@@ -1,0 +1,2 @@
+module ProtBlastHelper
+end

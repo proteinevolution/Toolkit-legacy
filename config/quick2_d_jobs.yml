@@ -1,0 +1,9 @@
+quick2_d_job: 
+  title: Quick2D
+  hidden: false
+  code: Q2D
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:

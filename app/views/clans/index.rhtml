@@ -1,0 +1,65 @@
+<a href="#" onClick="openHelpWindow('/clans/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'clans'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+  <%= form_label("Select search tool", "searchtool") %>
+  <%= form_radio_buttons("searchtool", @searchtool_values, @searchtool_labels, @searchtool_values[0], "&nbsp;", "",1) %>	
+</div>
+<div class="row">
+  <%= form_label("Enter sequences in FASTA format (up to 2000 sequences!)", "input") %>
+  <%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+  <%= form_label("or upload a local file") %>
+  <%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/protein_dbs") %>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+  <%= form_label("Matrix", "matrix") %>
+  <%= form_select_single("matrix", @matrices, @matrices, @matrices.find(@matrices.first) {|m| m =~ /80/}) %>	
+</div>
+<div class="row">
+  <%= form_label("Number of iterations", "numiterations") %>
+  <%= form_text_field("numiterations", '1') %>	
+</div>
+<div class="row">
+  <%= form_label("E-value", "evalue") %>
+  <%= form_text_field("evalue", '10') %>	
+</div>
+<div class="row">
+  <%= form_label("E-value for inclusion in first iteration", "evaluefirst") %>
+  <%= form_text_field("evaluefirst", '0.001') %>	
+</div>
+
+<div class="row">
+  <%= form_label("Filter for low complexety regions", "filter") %>
+  <%= form_checkbox("filter", '1', false) %>	
+</div>
+<div class="row">
+  <%= form_label("Perform ungapped alignment", "ungappedalignment") %>
+  <%= form_checkbox("ungappedalign", '1', false) %>	
+</div>
+
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+  <%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+  Frickey, T. and Lupas A. N. (2004) CLANS: a Java application for visualizing protein families based on pairwise 
+  similarity. <em>Bioinformatics</em>, <strong>20</strong>(18), 3702-3704.
+</div>

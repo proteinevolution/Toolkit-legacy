@@ -1,0 +1,91 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input</a></li>
+	<li><a href="#input_format">Input format</a></li>	
+	<li><a href="#inputmode">Input mode</a></li>
+	<li><a href="#matrix">Matrix</a></li>
+	<li><a href="#weighting">Weighting</a></li>
+	<li><a href="#contact">Contact</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+Enter single sequence or sequence alignment and choose its format from the dropdown menu.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="input_format"></a>
+<h3 class="<%= @section["name"] %>">Input format</h3>
+<div class="row">
+	<p>
+	Accepted formats are listed in the dropdown menu. 
+	Format descriptions can be found <a href="/reformat/help_params#format">here</a>.	
+	</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="inputmode"></a>
+<h3 class="<%= @section["name"] %>">Input Mode</h3>
+<div class="row">
+Use input as given: Performs all calculations on the basis of a given sequence or a given sequence 
+alignment in FASTA format. Either put in a sequence or sequence alignment of your choice.
+</div><div class="row">
+Run PSI-BLAST: Performs a PSI-BLAST run on the given sequence 
+(two iterations, E-value for inclusion 0.0001). Hits are aligned and filtered to a minimum sequence 
+identity of 40% with the query sequence and a minimum coverage of 20%. This alignment is then the basis 
+for the input profile. In case you are not happy with the used PSI-BLAST parameters, run PSI-BLAST 
+separately with the parameters of your choice, create a multiple alignment in FASTA format, and use 
+this as COILS input.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="matrix"></a>
+<h3 class="<%= @section["name"] %>">Matrix</h3>
+<div class="row">
+MTIDK - is a matrix derived from myosins, paramyosins, tropomyosins, intermediate filaments type I - V, 
+desmosomal proteins and kinesins. The matrix was compiled by weighting the residue frequencies of the 
+different protein families according to the following scheme:
+<br/>
+0.2 MYOSINS - 0.5 myosins - 0.5 paramyosins
+<br/>
+0.2 TROPOMYOSINS
+<br/>
+0.2 INTERMEDIATE FILAMENTS - 0.2 type I (keratin) - 0.2 type II (keratin) - 0.2 type III 
+(desmin, vimentin, GFAP, peripherin) - 0.2 type IV (NF light, medium and heavy chains) - 0.2 type V 
+(lamins A and B)
+<br/>
+0.2 DESMOSOMAL PROTEINS - 0.33 desmoplakin - 0.33 plectin - 0.33 hemidesmosomal plaque prot. 
+(bullous pemphigoid)
+<br/>
+0.2 KINESINS
+<br/><br/>
+PDB - is a matrix derived from coiled coils in the PDB.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="weighting"></a>
+<h3 class="<%= @section["name"] %>">Weighting</h3>
+<div class="row">
+Weighting: Because coiled coils are generally fibrous, solvent-exposed structures, all but the internal a 
+and d positions have a high likelihood of being occupied by hydrophilic residues. A program that gives 
+equal weight to all positions is therefore going to be biased towards hydrophilic, charge-rich sequences. 
+While this does not pose a problem for the vast majority of natural sequences, some highly charged 
+sequences obtain high coiled-coil probabilities in the obvious absence of heptad periodicity and 
+coiled-coil-forming potential. An extreme case is that of polyglutamate which obtains a 
+coiled-coil-forming probability > 99%. To counter this problem, COILS contains a weighting option, 
+which allows the user to assign the the same weight to the two hydrophobic positions a and d as to the 
+five hydrophilic positions b, c, e, f and g. This leads to an only slightly worse performance of the 
+program and permits the identification of false positives. It is recommended to run a weighted and and 
+unweighted scan and to compare the outputs. A drop of more than 20-30% in the probability is a clear 
+indication of a highly-charged false positive.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="contact"></a>
+<h3 class="<%= @section["name"] %>">Contact</h3>
+<div class="row">
+We are committed to improve this service for you. Please inform us of problems, or send comments or 
+feedback to <a target="_blank" href="http://www.eb.tuebin\gen.mpg.de/dept1/staff/Gruber.html">Markus Gruber</a>.
+</div>

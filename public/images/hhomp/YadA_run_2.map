@@ -1,0 +1,4 @@
+<map name="YadA_run_2">
+<area shape="rect" coords="50,95,770,140" href="#" onmouseover="imgOn('hitimage2','/tmp/development/193/YadA_run_2_tt.png');" onmouseout="imgOff('hitimage2','/tmp/development/193/YadA_run_2.png');" >
+</map>
+<img name="hitimage2" src="/tmp/development/193/YadA_run_2.png" border="0" alt="hhomp profile 2" usemap="#YadA_run_2" />

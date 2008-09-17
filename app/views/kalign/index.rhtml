@@ -1,0 +1,58 @@
+<a href="#" onClick="openHelpWindow('/kalign/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'kalign'}, {:multipart => true})%> 
+<h3 class="<%= @section['name'] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter sequences in FASTA format", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("Output sequence order", "outputorder") %>
+	<%= form_radio_buttons("outorder",@outorder_values,@outorder_labels,@outorder_values[0], "&nbsp;&nbsp;") %>
+</div>
+
+<div class="row">
+	<%= form_label("Gap open penalty", "gapopen") %>
+	<%= form_text_field("gapopen", "11.0") %>
+</div>
+
+<div class="row">
+	<%= form_label("Gap extension penalty", "gapextension") %>
+	<%= form_text_field("gapextension", "0.85") %>
+</div>
+
+<div class="row">
+	<%= form_label("Terminal gap penalties", "termgap") %>
+	<%= form_text_field("termgap", "0.45") %>
+</div>
+
+<div class="row">
+	<%= form_label("Bonus score", "bonusscore") %>
+	<%= form_text_field("bonusscore", "0") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Timo Lassmann and Erik LL Sonnhammer (2005) Kalign - an accurate and fast multiple sequence alignment algorithm
+	<br>
+	<em>BMC Bioinformatics 2005, 6:298     doi:10.1186/1471-2105-6-298</em>
+</div>

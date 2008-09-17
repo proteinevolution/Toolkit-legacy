@@ -1,0 +1,73 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => true}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div id="results" class="row">
+	<p id="queryname" style="font-size:14px; font-weight:bold; padding:5px;"<%= @job.header%></p>
+	<br><br>
+	<pre><%= @job.data%></pre>
+</div>
+
+<div class="hr">&nbsp;</div>
+<div class="row"><pre><%= @job.legend%></pre></div>
+
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+<table cellpadding="3">
+	<tr>
+		<td>PSIPRED</td>
+		<td> D. T. Jones (1999) Protein secondary structure prediction based on position-specific scoring matrices. 
+			</br><em>Journal of Molecular Biology</em> <b>292</b>, 195-202.
+		</td>
+	</tr><tr>
+		<td>JNET</td>
+		<td>J. A. Cuff and G. J. Barton (1999) Application of enhanced multiple sequence alignment profiles to improve protein secondary structure prediction. </br>
+			<em>Proteins</em> <b>40</b>, 502-511.	
+		</td>	
+	</tr><tr>
+			<td>PROF</td>	
+			<td>M. Ouali and R. D. King (2000) Cascaded multiple classifiers for secondary structure prediction.</br>
+				<em>Protein Science</em> <b>9</b>, 1162-1176.
+			</td> 
+	</tr><tr>
+			<td>PROF</td>
+			<td>B. Rost (2001) Protein secondarystructure prediction continues to rise.</br> 
+	  			<em>Journal of Structural Biology</em> <b>134</b>, 204-218.
+  			</td>
+	</tr><tr>
+			<td>COILS</td>
+			<td>A. N. Lupas, M. Van Dyke and J. Stock (1991) Predicting Coiled Coils from Protein Sequences.</br>
+				<em>Science</em> <b>252</b>, 1162-1164.
+			</td>	
+	</tr><tr>	
+			<td>MEMSAT2</td>			
+			<td>D. T. Jones, W. R. Taylor and J. M. Thornton (1994) A model recognition approach to the prediction of all-helical membrane protein structure and topology.</br>
+				<em>Biochemistry</em> <b>33</b>, 3038-3049.
+			</td>		
+	</tr><tr>	
+			<td>HMMTOP</td>		
+			<td>G. E. Tusn&aacute;dy and I. Simon (1998) Principles Governing Amino Acid Composition of Integral Membrane Proteins: Applications to Topology Prediction.</br>
+				<em>Journal of Molecular Biology</em> <b>283</b>, 489-506.
+			</td>
+	</tr><tr>
+			<td>DISOPRED2</td>			
+			<td> J. J. Ward, J. S. Sodhi, L. J. McGuffin, B. F. Buxton and D. T. Jones (2004) Prediction and Functional Analysis of Native Disorder in Proteins from the Three Kingdoms of Life.</br>
+				<em>Journal of Molecular Biology</em> <b>337(3)</b>, 635-45.
+			</td>
+	</tr><tr>	
+			<td rowspan="2">VSL2</td>		
+			<td>K. Peng, P. Radivojac, S. Vucetic, A. K. Dunker, and Z. Obradovic (2006), Length-Dependent Prediction of Protein Intrinsic Disorder.</br> 
+ 	 	 		<em>BMC Bioinformatics</em> <b>7</b>, 208.
+ 	 	 	</td>
+ 	 </tr><tr>	
+			<td>Z. Obradovic, K. Peng, S. Vucetic, P. Radivojac, and A. K. Dunker, Exploiting Heterogeneous Sequence Properties Improves Prediction of Protein Disorder (2005).</br> 
+				<em>Proteins </em> <b>61(S7)</b>, 176-182.
+			</td>
+			</tr>
+</table>
+</div>
+
+</form>

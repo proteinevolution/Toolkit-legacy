@@ -1,0 +1,48 @@
+<%= form_tag({:controller => 'userdb', :action => 'upload'}, {:multipart => true})%> 
+
+<div style="position: fixed; top: 0px; left: 0px; z-index: 10; background-color: #FFF">	
+<span style="float: right; margin-right: 10px; margin-top: 10px;"><a href="#" onclick="self.close();">Close window</a></span>
+<h2>Upload personal databases</h2>
+<div class="hr">&nbsp;</div>	
+	
+	<% if !@uploaded_db.nil? %>
+		<p style="color: green; margin-left: 10px; font-weight: bold;">Successfully uploaded '<%= @uploaded_db %>' database. Database will be usable as soon as it is formatted. (This may take a few seconds.)</p>
+		<div class="hr">&nbsp;</div>
+	<% end %>
+	<% if !@user.nil? %>
+		<p style="margin-left: 10px;">You are currently logged in as user '<%= @user.login %>'. The total size of your personal databases may not exceed <span style="color: red; font-weight: bold;">100 MB</span>. Databases will be stored until you delete them in the database administration section.</p>
+		<% userid = @user.id %>
+	<% else %>
+		<p style="margin-left: 10px;">You are currently not logged in. Therefore the total size of your personal databases may not exceed <span style="color: red; font-weight: bold;">10 MB</span>. Databases will be stored until your browser session ends, but at most for 7 days. You can delete uploaded databases in the database administration section.</p>
+		<% userid = 0 %>
+	<% end %>
+	<div class="hr">&nbsp;</div>
+	<div class="row">
+		<%= form_label("Database name") %>
+		<%= form_text_field("dbname", "", "", 50) %>
+	</div>
+	
+	<div class="row">
+		<%= form_label("Database file") %>
+		<%= form_file("dbfile") %>
+	</div>
+	
+	<div class="row">
+		<%= form_label("Database type") %>
+		<%= form_radio_buttons("dbtype",@dbtype_values,@dbtype_labels,@type,"&nbsp;&nbsp;") %>
+	</div>
+	
+	<div class="row">
+		<div id="gloading_lnk" style="display:none; text-decoration:blink; float: right; margin-right: 25px;" >Loading...</div>
+	</div>		
+
+	<div class="row">
+		<input name="submitform" type="submit" class="toolbutton" value="Upload database" onclick="Effect.Appear('gloading_lnk');" />
+		<input name="resetform" type="reset" class="toolbutton" value="Reset form" /><br />&nbsp;
+	</div>
+	
+	<%= hidden_field_tag("userid", userid) %>
+	
+</div>
+
+</form>

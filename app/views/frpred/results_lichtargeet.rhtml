@@ -1,0 +1,33 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Lichtarges Evolutionaty Trace Method', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row">
+	<strong>Lichtarge's Evolutionaty Trace Method ranks all positions of the multiple sequence alignment by importance, thus
+	yielding both, conserved and subtyping residues. Subgroup classification is derived from a UPGMA tree.</strong>
+</div>
+<div class="hr">&nbsp;</div>
+<div class="row">
+        Mihalek, I., Res, I., and Lichtarge, O. (2004)
+        A Family of Evolution-Entropy Hybrid Methods for Ranking Protein Residues by Importance. <em>J. Mol. Biol.</em>,
+        <strong>336</strong>, 1265-1282.
+</div>
+<div class="row">
+        Kabsch, W., and Sander C. (1983)
+        Dictionary of protein secondary structure: Pattern recognition of hydrogen-bonded and geometrical features. <em>Biopolymers.</em>,
+	<strong>22</strong> (12), 2577-2637.
+</div>
+<div class="row">
+        Adamczak R., Porollo A., Meller J. (2004)
+        Accurate prediction of solvent accessibility using neural networks-based
+        regression. <em>Proteins.</em>,
+        <strong>56</strong> (4), 753-767.
+</div>
+<div class="hr">&nbsp;</div>
+<div class="row">
+	<%= @job.render_file(@job.jobid + ".4_scores.html") %>
+</div>
+
+</form>

@@ -1,0 +1,3 @@
+class HhompMakemodelJob < Job
+  
+end

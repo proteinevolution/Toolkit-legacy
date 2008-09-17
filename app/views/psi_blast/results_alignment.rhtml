@@ -1,0 +1,44 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool}) %>
+
+<%= render(:partial => "shared/resultsections", :locals => {:export_to => "alignment", :forward => false}) %>
+
+<%= form_tag({}, {:id => @job.tool+"_form"}) %>
+
+<div id="forward" style="display: none;">
+	<div class="row">
+		<%= form_label("Forward results to") %>
+		<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+		<div class="formw">
+			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+		</div>
+	</div>
+    
+	<div class="hr">&nbsp;</div>
+</div>
+
+	<div class="row">
+
+ 		<div id="applet">
+   		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.align">
+			<PARAM NAME="type"   value="URL">
+			<PARAM NAME="format" value="FASTA">
+			</APPLET> 
+			<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.ralign">
+			<PARAM NAME="type"   value="URL">
+			<PARAM NAME="format" value="FASTA">
+			</APPLET>
+			<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
+			
+		</div>
+	</div><div class="hr">&nbsp;</div>
+
+	<div class="row">
+		<%= text_area_tag("alignment", @job.render_file(@job.jobid+".align"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
+	</div>	
+	
+
+</form>

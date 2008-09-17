@@ -1,0 +1,56 @@
+<a href="#" onClick="openHelpWindow('/blastclust/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'blastclust'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Paste input sequences", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+<div class="row">
+	<%= form_label("Select input format", "input_format") %>
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "") %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%=form_label("Input is:","input_is")%>
+   <%=form_radio_buttons("itnp",['T','F'],['Protein','Nucleotide'],"T","&nbsp;")%>
+</div>
+
+<div class="row">
+	<%= form_label("Sequence length to be covered", "seqleng") %>
+	<%= form_text_field("lvalue", '','%') %>
+</div>
+
+<div class="row">
+   <%= form_radio_buttons("sdtpit",['T','F'],['Percent identity threshold','Score density threshold'],"T","&nbsp;","toggleDisabled('pvalue');toggleDisabled('svalue');")%>
+</div>
+
+<% disable = true %>
+<% if ((params['sdtpit'] && params['sdtpit'] == "F") || (@error_params['sdtpit'] && @error_params['sdtpit'] == "F")) then disable = false end %>
+	
+<div class="row">
+   <%= form_label("Percent identity threshold","pitsdt")%>
+   <%= form_text_field("pvalue", '', '%', 5, !disable) %>
+</div>
+<div class="row">
+   <%= form_label("Score density threshold","pitsdt")%>
+	<%= form_text_field("svalue", '', '', 5, disable) %>
+</div>
+  
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

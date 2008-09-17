@@ -1,0 +1,43 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => 'hhmergeali', :title_extra => "Query to Template Alignment", :resubmit => false}) %>
+
+<div class="hr">&nbsp;</div>
+
+<%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}) %>
+
+	<div class="row">
+
+ 		<div id="applet">
+   		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.qt.fas">
+			<PARAM NAME="type"   value="URL">
+			<PARAM NAME="format" value="FASTA">
+			</APPLET> 
+			<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.qt.reduced.fas">
+			<PARAM NAME="type"   value="URL">
+			<PARAM NAME="format" value="FASTA">
+			</APPLET>
+			<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
+			
+		</div>
+		<div class="hr">&nbsp;</div>
+
+	  	<input name="submitform" type="submit" class="feedbutton" value="Restart HHpred with this alignment" /> 
+   	<input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
+   	<strong>You may edit this merged query-template alignment and submit it to HHpred&nbsp;&nbsp;</strong>
+   	<br/>
+	</div>
+
+	<div class="spacer">&nbsp;</div>	
+
+
+
+
+	<div class="row">
+		<%= text_area_tag("alignment", @job.render_file(@job.jobid+".qt.fas"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
+	</div>	
+	
+
+</form>

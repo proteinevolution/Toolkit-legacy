@@ -1,0 +1,10 @@
+sixframe_job: 
+  title: 6 Frame Translation
+  hidden: false
+  code: 6FTR
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+

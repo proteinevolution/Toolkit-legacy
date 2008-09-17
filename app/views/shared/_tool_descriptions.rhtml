@@ -1,0 +1,12 @@
+<% @tools.each do |tool| %>
+
+	<% if is_active?(tool) && tool['section'] == @section['name'] %>
+	<h4><%= link_to_tool tool -%></h4>
+	<p class="tooldescr">
+	<%= render(:partial => tool['name']+"/description") %>
+	</p>
+	<div class="hr">&nbsp;</div>
+	<% end %>
+
+<% end %>
+

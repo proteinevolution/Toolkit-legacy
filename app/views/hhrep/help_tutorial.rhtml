@@ -1,0 +1,368 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#MalT">MalT</a></li>
+	<li><a href="#YadA">YadA</a></li>
+	<li><a href="#TIM">TIM barrel</a></li>
+	<li><a href="#OmpW">OmpW</a></li>
+	<li><a href="#references">References</a></li>
+	<li><a href="#contact">Contact</a></li>
+</ul>
+
+
+
+<h2>Short Tutorial to <%= @tool['title'] %></h2> 
+<br><br>
+
+Lets look at how to use HHpred by walking through a few example analyses. 
+Each job will take a few minutes to run. So if you want to do all examples, 
+you may want to submit all example sequences in parallel, using the button 
+'Submit new job' on the check/log screen. You might also want to compare 
+the results with those of the other <i>de novo</i> repeat detection servers:
+	<a target="_blank" href="http://www.ebi.ac.uk/Radar/">RADAR</a>,
+	<a target="_blank" href="http://ibivu.cs.vu.nl/programs/reprowww/">REPRO</a>,
+	<a target="_blank" href="http://ibivu.cs.vu.nl/programs/trustwww/">TRUST</a>,
+	<a target="_blank" href="http://nihserver.mbi.ucla.edu/Repeats/">Internal Repeat Finder</a>.
+These servers are much faster since they don't need to build sequence profiles by PSI-BLAST, 
+but they fail to detect all or most of the divergent repeats in these example sequences.
+<br><br>
+
+<a name="MalT"></a>
+<h3 class="<%= @section["name"] %>">MalT</h3>
+<div class="row">
+
+MalT is the dedicated transcriptional activator of the maltose regulon in <i>Escherichia coli</i>.
+It is subject to multiple controls. To integrate these controls, it contains four domains,
+the last of which is a three-helical bundle DNA-binding domain. 
+The third domain contains nine structural repeats that belong to the diverse group of TPR 
+(tetratrico peptide) repeats. Each MalT repeat unit is composed of an alpha-helical hairpin 
+with ~40 residues length. These helix hairpins stack on top of each other with a twist to form a 
+superhelix. The repeat units are so diverse that they can not be identified with significance 
+by Pfam. Domain III has been crystallized, and its sequence is:
+<br><br>
+
+<pre>
+>1HZ4_A Crystal Structure Of Transcription Factor Malt Domain III
+GHEIKDIREDTMHAEFNALRAQVAINDGNPDEAERLAKLALEELPPGWFYSRIVATSVLGEVLHCKGELT
+RSLALMQQTEQMARQHDVWHYALWSLIQQSEILFAQGFLQTAWETQEKAFQLINEQHLEQLPMHEFLVRI
+RAQLLWAWARLDEAEASARSGIEVLSSYQPQQQLQCLAMLIQCSLARGDLDNARSQLNRLENLLGNGKYH
+SDWISNANKVRVIYWQMTGDKAAAANWLRHTAKPEFANNHFLQGQWRNIARAQILLGEFEPAEIVLEELN
+ENARSLRLMSDLNRNLLLLNQLYWQAGRKSDAQRVLLDALKLANRTGFISHFVIEGEAMAQQLRQLIQLN
+TLPELEQHRAQRILREINQHHGA
+</pre>
+<br>
+
+Let us submit this sequence to HHrep. The precomputed results are also available 
+<a target="HHrep_tutorial" href="http://<%= DOC_ROOTHOST %>/hhrep/results/tu_1hz4_A">here</a>.
+<br><br>
+
+<center>
+<img src="/images/hhrep/MalT_0.png" border="0" alt="MalT 0"/>
+</center>
+<br><br>
+
+<img src="/images/hhrep/hhrep_tutorial_radio.jpg" border="0" alt="radio buttons"/>
+<br><br>
+
+The returned <b>dot plot</b> shows the graphical representation of the sequence compared to itself. 
+For a sequence of length <i>L</i> it has a size
+<i>L</i> x <i>L</i>. A diagonal line between points (i0,j0) and (i1,j1) would signify
+a local similarity starting at the residue pair (i0,j0) and ending at (i1,j1). To increase
+signal to noise, the column-to-column scores for the dot plot are averaged over diagonal windows of 
+size 21 (default). The dot plot shows an obvious repeat structure with seven
+intermittent diagonal lines in the lower triangular part and seven in the upper part.
+The upper part also shows in blue the self-alignments that HHrep reckons to be significant.
+Note that there is a wrong self-alignment just next to the main diagonal. 
+<i>Click on it to deselect it.</i> Two correct self-alignment in the very upper right and lower left
+corner that are already half visible by black diagonals have not yet been found by HHrep, 
+owing to their shortness.
+<br><br>
+
+Below are  <b>radio buttons</b> to change parameters: &nbsp; (1) In the first row, one can change
+the sequences that go into the multiple sequence alignment giving rise to the profile HMM.
+By default, no filter is applied. When you choose 50%, for instance, only sequences with
+at least 50% sequence identityto the query sequence enter into the alignment, rendering it much less diverse. 
+We will see at the example of YadA how this can be useful. &nbsp; (2) In the second row, we can select the
+score threshold above which a cell in the dot plot will be set. &nbsp; (3) In the third row, 
+we can change the length of the averaging window. &nbsp;&nbsp; Experiment with these parameters
+a bit to get a feeling for them. Whenever HHrep returns you a dot plot with almost no diagonal 
+lines set, you should evidently lower the threshold. When diagonal lines get smeared out
+to neighboring diagonals, try increasing the sequence identity filter.
+<br><br>
+ 
+Now look at the  <b>summary hit list</b> below. It gives you the significance of each self-alignment 
+as a probability be a true positive and as a P-value (which is the same as the E-value in HHrep).
+The <i>probability</i> given is the probability that (1) the self-alignment is showing a homologous 
+relationship -- i.e. the aligned parts (or at least subsets of them) originated by duplication of the same
+sequence -- or (2) that the self-alignment corresponds at least to a local structural similarity.
+The <i>P-value</i> is as usual the probability to observe a match with the same score or higher by chance.
+Hence, the lower the P-value, the higher the significance. In contrast to the probability,
+<i>the P-value does not include the secondary structure similarity score</i> (shown in the column named 'SS').
+<br><br>
+
+For repeat proteins, the P-value may look very significant even though the self-alignment is 
+not at all a true positive. This is the case for our alignment No 6 which has a P-value of 3.9E-9 
+despite being just wrong. The reason for the failure of the P-value to reflect significance is that
+the P-value assumes your query looks similar to a random sequence (since the P-value answers the
+question "With what probability will a <i>random</i> sequence show a score at least as high as that?").
+This assumption breaks down completely when your sequence is really a repeat protein. Hence, 
+P-values are a great help to judge if the protein contains repeats at all, but they have to be considered 
+with care when deciding on the validity of subalignments in a protein known to contain repeats.
+<br><br>
+
+Noteworthy is also the last column in the summary hit list. The "Shift" is the offset of the alignments 
+from the main diagonal. It is defined as j0-i0, where (i0,j0) is the first pair of aligned residues
+in the alignment.
+<br><br>
+
+<img src="/images/hhrep/hhrep_tutorial_hitlist_alignment.jpg" border="0" alt="summary hit list and sample alignment"/>
+<br><br>
+
+Look at the <b>alignments</b> below. The first two line give the secondary structure and confidence values as
+predicted by PSI-PRED. Below is the query sequence and further down the consensus sequence of the
+underlying multiple alignment of homologs. It shows a lower-case letter if the column is partially conserved (>40%)
+and a capital letter if it is highly conserved (>60%). The central line gives the match quality 
+(very bad  = ;  bad  - ;  neutral  . ;  good  + ;  very good  |).
+ <br><br>
+
+By pressing one of the colored histogram logos, you can go to an alternative view of the pairwise
+alignments which shows the underlying sequence profiles (HMMs) as colored histograms. See the 
+<a href="/hhrep/help_results"> results section</a>  for more details.
+<br><br>
+
+
+<img src="/images/hhrep/hhrep_tutorial_MalT_histogram.jpg" border="0" alt="summary hit list and sample alignment"/>
+<br><br>
+
+Now, check that you have deselected the invalid alignment No 6, set back the sequence identity filtering to 0%, 
+and press "<b>Merge alignments</b>". 
+<br><br>
+
+<img src="/images/hhrep/hhrep_tutorial_mergealignements_buttons.jpg" border="0" alt="summary hit list and sample alignment"/>
+<br><br>
+
+This will create a superalignment from the query alignment by 
+aliging the query alignment to itself. To see exactly what happens, let us turn to our example.
+We know that it consists of nine repeat units which are, in fact, already quite manifest in our dot plot. 
+Let's call these repeats ABCDEFGHI. Our six valid alignments are:
+<br>
+<pre> 
+    No 1         No 2         No 3         No 4         No 5         No 7         
+    ABCDEFGHI    ABCDEFGHI    ABCDEFGHI    ABCDEFGHI    ABCDEFGHI    ABCDEFGHI    
+    BCDEFGHI-    CDEFGHI--    DEFGHI---    EFGHI----    FGHI-----    GHI------
+   
+    ABCDEFGHI    ABCDEFGHI    ABCDEFGHI    ABCDEFGHI    ABCDEFGHI    ABCDEFGHI    
+    -ABCDEFGH    --ABCDEFG    ---ABCDEF    ----ABCDE    -----ABCD    ------ABC 
+</pre>
+<br>
+The first row of alignments corresponds to the blue traces in the upper half of the dot plot,
+while the lower row corresponds to the same alignments in the lower half of the dot plot.
+When we press "Merge alignments", HHrep will produce a super-alignment that will look like this:
+<br><br>
+
+<pre>
+    GHI------
+    FGHI----- 
+    EFGHI----
+    DEFGHI---
+    CDEFGHI--
+    BCDEFGHI-
+    ABCDEFGHI
+    -ABCDEFGH 
+    --ABCDEFG 
+    ---ABCDEF
+    ----ABCDE
+    -----ABCD
+    ------ABC
+</pre>
+<br>
+Each line in this superalignment represents the entire original query alignment, shifted and aligned to the 
+other alignments. The resulting super-alignment is then compared with itself again, just as in the first step. 
+In this way, HHrep exploits the redundancy of information in the pairwise alignments (termed "transitivity" or 
+"consistency"): an alignment of A with B and B with C implicitly determines the alignment of A with C. 
+Let's look at <a target="HHrep_tutorial" href="http://<%= DOC_ROOTHOST %>/hhrep/results/75563">the results</a> 
+of the merging operation.
+<br><br>
+
+<center>
+<img src="/images/hhrep/MalT_1.png" border="0" alt="MalT 1"/>
+</center>
+<br><br>
+
+The dot plot now looks very tidy and clean, with nine obvious repeats. Of the eight valid alignments to be
+expected, seven are found (except the last one in the upper right corner). Three invalid alingments are 
+also found (Nos 7, 9, and 10). Le us deselect them by clicking on them and do a second round of "Merge alingments".
+<br><br>
+
+<center>
+<img src="/images/hhrep/MalT_2.png" border="0" alt="MalT 2"/>
+</center>
+<br><br>
+
+The dot plot looks even cleaner with only the shortest alignment still missing, but with no false positives anymore.
+We can finally extract the mulitple alignment of repeats by pressing "<b>View repeats</b>". (Deselect 
+invalid alignment before, if appropriate.) The results are shown  
+<a target="HHrep_tutorial" href="http://<%= DOC_ROOTHOST %>/hhrep/results/48684">here</a>. 
+The first and last block of aligned repeats contains eight repeat units, while all others contain all nine.
+Note that otherwise, the nine blocks of alignments look practically identical: through the two rounds 
+of alignment merging, consistency between the pairwise alignments has been achieved almost completely. 
+<br><br>
+
+<img src="/images/hhrep/MalT_viewrepeats.jpg" border="0" alt="MalT repeats aligned"/>
+
+<br><br>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="YadA"></a>
+<h3 class="<%= @section["name"] %>">YadA</h3>
+<div class="row">
+
+YadA from  <i>Yersinia enterocolitica</i> is a non-fimbrial adhesin, an important class of molecules 
+by which pathogenic proteobacteria adhere to their hosts. These adhesing form trimeric surface structures with 
+a head-rod-anchor architecture. The head domain is used to attach to extracellular matrix proteins. It is a 
+left-handed beta-helix (PDB: 1P9H) with a degenerate periodicity close to 14. The stalk is a coiled coil 
+with an unusual periodicity of 15 residues. The protein is anchored in the outer membrane by a porin-like 
+domain consisting of four transmembrane beta-strands.
+<br><br>
+
+Let us submit the sequence of YadA to HHrep. The precomputed results are also available
+<a target="HHrep_tutorial" href="http://<%= DOC_ROOTHOST %>/hhrep/results/tu_YadA">here</a>.
+
+<br><br>
+
+<pre>
+>YadA [Yersinia enterocolitica]
+MTKDFKISVSAALISALFSSPYAFADDYDGIPNLTAVQISPNADPALGLEYPVRPPVPGAGGLNASAKGI
+HSIAIGATAEAAKGAAVAVGAGSIATGVNSVAIGPLSKALGDSAVTYGAASTAQKDGVAIGARASTSDTG
+VAVGFNSKADAKNSVAIGHSSHVAANHGYSIAIGDRSKTDRENSVSIGHESLNRQLTHLAAGTKDTDAVN
+VAQLKKEIEKTQENTNKRSAELLANANAYADNKSSSVLGIANNYTDSKSAETLENARKEAFAQSKDVLNM
+AKAHSNSVARTTLETAEEHANSVARTTLETAEEHANKKSAEALASANVYADSKSSHTLKTANSYTDVTVS
+NSTKKAIRESNQYTDHKFRQLDNRLDKLDTRVDKGLASSAALNSLFQPYGVGKVNFTAGVGGYRSSQALA
+IGSGYRVNENVALKAGVAYAGSSDVMYNASFNIEW
+</pre>
+<br><br>
+
+<center>
+<img src="/images/hhrep/YadA_0.png" border="0" alt="YadA_C"/>
+</center>
+<br><br>
+
+Look at the dot plot and observe how it changes when you choose a sequence identity filter 
+of 30%, 40%, and 50%. The marked changes in repeat structure indicate that the sequence 
+alignment at 0% is too broad and smeares out the subtle sequence repeat features. One can
+also easily tell from the dot plots that the sequence is composed of three or four domains,
+in the ranges 1-210, 211-350, and 351-455. Since HHrep is best on single domain sequences 
+(mainly because PSI-BLAST has fewer problems to assemble a clean alignment in this case),
+we cut the sequence into three parts and submit them separately:
+<br><br>
+
+<pre>
+>YadA_head [Yersinia enterocolitica]
+MTKDFKISVSAALISALFSSPYAFADDYDGIPNLTAVQISPNADPALGLEYPVRPPVPGAGGLNASAKGI
+HSIAIGATAEAAKGAAVAVGAGSIATGVNSVAIGPLSKALGDSAVTYGAASTAQKDGVAIGARASTSDTG
+VAVGFNSKADAKNSVAIGHSSHVAANHGYSIAIGDRSKTDRENSVSIGHESLNRQLTHLAAGTKDTDAVN
+
+>YadA_stalk [Yersinia enterocolitica]
+VAQLKKEIEKTQENTNKRSAELLANANAYADNKSSSVLGIANNYTDSKSAETLENARKEAFAQSKDVLNM
+AKAHSNSVARTTLETAEEHANSVARTTLETAEEHANKKSAEALASANVYADSKSSHTLKTANSYTDVTVS
+
+>YadA_C [Yersinia enterocolitica]
+NSTKKAIRESNQYTDHKFRQLDNRLDKLDTRVDKGLASSAALNSLFQPYGVGKVNFTAGVGGYRSSQALA
+IGSGYRVNENVALKAGVAYAGSSDVMYNASFNIEW
+</pre>
+<br><br>
+
+With default parameters, the dot plot of the head domain shows a 7-residue
+repeat pattern that is a bit smeared out. By increasing the score threshold
+to 0.6 bits the pattern gets much cleaner and two fault lines appear: 
+one around resdiue 130 (two nearby inserts of two residue each) and one
+in the range of 160-170 (a two-residue insert). Also, a 14 residue pattern 
+around is discernable at the lower and right edges. Switch to a  50% filter 
+and 0.2 bits threshold to see the 14-residue repeat pattern more clearly.
+The conlusion is that the closer homologs have a main 14 residue repeat, 
+but the 14-residue super-repeat gets overwhelmed by an internal 7-residue 
+sub-repeat that dominates in the more distant homologs.
+<br><br>
+
+<center>
+<img src="/images/hhrep/YadA_head_0.png" border="0" alt="YadA_head"/>
+</center>
+<br><br>
+
+The stalk domain dot plot looks too dark at default parameters. Increasing the
+score threshold from 0.4 to 0.6 reveals a nice periodicity of 5. But if in addition
+we increase the sequence identity filter to 30%, we see that the real periodicity
+is not 5 but 15. A round of "Merge alignments" reveals that the repeat pattern
+stretches over the entire region of the investigated sequence stretch:
+<br><br>
+
+<center>
+<img src="/images/hhrep/YadA_stalk_1.png" border="0" alt="YadA_stalk"/>
+</center>
+<br><br>
+
+<center>
+<img src="/images/hhrep/YadA_stalk_1_viewrepeats.jpg" border="0" alt="YadA_stalk repeats"/>
+</center>
+<br><br>
+
+And finally, the C-terminal part of the YadA sequence shows a 7 residue repeat between
+residues 350 and 380 and four repeats of 13 to 14 residues each in the region 400-455.
+(Choose 30% and 0.5 bits, for example.)
+<br><br>
+
+<center>
+<img src="/images/hhrep/YadA_C_0.png" border="0" alt="YadA_C"/>
+</center>
+<br><br>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="TIM"></a>
+<h3 class="<%= @section["name"] %>">TIM barrel fold</h3>
+<div class="row">
+
+A protein with a TIM barrel fold and a repeat structure. 
+Note that this is the first report of an eightfold repeat structure in the sequence of TIM barrel proteins.
+On the results page, lower the score threshold to 0.1. 
+Select correct alignments and press "Merge alignments" (do five times)
+<br><br>
+
+<pre>
+>gi|5821872|pdb|1BQC|A Chain A, Beta-Mannanase From Thermomonospora Fusca
+ATGLHVKNGRLYEANGQEFIIRGVSHPHNWYPQHTQAFADIKSHGANTVRVVLSNGVRWSKNGPSDVANV
+ISLCKQNRLICMLEVHDTTGYGEQSGASTLDQAVDYWIELKSVLQGEEDYVLINIGNEPYGNDSATVAAW
+ATDTSAAIQRLRAAGFEHTLVVDAPNWGQDWTNTMRNNADQVYASDPTGNTVFSIHMYGVYSQASTITSY
+LEHFVNAGLPLIIGEFGHDHSDGNPDEDTIMAEAERLKLGYIGWSWSGNGGGVEYLDMVYNFDGDNLSPW
+GERIFYGPNGIASTAKEAVIFG
+</pre>
+<br><br>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="OmpW"></a>
+<h3 class="<%= @section["name"] %>">OmpW</h3>
+<div class="row">
+
+OmpW is an outer membrane beta barrel protein from <i>E. coli</i> which is composed of
+four structural beta-hairpin repeats. One of these repeats is divided between
+the N-terminal and C-terminal end of the chain, closing the barell in a velcro-like fashion.
+The first repeat isHHrep finds the repeat unit to be a single 30-residue beta hairpin. 
+Note that Neuwald et al. found a motif that corresponds to the first 11-13 residues of our repeat units:
+Neuwald AF, Liu JS, Lawrence CE. (1995) Gibbs motif sampling: detection of bacterial outer membrane protein repeats. Protein Sci. 4:1618-32.) 
+<br><br>
+On the results page, lower the score threshold to 0.1. 
+Select correct alignments and press "Merge alignments" (do three times)
+<br><br>
+
+<pre>
+>gi|71159606|sp|P0A915|OMPW_ECOLI Outer membrane protein W precursor
+MKKLTVAALAVTTLLSGSAFAHEAGEFFMRAGSATVRPTEGAGGTLGSLGGFSVTNNTQLGLTFTYMATD
+NIGVELLAATPFRHKIGTRATGDIATVHHLPPTLMAQWYFGDASSKFRPYVGAGINYTTFFDNGFNDHGK
+EAGLSDLSLKDSWGAAGQVGVDYLINRDWLVNMSVWYMDIDTTANYKLGGAQQHDSVRLDPWVFMFSAGY
+RF
+</pre>
+<br><br>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<%= render(:partial => "hhrep/references_and_contact") %>

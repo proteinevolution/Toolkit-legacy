@@ -1,0 +1,89 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Cutoff Selection', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( url_for(:action => 'run', :job => 'cluster', :parent => @job, :forward_controller => 'clans', :forward_action => 'results_clustering', :increment_id => 'true') , {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row">
+	<%= form_label("Cutoff", "cutoff") %>
+	<%= form_text_field("xcutoff", '0', "(You can also choose the cutoff by clicking into the image)", 20) %>	
+</div>
+
+<div class="row">
+	<%= form_label("Mode", "clusterby") %>
+	<div class="formw">
+		<input name="datatype" type="radio" value="1" checked="checked" onchange="setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'cluster', :parent => @job, :forward_controller => 'clans', :forward_action => 'results_clustering', :increment_id => 'true') %>'); Effect.Appear('cluster'); Effect.Fade('clans'); init_cluster();">&nbsp; Clustering &nbsp; &nbsp;
+		<input name="datatype" type="radio" value="2" onchange="setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'view_clans', :parent => @job, :forward_controller => 'clans', :forward_action => 'results_view_clans', :increment_id => 'true') %>');  Effect.Appear('clans'); Effect.Fade('cluster'); init_clans();"> &nbsp; View in <a href="http://protevo.eb.tuebingen.mpg.de/miscpages/clans/">CLANS</a>
+	</div>
+</div>
+
+<div class="hr">&nbsp;</div>
+
+<div id="cluster">
+	<div class="row">
+		<%= form_label("Linkage") %>
+		<div class="formw">
+			<input name="cluster" type="radio" value="linkage" checked="checked" onChange="toggleFields('linkage');" />	&nbsp;<input id="minLinks" name="minLinks" type="text" value="1"/>
+		</div>
+	</div>
+	<div class="row">
+		<%= form_label("Convex") %>
+		<div class="formw">
+			<input name="cluster" type="radio" value="convex" onChange="toggleFields('convex');" />	&nbsp;<input id="stdev" name="stdev" type="text" value="0.5" disabled=true />
+		</div>
+	</div>
+	<div class="row">
+		<%= form_label("Network") %>
+		<div class="formw">
+			<input name="cluster" type="radio" value="network" onChange="toggleFields('network');" />	&nbsp;&nbsp;
+			<input id="globalaverage" name="globalaverage" type="checkbox" value="1" disabled=true />&nbsp; Global average
+			<input id="offset" name="offset" type="checkbox" value="1" disabled=true />&nbsp; Offset values
+		</div>
+	</div>
+	<div class="row">
+		<%= form_label("Min. sequences", "minseq") %>
+		<div class="formw">
+			<input id="minseqs" name="minseqs" type="text" size="5" value="2" />
+		</div>
+	</div>
+</div>
+	
+<div id="clans" style="display: none;">
+	<div class="row">
+		<%= form_label("Method") %>
+		<div class="formw">
+			<input name="savetype" type="radio" value="pairwise" checked="checked" />
+			Pairwise similarities only (smaller, faster)<br/>
+			<input name="savetype" type="radio" value="all" />
+			Include HSP information (LARGE, slower)
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="formw">
+		<input name="submitform" type="submit" class="feedbutton" value="Continue" />
+	</div>
+</div>
+			
+	
+<div class="row">
+	<div id="divline" style="position: absolute; background: #000000; width: 1px; height: 347px; top: 313px; left: 81px">&nbsp;</div>
+	<div id="graphdiv" style="">
+		<input type="hidden" name="dataid" value="blast_data_id" />
+		<input type="hidden" id="maxval" name="maxval" value="<%= @job.max_num %>" />
+		<table>
+			<tr><td>
+			<img id="graph" name="img1" src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>.png" width="700px" height="400px" /><br/>
+			</td></tr><tr><td align="center"></td></tr>
+		</table>
+	</div>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Frickey, T. and Lupas A. N. (2004) CLANS: a Java application for visualizing protein families based on pairwise 
+	similarity. <em>Bioinformatics</em>, <strong>20</strong>(18), 3702-3704.
+</div>

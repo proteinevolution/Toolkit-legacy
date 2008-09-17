@@ -1,0 +1,33 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Shannon Entropy', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row">
+	<strong>Shannon Entropy is a simple conservation method, which does not account for gaps nor amino acid similaity. The method ranks
+	those positions highest that have the same character in all sequences.</strong>
+</div>
+<div class="hr">&nbsp;</div>
+<div class="row">
+        Kabsch, W., and Sander C. (1983)
+        Dictionary of protein secondary structure: Pattern recognition of hydrogen-bonded and geometrical features. <em>Biopolymers.</em>,
+	<strong>22</strong> (12), 2577-2637.
+</div>
+<div class="row">
+        Adamczak R., Porollo A., Meller J. (2004)
+        Accurate prediction of solvent accessibility using neural networks-based
+        regression. <em>Proteins.</em>,
+        <strong>56</strong> (4), 753-767.
+</div>
+<div class="row">
+        Durbin, R., Eddy, S., Krogh, A., and Mitchison, G. (1998)
+        Biological sequence analysis: Probabilistic models of proteins and nucleic acids. <em>Cambridge University Press, Cambridge.</em>, 
+	<strong>chapter 11.2</strong>.
+</div>
+<div class="hr">&nbsp;</div>
+<div class="row">
+	<%= @job.render_file(@job.jobid + ".3_scores.html") %>
+</div>
+
+</form>

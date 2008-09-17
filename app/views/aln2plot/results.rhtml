@@ -1,0 +1,15 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections") %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row">
+	<img hspace="14" src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>-1.png" />
+	<img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>-2.png" />
+</div>
+<div class="alignres">
+<%= @job.render_file(@job.jobid + ".data") %>
+</div>
+		
+</form>

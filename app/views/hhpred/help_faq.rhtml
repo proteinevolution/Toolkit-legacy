@@ -1,0 +1,356 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#homology">What is homology?</a></li>
+	<li><a href="#search nr">Can I search the nr?</a></li>
+	<li><a href="#correct match">Correct match?</a></li>
+
+	<li><a href="#misaligned">Results page misaligned</a></li>
+	<li><a href="#truncated page">Truncated results page</a></li>
+	<li><a href="#forever">Job runs forever</a></li>
+	<li><a href="#error">Error message</a></li>
+	<li><a href="#background color">Print color alignments</a></li>
+	<li><a href="#javacrash">Browser crashes</a></li>
+	<li><a href="#javatrash">Applets don't work</a></li>
+
+	<li><a href="#input parameters">Input parameters</a></li>
+	<li><a href="#maxnumres">Maximum sequence length</a></li>
+	<li><a href="#multi-domain">Multi-domain sequences</a></li>
+	<li><a href="#db updates">DB updates</a></li>
+	<li><a href="#pfam twice">Pfam twice</a></li>
+	<li><a href="#Search several DBs">Search several DBs</a></li>
+	<li><a href="#multiple_sequences">Multiple queries</a></li>
+
+	<li><a href="#results">Help on results</a></li>
+	<li><a href="#evalues">E-values not ordered</a></li>
+	<li><a href="#HEC">What is H, E, C?</a></li>
+	<li><a href="#SS influence">E-values depend on SS scoring</a></li>
+
+</ul>
+
+<h2><%= @tool['title'] %> - Frequently asked questions</h2>
+<br>
+
+<a name="homology"></a><br>
+<b>What does homology mean exactly and why is it important for strucuture and function prediction?</b>
+<div class="row">
+Two protein sequences are <i>homologous</i> to each other if they descended from a 
+common ancestor sequence. Generally, homologous proteins (or protein fragments) have similar 
+structure because structures diverge much more slowly than their sequences (see, e.g. 
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=3709526">Chothia and Lesk, 1986</a>). Depending on the degree
+of divergence between the sequences, the proteins may also have similar cellular functions, ligands, 
+protein interaction partners, or enzymatic mechanisms (See, e.g. <a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=11286560">Todd <i>et al.</i>, 2001</a>). 
+On the contrary, proteins that have a 
+similar structure by convergence (i.e. by chance) are said to be analogous. They don't generally
+share similar functions or biochemical mechanisms and are therefore much less helpful for making 
+inferences. HHpred is is a tool for homology detection and as such does not normally detect 
+analogous relationships.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="homology"></a><br>
+<b>Why can't I search sequence databases like the NR or SwissProt with HHpred?</b><br>
+<div class="row">
+HHpred is based on HMM-HMM comparison and to build an HMM you need a multiple alignment. Therefore
+HHpred can only search <i>alignment databases</i>, not sequence databases. (In principle, one can 
+also build an HMM from a single sequence, but in this case one does not gain much over HMM-sequence
+methods like HMMer. Also, the speed would be lower by a factor of two to three.)
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="correct match"></a><br>
+<b>How can I verify if a database match is really homologous?</b>
+<div class="row">
+<i><b>Check probability and E-value:</b></i> HHpred can detect homologous relationships far beyond 
+the twilight zone, i.e. below 20% sequence identity. Sequence identity is therefore not an appropriate 
+measure of relatedness anymore. The estimated <i>probability</i> of the template to be (at least partly) 
+homologous to your query sequence is the most important criterion to decide whether 
+a template HMM is actually homologous or just a high-scoring chance hit. When it is larger than 95%, 
+say, the homology is nearly certain. Roughly speaking, I would give a hit serious consideration 
+(i.e. check the other points in this list) whenever (1) the hit has >50% probability, or (2) it has 
+>30% probability and is among the top three hits. The <i>E-value</i> is an alternative measure of 
+statistical significance. It tells you how many chance hits with a score better than this would be 
+expected if the database contained only hits unrelated to the query. At E-values below one, matches
+start to get marginially significant. Contrary to the probability, when calculating the E-value
+HHpred does not take into account the secondary structure similarity. Therefore, the probability 
+is a more sensitive measure than the E-value.
+
+<br><br> <i><b>Check if homology is biologically suggestive or at least reasonable:</b></i> Does the database hit 
+have a function you would expect also for your query? Does it come from an organism that is 
+likely to contain a homolog of your query protein?
+
+<br><br> <i><b>Check secondary structure similarity</b></i>: If the secondary structure of query and template
+is very different or you can't see how they could fit together in 3D, then this is a reason to 
+distrust the hit. 
+(Note however that if the query alignment contains only a single sequence, the secondary structure 
+prediction is quite unreliable and confidence values are overestimated.)
+
+<br><br> <i><b>Check relationship among top hits</b></i>: If several of the top hits are homologous to each 
+other, (e.g. when they are members of the same SCOP superfamily), then this will considerably reduce the 
+chances of all of them being chance hits, especially if these related hits are themselves not very similar 
+to each other. Searching the SCOP database is very usefull precisely for this reason, since the SCOP family 
+identifier (e.g. a.118.8.2) allows to tell immediately if two templates are likely homologs.
+
+<br><br> <i><b>Check for possible conserved motifs</b></i>: Most homologous pairs of alignments will 
+have at least one (semi-)conserved motif in common. You can identify such putative (semi-)conserved 
+motifs by the agglomeration of three or more well-matching columns (marked with a '|' sign between the 
+aligned HMMs) occurring within a few residues, as well as by matching consensus sequences. Some false positive 
+hits have decent scores due to a similar amino acid composition of the template. In these cases, the alignments 
+tend to be long and to lack conserved motifs.
+
+<br><br> <i><b>Check residues and role of conserved motifs</b></i>: If you can identify possible conserved 
+motifs: are the corresponding conserved template residues involved in binding or enzymatic function? 
+
+<br><br> <i><b>Check query and template alignments!</b></i>: A corrupted query or template alignment 
+is the main source of high-scoring false positives. The two most common sources of 
+corruption in an alignment are (1) non-homologous sequences, especially repetitive or low-complexity
+sequences in the alignment, and (2) non-homologous fragments at the ends of the aligned database 
+sequences that are due to PSI-BLAST's greedyness.<br>
+To check the <i>query</i> alignment, click 'Edit Query Alignment' on the results page and copy it 
+into a sequence viewer and, if necessary, edit it.  Do <b>not</b> use a multiple alignment 
+program for 'improving' the alignment. Despite the fact that the alignment will probably look better 
+afterwards (mainly due to collapsing inserts at only a few positions), it will in most cases 
+perform worse for finding homologs. <br>
+To check the <i>template</i> alignment, click on 'Show Template Alignments' and select one template. 
+Examine the alignment with an appropriate alignment viewer.<br>
+(We will continue to work on automatic methods to diagnose and correct corrupted alignments.)
+
+<br><br> <i><b>Realign with other parameters</b></i>: Press the "Realign>" button and change
+the alignment parameters. Choose global instead of local mode, for instance, if you expect your
+query to be globally homologous to the putative homolog. Try to improve the probability by
+changing the values for minimum coverage or minimum sequence identity. You can also run the 
+query HMM against other databases.
+
+<br><br> <i><b>Use <font color="green">HHsenser</font> to find more homologs for your query alignment</b></i>:
+If your query alignment has less than 50 sequences, you may try to enrich it by pressing 
+"Resubmit with HHsenser" on the results page. HHsenser is a novel, very sensitive homolog search 
+method based on recursive PSI-BLAST and HMM-HMM comparison for validation of putative homologs.
+Alternatively, you may try to use manual PSI-BLAST iterations to try to find more distant homologs 
+for your query alignment and jump-start HHpred with the manually enriched alignment.
+
+<br><br> <i><b>Try out other structure prediction servers!</b></i>: A list of servers can be found at 
+<a target="_blank" href="http://bioinfo.pl/cafasp/servers.html">http://bioinfo.pl/cafasp/servers.html</a>. Links
+to selected servers are also found in our MPG toolkit at <a target="_blank" href="/sections/tertstruct">'3ary structure'</a>.
+
+<br><br> <i><b>Verify predictions experimentally</b></i>: The ultimate confirmation of a 
+homologous relationship or structural model is, of course, the experimental verification of some of
+its key predictions, such as testing the binding to certain ligands by binding assays, 
+measuring biochemical activity, or comparing the knock-out phenotype with the one obtained
+when the putative functional residues are mutated.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+
+<a name="misaligned"></a><br>
+<b>The results page looks all misaligned and scrambled up. How can I get an orderly output?</b>
+<div class="row">
+There are two possible reasons. Either your browser has a non-monospace font specified as default monospace font 
+OR your browser does not allow the page to use the fonts specified in its cascaded style sheets (and, in particular, 
+the monospace font). To correct the settings:
+<br><br><i>Netscape/Mozilla</i>: Go to 'Edit' > 'Preferences' and choose 'Appearance' > 'Fonts'.
+Under <u>M</u>onospace select a monospce font (like 'monospace', 'Courrier', 'Luxi mono' etc.)
+and then check the box 'Allow documents to use other fonts'.
+<br><br><i>Mozilla Firefox</i>: Go to 'Edit' > 'Preferences' and choose 'General' > 'Fonts & Colors' 
+OR Go to 'Tools' > 'Options' and click on 'Fonts & Colors'. Check that under <u>M</u>onospace a monospace font is selected and uncheck the box 'Always use my:  Fonts / Colors'
+<br><br><i>Explorer</i>: Go to 'Tools' > 'Internet Options', click on the tab 'General' and choose 'Accessability'.
+Check that under <u>M</u>onospace a monospace font is selected and uncheck 'Ignore colors specified by Web pages' 
+and 'Ignore font styles specified by Web pages'. 
+<br><br>If this still does not give the desired result, you may force your web browser to use
+monospace font:
+<br><br><i>Netscape/Mozilla</i>: As before, go to 'Edit' > 'Preferences' and choose 'Appearance' > 'Fonts'.
+<b>Un</b>check 'Allow documents to use other fonts' and select monospace (typewriter) fonts such as Courrier
+for "Serif", "Sans-Serif" and "Monospace" categories.
+<br><br><i>Mozilla Firefox</i>: As before, go to 'Edit' > 'Preferences' and choose 'General' > 'Fonts & Colors'
+OR Go to 'Tools' > 'Options' and click on 'Fonts & Colors'.
+<br><b>Check</b> 'Always use my:  Fonts / Colors' and select a monospace or typewriter font
+for "Serif", "Sans-serif" and "Monospace" styles.
+<br><br><i>Explorer</i>: As before, go to 'Tools' > 'Internet Options', click on the tab 'General' and choose 'Accessability'.
+<br><b>Check</b> 'Ignore colors specified by Web pages' and 'Ignore font styles specified by Web pages'
+and choose a monospace or typewriter font for ...
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="truncated page"></a><br>
+<b>Sometimes I get an empty or truncated results page. How do I get the full results?</b>
+<div class="row">
+Just press the "Reload" button of your browser. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="forever"></a><br>
+<b>My job is running since more than 24 hours. The status screen still asks me to wait. What is going on?</b>
+<div class="row">
+Once your job is started, it should show a message in the log window, e.g. "Building alignment for query with PSI-BLAST ..."
+ or similar. If this does not happen within a few minutes then your job has probably not been launched correctly.
+Try again and if the problem persists, please notify us by email, giving the job ID.<br>
+If the log window shows that your job has been started but it hangs at the same point for more than a few minutes 
+then it depends how long your query sequence is. Sequences/alignments of less than 300 residues should not take more than
+a few minutes per PSI-BLAST iteration while very long sequences may take up to a few hours.
+In any case, if your job is not finished after 1 hour (length<300 residues) or after 24 hours (length=6000 residues), 
+chances are that something went wrong, probably on our side. Try again and if the problem persists, please send us a note 
+specifying the job ID. Thank you.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="error"></a><br>
+<b>What to do if I get an error message, e.g. "Cannot open: No such file or directory at /var/web/cgi-bin/toolkit/hhpred/hhpredResults.pl line 44"?</b>
+<div class="row">
+The error is on our side and we would be grateful to know about it as soon as possible.
+Please notify us (soeding@lmb.uni-muenchen.de), including the job-ID and error text.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="background color"></a><br>
+<b>How can I print the alignments in color as I see them on the screen?</b>
+<div class="row">
+You can color the amino acids in the alignments according to physico-chemical properties. If the 
+background colors are not printed, you probably have to modify the preferences of your browser.
+In Mozilla, choose 'File'>'Page Setup', choose tab 'Format&Options' and check 
+'Print Background (Color&Images)'.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<a name="javacrash"></a><br>
+<b>Why does my browser crash when I press "Edit Query Alignment" or "PDB-Viewer"?</b>
+<div class="row">
+Your browser crashes when it tries to execute a Java applet like JalView or pdb-viewer.
+This is a common problem that has to do with the fact that Java version and browser version have to
+be compatible. Suggestions: install the newest versions of Java and of your browser. If this does not
+work, try other browsers. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="javatrash"></a><br>
+<b>Why don't the "PDB-Viewer" applet and the JalView alignment editor work?</b>
+<div class="row">
+See the answer to the previous question.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<a name="input parameters"></a><br>
+<b>Where can I find help on the input parameters?</b>
+<div class="row">
+Click the input parameter on the input page or 
+click <a href="/hhpred/help_params" title="HHpred parameters">here</a>
+for the comprehensive list.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="maxresnum"></a><br>
+<b>What is the maximum sequence length allowed?</b>
+<div class="row">
+Query sequences longer than 6000 residues will be trimmed down to the first 6000 residues.
+FASTA alignments may be much longer than 6000 columns. They only get trimmed if the <i>query
+sequence</i> contains more than 6000 residues.
+However, a few iterations of PSI-BLAST search with sequences of 2000 residues or longer is very 
+time-consuming. We advise you to cut the sequence down into smaller blocks of less than 2000 residues
+and search with these parts seperately.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="multi-domain"></a><br>
+<b>Does HHpred work fine with multi-domain sequences as query?</b>
+<div class="row">
+HHpred and HHsearch have been designed to work with both single- and multi-domain queries. However,
+the chances for false positives entering the query alginment during the PSI-BLAST iterations is
+much greater for multi-domain proteins. Also, tuning parameters is easier and more effective for
+shorter sequences. For long sequences, it is therefore recommended first to search the SCOP domain 
+database and then to cut the query sequence into smaller parts on the basis of the SCOP domain assignments. 
+Please note that Pfam or CDD are - in my opinion - not suitable to determine domain boundaries.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="db updates"></a><br>
+<b>Why are the databases not up-to-date?</b>
+<div class="row">
+The PDB should get updated every Thursday, the other databases get updated only when there are new
+versions available, which happens irregularly (Pfam: every three to nine months, SCOP: every 12 to 18 months). 
+If you find that the PDB was not updated as it should, or you note that the version of Pfam, SMART, or CDD is not the newest, please notify us, so we can check our update scripts or perform 
+the necessary manual updates.  
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="pfam twice"></a><br>
+<b>Why are there two versions of Pfam databases to choose from?</b>
+<div class="row">
+One version is downloaded from Pfam directly. It's the one with the version number, e.g. pfam16.0.
+The other pfam is downloaded automatically from NCBI. It may not be as up-to-date and we found that,
+for some reason, the alignments contain fewer sequences. But it has the
+advantage that comments and explanation concerning the protein families are included in the HHpred 
+results. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="Search several DBs"></a><br>
+<b>Can I search several databases at a time?</b>
+<div class="row">
+HHpred allows you to select several databases from the menue by holding down the Control key during selection.
+Alternatively, you may submit several jobs, one for each database, seperately. 
+Just click 'Submit new job' or 'Submit with parameters of this job'. 
+Each job gets a job-ID (a five-digit number) that appears in the list of recent jobs in the light-blue pane 
+on the left. You can click on any of these job IDs to check the status and view the results. 
+Remember that CDD contains Pfam, SMART, COG, KOG, and CD (plus a few hundred other domains).<br>
+If you want to search another database with the same query, you can skip the PSI-BLAST search by clicking 
+'Resubmit query HMM' on the results page. Alternatively, you may press the tab 'Edit Query Alignment' 
+and in the window that opens, press 'Restart HHpred with this alignment'.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="multiple_sequences"></a><br>
+<b>Can I do a multiple search with many sequences at once?</b>
+<div class="row">
+No, sorry, for the time being multiple searches are not supported. If you have many sequences to
+process, please download the batch version of hhsearch at <a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/HHsearch/" title="Download HHsearch Software">ftp://ftp.tuebingen.mpg.de/pub/protevo/HHsearch/</a>.
+Alternatively, you could write a script that would send queries to the HHpred server automatically,
+one at a time. For an example of such a script, see the 4_blast.pl script from the package "Programming in Perl - Part II" at <a target="_blank" href="http://www.gchelpdesk.ualberta.ca/repository/VersionDetails.php?fileId=39&submissionId=30">http://www.gchelpdesk.ualberta.ca/repository/</a>.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<a name="results"></a><br>
+<b>Where do I find help to understand the results?</b>
+<div class="row">
+Click <a href="#" title="HHpred Results" onclick="openHelpWindow('hhpred_help_results');">here</a>
+for help on HHpred results.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="evalues"></a><br>
+<b>Why are the E-values not correctly ordered in my search results?</b>
+<div class="row">
+The results are not ordered by the E-value, but by the probability for the template to be 
+(at least locally) homologous to the query sequence. In contrast to the E-value, 
+this probability also takes account of the secondary structure similarity between 
+query and template.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="HEC"></a><br>
+<b>What do H, E, and C stand for in the alignments on the results page?</b>
+<div class="row">
+Sequences named >ss_pred contain the secondary structure predicted from the alignment
+of homologs by the program PSIPRED. H means helix, 
+E stands for extended beta sheet, and C signifies a coil or loop residue. The numbers
+below these sequences contain the confidence values for the prediction. 9 means high confidence,
+something like >90%, and 0 means very low confidence.<br>
+Sequences named >ss_dssp contain the actual secondary structure determined from the 3D structure
+by the program DSSP. H, E, and C are the same as above. S is a bend, B a beta brigded residue, 
+T a turn, and G a 3_10 helix residue.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+<BR>
+
+<a name="SS influence"></a><br>
+<b>Shouldn't the scores and E-values be the same with and without secondary structure scoring?</b>
+<div class="row">
+
+Only approximately. It is true that the raw scores, the E-values and P-values do not explicitely 
+depend on the secondary structure score. But the secondary structure score influences the alignments.
+Since the calibration will therefore also be slightly different with and without secondary structure 
+scoring, the raw scores, E- and P-values differ with and without secondary structure even when the 
+alignment does not change.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<%= render(:partial => "hhpred/references_and_contact") %>

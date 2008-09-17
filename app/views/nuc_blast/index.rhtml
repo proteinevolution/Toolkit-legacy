@@ -1,0 +1,60 @@
+<a href="#" onClick="openHelpWindow('/nuc_blast/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'nuc_blast'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+    <%= form_label("Enter sequence in FASTA format", "input") %>
+    <%= form_text_area("sequence_input") %>
+  </div>
+  <div class="row">
+    <%= form_label("or upload a local file") %>
+    <%= form_file("sequence_file") %>
+  </div>
+  <div class="row">
+    <%= form_label("Select a program", "program") %>
+    <%= form_select_single("program", @program_values, @program_labels, @program_values[0], 1, "toggle_blosum();") %>	
+  </div>
+  <div class="spacer">&nbsp;</div>
+
+  <%= render(:partial => "shared/nucleotide_dbs") %>
+
+  <h3 class="<%= @section["name"] %>">Search Options</h3>
+ 
+  <div class="row">
+    <%= form_label("Matrix", "matrix") %>
+    <%= form_select_single("matrix", @matrices, @matrices, @matrices.find(@matrices.first) {|m| m =~ /80/}) %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("E-Value", "evalue") %>
+    <%= form_text_field("evalue", '10') %>	
+  </div>
+  <div class="row">
+    <%= form_label("Filter for low complexety regions", "filter") %>
+    <%= form_checkbox("filter", '1', false) %>	
+  </div>
+  <div class="row">
+    <%= form_label("Perform ungapped alignment") %>
+    <%= form_checkbox("ungappedalign", '1', false) %>	
+  </div>
+  <div class="row">
+    <%= form_label("Descriptions", "descriptions") %>
+    <%= form_text_field("descr", '100') %>
+  </div>
+  <div class="row">
+    <%= form_label("Alignments", "alignments") %>
+    <%= form_text_field("alignments", '100') %>
+  </div>
+  <div class="row">
+    <%= form_label("Other advanced options", "otheradvanced") %>
+    <%= form_text_field("otheradvanced", '', '', 20) %>
+  </div>
+  <div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

@@ -1,0 +1,319 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Paste sequence or multiple alignment</a></li>
+	<li><a href="#input_format">Select input format</a></li>
+	<li><a href="#maxpsiblastit">Max. number of PSI-BLAST iterations</a></li>
+	<li><a href="#ss_scoring">Score secondary structure</a></li>
+	<li><a href="#maxseq">Show representative sequences per HMM</a></li>
+	<li><a href="#width">Width of alignments</a></li>
+	<li><a href="#coloring">Coloring query-template multiple alignments in results</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> - Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Paste single sequence or multiple alignment</h3>
+<div class="row">
+Paste the query <i>sequence</i> with which you want to do the search either as raw sequence 
+(e.g. 'ELRLRYCAPAGFALLKCN...'), as FASTA sequence (i.e. with a single line '>sequence_name optional description' 
+preceding the raw sequence, see next subsection). HHrep will use PSI-BLAST searches
+against the non-redundant sequence database from NCBI to build a multiple alignment from it. This 
+alignment will then be used to construct a concise statistical representation (a hidden Markov 
+model or HMM) and to search the selected HMM databases for homologs. <br>
+You may also paste a query <i>multiple alignment</i> (for allowed formats see below). 
+The alignment will be used to jumpstart PSI-BLAST. An expert-built or expert-edited alignment or one 
+that contains homologs not yet contained in the non-redundant sequence database may significantly increase 
+the sensitivity and reliability of HHrep. I recommend NOT to use automatic multiple alignment
+programs such as CLUSTAL, as PSI-BLAST tends to give clearly better alignments for the purpose of
+homologous relationships.
+Note: if you paste a multiple alignment please don't forget to select the appropriate input format below. 
+<br/><br/>
+</div><div class="spacer">&nbsp;</div>
+
+<a name="input_format"></a>
+<h3 class="<%= @section["name"] %>">Select input format</h3>
+<div class="row">
+<h5>Entering a single query sequence</h5>
+<br>
+You can enter a single query sequence in FASTA format (with or withour name line). HHrep will build a multiple alignment of homologs from it with PsiBlast. The query sequence in FASTA can look like this:
+<br><br>
+<PRE>
+>gi|532319|pir|TVFV2E|TVFV2E envelope protein
+ELRLRYCAPAGFALLKCNDADYDGFKTNCSNVSVVHCTNLMNTTVTTGLLLNGSYSENRT
+QIWQKHRTSNDSALILLNKHYNLTVTCKRPGNKTVLPVTIMAGLVFHSQKYNLRLRQAWC
+HFPSNWKGAWKEVKEEIVNLPKERYRGTNDPKRIFFQRQWGDPETANLWFNCHGEFFYCK
+MDWFLNYLNNLTVDADHNECKNTSGTKSGNKRAPGPCVQR
+</PRE><br>
+or this
+<br><br>
+<PRE>
+>gi|532319|pir|TVFV2E|TVFV2E envelope protein
+ELRLRYCAPA GFALLKCNDA DYDGFKTNCS NVSVVHCTNL MNTTVTTGLL LNGSYSENRT QIWQKHRTSN 
+DSALILLNKH YNLTVTCKRP GNKTVLPVTI MAGLVFHSQK YNLRLRQAWC HFPSNWKGAW KEVKEEIVNL 
+PKERYRGTND PKRIFFQRQW GDPETANLWF NCHGEFFYCK MDWFLNYLNN LTVDADHNEC KNTSGTKSGN 
+KRAPGPCVQR
+</PRE><br>
+or simply this<br>
+<br>
+<PRE>
+ELRLRYCAPAGFALLKCNDADYDGFKTNCSNVSVVHCTNLMNTTVTTGLLLNGSYSENRTQIWQKHRTSNDSALILLNKHYNLTVTCKRPGNK
+TVLPVTIMAGLVFHSQKYNLRLRQAWCHFPSNWKGAWKEVKEEIVNLPKERYRGTNDPKRIFFQRQWGDPETANLWFNCHGEFFYCKMDWFLNYLNNLTVDADHNE
+CKNTSGTKSGNKRAPGPCVQR
+</PRE>
+<br>
+The sequence may contain a nameline that must start with a &gt symbol, followed directly by the sequence name
+and an optional description. The residue data is contained in one or more lines of arbitrary length following 
+the name line. No empty lines should be used. Upper and lower case letters are allowed. 
+Spaces and gaps (-.) will be removed.
+
+</div><div class="hr">&nbsp;</div>
+<div class="row">
+<h5>Entering a multiple alignment</h5>
+<br>
+If you already have a query alignment (you may insert the manually edited query alignment built by 
+HHrep for example) then you can enter it here. The PsiBlast search will then be kickstarted 
+with this alignment. (If you choose the maximum number of PsiBlast iterations to be 0 then only the 
+predicted secondary structured will be added to your alignment.) The query sequence is the first sequence. 
+It is not marked explicitely.
+</p>
+
+<br>
+You can enter alignments in different formats, which are listed in the dropdown menu. 
+Format descriptions can be found <a href="/reformat/help_params#formats">here</a>.
+</p>
+
+
+<br><br><b>
+Example for aligned FASTA format:
+</b></p>
+<br><br>
+<PRE>
+>d1a1x__ b.63.1.1 (-) p13-MTCP1 {Human (Homo sapiens)}
+PPDHLWVHQEGIYRDEYQRTWVAVVEE--E--T--SF---------LR----------ARVQQIQVPLG-------DAARPSHLLTS-----QLPLMWQLYP
+>gi|6678257|ref|NP_033363.1|:(7-103) T-cell lymphoma breakpoint 1 [Mus musculus]
+HPNRLWIWEKHVYLDEFRRSWLPVVIK--S--N--EK---------FQ----------VILRQEDVTLG-------EAMSPSQLVPY-----ELPLMWQLYP
+>gi|7305557|ref|NP_038800.1|:(8-103) T-cell leukemia/lymphoma 1B, 3 [Mus musculus]
+PPRFLVCTRDDIYEDENGRQWVVAKVE--T--S--RSpygsrietcIT----------VHLQHMTTIPQ-------EPTPQQPINNN-----SLPTMWRLES
+>gi|11415028|ref|NP_068801.1|:(2-106) T-cell lymphoma-1; T-cell lymphoma-1A [Homo sapiens]
+HPDRLWAWEKFVYLDEKQHAWLPLTIEikD--R--LQ---------LR----------VLLRREDVVLG-------RPMTPTQIGPS-----LLPIMWQLYP
+>gi|7305561|ref|NP_038804.1|:(7-103) T-cell leukemia/lymphoma 1B, 5 [Mus musculus]
+----------GIYEDEHHRVWIAVNVE--T--S--HS---------SHgnrietcvt-VHLQHMTTLPQ-------EPTPQQPINNN-----SLPTMWRLES
+>gi|7305553|ref|NP_038801.1|:(5-103) T-cell leukemia/lymphoma 1B, 1 [Mus musculus]
+LPVYLVSVRLGIYEDEHHRVWIVANVE--TshS--SH---------GN----------RRRTHVTVHLW-------KLIPQQVIPFNplnydFLPTTWKLES
+>gi|27668591|ref|XP_234504.1|:(7-103) similar to Chain A, Crystal Structure Of Murine Tcl1
+-PDRLWLWEKHVYLDEFRRSWLPIVIK--S--N--GK---------FQ----------VIMRQKDVILG-------DSMTPSQLVPY-----ELPLMWQLYP
+>gi|27668589|ref|XP_234503.1|:(9-91) similar to T-cell leukemia/lymphoma 1B, 5;
+-PHILTLRTHGIYEDEHHRLWVVLDLQ--A--ShlSF---------SN----------RLLIYLTVYLQqgvafplESTPPSPMNLN-----GLPRRWTLRT
+>gi|7305559|ref|NP_038802.1|:(8-102) T-cell leukemia/lymphoma 1B, 4 [Mus musculus] 
+PPCFLVCTRDDIYEDEHGRQWVAAKVE--T--S--SH---------SPycskietcvtVHLWQMTTLFQ-------EPSPDSLKTFN-----FLPRTWRLES
+>gi|7305555|ref|NP_038803.1|:(9-102) T-cell leukemia/lymphoma 1B, 2 [Mus musculus]
+---------PGFYEDEHHRLWMVAKLE--T--C--SH---------SPycnkietcvtVHLWQMTRYPQ-------EPAPYNPMNYN-----FLPMTWRLAS
+</PRE>
+
+<br> 
+In aligned FASTA the gaps are written with '-' and the n'th letter of each sequence (except newlines) is 
+understood to build the n'th column of the multiple alignment. The sequence residues may be broken up 
+into several lines containing arbitrary numbers of residues. 
+
+<br><br><b> The same alignment in CLUSTAL format looks like this:</b></p>
+<br><br>
+<PRE>
+CLUSTAL X (1.83) multiple sequence alignment
+
+
+d1a1x__                             PPDHLWVHQEGIYRDEYQRTWVAVVEE--E--T--SF---------LR----------AR
+gi|6678257|ref|NP_033363.1|__7      HPNRLWIWEKHVYLDEFRRSWLPVVIK--S--N--EK---------FQ----------VI
+gi|7305557|ref|NP_038800.1|__8      PPRFLVCTRDDIYEDENGRQWVVAKVE--T--S--RSPYGSRIETCIT----------VH
+gi|11415028|ref|NP_068801.1|__      HPDRLWAWEKFVYLDEKQHAWLPLTIEIKD--R--LQ---------LR----------VL
+gi|7305561|ref|NP_038804.1|__7      ----------GIYEDEHHRVWIAVNVE--T--S--HS---------SHGNRIETCVT-VH
+gi|7305553|ref|NP_038801.1|__5      LPVYLVSVRLGIYEDEHHRVWIVANVE--TSHS--SH---------GN----------RR
+gi|27668591|ref|XP_234504.1|__      -PDRLWLWEKHVYLDEFRRSWLPIVIK--S--N--GK---------FQ----------VI
+gi|27668589|ref|XP_234503.1|__      -PHILTLRTHGIYEDEHHRLWVVLDLQ--A--SHLSF---------SN----------RL
+gi|7305559|ref|NP_038802.1|__8      PPCFLVCTRDDIYEDEHGRQWVAAKVE--T--S--SH---------SPYCSKIETCVTVH
+gi|7305555|ref|NP_038803.1|__9      ---------PGFYEDEHHRLWMVAKLE--T--C--SH---------SPYCNKIETCVTVH
+                                               .* **  : *:    :                       
+
+d1a1x__                             VQQIQVPLG-------DAARPSHLLTS-----QLPLMWQLYP
+gi|6678257|ref|NP_033363.1|__7      LRQEDVTLG-------EAMSPSQLVPY-----ELPLMWQLYP
+gi|7305557|ref|NP_038800.1|__8      LQHMTTIPQ-------EPTPQQPINNN-----SLPTMWRLES
+gi|11415028|ref|NP_068801.1|__      LRREDVVLG-------RPMTPTQIGPS-----LLPIMWQLYP
+gi|7305561|ref|NP_038804.1|__7      LQHMTTLPQ-------EPTPQQPINNN-----SLPTMWRLES
+gi|7305553|ref|NP_038801.1|__5      RTHVTVHLW-------KLIPQQVIPFNPLNYDFLPTTWKLES
+gi|27668591|ref|XP_234504.1|__      MRQKDVILG-------DSMTPSQLVPY-----ELPLMWQLYP
+gi|27668589|ref|XP_234503.1|__      LIYLTVYLQQGVAFPLESTPPSPMNLN-----GLPRRWTLRT
+gi|7305559|ref|NP_038802.1|__8      LWQMTTLFQ-------EPSPDSLKTFN-----FLPRTWRLES
+gi|7305555|ref|NP_038803.1|__9      LWQMTRYPQ-------EPAPYNPMNYN-----FLPMTWRLAS
+                                                                     **  * * .
+</PRE>
+
+<br>
+The first line must begin with CLUSTAL, the rest of the line is ignored. The sequences come in blocks with
+the sequence name, cut to a constant number of characters, followed by some whitespace and the sequence 
+residues and gaps (-).
+The number of alignment columns per sequence line is arbitrary but constant within a block.
+Thus the whole alignment may be written in one long block. At the end of each block is an optional
+line indicating the conservation of each alignment column, followed by an obligatory empty line
+that separates the block from the next. Capital and lower case characters may be used for the amino acids.
+</p>
+<br><br>
+<br><b> The same alignment in Stockholm format is here:</b></p>
+<br><br>
+<PRE>
+# STOCKHOLM 1.0
+
+#=GC RF                          XXXXXXXXXXXXXXXXXXXXXXXXXXX--X--X--XX---------XX----------XXXXXXXXXXX
+d1a1x__                          PPDHLWVHQEGIYRDEYQRTWVAVVEE--E--T--SF---------LR----------ARVQQIQVPLG
+gi|6678257|ref|NP_033363.1|:(7-1 HPNRLWIWEKHVYLDEFRRSWLPVVIK--S--N--EK---------FQ----------VILRQEDVTLG
+gi|7305557|ref|NP_038800.1|:(8-1 PPRFLVCTRDDIYEDENGRQWVVAKVE--T--S--RSpygsrietcIT----------VHLQHMTTIPQ
+gi|11415028|ref|NP_068801.1|:(2- HPDRLWAWEKFVYLDEKQHAWLPLTIEikD--R--LQ---------LR----------VLLRREDVVLG
+gi|7305561|ref|NP_038804.1|:(7-1 ----------GIYEDEHHRVWIAVNVE--T--S--HS---------SHgnrietcvt-VHLQHMTTLPQ
+gi|7305553|ref|NP_038801.1|:(5-1 LPVYLVSVRLGIYEDEHHRVWIVANVE--TshS--SH---------GN----------RRRTHVTVHLW
+gi|27668591|ref|XP_234504.1|:(7- -PDRLWLWEKHVYLDEFRRSWLPIVIK--S--N--GK---------FQ----------VIMRQKDVILG
+gi|27668589|ref|XP_234503.1|:(9- -PHILTLRTHGIYEDEHHRLWVVLDLQ--A--ShlSF---------SN----------RLLIYLTVYLQ
+gi|7305559|ref|NP_038802.1|:(8-1 PPCFLVCTRDDIYEDEHGRQWVAAKVE--T--S--SH---------SPycskietcvtVHLWQMTTLFQ
+gi|7305555|ref|NP_038803.1|:(9-1 ---------PGFYEDEHHRLWMVAKLE--T--C--SH---------SPycnkietcvtVHLWQMTRYPQ
+
+#=GC RF                          -------XXXXXXXXXXX-----XXXXXXXXXX
+d1a1x__                          -------DAARPSHLLTS-----QLPLMWQLYP
+gi|6678257|ref|NP_033363.1|:(7-1 -------EAMSPSQLVPY-----ELPLMWQLYP
+gi|7305557|ref|NP_038800.1|:(8-1 -------EPTPQQPINNN-----SLPTMWRLES
+gi|11415028|ref|NP_068801.1|:(2- -------RPMTPTQIGPS-----LLPIMWQLYP
+gi|7305561|ref|NP_038804.1|:(7-1 -------EPTPQQPINNN-----SLPTMWRLES
+gi|7305553|ref|NP_038801.1|:(5-1 -------KLIPQQVIPFNplnydFLPTTWKLES
+gi|27668591|ref|XP_234504.1|:(7- -------DSMTPSQLVPY-----ELPLMWQLYP
+gi|27668589|ref|XP_234503.1|:(9- qgvafplESTPPSPMNLN-----GLPRRWTLRT
+gi|7305559|ref|NP_038802.1|:(8-1 -------EPSPDSLKTFN-----FLPRTWRLES
+gi|7305555|ref|NP_038803.1|:(9-1 -------EPAPYNPMNYN-----FLPMTWRLAS
+//
+</PRE>
+
+<br>
+Stockholm format is similar to Clustal format, but offers a number of markups to include 
+annotation and additional information referring to the alignment, its columns, or sequences. 
+It was developed by Sean Eddy for Pfam and the HMMer software package. Each alignment may 
+be separated into an arbitrary number of blocks with an arbitrary number of alignment columns 
+contained per line. Gaps may be written '-" or '.'. The line starting with #=GC RF is 
+an example of an optional markup line that contains one character per alignment columns. 
+In this case it indicates which are the match/delete columns (as opposed to insert columns).
+It is just given as an example and is not obligatory for HHrep.
+</p>
+
+<br><br>
+<br><b> The same alignment in A2M format looks like this:</b></p>
+<br><br>
+<PRE>
+>d1a1x__ b.63.1.1 (-) p13-MTCP1 {Human (Homo sapiens)}
+PPDHLWVHQEGIYRDEYQRTWVAVVEE..E..T..SF.........LR..........ARVQQIQVPLG.......DAARPSHLLTS.....QLPLMWQLYP
+>gi|6678257|ref|NP_033363.1|:(7-103) T-cell lymphoma breakpoint 1 [Mus musculus]
+HPNRLWIWEKHVYLDEFRRSWLPVVIK..S..N..EK.........FQ..........VILRQEDVTLG.......EAMSPSQLVPY.....ELPLMWQLYP
+>gi|7305557|ref|NP_038800.1|:(8-103) T-cell leukemia/lymphoma 1B, 3 [Mus musculus]
+PPRFLVCTRDDIYEDENGRQWVVAKVE..T..S..RSpygsrietcIT..........VHLQHMTTIPQ.......EPTPQQPINNN.....SLPTMWRLES
+>gi|11415028|ref|NP_068801.1|:(2-106) T-cell lymphoma-1; T-cell lymphoma-1A [Homo sapiens]
+HPDRLWAWEKFVYLDEKQHAWLPLTIEikD..R..LQ.........LR..........VLLRREDVVLG.......RPMTPTQIGPS.....LLPIMWQLYP
+>gi|7305561|ref|NP_038804.1|:(7-103) T-cell leukemia/lymphoma 1B, 5 [Mus musculus]
+----------GIYEDEHHRVWIAVNVE..T..S..HS.........SHgnrietcvt.VHLQHMTTLPQ.......EPTPQQPINNN.....SLPTMWRLES
+>gi|7305553|ref|NP_038801.1|:(5-103) T-cell leukemia/lymphoma 1B, 1 [Mus musculus]
+LPVYLVSVRLGIYEDEHHRVWIVANVE..TshS..SH.........GN..........RRRTHVTVHLW.......KLIPQQVIPFNplnydFLPTTWKLES
+>gi|27668591|ref|XP_234504.1|:(7-103) similar to Chain A, Crystal Structure Of Murine Tcl1
+-PDRLWLWEKHVYLDEFRRSWLPIVIK..S..N..GK.........FQ..........VIMRQKDVILG.......DSMTPSQLVPY.....ELPLMWQLYP
+>gi|27668589|ref|XP_234503.1|:(9-91) similar to T-cell leukemia/lymphoma 1B, 5;
+-PHILTLRTHGIYEDEHHRLWVVLDLQ..A..ShlSF.........SN..........RLLIYLTVYLQqgvafplESTPPSPMNLN.....GLPRRWTLRT
+>gi|7305559|ref|NP_038802.1|:(8-102) T-cell leukemia/lymphoma 1B, 4 [Mus musculus] 
+PPCFLVCTRDDIYEDEHGRQWVAAKVE..T..S..SH.........SPycskietcvtVHLWQMTTLFQ.......EPSPDSLKTFN.....FLPRTWRLES
+>gi|7305555|ref|NP_038803.1|:(9-102) T-cell leukemia/lymphoma 1B, 2 [Mus musculus]
+---------PGFYEDEHHRLWMVAKLE..T..C..SH.........SPycnkietcvtVHLWQMTRYPQ.......EPAPYNPMNYN.....FLPMTWRLAS
+</PRE>
+
+<br><br> A2M format is derived from aligned FASTA format. It looks very similar, but it 
+distinguishes between match/delete columns and insert columns. This information is 
+used to specify how an alignment is transformed into an HMM. The 
+match/delete columns use upper case letters for residues and the '-' symbol for 
+deletions (gaps). The insert columns use lower case letters for the inserted residues. 
+Gaps aligned to inserted residues are written as '.'
+<br><br>
+
+
+<br> <b>The same alignment in A3M is here:</b></p>
+<br><br>
+<PRE>
+>d1a1x__ b.63.1.1 (-) p13-MTCP1 {Human (Homo sapiens)}
+PPDHLWVHQEGIYRDEYQRTWVAVVEEETSFLRARVQQIQVPLGDAARPSHLLTSQLPLMWQLYP
+>gi|6678257|ref|NP_033363.1|:(7-103) T-cell lymphoma breakpoint 1 [Mus musculus]
+HPNRLWIWEKHVYLDEFRRSWLPVVIKSNEKFQVILRQEDVTLGEAMSPSQLVPYELPLMWQLYP
+>gi|7305557|ref|NP_038800.1|:(8-103) T-cell leukemia/lymphoma 1B, 3 [Mus musculus]
+PPRFLVCTRDDIYEDENGRQWVVAKVETSRSpygsrietcITVHLQHMTTIPQEPTPQQPINNNSLPTMWRLES
+>gi|11415028|ref|NP_068801.1|:(2-106) T-cell lymphoma-1; T-cell lymphoma-1A [Homo sapiens]
+HPDRLWAWEKFVYLDEKQHAWLPLTIEikDRLQLRVLLRREDVVLGRPMTPTQIGPSLLPIMWQLYP
+>gi|7305561|ref|NP_038804.1|:(7-103) T-cell leukemia/lymphoma 1B, 5 [Mus musculus]
+----------GIYEDEHHRVWIAVNVETSHSSHgnrietcvtVHLQHMTTLPQEPTPQQPINNNSLPTMWRLES
+>gi|7305553|ref|NP_038801.1|:(5-103) T-cell leukemia/lymphoma 1B, 1 [Mus musculus]
+LPVYLVSVRLGIYEDEHHRVWIVANVETshSSHGNRRRTHVTVHLWKLIPQQVIPFNplnydFLPTTWKLES
+>gi|27668591|ref|XP_234504.1|:(7-103) similar to Chain A, Crystal Structure Of Murine Tcl1
+-PDRLWLWEKHVYLDEFRRSWLPIVIKSNGKFQVIMRQKDVILGDSMTPSQLVPYELPLMWQLYP
+>gi|27668589|ref|XP_234503.1|:(9-91) similar to T-cell leukemia/lymphoma 1B, 5;
+-PHILTLRTHGIYEDEHHRLWVVLDLQAShlSFSNRLLIYLTVYLQqgvafplESTPPSPMNLNGLPRRWTLRT
+>gi|7305559|ref|NP_038802.1|:(8-102) T-cell leukemia/lymphoma 1B, 4 [Mus musculus] 
+PPCFLVCTRDDIYEDEHGRQWVAAKVETSSHSPycskietcvtVHLWQMTTLFQEPSPDSLKTFNFLPRTWRLES
+>gi|7305555|ref|NP_038803.1|:(9-102) T-cell leukemia/lymphoma 1B, 2 [Mus musculus]
+---------PGFYEDEHHRLWMVAKLETCSHSPycnkietcvtVHLWQMTRYPQEPAPYNPMNYNFLPMTWRLAS
+</PRE>
+
+<br><br> The A3M format is a condensed version of A2M format. It is obtained by omitting all '.' 
+symbols from A2M format. Hence residues emitted by Match states of the HMM are in upper 
+case, residues emitted by Insert states are in lower case and deletions are written '-'.
+A3M-formatted alignments are not really human readable but they can be reformatted to other more readable
+formats like FASTA, A2M CLUSTAL and many others with the reformating utility in our toolbox: 
+<a target="_blank" href="http://<%= DOC_ROOTHOST %>/reformat/">http://<%= DOC_ROOTHOST %>/reformat/</a>.<BR>
+A3M is not an official format. Likewise, the name A3M is our personal invention for this 
+very practical and space-efficient format which we use to store the HHsearch alignments internally.
+</div><div class="spacer">&nbsp;</div>
+
+
+<a name="maxpsiblastit"></a>
+<h3 class="<%= @section["name"] %>">Max. number of PSI-BLAST iterations</h3>
+<div class="row">
+This specifies the number of PSI-BLAST iterations that are performed to build up an alignment from the input sequence 
+or input alignment. The iterations stop in any case when no further sequences are found. If you want to use exactly 
+your input alignment choose 0 here. This will ensure that only predicted secondary structure is added to your input 
+alignment. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="ss_scoring"></a>
+<h3 class="<%= @section["name"] %>">Score secondary structure</h3>
+<div class="row">
+If you chose "yes", the secondary structure of the query will be predicted with <a target="_blank" 
+href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=10493868">PSIPRED</a>
+and a secondary structure similarity score is added to the total score. Scoring the secondary structure similarity
+improves sensitivity and also alignment quality significantly. 
+(See figure at <a href="/hhpred/help_ov">"About HHpred"</a>). 
+Since the weight of the secondary structure score is small (12% of the amino acid similarity score), the risk for 
+high-scoring non-homologous matches is still small.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="maxseq"></a>
+<h3 class="<%= @section["name"] %>">Show representative sequences per HMM</h3>
+<div class="row">
+Setting this to 10, for instance, will generate alignments containing 10 representative sequences
+from both query and template alignments. This can help to get a better feeling for the conservation
+along the alignment. The representative sequences shown are selected for maximum pairwise dissimilarity.
+The maximum value for this parameter is 10.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="width"></a>
+<h3 class="<%= @section["name"] %>">Width of alignments (in columns)</h3>
+<div class="row">
+Number of alignment columns per line in the HMM-HMM alignments. Leave at default except if your browser
+cuts off parts of the alignment.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="coloring"></a>
+<h3 class="<%= @section["name"] %>">Coloring query-template multiple alignments in results</h3>
+<div class="row">
+You can choose to color the sequences in the query-template alignments on the results page
+by physico-chemical properties of the amino acids, either by using colored fonts or by background coloring.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+<BR>

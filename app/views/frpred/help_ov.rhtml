@@ -1,0 +1,47 @@
+<h2><%= @tool['title'] %> Overview</h2> 
+<div class="row">
+FRpred is a collection of methods for the prediction of functional
+residues in protein multiple sequence alignemnets. You can also run it
+on a single sequence. Then, PSI-BLAST is called to generate an
+alignment, which is directly used as input for the methods. If you
+have a PDB file representing the sequences in your alignment, you can
+specify it in the input parameters. It will be used to visualize the
+results via RasMol scripts. The methods in FRpred are:
+
+<ol>
+<li><b>Shannon entropy:</b> A simple method to score conservation.
+<li><b>FRcons:</b> A novel conservation method that scores fully conserved
+positions equally, conservative mutaions higher than non-conservative
+ones, penalizes gap-rich columns and yields a score of 0 for positions
+distributed like the background frequencies.
+<li><b>Evolutionary Trace (ET):</b> A method yielding conserved and
+subtype-specific residues. It uses UPGMA to cluster the sequences
+according to sequence similarity and the sums over teh entropy
+conservation score of all subgroups defined by dendrogram cuts on all
+levels of the UPGMA tree. 
+<li><b>FRtrace:</b> Following the idea of ET, FRtrace also sums over
+conservation scores in subgroups defined by a UPGMA tree in order to
+predict conserved as well as subtype-specific positions. However,
+FRtrace uses FRcons instead of entropy conservation and weighs the
+contribution from each subgroup according to its effective number of
+sequences. Moreover, the method takes only those subgroups into
+account that are new in the current dendrogram cut when traversing the
+tree from the root to the leafs. FRtrace offers a family- and a
+sequence-centered analysis.
+<li><b>FRsubtype:</b>  This method predicts only subtype-specific
+residues. It uses mutual information to score the difference between
+the amino acid distribution at the same position in different
+subgroups and, additionally, it scores the conservation within the
+subgroups using FRcons. It also offers a sequence- and a
+family-centerd analysis. You can either manually group the alignment
+into subgroups or - if this information is not available - the method
+can do its own clustering (UPGMA tree) and sum over the weighted
+subgroups.
+</ol>
+
+If a structure is supplied, DSSP will be used to compute the solvent
+accessibility. Otherwise, Sable2 is run to predict it. Sable2 runs 3 PSI-BLAST
+iterations on the query sequence, which constitutes a big part of the total
+runtime of FRpred.
+</div>
+

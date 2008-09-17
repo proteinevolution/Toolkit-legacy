@@ -1,0 +1,125 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input</a></li>
+	<li><a href="#input_format">Input format</a></li>	
+	<li><a href="#bootstrap">Enable bootstrapping</a></li>
+	<li><a href="#replicates">Number of replicates</a></li>
+	<li><a href="#type">DNA or Protein</a></li>
+	<li><a href="#protMat">Model of amino acid replacemenet</a></li>
+	<li><a href="#dnaMat">Model of nucleotide substitution</a></li>
+	<li><a href="#gamma">Gamma distributed rates across sites</a></li>
+	<li><a href="#gamma">Amount of variation</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+Enter sequence alignment and choose its format from the dropdown menu.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="input_format"></a>
+<h3 class="<%= @section["name"] %>">Input format</h3>
+<div class="row">
+	<p>
+	Accepted formats are listed in the dropdown menu. 
+	Format descriptions can be found <a href="/reformat/help_params#format">here</a>.	
+	</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="bootstrap"></a>
+<h3 class="<%= @section["name"] %>">Enable bootstrapping</h3>
+<div class="row">
+Checking this box enables bootstrapping. The data is resampled using the program 
+<A href="http://evolution.genetics.washington.edu/phylip/doc/seqboot.html"  target="_blank">SEQBOOT</A> (regular bootstrap mode) 
+of the PHYLIP package. A consensus tree can be used to determine the reliability of a phylogenetic tree.  
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="replicates"></a>
+<h3 class="<%= @section["name"] %>">Number of replicates</h3>
+<div class="row">
+Number of resampled datasets asked by 
+<A href="http://evolution.genetics.washington.edu/phylip/doc/seqboot.html" target="_blank">SEQBOOT</A>. 
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="type"></a>
+<h3 class="<%= @section["name"] %>">DNA or Protein</h3>
+ <div class="row">
+ Please enter the biochemical type of your input sequences.<br/>
+<br/>
+"DNA" refers to nucleic acid sequences using the following one letter code.
+</p>
+<pre>
+   A --> adenosine           M --> A C (amino)
+   C --> cytidine            S --> G C (strong)
+   G --> guanine             W --> A T (weak)
+   T --> thymidine           B --> G T C
+   U --> uridine             D --> G A T
+   R --> G A (purine)        H --> A C T
+   Y --> T C (pyrimidine)    V --> G C A
+   K --> G T (keto)          N --> A G C T (any)
+                             -  gap of indeterminate length
+</pre>
+
+<br/>
+
+ "Protein" refers to amino acid sequences using the following one letter code.
+ </p>
+ <pre>
+    A  alanine                         P  proline
+    B  aspartate or asparagine         Q  glutamine
+    C  cystine                         R  arginine
+    D  aspartate                       S  serine
+    E  glutamate                       T  threonine
+    F  phenylalanine                   U  selenocysteine
+    G  glycine                         V  valine
+    H  histidine                       W  tryptophan
+    I  isoleucine                      Y  tyrosine
+    K  lysine                          Z  glutamate or glutamine
+    L  leucine                         X  any
+    M  methionine                      N  asparagine  
+                                       -  gap of indeterminate length
+ </pre>
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="protMat"></a>
+<h3 class="<%= @section["name"] %>">Model of amino acid replacement</h3>
+<div class="row">
+Amino acid substitution model that is used for the computation of the distance matrix by <a href="http://evolution.genetics.washington.edu/phylip/doc/protdist.html" target="blanc">PROTDIST</a> (Please have a look at the link for a more detailed description).
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="dnaMat"></a>
+<h3 class="<%= @section["name"] %>">Model of nucleotide substitution</h3>
+<div class="row">
+Nucleotide substitution model that is used for the computation of the distance matrix by <A href=http://evolution.genetics.washington.edu/phylip/doc/dnadist.html target="blanc">DNADIST</A> (Please take the link for a more detailed description).
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="gamma"></a>
+<h3 class="<%= @section["name"] %>">Gamma distributed rates across sites</h3>
+<div class="row">
+Enable distance correction for unequal rates of change at different amino acid positions. This correction assumes that the distribution of rates of change among amino acid positions follows a Gamma distribution.<br/>
+Further information can be found here 
+<A href="http://evolution.genetics.washington.edu/phylip/doc/dnadist.html" target="blanc">DNADIST</A> or  
+<a href="http://evolution.genetics.washington.edu/phylip/doc/protdist.html" target="blanc">PROTDIST</a>.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<h3 class="<%= @section["name"] %>">Amount of variation</h3>
+<div class="row">
+ Enter the value that determines the amount of variation of rates among amino acid positions. Instead of the more widely-known coefficient alpha, PROTDIST uses the coefficient of variation (ratio of the standard deviation to the mean) of rates among amino acid positions. So if there is 20% variation in rates, the CV is is 0.20. The square of the C.V. is also the reciprocal of the better-known "shape parameter" alpha, of the Gamma distribution, so in this case the shape parameter alpha = 1/(0.20*0.20) = 25. If you want to achieve a particular value of alpha, such as 10, you will want to use a CV of 1/sqrt(100) = 1/10 = 0.1.<br/>
+Further information can be found here 
+<A href="http://evolution.genetics.washington.edu/phylip/doc/dnadist.html" target="blanc">DNADIST</A> or  
+<a href="http://evolution.genetics.washington.edu/phylip/doc/protdist.html" target="blanc">PROTDIST</a>.
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

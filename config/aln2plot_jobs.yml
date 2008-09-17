@@ -1,0 +1,9 @@
+aln2plot_job: 
+  title: Aln2Plot
+  hidden: false
+  code: A2PL
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:

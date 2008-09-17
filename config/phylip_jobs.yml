@@ -1,0 +1,13 @@
+phylip_job: 
+  title: PHYLIP-NEIGHBOR
+  hidden: false
+  code: PHYN
+  resultsections:  
+    - name: results
+      title: Results Neighbor-Joining
+      title_long: Show result of Neighbor-Joining
+      forwardsections:
+    - name: results_upgma
+      title: Results UPGMA
+      title_long: Show result of UPGMA
+      forwardsections:

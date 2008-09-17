@@ -1,0 +1,19 @@
+<% if @id == '' %>
+
+<h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<% else %>
+
+<%= render(:partial => "dataajobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<% end %>
+
+<div class="row">
+
+<%= @ret %>
+
+</div>

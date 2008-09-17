@@ -1,0 +1,16 @@
+gi2seq_job: 
+  title: RetrieveSeq
+  hidden: false
+  code: SEQR
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results
+    - name: results_unretrieve
+      title: Unretrieveable Sequences
+      title_long: Show unretrieveable Sequences
+      forwardsections:

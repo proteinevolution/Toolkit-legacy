@@ -1,0 +1,123 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input</a></li>
+	<li><a href="#aaseq">Include amino acid sequence in output</a></li>
+	<li><a href="#gencode">Genetic code</a></li>
+	<li><a href="#usecut">Codon usage table</a></li>
+	<li><a href="#cutorganism">Codon usage table of organism</a></li>
+<!--
+	<li><a href="#cutpersonal">Personal codon usage table</a></li>
+-->
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+<p>
+Enter a single protein sequence in FASTA format, for example:
+</p>
+<pre>
+
+>gi|576099|pdb|1ENA|  Staphylococcal Nuclease (E.C.3.1.31.1) Mutation
+LHKEPATLIKAIDGETVKLMYKGQPMTFRLLLVDTPETKHPKKGVEKYGPEASAFTKKMVENAKKIEVEF
+DKGQRTDKYGRGLAYIYADGKMVNEALVRQGLAKVAYVYKPNNTHEQHLRKSEAQAKKEKLNIWS
+
+</pre>
+<p>
+The sequence name (and an optional description) must be contained in a single name line beginning 
+with the &gt symbol and followed directly by the sequence name. The residue data is 
+contained in one or more lines of arbitrary length following the name line. No empty 
+lines should be used. Upper and lower case letters are allowed. Spaces and gaps (-.) will be removed.
+</p> 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="aaseq"></a>
+<h3 class="<%= @section["name"] %>">Include amino acid sequence in output</h3>
+<div class="row">
+<p>
+Activate this option to include the amino acid sequence in the output. If activated amino acids will be printed above their encoding DNA codon. For example, results may look like this:
+</p>
+<pre>
+	
+> Possible DNA-sequence of Protein: gi|576099|pdb|1ENA|  Staphylococcal Nuclease (E.C.3.1.31.1) Mutation
+ L   H   K   E   P   A   T   L   I   K   A   I   D   G   E   T   V   K   L   M  
+TTG CAC AAG GAG CCT GCA ACC CTT ATC AAG GCA ATA GAC GGA GAA ACG GTA AAA CTC ATG 
+
+ Y   K   G   Q   P   M   T   F   R   L   L   L   V   D   T   P   E   T   K   H  
+TAC AAA GGG CAG CCT ATG ACG TTT CGG CTA CTT CTG GTC GAC ACG CCG GAA ACG AAA CAT 
+
+ P   K   K   G   V   E   K   Y   G   P   E   A   S   A   F   T   K   K   M   V  
+CCG AAG AAA GGG GTC GAA AAA TAT GGT CCG GAG GCC TCG GCA TTC ACA AAA AAG ATG GTA 
+
+ E   N   A   K   K   I   E   V   E   F   D   K   G   Q   R   T   D   K   Y   G  
+GAG AAT GCT AAA AAA ATT GAG GTG GAG TTT GAT AAA GGT CAA CGA ACT GAC AAG TAT GGT 
+
+ R   G   L   A   Y   I   Y   A   D   G   K   M   V   N   E   A   L   V   R   Q  
+AGA GGT TTA GCT TAC ATC TAC GCT GAT GGC AAG ATG GTC AAT GAA GCC CTC GTT CGG CAA 
+
+ G   L   A   K   V   A   Y   V   Y   K   P   N   N   T   H   E   Q   H   L   R  
+GGC CTT GCA AAA GTG GCT TAT GTG TAT AAA CCG AAC AAT ACT CAC GAA CAA CAC CTT CGG 
+
+ K   S   E   A   Q   A   K   K   E   K   L   N   I   W   S  
+AAA TCA GAG GCT CAG GCA AAA AAG GAA AAA TTA AAT ATC TGG TCG 
+
+</pre>
+<p>With the option turned of the above output would look like this:</p>
+<pre>
+
+> Possible DNA-sequence of Protein: gi|576099|pdb|1ENA|  Staphylococcal Nuclease (E.C.3.1.31.1) Mutation 
+CTTCATAAAGAACCAGCTACCCTTATCAAGGCGATCGACGGTGAAACTGTGAAGCTCATGTACAAGGGGCAAC
+CAATGACGTTCCGCCTGCTGCTTGTGGACACACCCGAAACTAAGCACCCCAAAAAAGGTGTAGAGAAATACGG
+GCCTGAAGCTTCTGCCTTCACAAAAAAGATGGTGGAAAACGCAAAGAAGATTGAGGTCGAATTCGATAAGGGC
+CAAAGAACGGATAAGTACGGTCGAGGGCTGGCCTATATTTACGCTGACGGCAAGATGGTGAATGAAGCGCTCG
+TGCGTCAAGGACTGGCCAAAGTAGCATACGTTTACAAACCAAATAATACTCATGAGCAACACCTCCGAAAGAG
+TGAGGCGCAAGCTAAAAAGGAAAAGCTCAACATCTGGTCC
+
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="gencode"></a>
+<h3 class="<%= @section["name"] %>">Genetic code</h3>
+<div class="row">
+<p>
+Select the correct genetic code for your organism. The genetic codes are identical with those available
+on the <a target="_blank" href="http://www3.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi?mode=t">NCBI homepage</a>.
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="usecut"></a>
+<h3 class="<%= @section["name"] %>">Codon usage table</h3>
+<div class="row">
+<p>
+Select this option if you want to use a codon usage table. If this option is not selected all possible
+codons will have the same probability.
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="cutorganism"></a>
+<h3 class="<%= @section["name"] %>">Codon usage table of organism</h3>
+<div class="row">
+<p>
+Here you can search for a codon usage table of an organism. The codon usage database (identical with the
+one of <a target="_blank" href="http://www.kazusa.or.jp/codon/">http://www.kazusa.or.jp/codon/</a>) is
+based of the <a target="_blank" href="http://www.ncbi.nlm.nih.gov/Genbank/GenbankOverview.html">
+NCBI GenBank</a> (GenBank Release 150.0 [November 25 2005])
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<!--
+<a name="cutpersonal"></a>
+<h3 class="<%= @section["name"] %>">Personal codon usage table</h3>
+<div class="row">
+<p>
+Here, you may enter a personal codon usage table.
+</p>
+</div>
+div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div><a name="input"></a>
+-->

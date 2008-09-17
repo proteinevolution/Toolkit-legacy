@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Toolkit::Job</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Toolkit::Job</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/app/models/toolkit/job_rb.html">
+                app/models/toolkit/job.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                ActiveRecord::Base
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000105">config</a>&nbsp;&nbsp;
+      <a href="#M000096">create</a>&nbsp;&nbsp;
+      <a href="#M000095">create_id</a>&nbsp;&nbsp;
+      <a href="#M000101">done?</a>&nbsp;&nbsp;
+      <a href="#M000117">export</a>&nbsp;&nbsp;
+      <a href="#M000093">export_basename</a>&nbsp;&nbsp;
+      <a href="#M000092">export_file_ext</a>&nbsp;&nbsp;
+      <a href="#M000094">export_type</a>&nbsp;&nbsp;
+      <a href="#M000116">forward_action</a>&nbsp;&nbsp;
+      <a href="#M000115">forward_controller</a>&nbsp;&nbsp;
+      <a href="#M000111">forward_params</a>&nbsp;&nbsp;
+      <a href="#M000112">forwarded?</a>&nbsp;&nbsp;
+      <a href="#M000097">init_on_create</a>&nbsp;&nbsp;
+      <a href="#M000108">job_dir</a>&nbsp;&nbsp;
+      <a href="#M000109">params</a>&nbsp;&nbsp;
+      <a href="#M000110">render_file</a>&nbsp;&nbsp;
+      <a href="#M000104">render_statuslog</a>&nbsp;&nbsp;
+      <a href="#M000099">run</a>&nbsp;&nbsp;
+      <a href="#M000098">sanitize_params</a>&nbsp;&nbsp;
+      <a href="#M000090">set_export_basename</a>&nbsp;&nbsp;
+      <a href="#M000089">set_export_file_ext</a>&nbsp;&nbsp;
+      <a href="#M000091">set_export_type</a>&nbsp;&nbsp;
+      <a href="#M000102">statuslog</a>&nbsp;&nbsp;
+      <a href="#M000103">statuslog_path</a>&nbsp;&nbsp;
+      <a href="#M000100">stripped_class_name</a>&nbsp;&nbsp;
+      <a href="#M000113">to_param</a>&nbsp;&nbsp;
+      <a href="#M000114">update_status</a>&nbsp;&nbsp;
+      <a href="#M000106">url_for_job_dir</a>&nbsp;&nbsp;
+      <a href="#M000107">url_for_job_dir_abs</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000096" class="method-detail">
+        <a name="M000096"></a>
+
+        <div class="method-heading">
+          <a href="#M000096" class="method-signature">
+          <span class="method-name">create</span><span class="method-args">(parameters)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000096-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000096-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 45</span>
+45:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">parameters</span>)
+46:       <span class="ruby-identifier">job</span> = <span class="ruby-identifier">new</span>
+47:       <span class="ruby-identifier">job</span>.<span class="ruby-identifier">init_on_create</span>(<span class="ruby-identifier">parameters</span>)
+48:       <span class="ruby-identifier">job</span>.<span class="ruby-identifier">save!</span>
+49:       <span class="ruby-identifier">job</span>
+50:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000095" class="method-detail">
+        <a name="M000095"></a>
+
+        <div class="method-heading">
+          <a href="#M000095" class="method-signature">
+          <span class="method-name">create_id</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000095-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000095-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 35</span>
+35:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">create_id</span>
+36:       <span class="ruby-identifier">id</span> = (<span class="ruby-identifier">rand</span>(<span class="ruby-value">9</span>)<span class="ruby-operator">+</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_s</span>
+37:       <span class="ruby-value">5</span>.<span class="ruby-identifier">times</span> { <span class="ruby-identifier">id</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">10</span>).<span class="ruby-identifier">to_s</span>}
+38:       <span class="ruby-keyword kw">while</span> (<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-value str">&quot;jobid = ?&quot;</span>, <span class="ruby-identifier">id</span>])) <span class="ruby-keyword kw">do</span>
+39:         <span class="ruby-identifier">id</span> = (<span class="ruby-identifier">rand</span>(<span class="ruby-value">9</span>)<span class="ruby-operator">+</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_s</span>
+40:         <span class="ruby-value">5</span>.<span class="ruby-identifier">times</span> { <span class="ruby-identifier">id</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">10</span>).<span class="ruby-identifier">to_s</span>}
+41:       <span class="ruby-keyword kw">end</span>
+42:       <span class="ruby-identifier">id</span>
+43:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000093" class="method-detail">
+        <a name="M000093"></a>
+
+        <div class="method-heading">
+          <a href="#M000093" class="method-signature">
+          <span class="method-name">export_basename</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000093-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000093-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 26</span>
+26:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">export_basename</span>
+27:       <span class="ruby-ivar">@@export_basename</span>
+28:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000092" class="method-detail">
+        <a name="M000092"></a>
+
+        <div class="method-heading">
+          <a href="#M000092" class="method-signature">
+          <span class="method-name">export_file_ext</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000092-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000092-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 22</span>
+22:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">export_file_ext</span>
+23:       <span class="ruby-ivar">@@export_file_ext</span>
+24:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000094" class="method-detail">
+        <a name="M000094"></a>
+
+        <div class="method-heading">
+          <a href="#M000094" class="method-signature">
+          <span class="method-name">export_type</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000094-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000094-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 30</span>
+30:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">export_type</span>
+31:       <span class="ruby-ivar">@@export_type</span>
+32:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000090" class="method-detail">
+        <a name="M000090"></a>
+
+        <div class="method-heading">
+          <a href="#M000090" class="method-signature">
+          <span class="method-name">set_export_basename</span><span class="method-args">(val)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000090-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000090-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 14</span>
+14:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">set_export_basename</span>(<span class="ruby-identifier">val</span>)
+15:         <span class="ruby-ivar">@@export_basename</span> = <span class="ruby-identifier">val</span>
+16:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000089" class="method-detail">
+        <a name="M000089"></a>
+
+        <div class="method-heading">
+          <a href="#M000089" class="method-signature">
+          <span class="method-name">set_export_file_ext</span><span class="method-args">(val)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000089-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000089-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 10</span>
+10:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">set_export_file_ext</span>(<span class="ruby-identifier">val</span>)
+11:         <span class="ruby-ivar">@@export_file_ext</span> = <span class="ruby-identifier">val</span>
+12:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000091" class="method-detail">
+        <a name="M000091"></a>
+
+        <div class="method-heading">
+          <a href="#M000091" class="method-signature">
+          <span class="method-name">set_export_type</span><span class="method-args">(val)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000091-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000091-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 18</span>
+18:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">set_export_type</span>(<span class="ruby-identifier">val</span>)
+19:         <span class="ruby-ivar">@@export_type</span> = <span class="ruby-identifier">val</span>
+20:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000105" class="method-detail">
+        <a name="M000105"></a>
+
+        <div class="method-heading">
+          <a href="#M000105" class="method-signature">
+          <span class="method-name">config</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000105-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000105-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 129</span>
+129:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">config</span>
+130:       (<span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-constant">TOOLKIT_ROOT</span>, <span class="ruby-value str">'config'</span>, <span class="ruby-identifier">tool</span>.<span class="ruby-identifier">to_us</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'_jobs.yml'</span>)))[<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">to_us</span>]
+131:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000101" class="method-detail">
+        <a name="M000101"></a>
+
+        <div class="method-heading">
+          <a href="#M000101" class="method-signature">
+          <span class="method-name">done?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000101-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000101-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 108</span>
+108:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">done?</span>
+109:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-constant">STATUS_DONE</span>
+110:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000117" class="method-detail">
+        <a name="M000117"></a>
+
+        <div class="method-heading">
+          <a href="#M000117" class="method-signature">
+          <span class="method-name">export</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000117-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000117-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 199</span>
+199:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">export</span>
+200:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000116" class="method-detail">
+        <a name="M000116"></a>
+
+        <div class="method-heading">
+          <a href="#M000116" class="method-signature">
+          <span class="method-name">forward_action</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+returns the forward action of the last action that has not yet been
+forwarded. This happens to make it possible to get back to main results
+after he has forwarded its results to another tool.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000116-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000116-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 194</span>
+194:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forward_action</span>
+195:       <span class="ruby-identifier">action</span> = <span class="ruby-identifier">actions</span>.<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">find</span>() {<span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">a</span>.<span class="ruby-identifier">forwarded</span> }
+196:       <span class="ruby-identifier">action</span>.<span class="ruby-identifier">forward_action</span>
+197:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000115" class="method-detail">
+        <a name="M000115"></a>
+
+        <div class="method-heading">
+          <a href="#M000115" class="method-signature">
+          <span class="method-name">forward_controller</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+returns the forward controller of the last action that has not yet been
+forwarded. This happens to make it possible to get back to main results
+after he has forwarded its results to another tool.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000115-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000115-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 186</span>
+186:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forward_controller</span>
+187:       <span class="ruby-identifier">action</span> = <span class="ruby-identifier">actions</span>.<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">find</span>() {<span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">a</span>.<span class="ruby-identifier">forwarded</span> }
+188:       <span class="ruby-identifier">action</span>.<span class="ruby-identifier">forward_controller</span>
+189:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000111" class="method-detail">
+        <a name="M000111"></a>
+
+        <div class="method-heading">
+          <a href="#M000111" class="method-signature">
+          <span class="method-name">forward_params</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000111-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000111-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 158</span>
+158:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forward_params</span>
+159:       <span class="ruby-identifier">action</span> = <span class="ruby-identifier">actions</span>.<span class="ruby-identifier">last</span>
+160:       <span class="ruby-identifier">fw_p</span> = <span class="ruby-identifier">action</span>.<span class="ruby-identifier">forward_params</span>
+161:       <span class="ruby-identifier">action</span>.<span class="ruby-identifier">forwarded</span> = <span class="ruby-keyword kw">true</span>
+162:       <span class="ruby-identifier">action</span>.<span class="ruby-identifier">save!</span>
+163:       <span class="ruby-identifier">fw_p</span>
+164:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000112" class="method-detail">
+        <a name="M000112"></a>
+
+        <div class="method-heading">
+          <a href="#M000112" class="method-signature">
+          <span class="method-name">forwarded?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000112-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000112-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 166</span>
+166:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forwarded?</span>
+167:       <span class="ruby-identifier">actions</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">forwarded</span>
+168:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000097" class="method-detail">
+        <a name="M000097"></a>
+
+        <div class="method-heading">
+          <a href="#M000097" class="method-signature">
+          <span class="method-name">init_on_create</span><span class="method-args">(parameters)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000097-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000097-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 52</span>
+52:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">init_on_create</span>(<span class="ruby-identifier">parameters</span>)
+53:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">parameters</span>[<span class="ruby-value str">'jobid'</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">parameters</span>[<span class="ruby-value str">'jobid'</span>].<span class="ruby-identifier">empty?</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">parameters</span>[<span class="ruby-value str">'jobid'</span>] = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">create_id</span> <span class="ruby-keyword kw">end</span>
+54:       <span class="ruby-identifier">parameters</span> = <span class="ruby-identifier">sanitize_params</span>(<span class="ruby-identifier">parameters</span>)
+55:       
+56:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">jobid</span> = <span class="ruby-identifier">parameters</span>[<span class="ruby-value str">'jobid'</span>]
+57:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">tool</span> = <span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">:controller</span>]
+58:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">parent</span> = <span class="ruby-constant">Toolkit</span><span class="ruby-operator">::</span><span class="ruby-constant">Job</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-value str">&quot;jobid = ?&quot;</span>, <span class="ruby-identifier">parameters</span>[<span class="ruby-value str">'parent'</span>]])
+59:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_INIT</span>
+60: 
+61:       <span class="ruby-comment cmt"># create working directory</span>
+62:       <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-constant">TMP</span>, <span class="ruby-identifier">jobid</span>), <span class="ruby-value">0755</span>)
+63:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000108" class="method-detail">
+        <a name="M000108"></a>
+
+        <div class="method-heading">
+          <a href="#M000108" class="method-signature">
+          <span class="method-name">job_dir</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000108-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000108-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 141</span>
+141:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">job_dir</span>
+142:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-constant">TMP</span>, <span class="ruby-identifier">jobid</span>)
+143:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000109" class="method-detail">
+        <a name="M000109"></a>
+
+        <div class="method-heading">
+          <a href="#M000109" class="method-signature">
+          <span class="method-name">params</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000109-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000109-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 145</span>
+145:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">params</span>
+146:       <span class="ruby-identifier">actions</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">params</span>
+147:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000110" class="method-detail">
+        <a name="M000110"></a>
+
+        <div class="method-heading">
+          <a href="#M000110" class="method-signature">
+          <span class="method-name">render_file</span><span class="method-args">(filename)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000110-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000110-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 149</span>
+149:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_file</span>(<span class="ruby-identifier">filename</span>)
+150:       <span class="ruby-identifier">aFile</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">job_dir</span>, <span class="ruby-identifier">filename</span>))
+151:       <span class="ruby-identifier">erg</span> = <span class="ruby-value str">&quot;&quot;</span>
+152:       <span class="ruby-identifier">aFile</span>.<span class="ruby-identifier">each_line</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+153:         <span class="ruby-identifier">erg</span> = <span class="ruby-identifier">erg</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">line</span>
+154:       <span class="ruby-keyword kw">end</span>
+155:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">erg</span>
+156:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000104" class="method-detail">
+        <a name="M000104"></a>
+
+        <div class="method-heading">
+          <a href="#M000104" class="method-signature">
+          <span class="method-name">render_statuslog</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000104-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000104-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 120</span>
+120:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_statuslog</span>
+121:       <span class="ruby-identifier">erg</span> = <span class="ruby-value str">&quot;&quot;</span>
+122:       <span class="ruby-identifier">aFile</span> = <span class="ruby-identifier">statuslog</span>
+123:       <span class="ruby-identifier">aFile</span>.<span class="ruby-identifier">each_line</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+124:         <span class="ruby-identifier">erg</span> = <span class="ruby-identifier">erg</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">line</span>
+125:       <span class="ruby-keyword kw">end</span>
+126:       <span class="ruby-identifier">erg</span>
+127:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000099" class="method-detail">
+        <a name="M000099"></a>
+
+        <div class="method-heading">
+          <a href="#M000099" class="method-signature">
+          <span class="method-name">run</span><span class="method-args">(actiontype=nil, parameters={ })</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000099-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000099-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 72</span>
+ 72:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">run</span>(<span class="ruby-identifier">actiontype</span>=<span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">parameters</span>={ })
+ 73:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_RUNNING</span>
+ 74:       <span class="ruby-identifier">save!</span>
+ 75: 
+ 76:       <span class="ruby-identifier">parameters</span> = <span class="ruby-identifier">sanitize_params</span>(<span class="ruby-identifier">parameters</span>)
+ 77: 
+ 78:       <span class="ruby-comment cmt"># save uploaded files in job_dir under name of html element</span>
+ 79:       <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+ 80:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">StringIO</span>)
+ 81:           <span class="ruby-identifier">filename</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-constant">TMP</span>, <span class="ruby-identifier">jobid</span>, <span class="ruby-identifier">k</span>)
+ 82:           <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">filename</span>, <span class="ruby-value str">&quot;w&quot;</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+ 83:             <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">read</span>)
+ 84:           <span class="ruby-keyword kw">end</span>
+ 85:           <span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">filename</span>
+ 86:         <span class="ruby-keyword kw">end</span>
+ 87:       <span class="ruby-keyword kw">end</span>
+ 88: 
+ 89:       <span class="ruby-constant">RAILS_DEFAULT_LOGGER</span>.<span class="ruby-identifier">debug</span> <span class="ruby-value str">&quot;### &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">inspect</span>
+ 90: 
+ 91:       <span class="ruby-identifier">fw_c</span> = <span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">:forward_controller</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">:forward_controller</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">:controller</span>]
+ 92:       <span class="ruby-identifier">fw_a</span> = <span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">:forward_action</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">:forward_action</span>] <span class="ruby-operator">:</span> <span class="ruby-value str">'results'</span>
+ 93:       <span class="ruby-identifier">actiontype</span> = <span class="ruby-identifier">actiontype</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-value">? </span><span class="ruby-identifier">stripped_class_name</span><span class="ruby-operator">+</span><span class="ruby-value str">&quot;Action&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">actiontype</span>.<span class="ruby-identifier">to_cc</span><span class="ruby-operator">+</span><span class="ruby-value str">&quot;Action&quot;</span>
+ 94:       <span class="ruby-identifier">newaction</span> = <span class="ruby-constant">Object</span>.<span class="ruby-identifier">const_get</span>(<span class="ruby-identifier">actiontype</span>).<span class="ruby-identifier">create</span>(<span class="ruby-identifier">:params</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">parameters</span>,
+ 95:                                                       <span class="ruby-identifier">:job</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>,
+ 96:                                                       <span class="ruby-identifier">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">STATUS_INIT</span>,
+ 97:                                                       <span class="ruby-identifier">:forward_controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">fw_c</span>,
+ 98:                                                       <span class="ruby-identifier">:forward_action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">fw_a</span>
+ 99:                                                       )
+100:       <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-identifier">newaction</span>.<span class="ruby-identifier">inspect</span>
+101:       <span class="ruby-identifier">newaction</span>.<span class="ruby-identifier">run</span>
+102:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000098" class="method-detail">
+        <a name="M000098"></a>
+
+        <div class="method-heading">
+          <a href="#M000098" class="method-signature">
+          <span class="method-name">sanitize_params</span><span class="method-args">(parameters)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000098-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000098-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 65</span>
+65:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sanitize_params</span>(<span class="ruby-identifier">parameters</span>)
+66:       <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+67:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">''</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">parameters</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">end</span>
+68:       <span class="ruby-keyword kw">end</span>
+69:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">parameters</span>
+70:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000102" class="method-detail">
+        <a name="M000102"></a>
+
+        <div class="method-heading">
+          <a href="#M000102" class="method-signature">
+          <span class="method-name">statuslog</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000102-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000102-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 112</span>
+112:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">statuslog</span>
+113:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">job_dir</span>, <span class="ruby-value str">&quot;status.log&quot;</span>), <span class="ruby-value str">'a+'</span>)
+114:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000103" class="method-detail">
+        <a name="M000103"></a>
+
+        <div class="method-heading">
+          <a href="#M000103" class="method-signature">
+          <span class="method-name">statuslog_path</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000103-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000103-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 116</span>
+116:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">statuslog_path</span>
+117:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">job_dir</span>, <span class="ruby-value str">&quot;status.log&quot;</span>)
+118:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000100" class="method-detail">
+        <a name="M000100"></a>
+
+        <div class="method-heading">
+          <a href="#M000100" class="method-signature">
+          <span class="method-name">stripped_class_name</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000100-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000100-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 104</span>
+104:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">stripped_class_name</span>
+105:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-value str">&quot;Job&quot;</span>, <span class="ruby-value str">&quot;&quot;</span>)
+106:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000113" class="method-detail">
+        <a name="M000113"></a>
+
+        <div class="method-heading">
+          <a href="#M000113" class="method-signature">
+          <span class="method-name">to_param</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000113-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000113-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 170</span>
+170:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_param</span>
+171:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">jobid</span>
+172:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000114" class="method-detail">
+        <a name="M000114"></a>
+
+        <div class="method-heading">
+          <a href="#M000114" class="method-signature">
+          <span class="method-name">update_status</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000114-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000114-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 174</span>
+174:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_status</span>
+175:       <span class="ruby-identifier">stat</span> = <span class="ruby-identifier">actions</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-constant">STATUS_INIT</span>)  <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">s</span>, <span class="ruby-identifier">action</span><span class="ruby-operator">|</span>
+176:         <span class="ruby-constant">STATUS_CMP1</span>[<span class="ruby-identifier">action</span>.<span class="ruby-identifier">status</span>] <span class="ruby-operator">&lt;</span> <span class="ruby-constant">STATUS_CMP1</span>[<span class="ruby-identifier">s</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">action</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">s</span>
+177:       <span class="ruby-keyword kw">end</span>
+178:       <span class="ruby-keyword kw">if</span> <span class="ruby-constant">STATUS_CMP2</span>[<span class="ruby-identifier">status</span>] <span class="ruby-operator">&lt;</span> <span class="ruby-constant">STATUS_CMP2</span>[<span class="ruby-identifier">stat</span>] <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">stat</span> = <span class="ruby-identifier">status</span> <span class="ruby-keyword kw">end</span>
+179:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">status</span> = <span class="ruby-identifier">stat</span>
+180:       <span class="ruby-identifier">save!</span>
+181:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000106" class="method-detail">
+        <a name="M000106"></a>
+
+        <div class="method-heading">
+          <a href="#M000106" class="method-signature">
+          <span class="method-name">url_for_job_dir</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000106-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000106-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 133</span>
+133:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">url_for_job_dir</span>
+134:       <span class="ruby-node">&quot;/tmp/development/#{jobid}&quot;</span>
+135:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000107" class="method-detail">
+        <a name="M000107"></a>
+
+        <div class="method-heading">
+          <a href="#M000107" class="method-signature">
+          <span class="method-name">url_for_job_dir_abs</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000107-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000107-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/toolkit/job.rb, line 137</span>
+137:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">url_for_job_dir_abs</span>
+138:       <span class="ruby-constant">DOC_ROOTURL</span><span class="ruby-operator">+</span><span class="ruby-node">&quot;tmp/development/#{jobid}&quot;</span>
+139:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

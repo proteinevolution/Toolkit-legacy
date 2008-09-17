@@ -1,0 +1,74 @@
+<a href="#" onClick="openHelpWindow('/tprpred/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<div class="spacer">&nbsp;</div>
+
+TPRpred uses the profile representation of the known repeats to detect Tetratrico Peptide Repeats (TPRs), 
+Pentatrico Peptide Repeats(PPRs) and SEL1-like repeats from the query sequence and computes the statistical 
+significance for their occurrence. 
+
+<div class="spacer">&nbsp;</div>
+
+<%= form_tag({:action => :run, :job => 'tprpred'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter sequence in FASTA format", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<% display = 'none' %>
+<% if ((params['advanced_options'] && params['advanced_options'] == "true") ||
+      (@error_params['advanced_options'] && @error_params['advanced_options'] == "true")) 
+   	display = 'true' 
+   end %>
+	
+
+<div id="advanced" style="display: <%= display %>;">
+	<div class="row">
+		<%= form_label("Select profile", "database") %>
+		<%= form_select_single("pssm", @pssm_paths, @pssm_labels, @pssm_default) %>	
+	</div>
+	<div class="row">
+		<%= form_label("Maximum whole-protein e-value", "maxevalue") %>
+		<%= form_text_field("evalue", '10000') %>	
+	</div>
+	<div class="row">
+		<%= form_label("Minimum number of single-repeat hits", "minhits") %>
+		<%= form_text_field("minhits", '1') %>	
+	</div>
+	<div class="row">
+		<%= form_label("Maximum number of rows in hitlist", "maxrows") %>
+		<%= form_text_field("maxrows", '100') %>	
+	</div>
+</div>
+
+<% if (display == 'none')
+		display = 'true'
+	else
+		display = 'none'
+	end %>
+
+<div id="advanced_link" style="display: <%= display %>;">
+	<div class="row">
+		<a href="#" onclick="Effect.Appear('advanced'); Effect.Fade('advanced_link'); setValue('advanced_options', 'true');">Show advanced options</a>
+	</div>
+</div>
+
+<%= form_hidden_field("advanced_options", "false") %>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

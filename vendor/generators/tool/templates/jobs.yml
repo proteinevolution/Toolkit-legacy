@@ -1,0 +1,9 @@
+<%= job_name.underscore %>_job: 
+  title: <%= job_title %>
+  hidden: false
+  code: <%= job_code %>
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:

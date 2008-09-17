@@ -1,0 +1,280 @@
+<% if @id == '' %>
+
+<h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<% else %>
+
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<% end %>
+
+<div class="row">
+
+
+<% if @gi_seq != ""  && @page == '' %>
+
+	<div class="row">
+		<h3 class="<%= @section["name"] %>">FASTA-sequence of selected protein</h3>
+		<pre><%= @gi_seq %></pre>
+	</div>
+	<div class="spacer">&nbsp;</div>
+
+<% else %>
+
+<% if (@page == 'table') %>
+
+<h3 class="<%= @section["name"] %>">HHomp database (version 1.0 - Jan 25, 2007)</h3>
+ 
+<div class="row">
+<a href="/hhomp/browse">View clustermap with each cluster linked</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="/hhomp/browse?page=bigmap">View clustermap with each protein linked (large)</a>
+<br/>
+<div class="hr">&nbsp;</div>
+<center>
+<table width="350px" border = "1">
+<tr><th width="250px">Protein class</th><th width="100px">HMMs</th></tr>
+<tr><td>OMP with 8 strands</td><td><%= form_select_single("OMP8", @OMP8, @OMP8, "", 1, "loadPage('OMP8','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>OMP with 10 strands</td><td><%= form_select_single("OMP10", @OMP10, @OMP10, "", 1, "loadPage('OMP10','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>OMP with 12 strands</td><td><%= form_select_single("OMP12", @OMP12, @OMP12, "", 1, "loadPage('OMP12','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>OMP with 14 strands</td><td><%= form_select_single("OMP14", @OMP14, @OMP14, "", 1, "loadPage('OMP14','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>OMP with 16 strands</td><td><%= form_select_single("OMP16", @OMP16, @OMP16, "", 1, "loadPage('OMP16','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>OMP with 18 strands</td><td><%= form_select_single("OMP18", @OMP18, @OMP18, "", 1, "loadPage('OMP18','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>OMP with 22 strands</td><td><%= form_select_single("OMP22", @OMP22, @OMP22, "", 1, "loadPage('OMP22','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>OMP with 3x4 strands</td><td><%= form_select_single("OMP34", @OMP34, @OMP34, "", 1, "loadPage('OMP34','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>OMP with 8x2 strands</td><td><%= form_select_single("OMP82", @OMP82, @OMP82, "", 1, "loadPage('OMP82','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>OMP with unknown number of strands</td><td><%= form_select_single("OMPnn", @OMPnn, @OMPnn, "", 1, "loadPage('OMPnn','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>not homologous OMP</td><td><%= form_select_single("nothom", @nothom, @nothom, "", 1, "loadPage('nothom','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>hypothetical OMP</td><td><%= form_select_single("hypo", @hypo, @hypo, "", 1, "loadPage('hypo','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+<tr><td>cluster of two or more HMMs</td><td><%= form_select_single("cluster", @cluster, @cluster, "", 1, "loadPage('cluster','"+url_for(:jobid => @id)+"');", false, true) %></td></tr>
+</table>
+</center>
+
+</div>
+
+<% elsif (@page == '' || @page == 'bigmap') %>
+
+<% if (@page == '') %>
+	<a href="/hhomp/browse?page=bigmap">View clustermap with each protein linked (large)</a>
+<% else %>
+	<a href="/hhomp/browse">View clustermap with each cluster linked</a>
+<% end %>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="/hhomp/browse?page=table">View table overview of clusters</a>
+<br/>
+<div class="hr">&nbsp;</div>
+<input class="checkbutton" id="search_btn" type="button" value="Search HMM" onclick="toggle_search(); ">
+<input type="hidden" id="search_btn_value" value="Search HMM">
+<div style="display:none;" id="search_options">
+	<%= form_tag({:action => 'run', :job => 'hhompdb', :forward_action => 'browse'}, {:multipart => true})%> 
+	<div class="row">
+		<%= form_label("Enter keywords") %>
+		<div class="formw">
+			<%= form_text_field("keywords", '', '', 50, false, '', true) %>
+			<%= radio_button_tag('comb', 'and', true) %> AND &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<%= radio_button_tag('comb', 'or', false) %> OR
+			<input name="submitform" type="submit" class="toolbutton" value="Search HMM" />
+			<br/>
+			Example: &nbsp;&nbsp; <i>12 strands</i> &nbsp;&nbsp;&nbsp; or &nbsp;&nbsp;&nbsp; <i>OmpA-like</i>
+  		</div>
+	</div>
+	</form>
+</div>
+<div class="hr">&nbsp;</div>
+
+<map name="cluster">
+	<%= @map %>
+</map>
+<map name="tolc_map">
+	<%= @tolc_map %>
+</map>
+<map name="wza_map">
+	<%= @wza_map %>
+</map>
+
+<div>
+<div style="border-width: 1px; border-style: solid; width: 815px;" >
+<% if (@search_results.empty?) %>
+	<img name="galaxy" src="/images/hhomp/all.png" border="0" style="margin-bottom: 0px; padding-bottom: 0px;" usemap="#cluster"/>
+<% else %> 
+	<img name="galaxy" src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>.gif" border="0" style="margin-bottom: 0px; padding-bottom: 0px;" usemap="#cluster"/>
+<% end %>
+</div>
+
+<div style="margin-top: 10px; margin-bottom: 5px; border-width: 1px; border-style: solid; width: 815px;" >
+<table>
+<tr><td>
+&nbsp;&nbsp;<strong>Legend:</strong>&nbsp;
+</td></tr>
+<tr><td>
+<span style="background-color: #ff9999;">&nbsp;&nbsp;&nbsp;</span> = 8 beta strands&nbsp;
+</td><td>
+<span style="background-color: #00ff00;">&nbsp;&nbsp;&nbsp;</span> = 10 beta strands&nbsp;
+</td><td>
+<span style="background-color: #ff9900;">&nbsp;&nbsp;&nbsp;</span> = 12 beta strands&nbsp;
+</td><td>
+<span style="background-color: #ff00cc;">&nbsp;&nbsp;&nbsp;</span> = 14 beta strands&nbsp;
+</td><td>
+<span style="background-color: #0000ff;">&nbsp;&nbsp;&nbsp;</span> = 16 beta strands&nbsp;
+</td></tr><tr><td>
+<span style="background-color: #009900;">&nbsp;&nbsp;&nbsp;</span> = 18 beta strands&nbsp;
+</td><td>
+<span style="background-color: #00ffff;">&nbsp;&nbsp;&nbsp;</span> = 22 beta strands&nbsp;
+</td><td>
+<span style="background-color: #ffff99;">&nbsp;&nbsp;&nbsp;</span> = number unknown&nbsp;
+</td><td>
+<span style="background-color: #ff0000;">&nbsp;&nbsp;&nbsp;</span> = 3x4 beta strands&nbsp;
+</td><td>
+<span style="background-color: #660000;">&nbsp;&nbsp;&nbsp;</span> = 8x2 beta strands&nbsp;
+</td></tr>
+</table>
+</div>
+
+<div style="padding-top: 5px; width: 821px;" >
+<% if (@search_results.empty?) %>
+	<img name="tolc_galaxy" src="/images/hhomp/tolc.png" style="margin-bottom: 0px; padding-bottom: 0px; border-width: 1px; border-style: solid; border-color: black; link-color: black;" usemap="#tolc_map"/>
+	<img name="wza_galaxy" src="/images/hhomp/wza.png" style="margin-bottom: 0px; margin-left: 2px; padding-bottom: 0px; border-width: 1px; border-style: solid; border-color: black; link-color: black;" usemap="#wza_map"/>
+<% else %> 
+	<img name="tolc_galaxy" src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_tolc.gif" style="margin-bottom: 0px; padding-bottom: 0px; border-width: 1px; border-style: solid; border-color: black; link-color: black;" usemap="#tolc_map"/>
+	<img name="wza_galaxy" src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_wza.gif" style="margin-bottom: 0px; margin-left: 2px; padding-bottom: 0px; border-width: 1px; border-style: solid; border-color: black; link-color: black;" usemap="#wza_map"/>
+<% end %>
+</div>
+
+</div>
+
+
+<% if (!@search_results.empty?) %>
+<div class="spacer">&nbsp;</div>
+<div class="row">
+<h3 class="<%= @section["name"] %>">Search Results</h3>
+<pre><%= @search_results.join("\n") %></pre>
+</div>
+<% end %>
+
+<% else %>
+
+<h2><%= @name %></h2>
+<% if @name != @fullname %>
+	<div class="row">	
+		<%= @fullname %>
+	</div>
+	<br/>
+	<% if @name =~ /^cluster/ %>
+		<div class="row">
+			Tree in NEWICK format
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/hhomp_ali/tree/<%= @page %>.tree" target="_blank">Download <%= @page %>.tree</a>
+      	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="new Ajax.Updater('tree_applet', '/hhomp/applet?tree=<%= @page %>', {asynchronous:true});">Show tree in applet</a>			
+
+			<div id="tree_applet"></div>      
+			
+		</div>
+		
+	<% end %>
+	<div class="spacer">&nbsp;</div>	
+<% end %>
+
+<% if @desc != "" %>
+	<div class="row">
+		<h3 class="<%= @section["name"] %>">Description of this HMM:</h3><br/>
+		<%= @desc %>
+	</div>
+	<br>
+	<div class="spacer">&nbsp;</div>
+<% else %>
+	<div class="hr">&nbsp;</div>
+<% end %>
+
+<div class="row">
+	<strong>length of HMM: </strong> <%= @length %>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<strong>approximate position of beta-barrel domain: </strong> <%= @bbdom %>
+	<br/>
+	<br/>
+</div> 
+
+<% if @pdb != "" %>
+	<div class="row">
+		<h3 class="<%= @section["name"] %>">Generated 3D-model of beta-barrel domain</h3>
+		<input class="checkbutton" id="pdb_btn" type="button" value="Show PDB-file" onclick="toggle_pdb(); ">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		
+		<a href="<%= @pdb_url %>">Download PDB-file</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		
+		<a href="#" onclick="var win = window.open('<%= DOC_ROOTURL %>/hhomp/pdb_applet?file=<%= @page %>','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();" style="margin: 5px 10px 10px 10px;" > Show PDB applet </a>		
+		<div style="display:none;" id="pdb">
+			<div class="alignres"><%= @pdb %></div>
+		</div>
+	</div>
+	<br/>
+	<br/>
+	<div class="spacer">&nbsp;</div>
+<% end %>
+
+<% if @gi_seq != "" %>
+	<div class="row">
+		<h3 class="<%= @section["name"] %>">FASTA-sequence of selected protein</h3>
+		<pre><%= @gi_seq %></pre>
+	</div>
+	<div class="spacer">&nbsp;</div>
+<% end %>
+
+<h3 class="<%= @section["name"] %>">Alignment</h3>
+<div class="row">
+	<div id="applet">
+  		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+		<PARAM NAME="input"  value="<%= DOC_ROOTURL %>/hhomp_ali/<%= @page %>.fas">
+		<PARAM NAME="type"   value="URL">
+		<PARAM NAME="format" value="FASTA">
+		</APPLET> 
+		<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+		<PARAM NAME="input"  value="<%= DOC_ROOTURL %>/hhomp_ali/<%= @page %>.reduced.fas">
+		<PARAM NAME="type"   value="URL">
+		<PARAM NAME="format" value="FASTA">
+		</APPLET>
+		<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
+			
+	</div>	
+</div>
+
+<div class="hr">&nbsp;</div>
+<div class = "row">
+	<span style="font-weight: bold;">Download alignment files:</span>
+	<table>
+		<tr height="0px"><td width="300px"></td><td></td></tr>
+		<tr>
+			<td><a href="/hhomp_ali/<%= @page %>.clu" target="_blank"><%= @page %>.clu</a></td>
+			<td>CLUSTAL formatted</td>
+		</tr>
+		<tr>
+			<td><a href="/hhomp_ali/<%= @page %>.reduced.clu" target="_blank"><%= @page %>.reduced.clu</a></td>
+			<td>CLUSTAL formatted (100 most distinct sequences with inserted residues deleted)</td>
+		</tr>
+		<tr>
+			<td><a href="/hhomp_ali/<%= @page %>.a3m" target="_blank"><%= @page %>.a3m</a></td>
+			<td>A3M formatted</td>
+		</tr>
+		<tr>
+			<td><a href="/hhomp_ali/<%= @page %>.fas" target="_blank"><%= @page %>.fas</a></td>
+			<td>FASTA formatted</td>
+		</tr>
+		<tr>
+			<td><a href="/hhomp_ali/<%= @page %>.reduced.fas" target="_blank"><%= @page %>.reduced.fas</a></td>
+			<td>FASTA formatted (50 most distinct sequences with inserted residues deleted)</td>
+		</tr>
+	</table>
+	<br/>
+	<span style="font-weight: bold;">Alignment of 100 most distinct sequences with inserted residues deleted:</span>
+</div>	
+
+<div class="alignres"><%= @ali %></div>
+
+<% end %>
+
+<% end %>
+
+</div>

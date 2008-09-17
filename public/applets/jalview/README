@@ -1,0 +1,224 @@
+JalView 1.3 beta - Michele Clamp 1998
+-------------------------------------
+
+Any problems mail me:  michele@ebi.ac.uk
+
+--------------------------------------------------
+Note: 18th September 1998:  New in 1.3b version
+
+  Grouping sequences by selecting on the average PID tree
+  Conservation analysis and colouring by group
+  Sequences can be sorted by tree and group
+
+  New colour schemes - K&D hydrophobicity, 
+                       Helix,sheet,turn,buried propensities
+
+  Can fetch sequence features and display on the alignment
+
+  Can view database entry through the application
+
+  Can save to a file for the text alignment and postscript.
+
+  New command line options: -srsServer for the location of wgetz 
+                            -database for srs database
+
+  New applet parameters:  srsServer -  for wgetz
+                          database  -  for srs database name
+
+   (n.b. srsServer should be of the form
+             srs.ebi.ac.uk/srs5bin/cgi-bin/
+    i.e. no http:// and must have a following slash
+   )
+                           
+--------------------------------------------------
+Note: 17th August 1998:  New in 1.2b version
+
+ In summary:
+  User defined colour schemes
+  Tree calculation and drawing.
+  Principal component analysis to cluster 
+         sequences.
+  Extra fonts and 2 drawing modes.
+
+ In more detail:
+
+  New file formats accepted : BLC and MSP
+  (output of MSPcrunch for blast output viewing).
+
+  Selecting columns and trimming the alignment
+  left and right of selected columns.  This 
+  is very useful for evening up ragged edges
+  of an alignment prior to calculating a tree
+  or PCA.
+
+  Gap insertion character can be changed from
+  - to .
+
+  Extra fonts - Helvetica and Times-Roman on the
+  screen display and the choice of plain or bold
+  fonts.
+
+  Two modes for font drawing.  Fastdraw 
+  only allows Courier but is the fastest in
+  updating the screen and has the residues
+  closer together.  Non-fastdraw allows Courier,
+  Helvetica and Times and spaces the residues
+  further apart from each other.
+
+  Selecting a colour scheme or a PID threshold 
+  from the Colour menu only changes the colours
+  of the selected sequences.  If none 
+  are selected then the changes affect all
+  sequences.
+
+  Extra colour schemes.  I have included Willie
+  Taylor's colour scheme (the subject of a very
+  entertaining Protein Engineering paper vol 10, 
+  743-746 1997) as an alternative to zappo.  
+
+  User definable colour schemes. Once 
+  a colour scheme is set you can change it by 
+  selecting the 'User defined colours...' option
+  in the Colour menu.  You can change the colours
+  of the different residue groupings by using a
+  rgb colour selector.  You can also change which
+  residues are grouped together. (Note: there
+  are problems here if two colours are set equal).
+
+  The PID colours have changed from blues to 
+  red pink and yellow for no particular reason.
+
+  You can sort sequences in the alignment by their
+  percent identity to the consensus sequence.
+
+  You can remove redundancy in the sequences by 
+  percent identity to the consensus sequence.
+
+  You can sort the sequences by group for tidiness.
+
+  Using the whole sequences as the starting data 
+  (as opposed to the individual residues) you can
+  perform a principal component analysis of your
+  alignment.  This is a method of clustering 
+  aligned protein sequences.  For more information
+  have a look at http://industry.ebi.ac.uk/SeqSpace
+  or Georg Casari, Chris Sander and Alfonso Valencia. 
+  Structural Biology volume 2, no. 2, February 1995.
+  The sequences are converted into vectors (n dimensions
+  for n sequences in your alignment).  These
+  vectors can then be viewed in 3d by projecting
+  them into a lower dimensional space. 
+
+  Tree building using percentage pairwise
+  identity of aligned sequences as the distance matrix.
+  The trees are then built using either UPGMA
+  or neighbour joining.  Postscript output can
+  be obtained by email.
+
+  Clustalw alignment locally or at the EBI. Choosing one of
+  these options with either run clustalw locally or
+  send your sequences to the EBI for alignment.  The
+  resulting aligned sequences are displayed in a new window.
+  The local option only works unded unix at the moment.
+ 
+  Selecting sequences in an alignment will also select
+  the same sequences in a tree or PCA window.
+
+  Local alignment now works with windows 95 IF
+  clustalw is in the path and c:\windows\temp is
+  writable.
+
+  added -mail mailserver option to command line
+
+--------------------------------------------------
+Note: 5th June 1998:  This is unfinished software
+that I am making available to anybody who might
+like it with the usual disclaimer that I take
+no responsibility for anything at all that may
+go wrong with it.  I will be extremely grateful
+for any suggestions/gripes anybody may have.
+If the load becomes too much for my pine INBOX
+I may set up a mailing list for software updates,
+bug fixes etc.
+--------------------------------------------------
+
+This is a pre-beta release  of the java multiple alignment
+editor Jalview . 
+
+To install Jalview look in the INSTALL file.
+
+(Quick start if you have java already set up and 
+you know what you're doing:
+
+Unix:
+    setenv CLASSPATH ${CLASSPATH}:`pwd`/jalview.jar
+    java jalview.AlignFrame examples/lipase.msf File MSF
+
+PC:
+    set CLASSPATH=%CLASSPATH%;jalview.jar
+    java jalview.AlignFrame examples\lipase.msf File MSF
+
+}
+
+
+##########################################################
+
+PLEASE PLEASE PLEASE if you have problems don't just say
+'Oh bugger it' and stroll off for a cup of coffee.  
+Please take some time to email me so I can put things 
+right.  Any feedback is welcome but  don't make it
+too negative. We're delicate little flowers here at
+the EBI.
+
+##########################################################
+
+
+For help on writing html pages to run Jalview look in
+the doc/applet.html file.
+
+For general information about Jalview look in the
+doc/contents.html file.
+
+For details of the functions in Jalview look in the
+doc/help.html file.
+
+You can download this distribution (and later ones)
+from http://www.ebi.ac.uk/~michele/jalview/dist/
+
+Jalview's home page is :
+  http://www.ebi.ac.uk/~michele/jalview/
+
+Latest releases will appear on the home page.
+
+
+New in 1.1b July 1998
+--------------------
+
+Can run clustalw locally.  Clustalw needs to be in your path and named
+'clustalw' otherwise things go pearshaped.  You can also run clustalw
+remotely at the EBI.  This is new stuff and probably has hideous bugs.
+
+Principal component analysis of alignments.  Reduces sequences in your
+alignment to points in a 3d space so you can see how the sequences
+cluster.  This is meant to be complementary to constructing a tree from
+your alignment.
+
+Colour your sequences only if the residues agree with the consensus above
+a certain percentage.  This feature is available with zappo and
+hydrophobicity colourings.
+
+Trimming alignments on the left and right hand side (again stolen from
+bevu). Selecting a column on the scale panel and choosing 'remove columns
+left of selected column' from the edit menu deletes all columns left of
+the selected one.  I find this useful for evening up the edges of
+alignments prior to PCA or making a tree as uneven sequence lengths bias
+the output.
+
+umm...changing gap insert characters from - to . and vice versa.
+
+Extra editing functions - select all, invert selected sequences..
+
+If no sequences selected and the consensus option is picked a consensus is
+calculated over all sequences.  Previously an error message came up in the
+status bar saying no sequences selected.
+

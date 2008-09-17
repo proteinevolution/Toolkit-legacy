@@ -1,0 +1,76 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+<li><a href="#intro">Introduction</a></li>
+<li><a href="#time">May run for days</a></li>
+<li><a href="#multi-domain">Multi-domain sequences</a></li>
+<li><a href="#method">Method overview</a></li>
+<li><a href="#algorithm">Algorithm</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+
+<h2>About <%= @tool['title'] %></h2> 
+
+<a name="intro"></a>
+<h3 class="<%= @section["name"] %>">Introduction</h3>
+<div class="row">
+HHsenser is a tool for sensitive iterative sequence search based on HMM-HMM comparison. It takes an alignment as input and builds from it an alignment with as many near or remote homologs as possible. Starting from a single sequence it is able to explore whole protein superfamilies with few or no false positives. This method can be useful wherever a rich and diverse alignment of homologous sequences is important:
+<ul>
+<li> Evolutionary studies (see, e.g. <a target="_BLANK" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=15939023">Coles <i>et al.</i> (2005)</a>)
+</li><li> Protein structure prediction by remote homology detection
+</li><li> Protein function prediction by remote homology detection
+</li><li> Secondary structure, solvent accessability, and disorder prediction
+</li><li> Transmembrane helix prediction
+</li><li> Protein-protein contact prediction
+</li><li> Prediction of subcellular localization
+</li><li> Prediction of functional residues
+</li></ul>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="time"></a>
+<h3 class="<%= @section["name"] %>">HHsenser may run for days</h3>
+<div class="row">
+Due to the iterative transitive search strategy, normally tens of PSI-BLAST searches need to be performed until all detectable members from a superfamily have been found. Therefore, <i>HHsenser may run hours up to days</i>, depending on the number of homologs that can be detected and the length of the query sequence. A rough guide is here:<br><br>
+<pre>
+<b>    Number of homologs   Typical time to complete</b>
+                 1               1-5 minutes
+               100              5-30 minutes
+              1000              1-12 hours
+              5000               1-5 days
+</pre><br>
+	
+You can limit the time the search will take by setting an upper threshold on the number of sequences found. As soon as this number is exceeded, HHsenser will terminate and return the results.<br><br>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="multi-domain"></a>
+<h3 class="<%= @section["name"] %>">Multi-domain sequences</h3>
+<div class="row">
+It is recommended that you submit only single domains to HHsenser for two reasons. First, the job will execute faster. Second, PSI-BLAST is known to be prone to generate alignments corrupted with non-homologous sequences or sequence fragments when multi-domain sequences are used in the search. Even though HHsenser employs a specially designed filtering procedure to suppress this effect as much as possible, multi-domain sequences will still be at a higher risk of producing HHsenser alignments with too many false positives. <br><br>
+
+To determine the domain boundaries in a sequence you can submit it to HHpred and select the SCOP database. If that doesn't provide a clear answer, you could try Pfam, TIGRFAM, and SMART as well (not COGs/KOGs, PANTHER, or PDB, since they contain full-length sequences). For the purpose of limiting the computational burdon, the <i>maximum length of a submitted sequence is 500 residues</i>. 
+<br>
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="method"></a>
+<h3 class="<%= @section["name"] %>">Method overview</h3>
+<div class="row">
+HHsenser is an extension of straighforward intermediate profile search methods, where the significant hits from one iterated PSI-BLAST search (e.g. with E-values less than 1E-3) are used as starting sequences for following PSI-BLAST searches.<br>In HHsenser, all matches with E-values up to 1 ("trailing end") are checked for a possible homologous relationship. This allows to jump wider gaps between protein families in the course of the transitive search. From the sequences within the trailing end, representative sequences are selected by a maximum pairwise sequence identity criterion and these representative sequence are used as seeds to start a new PSI-BLAST search. The resulting alignment is then checked by performing a sensitive HMM-HMM comparison with the alignment of already accepted sequences. The process continues until no more sequences are found.
+<br>
+<center><img src="/images/hhsenser/hhsenser_diagram.png" height="369px" align="top" style="margin: 10px;"></center>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="algorithm"></a>
+<h3 class="<%= @section["name"] %>">Algorithm</h3>
+<div class="row">
+HHsenser returns two alignments, a <i>strict</i>, reliable one which rarely includes unrelated sequences and which is appropriate for automatic analyses, and a more <i>permissive</i> one that occasionally contains unrelated sequences but which often covers more homologous sequences as well. The strict alignment is behind the "firewall" of a stricter set of acceptance criteria. The flow chart below summarizes the algorithm. 
+A more detailed account will hopefully be available soon:
+S&ouml;ding, J, Remmert, M, Biegert, A, and Lupas, A (2006) HHsenser: exhaustive transitive profile search using HMM-HMM comparison. Submitted.
+<br><br>
+<center><img src="/images/hhsenser/hhsenser_flowchart.png" height="920px" align="top" style="margin: 10px;"></center>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+<%= render(:partial => "hhsenser/references_and_contact") %>

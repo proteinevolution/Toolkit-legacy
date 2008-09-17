@@ -1,0 +1,151 @@
+<h3 class="secstruct"><%= @page_title -%></h3>
+
+<%= render(:partial => "shared/tool_descriptions") %>
+
+<h3 class="secstruct">External secondary structure prediction servers</h3>		
+
+<h4><a target="_blank" href="http://www.predictprotein.org/newwebsite/">PredictProtein</a></h4>
+<p class="tooldescr">
+Meta-server that performs a BLAST search, predicts functional motifs (Prosite) (beware of false positives), secondary structure (PHDsec), solvent accessability (PHDacc), transmembrane helices (PHDhtm), disordered and composition biased regions, coiled coils, disulphide bridges, and more. 
+</p>
+<div class="hr">&nbsp;</div>
+
+<h4><a target="_blank" href="http://bioinf.cs.ucl.ac.uk/psipred/psiform.html">PSIPRED</a></h4>
+<p class="tooldescr">
+Secondary structure prediction using neural networks. Results are returned by e-mail. PSIPRED is one of the most popular and accurate methods around. This server also offers transmembrane topology prediction with MEMSAT2 or fold recognition with GenTHREADER.<br> 
+<!-- Bryson, K., McGuffin, L. J., Marsden, R. L., Ward, J. J., Sodhi, J. S. & Jones, D. T. (2005) <em>Nucl. Acids Res.</em> <b>33</b>, 36-38.<br> -->
+<!--  McGuffin LJ, Bryson K, Jones DT. (2000) <em>Bioinformatics</em> <b>16</b>, 404-405.<br>-->
+<!-- Jones DT. (1999) <em>J. Mol. Biol.</em> <b>292</b>, 195-202.-->
+</p>
+<div class="hr">&nbsp;</div>
+
+
+
+<h4><a target="_blank" href="http://www.compbio.dundee.ac.uk/~www-jpred/submit.html">JPRED</a></h4>
+<p class="tooldescr">
+Secondary structure prediction using neural networks. Also accepts multiple sequence alignments.<br>
+<!-- Cuff, J. A., Clamp, M. E., Siddiqui, A. S., Finlay, M. and Barton, G. J. (1998) <em>Bioinformatics</em> <b>14</b>, 892-893.<br>-->
+<!-- Cuff, J. A. and Barton, G. J. (2000) <em>PROTEINS: Structure, Function and Genetics</em> <b>40</b>, 502-511.-->
+</p>
+<div class="hr">&nbsp;</div>
+
+
+<h3 class="secstruct">External disorder prediction servers</h3>		
+
+<h4><a target="_blank" href="http://www.ist.temple.edu/disprot/predictor.php">DisProt</a></h4>
+<p class="tooldescr">
+Protein disorder prediction based on neural networks. Best results for disorder prediction in CASP6 benchmark.<br>
+</p>
+<div class="hr">&nbsp;</div>
+
+<h4><a target="_blank" href="http://dis.embl.de/">DisEMBL</a></h4>
+<p class="tooldescr">
+Protein disorder prediction based on neural networks. Predicts propensity for loops (no helix, no strand), 
+hot loops (floppy loops with high temperature factors), and disordered regions (called "Remark465" in DISEMBL).
+<!-- R. Linding, L.J. Jensen, F. Diella, P. Bork, T.J. Gibson and R.B. Russell (2003) <em>Structure</em> <b>11(11)</b> -->
+</p>
+<div class="hr">&nbsp;</div>
+
+<h4><a target="_blank" href="http://www.strubi.ox.ac.uk/RONN">RONN</a></h4>
+<p class="tooldescr">
+Protein disorder prediction. Aligns query sequence in a sliding window with a database of known ordered and disordered 
+sequence segments and uses a neural network to predict disorder from the alignment scores.<br>
+</p>
+<div class="hr">&nbsp;</div>
+
+<h4><a target="_blank" href="http://bioinf.cs.ucl.ac.uk/disopred/disopred.html">DISOPRED</a></h4>
+<p class="tooldescr">
+Protein disorder prediction, returns results by e-mail<br>
+</p>
+<div class="hr">&nbsp;</div>
+
+
+<h3 class="secstruct">External transmembrane protein and signal peptide predictors</h3>		
+
+<h4><a target="_blank" href="http://www.enzim.hu/hmmtop/html/submit.html">HMMTOP</a></h4>
+<p class="tooldescr">
+      Predict transmembrane (TM) helices and their topology. The method uses a hidden Markov model (HMM) that 
+      distinguishes between TM helix states, inside tails, outside tails, inside loops, and outside loops.	
+      The best fit of the query sequence with this HMM is evaluated.<br>
+      <!-- G.E Tusn&aacute;dy and I. Simon (1998) <em>J. Mol. Biol.</em> <b>283</b>, 489-506.<br>-->
+      <!-- G.E Tusn&aacute;dy and I. Simon (2001) <em>Bioinformatics</em> <b>17</b>, 849-850. -->     
+</p>
+<div class="hr">&nbsp;</div>
+
+
+
+<h4><a target="_blank" href="http://saier-144-37.ucsd.edu/memsat.html">MEMSAT</a></h4>
+<p class="tooldescr">
+Predict transmembrane (TM) helices and their topology. The method employs a set of statistical tables 
+(log likelihood ratios) compiled from well- characterized membrane protein data. The structural states
+of the model are: inside loop, outside loop, inside helix end, outside helix end, helix middle.<br>
+<!-- Jones, D.T., Taylor, W.R. and Thornton, J. M. (1994) <em>Biochemistry</em> <b>33</b>, 3038-3049.-->
+</p>
+<div class="hr">&nbsp;</div>
+
+
+
+<h4><a target="_blank" href="http://www.cbs.dtu.dk/services/TMHMM-2.0/">TMHMM</a></h4>
+<p class="tooldescr">
+Predict transmembrane  helices and their topology<br>
+<!-- A. Krogh, B. Larsson, G. von Heijne, and E. L. L. Sonnhammer (2001) <em>Journal of Molecular Biology</em>, <b>305</b>, 567-580.<br> -->
+</p>
+<div class="hr">&nbsp;</div>
+
+
+<h4><a target="_blank" href="http://phobius.cgb.ki.se//">Phobius</a></h4>
+<p class="tooldescr">
+A combined transmembrane topology and signal peptide predictor. Most transmembrane prediction methods are prone to predict 
+N-terminal signal peptides as TM helix. This server is excellent at distinguishing signal peptides from
+transmembrane helices. Also a good TM helix predictor.<br>
+<!-- L. Käll, A. Krogh and E. L. L. Sonnhammer (2004) <em>Journal of Molecular Biology</em> <b>338(5)</b> 1027-1036.-->
+</p>
+<div class="hr">&nbsp;</div>
+
+
+
+<h4><a target="_blank" href="http://www.cbs.dtu.dk/services/SignalP/">SignalP</a></h4>
+<p class="tooldescr">
+SignalP 3.0 server predicts the presence and location of signal peptide cleavage sites in amino acid sequences from different organisms: Gram-positive prokaryotes, Gram-negative prokaryotes, and eukaryotes. The method incorporates a prediction of cleavage sites and a signal peptide/non-signal peptide prediction based on a combination of several artificial neural networks and hidden Markov models.<br>
+<!-- J. D. Bendtsen, H. Nielsen, G. von Heijne and S. Brunak (2004) <em>Journal of Molecular Biology</em>, <b>340</b>, 783-795.<br>-->
+<!-- H. Nielsen, J. Engelbrecht, S. Brunak and G. von Heijne (1997) <em>Protein Engineering</em>, <b>10</b>, 1-6. -->
+</p>
+<div class="hr">&nbsp;</div>
+
+
+<h3 class="secstruct">External GPI linkage predictors</h3>		
+
+<h4><a target="_blank" href="http://129.194.185.165/dgpi/DGPI_demo_en.html">DGPI</a></h4>
+<p class="tooldescr">
+	GPI linkage prediction. Uses a rule-based algorithm for identifying the signal peptide 
+	for GPI linkers which is often wrongly predicted as transmembrane helix. 
+	GPI linked proteins are achored to the outside of the cell membrane by GPI 
+	(glycosylated phosphatidylinositol).
+</p>
+<div class="hr">&nbsp;</div>
+
+
+<h4><a target="_blank" href="http://gpi.unibe.ch/">GPI-SOM</a></h4>
+<p class="tooldescr">
+	GPI linkage prediction. Uses Kohonen self-organizing maps. 
+</p>
+<div class="hr">&nbsp;</div>
+
+
+
+<h4><a target="_blank" href="http://mendel.imp.univie.ac.at/gpi/gpi_server.html">big-PI</a></h4>
+<p class="tooldescr">
+	GPI linkage prediction. Looks at amino acid type preferences near 
+	a supposed omega-site and at general physical properties.
+</p>
+<div class="hr">&nbsp;</div>
+
+
+<h4><a target="_blank" href="http://bioinformatics2.biol.uoa.gr/PRED-TMBB/input.jsp">PRED-TMBB</a></h4>
+<p class="tooldescr">
+Predict outer membrane beta-barrel proteins by a hidden Markov model method. (Compare results to 
+<a target="_blank" href="http://<%= DOC_ROOTHOST %>/hhomp">HHomp</a>, 
+which can reliably detect outer membrane beta barrels.)
+<br>
+</p>
+<div class="hr">&nbsp;</div>

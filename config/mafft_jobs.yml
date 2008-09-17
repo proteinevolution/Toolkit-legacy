@@ -1,0 +1,12 @@
+mafft_job: 
+  title: MAFFT
+  hidden: false
+  code: MAFF
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results

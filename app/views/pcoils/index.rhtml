@@ -1,0 +1,82 @@
+<a href="#" onClick="openHelpWindow('/pcoils/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+<h2><%= @page_title %></h2>
+
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+PCOILS compares a single sequence or a sequence alignment to a database of known coiled-coils and derives a 
+similarity score. The program then calculates the probability that the sequence will adopt a coiled-coil 
+conformation. The older COILS version can be found 
+<a target="_blank" href="http://www.ch.embnet.org/software/COILS_form.html">here</a>.
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= form_tag({:action => :run, :job => 'pcoils'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter sequence or sequence alignment", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+<div class="row">
+	<%= form_label("Select alignment format", "input_format") %>
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("Input mode", "inputmode") %>
+	<%= form_radio_buttons("inputmode", @inputmode_values, @inputmode_labels, @inputmode_values[0], "&nbsp;&nbsp;") %>	
+</div>
+<div class="row">
+	<%= form_label("Weighting", "weighting") %>
+	<%= form_radio_buttons("weighting", @weighting_values, @weighting_labels, @weighting_values[0], "&nbsp;&nbsp;") %>	
+</div>
+<div class="row">
+	<%= form_label("Matrix", "matrix") %>
+	<%= form_radio_buttons("matrix", @matrix_values, @matrix_labels, @matrix_values[0], "&nbsp;&nbsp;") %>	
+</div>
+<div class="row">
+	<%= form_label("Run PSIPRED") %>
+	<%= form_checkbox("psipred", 1, false) %>	
+</div>
+
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+	<ul class="arrow-marker">
+		<li><a target="_blank" href="http://protevo.eb.tuebingen.mpg.de/download">Downloads</a></li>
+		<li><a target="_blank" href="http://www.eb.tuebingen.mpg.de/dept1/staff/Gruber.html">Send feedback</a></li>
+	</ul>
+</div>
+	
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+	Lupas, A., Van Dyke, M., and Stock, J. (1991) Predicting coiled coils from protein sequences. 
+	<em>Science</em>, <strong>252</strong>, 1162-1164. 
+	<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=2031185">Free Abstract</a><br/><br/>
+	
+	Lupas, A. (1996) Prediction and analysis of coiled-coil structures. <em>Methods Enzymol.</em>, <strong>266</strong>, 513-525.<br/><br/>
+	
+	Parry, DA. (1982) Coiled-coils in alpha-helix-containing proteins: analysis of the residue types within the heptad repeat and the use of these data in the prediction of coiled-coils in other proteins. <em>Biosci. Rep.</em>, <strong>2</strong>, 1017-1024.
+	<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=7165792">Free Abstract</a>
+</div>

@@ -1,0 +1,26 @@
+Dear <%= @params['name'] %>,
+
+PDBalert (<%= DOC_ROOTURL %>/pdbalert ) has found a match to one of your sequences among the PDB structures released recently. Here is the summary of the result.
+
+Sequence Name : <%= @params['db'] %>
+Uploaded on : <%= @params['date'] %>
+Threshold Probability : <%= @params['probability'] %>%
+Link to Result: <%= DOC_ROOTURL %>/hhpred/check/<%= @params['job_id'] %>
+Link to predicted structure: <%= DOC_ROOTURL %>/modeller/results_model/<%= @params['str_id'] %>
+
+Thank You!
+Your PDBalert Team
+_________________________________________________________________________________
+
+Notes: 
+1) When PDBalert confidently predicts a domain in a longer sequence, it is recommended to split the sequence up according to the (partial) predicted domain structure and upload the fragments separately to PDBalert since it may contain another (less confident) domain of interest. Follow the given steps.
+   a) Note the domain of sequence for which PDBalert has found the matching template.
+   b) Remove the domain noted in (a) and few residues on either sides. (Remove the section if it is less than 10 residues on either sides of found domain.)
+   c) Upload the remaining sequence to PDBalert again.
+
+2) It is recommended that users create the models of protein structures themselves instead of using the automatically predicted structure by following given steps.
+   a) Choose option 'Create Model' in the menu on the 'HHpred - Results' page.
+   b) Select the template for structure prediction with 'Single Template model' 
+   					OR
+      Opt for 'Multiple template model' and select templates on 'HHpred makemodel - Results' page that appears after few minutes. Press 'Prepare for MODELLER' button.
+   c) Put the MODELLER-key in the space provided and submit the job.

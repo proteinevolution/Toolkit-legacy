@@ -1,0 +1,36 @@
+<a href="#" onClick="openHelpWindow('/gi2pro/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'gi2pro'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Paste GI numbers", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("Reported upstream nucleotides", "num_lead") %>
+	<%= form_text_field("num_lead", "200") %>
+</div>
+
+<div class="row">
+	<%= form_label("Reported downstream nucleotides", "num_trail") %>
+	<%= form_text_field("num_trail", "100") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

@@ -1,0 +1,21 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+
+<div class="row">
+     
+<% if File.exists?(File.join(@job.job_dir, @job.jobid + ".solvx")) %>
+	<img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>.solvx.png" border="0" name="model quality" >
+	<br/><br/>
+	L. Holm, C. Sander (1992) Evaluation of protein models by atomic solvation preference. J Mol Biol 225. 93-105. <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=1583696&query_hl=7" target="_blank">(pdf)</a>
+	<br/><br/>
+	<pre>
+		<%= @job.render_file(@job.jobid + ".solvx") %>
+	</pre>
+     <% else %>
+
+     	No results found!
+
+     <% end %>
+</div>

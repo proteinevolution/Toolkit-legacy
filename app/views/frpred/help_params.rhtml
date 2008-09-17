@@ -1,0 +1,168 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input</a></li>
+	<li><a href="#input_format">Input format</a></li>
+	<li><a href="#pdbInput">Pdb file</a></li>
+	<li>&nbsp;</li>
+	<li><a href="#moreHomologs">Extend sequence/alignment</a></li>
+	<li><a href="#maxPsiBlastIt">Max. number of <%= @tools_hash['psi_blast']['title'] %> iterations</a></li>
+	<li><a href="#ePsiBlast"><%= @tools_hash['psi_blast']['title'] %> Evalue threshold</a></li>
+	<li><a href="#minCoverage">Minimum coverage</a></li>
+	<li><a href="#minIdentity">Minimum identity</a></li>
+	<li>&nbsp;</li>	
+	<li><a href="#emphCatalytics">Catalytic residues</a></li>
+	<li><a href="#seqCentered">Sequence-centered analysis</a></li>	
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input</h3> 
+<div class="row">
+Enter a protein sequence alignment and choose its format from the dropdown menu or
+enter a single query sequence in FASTA format. <%= @tool['title'] %> will build a multiple alignment 
+of homologs from it with <%= @tools_hash['psi_blast']['title'] %>. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="input_format"></a>
+<h3 class="<%= @section["name"] %>">Input format</h3>
+<div class="row">
+	<p>
+	Accepted formats are listed in the dropdown menu. 
+	FASTA input format accepts a single raw sequence without headers as well.
+	Format descriptions can be found <a
+	href="/reformat/help_params#formats">here</a>. The grouped
+	FASTA format has been defined for this program
+	specifically. Use a line starting with '#' in order to
+	separate sequences belonging to differet subgroups.	
+	</p>
+
+	<p>&nbsp;</p>
+
+	<p>
+	>sequence_name_1_belonging_to_subgoups_1<br>
+	SE-QVENCED--ATAXDDEFIVLIPSPTRCMH<br>
+        >sequence_name_2_belonging_to_subgoup_1<br>
+        SE-QVENCED--AT-ADEEFIVLIPS-TRCKH<br>
+        >sequence_name_3_belonging_to_subgoups_1<br>
+        SE-QVENCED--ATADDDEYILLIPSPTRCWK<br>
+        >sequence_name_4_belonging_to_subgoup_1<br>
+        SE-QVENCED--AT-ADEEFIVLIPS-TRCNR<br>
+	#<br>
+        >sequence_name_1_belonging_to_subgoups_2<br>
+        TE-QVQDCED---SAXDDEFIVLIPSPTRCMH<br>
+        >sequence_name_2_belonging_to_subgoup_2<br>
+        TE-QVQDCED---S-ADEEFIVLIPS-TRCKH<br>
+        >sequence_name_3_belonging_to_subgoups_2<br>
+        TE-QVQDCED---SADDDEYILLIPSPTRCWK<br>
+        >sequence_name_4_belonging_to_subgoup_2<br>
+        TE-QVQDCED---S-ADEEFIVLIPS-TRCNR<br>
+	#<br>
+        >sequence_name_1_belonging_to_subgoups_3<br>
+        TE-QVQDCED---SAXDDEFIVLIKKGARCMH<br>
+        >sequence_name_2_belonging_to_subgoup_3<br>
+        TE-QVQDCED---S-ADEEFIVLIKKG-RCKH<br>
+        >sequence_name_3_belonging_to_subgoups_3<br>
+        TE-QVQDCED---SADDDEYILLIPKK--RCWK<br>
+	</p>
+	
+        <p>&nbsp;</p>
+
+	<p><b>PLEASE make sure that the query sequence is the first
+	sequence in your input alignment!
+	</b></p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="pdbInput"></a>
+<h3 class="<%= @section["name"] %>">PDB file</h3>
+<div class="row">
+Optionally it is possible to upload a file containing structural
+information that represents your alignment/sequence in PDB format. 
+For each method, a RasMol-script is generated, which visualizes
+high-scoring residues. The sequence of the PDB file is aligned to the
+query (first sequence in FastA alignment). Therefore, please make sure
+that the PDB file is unambigously alignable to the query sequence. The
+savest way is to use the part of the PDB sequence that corresponds to
+your alignment as the query sequence. Please do not forget to specify
+the appropriate chain in the PDB file (if applicable).
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<a name="chain"></a>
+<h3 class="<%= @section["name"] %>">Chain</h3>
+<div class="row">
+Please do not forget to specify the appropriate chain if you use a PDB
+file. Even if there is only one chain in your file it might have a
+name. Only if it does not have a name you can leave this field free. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<br/><div class="hr">&nbsp;</div><br/>
+
+<a name="moreHomologs"></a>
+<h3 class="<%= @section["name"] %>">Extend sequence/alignment</h3>
+<div class="row">
+This checkbox triggers an extension of your alignment kickstarting <%= @tools_hash['psi_blast']['title'] %>. 
+For single sequence input this is done automatically.
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="maxPsiBlastIt"></a>
+<h3 class="<%= @section["name"] %>">Maximum number of <%= @tools_hash['psi_blast']['title'] %> iterations</h3>
+<div class="row">
+Maximum  number of <%= @tools_hash['psi_blast']['title'] %> iterations used to build an alignment around a seed sequence.
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="ePsiBlast"></a>
+<h3 class="<%= @section["name"] %>"><%= @tools_hash['psi_blast']['title'] %> Evalue threshold</h3>
+<div class="row">
+<%= @tools_hash['psi_blast']['title'] %> E-value threshold for building alignments around seed sequences.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="minCoverage"></a>
+<h3 class="<%= @section["name"] %>">Minimum coverage</h3>
+<div class="row">
+Minimum coverage of <%= @tools_hash['psi_blast']['title'] %> hits with the seed sequence in the <%= @tools_hash['psi_blast']['title'] %> iterations.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="minIdentity"></a>
+<h3 class="<%= @section["name"] %>">Minimum sequence identity</h3>
+<div class="row">
+Minimum sequence identity of <%= @tools_hash['psi_blast']['title'] %> hits with the seed sequence in the <%= @tools_hash['psi_blast']['title'] %> iterations.
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<br/><div class="hr">&nbsp;</div><br/>
+
+<a name="emphCatalytics"></a>
+<h3 class="<%= @section["name"] %>">Catalytic residues</h3>
+<div class="row">
+If checked, this option scores residues that are possibly catalyticly
+active higher than hydrophobic ones. Use this option if you are
+looking for ligand binding sites. Do not use it if you are analyzing
+differences in structure.
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="seqCentered"></a>
+<h3 class="<%= @section["name"] %>">Sequence-centered analysis</h3>
+<div class="row">
+If you are interested in learning about the protein family of your
+alignment, it is best to leave this box unchecked. However, if you are
+mainly interested in the sequence, the checked box performs a
+sequence-centered analysis of the UPGMA tree. That is, it takes only
+those subgroups into account that contain information about the query
+sequence. For single sequence input this is done automatically. 
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

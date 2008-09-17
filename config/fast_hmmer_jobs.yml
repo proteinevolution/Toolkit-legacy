@@ -1,0 +1,20 @@
+fast_hmmer_job: 
+  title: FastHMMER
+  hidden: false
+  code: HMMR
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+    - name: results_fasta
+      title: FASTA alignment
+      title_long: Show FASTA alignment
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results
+    - name: results_stockholm
+      title: STOCKHOLM alignment
+      title_long: Show STOCKHOLM alignment
+      forwardsections:

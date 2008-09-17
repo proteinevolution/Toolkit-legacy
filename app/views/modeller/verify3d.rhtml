@@ -1,0 +1,21 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+
+<div class="row">
+
+     <% if File.exists?(File.join(@job.job_dir, @job.jobid + ".verify3d.png")) %>
+	<img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>.verify3d.png" border="0" name="model quality" >
+	<br/><br/>
+	R. Luethy, J. Bowie, and D. Eisenberg (1992) Assessment of protein models with three-dimensional profiles. Nature 356, 83-85. 
+	<br/><br/>
+	<pre>
+		<%= @job.verify3d_out %>
+	</pre>
+     <% else %>
+
+     	No results found!
+
+     <% end %>
+</div>

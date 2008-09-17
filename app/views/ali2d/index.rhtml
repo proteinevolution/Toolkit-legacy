@@ -1,0 +1,35 @@
+<a href="#" onClick="openHelpWindow('/ali2d/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'ali2d'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter alignment", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+<div class="row">
+	<%= form_label("Select input format", "format") %>
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("Percentage sequence identity below which a new Psipred run is invoked", "percentage") %>
+	<%= form_text_field("seqident", "30", "%") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_snail_buttons("Runtime ~10 min for N=100 sequences of length L=200. Scales as N * L.") %>
+</div>
+
+</form>

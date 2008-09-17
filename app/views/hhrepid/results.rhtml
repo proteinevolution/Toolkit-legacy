@@ -1,0 +1,105 @@
+<%= render :partial => "shared/jobspecs", :locals => { :title_extra => 'Results', :toolname => @job.tool } %>
+
+<%= render :partial => "shared/resultsections" %>
+
+<div class="row">
+  <div class="label">
+    <a href="#" onclick="openHelpWindow('hhrepid_help_params', 'alignment_stringency');">Alignment stringency</a>
+  </div>
+  
+  <div class="formw" style="float: right; margin-left: 20px;">
+    <strong>
+      <% @job.qscs.each do |qsc| checked = @qsc == qsc ? "checked='checked'" : "" %>
+      <input name="qsc" type="radio" <%= checked %> value="<%= @job.actions.first.params['qsc'].to_s %>"  onclick="document.location.href='/hhrepid/results/<%= @job.jobid %>?qsc=<%= qsc %>&mode=<%= @mode %>';" />&nbsp;<%= qsc %> &nbsp;&nbsp;
+      <% end %>
+    </strong>
+  </div>
+</div>
+
+<div class="row">
+  <div class="label">
+    <a href="#" onclick="openHelpWindow('hhrepid_help_params', 'coloring');">Color alignments</a>
+  </div>
+  <div class="formw" style="float: right; margin-left: 20px;">
+    <strong>
+      <input name="mode" type="radio" <%= @mode == "onlySS" ? "checked='checked'" : "" %> value="no coloring" onclick="document.location.href='/hhrepid/results/<%= @job.jobid %>?mode=onlySS&qsc=<%= @qsc %>';" />&nbsp;no coloring &nbsp;&nbsp;&nbsp;&nbsp;
+      
+      <input name="mode" type="radio" <%= @mode == "letters" ? "checked='checked'" : "" %> value="letters" onclick="document.location.href='/hhrepid/results/<%= @job.jobid %>?mode=letters&qsc=<%= @qsc %>';"/>&nbsp;
+      <span style="color: orange;">c</span>
+      <span style="color: black;">o</span>
+      <span style="color: green;">l</span>
+      <span style="color: black;">o</span>
+      <span style="color: red;">r&nbsp;</span>
+      <span style="color: grey;">a</span>
+      <span style="color: green;">li</span>
+      <span style="color: maroon;">g</span>
+      <span style="color: purple;">n</span>
+      <span style="color: green;">m</span>
+      <span style="color: blue;">e</span>
+      <span style="color: purple;">n</span>
+      <span style="color: grey;">t</span>
+      <span style="color: grey;">s</span> 
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      
+      <input name="mode" type="radio" <%= @mode == "background" ? "checked='checked'" : "" %> value="background" onclick="document.location.href='/hhrepid/results/<%= @job.jobid %>?mode=background&qsc=<%= @qsc %>';" />&nbsp;
+      <span style="background-color: #ffff00;">c</span>
+      <span style="background-color: white;">o</span>
+      <span style="background-color: #00ff00;">l</span>
+      <span style="background-color: white;">o</span>
+      <span style="background-color: #ff0000;">r&nbsp;</span>
+      <span style="background-color: white;">a</span>
+      <span style="background-color: #00ff00;">li</span>
+      <span style="background-color: #ffd070;">g</span>
+      <span style="background-color: #ffc0ff;">n</span>
+      <span style="background-color: #00ff00;">m</span>
+      <span style="background-color: #c080ff;">e</span>
+      <span style="background-color: #ffc0ff;">n</span>
+      <span style="background-color: white;">t</span>
+      <span style="background-color: white;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </strong>
+  </div>
+</div>
+
+
+<% if @job.repfams[@qsc].nil? -%>
+<div class="row">
+  <strong>No repeats found!</strong>
+</div>
+<% else -%>
+
+<map name="hhrepidmap">
+<%= @job.render_file(@job.mapfiles[@qsc.to_f]) -%>
+</map>
+
+<div class="row">
+  <center>
+    <img style="width: 800px" id="repeatgraph" name="repeatgraph" border="0" src="<%= @job.url_for_job_dir_abs %>/<%= @job.graphfiles[@qsc.to_f] %>" border="0" usemap="#hhrepidmap"/>
+    <br/> 
+  </center>
+</div>
+
+<% @job.repfams[@qsc].each do |repfam| -%>
+<div class="row">
+  <a name="type<%= repfam.famid %>">Repeats type <%= repfam.famid %></a>
+</div>
+<div class="row">
+  <center>
+    <img style="width: 800px" id="graph" name="img1" border="0" src="<%= @job.url_for_job_dir_abs %>/<%= @job.plotfiles[@qsc.to_f][repfam.famid] %>" border="0" /><br/> 
+  </center>
+</div>
+<div class="row">
+  <pre>
+    <%= @job.results[@qsc][repfam.famid] %>
+  </pre>
+</div>
+<% end -%>
+
+<% end -%>
+
+
+
+
+
+
+
+

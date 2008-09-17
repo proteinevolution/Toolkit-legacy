@@ -1,0 +1,213 @@
+JalView 1.7.5b Installation document September 1998
+-----------------------------------------------
+
+Author: Michele Clamp (michele@ebi.ac.uk)
+        EMBL-EBI
+        Hinxton
+        Cambs
+        UK.
+
+
+Requirements:
+-------------
+For the application version:
+  JDK1.1 or higher
+
+For windows users I recommend the IBM
+java distribution available from
+
+http://ww.ibm.com
+
+For the applet version:
+  Netscape4.05 (4.04 will do but there is odd scrollbar behaviour)
+  IE4
+  HotJava1.1
+  
+I heartily recommend using the latest version of Netscape you can get
+your paws on as the JVM has speeded up (especially on the graphics 
+side) in the most recent versions.  I really, really don't 
+recommend Netscape3 as things don't behave as expected and the
+speed is abysmal.
+
+Tested Platforms:
+-----------------
+
+For the application version:
+   IRIX + SGI JDK1.1.2
+   Win95 + Sun JDK1.1.5
+   
+For the applet version:
+   Netscape4.05 on IRIX
+   Netscape4.05 on win95
+   IE4 on win95
+
+   Netscape3 is no good - problems with fonts and dialog boxes.
+   Netscape4.05 on Mac PowerPC - works but odd fonts.
+   
+
+I should expect most platforms to run JalView if you have either java1.1, 
+Netscape4.05 or IE4.  If you have problems email me with the details.
+
+
+Unix Application Installation:
+------------------------------
+
+1. You should have downloaded a file jalview-1.7.5b.tar.gz .  Gunzip and untar 
+this file as follows
+
+gunzip -c jalview-1.7.5b.tar.gz |tar xvf -
+
+This will create a directory jalview-1.7.5b.
+
+2.  cd to this directory and you should find the following files:
+
+       INSTALL          -   This file!
+       README           -   General info about obtaining jalview
+       LICENSE          -   The gnu public license
+       doc/             -   help files.
+       examples/        -   example alignment files and html files.
+       jalview.jar      -   the java classes (closest thing to a java executable)
+       Jalview          -   the script file to run jalview
+       Jalview.bat      -   windows script file (not used)
+
+3.  Edit the file Jalview to reflect your java environment:
+
+To run jalview you need to set the java environment variables.
+Assuming a JDK is already installed you need to change two lines
+in the script file Jalview .
+
+You need to know where your java JDK is (or JRE) and then set up your
+CLASSPATH variable so it can see both jalview.jar and the JDK classes.
+
+You then need to set the JAVA_EXE variable to where your java binary 
+lies.
+
+e.g.
+
+setenv CLASSPATH /usr/local/java/jdk-1.1.2/classes:<path to jalview>/jalview.jar
+setenv JAVA_EXE /usr/local/java/jdk-1.1.2/bin/java
+
+or
+
+setenv CLASSPATH /ebi/supported/jdk-1.1.5/lib/classes.zip:<path to jalview>/jalview.jar
+setenv JAVA_EXE /ebi/supported/jdk-1.1.5/bin/java
+
+4.  Test the application as follows
+
+Jalview examples/lipase.msf MSF 
+
+This should print some twaddle to the terminal and bring up a
+jalview frame with the alignment in.
+
+If the format type is omitted then jalview assumes MSF format.
+Other formats are FASTA, PIR and CLUSTAL
+
+
+Windows application installation:
+---------------------------------
+
+1.  Unzip the downloaded file jalview-1.7.5b.zip
+
+This will create a directory jalview-1.7.5b .
+
+2.  cd to this directory and you should find the following files:
+       INSTALL          -   This file!
+       README           -   General info about obtaining jalview
+       LICENSE          -   The gnu public license
+       doc              -   directory containing help files
+       examples         -   directory with example alignment files and html files.
+       jalview.jar      -   the java classes (closest thing to a java executable)
+       Jalview.bat      -   a script file to run jalview
+       JalviewJRE.bat   -   a script file to run jalview using the Java Runtime Environment
+       Jalview          -   the unix script file (not used)
+
+3.  Edit the file Jalview.bat to reflect your java environment:
+
+To run jalview you need to set the java environment variables.
+Assuming a JDK is already installed you need to change two lines
+in the script file jalview .
+
+You need to know where your java JDK is (or JRE) and then set up your
+CLASSPATH variable so it can see both jalview.jar and the JDK classes.
+
+You then need to set the JAVA_EXE variable to where your java binary 
+lies.
+
+e.g. Add these lines to your Jalview.bat file 
+
+set CLASSPATH=c:\java\jdk-1.1.5\classes.zip;<path to jalview>\jalview.jar
+set JAVA_EXE=c:\java\jdk-1.1.5\bin\javaes
+
+
+3a. If you have the java runtime environment modify the file JalviewJRE.bat 
+    and use that instead of Jalview.bat
+
+4. Run a test application:
+
+Start Menu->Run
+
+type c:\path_to_jalview\Jalview.bat c:\path_to_jalview\examples\lipase.msf MSF
+
+If things are working OK you should get a DOS box up with some output
+in it then a java window should appear with the alignment in it.  There
+should be a short (a few seconds) wait whilst Jalview calculates the
+consensus sequence and colours the alignment accordingly.
+
+5. Associating file types with jalview:
+This assumes you don't already have a program associated 
+with alignment files.  This example is for .msf files
+only.  It should be obvious how to adapt for different
+extensions
+
+Open a 'My Computer' window.
+
+Go to the menu option View->Options->File Types->New Type
+
+Change the icon if you like by pressing the "Change Icon"
+button. (I haven't included icons in the distribution)
+
+Put the following entries in the boxes:
+
+  Description of type:    GCG Alignment Format
+
+  Associated extension:   .msf
+
+Now press the "New" box underneath the big "Action" box
+
+  New:   
+	Action:   open
+	Application used to perform action: 
+           c:\path_to_jalview\jalview.bat "%1" MSF
+
+Press OK until both dialogs are closed and Bob's your 
+uncle.  Double clicking a msf file should run jalview
+for you.
+
+
+
+  
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+- name: search
+  title: Search
+  theme: ocker
+  title_long: Search Tools
+  active: true
+- name: alignment
+  title: Alignment
+  theme: orange
+  title_long: Alignment Tools
+  active: true
+- name: seqanal
+  title: Sequence Analysis
+  theme: green
+  title_long: Sequence Analysis Tools
+  active: true
+- name: secstruct
+  title: 2ary Structure
+  theme: blue
+  title_long: Secondary Structure Tools
+  active: true
+- name: tertstruct
+  title: 3ary Structure
+  theme: violett
+  title_long: Tertiary Structure Tools
+  active: true
+- name: classification
+  title: Classification
+  theme: red
+  title_long: Classification Tools
+  active: true
+- name: utils
+  title: Utils
+  theme: darkred
+  title_long: Utility Tools
+  active: true
+

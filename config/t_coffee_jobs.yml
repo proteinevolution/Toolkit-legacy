@@ -1,0 +1,15 @@
+t_coffee_job: 
+  title: TCoffee
+  hidden: false
+  code: TCOF
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show HTML results
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results
+    - name: results_color
+      title: Colored
+      title_long: Show colored TCoffee results

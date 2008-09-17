@@ -1,0 +1,83 @@
+<a href="#" onClick="openHelpWindow('/hhrep/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'hhrep'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+
+<div class="row">
+	<%= form_label("Paste protein sequence or multiple alignment", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+<div class="row">
+	<%= form_label("Select input format", "input_format") %>
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+</div><div class="spacer">&nbsp;</div>
+
+<div class="row">
+	<%= form_label("Examples") %>
+	<div class="formw">
+		<strong>TPR</strong> <a href="#" onClick="javascript:pasteTPR();">paste</a>/<a target="_blank" href="/hhrep/results/tu_malt">results</a>&nbsp;&nbsp; 
+		<strong>TIM barrel</strong> <a href="#" onClick="javascript:pasteTIM();">paste</a>/<a target="_blank" href="/hhrep/results/tu_1mzhB">results</a>&nbsp;&nbsp; 
+		<strong>OMPW</strong> <a href="#" onClick="javascript:pasteOMPW();">paste</a>/<a target="_blank" href="/hhrep/results/tu_ompw_1">results</a> 
+	</div>	
+</div> 
+ 
+  
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("Max. PSI-BLAST iterations", "maxpsiblastit") %>
+	<%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, '8') %>	
+</div>
+<div class="row">
+	<%= form_label("Score secondary structure", "ss_scoring") %>
+	<%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, "4", "&nbsp;") %>	
+</div>
+<div class="row">
+	<%= form_label("Show sequences per HMM", "maxseq") %>
+	<%= form_select_single("maxseq", @maxseqval, @maxseqval, '1') %>	
+</div>
+<div class="row">
+	<%= form_label("Width of alignments", "width") %>
+	<%= form_text_field("width", '70', 'columns') %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<ul class="arrow-marker">
+	<li><a href="#" title="About HHrep" onclick="openHelpWindow('/hhrep/help_ov');">About HHrep</a></li>
+	<li>Other <i>de novo</i> repeat detection servers: 
+		<a target="_blank" href="http://www.ebi.ac.uk/Radar/">RADAR</a>,
+		<a target="_blank" href="http://ibivu.cs.vu.nl/programs/reprowww/">REPRO</a>,
+		<a target="_blank" href="http://ibivu.cs.vu.nl/programs/trustwww/">TRUST</a>,
+		<a target="_blank" href="http://nihserver.mbi.ucla.edu/Repeats/">Internal Repeat Finder</a>
+		</li>
+	<li><a target="_blank" href="/hhpred">HHpred server for homology detection and stucture prediction</a></li>
+	<li><a target="_blank" href="http://www.lmb.uni-muenchen.de/soeding/soeding.htm">Send feedback</a></li>
+</ul>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Reference: 
+	S&ouml;ding J, Remmert M, and Biegert A: HHrep: de novo repeat 
+detection and the origin of TIM barrels. <em>Nucleic Acids Res.</em> 
+<strong>34</strong>, W137-142.
+	<a 
+href="http://nar.oxfordjournals.org/cgi/reprint/34/suppl_2/W137?ijkey=IWvdczwA16M5cVp&keytype=ref">
+	(download pdf)</a>
+
+</div>

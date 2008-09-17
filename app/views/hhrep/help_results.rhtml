@@ -1,0 +1,369 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+<li><a href="#example">Example bFGF</a></li>
+<li><a href="#dot plot">Dot plot</a></li>
+<li><a href="#merge">Merge alignments</a></li>
+<li><a href="#hit list">Summary hit list</a></li>
+<li><a href="#alignments">Self-alignments</a></li>
+<li><a href="#histograms">Histrograms</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> - Results</h2> 
+
+<br>
+<div class="row">
+<a name="example"></a>
+<h3 class="<%= @section["name"] %>">Example: basic fibroblast growth factor</h3>
+
+The protein encoded by this gene is a member of the fibroblast growth factor (FGF) family. 
+FGF family members bind heparin and possess broad mitogenic and angiogenic activities.
+In normal tissue, bFGF is present in basement membranes and in the subendothelial extracellular 
+matrix of blood vessels. It stays membrane-bound as long as there is no signal peptide. 
+It has been hypothesized that, during both wound healing of normal tissues and tumor development, 
+the action of heparan sulfate degrading enzymes activates bFGF, thus mediating the formation 
+of new blood vessels.
+<br><br>
+
+bFBF is a pretty little domain that forms a small barrel composed of three structurally similar 
+beta sheets with four strands each. The sheets are arranged around a central symmetry axis, 
+with the strands having roughly a 45 degree angle with this axis. The structure is closed in a 
+velcro-like fashion, the first beta sheet having one strand from the C-terminal end of the chain 
+and the other three strands from the N-terminal end. The sequence does not show an obvious 
+repeat structure:
+<br><br>
+
+<pre>
+>1BFB  Basic Fibroblast Growth Factor Complexed With Heparin Tetramer Fragment
+LPALPEDGGSGAFPPGHFKDPKRLYCKNGGFFLRIHPDGRVDGVREKSDPHIKLQLQAEERGVVSIKGVS
+ANRYLAMKEDGRLLASKSVTDECFFFERLESNNYNTYRSRKYTSWYVALKRTGQYKLGSKTGPGQKAILF
+LPMSAKS
+</pre>
+<br>
+
+Let's look at what HHrep returns on submitting this sequence with default parameters. <b>Press on 
+<a target="_blank" href="http://<%= DOC_ROOTHOST %>/hhrep/results/tu_1bfb">this link</a>
+to open these example results in a new window.</b>
+<br><br>
+The result page consists of four parts, which we will explain in detail in the next paragraphs:
+<ol>
+<li> a dotplot showing bFBF compared to itself 
+<li> radio buttons to change parameters of the dot plot and the self-alignment
+<li> a summary hit list of self-alignments found by HHrep
+<li> the pairwise self-alignments
+</ol>
+
+</div>
+<div class="row">
+<a name="dot plot"></a>
+<h3 class="<%= @section["name"] %>">Dot plot and radio buttons</h3>
+
+The dot plot has a size of <i>L</i> x <i>L</i> square dots, where L is the number of residues in the query sequence.
+A light red line is drawn every 10, 50, and 100 residue with higher color intensity for 50 and 100.
+The dot at position (i,j) is <i>on</i> or <i>off</i> depending on the profile-profile score, averaged over a diagonal 
+window around (i,j). If the score is above a certain threshold (0.4 bits by default) the dot is <i>on</i>,
+otherwise <i>off</i>. The length of the averaging window (21 by default) and the score threshold 
+can be changed with the radio buttons below the dot plot. 
+<br><br>
+
+In the lower left triangular section of the dot plot, <i>on</i> dots are black and <i>off</i> dots are white.
+The upper right triangular part also contains the self-alignments found by HHrep, colored 
+in light and dark blue. Light blue is used for dots that are <i>off</i> and dark blue for dots that are <i>on</i>.
+Alignments can be selected and deselected by clicking on them, and accordingly are shown or hidden in the dot plot.
+<br><br>
+
+The main diagonal of the dotplot corresponds to the unshifted self-alignmnt of the query with itself. Since
+every profile is similar to itself unshifted, the points on this diagonal are always on. 
+If the query was composed of three identical domains of length <i>L/3</i> each, the dotplot would show five lines: 
+the main diagonal with length <i>L</i> and two diagonal lines with length 2/3 x <i>L</i> and 1/3 x <i>L</i> 
+each in the lower and in the upper part. If the two domains are similar but not identical, their pairwise alignment 
+may contain gaps. These gaps show up in the dot plot as breaks on the shorter diagonals, which lead to a shift of the
+diagonal down or right at the break point. Generally speaking, a region which contains <i>N</i> similar repeat 
+units will have a dot plot with <i>2N-1</i> (possibly broken) diagonals, one main diagonal and <i>N-1</i> diagonal 
+lines each in the upper and lower triangular part.
+<br><br>
+
+The dot plot for bFGF shows one self-alignment in blue, which starts at point (18,60) and continues until (82,124).
+Two breaks with offsets of 1 and -1 in the diagonal line indicate gaps of one residue. The self-alignment is overlaid
+over two diagonal stretches of cells with scores above threshold. A second diagonal stretch of high-scoring cells
+starts at (30,114) and ends at (41,121), but HHrep did not consider the corresponding self-alignment significant
+enough to report it. (This will change after we have merged the repeats from the first self-alignment.)
+<br><br>
+
+You can (de)select invalid self-alignments by clicking on them in the dot plot (or by deselecting them with the checkboxes
+further down in the summary hit list). This may be important in cases where HHrep finds too many self-aligments, 
+in particular since long but spurious similarities may rank higher than short but correct alignments. What is 
+right and what is wrong is normally very easily seen from the regular spacing of correct self-alignment in the dot plot.
+When in doubt do not select.
+
+Observe what happens if you change the radio button settings below the dotplot. The first row allows to filter the 
+query alignment by using only the sequences with a certain minimum sequence identity with the query sequence.
+When the repeat units are very diverged, selecting anything larger than zero will result in a complete
+loss of the repeat signal. In our case, the repeat pattern stays visible up to 50% sequence identity, but observe how
+the P-value for the self-alignment goes up from 3E-6 to 0.097 and how the alignmetn gets shorter. It is generally
+best to select the filtering threshold such that the dot plot looks cleanest. Try also the radio buttons for setting the
+score threshold and the length of the averaging window to get a feeling for their effect.
+<br>
+
+</div>
+<div class="row">
+<a name="merge"></a>
+<h3 class="<%= @section["name"] %>">Merge alignments</h3>
+
+Before we continue with our explanation, press the button "Merge alignments" in our bFBF example. This will merge repeat
+units according to the alignments you selected in the dot plot. The result is a new query alignment which is richer
+than the original one since it merged repeat units found in the alignment according to the selected self-alignments. 
+(Press on <a target="_blank" href="http://<%= DOC_ROOTHOST %>/hhrep/results/tu_1bfb_1">this link</a>
+to simply open the result of "Merge alignments" in a new window.) Note that the residual noise that was still visible
+on the previous dot plot has now disappeared and a second self-alignment has appeared in the upper right, testifying
+to the increased sensitivity of the merged alignment.
+<br><br>
+
+</div>
+<div class="row">
+<a name="hit list"></a>
+<h3 class="<%= @section["name"] %>">Summary hit list</h3>
+
+
+<div class="spacer">&nbsp;</div>
+<pre>Query:  1BFB Basic Fibroblast Growth Factor Complexed With Heparin Tetramer Fragment (Length=146, Nseqs=303)
+        Alignment: local
+
+    No Hit                             Prob E-value P-value  Score    SS Cols Query HMM  Template HMM Shift
+<input type="checkbox" checked="checked" name="hits[]" value="1" />  <a href=#1>1</a> 1BFB Basic Fibroblast Growth F  98.9 2.9E-22 2.9E-22  113.0   4.8   64   18-82     60-124 (146)   42
+<input type="checkbox" checked="checked" name="hits[]" value="2" />  <a href=#2>2</a> 1BFB Basic Fibroblast Growth F  76.3 1.3E-06 1.3E-06   32.9   1.7   23   18-40    101-124 (146)   83
+</pre>
+<br><br>
+
+The checkboxes serve to select and deselect alignments for further analysis. 
+The rest of the summary list is the same as for HHpred, except for the additional last column:
+<br><br>
+
+<table cellspacing ="1" cellpadding="2" align="left">
+<tr Valign="top"><td width="90"> <strong>No</strong>:</td> <td>Index of self-alignment.
+This links to the alignment further down.
+</td></tr>
+
+<tr Valign="top"><td width="90"> <strong>Hit</strong>:</td> 
+<td>Query name 
+</td></tr>
+
+<tr Valign="top"><td width="90"> <strong>Prob</strong>:</td> <td>
+Probability of self-alignment to report a homologous relationship or at least a structural 
+similarity between the aligned parts of the query.
+For the probability of being a true positive, the secondary structure score 
+in column 8 is taken into account, together with the raw score ('Score' in column 7). 
+</td></tr>
+
+<tr Valign="top"><td width="90"> <strong>E-value / P-value </strong>:</td> <td>
+E-value and P-value are the same in HHrep, since the database is the query HMM itself, 
+which has size 1. Unlike the probability, the E-/P-value is calculated 
+<i>without taking the secondary structure into account!</i>
+The P-value gives the average number of false positives ('wrong hits') with a score 
+better than the one for the template. It is a measure of 
+reliability: E-values near 0 signify a very reliable hit, an E-value of 1 means 
+about 1 wrong hit is expected to be found in a self-comparison with a score at least 
+this good.
+</td></tr>
+
+<tr Valign="top"><td width="90"> <strong>Score</strong>:</td> <td>Raw score.
+The raw score is calculated by comparing the amino acid distributions between columns
+from the query alignment and columns from the template alignment. The probabilities for 
+insertions and deletions at each position in the alignments are taken into account
+as position specific gap penalties. 
+</td></tr>
+
+<tr Valign="top"><td width="90"> <strong>SS</strong>:</td> <td>Secondary structure score.
+This score tells how well the PSIPRED-predicted (3-state) secondary structure sequence 
+for query and template agree with each other. PSIPRED confidence values are taken into 
+account for scoring secondary structure, such that positions with low confidence values 
+get less statistical weight.
+</td></tr>
+
+<tr Valign="top"><td width="90"> <strong>Cols</strong>:</td> 
+<td>The number of aligned match-match columns in the HMM-HMM alignment.
+</td></tr>
+
+<tr Valign="top"><td width="90"> <strong>Query HMM</strong>:</td> 
+<td>Range of query match states aligned 	
+</td></tr>
+
+<tr Valign="top"><td width="90"> <strong>Template HMM</strong>:</td> 
+<td>Range of template match states aligned and, in parenthesis,
+total number of match states in template HMM.
+</td></tr>
+
+<tr Valign="top"><td width="90"> <strong>Shift</strong>:</td> 
+<td>This is the offset from the main diagonal, defined as <i>j1-i1</i>, where (i1,j1) is the
+first pair of aligned residues in the self-alignment.	
+</td></tr>
+
+</table>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<div class="row">
+<a name="alignments"></a>
+<h3 class="<%= @section["name"] %>">HMM-HMM alignments</h3>
+
+Let us look at the first query-template alignment below the hit list:
+<br>
+<div class="spacer">&nbsp;</div>
+<pre>
+
+   <a name = 1>No 1</a>  <a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_histogram_single.png" alt="Histograms" title="Show histograms" border="0" align="middle" height="30"></a>
+
+<input type="checkbox" checked="checked" name="hits[]" value="1" />>1BFB Basic Fibroblast Growth Factor Complexed With Heparin Tetramer Fragment
+   Probab=98.86   E-value=2.9e-22  Score=113.02  Aligned_columns=64  Identities=16%
+
+   Q ss_pred             CCCCC<span style="color: #0000D0;">EEEE</span>CCCC<span style="color: #0000D0;">EEEEE</span>CCCCCCCCCCCCCCC<span style="color: #0000D0;">EEEEEEEE</span>CCCC<span style="color: #0000D0;">EEEEEE</span>CCC-C<span style="color: #0000D0;">EEEEE</span>CCCC<span style="color: #0000D0;">E</span>
+   Q ss_conf             568512566179569897688750240026797079997404464378741134-30466514670
+   Q 1BFB             18 FKDPKRLYCKNGGFFLRIHPDGRVDGVREKSDPHIKLQLQAEERGVVSIKGVSA-NRYLAMKEDGR   82 (146)
+   Q Consensus        18 ~~~~v~L~~~~s~~yL~in~~G~v~Gs~~~~~~~c~f~e~~~~~~~~~l~s~~~-~~yL~in~~Gr   82 (146)
+                         ..+.++|||+.+++|||||++|+|+|+++++++ |+|+|++++++|++|+|+++ +||||||++|+
+   T Consensus        60 ~~~~~~l~s~~~~~yL~in~~Grv~Gs~~~~~~-c~f~e~~~~~~~v~~~s~~~~~~Ylamn~~Gk  124 (146)
+   T 1BFB             60 ERGVVSIKGVSANRYLAMKEDGRLLASKSVTDE-CFFFERLESNNYNTYRSRKYTSWYVALKRTGQ  124 (146)
+   T ss_pred             CCC<span style="color: #0000D0;">EEEEEE</span>CCCC<span style="color: #0000D0;">EEEEE</span>CCCC<span style="color: #0000D0;">EEEE</span>CCCCCC<span style="color: #D00000;">H</span>-<span style="color: #D00000;">H</span><span style="color: #0000D0;">EEEEE</span>CCCCCCCCCCCC<span style="color: #0000D0;">EEEEEEEEEEE</span>CCC
+   T ss_conf             464378741134304665146705421444310-10111010477442002100257888752453
+
+
+   <a name = 2>No 2</a>  <a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_histogram_single.png" alt="Histograms" title="Show histograms" border="0" align="middle" height="30"></a>
+
+<input type="checkbox" checked="checked" name="hits[]" value="2" />>1BFB Basic Fibroblast Growth Factor Complexed With Heparin Tetramer Fragment
+   Probab=76.32   E-value=1.3e-06  Score=32.89  Aligned_columns=23  Identities=4%
+
+   Q ss_pred             CCCCC<span style="color: #0000D0;">EEEE</span>CCC-C<span style="color: #0000D0;">EEEEE</span>CCCCC
+   Q ss_conf             568512566179-56989768875
+   Q 1BFB             18 FKDPKRLYCKNG-GFFLRIHPDGR   40 (146)
+   Q Consensus        18 ~~~~v~L~~~~s-~~yL~in~~G~   40 (146)
+                         ..+.+.|+|+.+ ++|||||++|+
+   T Consensus       101 ~~~~v~~~s~~~~~~Ylamn~~Gk  124 (146)
+   T 1BFB            101 SNNYNTYRSRKYTSWYVALKRTGQ  124 (146)
+   T ss_pred             CCCCCCCCCC<span style="color: #0000D0;">EEEEEEEEEEE</span>CCC
+   T ss_conf             477442002100257888752453
+
+
+</pre>
+<br>
+
+The alignments consist of one or more blocks with the following lines:
+<br>
+<table cellspacing ="1" cellpadding="1">
+<tr>
+<td><strong>Q ss_pred:</strong></td>
+<td> query secondary structure as predicted by PSIPRED (when available)</td>
+</tr><tr>
+<td><strong>Q ss_conf:</strong></td>
+<td> PSIPRED confidence values (0-9) (when available)</td>
+</tr><tr>
+<td><strong>Q <i>query_name</i>:</strong></td>
+<td> query sequence</td>
+</tr><tr>
+<td><strong>Q Consensus:&nbsp;&nbsp;</i></strong></td>
+<td> query alignment consensus sequence</td>
+</tr><tr>
+<td> - </td>
+<td>quality of colum-column match (very bad  = ;  bad  - ;  neutral  . ;  good  + ;  very good  |  </td>
+</tr><tr>
+<td><strong>T Consensus:&nbsp;&nbsp;</i></strong></td>
+<td> template alignment consensus sequence</td>
+</tr><tr>
+<td><strong>T <i>templ_name</i>:</strong></td>
+<td> template sequence</td>
+</tr><tr>
+<td><strong>T ss_dssp:</strong></td>
+<td> template secondary structure as determined by DSSP (when available)</td>
+</tr><tr>
+<td><strong>T ss_pred:</strong></td>
+<td> template secondary structure as predicted by PSIPRED (when available)</td>
+</tr><tr>
+<td><strong>T ss_conf:</strong></td>
+<td> PSIPRED confidence values (0-9) (when available)</td>
+</tr>
+<table>
+<br>
+
+The <i>consensus</i> sequence uses capital letters for amino acids that occur with >=60% 
+probability and lower case letters for amino acids that have >=40% probability.
+For unconserved columns a tilde is used.<br>
+The middle line shows the <i>column score</i> between the query and template 
+amino acid distributions. It gives a valuable indication for the alignment quality.
+(A unit of column score corresponds approximately to 0.6 bits.)
+<br>
+<table cellspacing ="1" cellpadding="1">
+<pre>
+<tr>
+<td> </td> <td><b>=</b></td> <td>:</td> <td>very bad match</td> <td> column score below -1.5</td>
+<tr></tr>
+<td> </td> <td><b>-</b></td> <td>:</td> <td>bad match</td> <td> column score between -1.5 and -0.5</td>
+<tr></tr>
+<td> </td> <td><b>.</b></td> <td>:</td> <td>neutral match</td> <td> column score between -0.5 and +0.5</td>
+<tr></tr>
+<td> </td> <td><b>+</b></td> <td>:</td> <td>good match</td> <td> column score between +0.5 and +1.5</td>
+<tr></tr>
+<td> </td> <td><b>|</b></td> <td>:</td> <td>very good match &nbsp;</td> <td> column score above   +1.5</td>
+</pre>
+</table>
+<BR>
+
+The alignments show strong similarity between the three regions of bFBF, despite the low sequence identity of only 16%
+and 4% respectively. This demonstrates the enormous value of the homologous sequences in the multiple alignment
+to detect this similarity which, obviously, would be insignificant or undetectable from sequence-sequence alignment alone.
+<br><br>
+The colorful logo will bring you to the histogram view of the alignments. 
+<br><br>
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<div class="row">
+<a name="histograms"></a>
+<h3 class="<%= @section["name"] %>">Histogram view of the HMM-HMM alignments</h3>
+
+The histogram view is the same as the alignment view except that for the pairwise self-alignments
+the profile HMMs are depicted as histograms. The histogram view of two second of the 
+bFBF self-alignments looks like this:
+<br><br>
+
+<pre>
+   <a name = 2>No 2</a>  <a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_alignments.jpg" alt="Alignments" title="show query-template alignments" border="0" align="middle" height="30"></a>
+<input type="checkbox" checked="checked" name="hits[]" value="2" />>1BFB Basic Fibroblast Growth Factor Complexed With Heparin Tetramer Fragment
+   Probab=76.32   E-value=1.3e-06  Score=32.89  Aligned_columns=23  Identities=4%
+   <map name="49880_2">
+   <area shape="rect" coords="50,95,850,140" href="#" onmouseover="imgOn('hitimage2','/images/hhrep/49880_2_tt.png');" onmouseout="imgOff('hitimage2','/images/hhrep/49880_2.png');" >
+
+   </map>
+   <img name="hitimage2" src="/images/hhrep/49880_2.png" border="0" alt="hhpred profile 2" usemap="#49880_2" />
+</pre>
+<br><br>
+
+The black bar in the middle shows the score between the two columns of the query profile
+with <b>|</b>, <b>+</b>, <b>.</b>, <b>-</b>, <b>=</b> indicating scores from 'very good' to 'very bad'.
+Alignment gaps in the upper or lower part of the profile are marked by a blank field in this middle line.
+
+<br><br>
+The colored histogram bars report direcly the proportion of the most abundant amino acids in the corresponding column of the 
+underlying multiple alignment. (Remember that HHrrep relies on HMM-HMM comparison and that the query HMM 
+is derived from an alignment of homologs.) As an example, the last column in the upper profile shown contains 
+approximately 15% threonine (T), and 30% arginine (R), and 20% lysine (K). The other
+residues, which together make up about 35%, are below 10% each and are not shown. Therefore, badly conserved columns which
+contain a lot of residues with proportions of less than 10% have a low total height whereas well conserved columns assume 
+the maximum height. The residues are colored according to their general physico-chemical properties: 
+cysteines in yellow, aliphatic hydrophobics (V, L, I, M) in green, aromatic amino acids (Y, F, W) in dark green, 
+small amino acids (G, A, S, T) in light grey, negatively charged (D, E) in blue, polar (N, Q) in magenta, histidines in orange, 
+positively charged (K, L) in red, prolines in grey. 
+These groups are displayed in the order given above, from the center out. The order within groups is by their abundance. 
+
+<br><br>
+The histogram view is very useful to grasp the character of similarity between two profile HMMs that HHpred has detected.
+In a single glance, one can often tell apart false positives that are due to merely similar amino acid composition from 
+real homologs with their conserved motifs. Functional motifs can often be quickly spotted due to the expected high 
+conservation of the involved residues in both query and template.  In this context, note the aligned, highly conserved 
+glycines at the end of the alignment, which participate in a three-residue beta turn and adopt a left-handed alpha-helical 
+conformation of their main chain dihedral angles.
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<%= render(:partial => "hhrep/references_and_contact") %>

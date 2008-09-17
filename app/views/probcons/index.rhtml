@@ -1,0 +1,72 @@
+<a href="#" onClick="openHelpWindow('/probcons/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'probcons'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter sequences in FASTA format", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("CLUSTALW output format", "clustalw") %>
+	<%= form_checkbox("clustalw", '1', false) %>	
+</div>
+
+<div class="row">
+	<%= form_label("Output in alignment order", "alnorder") %>
+	<%= form_checkbox("alnorder", '1', false) %>	
+</div>
+
+<div class="row">
+	<%= form_label("Generate all-pairs pairwise alignments", "pairs") %>
+	<%= form_checkbox("pairs", '1', false) %>	
+</div>
+
+<div class="row">
+	<%= form_label("Use Viterbi algorithm to generate all pairs", "viterbi") %>
+	<%= form_checkbox("viterbi", '1', false) %>	
+</div>
+
+<div class="row">
+	<%= form_label("Passes of consistency transformation", "consistency") %>
+	<%= form_text_field("consistency", "2") %>
+</div>
+
+<div class="row">
+	<%= form_label("Passes of iterative-refinement", "itrefine") %>
+	<%= form_text_field("itrefine", "100") %>
+</div>
+
+<div class="row">
+	<%= form_label("Rounds of pretraining", "pretrain") %>
+	<%= form_text_field("pretrain", "0") %>
+</div>
+
+<div class="row">
+	<%= form_label("Other advanced options", "otheradvanced") %>
+	<%= form_text_field("otheradvanced", "", "", 50) %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_snail_buttons("Runtime ~45 min for N=300 sequences of length L=200. Scales between N² * L² and  N³ * L².") %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Do, C. B., Mahabhashyam, M. S., Brudno, M., and Batzoglou, S. (2005) ProbCons: Probabilistic consistency-based multiple 
+	sequence alignment.  <em>Genome Res.</em>, <strong>15</strong>(2), 330-340.
+</div>

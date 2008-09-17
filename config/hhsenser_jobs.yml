@@ -1,0 +1,29 @@
+hhsenser_job: 
+  title: Hhsenser
+  hidden: false
+  code: HHSE 
+  resultsections:  
+    - name: results
+      title: Strict alignment
+      title_long: Show strict alignment    
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results      
+    - name: results_permissive
+      title: Permissive alignment
+      title_long: Show permissive alignment
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results      
+    - name: results_rejected
+      title: Rejected
+      title_long: Show rejected sequences
+      forwardsection:
+    - name: results_intermediate
+      title: Intermediate
+      title_long: Show intermediate alignments
+      forwardsection:
+
+

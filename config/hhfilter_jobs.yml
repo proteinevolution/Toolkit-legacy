@@ -1,0 +1,12 @@
+hhfilter_job: 
+  title: HHfilter
+  hidden: false
+  code: HHFI
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results      

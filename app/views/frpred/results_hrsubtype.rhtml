@@ -1,0 +1,46 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'H&R Subtyping', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row">
+	H&R subtyping is a method for prediction of functional subtypes proposed by Hannenhalli and Russel, which relies on 
+	relative entropy. Originally, the method works on HMMER profiles. Here, however, profiles weighted according to
+	sequence similarity with pseudocounts are used. If the input alignment has not been manually classified into subgroups,
+	an automated version of this approach works on UPGMA tree-dreived subgroups.
+</div>
+<div class="row">
+	Hannenhalli, S.S., and Russel, R.B. (2000)
+	Analysis and Prediction of Functional Sub-types from Protein Sequence Alignments. <em>J. Mol. Biol.</em>,
+        <strong303</strong> (1), 61-76.
+</div>
+<div class="row">
+        Kabsch, W., and Sander C. (1983)
+        Dictionary of protein secondary structure: Pattern recognition of hydrogen-bonded and geometrical features. <em>Biopolymers.</em>,
+	<strong>22</strong> (12), 2577-2637.
+</div>
+<div class="row">
+        Adamczak R., Porollo A., Meller J. (2004)
+        Accurate prediction of solvent accessibility using neural networks-based
+        regression. <em>Proteins.</em>,
+        <strong>56</strong> (4), 753-767.
+</div>
+<div class="hr">&nbsp;</div>
+<div class="row">
+	<%= @job.render_file(@job.jobid + ".6_scores.html") %>
+</div>
+
+<% if File.exists?(File.join(@job.job_dir, @job.jobid + ".6_rasmol")) %>
+<div class="row">
+	<a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>.6_rasmol">Download rasmol script</a>
+</div>
+<% end %>
+
+<% if File.exists?(File.join(@job.job_dir, @job.jobid + ".6_scores")) %>
+<div class="row">
+        <a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>.6_scores">Download score file</a>
+</div>
+<% end %>
+
+</form>

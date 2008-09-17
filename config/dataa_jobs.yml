@@ -1,0 +1,17 @@
+dataa_job: 
+  title: dataa
+  hidden: false
+  code: DATAA 
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+    - name: browse
+      title: Browse database
+      title_long: Browse database
+      forwardsections:
+    - name: index
+      title: Description 
+      title_long: Description
+      forwardsections:

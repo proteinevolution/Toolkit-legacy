@@ -1,0 +1,35 @@
+hhrep_job: 
+  title: HHrep
+  hidden: false
+  code: HHRP
+  resultsections:
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+    - name: results_histogram
+      title: Histogram
+      title_long: Show results in profile histogram view
+      forwardsections:
+    - name: results_showquery
+      title: Show query alignment
+      title_long: Show or edit the query alignment constructed by HHrep
+      forwardsections:
+
+hhrep_mergeali_job: 
+  title: HHrep
+  hidden: false
+  code: HHRM
+  resultsections:
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+    - name: results_histogram
+      title: Histogram
+      title_long: Show results in profile histogram view
+      forwardsections:
+    - name: results_showquery
+      title: Show query alignment
+      title_long: Show or edit the query alignment constructed by HHrep
+      forwardsections:

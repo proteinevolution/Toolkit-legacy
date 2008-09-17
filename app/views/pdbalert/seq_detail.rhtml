@@ -1,0 +1,86 @@
+<h2><%= @page_title %></h2>
+<div style="float: right;"><a href="home" style="color: green;">Back to Watchlist</a></div>
+
+<%= form_tag({:controller => 'pdbalert', :action => 'update', :id  => @userdb})%> 
+<div class="row">
+<h2><%= @userdb.name %></h2>
+</div>
+<h3>Search Parameters</h3>
+  <div class="row">
+    <%= form_label("Max. PSI-BLAST iterations", "maxpsiblastit") %>
+    <%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, @userdb.params['maxpsiblastit']) %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Score secondary structure", "ss_scoring") %>
+    <%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, @userdb.params['ss_scoring'], "&nbsp;") %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Alignment mode", "alignmode") %>
+    <%= form_radio_buttons("alignmode", ['local', 'global'], ['local', 'global'], @userdb.params['alignmode'], "&nbsp;") %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Realign with MAC", "realign") %>
+    <%= form_checkbox("realign", '1', @userdb.params['realign']) %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("E-value threshold for PSI-BLAST", "E_psiblast") %>
+    <%= form_select_single("Epsiblastval", @epsiblastval, @epsiblastval, @userdb.params['Epsiblastval']) %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Min. coverage of PSI-BLAST hits", "cov_min") %>
+    <%= form_select_single("cov_min", @cov_minval, @cov_minval, @userdb.params['cov_min']) %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Min. sequence identity of PSI-BLAST hits with query", "qid_min") %>
+    <%= form_select_single("qid_min", @cov_minval, @cov_minval, @userdb.params['qid_min']) %>	
+  </div>
+
+  <div class="hr">&nbsp;</div>
+
+  <div class="row">
+    <%= form_label("MAC realignment threshold (0.0:global, >=0.1:local)", "mapt") %>
+    <%= form_select_single("mapt", @maptval, @maptval, @userdb.params['mapt']) %>	
+  </div>
+  <div class="row">
+    <%= form_label("Compositional bias correction", "compbiascorr") %>
+    <%= form_radio_buttons("compbiascorr", @compbiascorr_values, @compbiascorr_labels, @userdb.params['compbiascorr'], "&nbsp;") %>	
+  </div>
+
+  <div class="hr">&nbsp;</div>
+
+  <div class="row">
+    <%= form_label("Show sequences per HMM", "maxseq") %>
+    <%= form_select_single("maxseq", @maxseqval, @maxseqval, @userdb.params['maxseq']) %>	
+  </div>
+  
+  <div class="row">
+    <%= form_label("Width of alignments", "width") %>
+    <%= form_text_field("width", @userdb.params['width'], 'columns') %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Min. probability in hitlist", "minprobab") %>
+    <%= form_text_field("Pmin", @userdb.params['Pmin'], '%') %>	
+  </div>
+  
+  <div class="row">
+    <%= form_label("Max. number of hits in hitlist", "maxlines") %>
+    <%= form_text_field("maxlines", @userdb.params['maxlines']) %>	
+  </div>
+
+<%= hidden_field_tag("id", @userdb.id) %>
+  
+<div class="row">
+<input name="submitform" type="submit" class="toolbutton" value="Update parameters" />
+</div>
+<h3>Sequence/Alignment</h3>
+</form>
+<div class="row" style="font-family: Monospace; font-size: 12px;">
+<%= @content.gsub(/\n/,'<br />') %>
+</div>

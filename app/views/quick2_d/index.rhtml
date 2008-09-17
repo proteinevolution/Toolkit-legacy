@@ -1,0 +1,190 @@
+<a href="#" onClick="openHelpWindow('/quick2_d/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'quick2_d'}, {:multipart => true})%> 
+
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Paste protein sequence or multiple alignment", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>	
+<div class="row">
+	<%= form_label("Select input format", "format") %>
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+</div><div class="spacer">&nbsp;</div>
+
+<div class="row">
+	<%= form_submit_snail_buttons("Runtime ~5 min for N=100 sequences of length L=200.") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+<div class="row">
+	<%= form_label("Do PSI-BLAST Search", "psiblast_search") %>
+	<%= form_checkbox("psiblast_chk", '1', true) %>
+</div>
+<div class="spacer">&nbsp;</div>
+
+
+<h3 class="<%= @section["name"] %>">Prediction Methods</h3>
+<div class="row">
+	<%= form_label("PSIPRED") %>
+	<div class="formw">	
+		<table><tr>
+			<td align="left" valign="top">
+				<%= form_checkbox("psipred_chk", '1', true, true) %>
+			</td><td> 
+				D. T. Jones (1999) 
+				Protein secondary structure prediction based on position-specific scoring matrices. 
+				<em>Journal of Molecular Biology</em> <b>292</b>, 195-202.
+			</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>		
+	
+<div class="row">
+	<%= form_label("JNET") %>	
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("jnet_chk", '1', true, true) %>
+		</td><td>
+			J. A. Cuff and G. J. Barton (1999) 
+			Application of enhanced multiple sequence alignment 
+			profiles to improve protein secondary structure prediction. 
+			<em>Proteins</em> <b>40</b>, 502-511.	
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>		
+	
+<div class="row">
+	<div class="label">
+		<%= form_label("Prof") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("profouali_chk", '1', true, true) %>
+		</td><td>		   
+  			M. Ouali and R. D. King (2000) Cascaded multiple classifiers for   
+  			secondary structure prediction. 
+			<em>Protein Science</em> <b>9</b>, 1162-1176. 
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>			
+<div class="row">
+	<div class="label">
+		<%= form_label("Prof") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("profrost_chk", '1', true, true) %>
+		</td><td>		   
+  			B. Rost (2001)
+  			Protein secondarystructure prediction continues to rise. 
+  			<em>Journal of Structural Biology</em> <b>134</b>, 204-218.
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>	
+
+<div class="row">
+	<div class="label">
+		<%= form_label("Coils") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("coils_chk", '1', true, true) %>
+		</td><td>			
+			A. N. Lupas, M. Van Dyke and J. Stock (1991)
+			Predicting Coiled Coils from Protein Sequences.
+			<em>Science</em> <b>252</b>, 1162-1164.
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>	
+	
+<div class="row">	<div class="label">
+		<%= form_label("MEMSAT2") %>
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("memsat2_chk", '1', true, true) %>
+		</td><td>			
+			D. T. Jones, W. R. Taylor and J. M. Thornton (1994)
+			A model recognition approach to the prediction of all-helical 
+			membrane protein structure and topology
+			<em>Biochemistry</em> <b>33</b>, 3038-3049.
+		</td>
+		</tr></table>
+	</div>			
+</div>
+<div class="spacer">&nbsp;</div>
+
+<div class="row">	<div class="label">
+		<%= form_label("HMMTOP") %>
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("hmmtop_chk", '1', true, true) %>
+		</td><td>			
+			G. E. Tusn&aacute;dy and I. Simon (1998) 
+			Principles Governing Amino Acid Composition of Integral Membrane Proteins: 
+			Applications to Topology Prediction. 
+			<em>Journal of Molecular Biology</em> <b>283</b>, 489-506.
+		</td>
+		</tr></table>
+	</div>			
+</div>
+<div class="spacer">&nbsp;</div>			
+			
+<div class="row">	<div class="label">
+		<%= form_label("DISOPRED2") %>
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("disopred2_chk", '1', true, true) %>
+		</td><td>			
+			J. J. Ward, J. S. Sodhi, L. J. McGuffin, B. F. Buxton and D. T. Jones (2004) 
+			Prediction and Functional Analysis of Native Disorder in Proteins
+			from the Three Kingdoms of Life.
+			<em>Journal of Molecular Biology</em> <b>337(3)</b>, 635-45.
+		</td>
+		</tr></table>
+	</div>			
+</div>
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+	<div class="label">
+		<%= form_label("VSL2") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("vsl2_chk", '1', true, true) %>
+		</td><td>			
+ 	 	 	K. Peng, P. Radivojac, S. Vucetic, A. K. Dunker, and Z. Obradovic (2006), 
+ 	 	 	Length-Dependent Prediction of Protein Intrinsic Disorder, 
+ 	 	 	<em>BMC Bioinformatics</em> <b>7</b>, 208.
+		</td></tr><td align="left" valign="top"></td><td>
+			Z. Obradovic, K. Peng, S. Vucetic, P. Radivojac, and A. K. Dunker, 
+			Exploiting Heterogeneous Sequence Properties Improves Prediction of Protein Disorder (2005), 
+			<em>Proteins </em> <b>61(S7)</b>, 176-182.
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>	
+
+<%= render(:partial => "shared/joboptions") %>
+
+</form>

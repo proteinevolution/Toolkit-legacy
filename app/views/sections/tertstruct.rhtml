@@ -1,0 +1,80 @@
+<h3 class="tertstruct"><%= @page_title -%></h3>
+
+<% tool = @tools_hash['hhpred'] %>
+<h4><%= link_to_tool tool -%></h4>
+<p class="tooldescr">
+<%= render(:partial => tool['name']+"/description") %>
+</p>
+<div class="hr">&nbsp;</div>
+	
+<%= render(:partial => "shared/tool_descriptions") %>
+
+<h4><a target="_blank" href="http://protevo.eb.tuebingen.mpg.de/iMolTalk">iMolTalk</a></h4>
+<p class="tooldescr">
+<i>i</i>MolTalk is an interactive, internet-based service for computational analyses and modeling in Structural Biology. [<a href="http://wiki.moltalk.org/index.php?page=iMolTalk" target="imtwiki">Wiki</a>] &nbsp; PDB files or uploaded model files can be subjected to analyses like: sequence derivation, crystallographic and biological assembly reconstruction, structural alignment, interface and contact analysis.
+</p>
+<div class="hr">&nbsp;</div>
+
+<h4><a target="_blank" href="/pdbalert">PDBalert</a></h4>
+<p class="tooldescr">
+PDBalert is a web-based automatic system that alerts users as soon as a pdb structure with homology to a protein of interest becomes available. Users can upload their personal protein sequences of interest. Once a week, when new proteins are released to the PDB database, PDBalert compares these with the users' sequences. When a significant match is found, the user is alerted by an email containing a link to the search results.
+</p>
+<div class="hr">&nbsp;</div>
+
+<h3 class="tertstruct">External tertiary structure prediction servers</h3>
+
+<h4><a href="http://ffas.ljcrf.edu/ffas-cgi/cgi/ffas.pl" target="blank">FFAS03</a></h4>
+<p class="tooldescr">
+	FFAS was the first structure prediction server based on profile-profile comparison. This sensitive server has  
+	the advantage of being interactive and fast. Also, it allows scanning other databases like PFAM, PDB, SCOP and COG. 
+	In addition to database searches, pairwise alignment is possible.
+</p>
+<div class="hr">&nbsp;</div>
+
+<h4><a href="http://bioinfo.pl/Meta/" target="blank">3D-Jury</a></h4>
+<p class="tooldescr">
+	One of the best-ranked structure prediction metaservers in the 2004 CAFASP4 benchmark. It sends query sequences 
+        to more than 10 autonomous servers. From all 3D models that it obtains it selects the model that best represents 
+	the structural consensus by structurally comparing all models against all. May take a few hours up to days for 
+ 	complete results.
+</p>
+<div class="hr">&nbsp;</div>
+
+<h4><a href="http://genesilico.pl/meta/" target="blank">Genesilico</a></h4>
+<p class="tooldescr">
+	The Genesilico metaserver sends requests to more than 10 autonomous servers and presents the individual 
+	results in an easily interpretable, uniform format. May take a few hours for complete results. 
+	Simple registration via e-mail required.</h4>
+<p class="tooldescr">
+</p>
+<div class="hr">&nbsp;</div>
+
+<h4><a href="http://www.cs.bgu.ac.il/~bioinbgu/form.html" target="blank">Ben Gurion Shotgun</a></h4>
+<p class="tooldescr">
+ 	This is an autonomous server that combines different sequence-sequence and sequence-structure matching methods.	
+	It was one of the best-ranked servers for comparative modelling in the 2004 CAFASP benchmark.
+</p>
+<div class="hr">&nbsp;</div>
+
+<h4><a href="http://robetta.bakerlab.org/">Robetta</a></h4>
+<p class="tooldescr">
+ 	Robetta is a metaserver that relies on autonomous servers like FFAS when a significant match to a known
+	structure can be found.
+	When nothing significant is found, the Rosetta ab-initio structure prediction method from the same lab is employed
+	to create a model. Best server for <i>ab-initio</i> prediction of protein structure (if everything else fails).
+	Simple registration via browser required.
+</p>
+<div class="hr">&nbsp;</div>
+
+<h3 class="tertstruct">External tertiary structure analysis servers</h3>
+
+<h4><a href="http://www.elnemo.org">elNemo</a></h4>
+<p class="tooldescr">
+	Excellent server for the normal mode analysis of protein conformational movements.
+	From a pdb file as input, the server calculates the lowest-energy normal modes. 
+	Very helpful animations for each mode are also provided. 
+	Relevance: In more than 50% of proteins with several known conformations, 
+	the movement between the two conformations corresponds to a combination of the lowest 
+	two normal modes. Normal modes may also improve MR in X-ray crystallography.
+</p>
+<div class="hr">&nbsp;</div>

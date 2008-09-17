@@ -1,0 +1,42 @@
+<h2><%= @page_title %></h2>
+
+<div id="jobsection">
+	<ul>
+		<% if @id == "" %>
+			<li><a href="/hhcluster/index" onmouseout="return nd();" onmouseover="return overlib('Show Galaxy of Folds');">Galaxy of Folds</a></li>
+		<% else %>
+			<li><a href="/hhcluster/results/<%= @id %>" onmouseout="return nd();" onmouseover="return overlib('Show Galaxy of Folds');">Galaxy of Folds</a></li>
+		<% end %>			
+		<li class="current">
+			<a href="/hhcluster/search/<%= @id %>" onmouseout="return nd();" onmouseover="return overlib('Search domains');">Search domains</a>
+		</li>
+	</ul>
+</div>
+
+<%= form_tag({:action => :run, :job => 'hhcluster'}, {:multipart => true})%> 
+
+<h3 class="<%= @section["name"] %>">Input</h3>
+
+<div class="row">
+	<%= form_label("Enter string for text search", "input") %>
+	<%= form_text_field("text_search", "", "", 30) %>
+</div>
+<div class="row">
+	<%= form_label("or enter plain sequence for BLAST search", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("Mark selected sequences with crossbars", "crossbars") %>
+	<%= form_checkbox("crossbars") %>
+</div>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

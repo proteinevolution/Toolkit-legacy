@@ -1,0 +1,21 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( url_for(:action => 'results_intermediate', :jobid => @job), {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+
+<div class="row">
+	<%= form_label("Select alignment") %>
+	<%= form_select_single("alignment", @job.alignment_values, @job.alignment_labels, @job.alignment) %>
+	<div class="formw">
+		<input type="submit" class="feedbutton" value="Show Alignment" onClick="" />
+	</div>
+</div>
+<div class="hr">&nbsp;</div>
+
+
+<div class="alignres">
+<%= @job.intermediate_res.join("\n") %>
+</div>
+
+</form>

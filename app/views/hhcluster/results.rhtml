@@ -1,0 +1,74 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Galaxy of Folds', :toolname => @job.tool}) %>
+
+<div id="jobsection">
+	<ul>
+		<li class="current">
+			<a href="/hhcluster/results/<%= @id %>" onmouseout="return nd();" onmouseover="return overlib('Show Galaxy of Folds');">Galaxy of Folds</a>
+		</li>
+		<li>
+			<a href="/hhcluster/search/<%= @id %>" onmouseout="return nd();" onmouseover="return overlib('Search domains');">Search domains</a>
+		</li>
+	</ul>
+</div>
+
+<div id="resultactions">
+	<ul>
+		<% for i in 0...@color_scheme.length %>	
+			<li <% if @color_scheme[i] == @coloring %> class="current" <% end %> >
+				<a href="/hhcluster/results/<%= @id %>?coloring=<%= @color_scheme[i] %>" 
+				<% if @color_scheme[i] != @coloring %> 
+					onmouseover="imgOn('galaxy','<%= @images[@color_scheme[i]] %>');" onmouseout="imgOn('galaxy','<%= @images['default'] %>');"
+				<% end %> >Color by <%= @color_scheme_names[i] %> 
+				</a>
+			</li>
+		<% end %>
+	</ul>
+</div>
+
+<map name="cluster">
+	<%= @map %>
+</map>
+
+<img name="galaxy" src="<%= @images['default'] %>" border="0" usemap="#cluster"/>
+<br>
+<input id="infolabel" name="infolabel" type="text" size="200" value="" style="font-size: 11px; background-color: #FFF; margin-bottom: 10px; width: 99%;" />
+
+<h3 class="<%= @section["name"] %>">Results</h3>
+
+<% if @job.results.empty? %>
+	<div class="row">No hits found!</div>
+<% else %>
+
+	<%= form_tag({:action => 'update', :jobid => @job}, {:multipart => true, :id => @job.tool+"_form", :name => @job.tool+"_form"})%>
+	<div class="row">
+		<input name="submitform" type="submit" class="feedbutton" value="Update cluster" />
+		<input name="resetform" type="reset" class="feedbutton" value="Reset" /><br />
+	</div>
+	<div class="spacer">&nbsp;</div>
+	<table style="width: 100%;">
+		<tr>
+			<td width="25px"> </td>
+			<td width="32px">E-value</td>
+			<td width="600px">Domain name</td>
+		</tr>
+		<% for i in 0...@job.results.size %>
+		<tr>
+			<td width="25px"><input type="checkbox" name="hits[]" value="<%= @job.gis[i] %>" <% if @job.marked[i] == "true" %> checked="checked" <% end %> /></td>
+			<td width="32px"><%= @job.evalue[i] %></td>
+			<td width="600px"><a href="/hhcluster/makeHhpred?id=<%= @job.gis[i] %>" title="View HHpred results for this domain"><pre><%= @job.results[i] %></pre></a></td>
+		</tr>
+		<% end %>
+	</table>
+	<div class="spacer">&nbsp;</div>
+	<div class="spacer">&nbsp;</div>
+	<a href="javascript:select()" >Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:deselect()" >Deselect all</a>
+
+	<div class="row">
+		<input name="submitform" type="submit" class="feedbutton" value="Update cluster" />
+		<input name="resetform" type="reset" class="feedbutton" value="Reset" /><br />&nbsp;
+	</div>
+	
+	<input type="hidden" name="userUpdateCluster" value="1">
+	<input type="hidden" id="checkboxes" name="checkboxes" value="<%= @job.results.size %>">
+	</form>
+<% end %>

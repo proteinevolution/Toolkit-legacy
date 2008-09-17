@@ -1,0 +1,32 @@
+<h2><%= @tool['title'] %> Overview</h2> 
+<div class="row">
+	Extraction of nucleotide sequences upstream of genes identified by the gi-number of their encoded 
+	proteins. This is limited to gi-numbers of completely sequenced genomes of bacteria and archaea available 
+	at the <a href="http://www.ncbi.nlm.nih.gov/" target="blanc">NCBI</a> 
+	See <a href="ftp://ftp.ncbi.nih.gov/genomes/Bacteria/" target="blanc">FTP download of complete genomes</a> 
+	for a list of genomes). 
+</div>
+
+<h3 class="<%= @section["name"] %>">Example output</h3>
+<div class="row">
+Parameters were set to report 15 upstream and 6 downstream nucleotides. Start codons are printed in upper, 
+leading and trailing nucleotides in lower case.<br/><br/>
+<pre>
+  >gi|26250939 '-'strand Escherichia_coli_CFT073/NC_004431
+  cacacaaggaagctgATGagacat
+  >gi|50121501 '+'strand Erwinia_carotovora_atroseptica_SCRI1043/NC_004547
+  aggctcgcatgcatcATGagattg
+  >gi|28211194 '-'strand Clostridium_tetani_E88/NC_004557
+  agatatttaccttaaATGaaagaa
+  >gi|15640810 '-'strand Vibrio_cholerae/NC_002505
+  gatagactcgccggcATGaaaata
+  >gi|54309468 '+'strand Photobacterium_profundum_SS9/NC_006370
+  cgtacttaacccgccATGccttta
+  >gi|42779699 '+'strand Bacillus_cereus_ATCC_10987/NC_003909
+  aatcatgttaggggaATGgttttg 
+  >gi|47526209 '+'strand Bacillus_anthracis_Ames_0581/NC_007530
+  caaagggtatggggtATGaaaaaa
+
+</pre>
+</div>
+

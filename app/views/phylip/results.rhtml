@@ -1,0 +1,20 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'NJ Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export_to => "nj"}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row">
+
+	<a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_nj.ps">View Postscript</a>
+	<br/><br/>
+	<img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_nj.gif" alt="GIF plot Neighbor-Joining tree.">
+
+	<div class="hr">&nbsp;</div>
+	
+	<a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_nj.tree">Get tree in Newick format</a>
+	<br/><br/>
+	<pre><%= @job.render_file(@job.jobid + ".nj") %></pre>
+</div>
+
+</form>

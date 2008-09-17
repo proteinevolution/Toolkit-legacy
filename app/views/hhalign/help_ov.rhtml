@@ -1,0 +1,23 @@
+<h2><%= @tool['title'] %> Overview</h2> 
+<div class="row">
+HHalign can either compare two alignments with each other or, if only one alignment is entered,
+the alignment with itself. It is based on the hhalign program that is part of the HHsearch software 
+package for HMM-HMM comparison.
+
+<p> HHalign generates an HMM from the alignments given and calculates the optimal alignment and all significant 
+non-overlappiung suboptimal alignments. Probabilities for being homologous and E-values are calculated
+by calibrating the profiles against a calibration database.
+HHalign also generates a dotplot for which the profile-profile column score is averaged over a window of 
+variable size 2W+1, where W is an input parameter. 
+
+<p> If only one alignment is entered, this alignment is compared to itself. Used in this way, <b> HHalign is 
+a very sensitive repeat-identification tool</b> that is able to detect very divergent repeats. 
+A protein with a twofold duplication shows a characteristic dotplot with the red central diagonal 
+(corresponding to trivial identity) and two diagonals half way between the central diagonal and the lower 
+left and upper right corners. A fivefold duplication would show up as a pattern of four equidistant diagonals 
+on each side of the central diagonal. Gaps in the repeats aligned to each other manifest themselves by their
+respective diagonal lines fading out and reappearing shifted by some distance.
+
+<p> The dotplot has a grid with period of 10 residues and a thicker line every 50 residues.
+
+</div>

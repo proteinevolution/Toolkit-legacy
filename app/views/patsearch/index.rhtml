@@ -1,0 +1,46 @@
+<a href="#" onClick="openHelpWindow('/patsearch/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'patsearch'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+
+<div class="row">
+	<%= form_label("Select grammar", "input") %>
+	<%= form_radio_buttons("grammar", @grammar_values, @grammar_labels, @grammar_values[0], "&nbsp;&nbsp;") %>	
+</div>
+  
+<div class="row">
+	<%= form_label("Enter pattern", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<% if @db_type == "prot" %>
+	<%= render(:partial => "shared/protein_dbs") %>
+<% else %>
+	<%= render(:partial => "shared/nucleotide_dbs") %>
+<% end %>
+
+<div class="row">
+	<%= form_label("or enter FASTA sequences", "seq") %>
+	<%= form_text_area("db_input") %>
+</div>
+
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("db_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

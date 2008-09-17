@@ -1,0 +1,9 @@
+gi2pro_job: 
+  title: GI2Promoter
+  hidden: false
+  code: GI2P
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:

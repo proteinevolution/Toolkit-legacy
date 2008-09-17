@@ -1,0 +1,123 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( url_for(:controller => "repper", :action => "run", :jobid => @job.jobid, :jobaction => 'createmap', :forward_controller => 'repper', :forward_action => 'results_createmap'), {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<% if @job.psipred %>
+
+	<h3 class="<%= @section["name"] %>">PSIPRED and PCOILS</h3>
+	<div class="row">
+		<img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_psipred.png" name="psipred" style="background-color: #FFF;">
+		<img src="/images/pcoils/legend_psipred.gif" border="0" name="psipred">
+	</div>
+
+<% else %>
+
+	<h3 class="<%= @section["name"] %>">PCOILS output</h3>
+
+<% end %>
+
+
+<% if @job.coils %>
+
+	<div class="row">
+		<img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_ncoils.png" name="coils" style="background-color: #FFF;">
+   	<img src="/images/pcoils/legend_coils.gif" border="0" name="coils" style="margin-right: auto; margin-left: auto;">
+	</div>
+
+<% else %>
+
+	<div class="row">
+		<span style="color: #CC3333; font-weight: bold;">No output from Coils</span>
+	</div>
+
+<% end %>
+
+<a name="overview"></a>
+<h3 class="<%= @section["name"] %>">FTwin</h3>
+
+<% if @job.overview %>
+
+	<div class="row">
+		<a href="<%= url_for(:controller => "repper", :action => "run", :jobid => @job.jobid) %>?jobaction=createmap&forward_controller=repper&forward_action=results_createmap&length=<%= @job.length %>&leftend=0&rightend=0&coords=" style="background-color: #FFF;">
+			<img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_overview.png" border="0" name="overview" ismap="<%= @job.jobid %>" >
+		</a>
+		<img src="/images/repper/legend_gradient.gif" border="0" name="overview" ismap="<%= @job.jobid %>" style="margin-right: auto; margin-left: auto;">
+	</div>
+
+	<div class="row">
+   	<div class="label">
+   		<a href="#" onclick="openHelpWindow('/repper/help_results#ftwin');">Choose a residue range</a>
+   	</div>
+   	<div class="formw">
+			<input name="createmap" type="submit" class="feedbutton" value="Show periodicity" />
+			<%= form_text_field('leftend', '', '', 5, false, 'from ', true) %>
+			<%= form_text_field('rightend', '', '', 5, false, 'to ', true) %>
+			<%= form_hidden_field('length', @job.length) %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="label">or</div>
+	</div>
+	<div class="row">
+		<div class="label">
+			<a href="#" onclick="openHelpWindow('/repper/help_results#ftwin');">click on colored line</a>
+		</div>
+	</div>
+	<div class="spacer">&nbsp;</div>
+
+<% else %>
+
+	<div class="row">
+		<span class="row" style="color: #CC3333; font-weight: bold;">No significant repeats found for given values!</span>
+	</div>
+
+<% end %>
+
+<a name="repper"></a>
+<h3 class="<%= @section["name"] %>">REPwin</h3>
+
+<% if @job.repper %>
+
+	<div class="row">
+		<a href="<%= url_for(:controller => "repper", :action => "run", :jobid => @job.jobid) %>?jobaction=reppermap&forward_controller=repper&forward_action=results_reppermap&length=<%= @job.length %>&coords=" style="background-color: #FFF;">
+			<img border="0" src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_repper.png" name="repper" ismap="<%= @job.jobid %>" >
+		</a>
+		<img src="/images/repper/legend_gradient.gif" border="0" name="repper" ismap="<%= @job.jobid %>" >
+	</div>
+	<div class="row">
+		<div class="label">
+			<a href="#" onclick="openHelpWindow('/repper/help_results#repwin');">click on colored line</a>
+		</div>
+	</div>
+	<div class="spacer">&nbsp;</div>
+	
+<% else %>
+
+	<div class="row">
+		<span style="color: #CC3333; font-weight: bold;">No significant repeats found for given values!</span>
+	</div>
+
+<% end %>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+Complete sequence from 1 to <%= @job.length %>:
+<br/>
+<pre>
+
+<%= @job.sequence %>
+</pre>
+</div>
+
+<% if @job.psipred %>
+
+	<br><br>
+	<div class="row">
+   	Sequence colored according to PSIPRED output
+	</div>
+
+<% end %>
+
+</form>

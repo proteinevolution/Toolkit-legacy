@@ -1,0 +1,84 @@
+<a href="#" onClick="openHelpWindow('/modeller/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'modeller', :parent => @parent_job}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<% if params['note'] %>
+<div class="row">
+	<div class="formw">
+		<span style="color: red;"><strong>
+			<%= params['note'] %>
+		</span></strong>
+	</div>
+</div>
+<% end %>
+
+<div class="row">
+	<%= form_label("Paste multiple alignment", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<div class="formw">
+		<span style="color: green;">
+			The first sequence in the multiple alignment must be the query sequence,  the other sequences are used as templates. In each template the first word in the header has to be the PDB- or SCOP-identifier. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
+		</span>
+	</div>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+<div class="row">
+    <%= form_label("Select input format") %>
+    <%= form_select_single("informat", @informat_values, @informat_labels, "fas") %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<% if @internal %>
+
+	<%= hidden_field_tag("modeller_key", "internal") %>
+	<%= hidden_field_tag("need_key", "false") %>
+
+<% else %>
+
+	<%= hidden_field_tag("need_key", "true") %>
+	
+	<% if @user.nil? || @user.modeller_key.nil? %>	
+	
+	<div class="row">
+		<div class="formw">
+			<span style="color: green;">
+				The MODELLER license requires you to enter a MODELLER-key!
+			</span>
+		</div>
+	</div>
+	<div class="row">
+		<%= form_label("Please insert your MODELLER-key", "mod_key") %>
+		<%= form_text_field("modeller_key", "", "", 20) %>
+	</div>
+	
+	<% else %>
+	
+		<%= hidden_field_tag("modeller_key", @user.modeller_key) %>
+	
+	<% end %>
+
+<% end %>	
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Sali, A., Potterton, L., Yuan, F., van Vlijmen, H., and Karplus, M. (1995) Evaluation of comparative protein modelling 
+	by MODELLER. <em>Proteins</em>, <strong>23</strong>, 318-326.
+</div>

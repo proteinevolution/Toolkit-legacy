@@ -1,0 +1,77 @@
+<a href="#" onClick="openHelpWindow('/fast_hmmer/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+<h2><%= @page_title %></h2>
+
+
+
+
+<%= form_tag({:action => :run, :job => 'fast_hmmer'}, {:multipart => true, :id => 'fast_hmmer', :name => 'fast_hmmer'})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+
+  <div class="row">
+		<%= form_label("Enter alignment", "input") %>
+		<%= form_text_area("sequence_input") %>
+	</div>
+	<div class="row">
+		<%= form_label("or upload a local file") %>
+		<%= form_file("sequence_file") %>
+	</div>
+	<div class="row">
+		<%= form_label("Select input format", "format") %>
+		<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+	</div>
+  <div class="spacer">&nbsp;</div>
+
+  <%= render(:partial => "shared/protein_dbs") %>
+
+  <h3 class="<%= @section["name"] %>">Search Options</h3>
+ 
+  <div class="row">
+    <%= form_label("Convert input to uppercase", "convertinput") %>
+    <%= form_checkbox("toupper", '1', false) %>	
+  </div>
+  
+  <div class="row">
+    <%= form_label("Compute consensus sequence", "computeconsensus") %>
+    <div class="formw">
+    	<%= form_checkbox("consensus", '1', true, true) %> &nbsp;(If deselected the first sequence is used as PsiBlast query.)
+    </div>
+  </div>
+  
+  <div class="row">
+    <%= form_label("Extract sequences up to evalue", "extractsequences") %>
+    <%= form_text_field("extracteval", '100') %>	
+  </div>
+  
+  <div class="row">
+    <%= form_label("HMM Build Options", "hmmbuild") %>
+    <%= form_text_field("hmmbuildopt", '', '', 30) %>	
+  </div>
+  
+  <div class="row">
+    <%= form_label("HMM Calibrate Options", "hmmcalibrate") %>
+    <%= form_text_field("hmmcalibrateopt", '', '', 30) %>	
+  </div>
+  
+  <div class="row">
+    <%= form_label("HMM Search Options", "hmmsearch") %>
+    <%= form_text_field("hmmsearchopt", '-E 1e-1', '', 30) %>	
+  </div>
+  
+  <div class="row">
+    <%= form_label("HMM Align Options", "hmmalign") %>
+    <%= form_text_field("hmmalignopt", '', '', 30) %>	
+  </div>
+  
+  <div class="spacer">&nbsp;</div>
+
+  <%= render(:partial => "shared/joboptions") %>
+
+  <div class="row">
+    <%= form_submit_buttons %>
+  </div>
+  </form>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Eddy, S. (1998) Profile hidden Markov models. <em>Bioinformatics</em>, <strong>14</strong>(9), 755-763.
+</div>

@@ -1,0 +1,51 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Periodicity Spectrum', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( url_for(:controller => "repper", :action => "run", :jobid => @job.jobid, :jobaction => 'createmap2', :forward_controller => 'repper', :forward_action => 'results_createmap'), {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<% if File.zero?(File.join(@job.job_dir, @job.jobid + ".out")) %>
+
+<p class="call-action">
+	<a href="/repper/results/<%= @job.jobid %>#overview" >Back to main results&#8250;</a>
+</p>
+<br/><br/>
+<div class="row">
+	<strong>No Periodicity Spectrum found!</strong>
+</div>
+
+<% else %>
+
+<div class="row">
+Mouse-over to see periodicity. Corresponding sequence below.
+</div>
+
+<div class="hr">&nbsp;</div>
+
+<p class="call-action">
+	<a href="/repper/results/<%= @job.jobid %>#overview" >Back to main results&#8250;</a>
+</p>
+	
+
+<div class="row">
+	<%= @job.render_file(@job.jobid + ".out") %>
+</div>
+<div class="row">
+	<div class="label">
+		Intensity cutoff
+	</div>
+	<div class="formw">
+		<input name="submitform" type="submit" class="feedbutton" value="Show periodicities above cutoff" />
+		<%= form_text_field('threshold', '', '', 5, false, '', true) %>
+	</div>
+</div>
+
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+	<textarea style="width: 100%; height: 150px;" name=partialSeq><%= @job.render_file(@job.jobid + ".newseq") %></textarea>
+</div>
+
+<% end %>
+
+</form>

@@ -1,0 +1,13 @@
+hhrepid_job: 
+  title: HHrepID
+  hidden: false
+  code: HHID
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+    - name: results_showquery
+      title: Show query alignment
+      title_long: Show or edit the query alignment constructed by HHrep
+      forwardsections:

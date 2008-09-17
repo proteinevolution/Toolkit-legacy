@@ -1,0 +1,155 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input format</a></li>
+	<li><a href="#otheradvanced">Other advanced options</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input Format</h3> 
+<div class="row">
+<p>
+Enter multiple sequences in fasta format.
+A sequence in FASTA format begins with a single-line description, followed by lines of sequence data. The description line is distinguished from the sequence data by a greater-than (">") symbol in the first column. It is recommended that all lines of text be shorter than 80 characters in length. An example sequence in FASTA
+format is:
+</p>
+<pre>
+
+>gi|532319|pir|TVFV2E|TVFV2E envelope protein
+ELRLRYCAPAGFALLKCNDADYDGFKTNCSNVSVVHCTNLMNTTVTTGLLLNGSYSENRT
+QIWQKHRTSNDSALILLNKHYNLTVTCKRPGNKTVLPVTIMAGLVFHSQKYNLRLRQAWC
+HFPSNWKGAWKEVKEEIVNLPKERYRGTNDPKRIFFQRQWGDPETANLWFNCHGEFFYCK
+MDWFLNYLNNLTVDADHNECKNTSGTKSGNKRAPGPCVQRTYVACHIRSVIIWLETISKK
+TYAPPREGHLECTSTVTGMTVELNYIPKNRTNVTLSPQIESIWAAELDRYKLVEITPIGF
+APTEVRRYTGGHERQKRVPFVXXXXXXXXXXXXXXXXXXXXXXVQSQHLLAGILQQQKNL
+LAAVEAQQQMLKLTIWGVK
+
+</pre>
+<p>
+Sequences are expected to be represented in the standard IUB/IUPAC amino acid and nucleic acid codes, with these exceptions: lower-case letters are accepted and are mapped into upper-case; a single hyphen or dash can be used to represent a gap of indeterminate length; and in amino acid sequences, U and * are acceptable letters (see below). Before submitting a request, any numerical digits in the query sequence should either be removed or replaced by appropriate letter codes (e.g., N for unknown nucleic acid residue or X for unknown amino acid residue).
+<br/>
+The nucleic acid codes supported are:
+</p>
+<pre>
+
+   A --> adenosine           M --> A C (amino)
+   C --> cytidine            S --> G C (strong)
+   G --> guanine             W --> A T (weak)
+   T --> thymidine           B --> G T C
+   U --> uridine             D --> G A T
+   R --> G A (purine)        H --> A C T
+   Y --> T C (pyrimidine)    V --> G C A
+   K --> G T (keto)          N --> A G C T (any)
+                             -  gap of indeterminate length
+</pre>
+<p>
+The accepted amino acid codes are:
+</p>
+<pre>
+
+    A  alanine                         P  proline
+    B  aspartate or asparagine         Q  glutamine
+    C  cystine                         R  arginine
+    D  aspartate                       S  serine
+    E  glutamate                       T  threonine
+    F  phenylalanine                   U  selenocysteine
+    G  glycine                         V  valine
+    H  histidine                       W  tryptophan
+    I  isoleucine                      Y  tyrosine
+    K  lysine                          Z  glutamate or glutamine
+    L  leucine                         X  any
+    M  methionine                      *  translation stop
+    N  asparagine                      -  gap of indeterminate length
+
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="otheradvanced"></a>
+<h3 class="<%= @section["name"] %>">Other advanced options</h3>
+<div class="row">
+Use this textfield to specify advanced options via commandline. The options supported by ClustalW are:
+<br/>
+<br/>
+<pre style="font-size: 11px;">
+***General settings:****
+-INTERACTIVE :read command line, then enter normal interactive menus
+-QUICKTREE   :use FAST algorithm for the alignment guide tree
+-TYPE=       :PROTEIN or DNA sequences
+-NEGATIVE    :protein alignment with negative values in matrix
+-OUTFILE=    :sequence alignment file name
+-OUTPUT=     :GCG, GDE, PHYLIP, PIR or NEXUS
+-OUTORDER=   :INPUT or ALIGNED
+-CASE        :LOWER or UPPER (for GDE output only)
+-SEQNOS=     :OFF or ON (for Clustal output only)
+ 
+ 
+***Fast Pairwise Alignments:***
+-KTUPLE=n    :word size
+-TOPDIAGS=n  :number of best diags.
+-WINDOW=n    :window around best diags.
+-PAIRGAP=n   :gap penalty
+-SCORE       :PERCENT or ABSOLUTE
+ 
+ 
+***Slow Pairwise Alignments:***
+-PWMATRIX=    :Protein weight matrix=BLOSUM, PAM, GONNET, ID or filename
+-PWDNAMATRIX= :DNA weight matrix=IUB, CLUSTALW or filename
+-PWGAPOPEN=f  :gap opening penalty
+-PWGAPEXT=f   :gap opening penalty
+ 
+ 
+***Multiple Alignments:***
+-NEWTREE=      :file for new guide tree
+-USETREE=      :file for old guide tree
+-MATRIX=       :Protein weight matrix=BLOSUM, PAM, GONNET, ID or filename
+-DNAMATRIX=    :DNA weight matrix=IUB, CLUSTALW or filename
+-GAPOPEN=f     :gap opening penalty
+-GAPEXT=f      :gap extension penalty
+-ENDGAPS       :no end gap separation pen.
+-GAPDIST=n     :gap separation pen. range
+-NOPGAP        :residue-specific gaps off
+-NOHGAP        :hydrophilic gaps off
+-HGAPRESIDUES= :list hydrophilic res.
+-MAXDIV=n      :% ident. for delay
+-TYPE=         :PROTEIN or DNA
+-TRANSWEIGHT=f :transitions weighting
+ 
+ 
+***Profile Alignments:***
+-PROFILE      :Merge two alignments by profile alignment
+-NEWTREE1=    :file for new guide tree for profile1
+-NEWTREE2=    :file for new guide tree for profile2
+-USETREE1=    :file for old guide tree for profile1
+-USETREE2=    :file for old guide tree for profile2
+ 
+ 
+***Sequence to Profile Alignments:***
+-SEQUENCES   :Sequentially add profile2 sequences to profile1 alignment
+-NEWTREE=    :file for new guide tree
+-USETREE=    :file for old guide tree
+ 
+ 
+***Structure Alignments:***
+-NOSECSTR1     :do not use secondary structure-gap penalty mask for profile 1
+-NOSECSTR2     :do not use secondary structure-gap penalty mask for profile 2
+-SECSTROUT=STRUCTURE or MASK or BOTH or NONE   :output in alignment file
+-HELIXGAP=n    :gap penalty for helix core residues
+-STRANDGAP=n   :gap penalty for strand core residues
+-LOOPGAP=n     :gap penalty for loop regions
+-TERMINALGAP=n :gap penalty for structure termini
+-HELIXENDIN=n  :number of residues inside helix to be treated as terminal
+-HELIXENDOUT=n :number of residues outside helix to be treated as terminal
+-STRANDENDIN=n :number of residues inside strand to be treated as terminal
+-STRANDENDOUT=n:number of residues outside strand to be treated as terminal
+ 
+ 
+***Trees:***
+-OUTPUTTREE=nj OR phylip OR dist OR nexus
+-SEED=n        :seed number for bootstraps.
+-KIMURA        :use Kimura's correction.
+-TOSSGAPS      :ignore positions with gaps.
+-BOOTLABELS=node OR branch :position of bootstrap values in tree display
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

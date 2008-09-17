@@ -1,0 +1,20 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => 'View repeats'}) %>
+
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+
+	<div id="applet">
+  		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+		<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.qt.fas">
+		<PARAM NAME="type"   value="URL">
+		<PARAM NAME="format" value="FASTA">
+		</APPLET> 
+		<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+	</div>
+</div><div class="hr">&nbsp;</div>
+
+<div class="alignres"><%= @job.rep_results.join("\n") %></div>	
+	
+
+</form>

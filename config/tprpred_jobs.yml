@@ -1,0 +1,9 @@
+tprpred_job: 
+  title: TPRpred
+  hidden: false
+  code: TPRP
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:

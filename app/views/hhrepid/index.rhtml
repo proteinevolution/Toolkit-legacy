@@ -1,0 +1,71 @@
+<a href="#" onClick="openHelpWindow('/hhrepid/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+
+<h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'hhrepid'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+  <%= form_label("Paste input sequence", "input") %>
+  <%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+  <%= form_label("or upload a local file") %>
+  <%= form_file("sequence_file") %>
+</div>
+<div class="row">
+  <%= form_label("Select input format", "input_format") %>
+  <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+  <%= form_label("Max. PSI-BLAST iterations", "maxpsiblastit") %>
+  <%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, '8') %>	
+</div>
+<div class="row">
+  <%= form_label("Score secondary structure", "ss_scoring") %>
+  <%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, "4", "&nbsp;") %>	
+</div>
+<div class="row">
+  <%= form_label("Repeat family P-value threshold", "ptot") %>
+  <%= form_select_single("ptot", @ptot, @ptot, '1e-2') %>	
+</div>
+<div class="row">
+  <%= form_label("Self-Alignment P-value threshold", "pself") %>
+  <%= form_select_single("pself", @pself, @pself, '1e-1') %>	
+</div>
+<div class="row">
+  <%= form_label("Merge rounds", "mergerounds") %>
+  <%= form_select_single("mergerounds", @mergerounds, @mergerounds, '3') %>	
+</div>
+<div class="row">
+  <%= form_label("MAC threshold", "mact") %>
+  <%= form_select_single("mact", @mact, @mact, '0.5') %>	
+</div>
+<div class="row">
+  <%= form_label("Domain boundary detection", "domm") %>
+  <%= form_checkbox("domm", '1', true) %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+  <%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<ul class="arrow-marker">
+  <li><a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/HHrepID" title="Download HHrepID"><B>Download HHrepID</B></a>
+  <li><a target="_blank" href="http://www.lmb.uni-muenchen.de/soeding/index.htm">S&ouml;ding group at Gene Center in Munich</a></li>
+</ul>
+<div class="hr">&nbsp;</div>
+<div class="row">
+  Please send feedback to: biegert AT lmb.uni-muenchen.de
+</div>

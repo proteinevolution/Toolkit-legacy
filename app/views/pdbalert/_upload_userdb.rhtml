@@ -1,0 +1,114 @@
+<%= form_tag({:controller => 'pdbalert', :action => 'confirm_upload'}, {:multipart => true})%> 
+
+<div class="row">
+  <%= form_label("Paste protein sequence(s) or multiple alignment", "input") %>
+  <%= form_text_area("db_seq") %>
+</div>
+
+<div class="row">
+  <%= form_label("or upload a local file") %>
+  <%= form_file("db_file") %>
+</div>
+
+<div class="row">
+  <%= form_label("Select input mode", "input") %>
+  <%= form_radio_buttons("inputmode", @inputmode_values, @inputmode_labels, @inputmode_values[0], "&nbsp;&nbsp;", "toggleDisabled('informat'); toggleForward('dbname');") %>
+</div>
+
+<div class="row">
+  <%= form_label("Select alignment format", "input_format") %>
+  <% disable = true %>
+  <% if ((params['inputmode'] && params['inputmode'] == "alignment") || (@error_params['inputmode'] && @error_params['inputmode'] == "alignment")) then disable = false end %>
+  <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "", disable) %>
+</div>
+						
+<%= hidden_field_tag("userid", @user.id) %>
+
+<div class="spacer">&nbsp;</div>
+<br />
+<span id="show_more_options" style="font-size: 10px; display: <%= @show_more_options ? 'none' : 'true' %>"><a style="margin-left: 10px; font-weight: bold;" on_click="show_hide_more_options();" href="javascript:show_hide_more_options();">Change Search Parameters</a></span>
+<h3 class="utils" id="hide_more_options" style="font-size: 10px; display: <%= @show_more_options ? 'true' : 'none' %>"><a style="margin-left: 10px; font-weight: normal;" on_click="show_hide_more_options();" href="javascript:show_hide_more_options();">Use Default Search Parameters</a>
+</h3>
+
+<%= hidden_field_tag("more_options_on", (@show_more_options ? "true" : "false") ) %>
+<div style="display:<%= @show_more_options ? 'true' : 'none' %>;" id="more_options">
+	    
+  <div class="row">
+    <%= form_label("Max. PSI-BLAST iterations", "maxpsiblastit", "hhpred") %>
+    <%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, '8') %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Score secondary structure", "ss_scoring", "hhpred") %>
+    <%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, "2", "&nbsp;") %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Alignment mode", "alignmode", "hhpred") %>
+    <%= form_radio_buttons("alignmode", ['local', 'global'], ['local', 'global'], "local", "&nbsp;") %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Realign with MAC", "realign", "hhpred") %>
+    <%= form_checkbox("realign", '1', false) %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("E-value threshold for PSI-BLAST", "E_psiblast", "hhpred") %>
+    <%= form_select_single("Epsiblastval", @epsiblastval, @epsiblastval, '1E-3') %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Min. coverage of PSI-BLAST hits", "cov_min", "hhpred") %>
+    <%= form_select_single("cov_min", @cov_minval, @cov_minval, '20') %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Min. sequence identity of PSI-BLAST hits with query", "qid_min", "hhpred") %>
+    <%= form_select_single("qid_min", @cov_minval, @cov_minval, '0') %>	
+  </div>
+
+  <div class="hr">&nbsp;</div>
+
+  <div class="row">
+    <%= form_label("MAC realignment threshold (0.0:global, >=0.1:local)", "mapt", "hhpred") %>
+    <%= form_select_single("mapt", @maptval, @maptval, '0.3') %>	
+  </div>
+  <div class="row">
+    <%= form_label("Compositional bias correction", "compbiascorr", "hhpred") %>
+    <%= form_radio_buttons("compbiascorr", @compbiascorr_values, @compbiascorr_labels, "1", "&nbsp;") %>	
+  </div>
+
+  <div class="hr">&nbsp;</div>
+
+  <div class="row">
+    <%= form_label("Show sequences per HMM", "maxseq", "hhpred") %>
+    <%= form_select_single("maxseq", @maxseqval, @maxseqval, '1') %>	
+  </div>
+  
+  <div class="row">
+    <%= form_label("Width of alignments", "width", "hhpred") %>
+    <%= form_text_field("width", '80', 'columns') %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Min. probability in hitlist", "minprobab", "hhpred") %>
+    <%= form_text_field("Pmin", '80', '%') %>	
+  </div>
+  
+  <div class="row">
+    <%= form_label("Max. number of hits in hitlist", "maxlines", "hhpred") %>
+    <%= form_text_field("maxlines", '100') %>	
+  </div>
+
+  <div class="spacer">&nbsp;</div>
+  
+</div>
+
+<%= hidden_field_tag("confirm", @confirm) %>
+
+<div class="row">
+  <input name="submitform" type="submit" class="toolbutton" value="Upload Sequence(s)" /><input name="resetform" type="reset" class="toolbutton" value="Reset form" onclick="reset_informat();" /><br/>
+</div>
+
+</form>

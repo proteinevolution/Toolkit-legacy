@@ -1,0 +1,88 @@
+Install ruby:
+$ apt-get install irb1.8 libreadline-ruby1.8 libruby libruby1.8 rdoc1.8 ruby ruby1.8 ruby1.8-dev libopenssl-ruby1.8
+
+Install rubygems (or by apt-get):
+$ wget http://rubyforge.org/frs/download.php/11289/rubygems-0.9.0.tgz
+$ tar zxf rubygems-0.9.0.tgz
+$ cd rubygems-0.9.0
+$ sudo ruby setup.rb
+
+Install Rails!
+$ gem install rails --include-dependencies
+
+Install development tools
+$ apt-get install gcc make libc6-dev g++ automake autoconf
+
+First, install MySQL.
+$ apt-get install mysql-server mysql-client
+
+Next, install development files for MySQL. We'll need these in order to make Ruby understand.
+$ apt-get install libmysqlclient15off libmysqlclient15-dev
+
+Then, you may install the gem
+$ sudo gem install mysql
+
+Change MySQL password:
+$ mysqladmin -u root password NEW-PASSWORD
+
+In mysql:
+$ create database toolkit_development;
+$ create database toolkit_test;
+$ create database toolkit_production;
+
+$ grant all on toolkit_development.* to 'toolkit'@'%' identified by 'PASSWORD';
+$ grant all on toolkit_test.* to 'toolkit'@'%' identified by 'PASSWORD';
+$ grant all on toolkit_production.* to 'toolkit'@'%' identified by 'PASSWORD';
+
+Install memchache
+$ apt-get install memcached
+
+Install monit (automatic restart of mongrel_rails)
+$ apt-get install monit
+(config files in /etc/monit on cerberus)
+
+Install needed gems
+$ gem install actionmailer --include-dependencies
+$ gem install memcache-client --include-dependencies
+$ gem install mongrel --include-dependencies
+$ gem install mongrel_cluster --include-dependencies
+$ gem install salted_login_generator --include-dependencies
+$ gem install localization_generator --include-dependencies
+
+Your local gem should be the following ($gem list):
+*** LOCAL GEMS ***
+
+actionmailer (2.0.2)
+actionpack (2.0.2)
+activerecord (2.0.2)
+activeresource (2.0.2)
+activesupport (2.0.2)
+cgi_multipart_eof_fix (2.5.0)
+daemons (1.0.10)
+fastthread (1.0.1)
+gem_plugin (0.2.3)
+hoe (1.5.1)
+localization_generator (1.0.8)
+mem_cache_fragment_store (1.0.1)
+memcache-client (1.5.0)
+mongrel (1.1.4)
+mongrel_cluster (1.0.5)
+mysql (2.7)
+rails (2.0.2)
+rake (0.8.1)
+rubyforge (0.4.5)
+salted_login_generator (2.0.2)
+ZenTest (3.9.2)
+
+
+Install perl packages for HHpred (this will be obsolete as soon as hhpred_results.pl is converted to ruby!)
+
+cpan install
+
+Class::DBI
+YAML::Parser::Syck
+YAML
+
+mkdir /var/log/toolkit/
+chown toolkit:toolkitgroup ~
+chmod 775 ~

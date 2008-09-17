@@ -1,0 +1,88 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export_action => 'mafft_export'}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<% if @errors['hits'] %>
+<div class="row">
+	<p class="formerror"><%= @errors['hits'] %></p>
+</div><div class="hr">&nbsp;</div>
+<% end %>
+
+<div id="forward" style="display: none;">
+	<div class="row">
+		<div class="label">Forward results to</div>
+		<div class="formw">
+			<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+		</div>
+	</div>
+    
+	<div class="row">
+		<div class="label"></div>
+		<div class="formw">
+			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+		</div>
+	</div>
+	<div class="hr">&nbsp;</div>
+	
+</div>
+
+<div class="row">
+	<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:select_first()">Select the best ten</a>
+	<br/><br/>
+	<strong>Number of sequences: <%= @job.num_seqs %></strong>
+	<br/><br/>
+	<% if @job.mode == "fas" %>
+	
+		<table>
+		<% for i in 0...@job.header.size %>
+			<tr>
+			<td><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= i %>" checked="checked" /></td>
+			<td><pre><%= @job.header[i] %></pre></td>
+			</tr>
+			<tr>
+			<td></td>
+			<td><pre><%= @job.aln_blocks[i] %></pre></td>
+			</tr>
+			
+		<% end %>
+		</table>
+	
+	<% else %>
+	
+		<%= @job.header %>
+		<br/><br/>
+		<table>
+		<% @job.aln_blocks.each do |block| %>
+			<% block.each do |line| %>
+				<tr>		
+				<% if line =~ /^[\s\.\:\*]+$/ %>
+					<td></td>
+				<% else %>
+					<td valign="top">
+						<input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= block.index(line) %>" checked="checked" onclick="javascript:change(<%= block.index(line) %>, <%= @job.aln_blocks.index(block) %>)" />
+					</td>
+				<% end %>
+				<td><pre><%= line %></pre></td>
+				</tr>
+			<% end %>
+			<tr><td></td><td>&nbsp;<br/>&nbsp;</td></tr>
+		<% end %>
+		</table>
+	
+	<% end %>
+</div>
+
+<%= form_hidden_field('CHECKBOXES', @job.num_seqs) %>
+<%= form_hidden_field('BLOCKS', @job.aln_blocks.size) %>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Katho, K., Misawa, K., Kuma, K.-i. and Miyata, T. (2002) MAFFT: a novel method for rapid multiple sequence alignment 
+	based on fast Fourier transform. <em>Nucl. Acids Res.</em>, <strong>30</strong>(14), 3059-3066.
+</div>

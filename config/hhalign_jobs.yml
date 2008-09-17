@@ -1,0 +1,13 @@
+hhalign_job: 
+  title: HHalign
+  hidden: false
+  code: HHAL
+  resultsections:  
+    - name: results
+      title: Global alignment
+      title_long: Global alignment
+      forwardsections:
+    - name: dotplot
+      title: profile-profile dotplot 
+      title_long: Dotplot of the profile-profile comparison
+      forwardsections:

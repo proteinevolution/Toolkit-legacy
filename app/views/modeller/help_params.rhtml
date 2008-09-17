@@ -1,0 +1,57 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input format</a></li>
+	<li><a href="#mod_key">MODELLER_KEY</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input format</h3>
+<div class="row">
+
+<p>
+Paste a multiple alignment in one of the formats, which are listed in the dropdown menu:
+</p>
+<p>
+Format descriptions can be found <a href="/reformat/help_params#formats" >here</a>.
+</p>
+
+<p>
+The first sequence in the multiple alignment must be the query sequence.
+The other sequences are the template sequences. In each template the first word in the header has to be the PDB- or SCOP-identifier. A FASTA formatted example imput is shown below:
+</p>
+<pre>
+
+>gi|50121231|ref|YP_050398.1|
+AHQEGDFIVRAGSATV-RPSESSD-NVLGSLGSFQVNNNTQLGLTFSYMV----T-DNIGVELLAATPF-
+----NHNVGLRSTGTIAEVKHLPPSLVAQYYFGDKEDTLRPYLGVGVNYTLFFDEKFNDTGTNAGLSDLS
+-LKNSWGIAAQAGLDYNLDKNWLLNMSVWWMDIDTDVKFKAGNDQQSVHTRLDPWAFMFGVGYRF
+>1qj8
+--ATSTVTGGYAQSD-A------Q-G----------QMNKMGGFNLKYRYEEDNSPLGVIGSFTYTEKSR
+TASS------GD-----YNKNQYYGITAGPAY-RINDWASIYGVVGVGYGKFQTT-------EY-PTYKN
+-DTSDYGFSYGAGLQFNPMENVALDFSYEQSRI----------------RSVDVGTWI-AGVGYR
+>1qjp
+APKDNTWYTGAKLGWSQ-------H-----------ENKLGAGAFGGYQV----N-PYVGFEMGYDWLG-
+----RMPY---------AYKAQGVQLTAKLGY-PITDDLDIYTRLGGMVWRADTY-----SNVY---GKN
+H-DTGVSPVFAGGVEYAITPEIATRLEYQWT---------------------N-GMLSLGVSYRF
+>1p4t
+-EGASGFYVQADAAHA-KASSSLG-S----------AKGFSPRISAGYRI----N--DLRFAVDYTRYK-
+----N-YKAPST-----DFKLYSIGASAIYDF-DTQSPVKPYLGARLSLNRASVD--------LGG-SDS
+FSQTSIGLGVLTGVSYAVTPNVDLDAGYRYNYI----------GKVNTVKNVRSGELSAGVRVKF
+
+</pre>
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="mod_key"></a>
+<h3 class="<%= @section["name"] %>">Modeller key</h3>
+<div class="row">
+The MODELLER license requires you to enter a MODELLER-key to use this tool. 
+This key is freely available for academic users and easily obtainable at: 
+<a target="_blank" href="http://salilab.org/modeller/registration.shtml">http://salilab.org/modeller/registration.shtml</a>. 
+<br/>
+If you have a user-account, you can enter your MODELLER key in the "Your Account" section and
+it will be used automatically.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

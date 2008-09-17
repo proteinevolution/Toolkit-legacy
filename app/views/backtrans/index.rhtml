@@ -1,0 +1,72 @@
+<a href="#" onClick="openHelpWindow('/backtrans/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'backtrans'}, {:multipart => true, :id => "backtrans_form", :name => "backtrans_form"})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Paste sequence in FASTA format", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("Include amino acid sequence in output", "aaseq") %>
+	<%= form_checkbox("showseqs", 1, false) %>
+</div>
+
+<div class="row">
+	<%= form_label("Choose a genetic code", "gencode") %>
+	<%= form_select_single("gencode", @gencode_values, @gencode_labels, @gencode_values[0]) %>	
+</div>
+
+<% if params['organism'] %>
+
+<div class="row">
+	<%= form_label("Use codon usage table", "usecut") %>
+	<%= form_checkbox("cut", 1, false, false, "toggleDisabled('cutorganism');") %>
+</div>
+
+<% organism = IO.readlines(params['organism'])[0].split(',') %>
+<% File.delete(params['organism']) %>
+
+<div class="row">
+	<%= form_label("Choose a codon usage table", "cutorganism") %>
+	<%= form_select_single("cutorganism", organism, organism, organism[0], 10) %>	
+</div>
+
+<% else %>
+
+<div class="row">
+	<%= form_label("Use codon usage table", "usecut") %>
+	<%= form_checkbox("cut", 1, false, false, "toggleDisabled('cutname'); toggleDisabled('cutupload');") %>
+</div>
+
+
+<% disable = true %>
+<% if (params['cut'] || @error_params['cut']) then disable = false end %>
+	
+<div class="row">
+	<%= form_label("Use codon usage table of the following organism", "cutorganism") %>
+	<div class="formw">
+		<input id="cutupload" name="cutupload" type="submit" class="feedbutton" value="Upload codon usage table of organism" onclick="setAction('backtrans_form', '/backtrans/upload_cut');" disabled=<%= disable %> />		
+		<%= form_text_field("cutname", '' ,'', 30, disable, '', true) %>
+	</div>
+</div>
+
+<% end %>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

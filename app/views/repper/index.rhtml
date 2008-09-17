@@ -1,0 +1,182 @@
+<a href="#" onClick="openHelpWindow('/repper/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+<h2><%= @page_title %></h2>
+
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+It finds PERiodicities by Fourier Transform 
+(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#ftwin');" onmouseover="return overlib('Help');" onmouseout="return nd();">FTwin</a>) and internal homology analysis 
+(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#repwin');" onmouseover="return overlib('Help');" onmouseout="return nd();">REPwin</a>). The exact locations of the 
+periodic patterns are traced by a sliding window. The output is complemented by coiled coil prediction 
+(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#coils');" onmouseover="return overlib('Help');" onmouseout="return nd();">COILS</a>) and optionally by secondary 
+structure prediction according to Jones 
+(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#psipred');" onmouseover="return overlib('Help');" onmouseout="return nd();">PSIPRED</a>).
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= form_tag({:action => :run, :job => 'repper'}, {:multipart => true, :id => "repper_form", :name => "repper_form"})%>
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter sequence or sequence alignment", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<div class="label">
+		<a href="#" onclick="setSequence();">or use an example sequence</a>
+	</div>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+<div class="row">
+	<%= form_label("Select alignment format", "input_format") %>
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+</div>
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("Input mode", "inputmode") %>
+	<%= form_radio_buttons("inputmode", @inputmode_values, @inputmode_labels, @inputmode_values[0], "&nbsp;&nbsp;") %>	
+</div>
+
+<div class="row">
+	<%= form_label("Window size", "windowsize") %>
+	<%= form_text_field("windowsize", "100") %>
+</div>
+
+<div class="row">
+	<%= form_label("Periodicity range", "periodicity") %>
+	<%= form_text_field("minper", "2", "", 5, false, "Min &nbsp;") %>
+</div>
+
+<div class="row">
+	<%= form_text_field("maxper", "100", "", 5, false, "Max ") %>
+</div>
+
+<div class="row">
+	<%= form_label("Criteria for periodicity search", "criteria") %>
+	<%= form_radio_buttons("criteria", @criteria_values, @criteria_labels, @criteria_values[0], "&nbsp;&nbsp;", "setHydro();") %>	
+</div>
+
+<div class="row">
+	<div class="formw">
+		<table>
+			<tr>
+				<td width="10px">I</td>
+				<td width="50px"><%= form_text_field("ile", "4.5", "", 5, false, "", true) %></td>
+				<td width="10px">W</td>
+				<td width="50px"><%= form_text_field("trp", "-0.9", "", 5, false, "", true) %></td>
+			</tr>
+			<tr>
+				<td width="10px">V</td>
+				<td width="50px"><%= form_text_field("val", "4.2", "", 5, false, "", true) %></td>
+				<td width="10px">Y</td>
+				<td width="50px"><%= form_text_field("tyr", "-1.3", "", 5, false, "", true) %></td>
+			</tr>
+			<tr>
+				<td width="10px">L</td>
+				<td width="50px"><%= form_text_field("leu", "3.8", "", 5, false, "", true) %></td>
+				<td width="10px">P</td>
+				<td width="50px"><%= form_text_field("pro", "-1.6", "", 5, false, "", true) %></td>
+			</tr>
+			<tr>
+				<td width="10px">F</td>
+				<td width="50px"><%= form_text_field("phe", "2.8", "", 5, false, "", true) %></td>
+				<td width="10px">H</td>
+				<td width="50px"><%= form_text_field("his", "-3.2", "", 5, false, "", true) %></td>
+			</tr>
+			<tr>
+				<td width="10px">C</td>
+				<td width="50px"><%= form_text_field("cys", "2.5", "", 5, false, "", true) %></td>
+				<td width="10px">E</td>
+				<td width="50px"><%= form_text_field("glu", "-3.5", "", 5, false, "", true) %></td>
+			</tr>
+			<tr>
+				<td width="10px">M</td>
+				<td width="50px"><%= form_text_field("met", "1.9", "", 5, false, "", true) %></td>
+				<td width="10px">Q</td>
+				<td width="50px"><%= form_text_field("gln", "-3.5", "", 5, false, "", true) %></td>
+			</tr>
+			<tr>
+				<td width="10px">A</td>
+				<td width="50px"><%= form_text_field("ala", "1.8", "", 5, false, "", true) %></td>
+				<td width="10px">D</td>
+				<td width="50px"><%= form_text_field("asp", "-3.5", "", 5, false, "", true) %></td>
+			</tr>
+			<tr>
+				<td width="10px">G</td>
+				<td width="50px"><%= form_text_field("gly", "-0.4", "", 5, false, "", true) %></td>
+				<td width="10px">N</td>
+				<td width="50px"><%= form_text_field("asn", "-3.5", "", 5, false, "", true) %></td>
+			</tr>
+			<tr>
+				<td width="10px">T</td>
+				<td width="50px"><%= form_text_field("thr", "-0.7", "", 5, false, "", true) %></td>
+				<td width="10px">K</td>
+				<td width="50px"><%= form_text_field("lys", "-3.9", "", 5, false, "", true) %></td>
+			</tr>
+			<tr>
+				<td width="10px">S</td>
+				<td width="50px"><%= form_text_field("ser", "-0.8", "", 5, false, "", true) %></td>
+				<td width="10px">R</td>
+				<td width="50px"><%= form_text_field("arg", "-4.5", "", 5, false, "", true) %></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+
+
+<div class="row">
+	<%= form_label("FTwin threshold", "intensity") %>
+	<%= form_text_field("intthresh", "6") %>
+</div>
+
+<div class="row">
+	<%= form_label("REPwin threshold", "repperthres") %>
+	<%= form_text_field("repperthresh", "2") %>
+</div>
+
+<div class="row">
+	<%= form_label("COILS Parameters", "coils_param") %>
+	<%= form_radio_buttons("weighting", @weighting_values, @weighting_labels, @weighting_values[0], "&nbsp;&nbsp;") %>	
+</div>
+<div class="row">
+	<%= form_radio_buttons("matrix", @matrix_values, @matrix_labels, @matrix_values[0], "&nbsp;&nbsp;") %>	
+</div>
+
+<div class="row">
+	<%= form_label("Run PSIPRED") %>
+	<%= form_checkbox("psipred", 1, false) %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+	<ul class="arrow-marker">
+		<li><a href="#" title="About REPPER" onClick="openHelpWindow('/repper/help_ov');">About REPPER</a></li>
+		<li><a target="_blank" href="http://protevo.eb.tuebingen.mpg.de/download">Downloads</a></li>
+		<li><a target="_blank" href="http://www.eb.tuebingen.mpg.de/dept1/staff/Gruber.html">Send feedback</a></li>
+	</ul>
+</form>
+<div class="hr">&nbsp;</div>
+<div class="row">
+	M.Gruber, J.S&ouml;ding, and A.N.Lupas (2005) REPPER - repeats and their periodicities in fibrous proteins <em>Nucl. Acids Res.</em>, <strong>33</strong>(2), W239-43 
+	<a target="_blank" href="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W239">FREE PDF</a>
+</div>

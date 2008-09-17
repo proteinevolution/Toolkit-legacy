@@ -1,0 +1,56 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#pdb">PDB-file</a></li>
+	<li><a href="#3d">3D structure</a></li>
+	<li><a href="#verify3d">Model quality VERIFY3D</a></li>
+	<li><a href="#solvx">Model quality SOLVX</a></li>
+	<li><a href="#anolea">Model quality ANOLEA</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Results</h2>
+
+<a name="pdb"></a>
+<h3 class="<%= @section["name"] %>">PDB-file</h3>
+<div class="row">
+Here you can see the PDB output computed by Modeller. To view the structure, click at the 3d-structure tab.<BR><BR>
+The B-factor column contains the confidence factor for homology modelling. It is a measure of uncertainty, so a high value implies
+low confidence about a specific part of the model. (In crystallography, high B-factor imply uncertainty in assignment of atom positions).
+Note that large B factors are assigned to atoms or residues built without a template, including loops, reflecting the lack of template
+support for those parts of the model.
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="3d"></a>
+<h3 class="<%= @section["name"] %>">View 3D structure</h3>
+<div class="row">
+The computed structure is shown in a Java applet called Chemis3D. 
+For documentation on the Chemis3D Java applet please go to <a target="_blank" href="http://www.mol3d.com">http://www.mol3d.com</a>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="verify3d"></a>
+<h3 class="<%= @section["name"] %>">Model quality VERIFY3D</h3>
+<div class="row">
+Here the quality of the model was computed by the tool VERIFY3D. A score in the red area indicates a not so good model at this position.
+<br/>
+R. Luethy, J. Bowie, and D. Eisenberg (1992) Assessment of protein models with three-dimensional profiles. Nature 356, 83-85. <a href="/download/modeller/paper/Nature-1992-356-83-Verify3D-protein-struc-validation.pdf">(pdf)</a>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="solvx"></a>
+<h3 class="<%= @section["name"] %>">Model quality SOLVX</h3>
+<div class="row">
+Here the quality of the model was computed by the tool SOLVX. A score in the red area indicates a not so good model at this position.
+<br/>
+L. Holm, C. Sander (1992) Evaluation of protein models by atomic solvation preference. J Mol Biol 225. 93-105. <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=1583696&query_hl=7" target="_blank">(pdf)</a>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="anolea"></a>
+<h3 class="<%= @section["name"] %>">Model quality ANOLEA</h3>
+<div class="row">
+Here the quality of the model was computed by the tool ANOLEA. A score in the red area indicates a not so good model at this position.
+<br/>
+F. Melo and E. Feytmans (1998) Assessing protein structures with a non-local atomic interaction energy. J Mol Biol 277, 1141 - 1152. <a href="/download/modeller/paper/JMB-1998-277-1141-Melo-Feytmans-ANOLEA-assessment-of-3D-prot-structures.pdf">(pdf)</a>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

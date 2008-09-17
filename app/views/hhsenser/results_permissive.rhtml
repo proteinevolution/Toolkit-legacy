@@ -1,0 +1,87 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export_to => 'permissive'}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div id="forward" style="display: none;">
+	<div class="row">
+		<div class="label">Forward results to</div>
+		<div class="formw">
+			<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+		</div>
+	</div>
+    
+	<div class="row">
+		<div class="label"></div>
+		<div class="formw">
+			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+		</div>
+	</div>
+	<div class="hr">&nbsp;</div>
+</div>
+
+<div class="row">
+	<div id="applet">
+		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+		<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_permissive_masterslave.fas">
+		<PARAM NAME="type"   value="URL">
+		<PARAM NAME="format" value="FASTA">
+		</APPLET> 
+		<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+		<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_permissive_masterslave.reduced.fas">
+		<PARAM NAME="type"   value="URL">
+		<PARAM NAME="format" value="FASTA">
+		</APPLET>
+		<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>		
+	</div>
+</div>
+<div class="hr">&nbsp;</div>
+
+<div class = "row">
+	<span style="font-weight: bold;">Download alignment files:</span>
+	<table>
+		<tr height="0px"><td width="300px"></td><td></td></tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_permissive_masterslave.clu" target="_blank"><%= @job.jobid %>_permissive_masterslave.clu</a></td>
+			<td>CLUSTAL formatted without inserts</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_permissive_masterslave.fas" target="_blank"><%= @job.jobid %>_permissive_masterslave.fas</a></td>
+			<td>FASTA formatted without inserts</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_permissive_masterslave.reduced.fas" target="_blank"><%= @job.jobid %>_permissive_masterslave.reduced.fas</a></td>
+			<td>FASTA formatted without inserts (with 100 most distinct sequences)</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_permissive.clu" target="_blank"><%= @job.jobid %>_permissive.clu</a></td>
+			<td>CLUSTAL formatted</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_permissive.a3m" target="_blank"><%= @job.jobid %>_permissive.a3m</a></td>
+			<td>A3M formatted</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_permissive.fas" target="_blank"><%= @job.jobid %>_permissive.fas</a></td>
+			<td>FASTA formatted</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_permissive.reduced.fas" target="_blank"><%= @job.jobid %>_permissive.reduced.fas</a></td>
+			<td>FASTA formatted (with 100 most distinct sequences)</td>
+		</tr>
+	</table>
+	
+	<br>
+	<span style="font-weight: bold;">Master-slave alignment of 100 most distinct sequences:</span>
+</div>
+
+<% if @job.permissive_res.length > 0 %>
+	<div class="alignres"><%= @job.permissive_res.join("\n") %></div>
+<% else %>
+	<div class="alignres">Permissive alignment is empty!</div>
+<% end %>
+
+</form>

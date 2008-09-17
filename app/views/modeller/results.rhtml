@@ -1,0 +1,19 @@
+  <%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool}) %>
+  
+  <%= render(:partial => "shared/resultsections") %>
+
+  <% if @job.imoltalk_id %>
+        <P>Analyze and manipulate this model in the <a href="http://protevo.eb.tuebingen.mpg.de/iMolTalk/pdb_information/2/model/<%= @job.imoltalk_id %>" target="iMTContent">iMolTalk<img src="http://protevo.eb.tuebingen.mpg.de/iMolTalk/images/href.png" border=0></a> web-server<br>
+  <% end %>
+
+
+  <% if @job.hhpred_child %>
+  <a href="<%= url_for(:controller => "modeller", :action => "modeller2hhpred", :jobid => @job.jobid) %>" style="color: brown; margin-left: 5px;" >Back to HHpred results to view query-template 3D-superpositions</a>
+  <% end %>
+  <% if @job.hhomp_child %>
+  <a href="<%= url_for(:controller => "modeller", :action => "modeller2hhomp", :jobid => @job.jobid) %>" style="color: brown; margin-left: 5px;" >Back to HHomp results to view query-template 3D-superpositions</a>
+  <% end %>
+  
+  <div class="row">
+    <pre><%= @job.render_file(@job.jobid + ".pdb") %></pre>
+  </div>

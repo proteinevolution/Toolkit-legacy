@@ -1,0 +1,26 @@
+modeller_job: 
+  title: Modeller
+  hidden: false
+  code: MODL
+  resultsections:  
+    - name: results
+      title: PDB-file
+      title_long: Show result
+      forwardsections:
+    - name: results_model
+      title: View 3D structure
+      title_long: Chemis3D molecular structure viewer
+      forwardsections:
+    - name: verify3d
+      title: Quality by VERIFY3D
+      title_long: Model quality check by VERIFY3D
+      forwardsections:
+    - name: solvx
+      title: Quality by SOLVX
+      title_long: Model quality check by SOLVX
+      forwardsections:
+    - name: anolea
+      title: Quality by ANOLEA
+      title_long: Model quality check by ANOLEA
+      forwardsections:
+      

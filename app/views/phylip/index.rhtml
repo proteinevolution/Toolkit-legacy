@@ -1,0 +1,74 @@
+<a href="#" onClick="openHelpWindow('/phylip/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'phylip'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter alignment (up to 200 sequences!)", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+<div class="row">
+	<%= form_label("Select input format", "format") %>
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("Enable bootstrapping", "bootstrap") %>
+	<%= form_checkbox("bootstrap", '1', false, false, onchange="toggleDisabled('replicates');") %>	
+</div>
+
+<% disable = true %>
+<% if (params['bootstrap'] || @error_params['bootstrap']) 
+		disable = false
+	end %>
+	
+<div class="row">
+	<%= form_label("Number of replicates", "replicates") %>
+	<%= form_text_field("replicates", '100', '(<200)', 5, disable) %>	
+</div>
+
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+	<%= form_label("DNA or Protein alignment", "type") %>
+	<%= form_select_single("ali_type", @type_values, @type_labels, @type_values[0], 1, "toggleDisabled('dnaMat'); toggleDisabled('protMat');") %>	
+</div>
+
+<% disable_prot = false %>
+<% disable_dna = true %>
+<% if ((params['type'] && params['type'] == "dna") || (@error_params['type'] && @error_params['type'] == "dna")) 
+		disable_prot = true
+		disable_dna = false
+	end %>
+
+<div class="row">
+	<%= form_label("Model of amino acid replacement", "protMat") %>
+	<%= form_select_single("protMat", @protMat_values, @protMat_labels, @protMat_values[0], 1, "", disable_prot) %>	
+</div>
+
+<div class="row">
+	<%= form_label("Model of nucleotide substitution", "dnaMat") %>
+	<%= form_select_single("dnaMat", @dnaMat_values, @dnaMat_labels, @dnaMat_values[0], 1, "", disable_dna) %>	
+</div>
+
+<div class="row">
+	<%= form_label("Gamma distributed rates across sites", "gamma") %>
+	<%= form_text_field("gammavalue", '', '', 5) %>		
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

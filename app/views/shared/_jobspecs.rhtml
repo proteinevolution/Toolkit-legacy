@@ -1,0 +1,40 @@
+<br/>
+
+<div id="toolsection">
+  <ul class="<%= @section['theme'] -%>">
+    <li><a href="<%= url_for(:action => 'index') %>" onmouseover="return overlib('Submit new job');" onmouseout="return nd();">New job</a></li>
+    <% if !defined?(resubmit) || resubmit != false %>
+    <li><a href="<%= url_for(:action => 'resubmit', :jobid => @job) %>" onmouseover="return overlib('Submit new job with same parameters');" onmouseout="return nd();">Resubmit</a></li>
+    <% end %>
+    <% if defined?(toolname) && toolname == 'hhpred' -%>
+    <li><a href="<%= url_for(:action => 'run', :job => @job, :jobaction => 'hhpred_forward', :mode => :queryhmm, :forward_controller => 'hhpred', :forward_action => 'forward') %>" onmouseover="return overlib('Go to HHpred input page but use query HMM from this job for search');" onmouseout="return nd();">Resubmit_HMM</a></li>
+    <li><a href="<%= url_for(:action => 'run', :job => @job, :jobaction => 'hhpred_forward', :mode => :hhsenser, :forward_controller => 'hhpred', :forward_action => 'forward') %>" onmouseover="return overlib('Do automatic intermediate HMM search for increased sensitivity');" onmouseout="return nd();">Resubmit/HHsenser</a></li>
+    <li><a href="<%= url_for(:action => 'run', :job => @job, :jobaction => 'hhpred_forward', :mode => :realign, :forward_controller => 'hhpred', :forward_action => 'forward') %>" onmouseover="return overlib('Realign database matches with different parameters');" onmouseout="return nd();">Realign</a></li>
+    <!--
+	<li><a href="<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_makemodel', :increment_id => 'true') %>" onmouseover="return overlib('Create 3D homology model');" onmouseout="return nd();">Create model</a></li>		
+	-->
+    <% end -%>
+    <% if defined?(toolname) && toolname == 'frpred' && @job.params_main_action['inputmode'] == 'sequence' -%>
+    <li><a href="<%= url_for(:action => 'run', :job => @job, :jobaction => 'frpred_forward', :forward_controller => 'frpred', :forward_action => 'forward') %>" onmouseover="return overlib('Go to FRpred input page but use alignment from this job as input');" onmouseout="return nd();">Resubmit/Alignment</a></li>
+    <% end -%>
+    <% if File.exists?(@job.statuslog_path) && !File.zero?(@job.statuslog_path) %>
+    <li><a href="#" onClick="window.open('<%= url_for(:action => 'log', :jobid => @job)%>','logwindow','width=600,height=500,left=0,top=0,scrollbars=yes,resizable=no');" onmouseover="return overlib('View log-file');" onmouseout="return nd();">Log</a></li>
+    <% end %>
+    <% if !@job.params_main_action.empty? %>
+    <li><a href="#" onClick="window.open('<%= url_for(:action => 'input_params', :jobid => @job)%>','paramswindow','width=600,height=500,left=0,top=0,scrollbars=yes,resizable=no');" onmouseover="return overlib('View input parameters');" onmouseout="return nd();">Input-params</a></li>
+    <% end %>
+    <li><a href="<%= url_for(:action => 'destroy', :jobid => @job)%>" onmouseover="return overlib('Delete this job!');" onmouseout="return nd();">Delete</a></li>		
+  </ul>
+</div>
+
+<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 10px;"></a>
+<h2>
+  <%= @job.config['title'] %>
+  <% if defined?(title_extra) %>
+  - <%= title_extra %>
+  <% end -%>
+  <span style="font-size: 12px; font-weight: normal;">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Job-ID: <%= @job.jobid %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date: <%= @job.created_on.strftime('%H:%M on %b %d %Y') %>
+  </span>
+
+</h2>

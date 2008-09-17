@@ -1,0 +1,61 @@
+hhomp_job: 
+  title: HHomp
+  hidden: false
+  code: HHOM
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show results in alignment view
+      forwardsections:
+      - name: createmodel
+        title: Create model
+        title_long: Select templates to create 3D model of query
+    - name: results_histograms
+      title: Histogram
+      title_long: Show results in profile histogram view
+      forwardsections:
+      - name: createmodel
+        title: Create model
+        title_long: Select templates to create 3D model of query
+    - name: showalign
+      title: Show query alignment
+      title_long: Show or edit the query alignment constructed by HHpred
+      forwardsections:
+    - name: blast_results
+      title: BLAST results
+      title_long: Show BLAST results on HHompDB70
+      forwardsections:
+    - name: browse
+      title: Browse database
+      title_long: Browse database
+      forwardsections:
+
+hhompdb_job: 
+  title: HHomp
+  hidden: false
+  code: HHOM
+  resultsections:  
+    - name: browse
+      title: Browse database
+      title_long: Browse database
+      forwardsections:
+    - name: index
+      title: Search database
+      title_long: Search database
+      forwardsections:
+
+hhomp3d_templ_job:
+  title: HHomp 3d template model
+  hidden: true
+  code: HHOM
+
+hhomp3d_querytempl_job:
+  title: HHomp 3d query-template model
+  hidden: true
+  code: HHOM
+  
+hhomp_makemodel_job:
+  title: HHomp makemodel
+  hidden: false
+  code: HHMM
+  resultsections:  

@@ -1,0 +1,9 @@
+t_coffee_combine_job: 
+  title: TCoffeeCombine
+  hidden: false
+  code: TCOM
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:

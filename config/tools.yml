@@ -1,0 +1,346 @@
+--- 
+- section: search
+  name: hhpred
+  title: HHpred
+  title_long: HHpred - Homology detection & structure prediction by HMM-HMM comparison
+  active: 
+  - member
+  - internal
+  - external
+- section: search
+  name: prot_blast
+  title: ProteinBLAST
+  title_long: Protein BLAST
+  active: 
+  - member
+  - internal
+  - external
+- section: tertstruct
+  name: modeller
+  title: Modeller
+  title_long: Modeller
+  active: 
+  - member
+  - internal
+  - external
+- section: seqanal
+  name: hhrep
+  title: HHrep
+  title_long: HHrep - de novo protein repeat detection by HMM-HMM comparison
+  active: 
+  - member
+  - internal
+  - external
+- section: search
+  name: hhsenser
+  title: HHsenser
+  title_long: HHsenser - exhaustive intermediate profile search using HMM-HMM comparison
+  active: 
+  - member
+  - internal
+  - external
+- section: search
+  name: psi_blast
+  title: PSI-BLAST
+  title_long: PSI-BLAST
+  active: 
+  - member
+  - internal
+  - external
+- section: utils
+  name: reformat
+  title: Reformat
+  title_long: Reformat
+  active: 
+  - member
+  - internal
+  - external
+- section: utils
+  name: sixframe
+  title: 6FrameTranslation
+  title_long: 6 Frame Translation
+  active: 
+  - member
+  - internal
+  - external
+- section: utils
+  name: seq2gi
+  title: Extract GIs
+  title_long: Extract GIs
+  active: 
+  - member
+  - internal
+  - external
+- section: secstruct
+  name: quick2_d
+  title: Quick2D
+  title_long: Quick2D
+  active: 
+  - member
+  - internal
+  - external
+- section: alignment
+  name: clustalw
+  title: ClustalW
+  title_long: ClustalW
+  active: 
+  - member
+  - internal
+  - external
+- section: alignment
+  name: muscle
+  title: MUSCLE
+  title_long: MUSCLE
+  active: 
+  - member
+  - internal
+  - external
+- section: alignment
+  name: probcons
+  title: ProbCons
+  title_long: ProbCons
+  active: 
+  - member
+  - internal
+  - external
+- section: alignment
+  name: mafft
+  title: MAFFT
+  title_long: MAFFT
+  active: 
+  - member
+  - internal
+  - external
+- section: alignment
+  name: blammer
+  title: Blammer
+  title_long: Blammer
+  active: 
+  - member
+  - internal
+  - external
+- section: alignment
+  name: hhalign
+  title: HHalign
+  title_long: HHalign
+  active: 
+  - member
+  - internal
+  - external
+- section: search
+  name: nuc_blast
+  title: NucleotideBLAST
+  title_long: Nucleotide BLAST
+  active: 
+  - member
+  - internal
+  - external
+- section: seqanal
+  name: patsearch
+  title: PatternSearch
+  title_long: Pattern Search
+  active: 
+  - member
+  - internal
+  - external
+- section: search
+  name: fast_hmmer
+  title: FastHMMER
+  title_long: FastHMMER
+  active: 
+  - member
+  - internal
+  - external
+- section: classification
+  name: ancescon
+  title: ANCESCON
+  title_long: ANCESCON
+  active: 
+  - member
+  - internal
+  - external
+- section: classification
+  name: clans
+  title: CLANS
+  title_long: CLANS
+  active: 
+  - member
+  - internal
+  - external
+- section: classification
+  name: hhcluster
+  title: HHcluster
+  title_long: HHcluster - Galaxy of Folds
+  active: 
+  - mpi
+  - internal
+- section: alignment
+  name: kalign
+  title: Kalign
+  title_long: Kalign
+  active: 
+  - member
+  - internal
+  - external
+- section: classification
+  name: phylip
+  title: PHYLIP-NEIGHBOR
+  title_long: PHYLIP-NEIGHBOR
+  active: 
+  - member
+  - internal
+  - external
+- section: alignment
+  name: alnviz
+  title: AlignmentViewer
+  title_long: Alignment Viewer
+  active: 
+  - member
+  - internal
+  - external
+- section: seqanal
+  name: aln2plot
+  title: Aln2Plot
+  title_long: Aln2Plot
+  active: 
+  - member
+  - internal
+  - external
+- section: seqanal
+  name: frpred
+  title: FRpred
+  title_long: FRpred
+  active: 
+  - member
+  - internal
+  - external
+- section: seqanal
+  name: tprpred
+  title: TPRpred
+  title_long: TPRpred
+  active: 
+  - member
+  - internal
+  - external
+- section: seqanal
+  name: pcoils
+  title: PCOILS
+  title_long: PCOILS
+  active: 
+  - member
+  - internal
+  - external
+- section: seqanal
+  name: repper
+  title: REPPER
+  title_long: REPPER - Detecting regions with short gapless REPeats in protein sequences
+  active: 
+  - member
+  - internal
+  - external
+- section: utils
+  name: gi2seq
+  title: RetrieveSeq
+  title_long: RetrieveSeq
+  active: 
+  - member
+  - internal
+  - external
+- section: utils
+  name: gi2pro
+  title: GI2Promoter
+  title_long: GI2Promoter
+  active: 
+  - member
+  - internal
+  - external
+- section: utils
+  name: backtrans
+  title: Backtranslator
+  title_long: Backtranslator
+  active: 
+  - member
+  - internal
+  - external
+- section: classification
+  name: blastclust
+  title: BLASTclust
+  title_long: BLASTclust
+  active: 
+  - member
+  - internal
+  - external
+- section: secstruct
+  name: ali2d
+  title: Ali2D
+  title_long: Ali2D
+  active: 
+  - member
+  - internal
+  - external
+- section: utils
+  name: hhfilter
+  title: HHfilter
+  title_long: HHfilter
+  active: 
+  - member
+  - internal
+  - external
+- section: alignment
+  name: t_coffee
+  title: TCoffee
+  title_long: TCoffee
+  active: 
+  - member
+  - internal
+  - external
+- section: search
+  name: hhomp
+  title: HHomp
+  title_long: HHomp - Homology detection of OMPs by HMM-HMM comparison
+  active: 
+  - member
+  - internal
+  - external
+- section: utils
+  name: peaks
+  title: Peaks
+  title_long: Peaks
+  active: 
+  - internal
+- section: alignment
+  name: t_coffee_combine
+  title: TCoffeeCombine
+  title_long: TCoffeeCombine
+  active: 
+  - member
+- section: seqanal
+  name: hhrepid
+  title: HHrepID
+  title_long: HHrepID
+  active: 
+  - member
+  - internal
+  - external
+- section: classification
+  name: dataa
+  title: daTAA
+  title_long: domain annotation of Trimeric Autotransporter Adhesins
+  active: 
+  - member
+  - internal
+  - external
+- section: search
+  name: hhblast
+  title: HHblast
+  title_long: HHblast - Homology detection by iterative HMM-HMM comparison
+  active: 
+  - member
+  - internal
+- section: search
+  name: cs_blast
+  title: csBLAST
+  title_long: Context-specific BLAST
+  active: 
+  - member
+  - internal

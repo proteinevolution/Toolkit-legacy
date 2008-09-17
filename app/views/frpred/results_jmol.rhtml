@@ -1,0 +1,89 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Jmol Applet', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<% if @job.pdb %>
+
+<div class="row">
+	<table border=0>
+	<th>
+		<td>cat9</td>
+		<td>cat8</td>
+		<td>cat7</td>
+		<td>remaining</td>
+		<td rowspan=7 width=70%>
+	  	  
+		    <ul>
+			<li>All residues that were aligned to the input sequence/alignment are shown in color.</li>
+			<li>Strong color intensity indicates high scoring residues.</li>
+			<li>The best-scoring 15% (categories 9-7) of all residues are shown in wireframe 250
+        			representation, the remaining ones in cartoon.</li>
+			<li>Refer to the table on the left for color explanations (possible ligands are shown in <font color="magenta">magenta</font>).</li>
+			<li>Rightclick on the structure and click Console to open a <strong>RasMol console</strong>.
+			<li>Type "select match" to select all residues that match the input alignment. You can also type 
+				"select cat9" for selecting the best-scoring 5%, "select cat8" for the next best 5% and so on.
+		    </ul>
+		</td>
+	</th>
+        <tr>
+                <td>ARG, LYS, HIS</td>
+                <td bgcolor="#FF0000">&nbsp;</td>
+                <td bgcolor="#EC4646">&nbsp;</td>
+                <td bgcolor="#DE7878">&nbsp;</td>
+                <td bgcolor="#D0AAAA">&nbsp;</td>
+        </tr>
+        <tr>
+                <td>ASP, GLU</td>
+                <td bgcolor="#0000FF">&nbsp;</td>
+                <td bgcolor="#4646EC">&nbsp;</td>
+                <td bgcolor="#7878DE">&nbsp;</td>
+                <td bgcolor="#AAAAD0">&nbsp;</td>
+        </tr>
+        <tr>
+                <td>ASN, GLN</td>
+                <td bgcolor="#00FFFF">&nbsp;</td>
+                <td bgcolor="#46ECEC">&nbsp;</td>
+                <td bgcolor="#78DEDE">&nbsp;</td>
+                <td bgcolor="#AAD0D0">&nbsp;</td>
+        </tr>
+        <tr>
+                <td>GLY, ALA, SER, THR, PRO, CYS</td>
+                <td bgcolor="#FFC800">&nbsp;</td>
+                <td bgcolor="#ECC846">&nbsp;</td>
+                <td bgcolor="#DEC878">&nbsp;</td>
+                <td bgcolor="#D0C8AA">&nbsp;</td>
+        </tr>
+        <tr>
+                <td>VAL, LEU, ILE, MET</td>
+                <td bgcolor="#00FF00">&nbsp;</td>
+                <td bgcolor="#46EC46">&nbsp;</td>
+                <td bgcolor="#78DE78">&nbsp;</td>
+                <td bgcolor="#AAD0AA">&nbsp;</td>
+        </tr>
+        <tr>
+                <td>PHE, TYR, TRP</td>
+                <td bgcolor="#008000">&nbsp;</td>
+                <td bgcolor="#469946">&nbsp;</td>
+                <td bgcolor="#78AB78">&nbsp;</td>
+                <td bgcolor="#AABDAA">&nbsp;</td>
+        </tr>
+
+	</table>
+
+</div>
+
+<div class="row">
+	<%= @job.render_file(@job.jobid + "_pdb.html") %>
+</div>
+
+<% else %>
+
+<div class="row">
+<strong>No PDB-Structure was submitted!</strong>
+</div>
+
+<% end %>
+
+</form>

@@ -1,0 +1,31 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'FRtrace', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row">
+	<strong>Following the idea of ET, FRtrace predicts conserved
+	as well as subtype-specific residues on a UPGMA tree. It uses FRcons as a
+	conservation score, offers a sequence-centered analysis if
+	chosen in the input options and weighs the contribution from
+	each subgroup in proportion to its effective number of sequences. </strong> 
+</div>
+<div class="hr">&nbsp;</div>
+<div class="row">
+        Kabsch, W., and Sander C. (1983)
+        Dictionary of protein secondary structure: Pattern recognition of hydrogen-bonded and geometrical features. <em>Biopolymers.</em>,
+	<strong>22</strong> (12), 2577-2637.
+</div>
+<div class="row">
+        Adamczak R., Porollo A., Meller J. (2004)
+        Accurate prediction of solvent accessibility using neural networks-based
+        regression. <em>Proteins.</em>,
+        <strong>56</strong> (4), 753-767.
+</div>
+<div class="hr">&nbsp;</div>
+<div class="row">
+	<%= @job.render_file(@job.jobid + ".2_scores.html") %>
+</div>
+
+</form>

@@ -1,0 +1,19 @@
+<a href="#" onClick="openHelpWindow('/bad/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><% if @id.empty? %>
+
+<h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<% else %>
+
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'main page'}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<% end %>
+
+<div class="row">
+
+<%= @ret %>
+
+</div>

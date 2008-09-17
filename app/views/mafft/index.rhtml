@@ -1,0 +1,57 @@
+<a href="#" onClick="openHelpWindow('/mafft/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'mafft'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter sequences in FASTA format", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("CLUSTALW output format", "clustalw") %>
+	<%= form_checkbox("clustalw", '1', false) %>	
+</div>
+
+<div class="row">
+	<%= form_label("Output in alignment order", "alnorder") %>
+	<%= form_checkbox("alnorder", '1', false) %>	
+</div>
+
+<div class="row">
+	<%= form_label("Gap opening penalty (>0)", "gapopen") %>
+	<%= form_text_field("gapopen", "1.53") %>
+</div>
+
+<div class="row">
+	<%= form_label("Offset (>0, works like gap extension penalty)", "offset") %>
+	<%= form_text_field("offset", "0.123") %>
+</div>
+
+<div class="row">
+	<%= form_label("Other advanced options", "otheradvanced") %>
+	<%= form_text_field("otheradvanced", "", "", 50) %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Katho, K., Misawa, K., Kuma, K.-i. and Miyata, T. (2002) MAFFT: a novel method for rapid multiple sequence alignment 
+	based on fast Fourier transform. <em>Nucl. Acids Res.</em>, <strong>30</strong>(14), 3059-3066.
+</div>

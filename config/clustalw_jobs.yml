@@ -1,0 +1,12 @@
+clustalw_job: 
+  title: ClustalW
+  hidden: false
+  code: CLUW
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results

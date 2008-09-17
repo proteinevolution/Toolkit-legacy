@@ -1,0 +1,56 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export_action => 'hhfilter_export'}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<% if @errors['hits'] %>
+<div class="row">
+	<p class="formerror"><%= @errors['hits'] %></p>
+</div><div class="hr">&nbsp;</div>
+<% end %>
+
+<div id="forward" style="display: none;">
+	<div class="row">
+		<div class="label">Forward results to</div>
+		<div class="formw">
+			<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+		</div>
+	</div>
+    
+	<div class="row">
+		<div class="label"></div>
+		<div class="formw">
+			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+		</div>
+	</div>
+	<div class="hr">&nbsp;</div>
+	
+</div>
+
+<div class="row">
+	<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:select_first()">Select the best ten</a>
+	<br/><br/>
+	<strong>Number of sequences: <%= @job.num_seqs %></strong>
+	<br/><br/>
+	<table>
+	<% for i in 0...@job.header.size %>
+		<tr>
+		<td><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= i %>" checked="checked" /></td>
+		<td><pre><%= @job.header[i] %></pre></td>
+		</tr>
+		<tr>
+		<td></td>
+		<td><pre><%= @job.aln_blocks[i] %></pre></td>
+		</tr>
+		
+	<% end %>
+	</table>
+	
+</div>
+
+<%= form_hidden_field('CHECKBOXES', @job.num_seqs) %>
+
+</form>

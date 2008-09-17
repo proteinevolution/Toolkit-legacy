@@ -1,0 +1,90 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input format</a></li>
+	<li><a href="#outputorder">Output sequence order</a></li>	
+	<li><a href="#gapopen">Gap open penalty</a></li>
+	<li><a href="#gapextension">Gap extension penalty</a></li>	
+	<li><a href="#termgap">Terminal gap penalties</a></li>
+	<li><a href="#bonusscore">Bonus score</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input format</h3>
+<div class="row">
+<p>
+Enter multiple sequences in fasta format.
+A sequence in FASTA format begins with a single-line description, followed by lines of sequence data. The description line is distinguished from the sequence data by a greater-than (">") symbol in the first column. It is recommended that all lines of text be shorter than 80 characters in length. An example sequence in FASTA
+format is:
+</p>
+<pre>
+
+>gi|532319|pir|TVFV2E|TVFV2E envelope protein
+ELRLRYCAPAGFALLKCNDADYDGFKTNCSNVSVVHCTNLMNTTVTTGLLLNGSYSENRT
+QIWQKHRTSNDSALILLNKHYNLTVTCKRPGNKTVLPVTIMAGLVFHSQKYNLRLRQAWC
+HFPSNWKGAWKEVKEEIVNLPKERYRGTNDPKRIFFQRQWGDPETANLWFNCHGEFFYCK
+MDWFLNYLNNLTVDADHNECKNTSGTKSGNKRAPGPCVQRTYVACHIRSVIIWLETISKK
+TYAPPREGHLECTSTVTGMTVELNYIPKNRTNVTLSPQIESIWAAELDRYKLVEITPIGF
+APTEVRRYTGGHERQKRVPFVXXXXXXXXXXXXXXXXXXXXXXVQSQHLLAGILQQQKNL
+LAAVEAQQQMLKLTIWGVK
+
+</pre>
+<p>
+Sequences are expected to be represented in the standard IUB/IUPAC amino acid codes, with these exceptions: lower-case letters are accepted and are mapped into upper-case; a single hyphen or dash can be used to represent a gap of indeterminate length; and in amino acid sequences, U and * are acceptable letters (see below). Before submitting a request, any numerical digits in the query sequence should either be removed or replaced by appropriate letter codes (e.g., X for unknown amino acid residue).
+<p>
+The accepted amino acid codes are:
+</p>
+<pre>
+
+    A  alanine                         P  proline
+    B  aspartate or asparagine         Q  glutamine
+    C  cystine                         R  arginine
+    D  aspartate                       S  serine
+    E  glutamate                       T  threonine
+    F  phenylalanine                   U  selenocysteine
+    G  glycine                         V  valine
+    H  histidine                       W  tryptophan
+    I  isoleucine                      Y  tyrosine
+    K  lysine                          Z  glutamate or glutamine
+    L  leucine                         X  any
+    M  methionine                      *  translation stop
+    N  asparagine                      -  gap of indeterminate length
+    
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="outputorder"></a>
+<h3 class="<%= @section["name"] %>">Output sequence order</h3>
+<div class="row">
+Use this radio button to specify the output order of the sequences.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="gapopen"></a>
+<h3 class="<%= @section["name"] %>">Gap open penalty</h3>
+<div class="row">
+Specify the gap open penalty
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="gapextension"></a>
+<h3 class="<%= @section["name"] %>">Gap extension penalty</h3>
+<div class="row">
+Specify the gap extension penalty
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="termgap"></a>
+<h3 class="<%= @section["name"] %>">Terminal gap penalties</h3>
+<div class="row">
+Specify the terminal gap penalties
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="bonusscore"></a>
+<h3 class="<%= @section["name"] %>">Bonus score</h3>
+<div class="row">
+Here you can specify a constant added to the substitution matrix.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

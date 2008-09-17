@@ -1,0 +1,7 @@
+De novo repeat identification in protein sequences by HMM-HMM comparison. 
+HHrep is extremely sensitive in detecting very diverged repeat units but will also be happy 
+with nearly identical repeats. It builds a profile HMM from the query sequence by several 
+rounds of PSI-BLAST and compares this HMM with itself. HHrep can also exploit the redundancy 
+in a set of pairwise alignments ("transitivity") with the help of its "Merge alignments" function. 
+It returns a profile-profile dotplot for immediate visual identification of the repeat structure, 
+as well as pairwise self-alignments and an alignment of the repeat units.

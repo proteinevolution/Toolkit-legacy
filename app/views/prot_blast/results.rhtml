@@ -1,0 +1,102 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+<%= render(:partial => "shared/resultsections", :locals => {:export_action => 'prot_blast_export'}) %>
+
+<%= form_tag( @fw_values[0], {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+
+<% if @errors['hits'] %>
+<div class="row">
+	<p class="formerror"><%= @errors['hits'] %></p>
+</div><div class="hr">&nbsp;</div>
+<% end %>
+
+<div id="forward" style="display: none;">
+	<div class="row">
+		<%= form_label("Forward results to") %>
+		<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0], 1, "toggle_seqlen('destination');") %>
+	</div>
+    
+	<div class="row">
+		<%= form_label("Select hits to forward") %>
+		<div class="formw">
+			<input name="includehits" type="radio" value="selected" checked="checked" />&nbsp;selected hits<br/>
+			<input name="includehits" type="radio" value="byevalue" />&nbsp;hits with e-value better than&nbsp;
+			<input name="hitsevalue" type="text" value="0.001" />
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="label">Select sequence length</div>
+		<div class="formw">
+			<input id="seqlen_hsp" name="seqlen" type="radio" value="hsp" checked="checked" disabled=true />&nbsp;Use HSPs<br/>
+			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+			<input id="seqlen_complete" name="seqlen" type="radio" value="complete" disabled=true />&nbsp;Use full length sequences&nbsp;
+		</div>
+	</div>
+	<div class="hr">&nbsp;</div>
+</div>
+
+<br/>
+
+<div style="width: 700px;">
+
+	<pre><%= @job.header.join("\n") %></pre>
+
+	<br/>
+	<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:select_first()">Select the best ten</a>
+	<br/><br/>
+
+	<% if @job.hits_better.empty? && @job.hits_worse.empty? %>
+	<br/><br/>
+	***** No hits found *****
+	<br/><br/>
+	<% else %>
+	<table>
+		<tr>
+			<td></td>
+			<td><pre>Hits                                                             Score  E-Value</pre></td>
+		</tr>
+		<% num = 0 %>
+		<% @job.hits_better.each do |hit| %>
+		<tr>
+			<td><%= check_box_tag("hits[]", hit[:id], true, {:onclick => "javascript:change(#{num}, 0);", :style => "margin: 0px 5px; padding: 0px;"}) %></td>
+			<td><pre><%= hit[:content] %></pre></td>
+		</tr>
+		<% num += 1 %>
+		<% end %>
+		<tr>
+			<td></td>
+			<td><pre>Hits with E-Value worse than <%= ProtBlastJob::E_THRESH %></pre></td>
+		</tr>
+		<% @job.hits_worse.each do |hit| %>
+		<tr>
+			<td><%= check_box_tag("hits[]", hit[:id], false, {:onclick => "javascript:change(#{num}, 0);", :style => "margin: 0px 5px; padding: 0px;"}) %></td>
+			<td style="background-color: #ffe0e0;"><pre><%= hit[:content] %></pre></td>
+		</tr>
+		<% num += 1 %>
+		<% end %>
+	</table>
+	<br/>
+	<table>
+		<% num = 0 %>
+		<% @job.alignments.each do |section| %>
+		<tr>
+			<td valign="top" >
+				<%= check_box_tag("hits[]", section[:id], section[:check], {:onclick => "javascript:change(#{num}, 1);", :style => "margin: 0px 5px; padding: 0px;"}) %>
+			</td>
+			<td><pre><%= section[:content].join("\n") %></pre></td>
+		</tr>
+		<% num += 1 %>
+		<% end %>
+
+	</table>
+	<%end %>
+	<br/><br/>
+	<pre><%= @job.footer.join("\n") %></pre>
+	      
+</div>
+    
+<%= hidden_field_tag("CHECKBOXES", @job.num_checkboxes, {:id => "CHECKBOXES"}) %>
+
+</form>

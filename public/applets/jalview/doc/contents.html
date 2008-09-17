@@ -1,0 +1,1570 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.05 [en] (X11; I; IRIX64 6.2 IP28) [Netscape]">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE" VLINK="#551A8B" ALINK="#FF0000">
+&nbsp;
+<TABLE WIDTH="100%" NOSAVE >
+<TR NOSAVE>
+<TD NOSAVE><IMG SRC="snap22sm.gif" HEIGHT=80 WIDTH=200></TD>
+
+<TD NOSAVE>
+<H1>
+<FONT SIZE=+4>Jalview</FONT> Documentation</H1>
+
+<H4>
+1.3 beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (25th September
+1998)</H4>
+Michele Clamp (michele@ebi.ac.uk)</TD>
+</TR>
+</TABLE>
+&nbsp;
+<BLOCKQUOTE>
+<BLOCKQUOTE>&nbsp;</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<UL>
+<UL>
+<UL>
+<LI>
+<B><A HREF="#Menus">Menus</A></B></LI>
+
+<UL>
+<LI>
+<A HREF="#file">File</A></LI>
+
+<LI>
+<A HREF="#edit">Edit</A></LI>
+
+<LI>
+<A HREF="#font">Font</A></LI>
+
+<LI>
+<A HREF="#view">View</A></LI>
+
+<LI>
+<A HREF="#colour">Colour</A></LI>
+
+<LI>
+<A HREF="#calculate">Calculate</A></LI>
+
+<LI>
+<A HREF="#mulalign">Align</A></LI>
+</UL>
+&nbsp;
+<LI>
+<B><A HREF="#inputcommandline">Command line parameters</A></B></LI>
+</UL>
+<B><A HREF="#inputcommandline"></A></B>&nbsp;
+<UL>
+<LI>
+<B><A HREF="groups.html">Applet parameters</A></B></LI>
+</UL>
+<B><A HREF="groups.html"></A></B>&nbsp;
+<UL>
+<LI>
+<B><A HREF="#file">Input/Output</A></B></LI>
+</UL>
+</UL>
+</UL>
+
+<UL>
+<UL>
+<UL>
+<LI>
+<B><A HREF="#edit">Selecting/editing operations</A></B></LI>
+
+<BR>&nbsp;
+<LI>
+<B><A HREF="#fastdraw">Changing the appearance</A></B></LI>
+</UL>
+</UL>
+</UL>
+
+<UL>
+<UL>
+<UL>
+<LI>
+<B><A HREF="#colour">Colour schemes</A></B></LI>
+
+<BR>&nbsp;
+<LI>
+<B><A HREF="#font">Fonts</A></B></LI>
+
+<BR>&nbsp;
+<LI>
+<B><A HREF="#calculate">Calculations</A></B></LI>
+
+<BR>&nbsp;
+<LI>
+<B><A HREF="#mulalign">Multiple alignments</A></B></LI>
+
+<BR>&nbsp;
+<LI>
+<B><A HREF="#srs">&nbsp;SRS access</A></B></LI>
+
+<BR>&nbsp;
+<LI>
+<B><A HREF="#alwin">The Alignment Window</A></B></LI>
+</UL>
+<B><A HREF="#alwin"></A></B>&nbsp;
+<UL>
+<LI>
+<B><A HREF="#statusbar">The status bar</A></B></LI>
+</UL>
+<B><A HREF="#statusbar"></A></B>&nbsp;
+<UL>
+<LI>
+<B><A HREF="#idpanel">The ID panel</A></B></LI>
+</UL>
+<B><A HREF="#idpanel"></A></B>
+
+<P>
+<HR WIDTH="100%"></UL>
+</UL>
+
+<H2>
+<A NAME="Menus"></A>Menus</H2>
+
+<UL>
+<H3>
+<A NAME="file"></A>File menu</H3>
+
+<UL>
+<LI>
+<A HREF="#inputcommandline">Input from the command line</A></LI>
+
+<LI>
+<A HREF="#URLinput">Input from a URL</A></LI>
+
+<LI>
+<A HREF="#infile">Input from a local file (application only)</A></LI>
+
+<LI>
+<A HREF="#outfile">Save to a local file (application only)</A></LI>
+
+<LI>
+<A HREF="#psout">Save postscript to a local file (application only)</A></LI>
+
+<LI>
+<A HREF="#textboxinput">Input via a text box (cut and paste)</A></LI>
+
+<LI>
+<A HREF="#textboxoutput">Alignment output in a text box (cut and paste)</A></LI>
+
+<LI>
+<A HREF="#emailoutput">Alignment output by email</A></LI>
+
+<LI>
+<A HREF="#postscriptoutput">Postscript output by email</A></LI>
+
+<LI>
+<A HREF="#formats">File formats supported</A></LI>
+
+<LI>
+<A HREF="#appletparameters">Applet parameters</A></LI>
+</UL>
+&nbsp;
+<BLOCKQUOTE>
+<H4>
+<A NAME="inputcommandline"></A>Input from the command line</H4>
+
+<BLOCKQUOTE>When run as an application jalview takes the name of an alignment
+file on the command line.&nbsp; The format is :
+<BR>&nbsp;
+<PRE>&nbsp;&nbsp;&nbsp; java jalview.AlignFrame &lt;alignfile> File|URL &lt;format> [-mail &lt;mailserver></PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -srsserver &lt;srsserver> -database &lt;srsdatabase>]</PRE>
+For people using the script file jalview.bat or Jalview the syntax is
+<BR>&nbsp;
+<PRE>&nbsp;&nbsp;&nbsp; Jalview &lt;alignfile> &lt;format></PRE>
+&lt;alignfile>&nbsp; is the name of the alignment file which has to be
+in one of the supported formats.&nbsp; The allowed formats are MSF, FASTA,
+PIR, CLUSTAL and BLC and are described in more detail <A HREF="/formats.html">here.</A>
+
+<P>File|URL&nbsp; If&nbsp; you are reading from a local file use the File
+switch here.&nbsp; If you are reading a URL use the URL switch.
+
+<P>&lt;format>&nbsp; This must be one of MSF, FASTA, PIR CLUSTAL, BLC,
+PFAM, MSP
+
+<P>Examples:
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp; 1) For a URL:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; java jalview.AlignFrame http://circinus.ebi.ac.uk:6543/jalview/llym.msf URL MSF</PRE>
+&nbsp;&nbsp; 2) For a local file
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Jalview 1lym.blc BLC</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; java jalview.AlignFrame 1lym.pir File PIR</PRE>
+&lt;mailserver>&nbsp; This defaults to circinus.ebi.ac.uk.&nbsp; For far
+away places and behind firewalls insert your own mail server.
+
+<P>&lt;srsserver>&nbsp; The default is the EBI srs server :
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; srs.ebi.ac.uk:5000/srs5bin/cgi-bin/&nbsp;&nbsp; .</PRE>
+If you use your own srs server then this option takes the location (minus
+the http://) of the wgetz program.&nbsp; In most cases this will be
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; your.hostname/srs5bin/cgi-bin/</PRE>
+&lt;database>&nbsp; The default database is swall which is probably EBI
+specific.&nbsp; Change this to your relevant database.
+
+<P>See here for more details about SRS access.
+
+<P>Example for access to the sanger SRS site and the pfam database :
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; java jalview.AlignFrame myfile.pfam File PFAM -srsserver www.sanger.ac.uk/srs5bin/cgi-bin/ -database pfamseq</PRE>
+</BLOCKQUOTE>
+
+<H4>
+<A NAME="URLinput"></A><FONT SIZE=+1>Input from a URL</FONT></H4>
+
+<BLOCKQUOTE>See <A HREF="#inputcommandline">Input from the command line
+</A>for details of how to do this
+<BR>&nbsp;</BLOCKQUOTE>
+
+<H4>
+<A NAME="infile"></A><FONT SIZE=+1>Input from a local file (application
+only)</FONT></H4>
+
+<BLOCKQUOTE>Selecting this option brings up a window where you can type
+in your local file and select the right format.&nbsp; Pressing the 'Apply'
+button loads up the alignment in a new window.&nbsp; Input formats allowed
+are MSF, FASTA, PIR, BLC, CLUSTAL, PFAM and MSP.&nbsp; Further details
+about formats are here.</BLOCKQUOTE>
+
+<H4>
+<A NAME="outfile"></A><FONT SIZE=+1>Output to a local file (application
+only)</FONT></H4>
+
+<BLOCKQUOTE>This option allows you to save your alignment as text to a
+local file using much the same procedure as reading in a file.&nbsp; WARNING:&nbsp;
+files can be overwritten with no prompting.</BLOCKQUOTE>
+
+<H4>
+<A NAME="psout"></A><FONT SIZE=+1>Outputting postscript to a local file
+(application only)</FONT></H4>
+
+<BLOCKQUOTE>You can save your coloured alignment as postscript using this
+option. A window appears where you can select the font and fontsize you
+wish to use as well as whether the output orientation is portrait or landscape.</BLOCKQUOTE>
+
+<H4>
+<A NAME="textboxinput"></A><FONT SIZE=+1>Input via a text box</FONT></H4>
+
+<BLOCKQUOTE>As applets can't write or read local files I have provided
+a way of inputting alignments by cutting and pasting.
+<BR>Select your alignment from your local text editor or xterm and paste
+directly into jalview.&nbsp; You then have to select the <A HREF="/formats.html">format</A>
+your alignment text is in and click apply to tell jalview to interpret
+the output.&nbsp; If the format is correct a new alignment window will
+appear.
+
+<P><B>Unix selection</B>:&nbsp; 'cat myalignfile' will display the alignment
+file on screen.&nbsp; Select the alignment text with the mouse.&nbsp; Move
+the mouse over the text input window and press the middle button.&nbsp;
+You should now have transferred your alignment to the jalview input box.
+
+<P><B>Windows selection</B>:&nbsp; Open up your alignment in a text editor
+(notepad, wordpad or whatever).&nbsp; Select all the text with the mouse
+and type CTRL-C to copy it.&nbsp; Move your mouse over the jalview text
+input window and type CTRL-V.&nbsp; The alignment text should now be transferred
+to the input window.
+<BR>&nbsp;</BLOCKQUOTE>
+
+<H4>
+<A NAME="emailoutput"></A><FONT SIZE=+1>Alignment Output by Email</FONT></H4>
+
+<BLOCKQUOTE>Again, as applets can't write local files jalview provides
+output via email.&nbsp;&nbsp;&nbsp; Selecting the 'Mail alignment...' option
+from the File menu brings up a window where you can enter your email address
+and select the output format you want.&nbsp; Pressing the 'Apply' button
+initiates the mail transfer and will send you a text version of your alignment.</BLOCKQUOTE>
+
+<H4>
+<A NAME="textboxoutput"></A><FONT SIZE=+1>Alignment output via a text box</FONT></H4>
+
+<BLOCKQUOTE>Similarly to the textbox input option the text version of your
+alignment can be output via a java text box.&nbsp; See the '<A HREF="#textboxinput">Input
+via a text box</A>' description for how to cut and paste your alignments.</BLOCKQUOTE>
+
+<H4>
+<A NAME="postscriptoutput"></A><FONT SIZE=+1>Postscript Output by Email</FONT></H4>
+
+<BLOCKQUOTE>A coloured version of your alignment can be obtained by email.&nbsp;
+Selecting the 'Mail postscript...' option in the file menu brings up a
+window where you can enter your email address.&nbsp; You can then select
+your choice of fonts and the orientation of the paper.&nbsp;&nbsp; Pressing
+the Apply button generates the postscript and mails it to your account.&nbsp;
+For large alignments this can take quite a while and can generate large
+postscript files (>1Mb).
+<BR>&nbsp;</BLOCKQUOTE>
+
+<H4>
+<A NAME="formats"></A><FONT SIZE=+1>File formats supported</FONT></H4>
+
+<BLOCKQUOTE>The formats supported are
+<BR>&nbsp;
+<UL>
+<LI>
+MSF (GCG output with no checksum),</LI>
+
+<LI>
+CLUSTAL (Clustalw output),</LI>
+
+<LI>
+FASTA (common and simple format),</LI>
+
+<LI>
+PIR (less common but almost as simple format) ,</LI>
+
+<LI>
+BLC (AMPS output)</LI>
+
+<LI>
+PFAM (simple and has the advantage of including start-end points).</LI>
+</UL>
+&nbsp;For more details look <A HREF="formats.html">here.</A>
+<BR>&nbsp;</BLOCKQUOTE>
+
+<H4>
+<A NAME="appletparameters"></A><FONT SIZE=+1>Applet parameters</FONT></H4>
+
+<BLOCKQUOTE>If you are running jalview via the button applet provided in
+the distribution then there are a number of parameters you can set to define
+different sequence groups and colour schemes.&nbsp; These are described
+in a <A HREF="groups.html">separate document.</A></BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<H2>
+<A NAME="edit"></A>The Edit menu</H2>
+
+<UL>
+<LI>
+<A HREF="#selectingseq">Selecting sequences</A></LI>
+
+<LI>
+<A HREF="#selectingres">Selecting residues</A></LI>
+
+<LI>
+<A HREF="#gaps">Inserting/deleting gaps</A></LI>
+
+<LI>
+<A HREF="#copying">Copying/moving&nbsp; sequences</A></LI>
+
+<LI>
+<A HREF="#deleting">Deleting sequences</A></LI>
+
+<LI>
+<A HREF="#selectingcolumns">Selecting columns</A></LI>
+
+<LI>
+<A HREF="#trimming">Trimming the alignment (Removing sequence -> and &lt;-
+of selected columns)</A></LI>
+
+<LI>
+<A HREF="#gapcharacter">Changing the gap insert character</A></LI>
+
+<LI>
+<A HREF="#gapcolumn">Removing gapped columns</A></LI>
+
+<LI>
+<A HREF="#groups">Editing sequence groups (Groups...)</A></LI>
+
+<LI>
+<A HREF="#groupedit">Editing the alignment by group (Group editing mode)</A></LI>
+
+<H4>
+&nbsp;<A NAME="selectingseq"></A><FONT SIZE=+1>Selecting sequences</FONT></H4>
+
+<UL>Select a sequence with the mouse by&nbsp; clicking on its name in the
+left hand panel.&nbsp; If a sequence is selected its ID background will
+be grey.&nbsp; Clicking again will deselect the sequence.&nbsp; You can
+select/deselect more than one sequence by dragging the mouse over more
+than one ID.
+
+<P>Selected sequences are used in the Colour and Calculate menus.&nbsp;
+The Consensus option in the Calculate menu only uses the selected sequences
+in its calculation and will display an error in its status bar if none
+are selected.&nbsp; Selecting a colour scheme in the Colour menu will only
+apply that scheme if any sequences are selected.&nbsp; If none are selected
+that colour scheme is applied to all sequences.
+
+<P>Sequences can also be selected in other displays such as the tree display
+window and the PCA results window.&nbsp; If a sequence is selected in one
+window it will also be selected in all the other windows.</UL>
+
+<H4>
+<A NAME="selectingres"></A><FONT SIZE=+1>Selecting residues</FONT></H4>
+
+<UL>Select a residue with the mouse and the status bar will change and
+display the sequence id and number and the residue's position in the sequence
+not including gaps.&nbsp; For instance if we have a sequence in the alignment
+that is composed of residues 58 to 126 of a swissprot entry selecting a
+residue in that sequence will report back a number from 58 to 126 and not
+the position in the alignment.
+<BR>&nbsp;
+<BR>&nbsp;</UL>
+&nbsp;<A NAME="gaps"></A><B><FONT SIZE=+1>Inserting/deleting gaps</FONT></B>
+<BR>&nbsp;
+<UL>The alignment may have gaps inserted or deleted by selecting a residue
+with the mouse and dragging that residue left or right.&nbsp; Gaps are
+automatically inserted/deleted but non-gap residues can not be overwritten.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="copying"></A><FONT SIZE=+1>Copying/Moving sequences</FONT></H4>
+
+<UL>After selecting some sequences in the ID panel (or another window)&nbsp;
+the selected sequences can be used to make a new alignment window.&nbsp;
+Choosing the 'Move selected sequences to new alignment'&nbsp; will create
+a new jalview window containing those selected sequences and remove them
+from the current window.&nbsp; Choosing the 'Copy selected sequences to
+new alignment'&nbsp; will create a new jalview window but leave the sequences
+in the original window.&nbsp; Be careful when using the move option as
+there is no undo function yet.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="deleting"></A><B><FONT SIZE=+1>Deleting sequences</FONT></B></H4>
+
+<UL>Selected sequences can be deleted by choosing the 'Delete selected
+sequences' option from the Edit menu.&nbsp; Be careful with this option
+as there is no undo function and no going back.
+<BR>&nbsp;
+<BR>&nbsp;</UL>
+<A NAME="selectingcolumns"></A><B><FONT SIZE=+1>Selecting columns</FONT></B>
+<UL>Selecting a position in the Id panel using the mouse will select that
+column in the alignment and all selected columns are marked with a red
+box.&nbsp;&nbsp; This is useful for either remembering a position to come
+back to or for marking a column for any alignment <A HREF="#trimming">trimming</A>
+operations you wish to do.&nbsp; Choosing the 'Deselect all columns' option
+in the Edit menu clears any previous column selections.
+<BR>&nbsp;</UL>
+<A NAME="trimming"></A><B><FONT SIZE=+1>Trimming the Alignment</FONT></B>
+<UL>It quite often happens that an alignment you have generated from, say,
+a blast search contains sequences of varying lengths and has quite ragged
+edges.&nbsp; This can bias subsequent calculations such as the PCA analysis
+or any trees made (phylogenetic or otherwise).&nbsp; Trimming the alignment
+left and right to even up the edges can be done by first selecting a column
+where you wish to trim.&nbsp; Choosing 'Remove sequence &lt;- left of selected
+columns' will delete all parts of all sequences to the left of that column
+and renumber the alignment from that column.&nbsp; Similarly choosing 'Remove
+sequence -> right of selected columns'&nbsp; deletes all parts of the alignment
+to the right of that column.&nbsp; If there are more than one column selected
+then the alignment is trimmed to the leftmost or rightmost column selected.
+
+<P>All columns may be deselected by choosing the 'Deselect all columns'
+option from the Edit menu.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="gapcharacter"></A><FONT SIZE=+1>Setting the gap character</FONT></H4>
+
+<UL>The gap insert character can be changed from - to . and back again
+by selecting the 'Set gap character to ...' option in the Edit menu.</UL>
+
+<H4>
+<A NAME="gapcolumn"></A><FONT SIZE=+1>Removing gapped columns</FONT></H4>
+
+<UL>It can often happen that you need to removed whole columns consisting
+of gaps to tidy up your alignment.&nbsp; This can arise after deleting
+sequences from an alignment that had large insertions.&nbsp; Selecting
+this option from the Edit menu will remove all columns in your alignment
+that consist entirely of '-', ''.' or ' '.</UL>
+
+<H4>
+<A NAME="groups"></A><FONT SIZE=+1>Editing sequence groups (Groups...)</FONT></H4>
+
+<UL>Sequences can be put into groups which have different colouring schemes
+applied to them.&nbsp; This is mostly done automatically now via a combination
+of&nbsp; selecting sequences in the Id panel and the Colour menu.&nbsp;&nbsp;
+Selecting Edit->Groups will bring up a new window with a list of the existing
+groups in the top left hand pane.&nbsp; Selecting one of these groups will
+cause the sequences contained in that group to be displayed in the next
+pane.&nbsp; To add or remove sequences from this group select one or more
+individual sequences and select a button in the top panel.&nbsp; Any sequences
+that aren't in any group will be displayed in the top right most panel.&nbsp;
+Display properties for the selected group can be changed using the switches
+in the botton right hand panel.
+
+<P>To generate a new group or delete a group the buttons in the bottom
+right hand of the window can be used.
+
+<P>Tip:&nbsp; To generate a new group quickly :
+<BR>&nbsp;
+<UL>
+<LI>
+select your sequences in the ID panel of the main alignment window using
+the mouse.</LI>
+
+<LI>
+Bring up the Edit->Groups window.</LI>
+
+<LI>
+Generate a new group by selecting 'Add new group'</LI>
+
+<LI>
+Add the selected ids to the new group by pressing 'Add selected IDs'</LI>
+</UL>
+This can be useful for generating a group for group editing or putting
+outliers together in one group prior to conservation analysis.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="groupedit"></A><FONT SIZE=+1>Group editing (Edit->Group edit mode)</FONT></H4>
+
+<UL>When tweaking an alignment by hand it is useful to be able to move
+a group of sequences together so the relationship between them is preserved.&nbsp;
+Setting this mode on and selecting a residue in the sequence and dragging
+to insert/delete a gap will cause the same insertions/deletions to occur
+in all sequences in the same group.
+
+<P>To create a group from selected sequences or to see the available sequence
+groups refere to the previous entry.&nbsp;&nbsp; By default when jalview
+is first started all sequences are in the same group.
+<BR>
+<HR WIDTH="100%"></UL>
+</UL>
+
+<H2>
+<A NAME="font"></A>Font menu</H2>
+
+<UL>
+<LI>
+<A HREF="#fastdraw">Fastdraw mode</A></LI>
+
+<LI>
+<A HREF="#fontstyle">Different font styles</A></LI>
+</UL>
+&nbsp;
+<UL>
+<H4>
+<A NAME="fastdraw"></A><FONT SIZE=+1>Fastdraw mode</FONT></H4>
+
+<UL>The default setting for jalview is for it to be in Fastdraw mode.&nbsp;
+There is only one font available (Courier) and the residues appear more
+closely packed than for non-fastdraw mode.&nbsp; If you have a slow machine
+or a very big alignment then this mode will be the fastest.
+
+<P>If Fastdraw is switched off other proportional fonts can be used (Helvetica
+and Times) and the residues appear more spaced out on the screen.&nbsp;&nbsp;
+The screen update time will also be slower (typically by a factor of 3).
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="fontstyle"></A><FONT SIZE=+1>Different font styles</FONT></H4>
+
+<UL>By selecting different options from the Font menu the font size and
+style (plain or bold)&nbsp; can be changed. These font changes apply to
+all sequences regardless of whether any sequences are selected or not.
+
+<P>&nbsp;Smaller font sizes (probably &lt; 6) are of most use if the text
+is switched off&nbsp; and the coloured residue boxes only are displayed
+(see view menu).&nbsp; The font sizes available are :
+<BR>&nbsp;</UL>
+</UL>
+</UL>
+
+<HR WIDTH="100%">
+<UL>
+<H2>
+<A NAME="view"></A>View menu</H2>
+
+<UL>
+<UL>The options in here refer to how each of the residues in the alignment
+appears.&nbsp;&nbsp; Selecting any of these options from this menu will
+affect every sequence in the alignment regardless of whether any sequences
+are selected.&nbsp; If you want to apply these&nbsp; options to only a
+subset of sequences this is only possible through the Edit->Groups... menu
+option.
+
+<P>If the redraw speed is too slow for you on your system then turning
+off the boxes option&nbsp; and colouring the text black will speed it up
+considerably.
+<BR>&nbsp;</UL>
+<A NAME="viewboxes"></A><B>View boxes</B>
+<UL>If the Boxes option is ticked then the residue will appear with a background
+colour.&nbsp;&nbsp; (The exact colour depends on which colour option is
+selected in the Colour menu.)
+<BR>&nbsp;</UL>
+<B>View text</B>
+<UL>If the Text option is ticked then the text is also drawn.
+<BR>&nbsp;</UL>
+<A NAME="colourtext"></A><B>Colour text</B>
+<UL>If the 'Colour text' option is selected in the Colour menu then the
+text colour is set to the colour scheme set in the colour menu otherwise
+it is coloured black.&nbsp; Obviously if you set both the Boxes option
+and the colour text option you won't see the residue letters clearly.
+<BR>&nbsp;</UL>
+<B>Black text</B>
+<UL>This option draws all the text in black.
+<BR>&nbsp;</UL>
+</UL>
+
+<HR WIDTH="100%">
+<H2>
+<A NAME="colour"></A>Colour menu</H2>
+
+<UL>
+<LI>
+<A HREF="#zappo">Zappo colours</A></LI>
+
+<LI>
+<A HREF="#taylor">Taylor colours</A></LI>
+
+<LI>
+<A HREF="#hydrophobicity">Hydrophobicity colours</A></LI>
+
+<LI>
+<A HREF="#pidthreshold">Colouring residues above a percentage identity
+threshold</A></LI>
+
+<LI>
+<A HREF="#userdefined">User defined colour schemes</A></LI>
+
+<LI>
+<A HREF="#pid">PID (Percentage Identity) Colours</A></LI>
+
+<LI>
+<A HREF="#pid">BLOSUM62 colours</A></LI>
+
+<LI>
+<A HREF="#seqfeat">View sequence features</A></LI>
+</UL>
+&nbsp;
+<BR>This sets the colour scheme for the residue boxes and the residue text.&nbsp;
+If a colour scheme is selected from this menu it will affect the selected
+sequences only.&nbsp;&nbsp; If no sequences are selected then the colour
+scheme applies to the whole alignment.
+<BR>&nbsp;
+<UL>
+<H4>
+<A NAME="zappo"></A>Zappo Colours</H4>
+
+<UL>&nbsp;
+<BR>The residues&nbsp; are coloured according to their physico-chemical
+properties as follows:
+<BR>&nbsp;</UL>
+</UL>
+&nbsp;
+<CENTER><TABLE BORDER WIDTH="80%" NOSAVE >
+<TR BGCOLOR="#CCCCCC" NOSAVE>
+<TD NOSAVE>Residues</TD>
+
+<TD>Description</TD>
+
+<TD NOSAVE>Colour</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>ILVAM</TD>
+
+<TD>Aliphatic/hydrophobic residues</TD>
+
+<TD BGCOLOR="#FF6666" NOSAVE>pink</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>FWY</TD>
+
+<TD>Aromatic</TD>
+
+<TD BGCOLOR="#FF9900" NOSAVE>orange</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>KRH</TD>
+
+<TD>Positive</TD>
+
+<TD BGCOLOR="#CC0000" NOSAVE>red</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>DE</TD>
+
+<TD>Negative</TD>
+
+<TD BGCOLOR="#33CC00" NOSAVE>green</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>STNQ</TD>
+
+<TD>Hydrophilic</TD>
+
+<TD BGCOLOR="#3366FF" NOSAVE>mid blue</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>PG</TD>
+
+<TD>Proline/Glycine (conformationally special)</TD>
+
+<TD BGCOLOR="#CC33CC" NOSAVE>magenta</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>C</TD>
+
+<TD>Cysteine</TD>
+
+<TD BGCOLOR="#FFFF00" NOSAVE>yellow</TD>
+</TR>
+</TABLE></CENTER>
+&nbsp;
+<UL>
+<UL>&nbsp;
+<UL>&nbsp;</UL>
+</UL>
+
+<H4>
+<A NAME="taylor"></A>Taylor Colours</H4>
+
+<UL>&nbsp;
+<BR>These colours were invented by Willie Taylor and an entertaining description
+of their birth can be found in Protein Engineering, Vol 10 , 743-746 (1997)</UL>
+</UL>
+&nbsp;
+<CENTER><TABLE BORDER WIDTH="80%" NOSAVE >
+<TR BGCOLOR="#CCCCCC" NOSAVE>
+<TD NOSAVE>Residues</TD>
+
+<TD>Full name</TD>
+
+<TD WIDTH="100" NOSAVE>Colour</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>V</TD>
+
+<TD>Valine</TD>
+
+<TD BGCOLOR="#99FF00" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>I</TD>
+
+<TD>Isoleucine</TD>
+
+<TD WIDTH="100" BGCOLOR="#66FF00" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>L</TD>
+
+<TD>Leucine</TD>
+
+<TD BGCOLOR="#33FF00" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>F</TD>
+
+<TD>Phenylalanine</TD>
+
+<TD BGCOLOR="#00FF66" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>Y</TD>
+
+<TD>Tyrosine</TD>
+
+<TD BGCOLOR="#00FFCC" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>W</TD>
+
+<TD>Tryptophan</TD>
+
+<TD BGCOLOR="#00CCFF" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>H</TD>
+
+<TD>Histidine</TD>
+
+<TD BGCOLOR="#0066FF" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>R</TD>
+
+<TD>Arginine</TD>
+
+<TD BGCOLOR="#0000FF" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>K</TD>
+
+<TD>Lysine</TD>
+
+<TD BGCOLOR="#6600FF" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>N</TD>
+
+<TD>Asparagine</TD>
+
+<TD BGCOLOR="#CC00FF" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>Q</TD>
+
+<TD>Glutamine</TD>
+
+<TD BGCOLOR="#FF00CC" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>E</TD>
+
+<TD>Glutamate</TD>
+
+<TD BGCOLOR="#FF0066" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>D</TD>
+
+<TD>Aspartate</TD>
+
+<TD BGCOLOR="#FF0000" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>S</TD>
+
+<TD>Serine</TD>
+
+<TD BGCOLOR="#FF3300" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>T</TD>
+
+<TD>Threonine</TD>
+
+<TD BGCOLOR="#FF6600" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>G</TD>
+
+<TD>Glycine</TD>
+
+<TD BGCOLOR="#FF9900" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>P</TD>
+
+<TD>Proline</TD>
+
+<TD BGCOLOR="#FFCC00" NOSAVE>&nbsp;</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>C</TD>
+
+<TD>Cysteine</TD>
+
+<TD BGCOLOR="#FFFF00" NOSAVE>&nbsp;</TD>
+</TR>
+</TABLE></CENTER>
+&nbsp;
+<UL>
+<UL>&nbsp;</UL>
+
+<H4>
+<A NAME="hydrophobicity"></A><FONT SIZE=+1>Hydrophobicity colours</FONT></H4>
+
+<UL>This option colours the residues in the alignment according to the
+hydrophobicity table of&nbsp; Kyte, J., and Doolittle, R.F., J. Mol. Biol.
+1157, 105-132, 1982.&nbsp; The most hydrophobic residues according to this
+table are coloured red and the most hydrophilic ones are coloured blue.&nbsp;
+The colours of the in between residues are varying shades of purple according
+to whereabouts they are on the scale.</UL>
+
+<UL>&nbsp;</UL>
+
+<H4>
+<A NAME="usercolours"></A><FONT SIZE=+1>User Colours</FONT></H4>
+
+<UL>Once a residue colouring scheme has been selected (Zappo, Taylor or
+hydrophobicity)&nbsp; the user can modify these colours to their own specification
+by selecting the Colour->User defined colours option.&nbsp; Awindow will
+appear showing the different colours used for that scheme and which residues
+are assigned to that colour.&nbsp; The user can now change the colours
+used and also which residues are assigned to which colour.
+
+<P><B>Choosing a colour (the colour selector)</B>
+
+<P>Underneath the list of colours and residues is a panel where you can
+select the rgb values of any colour you wish to use.&nbsp; The user can
+either move the scrollbars to change the rgb values or type in the values
+(0-255) in the text boxes.&nbsp; The new colour will be displayed in the
+panel to the right of the scrollbars.
+
+<P><B>Changing colours&nbsp; (the residue panels)</B>
+
+<P>Clicking on the colours assigned to different residues with the left
+mouse button will cause whichever colour is displayed in the colour selector
+to appear in that residue panel.&nbsp; If you wish to modify an existing
+residue panel colour right clicking that colour will change the the colour
+selector's colour to the residue panel colour.&nbsp; The colour selector
+colour can then be modified.
+
+<P><B>Changing residues</B>
+
+<P>For each colour present in that scheme a list of residues it is applied
+to appears to its right.&nbsp; These residues can be moved or deleted or
+added to.to group the residues in a different way.&nbsp; For instance you
+may just want to display the charged residues in one colour and the rest
+in another to highlight the charged ones or you may want to only colour
+the cysteines differently from the others.
+
+<P>If you wish to change the residues associated with a colour edit the
+residue string in the text field and press the 'Apply' button to its right.&nbsp;
+If any residues have been deleted from the text field they will be assigned
+a white colour and appear in the bottom residue panel.&nbsp; If any residues
+have been transferred from another colour panel they will be deleted from
+the old one.&nbsp; The main jalview alignment window will be automatically
+updated.
+
+<P>Any modifications of the colour scheme will only apply to sequences
+that are selected in the main alignment window.&nbsp; This allows the user
+to have multiple colour schemes in one alignment.&nbsp; If no sequences
+are selected then the colour scheme applies to all sequences.&nbsp; BEWARE::
+there is NO UNDO function.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="pidthreshold"></A><FONT SIZE=+1>Colouring above a percentage identity
+threshold</FONT></H4>
+
+<UL>Selecting this option causes the colour scheme to be applied to only
+those residues that occur in that column more than a certain percentage
+of the time.&nbsp; This is also only applied to selected sequences.&nbsp;
+For instance selecting the threshold to be 100 will only colour those columns
+with 100 % identity.&nbsp; This threshold option can be applied to the
+Zappo, Taylor, Hydrophobicity and User colour schemes.
+
+<P>This option depends on a consensus calculation having been performed.&nbsp;
+If no consensus exists (e.g. after a copy or a clustalw alignment) then
+no residues are coloured.</UL>
+
+<H4>
+<A NAME="pid"></A><FONT SIZE=+1>PID Colours</FONT></H4>
+
+<UL>This depends on the applet having performed a consensus calculation
+on the alignment.&nbsp; This is done automatically when the applet first
+starts up but is not done for subsequent alignment windows.&nbsp; If the
+consensus seuqence is calculated again by selecting 'Consensus' from the
+Calculate menu then the consensus is calculated for the selected sequences
+only&nbsp; and all the alignment sequences are coloured according to that
+consensus.&nbsp; This can be useful to display how similar all the other
+sequences in the alignment are compared to one (or a few) selected sequences.
+
+<P>The PID option colours the residues (boxes and/or text) according to
+the percentage of the residues in each column that agree with the consensus
+sequence.&nbsp; Only the residues that agree with the consensus residue
+for each column are coloured.</UL>
+</UL>
+&nbsp;
+<TABLE BORDER CELLPADDING=5 COLS=2 WIDTH="80%" NOSAVE >
+<TR BGCOLOR="#666666" NOSAVE>
+<TD NOSAVE>Percentage agreement</TD>
+
+<TD NOSAVE>Colour</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>> 80 %</TD>
+
+<TD BGCOLOR="#6464FF" NOSAVE>Mid blue</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>> 60 %</TD>
+
+<TD BGCOLOR="#9DA5FF" NOSAVE>Light blue</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>> 40 %</TD>
+
+<TD BGCOLOR="#CCCCCC" NOSAVE>Light grey</TD>
+</TR>
+
+<TR>
+<TD>&lt;= 40%</TD>
+
+<TD>White</TD>
+</TR>
+</TABLE>
+&nbsp;
+<H2>
+<A NAME="seqfeat"></A>View sequence features</H2>
+
+<UL>Selecting this option from the Colour menu will bring up the sequence
+feature console.&nbsp; If&nbsp; your <A HREF="srs">srs server </A>is specified
+correctly (either on the command line or as an applet parameter)&nbsp;
+the database entry for each sequence will be read.&nbsp; For large sequences
+this could take quite a time.
+
+<P>When the features have finished transferring the features will be displayed
+on the alignment with different colours for different features.&nbsp; The
+colours are as follows
+<BR>&nbsp;
+<BR>&nbsp;
+<TABLE BORDER COLS=2 WIDTH="70%" NOSAVE >
+<TR NOSAVE>
+<TD BGCOLOR="#666666" NOSAVE>Sequence feature</TD>
+
+<TD BGCOLOR="#666666" NOSAVE>Colour</TD>
+</TR>
+
+<TR>
+<TD>CHAIN</TD>
+
+<TD>White</TD>
+</TR>
+
+<TR>
+<TD>DOMAIN</TD>
+
+<TD>White</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>TRANSMEM</TD>
+
+<TD BGCOLOR="#990000" NOSAVE>Dark red</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>SIGNAL</TD>
+
+<TD BGCOLOR="#66FFFF" NOSAVE>Cyan</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>HELIX</TD>
+
+<TD BGCOLOR="#CC33CC" NOSAVE>Magenta</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>TURN</TD>
+
+<TD BGCOLOR="#33CC00" NOSAVE>Green</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>SHEET</TD>
+
+<TD BGCOLOR="#FFFF00" NOSAVE>Yellow</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>STRAND</TD>
+
+<TD BGCOLOR="#FFFF00" NOSAVE>Yellow</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>CARBOHYD</TD>
+
+<TD BGCOLOR="#FF6666" NOSAVE>Pink</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>ACT_SITE</TD>
+
+<TD BGCOLOR="#FF0000" NOSAVE>Red</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>TRANSIT</TD>
+
+<TD BGCOLOR="#FF9900" NOSAVE>Orange</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>VARIANT</TD>
+
+<TD BGCOLOR="#CC6600" NOSAVE>Dark orange</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>BINDING</TD>
+
+<TD BGCOLOR="#3333FF" NOSAVE>Blue</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>DISULFID</TD>
+
+<TD BGCOLOR="#999900" NOSAVE>Dark yellow</TD>
+</TR>
+
+<TR NOSAVE>
+<TD>anything else</TD>
+
+<TD BGCOLOR="#CCCCCC" NOSAVE>Light gray</TD>
+</TR>
+</TABLE>
+&nbsp;
+
+<P>When the features have been displayed on the alignment selecting a residue
+will change the display in the sequence feature console.&nbsp; The console
+will display details of any feature that has been selected and underneath
+a list of all features listed for that sequence.
+
+<P>There are at the moment a few limitations on the sequence feature display:
+<BR>&nbsp;
+<UL>
+<LI>
+Jalview is heavily protein biased and can only parse SWISSPROT features.</LI>
+</UL>
+&nbsp;
+<UL>
+<LI>
+Your alignment MUST have the correct start end positions in the ids</LI>
+</UL>
+&nbsp;
+<UL>For example:
+
+<P>>HBA_HUMAN/3-45
+
+<P>means the swissprot ID HBA_HUMAN starting at position 3 and ending at
+position 45.&nbsp; If your alignment doesn't have the correct start end
+positions the sequence feature overlay is at best
+<BR>meaningless.
+
+<P>A good example of the usage of the start-end positions is the <A HREF="http://www.sanger.ac.uk/Software/Pfam/">Pfam</A>
+database of protein alignments.
+<BR>&nbsp;</UL>
+
+
+<P>If everything is configured correctly (srs server, database and alignment
+ids)&nbsp;then you should get output like
+<BR>the following :
+
+<P><A HREF="feat.gif"><IMG SRC="featsm.gif" HEIGHT=40 WIDTH=37></A>
+
+<P>The main window&nbsp; is coloured using all the features in the Pfam
+pancreatic trypsin inhibitor alignment and the sequence feature console
+shows details of all features at the selected residue (which is in between
+2 disulphide bonds and at the active site in this case).&nbsp; In the background
+can be seen the mini web browser showing the contents of a Swissprot entry.
+<BR>&nbsp;</UL>
+
+<H2>
+<A NAME="calculate"></A>Calculate menu</H2>
+
+<UL>
+<LI>
+<A HREF="#consensus">Consensus sequence</A></LI>
+
+<LI>
+<A HREF="#sorting">Sorting sequence by pairwise identity to consensus</A></LI>
+
+<LI>
+<A HREF="#sorttree">Sorting by tree order</A></LI>
+
+<LI>
+<A HREF="#sortgroup">Sorting by group order</A></LI>
+
+<LI>
+<A HREF="#redundancy">Removing redundancy of sequences</A></LI>
+
+<LI>
+<A HREF="#pairwise">Smith-Waterman pairwise alignment</A></LI>
+
+<LI>
+<A HREF="#pca">Principal component analysis</A></LI>
+
+<LI>
+<A HREF="#UPGMA">UPGMA tree using percentage identity distances</A></LI>
+
+<LI>
+<A HREF="#njtree">Neighbour joining tree using percentage identity distances</A></LI>
+
+<LI>
+<A HREF="#nconservation">Conservation</A></LI>
+
+<UL>&nbsp;</UL>
+
+<H4>
+<A NAME="consensus"></A><FONT SIZE=+1>Consensus sequence</FONT></H4>
+
+<UL>Each residue in the consensus sequence is the most frequent residue
+in each column of the alignment excluding gap residues ' ','-' and '.'
+.&nbsp; You can't access the consensus sequence directly but it is used&nbsp;
+in the PID colour scheme.
+
+<P>When the editor first starts up the consensus sequence is automatically
+calculated using all the sequences in the alignment and the PID colour
+scheme is used as default.&nbsp; If the consensus option is selected again
+only the currently selected sequences are used to calculate it and all
+sequences in the alignment are coloured according to that consensus.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="sorting"></A><FONT SIZE=+1>Sorting sequences</FONT></H4>
+
+<UL>Once a consensus calculation has been done selecting this option will
+sort the selected&nbsp; sequences by their percentage identity to the consensus
+sequence.&nbsp; The most similar sequence is put at the top.&nbsp; If no
+sequences are selected then redundancy is removed from the whole alignment.</UL>
+
+<H4>
+<A NAME="sorttree"></A><FONT SIZE=+1>Sorting by tree order</FONT></H4>
+
+<UL>If a UPGMA tree or a neighbour joining tree has been displayed then
+the main alignment window displays the sequences in the same order as they
+appear in the tree.&nbsp; This makes for easier comparison of the tree
+and the alignment.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="sortgroup"></A><FONT SIZE=+1>Sorting by group order</FONT></H4>
+
+<UL>If the sequences have been grouped either by hand or by selecting a
+point on the tree then this option will reorder the alignment so all sequences
+in the same group are together.&nbsp; The largest group is shown at the
+top of the alignment and the smallest at the bottom.</UL>
+
+<H4>
+<A NAME="redundancy"></A><FONT SIZE=+1>Removing redundancy</FONT></H4>
+
+<UL>Selecting this option brings up a window asking you to select a threshold.&nbsp;&nbsp;
+If the percentage identity between two sequences exceeds this value one
+of the sequences (the shorter) is discarded.&nbsp;&nbsp;&nbsp; The redundancy
+calculation is done when the Apply button is pressed.&nbsp; For large numbers
+of sequences this can take a long time as all pairs have to be compared.</UL>
+
+<H4>
+<A NAME="pairwise"></A>P<FONT SIZE=+1>airwise alignment (Proteins only)</FONT></H4>
+
+<UL>This calculation is performed on the selected sequences only.&nbsp;
+Java is not the fastest language in the world and aligning more than a
+handful of sequences will take a fair amount of time.
+
+<P>For each pair of sequences the best global alignment is found using
+BLOSUM62 as the scoring matrix.&nbsp; The scores reported are the raw scores.&nbsp;&nbsp;
+The sequences are aligned using a dynamic programming technique and using
+the following gap penalties :
+
+<P>Gap open&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp; 12
+<BR>Gap extend&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp; 2
+
+<P>When you select the pairwise alignment option a new window will come
+up which will display the alignments in a text format as they are calculated.&nbsp;
+Also displayed is information about the alignment such as alignment score,
+length and percentage identity between the sequences.
+
+<P>If you want to save that pairwise alignment (it's not in any known format
+I'm afraid) you can cut and paste it from the text window with the mouse.&nbsp;
+You can also press the 'View in alignment editor'&nbsp; button to bring
+up another editor window.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="pca"></A><FONT SIZE=+1>Principal Component Analysis</FONT></H4>
+
+<UL>This is a method of clustering sequences based on the method developed
+by G. Casari, C. Sander and A. Valencia.&nbsp;&nbsp; Structural Biology
+volume 2, no. 2, February 1995 .&nbsp;&nbsp; Extra information can also
+be found at the <A HREF="http://industry.ebi.ac.uk/SeqSpace/">SeqSpace
+</A>server at the EBI.
+
+<P>The version implemented here only looks at the clustering of whole sequences
+and not individual positions in the alignment to help identify functional
+residues.&nbsp; This is due to memory and time limitations associated with
+java (you have to diagonalize a much bigger matrix basically).&nbsp; Plans
+are afoot to use the CORBA server written by Chris Dodge to do this 'residue
+space' PCA remotely.
+
+<P>When the Calculate->Principal component analysis option is selected
+all the sequences (not just the selected ones) are used in the calculation
+and for large numbers of sequences this could take quite a time.&nbsp;
+When the calculation is finished a new window is displayed showing the
+projections of the sequences along the 2nd, 3rd and 4th vectors giving
+a 3dimensional view of how the sequences cluster.
+
+<P>This 3d view can be rotated by holding the left mouse button down in
+the PCA window and moving it.&nbsp;&nbsp;&nbsp; The user can also zoom
+in and out by using the up and down arrow keys.
+
+<P>Individual points can be selected using the mouse and selected sequences
+show up green in the PCA window and the usual grey background/white text
+in the alignment and tree windows.
+
+<P>Different eigenvectors can be used to do the projection by changing
+the selected dimensions in the 3 menus underneath the 3d window.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="UPGMA"></A><FONT SIZE=+1>UPGMA tree</FONT></H4>
+
+<UL>If this option is selected from the Calculate menu then all sequences
+are used to generate a UPGMA tree.&nbsp; The pairwise distances used to
+cluster the sequences are the percentage&nbsp; mismatch between two sequences.&nbsp;&nbsp;
+For a reliable phylogenetic tree I recommend other programs (phylowin,
+phylip) should be used as they have the speed to use better distance methods
+and bootstrapping.&nbsp; Again, plans are afoot for a server to do this
+and to be able to read in tree files generated by other programs.
+
+<P>When the tree has been calculated a new window is displayed showing
+the tree with labels on the leaves showing the sequence ids.&nbsp;&nbsp;
+The user can select the ids with the mouse and the selected sequences will
+also be selected in the alignment window and the PCA window if&nbsp; that
+analysis has been calculated.
+
+<P>Selecting the 'show distances' checkbox will put branch lengths on the
+branches.&nbsp; These branch lengths are the percentage mismatch between
+two nodes.
+
+<P>Postscript output can be generated for this tree and mailed to you by
+clicking the Output button.&nbsp; This will bring up a window asking&nbsp;
+you for your email address&nbsp; and you can set font options and the page
+orientation.&nbsp; Clicking the Apply button will generate the postscript
+and send the email.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="njtree"></A><FONT SIZE=+1>Neighbour Joining tree</FONT></H4>
+
+<UL>The distances between sequences for this tree are generated in the
+same way as for the UPGMA tree.&nbsp; The method of clustering is the neighbour
+joining method which doesn't just pick the two closest leaves to cluster
+together but compensates for long edges by subtracting from the distances
+the average distance from each leaf to all the others.
+
+<P>Selection and output options are the same as for the UPGMA tree.</UL>
+
+<H3>
+&nbsp;<A NAME="conservation"></A>Conservation</H3>
+
+<UL>This option is based on the AMAS method of multiple sequence alignment
+analysis (Livingstone C.D. and Barton G.J. (1993), Protein Sequence Alignments:
+A Strategy for the Hierarchical Analysis of Residue Conservation.CABIOS
+Vol. 9 No. 6 (745-756)).
+
+<P>Hierarchical analysis is based on each residue having certain physico-chemical
+properties listed as follows:
+<BR>&nbsp;
+<BR>&nbsp;
+<BR>&nbsp;
+<BR>&nbsp;
+
+<P>In brief&nbsp; go about it like this :
+<BR>&nbsp;
+<UL>The alignment can first be divided into groups.&nbsp; This is best
+done by first creating an average distance tree (Calculate->Average distance
+tree).&nbsp; Selecting a position on the tree will cluster the sequences
+into groups depending on the position selected.&nbsp; Each group is coloured
+a different colour which is used for both the ids in the tree and alignment
+windows and the sequences themselves.&nbsp; If a PCA window is visible
+a visual comparison can be made between the clustering based on the tree
+and the PCA.
+
+<P><A HREF="treegroup.gif"><IMG SRC="treegroupsm.gif" HEIGHT=40 WIDTH=37></A>&nbsp;
+This link provides an example of the output after grouping for Pfam family
+rnaseH:
+
+<P>The grouping by tree may not be satisfactory and the user may want to
+edit the groups (Edit->Groups...) to put any outliers together.
+
+<P>Before selecting the conservation option change the colour scheme to
+something sensible (Taylor or hydrophobicity for example).&nbsp; When the
+conservation is done the existing colour scheme is modified so that the
+most conserved columns in each group have the most intense colours and
+the least conserved are the palest.
+
+<P><A HREF="hydcons.gif"><IMG SRC="hydconssm.gif" HEIGHT=110 WIDTH=202></A>
+
+<P>This link shows the results of first colouring the alignment by hydrophobicity
+(Colour->by hydrophobicity) then performing conservation analysis (Calculate->Conservation).&nbsp;
+Conserved hydrophobic columns are shown with predominately red residues
+and conserved hydrophilic columns with blue.&nbsp; The most conserved regions
+have the brightest colours.
+<BR>&nbsp;
+
+<P><A HREF="taycons.gif"><IMG SRC="tayconssm.gif" HEIGHT=99 WIDTH=196></A>
+<BR>&nbsp;
+<BR>Here is shown the same conservation but with Taylor colours instead
+of hydrophobicity (Colour->Taylor).
+<BR>&nbsp;
+
+<P>The conservation analysis is done on each sequence group.&nbsp; This
+highlights differences and similarities&nbsp; in conserved residue properties
+between groups.
+<BR>&nbsp;</UL>
+</UL>
+</UL>
+
+<H2>
+<A NAME="mulalign"></A>Multiple alignment</H2>
+
+<UL>
+<LI>
+<A HREF="#localalign">Local alignment using clustalw</A></LI>
+
+<LI>
+<A HREF="#remotealign">Remote alignment using clustalw at the EBI</A></LI>
+</UL>
+&nbsp;
+<UL>
+<UL>&nbsp;</UL>
+
+<H4>
+<A NAME="localalign"></A><FONT SIZE=+1>Local Alignment (Unix applications
+only)</FONT></H4>
+
+<UL>If you have clustalw installed locally this option will align your
+sequences on your local machine.&nbsp;&nbsp;&nbsp; For this option to work
+you have to have clustalw in your path,&nbsp; called clustalw and write
+access to the current directory.
+
+<P>When this option is selected a window will appear giving you a message
+about whether your process is running and the time elapsed since the job
+was started.&nbsp;&nbsp;&nbsp; The cancel button will&nbsp; kill&nbsp;
+your process at any time.
+
+<P>The text box below&nbsp; should show the progress of your job but at
+the moment doesn't.&nbsp; I haven't been able to devise a simple way of&nbsp;
+displaying stdout as the alignment is progressing but I'm working on this.&nbsp;
+The stdout will appear in the xterm you started
+
+<P>When the alignment is finished a new alignment window is created with
+the aligned sequences in.&nbsp; No consensus calculation is done on these
+sequences by default so to see the similarity select Calculate->Consensus.
+
+<P>Due to applet security restrictions this option can only be used from
+an application.
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="remotealign"></A><FONT SIZE=+1>Remote Alignment</FONT></H4>
+
+<UL>This option sends all your sequences to the EBI and aligns them there.&nbsp;
+When the completed alignment is sent back to you a new alignment window
+is created.
+
+<P>The Cancel button will cancel your job and the output is sent back to
+the text box below as the alignment progresses.&nbsp; As this application
+is written in 1.0 java (pretty much) to enable it to be used in older versions
+of netscape this display is somewhat flickery.&nbsp; Using the java1.1
+textbox things are much improved&nbsp; but this won't be available until
+the majority of browsers support full 1.1.</UL>
+&nbsp;
+<H4>
+<A NAME="srs"></A><FONT SIZE=+1>SRS Access</FONT></H4>
+
+<UL>Jalview provides links to SRS for both the display of <A HREF="#seqfeat">sequence
+features&nbsp;</A>&nbsp; and for viewing sequence entry annotation in a
+separate window.
+
+<P><B>SRS server&nbsp; and database</B><B></B>
+
+<P>The default SRS server&nbsp; and database are srs.ebi.ac.uk&nbsp; and
+swall at the EBI.&nbsp;&nbsp; To change to your own SRS server either use
+the -srsserver and -database options on the command line (see <A HREF="#inputcommandline">command
+line parameters</A>) or&nbsp; use the
+<PRE>&lt;param name="srsServer"&nbsp; value="srs.ebi.ac.uk:5000/srs5bin/cgi-bin/"></PRE>
+and
+<PRE>&lt;param name="database" value="swall"></PRE>
+options in the applet version.
+
+<P>Also for entries to be fetched correctly the sequence IDs in your alignment
+file must be of the right form.
+
+<P>The IDs must be :
+<PRE>HBA_HUMAN/6-20</PRE>
+or just
+<PRE>HBA_HUMAN</PRE>
+where HBA_HUMAN&nbsp;is the sequence ID&nbsp;(not the accession) and the
+6 and the 20 refer to the start and end residues of that sequence entry
+in the alignment.&nbsp; The start and end positions do not include gaps
+and are only essential if you wish to display the sequence features in
+the alignment window.&nbsp; I <B>urge everyone to include these numbers</B>
+as it stops embarrassing mistakes when inferring function from annotation
+of a multi-domain protein.
+
+<P>The application version now allows access to SRS through it's own mini
+web browser but at present none of the SRS links work (I'm trying to resist
+rewriting netscape :)
+
+<P>
+<HR WIDTH="100%">
+<BR>&nbsp;</UL>
+
+<H2>
+<A NAME="alwin"></A>The alignment window</H2>
+
+<UL>When the alignment window first appears&nbsp; you will see a central
+panel with the sequences in, an ID panel on the left with the sequence
+identifiers in, a menu bar across the top and a status bar along the bottom.&nbsp;
+When an alignment is first loaded a consensus calculation is done.&nbsp;
+When this is finished the alignment is coloured according to each residue's
+percentage identity (PID) agreement with the consensus.
+<BR>
+<HR WIDTH="100%"></UL>
+
+<H2>
+<A NAME="statusbar"></A>The Status Bar</H2>
+
+<UL>On the left hand side of the status bar are displayed various messages
+from the program.&nbsp; Selecting a residue in the alignment will display
+the sequence ID of the sequence it is from, its position in the alignment
+and the residue letter you have selected.&nbsp; Select an ID in the ID
+panel and the status bar will display the sequence ID name and its position
+in the alignment. (n.b. residues and sequences are numbered from 0)&nbsp;
+Other messages that appear in the left hand part of the status bar are
+success/failure of alignment loading, consensus calculation etc.
+
+<P>The right hand side of the status bar is mostly for development purposes
+but displays in milliseconds the time taken for the last redraw of the
+central sequence panel.</UL>
+
+<HR WIDTH="100%">
+<H2>
+<A NAME="idpanel"></A>The ID panel</H2>
+
+<UL>The identifiers of the sequences are shown on the left hand side of
+the window.
+<BR>&nbsp;
+<H4>
+<A NAME="selectID"></A>Selecting Sequence IDs</H4>
+When an alignment is loaded none of the sequences are selected and so menu
+choices like Calculate Consensus or Pairwise alignments won't work.&nbsp;
+To select sequences click with the left mouse button on an ID and the backgound
+will turn grey to show it's selected.&nbsp; To unselect it click with the
+mouse button again.&nbsp;&nbsp; Dragging the mouse over a number of IDs
+makes it easier to select/deselect a range of IDs.
+<BR>&nbsp;
+<H4>
+<A NAME="dbentry"></A>Showing sequence database entries</H4>
+If you are running jalview as an applet and your sequence IDs are from
+swissprot then clicking with the right mouse button on an ID will bring
+up a new browser window with the swissprot entry in.
+<BR>&nbsp;
+<BR>&nbsp;</UL>
+</UL>
+
+<HR WIDTH="100%">
+<BR>&nbsp;</UL>
+&nbsp;
+<BR>&nbsp;
+</BODY>
+</HTML>

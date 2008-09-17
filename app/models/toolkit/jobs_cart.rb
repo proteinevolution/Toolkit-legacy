@@ -1,0 +1,2 @@
+  class JobsCart < Array
+  end

@@ -1,0 +1,70 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#strict">Strict and permissive alignment</a></li>
+	<li><a href="#master-slave">Master-slave alignments</a></li>
+	<li><a href="#reduced">100 most different sequences</a></li>
+	<li><a href="#rejected">Rejected sequences</a></li>
+	<li><a href="#intermediate">Intermediate alignments</a></li>
+	<li><a href="#forward">Forward and Export</a></li>
+	<li><a href="#references">References</a></li>
+	<li><a href="#contact">Contact</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Results</h2>
+
+<a name="strict"></a>
+<h3 class="<%= @section["name"] %>">Strict and permissive alignment</h3>
+<div class="row">
+HHsenser returns two alignments, a <i>strict</i>, reliable one which rarely includes unrelated sequences and which is appropriate for automatic analyses, and a more <i>permissive</i> one that occasionally contains unrelated sequences but which often covers more homologous sequences as well. The strict alignment is behind the "firewall" of a stricter set of acceptance criteria.
+<br><br>
+
+All sequences have an annotation in double parenthesis that gives the indices of the intermeditate alignments leading from present sequence  back to the original query, e.g. ((#137 <= #27 <= #8 <= #1 <= #0)). Here, 137 is the index of the alignment in which the sequence was included first, 23, 8, and 1 are the indices of the intermediate alignments, and 0 stands for the first PSI-BLAST-generated alignment seeded from the original query sequence. All intermediate alignments can be accessed via these indices with the help of the "Intermediate Alignments" tab. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="master-slave"></a>
+<h3 class="<%= @section["name"] %>">Master-slave alignments</h3>
+<div class="row">
+The master sequence in HHsenser is the query sequence. (If you entered a multiple alignment, the query sequence is the first sequence in your alignment.) In the master slave alignment, all residues which are inserted with respect to the master sequence are omitted, to avoid overly gapped alignments that are difficult to read and that take too long to load. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="reduced"></a>
+<h3 class="<%= @section["name"] %>">100 most different sequences</h3>
+<div class="row">
+By pressing the right JalView button you can view a master-slave alignment in which the 100 most diverse sequences 
+are displayed. This can be very helpful to spot non-homologous sequences since they will also show up in this alignmetnt. The 100 sequences are those that have the maximum pairwise sequence identity with each other. (We use the program hhfilter in the HHsearch software package.)
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="rejected"></a>
+<h3 class="<%= @section["name"] %>">Rejected sequences</h3>
+<div class="row">
+With this tab you can check which sequences (i.e. sequence alignments) were rejected in the course of the 
+transitive search.  Sequences are sorted by the order in which they were rejected.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="intermediate"></a>
+<h3 class="<%= @section["name"] %>">Intermediate alignments</h3>
+<div class="row">
+Here you can inspect all the intermediate alignments that were accepted under the permissive conditions.
+The numbering agrees with that appearing in the sequence annotaions (within the double parentheses) and in 
+the log file. In combination with the log file (see tab to the right) this allows to reconstruct how 
+the search process passed off.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="forward"></a>
+<h3 class="<%= @section["name"] %>">Forward and Export</h3>
+<div class="row">
+Forward allows to send the strict or permissive alignment to other applications in the toolkit and
+with Export you can save an alignment to a file.
+Note that only the 100 most diverse sequences will be forwared, as they normally are better
+suited for most tasks such as homology detection (due to more uniform sampling). They do however 
+contain gaps, since these contain important information about where inserts and deletions are most 
+likely to occur.
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<%= render(:partial => "hhsenser/references_and_contact") %>

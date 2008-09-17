@@ -1,0 +1,7 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => 'Results'}) %>
+  
+<%= render(:partial => "shared/resultsections") %>
+ 
+
+<%= render(:partial => "results", :locals => { :coloring => true }) %>
+

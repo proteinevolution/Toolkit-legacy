@@ -1,0 +1,9 @@
+<% @tools.each do |tool| %>
+
+	<% if tool['active'] %>
+		<option value="<%= url_for(:controller => tool['name'], :action => 'help_ov') %>">
+			<%= tool['title'] %>
+		</option>
+	<% end %>
+
+<% end %>

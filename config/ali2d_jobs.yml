@@ -1,0 +1,14 @@
+ali2d_job: 
+  title: Ali2D
+  hidden: false
+  code: ALI2
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+    - name: results_applet
+      title: Alignment Viewer Applet
+      title_long: Show Alignment Viewer Applet
+      forwardsections:
+

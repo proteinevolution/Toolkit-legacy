@@ -1,0 +1,29 @@
+frpred_job: 
+  title: FRpred
+  hidden: false
+  code: FRPR
+  resultsections:  
+    - name: results
+      title: Overview
+      title_long: Shows an overview of the results
+      forwardsections:
+    - name: results_mpicons_cat
+      title: FRcons-cat
+      title_long:  Show FRcons-catalytic
+      forwardsections:
+    - name: results_mpicons_lig
+      title: FRcons-lig
+      title_long:  Show FRcons-ligand
+      forwardsections:
+    - name: results_mpiet
+      title: FRtrace
+      title_long: Show FRtrace
+      forwardsections:
+    - name: results_mpisubtype
+      title: FRsubtype
+      title_long: Show FRsubtype
+      forwardsections:
+    - name: results_jmol
+      title: Jmol applet
+      title_long: Show Jmol applet
+      forwardsections:

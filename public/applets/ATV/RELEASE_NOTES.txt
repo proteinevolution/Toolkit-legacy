@@ -1,0 +1,147 @@
+FORESTER - a framework for phylogenomics
+Version 1.92 (March 2002)
+Copyright (C) 1999-2002 Washington University School of Medicine
+and Howard Hughes Medical Institute
+All rights reserved
+----------------------------------------------------------------
+
+
+
+Changes from version 1.91 to version 1.92
+-----------------------------------------
+
+ATV can now display subtree-neighbors.
+
+
+
+Changes from version 1.9 to version 1.91
+----------------------------------------
+
+only minor changes.
+
+
+
+
+Changes from version 1.8 to version 1.9
+---------------------------------------
+
+o SDIunrooted:  Improved (cleaner code).
+                Uses branches (Node-Node) for rerooting
+                instead of nodes (or parent branch thereof).
+
+
+o ATV:          Search functionality added.
+                Right mouse click to inspect nodes.
+
+
+
+Changes from version 1.7 to version 1.8
+---------------------------------------
+
+
+o SDIunrooted:  Method "fastInfer(Tree,Tree)" added.  
+
+o ATV:          "Order subtrees", "Uncollapse all", and 
+                "Collapse to deepest" functionality added.
+
+                Drawing for multifurcated trees without real
+                branch lengths improved.
+
+                Trees with collapsed nodes can now be properly saved.
+
+o NHX format:   "Co=" tag for collapsed nodes added.
+
+o Species tree: A species tree covering more species is included 
+                ("tree_of_life_bin_1-4.nhx").
+
+
+
+
+Changes from version 1.6 to version 1.7
+---------------------------------------
+
+o ATV:          The ATV application ("ATVapp") gains the ability
+                to perform SDI related operations on the displayed
+                (gene) tree.
+
+                In versions 1.6 and lower, some bootsrap values did
+                not associate with the proper branch after
+                rerooting. This is now corrected. 
+
+o Tree class    Some unnecessary methods were removed.
+
+
+
+
+Changes from version 1.5 to version 1.6
+---------------------------------------
+
+
+o NHX format:   All data fields going beyond New Hampshire need to be
+                bracketed by '[&&NHX' and ']'. ATV can still read trees
+                in the previous definition of the NHX format, but the
+                output follows the current definition. This is done for
+                compatibility reasons with the NEXUS format.
+                Comments are now between '[' and ']'.  
+      
+o SDIdirectory: Version 1.5 did not save the correct tree when 
+                writing option used together with minimizing height
+                and minimizing sum of duplication or minimizing L.
+                (All the numbers in the summary files were correct,
+                and versions before 1.5 did not have this problem.)
+                This has been corrected in version 1.6.  
+
+
+
+Changes from version 1.4 to version 1.5
+---------------------------------------
+
+o ATV: Only insignificant changes.
+
+o SDI: Is now "officially" included and documented.
+
+
+
+Changes from version 1.3 to version 1.4
+---------------------------------------
+
+o ATV: All: Can now display how many times a sequence is orthologous
+  (and "super orthologous" -- no duplications on connecting path) 
+  towards another one. New NHX tags "O=" and "SO=".
+
+o NHX: "Seq X branch" data is not being supported anymore.
+  NHX tag "Bp=" is deprecated.
+
+o ATV: AWT version of ATV application (ATVapp_awt) looses ability
+  to print. In general, the AWT version of the application is
+  not being supported actively anymore, since Java 1.2 is now
+  available for all major platforms (in contrast, the AWT applet
+  is still being actively supported).
+
+
+
+Changes from version 1.2 to version 1.3
+---------------------------------------
+
+o ATV: All: Collapsing nodes now results in a actually smaller tree.
+
+o ATV Applet: Save tree on server
+  A extended version of the ATV Applet which allows to write
+  tree files on the server has been added. This modification has
+  been developed by Peter Ernst (P.Ernst@DKFZ-Heidelberg.de).
+  
+o ATV application: Adjust size of printed tree
+  The user can now adjust the size of the printed tree in the
+  Swing version of ATV application.
+
+o ATV application: Printing in color.
+  The user can now choose between printing in color or
+  in b/w in the Swing version of ATV application.
+
+
+
+(last modified: 10/04/01)
+
+Christian Zmasek
+
+

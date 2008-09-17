@@ -1,0 +1,9 @@
+backtrans_job: 
+  title: Backtranslator
+  hidden: false
+  code: BTRA
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:

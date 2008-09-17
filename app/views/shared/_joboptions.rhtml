@@ -1,0 +1,9 @@
+<h3 class="<%= @section["name"] %>">Job Options</h3>
+<div class="row">
+	<%= form_label("Job-ID") %>
+	<%= form_text_field("jobid", '', '(leave empty for automatic creation)', 10) %>	
+</div>
+<div class="row">
+	<%= form_label("Send notification to (optional)") %>
+	<%= form_text_field("mail", '', '', 50) %>
+</div>

@@ -1,0 +1,12 @@
+probcons_job: 
+  title: ProbCons
+  hidden: false
+  code: PCON
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results

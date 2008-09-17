@@ -1,0 +1,43 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Clans View', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections") %>
+
+<applet codebase="/applets/clans/" archive="clansApplet.jar" CODE="ClansApplet.class" name="clapplet" WIDTH="1" HEIGHT="1" mayscript>
+	<PARAM NAME = "dataUrl" value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.clans">
+</applet>
+
+<form action="http://f11.bc:8080/home/run/clanstest"
+	  id="hiddenform"
+	  name="hiddenform"
+	  method="POST">
+<input type="hidden" name="psdata" value="12345"/>
+</form>
+
+<script type="text/javascript">
+<!--
+function submithiddenform(s){
+	document.hiddenform.psdata.value=s;
+	document.hiddenform.submit();
+}
+//-->
+</script>
+
+<div class="hr">&nbsp;</div>
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+
+	The CLANS-applet should start automatically. If not, check if your browser allows Java.
+	<br/><br/>
+	Warning: Reloading the page will initialize the applet.
+	<br/><br/>
+	Download the CLANS-file: <a href="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.clans"><%= @job.jobid %>.clans</a>
+	<br/><br/>
+
+</div>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Frickey, T. and Lupas A. N. (2004) CLANS: a Java application for visualizing protein families based on pairwise 
+	similarity. <em>Bioinformatics</em>, <strong>20</strong>(18), 3702-3704.
+</div>

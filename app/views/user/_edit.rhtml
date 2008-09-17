@@ -1,0 +1,18 @@
+<div class="user_edit">
+  <%= form_input :hidden_field, 'form', :value => 'edit' %>
+
+  <table>
+    <%= form_input changeable(user, "firstname"), "firstname" %>
+    <%= form_input changeable(user, "lastname"), "lastname" %>
+    <%= form_input changeable(user, "login"), "login", :size => 30 %>
+    <%= form_input changeable(user, "institute"), "institute" %>
+    <%= form_input changeable(user, "street"), "street" %>
+    <%= form_input changeable(user, "city"), "city" %>
+    <%= form_input changeable(user, "country"), "country" %>
+    <%= form_input changeable(user, "modeller_key"), "modeller_key" %>
+    <br/>
+    <% if submit %>
+      <%= form_input :submit_button, user.new_record? ? 'signup' : 'change_settings', :class => 'two_columns' %>
+    <% end %>
+  </table>
+</div>

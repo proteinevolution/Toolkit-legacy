@@ -1,0 +1,57 @@
+<%= form_tag({:controller => 'userdb', :action => 'delete_userdbs'}, {:multipart => true})%> 
+
+<a href="#" onclick="openUserdbWindow('<%= @upload_url %>');" style="color: green; float: right; margin-right: 10px; margin-top: 5px;">Upload database...</a>
+<h2>Personal databases</h2>
+<% if !@user.nil? %>
+		<p style="margin: 10px 0px 0px 5px;">You are currently logged in as user '<%= @user.login %>'. The total size of your personal databases may not exceed <span style="color: red; font-weight: bold;">100 MB</span>. Databases will be stored until you delete them.</p>
+<% else %>
+		<p style="margin: 10px 0px 0px 5px;">You are currently not logged in. Therefore the total size of your personal databases may not exceed <span style="color: red; font-weight: bold;">10 MB</span>. Databases will be stored until your browser session ends or you delete them, but at most for 7 days.</p>
+<% end %>
+<table style="border: 1px solid #79A4C4; margin-top: 10px" width="100%">
+<tr>
+<th width="10px"></th>
+<th>Name</th>
+<th>Size [Byte]</th>
+<th>Type</th>
+<th>Formatted</th>
+<th>Date of upload</th>
+</tr>
+<% iteration = 0 %>
+<% @userdbs.each do |db| %>
+
+  <% iteration += 1 %>
+  <% if ((iteration % 2) == 0) %>
+    <tr style="background-color: #C8DCEC;">
+  <% else %>
+    <tr style="background-color: #E2EFF9;">
+  <% end %>
+
+  <td align="center">
+  <input name="userdb[]" type="checkbox" value="<%= db.name %>" />
+  </td>
+  <td>
+  <%= db.name %>
+  </td>
+  <td align="center">
+  <%= db.size %>
+  </td>
+  <td align="center">
+  <%= db.dbtype %>
+  </td>
+  <td align="center">
+  <% if db.formatted %>
+    yes
+  <% else %>
+    in progress
+  <% end %>
+  </td>
+  <td align="center">
+  <%= db.created_on %>
+  </td>
+  </tr>
+<% end %>
+</table>
+<p style="margin: 10px 0px 0px 5px; color: red; font-weight: bold; float: left;">Total database size:&nbsp;<%= @size %>&nbsp;MB</p>
+<input name="submitform" type="submit" class="toolbutton" value="Delete selected Databases" />
+
+</form>

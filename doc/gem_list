@@ -1,0 +1,71 @@
+
+*** LOCAL GEMS ***
+
+actionmailer (1.2.5, 1.2.1)
+    Service layer for easy email delivery and testing.
+
+actionpack (1.12.5, 1.12.1)
+    Web-flow and rendering framework putting the VC in MVC.
+
+actionwebservice (1.1.6, 1.1.2)
+    Web service support for Action Pack.
+
+activerecord (1.14.4, 1.14.2)
+    Implements the ActiveRecord pattern for ORM.
+
+activesupport (1.3.1)
+    Support and utility classes used by the Rails framework.
+
+daemons (1.0.3)
+    A toolkit to create and control daemons in different ways
+
+gem_plugin (0.2.1)
+    A plugin system based only on rubygems that uses dependencies only
+
+gruff (0.2.8)
+    Beautiful graphs for one or multiple datasets.
+
+hoe (1.1.7)
+    Hoe is a way to write Rakefiles much easier and cleaner.
+
+localization_generator (1.0.8)
+    [Rails] Localization generator.
+
+mem_cache_fragment_store (1.0.1)
+    A better Rails fragment store than MemCacheStore
+
+memcache-client (1.2.1)
+    A Ruby memcached client
+
+mongrel (0.3.13.4)
+    A small fast HTTP library and server that runs Rails, Camping, and
+    Nitro apps.
+
+mongrel_cluster (0.2.1)
+    Mongrel plugin that provides commands and Capistrano tasks for
+    managing multiple Mongrel processes.
+
+mysql (2.7)
+    MySQL/Ruby provides the same functions for Ruby programs that the
+    MySQL C API provides for C programs.
+
+rails (1.1.6, 1.1.2)
+    Web-application framework with template engine, control-flow layer,
+    and ORM.
+
+rake (0.7.1)
+    Ruby based make-like utility.
+
+rubyforge (0.4.0)
+    A simplistic script which automates a limited set of rubyforge
+    operations
+
+salted_login_generator (1.1.1)
+    [Rails] Login generator with salted passwords.
+
+sources (0.0.1)
+    This package provides download sources for remote gem installation
+
+ZenTest (3.4.3)
+    ZenTest provides 4 different tools and 1 library: zentest,
+    unit_diff, autotest, multiruby, and Test::Rails.

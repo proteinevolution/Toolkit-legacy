@@ -1,0 +1,30 @@
+clans_job: 
+  title: CLANS
+  hidden: false
+  code: CLAN
+  resultsections:  
+    - name: results
+      title: Select cutoff
+      title_long: Select cutoff
+      forwardsections:
+
+cluster_job:
+  title: CLANS
+  hidden: false
+  code: CLUS
+  resultsections:  
+    - name: results_clustering
+      title: Results
+      title_long: Show Results
+      forwardsections:
+      
+view_clans_job:
+  title: CLANS
+  hidden: false
+  code: CLAN
+  resultsections:  
+    - name: results_view_clans
+      title: Results
+      title_long: Show results
+      forwardsections:
+    

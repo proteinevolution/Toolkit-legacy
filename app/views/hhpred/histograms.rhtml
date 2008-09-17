@@ -1,0 +1,76 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => "Results"}) %>
+
+<%= render(:partial => "shared/resultsections", :locals => {:forward => false}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form"}) %>
+
+<% if @errors['hits'] %>
+<div class="row">
+	<p class="formerror"><%= @errors['hits'] %></p>
+</div><div class="hr">&nbsp;</div>
+<% end %>
+
+<% if @hhcluster %>
+	<a href="/hhcluster">Back to Galaxy of folds</a>
+	<div class="spacer">&nbsp;</div>	
+<% end %>
+
+<div id="noPdb" style="display: none;">
+	<div class="row">
+		<p class="formerror">Only hits found in PDB or SCOP can be used to create a model.</p>
+	</div>
+	<div class="hr">&nbsp;</div>
+</div>
+
+<div id="createmodel" style="display: none;">
+	<input name="hits" id="hits" type="hidden" value=""/>
+	
+	<div class="row">
+		<input name="submitform" onmouseover="return overlib('Corresponds to HHpred1');" onmouseout="return nd();" type="submit" class="toolbutton" value="Create single-template model" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'modeller', :forward_action => 'forward', :mode => 'single', :increment_id => 'true') %>');" />		
+		<strong>
+		For single-template modeling (fast), select one template with the check boxes. Selecting the best (default)
+		is equivalent to the successful HHpred1 server from 
+		<a target="_blank" href="http://<%= DOC_ROOTHOST %>/hhpred/CAFASP5_incl_times.html">CASP7</a>.
+		</strong>
+	</div>
+	<div class="row">
+		<input name="submitform" onmouseover="return overlib('Run time typically 8 min (up to hours depending strongly on alignment length). Corresponds to HHpred2.');" onmouseout="return nd();" type="submit" class="snailbutton" value="Create multi-template model" onClick="select_first(20); extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_makemodel', :mode => 'cluster', :increment_id => 'true') %>');" />
+		<strong>For multi-template modeling (slow), the checkboxes are ignored at this step. Templates will be clustered 
+		by structural similarity and super-HMMs generated. On the following page, a set of templates can 
+		then be selected. Using the default setting on that page corresponds to the HHpred2 server from 
+		<a target="_blank" href="http://<%= DOC_ROOTHOST %>/hhpred/CAFASP5_incl_times.html">CASP7</a>.
+		</strong>
+	</div>
+	<div class="row">
+<!--
+		<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:select_first(10)">Select the best ten</a>
+-->
+	</div>
+	<div class="row">
+		<p class="formerror">Only hits found in PDB or SCOP can be used to create a model (Other hits are disabled).</p>
+	</div>
+	<div class="hr">&nbsp;</div>
+</div>
+
+<div id="mergeali" style="display: none;">
+	<div class="row">
+		<div class="formw">		
+			<input name="submitform" type="submit" class="feedbutton" value="Merge alignments" onClick="setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmergeali', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_hhmergeali', :increment_id => 'true') %>');" />		
+		</div>
+	</div>
+	<div class="row">
+		<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:select_first()">Select the best ten</a>
+	</div>
+	<div class="hr">&nbsp;</div>
+</div>
+
+<div class="row">
+	<%=  @job.results  %>
+	
+</div>
+
+</form>

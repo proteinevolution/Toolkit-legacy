@@ -1,0 +1,94 @@
+<a href="#" onClick="openHelpWindow('/pdbalert/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>  
+<h2><%= @page_title %></h2>
+
+<% if flash[:notice] && flash[:notice] =~ /Successfully/ %>
+   <br /><div align="left" style="font-weight: bold; font-size: 10px; color: green;"><%= flash[:notice] %></div>
+<% elsif flash[:notice] %>
+   <br /><div align="center" style="font-weight: bold; background-color: #ffffaa; width: 180px; height: 16px; font-size: 12px;"><%= flash[:notice] %></div>
+<% end %>
+<span id="upload_form" style="display: <%= @upload_on ? 'true':'none' %>;">
+<h3 class="utils"><a href="javascript:hide_upload_form();" onclick="hide_upload_form();">Hide</a></h3>
+<%= render(:partial => "upload_userdb") %>
+<h3 class="utils">&nbsp;</h3>
+</span>
+<span id="upload_option" style="display: <%= @upload_on ? 'none':'true' %>;">
+<a href="javascript:show_upload_form();" style="color: green; float: right; margin-right: 10px; margin-top: 5px;" onclick="show_upload_form();">Upload sequence...</a>
+</span>
+
+<% if @userdbs.empty? %>
+<br />
+  <h3 class="utils">What is PDBalert?</h3>
+  <div class="row">
+  PDBalert is a web-based automatic system that alerts users as soon as a pdb structure with homology to a protein of interest becomes available. Users can upload their personal protein sequences of interest. Every Wednesday, when new proteins are released to the PDB database, PDBalert compares the users' sequences with the new proteins. When a significant match is found, the user is alerted by email containing a link to the search results. The sequence search uses the very sensitive and reliable remote homology detection server HHpred, which is based on pairwise comparison of Hidden Markov models. Its sensitivity is testified by its second rank in the last CASP structure prediction benchmark <a href="#" onclick="openHelpWindow('/hhpred/help_ov')">[CASP7 server results]</a>.
+  <br /><br />
+  </div>
+  
+  <h3 class="utils">How can PDBalert be useful for you?</h3>
+  <div class="row">
+  If you are a cell biologist and you want to be the first to model the 3D structure of your protein of interest with a brandnew template structure or to obtain hints about possible functions from a homologous relationship, then PDBalert will give you the crucial edge in time. As soon as a new template to one of your proteins becomes available, you will get notified by email. You can then quickly build a 3D model with the HHpred server or explore the functional consequences of the database match. If you are a crystallographer, you probably want to know if a protein related to one of your current pets has come out. PDBalert obviates the need to regularly check the new PDB entries and will also highlight relationships that are more distant than what would appear on your radar by simple key word alerts. If you are an evolutionary biologist interested in a protein family, you will be interested to learn as soon as possible about new structures from members of the family. In any case, you only need to enter your sequences or sequence alignments once and PDBalert will do the checking regularly without further ado.
+  <br /><br />
+  </div>
+  <h3 class="utils">Notes</h3>
+  <div class="row">
+  Whenever possible, users should upload sequences of single protein domains, since sensitivity increases and the false discovery rate is reduced compared to multi-domain proteins. When PDBalert confidently predicts a domain in a longer sequence, it is therefore recommended to split the sequence up according to the (partial) predicted domain structure and upload the fragments separately to PDBalert.
+  <br /><br />
+  Users must also try to avoid uploading sequences with more than 50% similarity since the profile created for such sequences will be almost same.
+  </div>
+  <br />
+  <%= render(:partial => "pdbalert/references_and_contact") %>
+<% else %>
+<h2>Sequence Watchlist</h2>
+<div class="hr">&nbsp;</div>
+<%= form_tag({:controller => 'pdbalert', :action => 'delete_userdbs'}, {:multipart => true})%>
+<table style="border: 1px solid #79A4C4; margin-top: 10px" width="100%">
+<tr>
+<th width="10px"></th>
+<th>Name &amp; Description</th>
+<th>Length</th>
+<th>Date of upload</th>
+<th>Result</th>
+</tr>
+<% iteration = 0 %>
+<% @userdbs.each do |db| %>
+
+  <% iteration += 1 %>
+  <% if ((iteration % 2) == 0) %>
+    <tr style="background-color: #C8DCEC;">
+  <% else %>
+    <tr style="background-color: #E2EFF9;">
+  <% end %>
+
+  <td align="center">
+  <input name="userdb[]" type="checkbox" value="<%= db.id %>" />
+  </td>
+  <td>
+  <a href="seq_detail?id=<%= db.id %>" style="font-size:10px; "><%= db.name %></a>
+  </td>
+  <td align="center">
+  <%= db.length %>
+  </td>
+  <td align="center">
+  <%= db.created_on.to_date.to_s(:long) %>
+  </td>
+  <td align="center">
+  <% if db.job_id.to_i == 0 %>
+  No useful hit yet<br />
+  <a href="result?id=<%=db.id%>">(Previous result)</a>
+  <% else %>
+  <a href='/hhpred/check/<%= db.job_id %>'>Match found (JOB-ID: <%= db.job_id %>)</a> <br /> <a href='/modeller/results_model/<%= db.str_id %>'>Structure (JOB-ID: <%= db.str_id %>)</a> <br /> <a href='/pdbalert/unsatisfactory_result?userdb=<%= db.id %>' style="color:#000000">(Click here if unsatisfactory)</a>
+  <% end %>
+  </td>
+</tr>
+<% end %>
+</table>
+<input name="submitform" type="submit" class="toolbutton" value="Delete selected sequences" />
+<p style="margin: 10px 0px 0px 5px;">The total number of your sequences may not exceed <span style="color: red; font-weight: bold;">100</span>.</p>
+
+</form>
+<% end %>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+  Please send feedback to: soeding AT lmb.uni-muenchen.de
+</div>
+

@@ -1,0 +1,18 @@
+<h3>Remote Debug</h3>
+</br>
+<p>(This page is restricted to requests from 10.35.*)</p>
+</br>
+<div class="hr">&nbsp;</div>
+<div class="row">
+	<div style="font-size:20;"><span style="width:250px; float:left; display:block;">Your IP: </span><span style="color:#f00;"><%= request.remote_ip %> <span></div>
+	</br>
+	<% request.env.each{|k,v| %>
+		<div style="font-size:14;"><span style="width:250px; float:left;"> <%= k %> </span><span style="color:#f00;"><%= v %> <span></div>
+
+	<% }%>
+	</br>
+	</br>
+
+	Updates, comments or errors, please mail to: 
+	<strong><a href="mailto:mpi-toolkit@tuebingen.mpg.de">mpi-toolkit@tuebingen.mpg.de</a></strong>
+</div>

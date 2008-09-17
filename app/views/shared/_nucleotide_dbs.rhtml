@@ -1,0 +1,95 @@
+<%# partial template containing the nucleotide db section \chris %>
+
+<script src="/javascripts/genomes.js" type="text/javascript"></script>
+<script src="/javascripts/dnatree.js" type="text/javascript"></script>
+
+<h3 class="<%= @section["name"] %>">Databases</h3>
+
+	<% if @db_type %>
+	<div class="row">
+		<%= form_label("Select database format", "database") %>
+		<%= form_radio_buttons("db_type", @db_type_values, @db_type_labels, @db_type, "&nbsp;&nbsp;", "location.href='/#{@tool['name']}?db_type=prot';") %>	
+	</div><div class="spacer">&nbsp;</div>
+	<% end %>
+
+  	<div class="row">
+    		<%= form_label("Select databases", "database") %>
+    		<div class="formw">
+    			<div class="db">
+					<h6>Standard</h6>
+    				<%= form_select_multiple("std_dbs", @std_dbs_paths, @std_dbs_labels, @std_dbs_paths[@std_dbs_labels.index('nt')],5,false) %>	
+    			</div>
+    			
+    			<%# User-DBs %>
+    			
+				<% if @user.nil? 
+						dbs = Userdb.find(:all, :conditions => [ "user_id = ? AND sessionid = ?", 0, session.session_id ])
+					else
+						dbs = @user.userdbs ? @user.userdbs : []
+					end %>
+					
+				<% if !dbs.empty?
+						user_dbs_paths = []
+						user_dbs_labels = []
+						dbs.each do |db|
+							user_dbs_paths << db.path
+							user_dbs_labels << db.name
+						end %>
+						<div id="userdbs_box" class="db">
+							<h6>Personal</h6>
+							<%= form_select_multiple("user_dbs", user_dbs_paths, user_dbs_labels, [],5,false) %>	
+						</div>
+				<% else %>
+						<div id="userdbs_box" style="display: none;" class="db">
+							<h6>Personal</h6>
+							<%= form_select_multiple("user_dbs", [], [], [],5,false) %>	
+						</div>
+				<% end %>
+				
+				<div class="db">
+					<a href="#" onclick="openUserdbWindow('<%= url_for(:controller => 'userdb', :action => 'upload_userdb', :type => 'n') %>');" style="color: green;">Upload database...</a>
+				</div>
+				<div class="footnote">(press CTRL to select/deselect multiple databases)</div>				
+				
+	 		</div>
+  	</div>
+	
+	<div class="row">
+		<div class="label">Genomes</div>
+  		<div class="formw">
+			<div id="gshow_lnk" ><a href="javascript:loadtogglegenomes('dna', 2);">Select Genomes</a></div>
+			<div id="gloading_lnk" style="display:none; text-decoration:blink;" >Loading...</div>	
+			<div id="ghide_lnk" style="display:none;">
+				<div>
+				 <input name="genomes_expr" id="genomes_expr" onkeypress="if(event && event.which==13){genomessearch('dna'); return false;}">&nbsp;
+				 <a id="gsearch_lnk" href="javascript: genomessearch('dna');">Search</a>
+				 <span id="gsearching" style="display:none; text-decoration:blink;">Searching...</span>
+				 </div>
+				<div style="height:4px;">&nbsp;</div>				
+				<div>
+				<a href="javascript: loadtogglegenomes('dna');">Hide</a>&nbsp;&nbsp;
+				<a href="javascript: collapseall(tree[0]);">Collapse all</a> &nbsp;&nbsp;
+				<a href="javascript: expandall(tree[0]);">Expand all</a>&nbsp;&nbsp;
+				<a href="javascript: expandselected();">Expand selected</a>&nbsp;&nbsp;
+				<a href="javascript: deselect();">Deselect all</a>&nbsp;&nbsp;	
+	</div></div></div></div>
+	<%# this is updated when the user clicks on 'Search'%>
+	<div class="row"><div class="formw"><span id="count_label"></span></div></div>
+	<div id="genomes_ids_target" style="height:0px;"><%= form_hidden_field("taxids") %></div>	
+	<div class="row"><div class="formw"><div id="gtree_target">
+			 <% if params['taxids'] || @error_params['taxids'] %>
+			 <%= render(:partial => "genomes/dnatree",
+				    :locals => { :hidetree => true } ) %>
+			 <script type="text/javascript">
+			 Element.show("ghide_lnk");
+			 Element.hide("gshow_lnk");
+			 window.setTimeout("taxids2tree($('taxids').value)",0);
+			 window.setTimeout("expandselected()",0);
+			 </script>
+			 <% end %>
+			</div> 
+		</div>
+	</div>
+	<div class="spacer">&nbsp;</div>
+
+

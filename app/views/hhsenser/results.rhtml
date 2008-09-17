@@ -1,0 +1,117 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => 'Results'}) %>
+  
+<% if @job.multi_dom.length > 0 %>
+
+<div id="jobsection">
+	<ul>
+		<li> </li>
+	</ul>
+</div>
+
+<div class="row">
+	<span style="font-weight: bold; font-size: 16px;">
+		Note: HHsenser prescreening with HHpred found a multidomain structure in your query sequence.
+	</span>
+	<br/><br/>
+	<span style="font-size: 13px;">
+	<ul>
+		<li> <a href="<%= url_for(:controller => 'hhpred', :action => 'results', :jobid => @job.hhpred_id) %>" style="font-size: 13px;"> Click this link for the HHpred results of this screening. </a> </li>
+		<li> Click these links to resubmit parts of your sequence to HHsenser:
+		<ul>
+			<% @job.multi_dom.each do |key, value| %>
+				<li> <a href="<%= url_for(:action => :run, :jobaction => 'hhsenser_forward', :jobid => @job, :forward_action => 'forward', :forward_controller => 'hhsenser', :alignment_mode => key) %>" style="font-size: 13px;"> region <%= value %> </a></li>
+			<% end %>
+		</ul>
+	</ul>
+	</span>
+
+</div>
+
+<% else %>
+
+<%= render(:partial => "shared/resultsections") %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div id="forward" style="display: none;">
+	<div class="row">
+		<div class="label">Forward results to</div>
+		<div class="formw">
+			<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+		</div>
+	</div>
+    
+	<div class="row">
+		<div class="label"></div>
+		<div class="formw">
+			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+		</div>
+	</div>
+	<div class="hr">&nbsp;</div>
+</div>
+
+<div class="row">
+	<div id="applet">
+		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+		<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_strict.reduced.fas">
+		<PARAM NAME="type"   value="URL">
+		<PARAM NAME="format" value="FASTA">
+		</APPLET> 
+		<strong><span style="position: relative; top: -16px;">alignment with 100 most distinct sequences&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+		<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_strict_masterslave.reduced.fas">
+		<PARAM NAME="type"   value="URL">
+		<PARAM NAME="format" value="FASTA">
+		</APPLET>
+		<strong><span style="position: relative; top: -16px;">reduced alignment: 100 most distinct sequences with inserted residues deleted</span></strong>		
+	</div>
+</div>
+<div class="hr">&nbsp;</div>
+
+<div class = "row">
+	<span style="font-weight: bold;">Download alignment files:</span>
+	<table>
+		<tr height="0px"><td width="300px"></td><td></td></tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_strict_masterslave.clu" target="_blank"><%= @job.jobid %>_strict_masterslave.clu</a></td>
+			<td>CLUSTAL formatted without inserts</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_strict_masterslave.fas" target="_blank"><%= @job.jobid %>_strict_masterslave.fas</a></td>
+			<td>FASTA formatted without inserts</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_strict_masterslave.reduced.fas" target="_blank"><%= @job.jobid %>_strict_masterslave.reduced.fas</a></td>
+			<td>FASTA formatted without inserts (with 100 most distinct sequences)</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_strict.clu" target="_blank"><%= @job.jobid %>_strict.clu</a></td>
+			<td>CLUSTAL formatted</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_strict.a3m" target="_blank"><%= @job.jobid %>_strict.a3m</a></td>
+			<td>A3M formatted</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_strict.fas" target="_blank"><%= @job.jobid %>_strict.fas</a></td>
+			<td>FASTA formatted</td>
+		</tr>
+		<tr>
+			<td><a href="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_strict.reduced.fas" target="_blank"><%= @job.jobid %>_strict.reduced.fas</a></td>
+			<td>FASTA formatted (with 100 most distinct sequences)</td>
+		</tr>
+	</table>
+	
+	<br>
+	<span style="font-weight: bold;">Master-slave alignment of 100 most distinct sequences:</span>
+</div>
+
+<% if @job.strict_res.length > 0 %>
+	<div class="alignres"><%= @job.strict_res.join("\n") %></div>
+<% else %>
+	<div class="alignres">Strict alignment is empty!</div>
+<% end %>
+
+</form>
+<% end %>

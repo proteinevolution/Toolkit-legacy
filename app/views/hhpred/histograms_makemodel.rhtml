@@ -1,0 +1,43 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => "Results", :resubmit => false}) %>
+
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form"}) %>
+
+<% if @errors['hits'] %>
+<div class="row">
+	<p class="formerror"><%= @errors['hits'] %></p>
+</div><div class="hr">&nbsp;</div>
+<% end %>
+
+<div id="createmodel">
+	<div class="row">
+			<input name="submitform" type="submit" class="toolbutton" value="Prepare for MODELLER" onClick="setAction('<%= @job.tool %>_form', '<%= url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => 'hhmakemodel_forward', :jobid => @job, :forward_action => "forward", :forward_controller => 'modeller') %>');" />
+			<strong>
+			Please press "Prepare for MODELLER" to generate a PIR alignment for MODELLER.		
+			(Using the default setting corresponds to HHpred2's procedure.) The alignments on this page 
+			represent groups of structurally similar templates (with permuted master templates). 
+			You may choose different multiple template alignments with the radio buttons.
+			</strong>
+	</div>
+	<div class="hr">&nbsp;</div>
+</div>
+
+<div id="color_button" class="row">
+	<div class="label">
+		<a href="#" onclick="openHelpWindow('hhpred_help_params', 'coloring');">Color alignments</a>
+	</div>
+	<div class="formw">
+		<strong>
+			<%= radio_button_tag('coloring', 'onlySS', @mode == 'onlySS', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'onlySS')+"';"}) -%>&nbsp;color only SS &nbsp;&nbsp;&nbsp;&nbsp;
+			<%= radio_button_tag('coloring', 'letters', @mode == 'letters', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'letters')+"';"}) -%>&nbsp;	
+			<span style="color: orange;">c</span><span style="color: black;">o</span><span style="color: green;">l</span><span style="color: black;">o</span><span style="color: red;">r&nbsp;</span>
+			<span style="color: grey;">a</span><span style="color: green;">li</span><span style="color: maroon;">g</span><span style="color: purple;">n</span><span style="color: green;">m</span><span style="color: blue;">e</span><span style="color: purple;">n</span><span style="color: grey;">t</span><span style="color: grey;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
+			<%= radio_button_tag('coloring', 'background', @mode == 'background', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'background')+"';"}) -%>&nbsp;
+			<span style="background-color: #ffff00;">c</span><span style="background-color: white;">o</span><span style="background-color: #00ff00;">l</span><span style="background-color: white;">o</span><span style="background-color: #ff0000;">r&nbsp;</span>
+			<span style="background-color: white;">a</span><span style="background-color: #00ff00;">li</span><span style="background-color: #ffd070;">g</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: #00ff00;">m</span><span style="background-color: #c080ff;">e</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: white;">t</span><span style="background-color: white;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
+		</strong>
+	</div>
+</div>
+
+<div class="spacer">&nbsp;</div>	<%= @job.hhpred_results("program=profile_logos makemodel=true") %>

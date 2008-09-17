@@ -1,0 +1,22 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+
+<div class="row">
+
+     <% if File.exists?(File.join(@job.job_dir, @job.jobid + ".pdb.profile")) %>
+	   <img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>.anolea.png" border="0" name="model quality" >
+	   <br/><br/>
+	   F. Melo and E. Feytmans (1998) Assessing protein structures with a non-local atomic interaction energy. J Mol Biol 277, 1141 - 1152.
+	   <br/><br/>
+	   <pre>
+		<%= @job.render_file(@job.jobid + ".pdb.profile") %>
+	   </pre>
+     <% else %>
+
+     	   No results found!
+
+     <% end %>
+
+</div>

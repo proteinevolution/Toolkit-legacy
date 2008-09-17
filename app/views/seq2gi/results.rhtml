@@ -1,0 +1,23 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections") %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+
+<div id="forward" style="display: none;">
+	<div class="row">
+		<%= form_label("Forward results to") %>
+		<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+	</div>
+	<div class="row">
+		<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+	</div>
+    
+	<div class="hr">&nbsp;</div>
+</div>
+  
+<div class="row">
+<pre><%= @job.render_file(@job.jobid+".out") %></pre>
+</div>
+
+</form>

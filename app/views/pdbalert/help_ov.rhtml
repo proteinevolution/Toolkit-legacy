@@ -1,0 +1,24 @@
+<ul id="helpindex" class="darkred">
+<li><a href="#about">What is PDBalert?</a></li>
+<li><a href="#use">How is it useful?</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+
+<h2>About PDBalert</h2> 
+
+<a name="about"></a>
+<h3 class="utils">What is PDBalert?</h3>
+<div class="row">
+PDBalert is a web-based automatic system that alerts users as soon as a pdb structure with homology to a protein of interest becomes available. Users can upload their personal protein sequences of interest. Once a week, when new proteins are released to the PDB database, PDBalert compares these with the users' sequences. When a significant match is found, the user is alerted by an email containing a link to the search results. The sequence search uses the very sensitive and reliable remote homology detection server HHpred, which is based on pairwise comparison of Hidden Markov models. Its sensitivity is testified by its second rank in the last CASP structure prediction benchmark <a href="#" onclick="openHelpWindow('/hhpred/help_ov')">[CASP7 server results]</a>. 
+<br /><br />
+</div>
+
+<a name="use"></a>
+<h3 class="utils">How can PDBalert be useful for you?</h3>
+<div class="row">
+If you are a cell biologist and you want to be the first to model the 3D structure of your protein of interest with a brandnew template structure or to obtain hints about possible functions from a homologous relationship, then PDBalert will give you the crucial edge in time. As soon as a new template to one of your proteins becomes available, you will get notified by email. You can then quickly build a 3D model with the HHpred server or explore the functional consequences of the database match. If you are a crystallographer, you probably want to know if a protein related to one of your current pets has come out. PDBalert obviates the need to regularly check the new PDB entries and will also highlight relationships that are more distant than what would appear on your radar by simple key word alerts. If you are an evolutionary biologist interested in a protein family, you will be interested to learn as soon as possible about new structures from members of the family. In any case, you only need to enter your sequences or sequence alignments once and PDBalert will do the checking regularly without further ado.
+<br /><br />
+</div>
+
+<%= render(:partial => "pdbalert/references_and_contact") %>

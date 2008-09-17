@@ -1,0 +1,17 @@
+bad_job: 
+  title: Bad
+  hidden: false
+  code: BAD
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+    - name: browse
+      title: Browse database
+      title_long: Browse database
+      forwardsections:
+    - name: index
+      title: Main page
+      title_long: Main page
+      forwardsections:

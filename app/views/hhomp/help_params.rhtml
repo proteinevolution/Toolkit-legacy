@@ -1,0 +1,262 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Paste sequence or multiple alignment</a></li>
+	<li><a href="#format">Select input format</a></li>
+	<li><a href="#databases">Select HMM databases</a></li>
+	<li><a href="#maxpsiblastit">Max. number of PSI-BLAST iterations</a></li>
+	<li><a href="#E_psiblast">E-value threshold for PSI-BLAST</a></li>
+	<li><a href="#cov_min">Min. coverage of PSI-BLAST hits</a></li>
+	<li><a href="#qid_min">Min. sequence identity of PSI-BLAST hits with query</a></li>
+	<li><a href="#alignmode">Alignment mode</a></li>
+	<li><a href="#score_bb">Score beta-barrel structure</a></li>
+	<li><a href="#maxseq">Show representative sequences per HMM</a></li>
+	<li><a href="#width">Width of alignments</a></li>
+	<li><a href="#minprobab">Minimum probability in hit list</a></li>
+	<li><a href="#maxlines">Maximum number of hits in hit list</a></li>
+	<li><a href="#coloring">Coloring query-template multiple alignments in results</a></li>
+</ul>
+
+<h2><%= @tool['title'] %>  Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Paste single sequence or multiple alignment</h3>
+<div class="row">
+Paste the query <i>sequence</i> with which you want to do the search either as raw sequence 
+(e.g. 'ELRLRYCAPAGFALLKCN...') or as FASTA sequence (i.e. with a single line '>sequence_name optional description' 
+preceding the raw sequence, see next subsection). HHomp will use PSI-BLAST searches
+against the non-redundant sequence database from NCBI to build a multiple alignment from it. This 
+alignment will then be used to construct a concise statistical representation (a hidden Markov 
+model or HMM) and to search the selected HMM databases for homologs. <br>
+You may also paste a query <i>multiple alignment</i> (for allowed formats see below). 
+The alignment will be used to jumpstart PSI-BLAST. An expert-built or expert-edited alignment or one 
+that contains homologs not yet contained in the non-redundant sequence database may significantly increase 
+the sensitivity and reliability of the HHomp search. I recommend NOT to use automatic multiple alignment
+programs such as CLUSTAL, as PSI-BLAST tends to give clearly better alignments for the purpose of
+detecting homologs.
+Note: if you paste a multiple alignment please don't forget to select the appropriate input format below. <!-- ' -->
+<br/><br/>
+</div><div class="spacer">&nbsp;</div>
+
+<a name="format"></a>
+<h3 class="<%= @section["name"] %>">Select input format</h3>
+<div class="row">
+<h5>Entering a single query sequence</h5>
+<br>
+You can enter a single query sequence in FASTA format (with or withour name line). HHomp will build a multiple alignment 
+of homologs from it with PsiBlast. The query sequence in FASTA can look like this:
+<br><br>
+<PRE>
+>gi|117623167|ref|YP_852080.1| OmpA [Escherichia coli APEC O1]
+MKDLTVLSRWRYSWRILDDNEAQKMKKTAIAIAVALAGFATVAQAAPKDNTWYTGAKLGW
+SQYHDTGFINNNGPTHENQLGAGAFGGYQVNPYVGFEMGYDWLGRMPYKGSVENGAYKAQ
+GVQLTAKLGYPITDDLDVYTRLGGMVWRADTKSNVYGKNHDTGVSPVFAGGVEYAITPEI
+ATRLEYQWTNNIGDAHTIGTRPDNGMLSLGVSYRFGQGEAAPVVAPAPAPAPEVQTKHFT
+LKSDVLFTFNKATLKPEGQAALDQLYSQLSNLDPKDGSVVVLGYTDRIGSDAYNQALSER
+RAQSVVDYLISKGIPADKISARGMGESNPVTGNTCDNVKQRAALIDCLAPDRRVEIEVKG
+IKDVVTQPQA
+</PRE><br>
+or this
+<br><br>
+<PRE>
+>gi|117623167|ref|YP_852080.1| OmpA [Escherichia coli APEC O1]
+MKDLTVLSRW RYSWRILDDN EAQKMKKTAI AIAVALAGFA TVAQAAPKDN TWYTGAKLGW
+SQYHDTGFIN NNGPTHENQL GAGAFGGYQV NPYVGFEMGY DWLGRMPYKG SVENGAYKAQ
+GVQLTAKLGY PITDDLDVYT RLGGMVWRAD TKSNVYGKNH DTGVSPVFAG GVEYAITPEI
+ATRLEYQWTN NIGDAHTIGT RPDNGMLSLG VSYRFGQGEA APVVAPAPAP APEVQTKHFT
+LKSDVLFTFN KATLKPEGQA ALDQLYSQLS NLDPKDGSVV VLGYTDRIGS DAYNQALSER
+RAQSVVDYLI SKGIPADKIS ARGMGESNPV TGNTCDNVKQ RAALIDCLAP DRRVEIEVKG
+IKDVVTQPQA
+</PRE><br>
+or simply this<br>
+<br>
+<PRE>
+MKDLTVLSRWRYSWRILDDNEAQKMKKTAIAIAVALAGFATVAQAAPKDNTWYTGAKLGWSQYHDTGFINNNGPTHENQLGAGAFGGYQVNPYVGFEMGYDWLG
+RMPYKGSVENGAYKAQGVQLTAKLGYPITDDLDVYTRLGGMVWRADTKSNVYGKNHDTGVSPVFAGGVEYAITPEIATRLEYQWTNNIGDAHTIGTRPDNGMLS
+LGVSYRFGQGEAAPVVAPAPAPAPEVQTKHFTLKSDVLFTFNKATLKPEGQAALDQLYSQLSNLDPKDGSVVVLGYTDRIGSDAYNQALSERRAQSVVDYLISK
+GIPADKISARGMGESNPVTGNTCDNVKQRAALIDCLAPDRRVEIEVKGIKDVVTQPQA
+</PRE>
+<br>
+The sequence may contain a nameline that must start with a &gt symbol, followed directly by the sequence name
+and an optional description. The residue data is contained in one or more lines of arbitrary length following 
+the name line. No empty lines should be used. Upper and lower case letters are allowed. 
+Spaces and gaps (-.) will be removed.
+
+</div><div class="hr">&nbsp;</div>
+<div class="row">
+<h5>Entering a multiple alignment</h5>
+<br>
+If you already have a query alignment (you may insert the manually edited query alignment built by 
+HHomp for example) then you can enter it here. The PsiBlast search will then be kickstarted 
+with this alignment. (If you choose the maximum number of PsiBlast iterations to be 0 then only the 
+predicted secondary structured and beta-barrel structure will be added to your alignment.) 
+The query sequence is the first sequence. It is not marked explicitely.
+</p>
+
+<br>
+You can enter alignments in different formats, which are listed in the dropdown menu. 
+Format descriptions can be found <a href="/reformat/help_params#formats">here</a>.
+</p>
+</div>
+
+<a name="databases"></a>
+<h3 class="<%= @section["name"] %>">Select HMM databases</h3>
+<div class="row">
+Select the database(s) of template HMMs against which you want to compare the query HMM.
+Hold down the Control key to select more than one database.
+<br><br>
+
+<h5>HHompDB <span style="color: #C0C0C0;">version 1.0 (April 2007)</span></h5>
+This database is built from over 22000 sequences which are found by a homology search detection (<a href="/hhsenser/help_ov">HHsenser</a>) based on outer membrane proteins 
+with known structure. 
+(Training set: 
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1QJP" target="_blank">OmpA</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2ERV" target="_blank">PagL</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1THQ" target="_blank">PagP</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1I78" target="_blank">OmpT</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1K24" target="_blank">OpcA</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1UYN" target="_blank">NalP</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1QD6" target="_blank">OmpLA</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1TLY" target="_blank">Tsx</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1T16" target="_blank">FadL</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2F1C" target="_blank">OmpG</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1PHO" target="_blank">PhoE</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2MPR" target="_blank">LamB</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1NQE" target="_blank">BtuB</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1UUN" target="_blank">MspA</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=1EK9" target="_blank">TolC</a>,
+<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=2J58" target="_blank">Wza</a>) 
+The visual clustering software <a href="/clans/help_ocv">CLANS</a> is used to identify clusters with different structure and
+function. In summary, this database contains 486 clusters of outer membrane proteins. 
+<br><br>
+
+<h5>HHompDB (only beta-barrel)</h5>
+This database is similar to the HHompDB. The difference is that this database consists only of clusters from canonical transmembrane beta-barrels.
+So, this database does not contain the cluster with the trimeric outer membrane effluc protein TolC and the alpha-helical translocon Wza. 
+(On the <a href="/hhomp/browse" target="_blank">browse database</a> page, this database corresponds to the upper cluster map). 
+<br><br>
+
+<h5>HHompDB (no hypothetical)</h5>
+This database is similar to the HHompDB. In this database, all clusters are filtered out, for which it is not clear if they contain outer membrane
+proteins. 
+<br><br>
+
+<h5>OMPs in scop70</h5>
+The scop70 alignment database is built from sequences in the <a target="_blank" href="http://scop.mrc-lmb.cam.ac.uk/scop/data/scop.b.html">SCOP </a>
+(Structural Classification of Proteins) database.
+SCOP is a hand-curated database with protein domains of known structure. It is hierarchically organized 
+into families, superfamilies, folds, and classes to reflect evolutionary relationships.
+In our database, only proteins in the f.4 fold (transmembrane beta-barrel), in the f.5.1.1 family (outer membrane efflux proteins) 
+and in the f.6.1.2 family (porin MspA) are taken. For each protein we build a multiple alignment with iterated PSI-BLAST searches 
+and transform these alignments into HMMs. HHomp can compare the query HMM to the database of HMMs
+and generate query-template alignments or it can build structural models for the 
+query sequence. We use a filtered version of the SCOP sequence set from the 
+<a target="_blank" href="http://astral.berkeley.edu/">ASTRAL server</a>, 
+e.g. scop70_1.71 is version 1.71 of SCOP filtered to 70% maximum sequence identity. 
+SCOP is updated irregularly, approximately every twelve months.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=10592240"><small>Lo Conte L, Ailey B, Hubbard TJ, Brenner SE, Murzin AG, Chothia C. SCOP: a structural classification of proteins database. NAR 2000, 28:257</small></a>
+<br><br>
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="maxpsiblastit"></a>
+<h3 class="<%= @section["name"] %>">Max. number of PSI-BLAST iterations</h3>
+<div class="row">
+This specifies the number of PSI-BLAST iterations that are performed to build up an alignment from the input sequence 
+or input alignment. The iterations stop in any case when no further sequences are found. If you want to use exactly 
+your input alignment choose 0 here. This will ensure that only predicted secondary structure is added to your input 
+alignment. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="E_psiblast"></a>
+<h3 class="<%= @section["name"] %>">E-value threshold for PSI-BLAST</h3>
+All PSI-BLAST sequence matches ("hits") with an E-value better than this threshold are included 
+in the alignment for the next PSI-BLAST iteration or, in the last iteration, for building the HMM for HHomp.
+<div class="row">
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="cov_min"></a>
+<h3 class="<%= @section["name"] %>">Minimum coverage of PSI-BLAST hits</h3>
+This parameter controls what percentage of the query residues needs to be covered by the PSI-BLAST hits 
+in order for the hit to be included into the alignment for the next iteration. More precisely, the coverage 
+of a sequence found by PSI-BLAST is defined as the number of residues aligned with the query divided by the 
+length of the query.
+<div class="row">
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="qid_min"></a>
+<h3 class="<%= @section["name"] %>">Minimum sequence identity of PSI-BLAST hits with query</h3>
+This parameter controls what percentage of residues from a PSI-BLAST hit needs to be identical
+to their aligned query residues in order for the hit to be included in the PSI-BLAST alignment.
+More precisely, the sequence identity of a PSI-BLAST hit is defined as the number of residues 
+identical with aligned query residues divided by the length of the PSI-BLAST hit.
+
+<div class="row">
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="score_bb"></a>
+<h3 class="<%= @section["name"] %>">Score beta-barrel structure</h3>
+<div class="row">
+If you chose "yes", the beta-barrel structure of the query will be predicted with PROFtmb
+and compared to the PROFtmb-predicted beta-barrel structure of the database sequences. Scoring the beta-barrel structure similarity
+improves sensitivity and also alignment quality significantly.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float:
+									  right;"></a></div>
+
+<a name="alignmode"></a>
+<h3 class="<%= @section["name"] %>">Alignment mode</h3>
+<div class="row">
+In local mode, HHomp will use <u>local</u> alignments to score your query sequence with the 
+database sequences. In global mode it uses global alignments with no end gap penalties (sometimes called 
+'global-local' alignments), i.e. the query-template alignments extend up to the beginning and end of the query 
+or template sequence. The use of local mode is strongly recommended if you want to know which are your most likely 
+remote homologs. If you have already identified your template with a previous run in local mode, you can use the global mode 
+to get global alignments with an already identified template. <BR>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="maxseq"></a>
+<h3 class="<%= @section["name"] %>">Show representative sequences per HMM</h3>
+<div class="row">
+Setting this to 10, for instance, will generate alignments containing 10 representative sequences
+from both query and template alignments. This can help to get a better feeling for the conservation
+along the alignment. The representative sequences shown are selected for maximum pairwise dissimilarity.
+The maximum value for this parameter is 10.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="width"></a>
+<h3 class="<%= @section["name"] %>">Width of alignments (in columns)</h3>
+<div class="row">
+Number of alignment columns per line in the HMM-HMM alignments. Leave at default value except if your browser
+cuts off parts of the alignment.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="minprobab"></a>
+<h3 class="<%= @section["name"] %>">Minimum probability in hit list</h3>
+<div class="row">
+Only hits above this cut-off probability will be displayed.</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="maxlines"></a>
+<h3 class="<%= @section["name"] %>">Max. number of hits in hit list</h3>
+<div class="row">
+This parameter controls how many matches will be displayed in the results.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="coloring"></a>
+<h3 class="<%= @section["name"] %>">Coloring query-template multiple alignments in results</h3>
+<div class="row">
+You can choose to color the sequences in the query-template alignments on the results page
+by physico-chemical properties of the amino acids, either by using colored fonts or by background coloring.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+<BR>
+
+<%= render(:partial => "hhomp/references_and_contact") %>

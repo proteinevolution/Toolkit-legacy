@@ -1,0 +1,36 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'FRcons', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row"><strong>
+	FRcons-ligand predicts ligand-binding residues (4A cut-off) by scoring conservation combined with 
+	amino acid distribution and predicted secondary structure and solvent accessibility.
+</strong>
+</div>
+<div class="hr">&nbsp;</div>
+<div class="row">
+        <strong>
+        Fischer JD, Mayer CE, S&ouml;ding J. (2008)
+        Prediction of protein functional residues from sequence by probability density estimation.
+        <em>Bioinformatics</em> 24:613-620.
+        </strong>
+</div><div class="row">
+        Kabsch, W., and Sander C. (1983)
+        Dictionary of protein secondary structure: Pattern recognition of hydrogen-bonded and geometrical features. <em>Biopolymers.</em>,
+	<strong>22</strong> (12), 2577-2637.
+</div>
+<div class="row">
+        Adamczak R., Porollo A., Meller J. (2004)
+        Accurate prediction of solvent accessibility using neural networks-based
+        regression. <em>Proteins.</em>,
+        <strong>56</strong> (4), 753-767.
+</div>
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+	<%= @job.render_file(@job.jobid + ".1_scores.html") %>
+</div>
+
+</form>

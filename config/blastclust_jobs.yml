@@ -1,0 +1,12 @@
+blastclust_job: 
+  title: BLASTclust
+  hidden: false
+  code: BCLU
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results

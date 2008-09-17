@@ -1,0 +1,38 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Paste GI numbers</a></li>
+	<li><a href="#num_lead">Reported upstream nucleotides</a></li>
+	<li><a href="#num_trail">Reported downstream nucleotides</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Paste GI numbers</h3>
+<div class="row">
+Input is a set of GI numbers. A GI number (GenInfo Identifier) is a unique integer which identifies a sequence.
+The numbers have to be separated by non-numerical characters.<br/><br/>
+Example:<br/><br/>
+<pre>
+  gi|42779699
+  GI:54309468
+  15640810 47526209 50121501
+  |26250939|28211194|123456789
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="num_lead"></a>
+<h3 class="<%= @section["name"] %>">Reported upstream nucleotides</h3>
+<div class="row">
+Specifies the number of reported nucleotides before the start codon.
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="num_trail"></a>
+<h3 class="<%= @section["name"] %>">Reported downstream nucleotides</h3>
+<div class="row">
+Specifies the number of reported nucleotides behind the start codon.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+

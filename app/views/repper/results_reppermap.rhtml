@@ -1,0 +1,10 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Corresponding Alignment', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<p class="call-action">
+	<a href="/repper/results/<%= @job.jobid %>#overview" >Back to main results&#8250;</a>
+</p>	
+<div class="alignres">
+<%= @job.render_file(@job.jobid + ".r_out") %>
+</div>

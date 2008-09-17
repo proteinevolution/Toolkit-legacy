@@ -1,0 +1,157 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#program">Program</a></li>
+	<li><a href="#input">Input format</a></li>
+	<li><a href="#database">Database</a></li>
+	<li><a href="#matrix">Matrix</a></li>
+	<li><a href="#evalue">E-value</a></li>
+	<li><a href="#filter">Filter (low complexity)</a></li>
+	<li><a href="#descriptions">Descriptions</a></li>
+	<li><a href="#alignments">Alignments</a></li>
+	<li><a href="#otheradvanced">Other Advanced Options</a></li></ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="program"></a>
+<h3 class="<%= @section["name"] %>">Program</h3> 
+<div class="row">
+The Nucleotide BLAST family of programs includes:
+<p>
+<strong>blastn:</strong> compares a nucleotide query sequence against a nucleotide sequence database <br/><br/>
+<strong>tblastn:</strong> compares a protein query sequence against a nucleotide sequence database dynamically translated in all reading frames<br/><br/>
+<strong>tblastx:</strong> compares the six-frame translations of a nucleotide query sequence against the six-frame translations of a nucleotide sequence database.<br/><br/>
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input Format</h3> 
+<div class="row">
+<p>
+A sequence in FASTA format begins with a single-line description, followed by lines of sequence data. The description line is distinguished from the sequence data by a greater-than (">") symbol in the first column. It is recommended that all lines of text be shorter than 80 characters in length. An example sequence in FASTA
+format is:
+</p>
+<pre>
+
+>gi|532319|pir|TVFV2E|TVFV2E envelope protein
+ELRLRYCAPAGFALLKCNDADYDGFKTNCSNVSVVHCTNLMNTTVTTGLLLNGSYSENRT
+QIWQKHRTSNDSALILLNKHYNLTVTCKRPGNKTVLPVTIMAGLVFHSQKYNLRLRQAWC
+HFPSNWKGAWKEVKEEIVNLPKERYRGTNDPKRIFFQRQWGDPETANLWFNCHGEFFYCK
+MDWFLNYLNNLTVDADHNECKNTSGTKSGNKRAPGPCVQRTYVACHIRSVIIWLETISKK
+TYAPPREGHLECTSTVTGMTVELNYIPKNRTNVTLSPQIESIWAAELDRYKLVEITPIGF
+APTEVRRYTGGHERQKRVPFVXXXXXXXXXXXXXXXXXXXXXXVQSQHLLAGILQQQKNL
+LAAVEAQQQMLKLTIWGVK
+
+</pre>
+<p>
+Sequences are expected to be represented in the standard IUB/IUPAC amino acid and nucleic acid codes, with these exceptions: lower-case letters are accepted and are mapped into upper-case; a single hyphen or dash can be used to represent a gap of indeterminate length; and in amino acid sequences, U and * are acceptable letters (see below). Before submitting a request, any numerical digits in the query sequence should either be removed or replaced by appropriate letter codes (e.g., N for unknown nucleic acid residue or X for unknown amino acid residue).
+<br/>
+The nucleic acid codes supported are:
+</p>
+<pre>
+
+   A --> adenosine           M --> A C (amino)
+   C --> cytidine            S --> G C (strong)
+   G --> guanine             W --> A T (weak)
+   T --> thymidine           B --> G T C
+   U --> uridine             D --> G A T
+   R --> G A (purine)        H --> A C T
+   Y --> T C (pyrimidine)    V --> G C A
+   K --> G T (keto)          N --> A G C T (any)
+                             -  gap of indeterminate length
+</pre>
+<p>
+For those programs that use amino acid query sequences (TBLASTN), the accepted amino acid codes are:
+</p>
+<pre>
+    A  alanine                         P  proline
+    B  aspartate or asparagine         Q  glutamine
+    C  cystine                         R  arginine
+    D  aspartate                       S  serine
+    E  glutamate                       T  threonine
+    F  phenylalanine                   U  selenocysteine
+    G  glycine                         V  valine
+    H  histidine                       W  tryptophan
+    I  isoleucine                      Y  tyrosine
+    K  lysine                          Z  glutamate or glutamine
+    L  leucine                         X  any
+    M  methionine                      *  translation stop
+    N  asparagine                      -  gap of indeterminate length
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="database"></a>
+<h3 class="<%= @section["name"] %>">Database</h3> 
+<div class="row">
+The selected databases are used by BLAST to perform the search. You may press CTRL to select multiple databases.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="matrix"></a>
+<h3 class="<%= @section["name"] %>">Matrix</h3> 
+<div class="row">
+<p>
+Specify an alternate scoring matrix for BLASTN, TBLASTN and TBLASTX. 
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="evalue"></a>
+<h3 class="<%= @section["name"] %>">E-value</h3> 
+<div class="row">
+<p>
+The statistical significance threshold for reporting matches against database sequences; the default value is 10, meaning that 10 
+matches are expected to be found merely by chance, according to the stochastic model of Karlin and Altschul (1990). If the statistical 
+significance ascribed to a match is greater than the e-value threshold, the match will not be reported. Lower e-value thresholds are 
+more stringent, leading to fewer chance matches being reported. Increasing the threshold shows less stringent matches. Fractional 
+values are acceptable.  
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="filter"></a>
+<h3 class="<%= @section["name"] %>">Filter (low complexity)</h3> 
+<div class="row">
+<p>
+Mask off segments of the query sequence that have low compositional complexity, as determined by the SEG program of Wootton & Federhen 
+(Computers and Chemistry, 1993) or, for BLASTN, by the DUST program of Tatusov and Lipman (in preparation). Filtering can eliminate 
+statistically significant but biologically uninteresting reports from the blast output (e.g., hits against common acidic-, basic- or 
+proline-rich regions), leaving the more biologically interesting regions of the query sequence available for specific matching against 
+database sequences. <br/>
+Filtering is only applied to the query sequence (or its translation products), not to database sequences. Default filtering is DUST 
+for BLASTN, SEG for other programs. <br/> 
+It is not unusual for nothing at all to be masked by SEG, when applied to sequences in  SWISS-PROT, so filtering should not be expected 
+to always yield an effect. Furthermore, in some cases, sequences are masked in their entirety, indicating that the statistical 
+significance of any matches reported against the unfiltered query sequence should be suspect.
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="descriptions"></a>
+<h3 class="<%= @section["name"] %>">Descriptions</h3> 
+<div class="row">
+<p>
+Restricts the number of short descriptions of matching sequences reported to the number specified; default limit is 100 descriptions.
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="alignments"></a>
+<h3 class="<%= @section["name"] %>">Alignments</h3> 
+<div class="row">
+<p>
+Restricts database sequences to the number specified for which high-scoring segment pairs (HSPs) are reported; the default limit is 100. 
+If more database sequences than this happen to satisfy the statistical significance threshold for reporting, only the matches ascribed 
+the greatest statistical significance are reported.
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="otheradvanced"></a>
+<h3 class="<%= @section["name"] %>">Other Advanced Options</h3> 
+<div class="row">
+<p>
+Use this textfield to specify advanced options via commandline, e.g. "-E 1". 
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

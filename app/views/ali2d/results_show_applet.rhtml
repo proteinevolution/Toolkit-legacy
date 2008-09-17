@@ -1,0 +1,8 @@
+<div class="row">
+	<applet id="ali2d" codebase="/applets/ali2d/" code="run_aln_vis.class" archive="ali2d.jar" height="500px" width="800px">
+	<% for i in 0...@job.param_keys.size %>
+	<param name="<%= @job.param_keys[i] %>" value="<%= @job.param_values[i] %>">
+	<% end %>
+	</applet>
+
+</div>

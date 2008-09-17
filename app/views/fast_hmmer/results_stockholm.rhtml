@@ -1,0 +1,16 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export_to => "stockholm"}) %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+	<% resfile = File.join(@job.job_dir, @job.jobid + ".hln") %>
+	<% if !File.readable?(resfile) || File.zero?(resfile) %>
+		<div class="row">
+		<strong> ***** No hits found ***** </strong>
+	<% else %>
+		<div class="alignres"><pre><%= @job.render_file(@job.jobid + ".hln") %></pre>
+	<% end %>
+</div>
+
+</form>

@@ -1,0 +1,2 @@
+module HhpredHelper
+end

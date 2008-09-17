@@ -1,0 +1,254 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.05 [en] (X11; I; IRIX64 6.2 IP28) [Netscape]">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE" VLINK="#551A8B" ALINK="#FF0000">
+
+<H1>
+Using Jalview in applets (with examples)</H1>
+<A HREF="#ex1"></A>&nbsp;
+<OL>
+<H3>
+<A HREF="#Basic">Basic html parameters</A></H3>
+
+<H3>
+<A HREF="#Advanced">Advanced html parameters (groups/colours)</A></H3>
+<A HREF="#Advanced"></A>&nbsp;</OL>
+
+<H1>
+
+<HR WIDTH="100%"></H1>
+
+<H1>
+<A NAME="Basic"></A>Basic html parameters</H1>
+<A NAME="ex1"></A>&nbsp;<APPLET codebase="http://circinus.ebi.ac.uk:6543/jalview/"
+         code = "jalview.ButtonAlignApplet"
+         width = 100
+         height = 35><PARAM name = input  value = "http://circinus.ebi.ac.uk:6543/jalview/lipase.msf"><PARAM name = type   value = "URL"><PARAM name = format value = "MSF"></APPLET>
+<BR>&nbsp;
+
+<P>The applet above reads in a protein alignment in msf format and displays
+it in a Jalview frame.
+<BR>A consensus calculation is done over all the sequences and the alignment
+is coloured according to each residue's agreement with the consensus.
+
+<P>The html to do this is:
+<PRE>&lt;APPLET codebase="http://circinus.ebi.ac.uk:6543/jalview/"</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp; code="jalview.ButtonAlignApplet"</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp; width = 1000</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp; height = 35></PRE>
+
+<PRE>&nbsp; &lt;param name=input value="http://circinus.ebi.ac.uk:6543/jalview/lipase.msf"></PRE>
+
+<PRE>&nbsp; &lt;param name=type value="URL"></PRE>
+
+<PRE>&nbsp; &lt;param name=format value="MSF"></PRE>
+
+<PRE>&lt;/APPLET></PRE>
+&nbsp;
+<H3>
+Description of the html parameters</H3>
+
+<H4>
+The &lt;APPLET> tag</H4>
+
+<PRE>&lt;APPLET codebase="http://www.ebi.ac.uk/~michele/jalview/"</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; code="jalview.ButtonAlignApplet"</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; width = 150</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; height = 40></PRE>
+This line defines where the code for the applet lies (www.ebi.ac.uk) and
+what java class is to be called
+<BR>(jalview.ButtonAlignApplet).
+
+<P>The width and height parameters define how many pixels the applet should
+take up in the browser.&nbsp; In this case they&nbsp; should be enough
+to display a button.
+
+<P>This CODEBASE method loads classes as and when it needs them so is probably
+suited for slow net connections.&nbsp; An
+<BR>alternative is to load all the classes at once in a jar file (~100kb).&nbsp;
+This makes the applet slow to start but subsequent
+<BR>operations faster.
+<BR>&nbsp;
+<BR>&nbsp;
+
+<P>To use a jar file:
+<BR>&nbsp;
+<PRE>&lt;APPLET ARCHIVE="http://www.ebi.ac.uk/~michele/jalview/jalview.jar"</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CODE="jalview.ButtonAlignApplet"</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WIDTH= 250</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HEIGHT = 40></PRE>
+&nbsp;
+<H4>
+Specifying an alignment file and format</H4>
+
+<PRE>&nbsp;&lt;param name=input value="http://www.ebi.ac.uk/jalview/test.msf"></PRE>
+
+<PRE>&nbsp;&lt;param name=type value="URL"></PRE>
+
+<PRE>&nbsp;&lt;param name=format value="MSF"></PRE>
+These parameters describe where to find the alignment and what format it
+is in.
+
+<P>&nbsp;&nbsp;&nbsp; <FONT COLOR="#FF0000">input</FONT> - The URL of the
+alignment to be viewed
+<BR>&nbsp;&nbsp;&nbsp; <FONT COLOR="#FF0000">type</FONT>&nbsp;&nbsp; -&nbsp;
+Whether the alignment is a file or a URL.&nbsp; Use URL here as File is
+not allowed for security reasons.
+<BR>&nbsp;&nbsp;&nbsp; <FONT COLOR="#FF0000">format</FONT> - the format
+of the alignment.&nbsp; Allowable values are MSF, CLUSTAL, FASTA and PIR.
+<BR>&nbsp;
+<BR>&nbsp;
+<H1>
+<A NAME="Advanced"></A>Advanced html parameters</H1>
+<A NAME="ex2"></A><APPLET archive="http://circinus.ebi.ac.uk:6543/jalview/jalview.jar" 
+        code="jalview.ButtonAlignApplet" width = 100 height = 40><PARAM name=input value="http://circinus.ebi.ac.uk:6543/jalview/test2.fa"><PARAM name=type value="URL"><PARAM name=format value="FASTA"><PARAM name="groups" value="2"><PARAM name="group1" value="1-36:PID:true:true:false"><PARAM name="group2" value="37-45:SECONDARY:false:true:true"><PARAM name=fontsize value="10"><PARAM name="mailServer" = value = "circinus.ebi.ac.uk"><PARAM name="Consensus" value="1-36"></APPLET>
+
+<P>The applet above reads in a protein alignment in fasta format that also
+contains some secondary structure predictions and definitions. The alignment
+is split into two groups which are displayed differently.
+
+<P>The protein alignment has the residue text displayed and is coloured
+according to each residues agreement with the consensus sequence. The secondary
+structure predictions/definitions have no text displayed but are coloured
+according to the structural element (helix/sheet).
+
+<P>The consensus calculation is done over a subset of the sequences in
+the alignment (the protein sequences). This is also specified in the html.
+The html to do this is :
+<BR>&nbsp;
+<PRE>&lt;APPLET archive="http://circinus.ebi.ac.uk:6543/jalview/jalview.jar"</PRE>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; code="jalview.ButtonAlignApplet" width = 100 height = 35></PRE>
+
+<PRE>&lt;PARAM name=input value="http://circinus.ebi.ac.uk:6543/jalview/test2.fa"></PRE>
+
+<PRE>&lt;PARAM name=type value="URL">&lt;PARAM name=format value="FASTA"></PRE>
+
+<PRE>&lt;PARAM name="groups" value="2">&lt;PARAM name="group1" value="1-36:PID:true:true:false"></PRE>
+
+<PRE>&lt;PARAM name="group2" value="37-45:SECONDARY:false:true:true"></PRE>
+
+<PRE>&lt;PARAM name=fontsize value="10"></PRE>
+
+<PRE>&lt;PARAM name="mailServer" = value = "circinus.ebi.ac.uk"></PRE>
+
+<PRE>&lt;PARAM name="Consensus" value="1-36"></PRE>
+
+<PRE>&lt;/APPLET></PRE>
+&nbsp;
+<H3>
+Defining groups</H3>
+
+<PRE>&lt;param name="groups" value="2"></PRE>
+
+<PRE>&lt;param name="group1" value="1-36:PID:true:true:false"></PRE>
+
+<PRE>&lt;param name="group2" value="37-45:SECONDARY:true:false:false"></PRE>
+
+<PRE>&nbsp;</PRE>
+&nbsp;&nbsp;&nbsp; groups -&nbsp; the number of groups defined
+<BR>&nbsp;&nbsp;&nbsp; groupn&nbsp; - the group definition for group n.&nbsp;
+If there are N groups defined with the groups parameter then there must
+be
+<BR>N groupn parameter lines.&lt;br>
+<BR>&nbsp;&nbsp;&nbsp; The value string for the groupn parameter is split
+into 5 fields separated by colons.&nbsp; The fields are:
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;sequences in group> :
+&lt;colour scheme> : &lt;display boxes> : &lt;display text> :&nbsp; &lt;colour
+text>
+<BR>&nbsp;
+<BR>&nbsp;
+<H4>
+Allocating sequences to a group</H4>
+The first field defines which sequences are to be in this group.&nbsp;&nbsp;
+A few examples are the most informative here I think.
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20-26&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Sequences 20,21,22,23,2425,26 are in the group
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,2,4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Sequences 1,2 and 4 are in the group
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10-15,2,6-7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Sequences 2,6,7,10,11,12,13,14,15 are in the group
+<BR>&nbsp;
+<BR>&nbsp;
+<H4>
+Defining a group colour scheme</H4>
+This colour scheme will apply to the residue boxes or the residue text
+depending on whether those parameters are set
+
+<P>Allowed values are
+
+<P>&nbsp;&nbsp;&nbsp; ZAPPO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- colour residues by physio-chemical properties
+<BR>&nbsp;&nbsp;&nbsp; PID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- colour residues by percentage identity agreement with consensus sequence
+<BR>&nbsp;&nbsp;&nbsp; BLOSUM62&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- colour residues by agreement with consensus or +ve BLOSUM62 score with
+consensus residue
+<BR>&nbsp;&nbsp;&nbsp; HYDROPHOBIC&nbsp; - colour residues by hydrophobicity
+(red - hydrophobic, blue - hydrophilic).
+<BR>&nbsp;&nbsp;&nbsp; SECONDARY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;
+colour residues by secondary structure (H - magenta, E - yellow).
+<BR>&nbsp;
+<BR>&nbsp;
+<H4>
+Displaying residue boxes</H4>
+The third parameter can be true or false according to whether you want
+residue boxes displayed or not
+<H4>
+Displaying text</H4>
+The 4th parameter can be true or false according to whether you want the
+residue text displayed or not.
+<H4>
+Colouring text</H4>
+The 5th parameter can be true or false according to whether you want the
+residue text coloured.&nbsp; Displaying the residue
+<BR>boxes and colouring the text will give the impression of no text displayed
+at all but will slow the display down
+<BR>considerably.
+<BR>&nbsp;
+<H4>
+Defining sequences to be included in the consensus</H4>
+Defining the sequences for the consensus calculation is done in much the
+same way as for the colour grouping.
+<BR>&nbsp;
+<PRE>&lt;PARAM name="Consensus" value="1,4,6-10"></PRE>
+You can also select all the sequences by
+
+<P>&lt;PARAM name="Consensus" value = "*">
+<BR>&nbsp;
+<H4>
+Defining sequences in html</H4>
+If you want to you can submit an alignment in the html as follows
+<BR>&nbsp;
+<PRE>&lt;PARAM name="numseqs" value=3></PRE>
+
+<PRE>&lt;PARAM name="seq1" value="ALSDKFHLKRHELKHASLDKHLKHR"></PRE>
+
+<PRE>&lt;PARAM name="seq2" value="ALSDKFHLKRHE-----LDKHLKHR"></PRE>
+
+<PRE>&lt;PARAM name="seq3" value="ALSDKFHLKRHELKHALKFL-HLKHR"></PRE>
+Optionally you can supply parameters that define the ids for each of the
+sequences as follows:
+<PRE>&lt;PARAM name="id1" value="LCAT_HUMAN"></PRE>
+
+<PRE>&lt;PARAM name="id2" value="LCAT_YEAST"></PRE>
+
+<PRE>&lt;PARAM name="id3" value="LCAT_MOUSE"></PRE>
+If you don't supply ids then the defaults will be Seq_1 Seq_2 etc.
+<BR>&nbsp;
+<BR>&nbsp;
+</BODY>
+</HTML>

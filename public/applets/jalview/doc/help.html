@@ -1,0 +1,212 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.05 [en] (X11; I; IRIX64 6.2 IP28) [Netscape]">
+   <TITLE>JalView - Java alignment editor</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE" VLINK="#551A8B" ALINK="#FF0000">
+
+<CENTER>&nbsp;</CENTER>
+
+<TABLE CELLPADDING=5 WIDTH="80%" NOSAVE >
+<TR VALIGN=CENTER NOSAVE>
+<TD NOSAVE>
+<H1>
+<IMG SRC="http://circinus.ebi.ac.uk:6543/jalview/snap22med.gif" NOSAVE HEIGHT=116 WIDTH=291></H1>
+</TD>
+
+<TD NOSAVE>
+<H4>
+<FONT SIZE=+4>Jalview</FONT> - a java multiple alignment editor</H4>
+<H4>
+(1.3 beta release 23rd September 1998)</H4>
+</TD>
+</TR>
+</TABLE>
+&nbsp;
+<CENTER><TABLE BORDER=2 CELLPADDING=2 COLS=6 WIDTH="80%" NOSAVE >
+<TR ALIGN=CENTER VALIGN=CENTER NOSAVE>
+<TD VALIGN=CENTER NOSAVE>
+<H3>
+<A HREF="http://circinus.ebi.ac.uk:6543/jalview/try.html">Try jalview</A></H3>
+</TD>
+
+<TD>
+<H3>
+<A HREF="http://circinus.ebi.ac.uk:6543/jalview/download.html">Download<BR>
+</A>1.3b version available 23rd September 1998</H3>
+</TD>
+
+<TD VALIGN=CENTER NOSAVE>
+<H3>
+<A HREF="http://circinus.ebi.ac.uk:6543/jalview/groups.html">HTML parameter
+example</A></H3>
+</TD>
+
+<TD NOSAVE>
+<H3>
+<A HREF="http://circinus.ebi.ac.uk:6543/jalview/screenshots.html">Screenshots</A></H3>
+</TD>
+
+<TD>
+<H3>
+<A HREF="http://www.ebi.ac.uk/~michele/jalview/align.html">view your own
+alignment (mended again 24/8/98)</A></H3>
+</TD>
+
+<TD>
+<H3>
+&nbsp;<A HREF="http://circinus.ebi.ac.uk:6543/jalview/contents.html">Jalview
+documentation</A></H3>
+</TD>
+</TR>
+</TABLE></CENTER>
+&nbsp;
+
+<P>JalView is being used in:
+<UL>
+<LI>
+<A HREF="http://circinus.ebi.ac.uk:8081/">Jpred</A>. This is an experimental
+secondary structure prediction server developed by <A HREF="mailto:james@ebi.ac.uk">James
+Cuff</A></LI><p>
+<li> The <a href= "http://www.sanger.ac.uk/Software/Pfam">Pfam3.1</a> web site at the <a href - "http://www.sanger.ac.uk">Sanger Centre</a> which is currently maintained by a number of people including Ewan Birney, Alex Bateman and ?</li><p>
+<LI>
+The EBI <A HREF="http://www2.ebi.ac.uk/clustalw">clustalw server</A>.</LI><p>
+
+<LI>
+The EBI <A HREF="http://circinus.ebi.ac.uk:6543/corba/Pfam.html">Pfam CORBA
+client</A>.</LI><p>
+
+<LI>
+The <A HREF="http://www.cse.ucsc.edu/~dave/">alternative splice site project</A>
+at UCSC</LI><p>
+
+<LI>
+Protein Profiles at the EBI</LI>
+</UL>
+<B>&nbsp;(Note: Netscape4.05, IE4 or HotJava1.1 are needed. Older browsers
+give no or unsatisfactory results.)</B>
+<BR>&nbsp;
+<H2>
+Introduction and features</H2>
+Jalview is a multiple alignment editor written entirely in <A HREF="http://java.sun.com">java</A>.&nbsp;
+It was initially to be used as a visualization tool for the <A HREF="http://circinus.ebi.ac.uk:6543/corba/Pfam.html">Pfam
+CORBA server</A> and client at the <A HREF="http://www.ebi.ac.uk">EBI</A>
+but is available as a general purpose alignment editor.
+<BR>&nbsp;
+<BR>&nbsp;
+
+
+<b>New in 1.3b</b>
+<ul>
+<li><b>Sequence feature retrieval and display on the alignment using SRS</b></li>
+<li><b>Conservation analysis similar to that of AMAS</b></li>
+<li><b>Group editing (insertion deletion of gaps in groups of sequences).</b></li>
+<li><b>Removal of gapped columns</b></li>
+<li><b>Extra colour schemes (secondary structure propensities mostly)</b></li>
+<li><b>Saving postscript and text to local files (application only)</b></li>
+<li><b>Extra sorting options (by tree order, by group)</b></li>
+<li><b>A mini browser for displaying SRS output for applications.</b></li>
+<li><b>Linking of group colours between the alignment, tree and PCA windows.</b></li>
+<li><b>Extra command line options to set the SRS server and database</b></li>
+</ul>
+<P>&nbsp;<B>New in 1.2b</B>
+<UL>
+<LI>
+<B>User definable colour schemes.</B></LI>
+
+<LI>
+<B>Taylor colour scheme added</B></LI>
+
+<LI>
+<B>UPGMA&nbsp;and NJ&nbsp;trees calculated and drawn based on percent identity
+distances.</B></LI>
+
+<LI>
+<B>Sequence clustering using principal component analysis.</B></LI>
+
+<LI>
+<B>Extra fonts and 2 drawing modes.</B></LI>
+
+<LI>
+<B>Removal of redundant sequences.</B></LI>
+</UL>
+<B><FONT FACE="Arial,Helvetica">Jalview'</FONT></B>s other features include:
+<UL>
+<LI>
+<B><FONT FACE="Arial,Helvetica">Aligns sequences using local clustalw (application
+only) or remotely at the <A HREF="http://www.ebi.ac.uk">EBI</A></FONT></B>
+*** New in 1.1b version ***</LI>
+</UL>
+
+<UL>
+<LI>
+<B><FONT FACE="Arial,Helvetica">Variable font sizes/colours</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Colour by amino acid physico-chemical property,&nbsp;
+similarity to consensus sequence, hydrophobicity or secondary structure.</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Sequences can be grouped and coloured differently.</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Smith Waterman pairwise alignment of selected
+sequences</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Sort sequences by pairwise identity to
+consensus or selected sequence.</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Consensus sequence calculations</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Removal of redundant sequences (coming
+soon).</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Gaps can be inserted/deleted using the
+mouse.</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Input from URL/local file (if running as
+application ) or cut and paste in textbox</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Common formats supported - msf,fasta, clustal,
+PIR.</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Text output via email/browser.</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Links to swissprot SRS server at EBI.</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">Colour postscript output via email.</FONT></B></LI>
+
+<LI>
+<B><FONT FACE="Arial,Helvetica">HTML parameters let you input sequences
+and groups and colour schemes.</FONT></B></LI>
+</UL>
+Why write a multiple alignment editor?&nbsp; There are certainly good programs
+out there (e.g. seaview and Cinema and a very special mention for belvu
+even though it's not an editor) but none of them have all the features
+I want.&nbsp;&nbsp; I wanted to combine display speed and consensus colour
+schemes&nbsp; with easy access to the databases available on the internet
+using CORBA or CGI.
+
+<P>The ability to run java applets in web browsers is probably the most
+important reason for using java as it enables the software to be easily
+accessed from almost anywhere and easy integration with sequence databases
+available on the web.&nbsp; The speed of the java VMs is improving and
+much helped by just-in-time compilers although java can not claim to be
+winning any points for speed of execution.
+<BR>&nbsp;
+<BR>
+<HR WIDTH="100%">
+<BR>Further information available from&nbsp; <A HREF="mailto:michele@ebi.ac.uk">M.Clamp</A>
+<BR>Last update 10th June 1998
+</BODY>
+</HTML>

@@ -1,0 +1,148 @@
+<a href="#" onClick="openHelpWindow('/frpred/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'frpred'}, {:multipart => true, :id => "frpred_form", :name => "frpred_form"})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Paste input sequence/alignment", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+<div class="row">
+	<%= form_label("Select input mode", "input") %>
+	<%= form_radio_buttons("inputmode", @inputmode_values, @inputmode_labels, @inputmode_values[0], "&nbsp;&nbsp;", "toggleDisabled('informat'); setMoreHomologs();") %>
+</div>
+<div class="row">
+	<%= form_label("Select alignment format", "input_format") %>
+	<% disable = true %>
+	<% if ((params['inputmode'] && params['inputmode'] == "alignment") || (@error_params['inputmode'] && @error_params['inputmode'] == "alignment")) then disable = false end %>
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "", disable) %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<% if (params['pdb_input'] && !params['pdb_input'].empty?) %>
+
+<div class="row">
+	<%= form_label("Use pdb-file from parent-job") %>
+	<div class="formw"><%= check_box_tag("pdb_check", '1', true, :onchange => "setPdb();") %></div>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= hidden_field_tag("parent_pdb", params['pdb_input']) %>
+<%= hidden_field_tag("parent_chain", params['pdb_chain']) %>
+
+<div style="display:none;" id="pdb_options">
+
+<% else %>
+
+<div id="pdb_options">
+
+<% end %>
+
+	<div class="row">
+		<%= form_label("Upload local pdb-file (optional)", "pdbInput" ) %>
+		<%= form_file("pdb_file")%>
+	</div>
+	<div class="row">
+		<%= form_label("and specify chain", "chain") %>
+		<%= form_text_field("pdb_chain", '') %>	
+	</div>
+	
+</div>
+
+<!--<div class="row">
+	<%= form_label("Predict solvent accessibility (slow)", "solvent_acc") %>
+	<%= form_checkbox("solv_acc", '') %>	
+</div>-->
+
+<div class="spacer">&nbsp;</div>
+
+<% if disable %>
+	<div style="display:true;" id="psiblast_options">
+	<%= hidden_field_tag("moreHomologs", "true") %>
+<% else %>
+	<div style="display:none;" id="psiblast_options">
+	<%= hidden_field_tag("moreHomologs", "false") %>
+<% end %>
+
+<h3 class="<%= @section["name"] %>"><%= @tools_hash['psi_blast']['title'] %> Options</h3>
+
+<div class="row">
+	<%= form_label("Max. number of iterations", "maxPsiBlastIt") %>
+	<%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, '10') %>	
+</div>
+
+<div class="row">
+	<%= form_label("E-value threshold", "ePsiBlast") %>
+	<%= form_select_single("epsiblastval", @epsiblastval, @epsiblastval, '1E-3') %>	
+</div>
+
+<div class="row">
+	<%= form_label("Min. coverage", "minCoverage") %>
+	<%= form_text_field("minCoverage", '80', '%') %>	
+</div>
+<div class="row">
+	<%= form_label("Min. identity", "minIdentity") %>
+	<%= form_text_field("minIdentity", '25', '%') %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+</div>
+
+<h3 class="<%= @section["name"] %>"><%= @tool['title'] %> Options</h3>
+
+
+<div class="row">
+	<%= form_label("Sequence-centered analysis <br>(default: off = family-centered)", "seqCentered") %>
+	<%= form_checkbox("seqCentered", '1', true) %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	<strong>
+	Fischer JD, Mayer CE, S&ouml;ding J. (2008)
+	Prediction of protein functional residues from sequence by probability density estimation.
+ 	<em>Bioinformatics</em> 24:613-620.
+	</strong>.
+</div>
+<div class="row">
+	Mihalek, I., Res, I., and Lichtarge, O. (2004)
+	A Family of Evolution-Entropy Hybrid Methods for Ranking Protein Residues by Importance. <em>J. Mol. Biol.</em>, 
+	<strong>336</strong>:1265-1282.
+</div>
+<div class="row">
+	Hannenhalli, S.S., and Russel, R.B. (2000)
+	Analysis and Prediction of Functional Sub-types from Protein Sequence Alignments. <em>J. Mol. Biol.</em>,
+        <strong303</strong>:61-76.
+</div>
+<div class="row">
+        Altschul, S., Madden, T., Schaffer, A., Zhang, J., Zhang, Z., Miller, W., and Lipman, D. (1997)
+        Gapped BLAST and PSI-BLAST: a new generation of protein database search programs. <em>Nucl.
+        Acids Res.</em>, <strong>25</strong>:3389-3402.
+</div>
+<div class="row">
+        Kabsch, W., and Sander C. (1983)
+        Dictionary of protein secondary structure: Pattern recognition of hydrogen-bonded and geometrical features. <em>Biopolymers.</em>,
+	<strong>22</strong>:2577-2637.
+</div>
+<div class="row">
+        Adamczak R., Porollo A., Meller J. (2004)
+        Accurate prediction of solvent accessibility using neural networks-based
+	regression. <em>Proteins.</em>, 
+	<strong>56</strong>:753-767.
+</div>

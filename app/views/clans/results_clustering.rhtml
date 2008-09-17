@@ -1,0 +1,11 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Cluster Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections") %>
+
+<div class="alignres"><%= @job.render_file(@job.jobid + ".clusters") %></div>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Frickey, T. and Lupas A. N. (2004) CLANS: a Java application for visualizing protein families based on pairwise 
+	similarity. <em>Bioinformatics</em>, <strong>20</strong>(18), 3702-3704.
+</div>

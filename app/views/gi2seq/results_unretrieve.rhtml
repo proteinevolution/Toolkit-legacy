@@ -1,0 +1,9 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<div class="row">
+	<pre><%= @job.render_file(@job.jobid + ".mainlog") %></pre>
+</div>
+
+</form>

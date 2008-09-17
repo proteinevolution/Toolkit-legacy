@@ -1,0 +1,28 @@
+#!/bin/csh
+# Unix script file to run JalView
+# -------------------------------
+# Author: Michele Clamp 1998
+# -------------------------------
+
+#Change this line to reflect where your JDK classes are and where jalview.jar is
+setenv CLASSPATH /ebi/supported/jdk-1.1.2/classes/:/homes/michele/jalview.new/jalview.jar
+
+#Change this line to reflect where you java binary is
+setenv JAVA_EXE /ebi/supported/jdk-1.1.2/bin/java
+
+
+#This actually runs the program
+# $1 is the alignment file
+# $2 is the alignment format MSF|FASTA|CLUSTAL|PIR
+
+$JAVA_EXE jalview.AlignFrame $1 File $2
+
+# add extra command line options to the previous command as follows:
+
+#   -mail <mailserver>
+#   -srsserver <srsServer>  - see the README file for details
+#   -database <database>    - srs database name
+
+# example :  %JAVA_EXE% jalview.AlignFrame %1 File %2 -mail circinus.ebi.ac.uk -srsserver srs.ebi.ac.uk/srs5bin/cgi-bin/ -database swissprot
+~
+

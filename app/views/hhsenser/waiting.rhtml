@@ -1,0 +1,57 @@
+<h3 class="<%= @section["name"] %>">Waiting for results</h3>
+<div class="row">
+	<p><strong>Your job is currently being processed, please be patient. The results of your job will appear in this browser window!</strong>
+	<br />(You may bookmark this page to view your results later if you wish.)</p>
+</div>
+
+<div class="row">
+	<div class="slabel">Current Status</div>
+	<div class="bformw"><span id="qstatus" class="<%= @job.status %>" >
+		<% if @job.status == 's'%>
+			submitted
+		<% elsif @job.status == 'q'%>
+			queued
+		<% elsif @job.status == 'i'%>
+			initialized
+		<% elsif @job.status == 'r'%>
+			running
+		<% elsif @job.status == 'd'%>
+			done
+		<% else %>
+			error
+		<% end %>
+	</span></div>
+</div>
+
+<div class="row">
+	<div class="slabel">Next check</div>
+	<div class="bformw">
+
+	<%= form_tag({:action => :check, :jobid => @job}, {:id => 'waitingform'})%>
+		<input class="stopbutton" name="checknow" value="Kill job!" type="submit" onclick="setAction('waitingform', '<%= url_for(:controller => @job.tool, :action => 'destroy', :jobid => @job)%>');"/>
+		<input class="stopbutton" name="checknow" value="Stop job!" type="submit" onclick="setAction('waitingform', '<%= url_for(:controller => @job.tool, :action => 'stop_hhsenser', :jobid => @job)%>');"/>
+		<input class="feedbutton" name="checknow" value="Check now!" type="submit" />
+		<%= @nextcheck %>&nbsp;seconds&nbsp;
+	</form>
+	</div>
+</div><div class="spacer">&nbsp;</div>
+	
+<h3 class="<%= @section["name"] %>">Job specs</h3>
+			
+<div class="row">
+	<div class="slabel">ID</div>
+	<div class="bformw"><strong><%= @job.jobid %></strong>&nbsp;&nbsp;(<%= @job.config['title'] %>)</div>
+</div>
+
+<div class="row">
+	<div class="slabel">Submissiondate</div>
+	<div class="bformw"><%= @job.created_on %></div>
+</div>
+
+<div class="hr">&nbsp;</div>
+<p class="call-action"><%= link_to('Submit new job', :action => 'index') %></p>
+<p class="call-action"><%= link_to('Submit with same parameters', :action => 'resubmit', :jobid => @job) %></p>
+<div class="spacer">&nbsp;</div>
+	
+<h3 class="<%= @section["name"] %>">Statuslog</h3>
+<div class="statuslog"><%= @job.render_statuslog %></div>

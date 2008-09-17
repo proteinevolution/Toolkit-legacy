@@ -1,0 +1,69 @@
+<%= form_tag({:action => 'run', :job => 'hhomp3d_querytempl', :parent => @job, :forward_controller => 'hhomp', :forward_action => 'results_hhomp3d_querytempl'}, {:name => "hhomp3d_form"}) %>	
+
+<input type="hidden" name="querypdb" value="<%= @job.querypdb %>">
+<input type="hidden" name="templpdb" value="<%= @job.templpdb %>">
+<input type="hidden" name="hit" value="<%= @job.hit %>">
+
+
+<P ALIGN="Center">
+<h2><center>
+3d Superposition of <%= @job.querypdb.gsub(/^.*\/(\S+).pdb/, '\1') %> (blue/cyan) with <%= @job.templpdb.gsub(/^.*\/(\S+).pdb/, '\1') %> (red/orange)
+</center></h2><br/>
+<TABLE BORDER=0 ALIGN="center">
+<TR>
+        <TD>
+        <APPLET codebase="/applets/Chemis3D/" ARCHIVE="Chemis3D.jar" CODE="Chemis3D.class" NAME="C3D" WIDTH="800" HEIGHT="800" ALT='Problem! Check your Security Options. There is a Java applet here. To use it, you need a Java aware browser with Java enabled.'>
+                <PARAM NAME="model" VALUE="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.templ.pdb">
+                <PARAM NAME="format" VALUE="x-pdb">
+                <PARAM NAME="display" VALUE="backbone">
+                <PARAM NAME="color" VALUE="temperature">
+        </APPLET><BR>
+        </TD>
+</TR>
+<TR>
+<TD VALIGN="top"  ALIGN="center">
+
+        <INPUT TYPE=radio NAME="manipulate" VALUE="Rotate" CHECKED Onclick="javascript:document.C3D.setMouse(this.value)"> <b>Rotate</b> &nbsp; &nbsp; &nbsp;
+		   &nbsp; &nbsp;
+        <INPUT TYPE=radio NAME="manipulate" VALUE="Zoom" Onclick="javascript:document.C3D.setMouse(this.value)"><b>Scale</b> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+        <INPUT TYPe=radio NAME="manipulate" VALUE="Translate" Onclick="javascript:document.C3D.setMouse(this.value)"><b>Translate</b> &nbsp; &nbsp; &nbsp;
+
+</TD>
+</TR>
+</TABLE>
+</P>
+
+<pre style="margin-left: 20px">
+<%= @job.sup_out %>
+</pre>
+
+<div class = "hr">&nbsp;</div>
+
+<div class = "row">
+	<div class = "label">
+		Alignment method
+	</div>
+	<div class = "formw">
+		<%= form_radio_buttons("method", @method_values, @method_labels, @job.method, "&nbsp;&nbsp;") %>	
+	</div>
+</div>
+
+<div class = "row">
+	<div class = "label">
+		RMS exclusion cutoff
+	</div>
+	<div class = "formw">
+		<input name="submitform" type="submit" class="feedbutton" style="margin-right: 10px" value="Update model" />
+		<input name="rms" type="text" size="5" value = "<%= @job.rms %>" /> Angstroem
+	</div>
+</div>
+
+<div class = "hr">&nbsp;</div>
+
+</form>
+
+<p style="margin-left: 10px;">
+Click the right mouse key to change the style (wireframe, stick, ball,...), coloring (CPK, group, temperature,...) and more.<br/>
+For documentation on the Chemis3D Java applet please go to <a target="_blank" href="http://www.mol3d.com">http://www.mol3d.com</a>
+</p>

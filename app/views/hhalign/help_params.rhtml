@@ -1,0 +1,130 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Select input format</a></li>
+	<li><a href="#query_input">Query alignment</a></li>
+	<li><a href="#target_input">Target alignment</a></li>
+	<li><a href="#id">Max. pairwise sequence identity</a></li>
+	<li><a href="#qid">Min. sequence identity with query</a></li>
+	<li><a href="#dwin">Half-length of averaging window for dotplot</a></li>
+	<li><a href="#dthr">Score threshold for dotplot</a></li>
+	<li><a href="#score2struct">Score secondary structure</a></li>
+	<li><a href="#otheradvanced">Other advanced options</a></li></ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Select input format</h3>
+<div class="row">
+
+<p>
+At the moment, HHalign only accepts entire alignments. It does not build alignments automatically from a single seuqence.
+To do this, you can go to search>PSI-BLAST in the toolkit and paste the resulting alignments from there. 
+</p>
+<br/>	
+<p>
+	Accepted formats are listed in the dropdown menu. 
+	FASTA input format accepts a single raw sequence without headers as well.
+	Format descriptions can be found <a href="/reformat/help_params#formats">here</a>.	
+</p>
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="query_input"></a>
+<h3 class="<%= @section["name"] %>">Query alignment</h3>
+<div class="row">
+Input the query alignment. 
+If you want to detect internal repeats in an alignment, put it here and leave the target alignment 
+field empty. In this case, the input alignment is compared to itself and the best off-diagonal 
+alignment plus all further alignments above significance threshold are shown.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="target_input"></a>
+<h3 class="<%= @section["name"] %>">Target alignment</h3>
+<div class="row">
+If no target alignment is given the input alignment is compared to itself.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="id"></a>
+<h3 class="<%= @section["name"] %>">Maximum pairwise sequence identity</h3>
+<div class="row">
+A representative set of seqeunces is filtered from the alignment by throwing out seuqences
+that have a sequqence identity higher than this threshold with another seuqence in the representative set.
+This is useful to ensure more homogenuous sampling within the family of homologs making up the alignment.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="qid"></a>
+<h3 class="<%= @section["name"] %>">Minimum sequence identity with query</h3>
+All sequences that have a sequence identity lower than this threshold are thrown out of the alignment.
+In this way, the alignment can be narrowed down to close homologs. A default value between 20 and 25% 
+percent has been shown to reduce false positives (corrupting sequences) in PSI-BLAST generated alignments
+without compromising sensitivity. If the seed sequences of the two alignments to be compared are quite 
+similar, i.e. they have a pairwise sequence identity above 25%, than a value of approximately the same
+magnitude is reasonable here. 
+<div class="row">
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="dwin"></a>
+<h3 class="<%= @section["name"] %>">Half-length of averaging window for dotplot</h3>
+<div class="row">
+The values for each pixel in the dotplot is the profile-profile column score averaged over a window
+of 2W+1 residues, centered around the coordinates of the pixel.
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="dthr"></a>
+<h3 class="<%= @section["name"] %>">score threshold for dotplot</h3>
+<div class="row">
+Pixels in the dotplot above this score will be colored black, all others remain empty. Try lowering
+this value if you see almost no signal. If, by lowering the threshold, many short diagonal lines 
+pop up in apparently random parts of the plot then you have reached the noise level. If still no
+longer diagonals stand out above the noise, then your sequences are either not homologous ro too 
+diverged to see the resisual similarity in their profiles.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="score2struct"></a>
+<h3 class="<%= @section["name"] %>">Score secondary structure</h3>
+<div class="row">
+Do you want to add the secondary structure similarity score to the profile-profile score?
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="otheradvanced"></a>
+<h3 class="<%= @section["name"] %>">Other advanced options</h3>
+<div class="row">
+Use this textfield to specify advanced options via commandline. The options supported by HHalign are:
+<br/>
+<br/>
+<pre style="font-size: 11px;">
+Output options:
+ -seq  [1,inf[ max. number of query/target sequences displayed  (def=1)
+ -nocons       don't show consensus sequence in alignments (default=show)
+ -nopred       don't show predicted 2ndary structure in alignments (default=show)
+ -nodssp       don't show DSSP 2ndary structure in alignments (default=show)
+ -aliw int     number of columns per line in alignment list (def=80)
+ -p float      for self-comparison: max p-value of alignments (def=par.pself
+ 
+Dotplot options:
+ -dsca int     size of dot plot box in pixels  (default=0)
+ -dgri 0 or 1  turn grid on/off in dot plot (default=1)
+ 
+Filter input alignment:
+ -cov  [0,100] minimum coverage in % for inclusion in HMM (def=0)
+ -diff [0,inf[ pick N most different sequences which pass other thresholds (def=inf)
+ 
+HMM-HMM alignment options:
+ -glob/-loc    global or local alignment mode (def=local)
+ -shift [-1,1] score offset (def=-0.100)
+ -corr [0,1]   weight of term for pair correlations (def=0.20)
+ -ssm  0-4     0:no ss scoring [default=2]
+               1:ss scoring after alignment
+               2:ss scoring during alignment
+ -ssw  [0,1]   weight of ss score  (def=0.15)
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

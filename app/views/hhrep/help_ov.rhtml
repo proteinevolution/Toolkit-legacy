@@ -1,0 +1,56 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#whatfor">What is HHrep good for</a></li>
+	<li><a href="#length">Length of submitted sequences</a></li>
+	<li><a href="#alignment">Submitting an alignment</a></li>
+	<li><a href="#sensitive">Why is HHrep so sensitive?</a></li>
+	<li><a href="#references">References</a></li>
+	<li><a href="#contact">Contact</a></li>
+</ul>
+
+
+
+<h2>About <%= @tool['title'] %></h2> 
+
+<a name="whatfor"></a>
+<h3 class="<%= @section["name"] %>">What is HHrep good for?</h3>
+<div class="row">
+HHrep is a server for <i>de novo</i> repeat identification in protein sequences that is based on HMM-HMM comparison. HHrep is extremely sensitive in detecting very diverged repeat units but will also be happy with nearly identical repeats. It builds a profile HMM from the query sequence by several rounds of PSI-BLAST searches against the nr database and then compares this HMM with itself. HHrep returns a profile-profile dotplot for immediate visual identification of the repeat structure, as well as off-diagonal self-alignments which correpsond to the aligned repeat units. Furthermore, HHrep can give you an alignment of the supposed repeat units. And it can generate a merged super-alignment from those repeat units to be used for structure prediction with HHpred. 
+<br><br>
+
+If you have a protein that you suspect contains stretches of repeats, I recommend to do a search of with HHpred, Pfam, and REP first. HHpred in particular is very sensitive in detecting highly diverged repeats from known repeat families. But obviously, since these tools rely on databases of HMMs, they can not find repeats that are not yet contained in their databases. Also, many repeats are too much diverged to be detectable by these methods. In these two cases, HHrep is for you. Often HHrep will be able to identify repeats in your protein sequence if they exist, especially if a sufficient number of homologs can be found with PSI-BLAST.
+<br><br>
+
+The criteria to judge the presence of repeats are &nbsp; (1) the significance values for the HMM-HMM self-alignments, &nbsp; (2) the appearance of the self-alignments (do they look reasonable?) &nbsp;(3) and most importantly, the appearance of regularly spaced diagonals in the dot plot. (Our brains are superb at this kind of pattern recognition, after a small number of training examples.)
+<br><br>
+</div><div class="spacer">&nbsp;</div>
+
+<a name="length"></a>
+<h3 class="<%= @section["name"] %>">Length of submitted sequences</h3>
+<div class="row">
+HHrep works best on single-domain seuqences or sequences containing only one kind of tandem repeat. If you don't know where your domains are, 
+perform an <a target="_blank" href="http://<%= DOC_ROOTHOST %>/hhpred">HHpred search</a> through SCOP and PfamA.
+Also, you could perform a preliminary HHrep analysis to home in on the repeat regions and then cut the sequence further down to include only 
+regions with one kind of repeat structure. Sequences should best have between 100 and 300 residues length. Sequences that are too short will 
+gather too few homologs in the PSI-BLAST searches, thus loosing sensitivity. Also, the more repeat units are contained in a sequence, the more 
+information from transitivity of pairwise alignmemnts (A-B, B-C => A-C) can be used by HHrep through its "Merge alignments" functionality. 
+Sequences longer than <b>800 residues</b> are truncated by HHrep for practical reasons.
+<br><br>
+</div><div class="spacer">&nbsp;</div>
+
+<a name="alignment"></a>
+<h3 class="<%= @section["name"] %>">Submitting an alignment</h3>
+<div class="row">
+If you already have a trustworthy mulitple sequence alignment of your query with some homologs it is recommended that you start with this instead of from a single sequence. This will help PSI-BLAST to avoid alignment errors. 
+<br><br>
+</div><div class="spacer">&nbsp;</div>
+
+<a name="sensitive"></a>
+<h3 class="<%= @section["name"] %>">Why is HHrep so sensitive?</h3>
+<div class="row">
+The reason for HHrep's sensitivity lies in the use of evolutionary information when comparing the query sequence with itself. This evolutionary information
+comes from the multiple sequence alignment of the sequence with homologous stretches of proteins. The information in the multiple sequence alignment is used in a condensed form, a profile HMM. A profile HMM is almost the same as a sequence profile. This in turn is just a table with 20 rows and L columns (where L is the length of the query protein). Each of the L columns contains the frequencies of the 20 amino acids in the corresponding column of the multiple sequence alignment. This table is then compared with itself in order to find stretches of columns with similar amino acid distributions. By looking at many related sequences with very similar structures that contribute to the sequence profile, profile-profile (or HMM-HMM) comparison effectively averages away those features of the sequence that are there just by chance and not by necessity and concentrates on those that determine the protein family's properties. 
+<br><br>
+A method that also employs HMM-HMM comparison for very sensitive protein-protein comparison is implemented in HHpred, our interactive function and structure prediction server. (For a short description of HHpred, please go to the <a href="/hhpred/help_ov">HHpred help</a>.)
+<br><br>
+</div>
+<%= render(:partial => "hhrep/references_and_contact") %>

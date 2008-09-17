@@ -1,0 +1,126 @@
+<%= form_tag({:action => :run, :job => 'hhrep_mergeali', :parent => @job, :increment_id => 'true'}, {:multipart => true, :id => "hhrep_form", :name => "hhrep_form"})%> 
+ 
+<% if @errors['hits'] %>
+<div class="row">
+	<p class="formerror"><%= @errors['hits'] %></p>
+</div><div class="hr">&nbsp;</div>
+<% end %>
+
+
+<div class="row">
+	Deselect invalid self-alignments by clicking on them<br>
+	=> Press <strong>Merge alignments</strong> at least once to make use of transitivity information!
+	<% if @job.class.to_s == 'HhrepMergealiJob' %>
+		<br>=> Press <strong>View repeats</strong> below to view aligned repeats
+	<%end %>
+</div>
+	
+<center>
+<a href="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_factor3.png?<%= rand %>" title="Show large dotplot in new window" target="_blank">Show large dotplot in new window</a>
+<br/>
+
+<div class="row">
+	<map name="dotplot">
+		<%= @job.map.join("\n\t\t") %>
+	</map>
+	<img id="graph" name="img1" border="0" src="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.png?<%= rand %>" border="0" usemap="#dotplot" />\
+	<br/>
+</div>
+</center>
+
+<div class="row">
+	<div class="label">
+		<a href="#" onclick="openHelpWindow('hhrep_help_params', 'qid');">Sequence identity with query</a>
+	</div>
+	<div class="formw" style="float: left; margin-left: 20px;">
+		<strong>
+			<% ['0', '30', '40', '50'].each do |qid| 
+				checked = @job.qid == qid ? "checked='checked'" : ""
+			-%>
+    		<input name="qid" type="radio" <%= checked %> value="<%= qid %>"  onclick="document.location.href='/hhrep/hhrep_reload/<%= @job.jobid %>?mode=<%= @job.mode %>&qid=<%= qid %>&dwin=<%= @job.dwin %>&dthr=<%= @job.dthr %>&hits=<%= @job.hits %>';" />&nbsp;<%= qid %> &nbsp;&nbsp;
+    	<% end -%>
+		</strong>
+	</div>
+</div>
+
+<div class="row"> 
+	<div class="label">
+		<a href="#" onclick="openHelpWindow('hhrep_help_params', 'dthr');">Score threshold</a>
+	</div>
+	<div class="formw" style="float: left; margin-left: 20px;">
+		<strong>
+			<% ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6'].each do |dthr| 
+				checked = @job.dthr == dthr ? "checked='checked'" : ""
+			-%>
+    		<input name="dthr" type="radio" <%= checked %> value="<%= dthr %>"  onclick="document.location.href='/hhrep/hhrep_reload/<%= @job.jobid %>?mode=<%= @job.mode %>&qid=<%= @job.qid %>&dwin=<%= @job.dwin %>&dthr=<%= dthr %>&hits=<%= @job.hits %>';" />&nbsp;<%= dthr %> &nbsp;&nbsp;
+    		<% end -%>
+		</strong>
+	</div>
+</div>
+
+<div class="row"> 
+	<div class="label">
+		<a href="#" onclick="openHelpWindow('hhrep_help_params', 'dwin');">Window half width</a>
+	</div>
+	<div class="formw" style="float: left; margin-left: 20px;">
+		<strong>
+			<% ['5', '10', '15', '20'].each do |dwin| 
+				checked = @job.dwin == dwin ? "checked='checked'" : ""
+			-%>
+    		<input name="dwin" type="radio" <%= checked %> value="<%= dwin %>"  onclick="document.location.href='/hhrep/hhrep_reload/<%= @job.jobid %>?mode=<%= @job.mode %>&qid=<%= @job.qid %>&dwin=<%= dwin %>&dthr=<%= @job.dthr %>&hits=<%= @job.hits %>';" />&nbsp;<%= dwin %> &nbsp;&nbsp;
+    		<% end -%>
+		</strong>
+	</div>
+
+	<div class="hr">&nbsp;</div>
+	
+	<div class="formw_short">
+   	<input name="submitform" type="submit" class="feedbutton" value="Merge alignments" />
+   	<input name="submitform2" type="submit" class="feedbutton" onClick="setAction('hhrep_form', '<%= url_for({:action => :run, :jobaction => 'view_repeats', :jobid => @job, :forward_action => 'view_repeats_results', :forward_controller => 'hhrep'}) %>');" value="View repeats" />
+	</div>
+
+	<a href="/hhrep/hhrep_reload/<%= @job.jobid %>?mode=<%= @job.mode %>&qid=<%= @job.qid %>&dwin=<%= @job.dwin %>&dthr=<%= @job.dthr %>&hits= " onClick="">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="/hhrep/hhrep_reload/<%= @job.jobid %>?mode=<%= @job.mode %>&qid=<%= @job.qid %>&dwin=<%= @job.dwin %>&dthr=<%= @job.dthr %>&hits=<%= @job.best5 %>" onClick="">Best 5</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="/hhrep/hhrep_reload/<%= @job.jobid %>?mode=<%= @job.mode %>&qid=<%= @job.qid %>&dwin=<%= @job.dwin %>&dthr=<%= @job.dthr %>&hits=<%= @job.best10 %>" onClick="">Best 10</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="/hhrep/hhrep_reload/<%= @job.jobid %>?mode=<%= @job.mode %>&qid=<%= @job.qid %>&dwin=<%= @job.dwin %>&dthr=<%= @job.dthr %>&hits=<%= @job.best15 %>" onClick="">Best 15</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	
+	<a href="/hhrep/hhrep_reload/<%= @job.jobid %>?mode=<%= @job.mode %>&qid=<%= @job.qid %>&dwin=<%= @job.dwin %>&dthr=<%= @job.dthr %>&hits=all" onClick="">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+	<div class="hr">&nbsp;</div>
+
+</div>
+
+<% if defined?(coloring) && coloring %>
+<div class="row">
+	<div class="label">
+		<a href="#" onclick="openHelpWindow('hhrep_help_params', 'coloring');">Color alignments</a>
+	</div>
+	<div class="formw">
+		<strong>
+			<input name="mode" type="radio" <%= @job.mode == "onlySS" ? "checked='checked'" : "" %> value="onlySS" onclick="document.location.href='/hhrep/hhrep_reload/<%= @job.jobid %>?mode=onlySS&qid=<%= @job.qid %>&dwin=<%= @job.dwin %>&dthr=<%= @job.dthr %>&hits=<%= @job.hits %>';" />&nbsp;color only SS &nbsp;&nbsp;&nbsp;&nbsp;
+			
+			<input name="mode" type="radio" <%= @job.mode == "letters" ? "checked='checked'" : "" %> value="letters" onclick="document.location.href='/hhrep/hhrep_reload/<%= @job.jobid %>?mode=letters&qid=<%= @job.qid %>&dwin=<%= @job.dwin %>&dthr=<%= @job.dthr %>&hits=<%= @job.hits %>';"/>&nbsp;
+			<span style="color: orange;">c</span><span style="color: black;">o</span><span style="color: green;">l</span><span style="color: black;">o</span><span style="color: red;">r&nbsp;</span><span style="color: grey;">a</span><span style="color: green;">li</span><span style="color: maroon;">g</span><span style="color: purple;">n</span><span style="color: green;">m</span><span style="color: blue;">e</span><span style="color: purple;">n</span><span style="color: grey;">t</span><span style="color: grey;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
+			
+			<input name="mode" type="radio" <%= @job.mode == "background" ? "checked='checked'" : "" %> value="background" onclick="document.location.href='/hhrep/hhrep_reload/<%= @job.jobid %>?mode=background&qid=<%= @job.qid %>&dwin=<%= @job.dwin %>&dthr=<%= @job.dthr %>&hits=<%= @job.hits %>';" />&nbsp;
+			<span style="background-color: #ffff00;">c</span><span style="background-color: white;">o</span><span style="background-color: #00ff00;">l</span><span style="background-color: white;">o</span><span style="background-color: #ff0000;">r&nbsp;</span><span style="background-color: white;">a</span><span style="background-color: #00ff00;">li</span><span style="background-color: #ffd070;">g</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: #00ff00;">m</span><span style="background-color: #c080ff;">e</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: white;">t</span><span style="background-color: white;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
+	 	</strong>
+	 </div>
+</div>
+<div class="hr">&nbsp;</div>
+
+<% end %>
+
+<pre><%= @job.res.join("\n") %></pre>
+
+<br/>
+Please cite:
+
+<BR/><BR/>S&ouml;ding J, Remmert M, and Biegert A: HHrep: de novo repeat detection and the origin of TIM barrels. <em>Nucleic Acids Res.</em> 
+<strong>34</strong>, W137-142. <a href="http://nar.oxfordjournals.org/cgi/reprint/34/suppl_2/W137?ijkey=IWvdczwA16M5cVp&keytype=ref">(download pdf)</a>
+<BR/><BR/><i>PSIPRED</i>: Jones, D.T. (1999) Protein secondary structure prediction based on position-specific scoring matrices. JMB 292: 195-202.
+
+
+<input type="hidden" name="checkboxes" id="checkboxes" value="<%= @job.num_hits %>" \>
+<input type="hidden" id="action_val" name="action_val" value="<%= url_for({:action => :run, :jobaction => 'hhrep_reload', :jobid => @job, :forward_action => 'results', :forward_controller => 'hhrep'}) %>" />
+
+</form>

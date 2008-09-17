@@ -1,0 +1,52 @@
+<a href="#" onClick="openHelpWindow('/muscle/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'muscle'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter sequences in FASTA format", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+        <%= form_label("Output sequence order", "outputorder") %>
+        <%= form_radio_buttons("outorder",@outorder_values,@outorder_labels,@outorder_values[0]) %>
+</div>
+
+<div class="row">
+        <%= form_label("Select output format", "outputformat") %>
+        <%= form_radio_buttons("outformat",@outformat_values,@outformat_labels,@outformat_values[0]) %>
+</div>
+
+<div class="row">
+	<%= form_label("Maximum number of iterations", "maxnumberiterations") %>
+	<%= form_text_field("maxrounds", "3") %>
+</div>
+
+<div class="row">
+	<%= form_label("Other advanced options", "otheradvanced") %>
+	<%= form_text_field("otheradvanced", "", "", 50) %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_snail_buttons("Runtime ~5 min for N=600 sequences of length L=200. Scales between N² * L and N² * L².") %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+	Edgar, R. C. (2004) MUSCLE: multiple sequence alignment with high accuracy and high throughput. <em>Nuc. Acids Res.</em>,
+	 <strong>32</strong>(5), 1792-1797.
+</div>

@@ -1,0 +1,74 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+<li><a href="#general">General remarks</a></li>
+<li><a href="#alignments">Query-template alignments</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> - Histogram view</h2> 
+<p> 
+
+<div class="row">
+<a name="General"></a>
+<h3 class="<%= @section["name"] %>">General remarks</h3>
+Except for the query-template alignments, the histogram view is the same as the alignment view. The histogram view consists of 
+1. A <i>bar graph</i> summarizing the positions and color-coded significances of the 
+database matches with more than 40% probability.  2. A tabular <i>hit list</i> with probabilities, E-values, scores, and match 
+regions in query and templates.  3. The pairwise <i>query-templates alignments</i> of the profile HMMs,
+depicted as histograms over the amino acid distributions in the columns of the underlying multiple 
+alignments.  The first two sections are described in detail on the 
+<a href="/hhomp/help_results" title="HHomp help on results">Results</a> page of this help.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<div class="row">
+<a name="alignments"></a>
+<h3 class="<%= @section["name"] %>">Histogram view of aligned query and template profiles</h3>
+
+A typical histogram view of two aligned profiles looks like this:
+<p><br>
+
+<pre style="font-size: 10px;">
+<a style="font-size: 10px;" name = 2>No 2</a>  <a href='' style='margin: 5px 10px 10px 10px;' ><img src='http://10.35.1.40:82/images/hhpred/logo_alignments.jpg' alt='Alignments' title='Show query-template alignments' border='0' align='middle' height='30'></a><a href='#' style='margin: 5px 10px 10px 10px;' ><img src='http://10.35.1.40:82/images/hhpred/logo_T_struct.png' alt='Alignments' title='Show template 3D structure' border='0' align='middle' height='30'></a>
+><a style="font-size: 10px;" href='#' onmouseover="return overlib('OMP.14.1.7 FadL-like');" onmouseout="return nd();">OMP.14.1.7</a> FadL-like 
+Prob(OMP)=94.66   Prob(hit)=94.66   E-value=0.00035  Score=26.01  Aligned_columns=44  Identities=27  BB domain 25 - 458
+<map name="YadA_run_2">
+<area shape="rect" coords="50,95,770,140" href="#" onmouseover="imgOn('hitimage2','/images/hhomp/YadA_run_2_tt.png');" onmouseout="imgOff('hitimage2','/images/hhomp/YadA_run_2.png');" >
+</map>
+
+<img name="hitimage2" src="/images/hhomp/YadA_run_2.png" border="0" alt="hhomp profile 2" usemap="#YadA_run_2" />
+</pre>
+
+<br><br>
+The black bar in the middle shows the column score between the query and template 
+amino acid distributions with <b>|</b>, <b>+</b>, <b>.</b>, <b>-</b>, <b>=</b> 
+indicating scores from 'very good' to 'very bad'.
+(See the <a href="/hhomp/help_results" title="HHomp help on results">Results</a>
+page for a more detailed explanations).
+Gaps in either the query or target are marked by a blank field in this middle line.
+
+<br><br>
+The colored histogram bars report direcly the proportion of the most abundant amino acids in the corresponding column of the 
+underlying multiple alignment. (Remember that HHomp relies on HMM-HMM comparison and that both query and templates HMM 
+are derived from an alignment of homologs.) As an example, the first column shown from the query alignment contains 
+approximately 20% threonin (T), and 15% each of serine (S), glycine (G). and asparagine (N). The other
+residues, which together make up about 35%, are below 10% each and are not shown. Therefore, badly conserved columns which
+contain a lot of residues with proportions of less than 10% have a low total height whereas well conserved columns assume 
+the maximum height. The residues are colored according to their general physico-chemical properties: 
+cysteines in yellow, aliphatic hydrophobics (V, L, I, M) in green, aromatic amino acids (Y, F, W) in dark green, 
+small amino acids (G, A, S, T) in light grey, negatively charged (D, E) in blue, polar (N, Q) in magenta, histidines in orange, 
+positively charged (K, L) in red, prolines in grey. 
+These groups are displayed in the order given above, from the center out. The order within groups is by their abundance. 
+
+<br><br>
+The histogram view is very useful to grasp the character of similarity between two profile HMMs that HHomp has detected.
+In a single glance, one can often tell apart false positives that are due to merely similar amino acid composition from 
+real homologs with their conserved motifs. Functional motifs or structurally important amino acids can often be quickly 
+spotted due to the expected high conservation of the involved residues. In this context, note the aligned, highly conserved 
+cysteines at the end of the alignment which participate in disulphide bridges in the template.
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<%= render(:partial => "hhomp/references_and_contact") %>

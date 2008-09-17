@@ -1,0 +1,72 @@
+<a href="#" onClick="openHelpWindow('/blammer/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'blammer'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Paste input sequence", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="row">
+	<%= form_label("or enter a BLAST job-id", "input") %>
+	<%= form_text_field("blastid", "", "", 10) %>
+</div>
+
+<div class="row">
+	<%= form_label("Input is in HTML format", "input") %>
+	<%= form_checkbox("html", '1', true) %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+
+<div class="row">
+	<%= form_label("Maximum e-value", "maxevalue") %>
+	<%= form_text_field("maxevalue", "1e-5") %>
+</div>
+
+<div class="row">
+	<%= form_label("Minimal coverage", "minimalcoverage") %>
+	<%= form_text_field("minimalcoverage", "0.5") %>
+</div>
+
+<div class="row">
+	<%= form_label("Minimal score per column", "minimalscore") %>
+	<%= form_text_field("minimalscore", "0") %>
+</div>
+
+<div class="row">
+	<%= form_label("Minimal anchor width", "minimalanchor") %>
+	<%= form_text_field("minimalanchor", "5") %>
+</div>
+
+<div class="row">
+	<%= form_label("Maximum sequence identity", "maxseqidentity") %>
+	<%= form_text_field("maxseqidentity", "0.99") %>
+</div>
+
+<div class="row">
+	<%= form_label("Max. sequences per alignment", "maxseqalignment") %>
+	<%= form_text_field("maxseqalignment", "100") %>
+</div>
+
+<div class="row">
+	<%= form_label("Select output format", "outputformat") %>
+	<%= form_radio_buttons("outformat",@outformat_values,@outformat_labels,@outformat_values[0]) %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>
