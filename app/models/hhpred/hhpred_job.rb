@@ -40,6 +40,11 @@ class HhpredJob  < Job
     hhcluster = false
     makemodel = false
 
+    evalue_hash = Hash.new
+    first_hash = Hash.new
+    last_hash = Hash.new
+
+
     coloring = controller_params[:mode] ? controller_params[:mode] : 'onlySS'
     program = controller_params[:action]
     if (!actions.first.flash.nil? && !actions.first.flash['hhcluster'].nil?)
@@ -386,27 +391,27 @@ class HhpredJob  < Job
           # PRODOM identifier? (PD012345)
         elsif  template =~ /^PD\d{6}/
           # link to PRODOM domain
-          line[b] .sub!(/#{template}/, "<a href=\"http:\/\/prodes.toulouse.inra.fr\/prodom\/current\/cgi-bin\/request.pl?question=DBEN&query=#{template}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
+          line[b].sub!(/#{template}/, "<a href=\"http:\/\/prodes.toulouse.inra.fr\/prodom\/current\/cgi-bin\/request.pl?question=DBEN&query=#{template}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
           
           # SMART identifier? (smart00382)
         elsif template =~/^SM\d{5}/ || template =~/^smart\d{5}/
-				smartid = template
+	  smartid = template
           smartid.sub!(/^smart/, "SM")
           line[b] =~ /(\S+)\s+\S+\s+\S+\s+\S+\s+\S+\s+(\d+)\s*-(\d+)\s+\d+-\d+\s*\(\d+\)\s*$/
           evalue = $1
           first = $2
           last = $3
-          evalue[smartid] = evalue
-          first[smartid] =  first
-          last[smartid] =  last
+          evalue_hash[smartid] = evalue
+          first_hash[smartid] =  first
+          last_hash[smartid] =  last
           
           # Link to  SMART domain description
-          line[b] .sub!(/#{template}/, "<a href=\"http:\/\/dylan.embl-heidelberg.de\/smart\/do_annotation.pl?DOMAIN=#{smartid}&START=#{first}&END=#{last}&E_VALUE=#{evalue}&TYPE=SMART\" target=\"_blank\" title=\"#{descr[m]}\">#{template} <\/a>")
+          line[b].sub!(/#{template}/, "<a href=\"http:\/\/dylan.embl-heidelberg.de\/smart\/do_annotation.pl?DOMAIN=#{smartid}&START=#{first}&END=#{last}&E_VALUE=#{evalue}&TYPE=SMART\" target=\"_blank\" title=\"#{descr[m]}\">#{template} <\/a>")
           
           # Other CDD identifier? (COG0001, KOG0001, cd00001)
         elsif template =~/^COG\d{4}/ || template =~/^KOG\d{4}/ || template =~/^cd\d{5}/
 				# Link to CDD at NCBI
-          line[b] .sub!(/#{template}/, "<a href=\"http:\/\/www.ncbi.nlm.nih.gov\/Structure\/cdd\/cddsrv.cgi?uid=#{template}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
+          line[b].sub!(/#{template}/, "<a href=\"http:\/\/www.ncbi.nlm.nih.gov\/Structure\/cdd\/cddsrv.cgi?uid=#{template}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
           
           # PANTHER identifier? (PTHR15545)
         elsif template =~/^PTHR\d{5}/ 
@@ -463,7 +468,7 @@ class HhpredJob  < Job
           
           # Link to SCOP at family level
           if  template =~ /^[eu]/ 
-            line[b] .sub!(/#{family}/, "<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{template}&lev=fa\" target=\"_blank\">#{family}<\/a>")
+            line[b].sub!(/#{family}/, "<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{template}&lev=fa\" target=\"_blank\">#{family}<\/a>")
           else 
             line[b].sub!(/#{family}/, "<a href=\"http:\/\/www.mrc-lmb.cam.ac.uk\/agm\/cgi-bin\/find2.cgi?search_text=#{pdbc}&index=pox-SCOP_1_72\" target=\"_blank\">#{family}<\/a>")
           end
@@ -646,7 +651,7 @@ class HhpredJob  < Job
           @cite_prodom=1
           href="http:\/\/prodes.toulouse.inra.fr\/prodom\/current\/cgi-bin\/request.pl?question=DBEN&query=#{prodomid}"
           # link to PRODOM domain
-          line[b] .sub!(/#{template}/, "<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
+          line[b].sub!(/#{template}/, "<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
           line[b-1].chomp!
           line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_ProDom.jpg\" alt=\"ProDom\" title=\"ProDom\" #{logo_attr} height=\"20\"></a>\n"
           
@@ -655,9 +660,9 @@ class HhpredJob  < Job
           smartid = template;
           smartid.sub!(/^smart/,"SM")
           line[b] =~/^\s*\d+\s+\S+\s+\S+\s+\S+\s+(\S+)\s+.*(\d+)\s*-\s*(\d+)\s*\(\d+\)\s*\d+\s*-\s*\d+\s*\(\d+\)\s*$/
-          evalue = evalue[smartid]
-          first  = first[smartid]
-          last   = last[smartid]
+          evalue = evalue_hash[smartid]
+          first  = first_hash[smartid]
+          last   = last_hash[smartid]
           @cite_smart=1
           
           # Link to SMART domain description
@@ -830,7 +835,7 @@ class HhpredJob  < Job
           
           # Link to PDB
           href="http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}"
-          line[b] .sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
+          line[b].sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
           
           add_inter_pro_link_logo(b, line, link_attr, logo_attr);
           add_structure_database_logos(b,template,pdbcode,line, link_attr, logo_attr)
@@ -895,7 +900,7 @@ class HhpredJob  < Job
 	    
             # Link to PDB
             href="http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}"
-            line[b] .sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
+            line[b].sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
             
             add_structure_database_logos(i,template,pdbcode, line, link_attr, logo_attr);
             add_pubmed_logo(i,ucpdbcode, line, link_attr, logo_attr)
@@ -945,7 +950,7 @@ class HhpredJob  < Job
           
           # Link to PDB
           href="http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}"
-          line[b] .sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
+          line[b].sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
           
           add_structure_database_logos(b,template,pdbcode, line, link_attr, logo_attr)
           add_pubmed_logo(b,ucpdbcode, line, link_attr, logo_attr)

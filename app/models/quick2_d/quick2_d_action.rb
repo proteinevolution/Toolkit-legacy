@@ -105,6 +105,9 @@ class Quick2DAction < Action
 
 		init_vars	
 		reformat(@informat,"fas", flash['infile'], flash['fasfile'])
+		if @informat == "a3m"
+		   system("cp #{flash['infile']} #{flash['a3mfile']}")
+		end
 		prepareFiles			
 	end
 
@@ -135,7 +138,11 @@ class Quick2DAction < Action
 			if( flash['seqCount']>200 ) 
 				commands << "echo 'There are more than 200 sequences!' >> #{flash['logfile']}"	
 				commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
-				commands << "#{DIFFSEQS} #{flash['fasfile']} #{flash['fasfile']} 200 &> #{flash['buildalilog']}" 
+				if !File.exist?(flash['a3mfile'])
+				   commands << "#{REFORMAT} -i=fas -o=a3m -f=#{flash['fasfile']} -a=#{flash['a3mfile']} -M first"	
+				end
+				commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}" 
+				commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['fasfile']}" 
 			end	
 			flash['alnfasfile'] = flash['fasfile']
 		end
