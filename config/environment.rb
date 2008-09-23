@@ -5,6 +5,9 @@
 ENV['RAILS_ENV'] ||= 'production'
 #ENV['RAILS_ENV'] = 'development'
 
+# Set Location (Munich or Tuebingen)
+LOCATION = "Tuebingen"
+
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 

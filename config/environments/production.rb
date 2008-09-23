@@ -1,8 +1,5 @@
 # Settings specified here will take precedence over those in config/environment.rb
 
-# Set Location (Munich or Tuebingen)
-LOCATION = "Tuebingen"
-
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
 config.cache_classes = true
@@ -82,7 +79,8 @@ STATUS_QUEUED = 'q'
 if (LOCATION == "Munich")
   DOC_ROOTHOST = 'toolkit.lmb.uni-muenchen.de'
 else
-  DOC_ROOTHOST = 'wye.eb.tuebingen.mpg.de'
+#  DOC_ROOTHOST = 'wye.eb.tuebingen.mpg.de'
+  DOC_ROOTHOST = 'toolkit.tuebingen.mpg.de'
 end
 
 DOC_ROOTURL = 'http://' + DOC_ROOTHOST
