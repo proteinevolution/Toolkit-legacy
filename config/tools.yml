@@ -9,7 +9,7 @@
   - external
 - section: search
   name: prot_blast
-  title: ProteinBLAST
+  title: ProtBLAST
   title_long: Protein BLAST
   active: 
   - member
@@ -129,13 +129,13 @@
   - external
 - section: search
   name: nuc_blast
-  title: NucleotideBLAST
+  title: NucBLAST
   title_long: Nucleotide BLAST
   active: 
   - member
   - internal
   - external
-- section: seqanal
+- section: search
   name: patsearch
   title: PatternSearch
   title_long: Pattern Search

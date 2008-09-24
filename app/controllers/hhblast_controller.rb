@@ -13,7 +13,7 @@ class HhblastController < ToolController
     @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
     
     @dbvalues = [File.join(DATABASES, 'standard', 'nr30cons')]
-    @dbhhm = ['/cluster/databases/nr30']
+    @dbhhm = [File.join(DATABASES, 'nr30')]
     @dblabels = ['NR30']
     @default_db = @dbvalues[0]
     @default_dbhhm = @dbhhm[0]
