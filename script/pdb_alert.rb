@@ -194,7 +194,7 @@ def create_toolkit_job ( matches )
   
     userdb.job_id = job.jobid
     userdb.save!
-    job.user_id = userdb.user_id
+#    job.user_id = userdb.user_id
     job.save!
     STDOUT.write("\n#{Time.now} - Toolkit HHpred Job ID: #{job.jobid} created for #{userdb.name}\n")
   

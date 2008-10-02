@@ -55,7 +55,7 @@ module Toolkit
 						# Upload file or input field?
 						if (value.nil?) then next end
 						if (attr.to_s.include?('_file'))
-							if value.instance_of?(ActionController::UploadedStringIO) || value.instance_of?(Tempfile)
+							if value.instance_of?(ActionController::UploadedStringIO) || value.instance_of?(Tempfile) || value.instance_of?(ActionController::UploadedTempfile)
 								value.rewind
 								value = value.read
 							else

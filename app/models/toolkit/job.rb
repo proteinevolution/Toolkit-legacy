@@ -134,7 +134,7 @@
         
         # save uploaded files in job_dir under name of html element
         parameters.keys.each do |k|
-          if parameters[k].instance_of?(StringIO) || parameters[k].instance_of?(Tempfile) || parameters[k].instance_of?(ActionController::UploadedTempfile)
+          if parameters[k].instance_of?(StringIO) || parameters[k].instance_of?(Tempfile) || parameters[k].instance_of?(ActionController::UploadedTempfile) || parameters[k].instance_of?(ActionController::UploadedStringIO)
             parameters[k].rewind
             filename = File.join(job_dir, k)
             File.open(filename, "w") do |f|
