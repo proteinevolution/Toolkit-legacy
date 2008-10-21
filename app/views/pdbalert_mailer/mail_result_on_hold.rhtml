@@ -1,12 +1,11 @@
 Dear <%= @params['name'] %>,
 
-PDBalert (<%= DOC_ROOTURL %>/pdbalert ) has found a match to one of your sequences among the PDB structures released recently. Here is the summary of the result.
+PDBalert (<%= DOC_ROOTURL %>/pdbalert ) has found a match to one of your sequences among the "ON HOLD" PDB structures. Here is the summary of the result.
 
 Sequence Name : <%= @params['db'] %>
 Uploaded on : <%= @params['date'] %>
 Found template : <%= @params['match_name'] %>
 Link to Result: <%= DOC_ROOTURL %>/hhpred/check/<%= @params['job_id'] %>
-Link to predicted structure: <%= DOC_ROOTURL %>/modeller/results_model/<%= @params['str_id'] %>
 
 Thank You!
 Your PDBalert Team

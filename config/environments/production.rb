@@ -60,11 +60,13 @@ if (LOCATION == "Munich")
 
   QUEUE_MODE = 'sge'
   QUEUE_DIR = '. /cluster/opt/sge/default/common/settings.sh; /cluster/opt/sge/bin/lx24-amd64'
+  QUEUE_SETTINGS = '. /cluster/opt/sge/default/common/settings.sh'
 
 else
 
   QUEUE_MODE = 'sge'
   QUEUE_DIR = '. /usr/local/sge/default/common/settings.sh; /usr/local/sge/bin/lx26-amd64'
+  QUEUE_SETTINGS = '. /usr/local/sge/default/common/settings.sh'
 
 end
 

@@ -26,6 +26,28 @@
 
 <div class="spacer">&nbsp;</div>
 <br />
+<h3 class="utils" style="font-size: 10px;">Notification thresholds</h3>
+(logic AND)
+<br />
+
+  <div class="row">
+    <%= form_label("HHpred probability", "minprobab", "hhpred") %>
+    <%= form_text_field("Pmin", '80', '%') %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Sequence identity", "miniden", "hhpred") %>
+    <%= form_text_field("Imin", '0', '%') %>
+  </div>
+
+  <div class="row">
+    <%= form_label("E-value", "maxe", "hhpred") %>
+    <%= form_text_field("Emax", '10', '') %>
+  </div>
+
+<div class="spacer">&nbsp;</div>
+<br />
+
 <span id="show_more_options" style="font-size: 10px; display: <%= @show_more_options ? 'none' : 'true' %>"><a style="margin-left: 10px; font-weight: bold;" on_click="show_hide_more_options();" href="javascript:show_hide_more_options();">Change Search Parameters</a></span>
 <h3 class="utils" id="hide_more_options" style="font-size: 10px; display: <%= @show_more_options ? 'true' : 'none' %>"><a style="margin-left: 10px; font-weight: normal;" on_click="show_hide_more_options();" href="javascript:show_hide_more_options();">Use Default Search Parameters</a>
 </h3>
@@ -90,12 +112,7 @@
     <%= form_label("Width of alignments", "width", "hhpred") %>
     <%= form_text_field("width", '80', 'columns') %>	
   </div>
-
-  <div class="row">
-    <%= form_label("Min. probability in hitlist", "minprobab", "hhpred") %>
-    <%= form_text_field("Pmin", '80', '%') %>	
-  </div>
-  
+     
   <div class="row">
     <%= form_label("Max. number of hits in hitlist", "maxlines", "hhpred") %>
     <%= form_text_field("maxlines", '100') %>	

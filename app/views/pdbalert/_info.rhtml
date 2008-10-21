@@ -1,0 +1,21 @@
+<h3 class="utils">What is PDBalert?</h3>
+<div class="row">
+PDBalert is a web-based automatic system that alerts users as soon as a pdb structure with homology to a protein of interest becomes available. Users can upload their personal protein sequences of interest. Every Wednesday, when new proteins are released to the PDB database, PDBalert compares the users' sequences with the new proteins. When a significant match is found, the user is alerted by email containing a link to the search results. The sequence search uses the very sensitive and reliable remote homology detection server HHpred, which is based on pairwise comparison of Hidden Markov models. Its sensitivity is testified by its second rank in the CASP 7 structure prediction benchmark <a href="#" onclick="openHelpWindow('/hhpred/help_ov')">[CASP7 server results]</a>. 
+<br /><br />
+</div>
+
+<h3 class="utils">How can PDBalert be useful for you?</h3>
+<div class="row">
+If you are a cell biologist and you want to be the first to model the 3D structure of your protein of interest with a brandnew template structure or to obtain hints about possible functions from a homologous relationship, then PDBalert will give you the crucial edge in time. As soon as a new template to one of your proteins becomes available, or as soon as a template is <it>on hold</it> in the PDB, you will get notified by email. The email will certain a link to the HHpred job showing the alignment of the new template and a link to an automatically built homology model for your protein of interest. You can then manually refine the 3D model with the HHpred server or explore the functional consequences of the database match. If you are a crystallographer, you probably want to know if a protein related to one of your current pets has come out. PDBalert obviates the need to regularly check the new PDB entries and will also highlight relationships that are more distant than what would appear on your radar by simple key word alerts. If you are an evolutionary biologist working on a protein family, you will be interested to learn as soon as possible about new structures from members of the family. In any case, you only need to enter your sequences or sequence alignments once and PDBalert will do the checking regularly without further ado.
+<br /><br />
+</div>
+
+<h3 class="utils">Usage notes</h3>
+<div class="row">
+Whenever possible, users should upload sequences of single protein domains, since sensitivity
+increases and the false discovery rate is reduced compared to multi-domain proteins. When PDBalert
+confidently predicts a domain in a longer sequence, it is therefore recommended to split the
+sequence up according to the (partial) predicted domain structure and upload the fragments separately to PDBalert.
+<br /><br />
+To save computational ressources we ask users to avoid uploading sequences with more than 30% similarity, since the profile created for such sequences will be almost identical.
+</div>
