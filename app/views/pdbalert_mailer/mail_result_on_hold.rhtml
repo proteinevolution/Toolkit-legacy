@@ -2,24 +2,25 @@ Dear <%= @params['name'] %>,
 
 PDBalert (<%= DOC_ROOTURL %>/pdbalert ) has found a match to one of your sequences among the "ON HOLD" PDB structures. Here is the summary of the result.
 
-Sequence Name : <%= @params['db'] %>
-Uploaded on : <%= @params['date'] %>
-Found template : <%= @params['match_name'] %>
-Link to Result: <%= DOC_ROOTURL %>/hhpred/check/<%= @params['job_id'] %>
+Sequence Name:  <%= @params['db'] %>
+Uploaded on:    <%= @params['date'] %>
+Found template: <%= @params['match_name'] %>
+
+Link to HHpred result: <%= DOC_ROOTURL %>/hhpred/check/<%= @params['job_id'] %>
 
 Thank You!
 Your PDBalert Team
 _________________________________________________________________________________
 
 Notes: 
-1) When PDBalert confidently predicts a domain in a longer sequence, it is recommended to split the sequence up according to the (partial) predicted domain structure and upload the fragments separately to PDBalert since it may contain another (less confident) domain of interest. Follow the given steps.
-   a) Note the domain of sequence for which PDBalert has found the matching template.
-   b) Remove the domain noted in (a) and few residues on either sides. (Remove the section if it is less than 10 residues on either sides of found domain.)
-   c) Upload the remaining sequence to PDBalert again.
+A) When PDBalert confidently predicts a domain in a longer sequence, it is recommended to split the sequence at the boundaries of the discovered domain and upload the segments separately to PDBalert. Follow the given steps.
+   1) Redo a search with your sequence by clicking on 'Resubmit HMM' on the HHpred result page and changing the alignment mode to 'global'. Check if the new domain hit also appears with non-negligible probabilities in this global search.
+   2) Cut your sequence at the boundaries of the newly identified domain. Upload the two or three segments separately to PDBalert. If you can not determine the domain boundaries precisely, it may be useful to make the segments overlap by upto 30 residues.
 
-2) It is recommended that users create the models of protein structures themselves instead of using the automatically predicted structure by following given steps.
-   a) Choose option 'Create Model' in the menu on the 'HHpred - Results' page.
-   b) Select the template for structure prediction with 'Single Template model' 
+B) It is recommended that users create the models of protein structures themselves instead of using the automatically predicted structure by following given steps.
+   1) Choose option 'Create Model' in the menu on the 'HHpred - Results' page.
+   2) Select the template for structure prediction with 'Single Template model' 
    					OR
-      Opt for 'Multiple template model' and select templates on 'HHpred makemodel - Results' page that appears after few minutes. Press 'Prepare for MODELLER' button.
-   c) Put the MODELLER-key in the space provided and submit the job.
+      If more than one suitable template is available you may choose 'Multiple template model' and select templates on the 'HHpred makemodel - Results' page that appears after few minutes. Press 'Prepare for MODELLER' button.
+   3) Put the MODELLER-key in the space provided and submit the job.
+

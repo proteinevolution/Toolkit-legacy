@@ -9,7 +9,7 @@
 <span id="upload_form" style="display: <%= @upload_on ? 'true':'none' %>;">
 <h3 class="utils"><a href="javascript:hide_upload_form();" onclick="hide_upload_form();">Hide</a></h3>
 <%= render(:partial => "upload_userdb") %>
-<h3 class="utils">&nbsp;</h3>
+<div class="hr">&nbsp;</div>
 </span>
 <span id="upload_option" style="display: <%= @upload_on ? 'none':'true' %>;">
 <a href="javascript:show_upload_form();" style="color: green; float: right; margin-right: 10px; margin-top: 5px;" onclick="show_upload_form();">Upload sequence...</a>
