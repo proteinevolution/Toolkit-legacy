@@ -9,14 +9,17 @@ require File.join(File.dirname(__FILE__), '../config/environment')
 ##	For running when previous run was missed due to some reason: ./pdb_alert.rb 0 <Name of database of missed date (in /cluster/databases/pdbwatchlist/archives/ folder)> (e.g. ./pdb_alert.rb 0 pdb70_19Jul08)
 #######################################################################################################################################################################
 
-RSUB_PATH = "/cluster/user/toolkit/bin/rsub"
-SGE_SETTINGS = "export SGE_ROOT=/cluster/opt/sge; /cluster/opt/sge/default/common/settings.sh"
+RSUB_PATH = TOOLKIT_ROOT+"/script/rsub"
+RSUB_OPTS = "--logfile #{TMP}/rsub/pdb_alert.log --jobspath #{TMP}/rsub -a '-o #{TMP}/rsub -wd #{TMP}/rsub'"
 PDB_ALERT_TMP = TMP+"/pdbalert"
 HHPRED = BIOPROGS+"/hhpred"
 CAL_DATABASE = DATABASES+"/hhpred/cal.hhm"
 PDB_WATCHLIST = DATABASES+"/pdbwatchlist"
-ALL_PDB = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pdb*_*'))[0]
+NEW_ON_HOLD_SEQUENCE_DATABASE = PDB_WATCHLIST+"/pdb_on_hold_new.hhm"
+ALL_PDB = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pdb70_*'))[0]
+ALL_PDB_ON_HOLD = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pdb_on_hold_*'))[0]
 ALL_PDB_DATABASES = ALL_PDB + '/db/pdb.hhm'
+ALL_PDB_ON_HOLD_DATABASES = ALL_PDB_ON_HOLD + '/db/pdb.hhm'
 NEW_PDB_DATABASES = PDB_WATCHLIST+"/pdb_new.hhm"
 if !ARGV[1].nil?
   ARCHIVE_DATABASES = File.join(PDB_WATCHLIST, "archives", "#{ARGV[1]}.hhm")
@@ -39,9 +42,9 @@ def create_hmm ( subdir,file,params )
   hhm_file = File.join(PDB_ALERT_TMP,'hhm',"#{subdir}:,#{file.gsub(/\.fas/,'.hhm')}")
   if !File.exists?(hhm_file)
     STDOUT.write("\n#{Time.now} - Building Alignment for #{file}.......\n")
-    system("#{SGE_SETTINGS}; #{RSUB_PATH} --jobspath /cluster/user/toolkit/jobs --interval 60 -c \"#{HHPRED}/buildali.pl -nodssp -cpu 4 -v 1 -n #{params['maxpsiblastit']} -diff 1000 -e #{params['Epsiblastval']} -cov #{params['cov_min']} -fas #{infile}\"")
+    system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/buildali.pl -nodssp -cpu 4 -v 1 -n #{params['maxpsiblastit']} -diff 1000 -e #{params['Epsiblastval']} -cov #{params['cov_min']} -fas #{infile}\"")
     STDOUT.write("\n#{Time.now} - Creating HHM for #{file}..........\n")
-    system("#{SGE_SETTINGS}; #{RSUB_PATH} --jobspath /cluster/user/toolkit/jobs --interval 60 -c \"#{HHPRED}/hhmake -v 1 -cov #{params['cov_min']} -qid #{params['qid_min']} -diff 100 -i #{a3m_file} -o #{hhm_file}\"")
+    system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/hhmake -v 1 -cov #{params['cov_min']} -qid #{params['qid_min']} -diff 100 -i #{a3m_file} -o #{hhm_file}\"")
     system("rm #{a3m_file}")
   end
   hhm_file
@@ -94,9 +97,9 @@ def perform_hhsearch ( hmm_file=nil )
           end
         end
         STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file}......\n")
-        system("#{SGE_SETTINGS}; #{RSUB_PATH} --jobspath /cluster/user/toolkit/jobs --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
+        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
         STDOUT.write("\n#{Time.now} - Performing HHsearch for #{hhm_file}......\n")
-        system("#{SGE_SETTINGS}; #{RSUB_PATH} --jobspath /cluster/user/toolkit/jobs --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{pdb_database} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
+        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{pdb_database} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
         system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
       end
     end
@@ -122,13 +125,35 @@ def analyse_result
         system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhr/,'.hhm')}")
       elsif ( ARGV[0].nil? || ( !ARGV[0].nil? && ( ARGV[0].to_i == userdb.id || ARGV[0].to_i == 0 ) ) )
         present_prob = userdb.probability
+	if !userdb.params['Emax'].nil?
+	  present_Emax = userdb.params['Emax'].to_f
+	else
+	  present_Emax = 1
+	end
+	if !userdb.params['Imin'].nil?
+          present_Imin = userdb.params['Imin'].to_f
+	else
+	  present_Imin = 20
+        end
+			  
         hhr = File.new(File.join(PDB_ALERT_TMP,'hhr',file))
         @lines = hhr.readlines
         @line = @lines[9]
         prob = @line[35..39].to_f
-        if(prob > present_prob + 0.1)
+	emax = @line[44..47].to_f
+	cut = 0
+	@lines.each_index do |i|
+	  if @lines[i]=~/^No 1\s*$/
+	    cut = i
+	  end
+	end
+	@name = @lines[cut+1].gsub(/>/,'')
+	imin = @lines[cut+2].gsub(/^.*Identities=(.*)\%.*$/,'\1').to_f
+        if(prob > present_prob + 0.1 && emax < present_Emax - 0.01 && imin > present_Imin + 0.1)
           @matches.push(file)
-          @results.push(userdb)
+          userdb.params['match_name'] = @name
+	  userdb.save!
+	  @results.push(userdb)
   	  STDOUT.write("\n#{Time.now} - Match found for #{file}\n")
 
 	  STDOUT.write("\n#{Time.now} - Creating Multiple alignment for #{file} with best hit\n")
@@ -147,7 +172,7 @@ end
 #######################################################################################################################################################################
 #Creating actual Toolkit HHpred Job
 
-def create_toolkit_job ( matches )
+def create_toolkit_job ( matches, hhpred_db=ALL_PDB )
   matches.each do |file| 
     infilename = File.join(PDB_WATCHLIST,file.gsub(/\.hhr/,'.fas').gsub(/:,/,'/'))
     infile = File.new(infilename)
@@ -159,7 +184,7 @@ def create_toolkit_job ( matches )
     job.save!
     
     userdb = Watchlist.find( :first, :conditions =>  [ "path = ?", infilename ])
-    parameters = {"jobid" => job.jobid, "reviewing" => 'true', "sequence_file" => "#{TMP}/#{job.id}/sequence_file", "mail_transmitted" => 'false', "hhpred_dbs" => "#{ALL_PDB}"
+    parameters = {"jobid" => job.jobid, "reviewing" => 'true', "sequence_file" => "#{TMP}/#{job.id}/sequence_file", "mail_transmitted" => 'false', "hhpred_dbs" => "#{hhpred_db}"
     }
     parameters.merge!(userdb.params)
     parameters["informat"] = "fas"
@@ -187,14 +212,14 @@ def create_toolkit_job ( matches )
         eval "newaction."+key+" = value"
       end
     end
-  
+    newaction.jobid = job.jobid
     newaction.save!
   
     newaction.run
   
     userdb.job_id = job.jobid
     userdb.save!
-    job.user_id = userdb.user_id
+#    job.user_id = userdb.user_id
     job.save!
     STDOUT.write("\n#{Time.now} - Toolkit HHpred Job ID: #{job.jobid} created for #{userdb.name}\n")
   
@@ -348,13 +373,100 @@ end
 def email_results ( results )
   results.each do |userdb|
     userdb.reload
-    params = { 'name' => userdb.user.firstname, 'mail' => userdb.user.login, 'db' => userdb.name, 'date' => userdb.created_on.to_date.to_s(:long), 'job_id' => userdb.job_id, 'str_id' => userdb.str_id, 'probability' => userdb.probability }
+    params = { 'name' => userdb.user.firstname, 'mail' => userdb.user.login, 'db' => userdb.name, 'date' => userdb.created_on.to_date.to_s(:long), 'job_id' => userdb.job_id, 'str_id' => userdb.str_id, 'probability' => userdb.probability, 'match_name' => userdb.params['match_name'] }
     PdbalertMailer.deliver_mail_result(params)
   end
 end
-#########################################################################################################################################################################################
 
+#########################################################################################################################################################################################
+#Checking for homology in database of sequences kept on-hold
+def on_hold_sequence_search(on_hold_db=NEW_ON_HOLD_SEQUENCE_DATABASE)
+  if !File.exist?(File.join(PDB_ALERT_TMP,'hhr2'))
+    Dir.mkdir(File.join(PDB_ALERT_TMP,'hhr2'))
+  end
+  
+  Dir.foreach(File.join(PDB_ALERT_TMP,'hhm')) do |file|
+    hhm_file = File.join(PDB_ALERT_TMP,'hhm',file)
+    out_file = File.join(PDB_ALERT_TMP,'hhr2',file.gsub(/\.hhm/,'.hhr'))
+    path = File.join(PDB_WATCHLIST,file.gsub(/\.hhm/,'.fas').gsub(/:,/,'/'))
+    userdb = Watchlist.find( :first, :conditions =>  [ "path = ?", path ])
+    
+    if !userdb.nil?
+      params = userdb.params
+      @mapt = ''
+      @realign = params["realign"] ? "-realign" : "-norealign"
+      if @realign == '-realign'
+        if @ali_mode == 'global'
+          @mapt = '-mapt 0.0'
+        else
+          @mapt = params["mapt"].nil? ? '' : '-mapt '+params["mapt"]
+        end
+      end
+      STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file} for on-hold sequences......\n")
+      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
+      STDOUT.write("\n#{Time.now} - Performing HHsearch for #{hhm_file} with on-hold sequence database (#{on_hold_db})......\n")
+      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{on_hold_db} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
+      system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
+    end
+  end
+  
+  @matches = []
+  @results = []
+  Dir.foreach(File.join(PDB_ALERT_TMP,'hhr2')) do |file|
+    unless ( file =~ /\.$/ )
+      path = File.join(PDB_WATCHLIST,file.gsub(/\.hhr/,'.fas').gsub(/:,/,'/'))
+      userdb = Watchlist.find( :first, :conditions =>  [ "path = ?", path ])
+      if !userdb.nil?
+        present_prob = userdb.probability
+        if !userdb.params['Emax'].nil?
+          present_Emax = userdb.params['Emax'].to_f
+        else
+          present_Emax = 1
+        end
+        if !userdb.params['Imin'].nil?
+          present_Imin = userdb.params['Imin'].to_f
+        else
+          present_Imin = 20
+	end
+
+        hhr = File.new(File.join(PDB_ALERT_TMP,'hhr2',file))
+        @lines = hhr.readlines
+        @line = @lines[9]
+        prob = @line[35..39].to_f
+        emax = @line[44..47].to_f
+        cut = 0
+        @lines.each_index do |i|
+          if @lines[i]=~/^No 1\s*$/
+            cut = i
+          end
+        end
+        @name = @lines[cut+1].gsub(/>/,'')
+        imin = @lines[cut+2].gsub(/^.*Identities=(.*)\%.*$/,'\1').to_f
+        if(prob > present_prob + 0.1 && emax < present_Emax - 0.01 && imin > present_Imin + 0.1)
+	  @matches.push(file)
+          userdb.params['match_name'] = @name
+          userdb.save!
+          @results.push(userdb)
+          STDOUT.write("\n#{Time.now} - Match found for #{file}\n")
+        end
+      end
+    end
+  end
+
+  create_toolkit_job(@matches,ALL_PDB_ON_HOLD)
+
+  @results.each do |userdb|
+    userdb.reload
+    params = { 'name' => userdb.user.firstname, 'mail' => userdb.user.login, 'db' => userdb.name, 'date' => userdb.created_on.to_date.to_s(:long), 'job_id' => userdb.job_id, 'str_id' => userdb.str_id, 'probability' => userdb.probability, 'match_name' => userdb.params['match_name'] }
+    PdbalertMailer.deliver_mail_result_on_hold(params)
+  end
+
+end
+
+#########################################################################################################################################################################################
+#Functions that run the functions required for different cases
 def execute_all
+  on_hold_sequence_search
   perform_hhsearch
   @return_array = analyse_result
   len = @return_array.length
@@ -380,10 +492,10 @@ def execute_recovery
   email_results(@results)
 end
 		  
-
 def execute_one(watchlist_id)
   userdb = Watchlist.find(watchlist_id)
   hhm_file = create_hmm(userdb.user.login,File.basename(userdb.path),userdb.params)
+  on_hold_sequence_search(ALL_PDB_ON_HOLD_DATABASES)
   perform_hhsearch(File.basename(hhm_file))
   @return_array = analyse_result
   len = @return_array.length
@@ -394,8 +506,20 @@ def execute_one(watchlist_id)
   email_results(@results)
 end
 
+#########################################################################################################################################################################################
+#Main function that chooses which kind of operation particular execution requires
 def main
   STDOUT.write("\n#{Time.now} - STARTED - #{ARGV[0]}\n")
+
+  # check TMP directories
+  if !File.exist?(File.join(PDB_ALERT_TMP))
+    Dir.mkdir(File.join(PDB_ALERT_TMP))
+  end
+  if !File.exist?(File.join(TMP, "rsub"))
+    Dir.mkdir(File.join(TMP, "rsub"))
+  end
+
+
   if ARGV[0].nil?
     execute_all
   elsif ARGV[0] == "0"
@@ -409,3 +533,4 @@ end
 
 main
 
+#########################################################################################################################################################################################

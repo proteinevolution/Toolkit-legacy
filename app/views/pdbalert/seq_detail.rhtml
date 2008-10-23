@@ -5,6 +5,28 @@
 <div class="row">
 <h2><%= @userdb.name %></h2>
 </div>
+<h3>Notification thresholds</h3>
+(logic AND)
+<br />
+
+  <div class="row">
+    <%= form_label("HHpred probability", "minprobab", "hhpred") %>
+    <%= form_text_field("Pmin", '80', '%') %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("Sequence identity", "miniden", "hhpred") %>
+    <%= form_text_field("Imin", '0', '%') %>
+  </div>
+
+  <div class="row">
+    <%= form_label("E-value", "maxe", "hhpred") %>
+    <%= form_text_field("Emax", '10', '') %>
+  </div>
+
+<div class="spacer">&nbsp;</div>
+<br />
+
 <h3>Search Parameters</h3>
   <div class="row">
     <%= form_label("Max. PSI-BLAST iterations", "maxpsiblastit") %>
@@ -64,11 +86,6 @@
     <%= form_text_field("width", @userdb.params['width'], 'columns') %>	
   </div>
 
-  <div class="row">
-    <%= form_label("Min. probability in hitlist", "minprobab") %>
-    <%= form_text_field("Pmin", @userdb.params['Pmin'], '%') %>	
-  </div>
-  
   <div class="row">
     <%= form_label("Max. number of hits in hitlist", "maxlines") %>
     <%= form_text_field("maxlines", @userdb.params['maxlines']) %>	

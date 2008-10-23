@@ -77,7 +77,7 @@ class ToolController < ApplicationController
     if (!errors.nil?)
       session[:errors] = errors.dup
       params.keys.each do |k|
-        if params[k].instance_of?(StringIO) || params[k].instance_of?(Tempfile) || params[k].instance_of?(ActionController::UploadedStringIO)
+        if params[k].instance_of?(StringIO) || params[k].instance_of?(Tempfile) || params[k].instance_of?(ActionController::UploadedStringIO) || params[k].instance_of?(ActionController::UploadedTempfile)
           params.delete(k)
         elsif k=='sequence_input'
           sessionfile = File.join(TMP, "sequence_input_"+session.session_id)
