@@ -19,32 +19,32 @@ class Submit
     @wait = true
     @interval = 3
     @sleep = 0
-    @yamlfile = nil 
+    @yamlfile = nil
     @qm = SGE::Manager.new
 
     @commands_stack = []
     @i = 0  # file counter
     @j = 0  # submit counter
   end
-  
+
   def options
     OptionParser.new do |o|
       o.set_summary_indent('  ')
       o.banner = "Usage: #{$0} [options]"
       o.define_head( "Submit a SGE job via the rsge library.")
       o.separator ""
-      
+
       o.on("-c", "--commands COMMANDS", String,
-           "Comma separated string of commands to be executed." ) do |val| 
-        @commands = val 
+           "Comma separated string of commands to be executed." ) do |val|
+        @commands = val
       end
       o.on("-s", "--script SCRIPT", String,
-           "Absolute path to jobscript to be executed." ) do |val| 
-        @script = val 
+           "Absolute path to jobscript to be executed." ) do |val|
+        @script = val
       end
       o.on("-m", "--max JOBS", Integer,
            "Maximal number of concurrent jobs (default: #{@sge_config[:max_jobs]})." ) do |val|
-        @sge_config[:max_jobs] = val 
+        @sge_config[:max_jobs] = val
       end
       o.on("-g", "--glob GLOB", String,
            "Execute job for each file that is matched by the GLOB expression (e.g. *.a3m).",
@@ -53,121 +53,121 @@ class Submit
            "BASENAME will be substituted with the basename of FILENAME.",
            "DIRNAME will be substituted with the directory path of FILENAME.",
            "DIRBASENAME will be substituted with DIRNAME/BASENAME.") do |val|
-        @glob = val 
+        @glob = val
       end
       o.on("-e", "--exclude EXCLUDE_GLOB", String,
-           "Exclude all files whose basename is contained in the basenames of EXCLUDE_GLOB." ) do |val| 
+           "Exclude all files whose basename is contained in the basenames of EXCLUDE_GLOB." ) do |val|
         @exglob = val
       end
       o.on("-r", "--resubmit GLOB", String,
            "Resubmit all job scripts matched by GLOB expresssion (e.g. *.sh).") do |val|
         @resubmit = val
       end
-      o.on("-y", "--yaml-file FILE", "Optional yaml-file with parameters for grid jobs.") do |val| 
-        @yamlfile=val 
+      o.on("-y", "--yaml-file FILE", "Optional yaml-file with parameters for grid jobs.") do |val|
+        @yamlfile=val
       end
       o.on("-q", "--queue QUEUE", String,
-           "Name of queue to which the jobs should be submitted." ) do |val| 
-        @sge_config[:queue] = val 
+           "Name of queue to which the jobs should be submitted." ) do |val|
+        @sge_config[:queue] = val
       end
       o.on("-n", "--name NAME", String,
-           "The name prefix of the job." ) do |val| 
-        @sge_config[:name] = val 
+           "The name prefix of the job." ) do |val|
+        @sge_config[:name] = val
       end
       o.on("-p", "--priority PRIO", Integer,
-           "Defines or redefines the priority of the job relative to other jobs (PRIO is in the range -1023 to 1024)." ) do |val| 
-        @sge_config[:priority] = val 
+           "Defines or redefines the priority of the job relative to other jobs (PRIO is in the range -1023 to 1024)." ) do |val|
+        @sge_config[:priority] = val
       end
       o.on("-l", "--resources RESSOURCE", String,
-           "Launch  the job in a queue meeting the given resource request list (format: name=value,...)." ) do |val| 
-        @sge_config[:ressources] = val 
+           "Launch  the job in a queue meeting the given resource request list (format: name=value,...)." ) do |val|
+        @sge_config[:ressources] = val
       end
       o.on("-a", "--args ARGS", String,
-           "Additional submit arguments to be passed to qsub." ) do |val| 
-        @args = val
+           "Additional submit arguments to be passed to qsub." ) do |val|
+        @sge_config[:args] = val
       end
       o.on("--logfile FILE", String,
-           "The name of the logfile to which job outputs should be written (default: #{@sge_config[:jobs_path]}/NAME.log)." ) do |val| 
-        @sge_config[:logfile] = val 
+           "The name of the logfile to which job outputs should be written (default: #{@sge_config[:jobs_path]}/NAME.log)." ) do |val|
+        @sge_config[:logfile] = val
       end
       o.on("--mult JOBS", Integer,
-           "Merge multiple jobs into a jobscript to speed up glob-jobs with very quick commands (default: #{@mult})." ) do |val| 
-        @mult = val 
+           "Merge multiple jobs into a jobscript to speed up glob-jobs with very quick commands (default: #{@mult})." ) do |val|
+        @mult = val
       end
       o.on("--jobspath JOBSPATH", String,
-           "Path to which job scripts are written (default: #{@sge_config[:jobs_path]})." ) do |val| 
-        @sge_config[:jobs_path] = val 
+           "Path to which job scripts are written (default: #{@sge_config[:jobs_path]})." ) do |val|
+        @sge_config[:jobs_path] = val
       end
       o.on("--sgepath SGEPATH", String,
-           "Path to SGE executables (default: #{@sge_config[:sge_path]})." ) do |val| 
-        @sge_config[:sge_path] = val 
+           "Path to SGE executables (default: #{@sge_config[:sge_path]})." ) do |val|
+        @sge_config[:sge_path] = val
       end
       o.on("--no-sync", FalseClass,
-           "Do not wait for jobs to finish (default: wait for jobs #{@wait ? 'on' : 'off'})." ) do |val| 
+           "Do not wait for jobs to finish (default: wait for jobs #{@wait ? 'on' : 'off'})." ) do |val|
         @wait = false
       end
       o.on("--no-check", FalseClass,
-           "Turn off error checking (default: error checking #{@sge_config[:error_checking] ? 'on' : 'off'})." ) do |val| 
+           "Turn off error checking (default: error checking #{@sge_config[:error_checking] ? 'on' : 'off'})." ) do |val|
         @sge_config[:error_checking] = false
       end
       o.on("--interval INT", Integer,
-           "Update interval for jobs progress table (default: #{@interval} seconds)." ) do |val| 
-        @interval = val 
+           "Update interval for jobs progress table (default: #{@interval} seconds)." ) do |val|
+        @interval = val
       end
       o.on("--sleep INT", Integer,
-           "Sleep after each job submission  (default: #{@sleep} seconds)." ) do |val| 
-        @sleep = val 
+           "Sleep after each job submission  (default: #{@sleep} seconds)." ) do |val|
+        @sleep = val
       end
       o.on("--keep-files", TrueClass,
-           "Keep jobscripts and outfiles (for debugging, default: keep files #{@sge_config[:keep_files] ? 'on' : 'off'})." ) do |val| 
+           "Keep jobscripts and outfiles (for debugging, default: keep files #{@sge_config[:keep_files] ? 'on' : 'off'})." ) do |val|
         @sge_config[:keep_files] = true
       end
       o.on("--quiet", "Turn output off.") { |val| @verbose=false }
       o.on("-h", "--help", "Show this help message.") { puts o; exit }
     end
   end
-  
+
   def run(args=[])
-    options.parse!(args)    
-    if @sge_config[:name].nil? 
-      if @script 
-        @sge_config[:name] = File.basename(@script, '.sh') 
+    options.parse!(args)
+    if @sge_config[:name].nil?
+      if @script
+        @sge_config[:name] = File.basename(@script, '.sh')
       elsif @commands
         cmdscript = @commands.split(/\s+/).first
         ext = cmdscript.include?('.') ? cmdscript[-(cmdscript.size-cmdscript.rindex("."))..-1] : ''
         @sge_config[:name] = File.basename(cmdscript, ext)
       else
-        @sge_config[:name] = 'STDIN' 
+        @sge_config[:name] = 'STDIN'
       end
     end
-    if @sge_config[:logfile].nil? && @glob 
-      @sge_config[:logfile] = "#{@sge_config[:jobs_path]}/#{@sge_config[:name]}.log" 
+    if @sge_config[:logfile].nil? && @glob
+      @sge_config[:logfile] = "#{@sge_config[:jobs_path]}/#{@sge_config[:name]}.log"
     end
     @qm.interval = @interval
     @qm.verbose = @verbose
     @qm.set_config(@sge_config)
-    
+
     if @resubmit
       resubmit_jobs
     else
       process_jobs
     end
     check_for_errors
-    
+
     self
   end
-  
+
   def resubmit_jobs
     Dir.glob(@resubmit) do |filename|
       @qm.resubmit(filename)
       sleep @sleep if @sleep>0
-      @qm.print_progress($stdout) if @wait      
+      @qm.print_progress($stdout) if @wait
     end
     @qm.print_progress($stdout) if @wait
     if @wait
-      @qm.wait 
+      @qm.wait
       @qm.print_summary($stdout)
-    end    
+    end
   end
 
   def process_jobs
@@ -187,18 +187,18 @@ class Submit
       commands = @commands.strip.split(/;|\n/).map {|cmd| cmd.strip }
     else
       # read commands from standard input
-      commands = STDIN.readlines.map {|cmd| cmd.strip }      
+      commands = STDIN.readlines.map {|cmd| cmd.strip }
     end
 
     if @glob
       excl_basenames = @exglob ? Dir.glob(@exglob).map {|f| File.basename(f, f[-(f.size-f.rindex("."))..-1]) } : []
       @i = 0  # file counter
       @j = 0  # submit counter
-      
+
       Dir.glob(@glob) do |filename|
         basename = File.basename(filename, filename[-(filename.size-filename.rindex("."))..-1])
-        
-        unless excl_basenames.include?(basename)          
+
+        unless excl_basenames.include?(basename)
           dirname = File.dirname(filename)
           cmds = commands.dup
           cmds = cmds.map {|cmd| cmd.gsub(/DIRBASENAME/, "#{dirname}/#{basename}") }
@@ -211,7 +211,7 @@ class Submit
           tplvars['filename']    = filename
           tplvars['basename']    = basename
           tplvars['dirname']     = dirname
-          
+
           submit_job(cmds, tplvars)
         end
       end
@@ -227,13 +227,13 @@ class Submit
     end
     @qm.print_progress($stdout) if @wait
     if @wait
-      @qm.wait 
+      @qm.wait
       @qm.print_summary($stdout)
     end
   end
 
   def submit_job(cmds, tplvars={})
-    #load parameters for grid 
+    #load parameters for grid
     if @yamlfile && File.exists?(@yamlfile)
       fh = File.open(@yamlfile, 'r')
       params = YAML::load(ERB.new(fh.read).result(binding))
@@ -241,11 +241,11 @@ class Submit
     else
       params={}
     end
-    
+
     #generate commands for parameter grid
-    cg = SGE::CommandGenerator.new 
+    cg = SGE::CommandGenerator.new
     cg.generate(cmds.join("\n"), tplvars, params)
-    
+
     #submit jobs to queue
     cg.commands.each do |c|
       @i += 1
@@ -268,7 +268,7 @@ class Submit
       exit 1
     end
   end
-  
+
 end
 
 # instantiate script object

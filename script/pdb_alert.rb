@@ -10,6 +10,7 @@ require File.join(File.dirname(__FILE__), '../config/environment')
 #######################################################################################################################################################################
 
 RSUB_PATH = TOOLKIT_ROOT+"/script/rsub"
+RSUB_OPTS = "--logfile #{TMP}/rsub/pdb_alert.log --jobspath #{TMP}/rsub -a '-o #{TMP}/rsub -wd #{TMP}/rsub'"
 PDB_ALERT_TMP = TMP+"/pdbalert"
 HHPRED = BIOPROGS+"/hhpred"
 CAL_DATABASE = DATABASES+"/hhpred/cal.hhm"
@@ -41,9 +42,9 @@ def create_hmm ( subdir,file,params )
   hhm_file = File.join(PDB_ALERT_TMP,'hhm',"#{subdir}:,#{file.gsub(/\.fas/,'.hhm')}")
   if !File.exists?(hhm_file)
     STDOUT.write("\n#{Time.now} - Building Alignment for #{file}.......\n")
-    system("#{QUEUE_SETTINGS}; #{RSUB_PATH} --jobspath /cluster/user/toolkit/jobs --interval 60 -c \"#{HHPRED}/buildali.pl -nodssp -cpu 4 -v 1 -n #{params['maxpsiblastit']} -diff 1000 -e #{params['Epsiblastval']} -cov #{params['cov_min']} -fas #{infile}\"")
+    system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/buildali.pl -nodssp -cpu 4 -v 1 -n #{params['maxpsiblastit']} -diff 1000 -e #{params['Epsiblastval']} -cov #{params['cov_min']} -fas #{infile}\"")
     STDOUT.write("\n#{Time.now} - Creating HHM for #{file}..........\n")
-    system("#{QUEUE_SETTINGS}; #{RSUB_PATH} --jobspath /cluster/user/toolkit/jobs --interval 60 -c \"#{HHPRED}/hhmake -v 1 -cov #{params['cov_min']} -qid #{params['qid_min']} -diff 100 -i #{a3m_file} -o #{hhm_file}\"")
+    system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/hhmake -v 1 -cov #{params['cov_min']} -qid #{params['qid_min']} -diff 100 -i #{a3m_file} -o #{hhm_file}\"")
     system("rm #{a3m_file}")
   end
   hhm_file
@@ -96,9 +97,9 @@ def perform_hhsearch ( hmm_file=nil )
           end
         end
         STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file}......\n")
-        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} --jobspath /cluster/user/toolkit/jobs --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
+        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
         STDOUT.write("\n#{Time.now} - Performing HHsearch for #{hhm_file}......\n")
-        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} --jobspath /cluster/user/toolkit/jobs --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{pdb_database} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
+        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{pdb_database} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
         system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
       end
     end
@@ -402,9 +403,9 @@ def on_hold_sequence_search(on_hold_db=NEW_ON_HOLD_SEQUENCE_DATABASE)
         end
       end
       STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file} for on-hold sequences......\n")
-      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} --jobspath /cluster/user/toolkit/jobs --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
+      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
       STDOUT.write("\n#{Time.now} - Performing HHsearch for #{hhm_file} with on-hold sequence database (#{on_hold_db})......\n")
-      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} --jobspath /cluster/user/toolkit/jobs --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{on_hold_db} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
+      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"#{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{on_hold_db} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
       system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
     end
   end
@@ -509,6 +510,16 @@ end
 #Main function that chooses which kind of operation particular execution requires
 def main
   STDOUT.write("\n#{Time.now} - STARTED - #{ARGV[0]}\n")
+
+  # check TMP directories
+  if !File.exist?(File.join(PDB_ALERT_TMP))
+    Dir.mkdir(File.join(PDB_ALERT_TMP))
+  end
+  if !File.exist?(File.join(TMP, "rsub"))
+    Dir.mkdir(File.join(TMP, "rsub"))
+  end
+
+
   if ARGV[0].nil?
     execute_all
   elsif ARGV[0] == "0"
