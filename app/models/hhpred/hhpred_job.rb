@@ -329,7 +329,7 @@ class HhpredJob  < Job
         end
         if coiled_coil != 0
           @results.push("<div clas=\"row\">\n")
-          url ="#{DOC_ROOTURL}/hhpred/run/jobid?jobaction=hhpred_coils&forward_controller=pcoils&forward_action=forward"
+          url ="#{DOC_ROOTURL}/hhpred/run/#{jobid}?jobaction=hhpred_coils&forward_controller=pcoils&forward_action=forward"
           @results.push("<input type=\"button\" title=\"Run coiled-coil prediction\" value=\"Run PCOILS\" onclick=\"location.href='#{url}'\">\n")
           @results.push("<font color=\"purple\">&nbsp;&nbsp;&nbsp;HHpred has detected hits to coiled coil-containing proteins. Press button to run PCOILS prediction on your query</font>\n")
           @results.push("</div>\n")
