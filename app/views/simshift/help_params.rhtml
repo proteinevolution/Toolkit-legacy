@@ -1,0 +1,66 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input format</a></li>
+	<li><a href="#minblocklen">Minimal Block Length</a></li>
+	<li><a href="#localevaluecut">Local Evalue Cutoff</a></li>
+	<li><a href="#evaluecut">E-Value Cutoff</a></li>
+	<li><a href="#output">Output Format</a></li>
+
+
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3>Input Format</h3> 
+<div class="row">
+Prepare the target shifts in SHIFTX file format (example follows) <br><br>
+
+<pre> NUM RES HA     H      N        CA      CB      C
+  --- --- ------ ------ -------- ------- ------- --------
+    1   M 4.3215 8.3001 120.3496 54.8524 32.2672 172.9036
+    2   A 4.0305 7.9373 120.8557 49.2961 21.7604 171.6772
+    3   V 4.1755 9.5017 123.7657 61.8993 34.5571 173.2111
+    4   E 3.4846 8.4802 127.4171 57.4460 28.7679 178.0909
+    5   E 4.3270 8.8690 131.7955 55.1248 29.1562 173.7310
+    6   V 0.00   8.0282 125.2640 61.9025 32.3034 175.7654
+    7   I 4.0634 8.6714 131.1148 60.8345 37.5008 175.3402
+    8   E 4.8652 8.6917 127.9383 55.1060 29.8975 175.5015</pre>
+
+<table>
+<tr><td width ="120" valign="top" align="right">*</td><td width = "300">There have to be two header lines, followed by the lines describing the
+    chemical shift values. If a chemical shift value is not available, please 
+    set the value to 0.00, as it is done for the HA shift of residue number 6 
+    in the example.</td></tr>
+<tr><td align="right" valign="top">*</td><td>The second section of the standard SHIFTX file (describing shift for 
+    various side chain hydrogens) does not have to be included.</td></tr>
+
+<tr><td valign="top" align="left">TAKE CARE:</td><td> Only three shift values in each line are used for the alignment 
+             calculation. If more than three shift values are available, the 
+             first three available values are selected acoording to the 
+             following atom ranking: CA(1)-CB(2)-C(3)-N(4)-HA(5)-H(6).
+             If you want to make sure that a certain set of shifts is used for
+             the alignment caculation, set the others to 0.00. (for example
+             if you want to calculate the alignments based on HA, H and CA 
+             shifts, then you have to set CB, C and N to 0.00.)</td></tr>
+<tr height="50"><td></td><td></td></tr>
+</div></table>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="minblocklen"></a>
+<h3> Minimal Block Length </h3>
+<div>A SimShiftDB alignments is composed of (possibly) multiple ungapped alignments (called blocks). This parameter\
+s sets the minimal length such an alignment has to achieve not to be discarded. Raising this parameter result in a faster run, whereas lowering this parameter increases sensitivity.
+
+<a name="localevaluecut"> </a>
+<h3> Local Evalue Cutoff</h3>
+E-Value Cutoff for local alignments from the first step of the algorithms.
+
+<a name="evaluecut"></a>
+<h3>E-Value Cutoff</h3>
+Defines the E-Value an alignment has to achieve to be included in the output file.
+
+<a name="output"></a>
+<h3>Output Format</h3>
+Residue Output:  SimShift standard output <br>
+Full Alignment Output: This is not the alignment output decribed here but a straightforward fasta-like global alignment output.
+</div>
