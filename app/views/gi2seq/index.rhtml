@@ -1,3 +1,4 @@
+
 <a href="#" onClick="openHelpWindow('/gi2seq/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
 
 <%= form_tag({:action => :run, :job => 'gi2seq'}, {:multipart => true})%> 
@@ -17,6 +18,9 @@
 </div>
 
 <div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/protein_dbs") %>
+
 
 <h3 class="<%= @section["name"] %>">Options</h3>
 

@@ -17,8 +17,17 @@ module Toolkit
           
           validates_each(attr_names, configuration) do | record, attr, value |
             file = configuration[:input_file]
+            
+          #  if !(value.nil?)
+          #   if  value.is_a?(StringIO)
+          #      value = value.string
+           #  elsif  value.is_a?(File)
+            #   file = File.open(value,'r')
+             #  value =  file.readlines.join
+            # end
+           # end
             if (file.nil?)
-              if ((value.nil? || (value.strip).empty?) && !configuration[:allow_nil])
+              if ((value.nil? || (value.strip).empty? ) && !configuration[:allow_nil])
                 record.errors.add(attr, "You must specify an input source!")
               end
             else

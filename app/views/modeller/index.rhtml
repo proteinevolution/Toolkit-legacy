@@ -36,6 +36,20 @@
 
 <h3 class="<%= @section["name"] %>">Options</h3>
 
+
+<div class="row">
+        <%= form_label("Enter own alignment identifier") %>  
+        <%= form_text_field('own_pdb_name','', '(must be the identifier from the alignment above!)', '10') %>  
+
+</div> 
+
+
+<div class="row">
+        <%= form_label("upload PDB file") %>
+        <%= form_file("own_pdb_file") %>
+</div>
+
+
 <% if @internal %>
 
 	<%= hidden_field_tag("modeller_key", "internal") %>

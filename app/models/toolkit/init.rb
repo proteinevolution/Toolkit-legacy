@@ -10,20 +10,18 @@ require 'toolkit/pbs_worker'
 require 'toolkit/jobs_cart'
 
 # Validators
-Dir.foreach("#{RAILS_ROOT}/app/models/validators") do |file| 
-	if (!file.sub!(/\.rb$/, '').nil?)
-		require "validators/#{file}"
-	end
+Dir.foreach("#{RAILS_ROOT}/app/models/validators") do |file|
+  if (!file.sub!(/\.rb$/, '').nil?)
+    require "validators/#{file}"
+  end
 end
 
-
 # the lowerthe value the higher priority of a state
-# running state overrides done 
-
+# running state overrides done
 STATUS_CMP = {
   STATUS_INIT    => 4,
-  STATUS_QUEUED  => 3, 
-  STATUS_RUNNING => 2, 
-  STATUS_DONE    => 5, 
+  STATUS_QUEUED  => 3,
+  STATUS_RUNNING => 2,
+  STATUS_DONE    => 5,
   STATUS_ERROR   => 1
 };

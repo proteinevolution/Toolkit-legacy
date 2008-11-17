@@ -108,8 +108,8 @@ class HhpredAction < Action
     end
     
     # Replace pdb70_* with new version of pdb 
-    newpdb = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pdb*_*'))[0]
-    @dbs.gsub!(/\S*pdb\d+_\S+/, newpdb)
+    newpdb = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pdb70_*'))[0]
+    @dbs.gsub!(/\S*pdb70_\S+/, newpdb)
 
     @dbs = @dbs.split(' ')
     @dbs = @dbs.uniq.join(' ')

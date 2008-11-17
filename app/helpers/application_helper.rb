@@ -61,7 +61,11 @@ module ApplicationHelper
   def form_hidden_field(name, value=nil, options={})
     value = params[name] ? params[name] : value
     value = @error_params[name] ? @error_params[name] : value
-    hidden_field_tag(name, value, options)
+    ret = ""
+    if !@errors[name].nil?
+      ret = "<p class='formerror'>#{@errors[name]}</p>\n"
+    end
+    ret = ret << hidden_field_tag(name, value, options)
   end
 
 
