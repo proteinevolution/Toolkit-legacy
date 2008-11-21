@@ -3,7 +3,7 @@ class ModellerAction < Action
   MODEL_QUALITY = File.join(BIOPROGS, 'model-quality')
   MOD_BIN = File.join(BIOPROGS, 'modeller', 'bin', 'modeller')
 
-  attr_accessor :informat, :sequence_input, :sequence_file, :modeller_key, :jobid, :mail
+  attr_accessor :informat, :sequence_input, :sequence_file, :modeller_key, :jobid, :mail , :own_pdb_name , :own_pdb_file
 
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
                                                     :informat => 'fas', 
@@ -26,7 +26,9 @@ class ModellerAction < Action
     @basename = File.join(job.job_dir, job.jobid)
     @seqfile = @basename + ".prepare"
     @infile = @basename + ".in"
+    @ownpdbfile = File.join(job.job_dir, "#{params['own_pdb_name']}.pdb")
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
+    params_to_file(@ownpdbfile, 'own_pdb_file')
     @commands = []
     
     @format = params["informat"].nil? ? 'fas' : params["informat"]
@@ -60,7 +62,7 @@ class ModellerAction < Action
         reformat(@format, "fas", @seqfile)			
       
         # convert alignment in fasta-format
-        command = "#{MODELLER}/pir_converter.pl -i #{@seqfile} -o #{@infile} -fas"
+        command = "#{MODELLER}/pir_converter.pl -i #{@seqfile} -o #{@infile} -fas -tmp #{job.job_dir}"
         logger.debug "Command: #{command}"
         system(command)
         

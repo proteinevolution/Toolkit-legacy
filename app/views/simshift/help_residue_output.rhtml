@@ -1,0 +1,26 @@
+<h2><%= @tool['title'] %> Residue Output</h2>
+<div class="row">
+  
+  The ouput file format is explained using the following example:<br><br>
+  
+  <pre>Query: d1qqia_
+    d1qqia_1.972578e-134((1-M:1-M)(2-A:2-A)(3-V:3-V)(4-E:4-E)(5-E:5-E))
+    d1gxpa_1.094112e-068((2-A:127A-A)(3-V:128-V)(4-E:129-E)(5-E:130-E))
+    d1opc__8.787990e-014((14-L:145-L)(15-D:146-N)(16-P:147-L))
+    d1odd__4.199383e-013((14-L:145-L)(15-D:146-N)(16-P:147-L)(17-T:148-G))
+    |             |           |    |
+    Template      E-Value     Query Residue Number-Query Residue  
+    Structure                      |
+    Template Residue Number-Template Residue
+  </pre><br><br>
+  - The first line of the output file format shows the query file name <br>
+  <table><tr><td width="120" valign="top">- TAKE CARE:</td><td width="300"> Residue numbers of the target are give as defined in the
+        target.shiftx file.
+        Residue numbers of the templates are PDB residue numbers
+        including insertion codes (see first pair of d1gxpa_ for
+        an example).</td></tr></table>
+  
+  
+  
+</div>
+
