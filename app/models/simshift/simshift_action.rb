@@ -45,18 +45,16 @@ class SimshiftAction < Action
   def perform
      params_dump
     if @fullA == 'T' 
-      @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/load_remove_matrix_shm"
+      @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/load_remove_matrix_shm -load matrix_scop_dmaps_90.bin"
       @commands << "cd #{SIMSHIFT};  #{SIMSHIFT}/SimShiftDB_Server -M #{@blocklen} -e #{@localecut} -E #{@ecut} -O #{@outfileA} #{@infile} #{@db_path}"
       @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/simviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db_path}.fas &> /dev/null"
       @commands << "cd #{SIMSHIFT};  #{SIMSHIFT}/SimShiftDB_Server -M #{@blocklen} -e #{@localecut} -E #{@ecut} -F  -O #{@outfileB}  #{@infile} #{@db_path}"
-      @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/load_remove_matrix_shm"
-
+      
     else
-      @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/load_remove_matrix_shm"
+      @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/load_remove_matrix_shm -load matrix_scop_dmaps_90.bin"
       @commands << "cd #{SIMSHIFT};  #{SIMSHIFT}/SimShiftDB_Server -M #{@blocklen} -e #{@localecut} -E #{@ecut} -O #{@outfileA} #{@infile} #{@db_path}"
       @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/simviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db_path}.fas &> /dev/null"
-      @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/load_remove_matrix_shm"
-
+      
     end
        
     logger.debug("Commands:\n"+@commands.join("\n"))
