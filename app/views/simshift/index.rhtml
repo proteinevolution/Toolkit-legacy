@@ -1,7 +1,7 @@
 <a href="#" onClick="openHelpWindow('/simshift/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
 
 <h2><%= @page_title %></h2>
-
+<%= DATABASES %>
 <%= form_tag({:action => :run, :job => 'simshift'}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 
