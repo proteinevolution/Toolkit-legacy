@@ -1,5 +1,7 @@
 log
 tmp
 bioprogs
+databases
 config/database.yml
 config/local_environment.rb
+public/favicon.ico
