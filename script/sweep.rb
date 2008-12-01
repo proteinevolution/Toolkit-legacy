@@ -63,8 +63,13 @@ jobs.each do |job|
   end
   if( (NOW-job[:updated_on]) > TWOMONTHS )
     user = User.find(:first, :conditions=>"id='#{job[:user_id]}'")
-    logger.debug("Deleting job(id='#{job[:id]}') - older than 2 months and owned by user: #{user.login}")
-    puts "Deleting job(id='#{job[:id]}') - older than 2 months and owned by user: #{user.login}"		
+    if (user.nil?) 
+      logger.debug("Deleting job(id='#{job[:id]}') - older than 2 months and owned by user which no longer exists")
+      puts "Deleting job(id='#{job[:id]}') - older than 2 months and owned by user which no longer exists"		
+    else
+      logger.debug("Deleting job(id='#{job[:id]}') - older than 2 months and owned by user: #{user.login}")
+      puts "Deleting job(id='#{job[:id]}') - older than 2 months and owned by user: #{user.login}"		
+    end
     delete_job(job, logger)
   end	
 end
