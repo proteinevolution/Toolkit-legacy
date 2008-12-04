@@ -361,3 +361,11 @@
   - member
   - internal
   - external
+- name: ancient_dict
+  title: AncientDict
+  title_long: Ancient Dictionary
+  section: classification
+  active:
+  - member
+  - internal
+  - external
