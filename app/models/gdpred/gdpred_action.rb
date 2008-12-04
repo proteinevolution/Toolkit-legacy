@@ -1,10 +1,10 @@
 class GdpredAction < Action
-GDPRED = File.join(BIOPROGS, 'gdpred')
-BLAST  = File.join(BIOPROGS, 'blast')
-PSIPRED = File.join(BIOPROGS, 'psipred')
-PSIPRED_BIN = File.join(PSIPRED, 'bin')
-PSIPRED_DATA =  File.join(PSIPRED, 'data')
-STANDARD_DB = File.join(DATABASES, 'standard')
+  GDPRED = File.join(BIOPROGS, 'gdpred')
+  BLAST  = File.join(BIOPROGS, 'blast')
+  PSIPRED = File.join(BIOPROGS, 'psipred')
+  PSIPRED_BIN = File.join(PSIPRED, 'bin')
+  PSIPRED_DATA =  File.join(PSIPRED, 'data')
+  STANDARD_DB = File.join(DATABASES, 'standard')
 
 
   attr_accessor :sequence_input, :sequence_file, :jobid, :mail
@@ -39,6 +39,7 @@ STANDARD_DB = File.join(DATABASES, 'standard')
     mem = {}
     mem['basename']     = @basename
     mem['psipredfile']  = @basename+".horiz"
+    mem['gdpredfile']   = @outfile
     mem['queryfile']    = @infile
     mem['outfile']      = @outfile
     self.flash = mem
