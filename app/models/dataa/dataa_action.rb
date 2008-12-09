@@ -28,7 +28,7 @@ class DataaAction < Action
 	def perform
 		params_dump
 		
-		@commands << "#{BAD}/do_search.pl -i #{@infile} -td #{job.job_dir} -id #{job.jobid} -lp '#{job.url_for_job_dir}' -fg #{@fragcheck} 1> #{@outfile} 2> #{job.statuslog_path}"
+		@commands << "#{BAD}/do_search.pl -i #{@infile} -td #{job.job_dir} -id #{job.jobid} -lp '#{job.url_for_job_dir}' BIOPROGS_DIR = #{BIOPROGS} -fg #{@fragcheck} 1> #{@outfile} 2> #{job.statuslog_path}"
     
 		logger.debug "Commands:\n"+@commands.join("\n")
 		queue.submit(@commands)
