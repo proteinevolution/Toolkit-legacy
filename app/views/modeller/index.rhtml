@@ -37,17 +37,74 @@
 <h3 class="<%= @section["name"] %>">Options</h3>
 
 
+
+<!-- ####################################### -->
+<div class="row">
+  <%= form_hidden_field("sequence1","") %>
+</div>
 <div class="row">
         <%= form_label("Enter own alignment identifier") %>  
-        <%= form_text_field('own_pdb_name','', '(must be the identifier from the alignment above!)', '10') %>  
-
+        <%= form_text_field('own_pdb_name1','', '(must be the identifier from the alignment above!)', '10') %>  
 </div> 
-
-
 <div class="row">
-        <%= form_label("upload PDB file") %>
-        <%= form_file("own_pdb_file") %>
+        <%= form_label("upload PDB files") %>
+        <%= form_file("own_pdb_file1") %>
 </div>
+
+<!-- ####################################### -->
+<div class="row">
+  <%= form_hidden_field("sequence2","") %>
+</div>
+<div class="row">
+        <%= form_label("") %>
+        <%= form_text_field('own_pdb_name2','', '', '10') %>
+</div>
+<div class="row">
+     <%= form_label("") %>
+        <%= form_file("own_pdb_file2") %>
+</div>
+
+<!-- ####################################### -->
+<div class="row">
+  <%= form_hidden_field("sequence3","") %>
+</div>
+<div class="row">
+        <%= form_label("") %>
+        <%= form_text_field('own_pdb_name3','', '', '10') %>
+</div>
+<div class="row">
+     <%= form_label("") %>
+        <%= form_file("own_pdb_file3") %>
+</div>
+
+
+<!-- ####################################### -->
+<div class="row">
+  <%= form_hidden_field("sequence4","") %>
+</div>
+<div class="row">
+        <%= form_label("") %>
+        <%= form_text_field('own_pdb_name4','', '', '10') %>
+</div>
+<div class="row">
+     <%= form_label("") %>
+        <%= form_file("own_pdb_file4") %>
+</div>
+
+
+<!-- ####################################### -->
+<div class="row">
+  <%= form_hidden_field("sequence5","") %>
+</div>
+<div class="row">
+        <%= form_label("") %>
+        <%= form_text_field('own_pdb_name5','', '', '10') %>
+</div>
+<div class="row">
+     <%= form_label("") %>
+        <%= form_file("own_pdb_file5") %>
+</div>
+
 
 
 <% if @internal %>
