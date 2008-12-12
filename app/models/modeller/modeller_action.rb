@@ -28,7 +28,8 @@ class ModellerAction < Action
   
   validates_shell_params(:jobid, :mail, {:on => :create})
   
-  validates_modeller_option( :sequence1, :own_pdb_file1)
+  validates_modeller_option( :own_pdb_name1, :own_pdb_file1)
+#  validates_modeller_option( :sequence1, {:pdb_file => :own_pdb_file1 ,:allow_nil => false})
   # Put action initialisation code in here
   def before_perform
     
