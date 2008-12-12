@@ -16,8 +16,8 @@ class ModellerAction < Action
   validates_input( :sequence1  , :own_pdb_file1, {:informat => 'pdb'})
   validates_input( :sequence2  , :own_pdb_file2, {:informat => 'pdb'})
   validates_input( :sequence3  , :own_pdb_file3, {:informat => 'pdb'})
-  validates_input( :sequence4  , :own_pdb_file4, {:informat => 'pdb'})
-  validates_input( :sequence5  , :own_pdb_file5, {:informat => 'pdb'})
+#  validates_input( :sequence4  , :own_pdb_file4, {:informat => 'pdb'})
+ # validates_input( :sequence5  , :own_pdb_file5, {:informat => 'pdb'})
 
 
   validates_jobid(:jobid)
@@ -28,6 +28,7 @@ class ModellerAction < Action
   
   validates_shell_params(:jobid, :mail, {:on => :create})
   
+  validates_modeller_option( :sequence1, :own_pdb_file1)
   # Put action initialisation code in here
   def before_perform
     

@@ -148,7 +148,7 @@ module Toolkit
             
             when "pdb"
               logger.debug "##### PDB"
-               validates_pdb(attr_names, {:on => :create})
+              validates_pdb(attr_names, {:on => :create})
             else
               logger.debug "##### Wrong format!"
             end

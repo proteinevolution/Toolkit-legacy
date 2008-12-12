@@ -11,7 +11,7 @@ module Toolkit
       
       module ClassMethods
         def validates_pdb (*attr_names)
-          configuration = { :max_length => 50000,
+          configuration = { :max_length => 5000000,
             :white_list => "()=_ABUCZDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwyzxbuX.,:;1234567890- ",
             :on => :create,
             :message => "Input data is not in PDB-format!"}
@@ -22,6 +22,7 @@ module Toolkit
           
           validates_each(attr_names, configuration) do | record, attr, value |
             # Upload file or input field?
+          
             if (value.nil?) then  next end
             if (attr.to_s.include?('_file'))
               if value.instance_of?(ActionController::UploadedStringIO) || value.instance_of?(Tempfile) || value.instance_of?(ActionController::UploadedTempfile)
@@ -91,5 +92,5 @@ module Toolkit
 end
 
 ActiveRecord::Base.class_eval do
-              include Toolkit::Validations::ValidatesShiftX
+              include Toolkit::Validations::ValidatesPDB
 end
