@@ -112,13 +112,17 @@ class ModellerAction < Action
     
     # get knowns
     knowns = ""
+    knowns_h = Hash.new
     lines = IO.readlines(@infile)
     lines.each do |line|
       line.scan(/^structureX:(.*?):/) do |name|
-        if (knowns == "")
-          knowns = "'#{name}'"
-        else
-          knowns += ", '#{name}'"
+        if (!knowns_h.has_key?(name))     
+          if (knowns == "")
+            knowns = "'#{name}'"
+          else
+            knowns += ", '#{name}'"
+          end
+	  knowns_h[name] = 1
         end
       end
     end
