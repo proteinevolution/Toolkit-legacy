@@ -3,12 +3,12 @@ pcoils_job:
   hidden: false
   code: COIL
   resultsections:
+    - name: results
+      title: Results
+      title_long: Show results
+      forwardsections:
     - name: results_numerical
       title: Numerical Results
-      title_long: Show numerical result
-      forwardsections:
-    - name: results
-      title: Graphical Results
-      title_long: Show graphical results
+      title_long: Show numerical results
       forwardsections:
 
