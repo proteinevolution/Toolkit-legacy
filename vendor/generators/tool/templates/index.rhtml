@@ -3,7 +3,7 @@
 <h2><%%= @page_title %></h2>
 
 <%%= form_tag({:action => :run, :job => '<%= job_name.underscore %>'}, {:multipart => true})%> 
-<h3>Input</h3>
+<h3 class="<%%= @section["name"] %>">Input</h3>
 <div class="row">
 	<%%= form_label("Paste input sequence", "input") %>
 	<%%= form_text_area("sequence_input") %>
@@ -15,7 +15,7 @@
 
 <div class="spacer">&nbsp;</div>
 
-<h3>Options</h3>
+<h3 class="<%%= @section["name"] %>">Options</h3>
 
 <div class="spacer">&nbsp;</div>
 
@@ -25,4 +25,4 @@
 	<%%= form_submit_buttons %>
 </div>
 
-<%%= end_form_tag %>
+</form>

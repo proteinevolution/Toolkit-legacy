@@ -1,0 +1,9 @@
+gdpred_job: 
+  title: GDpred
+  hidden: false
+  code: GDPR
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:

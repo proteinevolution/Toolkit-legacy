@@ -1,19 +1,36 @@
-<a href="#" onClick="openHelpWindow('/dataa/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><% if @id.empty? %>
-
 <h2><%= @page_title %></h2>
 
 <%= render(:partial => "links") %>
 
-<% else %>
+<%= form_tag({:action => :run, :job => 'dataa'}, {:multipart => true})%> 
 
-<%= render(:partial => "dataajobspecs", :locals => {:title_extra => 'main page'}) %>
-  
-<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+<p style="font-size:12px; font-weight:bold;">Annotate your sequence:</p>
+<br/>
 
-<% end %>
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter ONE sequence in fasta format", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+<div class="row">
+        <%= form_label("This is a fragment. Do not check for presence of the membrane anchor.", "disc") %>
+        <%= form_checkbox("disc", '1', false) %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
 
 <div class="row">
-
-<%= @ret %>
-
+	<%= form_submit_buttons %>
 </div>
+
+</form>
