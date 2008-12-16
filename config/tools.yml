@@ -358,6 +358,4 @@
   title_long: GDpred
   section: secstruct
   active: 
-  - member
   - internal
-  - external
