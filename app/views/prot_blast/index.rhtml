@@ -1,6 +1,6 @@
 <a href="#" onClick="openHelpWindow('/prot_blast/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>  <h2><%= @page_title %></h2>
 
-  <%= form_tag({:action => :run, :job => 'prot_blast', :parent => @parent_job}, {:id => 'form', :multipart => true})%> 
+  <%= form_tag({:action => :run, :job => 'prot_blast', :parent => @parent_job}, {:id => 'form', :multipart => true})%>
 
   <h3 class="<%= @section["name"] %>">Input</h3>
 
@@ -14,30 +14,30 @@
   </div>
   <div class="row">
     <%= form_label("Select program", "program") %>
-    <%= form_select_single("program", %w(blastpgp blastx), %w(blastpgp blastx), 'blastpgp') %>	
+    <%= form_select_single("program", %w(blastpgp blastx), %w(blastpgp blastx), 'blastpgp') %>
   </div>
   <div class="spacer">&nbsp;</div>
 
   <%= render(:partial => "shared/protein_dbs") %>
 
   <h3 class="<%= @section["name"] %>">Search Options</h3>
- 
+
   <div class="row">
     <%= form_label("Matrix", "matrix") %>
-    <%= form_select_single("matrix", @matrices, @matrices, @matrices.find(@matrices.first) {|m| m =~ /62/}) %>	
+    <%= form_select_single("matrix", @matrices, @matrices, @matrices.find(@matrices.first) {|m| m =~ /62/}) %>
   </div>
 
   <div class="row">
     <%= form_label("E-Value", "evalue") %>
-    <%= form_text_field("evalue", '10') %>	
+    <%= form_text_field("evalue", '10') %>
   </div>
   <div class="row">
     <%= form_label("Filter for low complexety regions", "filter") %>
-    <%= form_checkbox("filter", '1', false) %>	
+    <%= form_checkbox("filter", '1', false) %>
   </div>
   <div class="row">
     <%= form_label("Perform ungapped alignment") %>
-    <%= form_checkbox("ungappedalign", '1', false) %>	
+    <%= form_checkbox("ungappedalign", '1', false) %>
   </div>
   <div class="row">
     <%= form_label("Descriptions", "descriptions") %>
@@ -62,6 +62,6 @@
 
 <div class="hr">&nbsp;</div>
 <div class="row">
-	Altschul, S., Gish, W., Miller, W., Meyers, E., and Lipman, D. (1990) Basic Local Alignment 
-  </form>	Search Tool. <em>Journal of Molecular Biology</em>, <strong>215</strong>(3), 403-410.
+        Altschul, S., Gish, W., Miller, W., Meyers, E., and Lipman, D. (1990) Basic Local Alignment
+        Search Tool. <em>Journal of Molecular Biology</em>, <strong>215</strong>(3), 403-410.
 </div>
