@@ -42,10 +42,14 @@
   <%= form_label("Max. iterations", "maxit") %>
   <%= form_select_single("maxit", @maxit, @maxit, '1') %>	
 </div>
+
 <div class="row">
-  <%= form_label("Alignment mode", "alignmode") %>
-  <%= form_radio_buttons("alignmode", ['local', 'global'], ['local', 'global'], "local", "&nbsp;") %>	
+<%#  <%= form_label("Alignment mode", "alignmode") %>
+<%#  <%= form_radio_buttons("alignmode", ['local', 'global'], ['local', 'global'], "local", "&nbsp;") %>
+<%= form_hidden_field("alignmode", "local") %>
 </div>
+
+
 <div class="row">
   <%= form_label("Realign with MAC", "realign") %>
   <%= form_checkbox("realign", '1', true) %>	
