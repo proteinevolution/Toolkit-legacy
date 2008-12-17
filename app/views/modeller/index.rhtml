@@ -43,7 +43,7 @@
   <%= form_hidden_field("sequence1","") %>
 </div>
 <div class="row">
-        <%= form_label("Enter own alignment identifier") %>  
+        <%= form_label("Enter own alignment identifier","up_pdb") %>  
         <%= form_text_field('own_pdb_name1','', '(must be the identifier from the alignment above!)', '10') %>  
 </div> 
 <div class="row">
@@ -51,64 +51,92 @@
         <%= form_file("own_pdb_file1") %>
 </div>
 <div class = "row">
- <input class="checkbutton" id="pdb_btn" type="button" value="More Uploads" onclick="javascript: toggle_upload_pdbs(); ">
-<a href="#" onClick="javascript: toggle_upload_pdbs();">More Uploads.</a>
+ <input class="checkbutton" id="pdb_btn1" type="button" value="More uploads" onclick="javascript: toggle_upload_pdbs(pdb_btn1,pdb1); "> Add additional upload possibilities
 
-</div>
 
-<!-- ####################################### -->
-<div class="row">
-  <%= form_hidden_field("sequence2","") %>
-</div>
-<div class="row">
+
+<div style="display:none;" id="pdb1">
+     
+     <!-- ####################################### -->
+     <div  class="row">
+     <%= form_hidden_field("sequence2","") %>
+     </div>
+     <div class="row">
         <%= form_label("") %>
         <%= form_text_field('own_pdb_name2','', '', '10') %>
-</div>
-<div class="row">
+	</div>
+     <div class="row">
      <%= form_label("") %>
         <%= form_file("own_pdb_file2") %>
-</div>
+     </div>
+      <div class = "row">
+      <input class="checkbutton" id="pdb_btn2" type="button" value="More uploads" onclick="javascript: toggle_upload_pdbs(pdb_btn2,pdb2); ">
+      </div>
 
-<!-- ####################################### -->
-<div class="row">
-  <%= form_hidden_field("sequence3","") %>
-</div>
-<div class="row">
+
+
+<div style="display:none;" id="pdb2">
+
+     <!-- ####################################### -->
+     <div class="row">
+     <%= form_hidden_field("sequence3","") %>
+     </div>
+     <div class="row">
         <%= form_label("") %>
         <%= form_text_field('own_pdb_name3','', '', '10') %>
-</div>
-<div class="row">
+     </div>
+     <div class="row">
      <%= form_label("") %>
         <%= form_file("own_pdb_file3") %>
-</div>
+     </div>
+     <div class = "row">
+      <input class="checkbutton" id="pdb_btn3" type="button" value="More uploads" onclick="javascript: toggle_upload_pdbs(pdb_btn3,pdb3); ">
+      </div>
+
+<div style="display:none;" id="pdb3">
 
 
-<!-- ####################################### -->
-<div class="row">
-  <%= form_hidden_field("sequence4","") %>
-</div>
-<div class="row">
+     <!-- ####################################### --> 
+     <div class="row">
+     <%= form_hidden_field("sequence4","") %>
+     </div>
+     <div class="row">
         <%= form_label("") %>
         <%= form_text_field('own_pdb_name4','', '', '10') %>
-</div>
-<div class="row">
+     </div>
+     <div class="row">
      <%= form_label("") %>
         <%= form_file("own_pdb_file4") %>
-</div>
+     </div>
+      <div class = "row">
+      <input class="checkbutton" id="pdb_btn4" type="button" value="More uploads" onclick="javascript: toggle_upload_pdbs(pdb_btn4,pdb4); ">
+      </div>
 
+<div style="display:none;" id="pdb4">
 
-<!-- ####################################### -->
-<div class="row">
-  <%= form_hidden_field("sequence5","") %>
-</div>
-<div class="row">
+     <!-- ####################################### -->
+     <div class="row">
+     <%= form_hidden_field("sequence5","") %>
+     </div>
+     <div class="row">
         <%= form_label("") %>
         <%= form_text_field('own_pdb_name5','', '', '10') %>
-</div>
-<div class="row">
-     <%= form_label("") %>
+     </div>
+     <div class="row">
+      <%= form_label("") %>
         <%= form_file("own_pdb_file5") %>
+     </div>
 </div>
+</div>
+</div>
+</div>
+     <div class = "row">
+
+
+
+     </div>
+
+
 
 
 
