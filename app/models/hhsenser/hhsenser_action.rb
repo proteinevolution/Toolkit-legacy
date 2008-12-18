@@ -89,7 +89,7 @@ class HhsenserAction < Action
     @commands << "#{HH}/reformat.pl fas clu #{@basename}_permissive_masterslave.reduced.fas #{@basename}_permissive_masterslave.reduced.clu -v #{@v} &> #{job.statuslog_path}_reform"
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'queue' => 'toolkit_long'})    
+    queue.submit(@commands, true, {'queue' => :long})    
   end
 
   def run_screening

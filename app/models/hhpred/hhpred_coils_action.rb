@@ -18,7 +18,7 @@ class HhpredCoilsAction < Action
 		@commands << "#{HH}/reformat.pl a3m fas #{@prepfile} #{@outfile} -r -noss &> /dev/null"
 		
 		logger.debug "Commands:\n"+@commands.join("\n")
-    	queue.submit(@commands, true, {'queue' => 'toolkit_immediate'})	
+    	queue.submit(@commands, true, {'queue' => :immediate})	
   	end
   
   	def forward_params

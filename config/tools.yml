@@ -1,355 +1,361 @@
 --- 
 - name: hhpred
-  section: search
   title: HHpred
   title_long: HHpred - Homology detection & structure prediction by HMM-HMM comparison
+  section: search
   active: 
   - member
   - internal
   - external
 - name: prot_blast
-  section: search
   title: ProtBLAST
   title_long: Protein BLAST
+  section: search
   active: 
   - member
   - internal
   - external
 - name: modeller
-  section: tertstruct
   title: Modeller
   title_long: Modeller
+  section: tertstruct
   active: 
   - member
   - internal
   - external
 - name: hhrep
-  section: seqanal
   title: HHrep
   title_long: HHrep - de novo protein repeat detection by HMM-HMM comparison
+  section: seqanal
   active: 
   - member
   - internal
   - external
 - name: hhsenser
-  section: search
   title: HHsenser
   title_long: HHsenser - exhaustive intermediate profile search using HMM-HMM comparison
+  section: search
   active: 
   - member
   - internal
   - external
 - name: psi_blast
-  section: search
   title: PSI-BLAST
   title_long: PSI-BLAST
+  section: search
   active: 
   - member
   - internal
   - external
 - name: reformat
-  section: utils
   title: Reformat
   title_long: Reformat
+  section: utils
   active: 
   - member
   - internal
   - external
 - name: sixframe
-  section: utils
   title: 6FrameTranslation
   title_long: 6 Frame Translation
+  section: utils
   active: 
   - member
   - internal
   - external
 - name: seq2gi
-  section: utils
   title: Extract GIs
   title_long: Extract GIs
+  section: utils
   active: 
   - member
   - internal
   - external
 - name: quick2_d
-  section: secstruct
   title: Quick2D
   title_long: Quick2D
+  section: secstruct
   active: 
   - member
   - internal
   - external
 - name: clustalw
-  section: alignment
   title: ClustalW
   title_long: ClustalW
+  section: alignment
   active: 
   - member
   - internal
   - external
 - name: muscle
-  section: alignment
   title: MUSCLE
   title_long: MUSCLE
+  section: alignment
   active: 
   - member
   - internal
   - external
 - name: probcons
-  section: alignment
   title: ProbCons
   title_long: ProbCons
+  section: alignment
   active: 
   - member
   - internal
   - external
 - name: mafft
-  section: alignment
   title: MAFFT
   title_long: MAFFT
+  section: alignment
   active: 
   - member
   - internal
   - external
 - name: blammer
-  section: alignment
   title: Blammer
   title_long: Blammer
+  section: alignment
   active: 
   - member
   - internal
   - external
 - name: hhalign
-  section: alignment
   title: HHalign
   title_long: HHalign
+  section: alignment
   active: 
   - member
   - internal
   - external
 - name: nuc_blast
-  section: search
   title: NucBLAST
   title_long: Nucleotide BLAST
+  section: search
   active: 
   - member
   - internal
   - external
 - name: patsearch
-  section: search
   title: PatternSearch
   title_long: Pattern Search
+  section: search
   active: 
   - member
   - internal
   - external
 - name: fast_hmmer
-  section: search
   title: FHMMER
   title_long: FastHMMER
+  section: search
   active: 
   - member
   - internal
   - external
 - name: ancescon
-  section: classification
   title: ANCESCON
   title_long: ANCESCON
+  section: classification
   active: 
   - member
   - internal
   - external
 - name: clans
-  section: classification
   title: CLANS
   title_long: CLANS
+  section: classification
   active: 
   - member
   - internal
   - external
 - name: hhcluster
-  section: classification
   title: HHcluster
   title_long: HHcluster - Galaxy of Folds
+  section: classification
   active: 
   - mpi
   - internal
 - name: kalign
-  section: alignment
   title: Kalign
   title_long: Kalign
+  section: alignment
   active: 
   - member
   - internal
   - external
 - name: phylip
-  section: classification
   title: PHYLIP-NEIGHBOR
   title_long: PHYLIP-NEIGHBOR
+  section: classification
   active: 
   - member
   - internal
   - external
 - name: alnviz
-  section: alignment
   title: AlignmentViewer
   title_long: Alignment Viewer
+  section: alignment
   active: 
   - member
   - internal
   - external
 - name: aln2plot
-  section: seqanal
   title: Aln2Plot
   title_long: Aln2Plot
+  section: seqanal
   active: 
   - member
   - internal
   - external
 - name: frpred
-  section: seqanal
   title: FRpred
   title_long: FRpred
+  section: seqanal
   active: 
   - member
   - internal
   - external
 - name: tprpred
-  section: seqanal
   title: TPRpred
   title_long: TPRpred
+  section: seqanal
   active: 
   - member
   - internal
   - external
 - name: pcoils
-  section: seqanal
   title: PCOILS
   title_long: PCOILS
+  section: seqanal
   active: 
   - member
   - internal
   - external
 - name: repper
-  section: seqanal
   title: REPPER
   title_long: REPPER - Detecting regions with short gapless REPeats in protein sequences
+  section: seqanal
   active: 
   - member
   - internal
   - external
 - name: gi2seq
-  section: utils
   title: RetrieveSeq
   title_long: RetrieveSeq
+  section: utils
   active: 
   - member
   - internal
   - external
 - name: gi2pro
-  section: utils
   title: GI2Promoter
   title_long: GI2Promoter
+  section: utils
   active: 
   - member
   - internal
   - external
 - name: backtrans
-  section: utils
   title: Backtranslator
   title_long: Backtranslator
+  section: utils
   active: 
   - member
   - internal
   - external
 - name: blastclust
-  section: classification
   title: BLASTclust
   title_long: BLASTclust
+  section: classification
   active: 
   - member
   - internal
   - external
 - name: ali2d
-  section: secstruct
   title: Ali2D
   title_long: Ali2D
+  section: secstruct
   active: 
   - member
   - internal
   - external
 - name: hhfilter
-  section: utils
   title: HHfilter
   title_long: HHfilter
+  section: utils
   active: 
   - member
   - internal
   - external
 - name: t_coffee
-  section: alignment
   title: TCoffee
   title_long: TCoffee
+  section: alignment
   active: 
   - member
   - internal
   - external
 - name: hhomp
-  section: search
   title: HHomp
   title_long: HHomp - Homology detection of OMPs by HMM-HMM comparison
+  section: search
   active: 
   - member
   - internal
   - external
 - name: peaks
-  section: utils
   title: Peaks
   title_long: Peaks
+  section: utils
   active: 
   - internal
 - name: t_coffee_combine
-  section: alignment
   title: TCoffeeCombine
   title_long: TCoffeeCombine
+  section: alignment
   active: 
   - member
 - name: hhrepid
-  section: seqanal
   title: HHrepID
   title_long: HHrepID
+  section: seqanal
   active: 
   - member
   - internal
   - external
 - name: dataa
-  section: classification
   title: daTAA
   title_long: domain annotation of Trimeric Autotransporter Adhesins
+  section: classification
   active: 
   - member
   - internal
   - external
 - name: hhblast
-  section: search
   title: HHblast
   title_long: HHblast - Homology detection by iterative HMM-HMM comparison
+  section: search
   active: 
   - member
   - internal
 - name: cs_blast
-  section: search
   title: CS-BLAST
   title_long: Context-specific BLAST
+  section: search
   active: 
   - member
   - internal
   - external
-- section: search
-  name: simshift
+- name: simshift
   title: SimShiftDB
   title_long: SimShiftDB
+  section: search
   active: 
   - member
   - internal
   - external
+- name: gdpred
+  title: GDpred
+  title_long: GDpred
+  section: secstruct
+  active: 
+  - internal

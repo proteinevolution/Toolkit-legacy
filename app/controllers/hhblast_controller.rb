@@ -12,9 +12,9 @@ class HhblastController < ToolController
     @ss_scoring_labels = ['yes', 'no', 'predicted vs predicted only']
     @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
     
-    @dbvalues = [File.join(DATABASES, 'standard', 'nr20cons'), File.join(DATABASES, 'standard', 'nr30cons')]
-    @dbhhm = [File.join(DATABASES, 'nr20'),File.join(DATABASES, 'nr30')]
-    @dblabels = ['NR20', 'NR30']
+    @dbvalues = [File.join(DATABASES, 'standard', 'nr20cons')]
+    @dbhhm = [File.join(DATABASES, 'nr20')]
+    @dblabels = ['NR20']
     @default_db = @dbvalues[0]
     @default_dbhhm = @dbhhm[0]
     
