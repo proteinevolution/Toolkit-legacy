@@ -28,9 +28,9 @@ class HhblastShowtemplalignAction < Action
       end
     end
 
-    # Search in NR20 database
+    # Search in NR30 database
     subdir = @seq_name[0..1]
-    @dir = "/databases/nr20/#{subdir}"
+    @dir = "/databases/nr30/#{subdir}"
     if File.exist?(File.join(@dir, @seq_name + ".a3m"))
       logger.debug "File #{@seq_name}.a3m found in #{@dir}"
     else
@@ -74,7 +74,7 @@ class HhblastShowtemplalignAction < Action
     end
     
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'queue' => :immediate})   
+    queue.submit(@commands, true, {'queue' => 'toolkit_immediate'})   
   end
   
 end

@@ -2,7 +2,7 @@ class DataaController < ToolController
 
 	BAD = File.join(BIOPROGS, 'dataa')
 
-	def search
+	def index
 		@ret = ""
 		open("|#{BAD}/main.cgi") do |ret|
 			@ret = ret.readlines.join
@@ -68,7 +68,7 @@ class DataaController < ToolController
 
 	end
 	
-	def index
+	def search
 		@widescreen = true
 	end
 	

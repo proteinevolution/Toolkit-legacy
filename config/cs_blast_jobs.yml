@@ -1,5 +1,5 @@
-cs_blast_job:
-  title: CS-BLAST
+cs_blast_job: 
+  title: csBLAST
   hidden: false
   code: CSBL
   resultsections:

@@ -3,22 +3,14 @@ class ModellerAction < Action
   MODEL_QUALITY = File.join(BIOPROGS, 'model-quality')
   MOD_BIN = File.join(BIOPROGS, 'modeller', 'bin', 'modeller')
 
-  attr_accessor :informat, :sequence_input, :sequence_file, :modeller_key, :jobid, :mail , :own_pdb_file1 ,  :own_pdb_file2, :own_pdb_file3, :own_pdb_file4, :own_pdb_file5, :own_pdb_name1 , :own_pdb_name2 , :own_pdb_name3 , :own_pdb_name4 , :own_pdb_name5 , :sequence1 , :sequence2 , :sequence3 , :sequence4 , :sequence5
+  attr_accessor :informat, :sequence_input, :sequence_file, :modeller_key, :jobid, :mail , :own_pdb_name , :own_pdb_file
+
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
                                                     :informat => 'fas', 
                                                     :inputmode => 'alignment',
                                                     :min_seqs => 2,
                                                     :max_seqs => 1000,
                                                     :on => :create })
-
-  
-
-  validates_input( :sequence1  , :own_pdb_file1, {:informat => 'pdb'})
-  validates_input( :sequence2  , :own_pdb_file2, {:informat => 'pdb'})
-  validates_input( :sequence3  , :own_pdb_file3, {:informat => 'pdb'})
-#  validates_input( :sequence4  , :own_pdb_file4, {:informat => 'pdb'})
- # validates_input( :sequence5  , :own_pdb_file5, {:informat => 'pdb'})
-
 
   validates_jobid(:jobid)
   
@@ -28,21 +20,15 @@ class ModellerAction < Action
   
   validates_shell_params(:jobid, :mail, {:on => :create})
   
-  validates_modeller_option( :own_pdb_name1, :own_pdb_file1)
-#  validates_modeller_option( :sequence1, {:pdb_file => :own_pdb_file1 ,:allow_nil => false})
   # Put action initialisation code in here
   def before_perform
     
     @basename = File.join(job.job_dir, job.jobid)
     @seqfile = @basename + ".prepare"
     @infile = @basename + ".in"
+    @ownpdbfile = File.join(job.job_dir, "#{params['own_pdb_name']}.pdb")
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
-    @ownpdbfiles = ['own_pdb_file1','own_pdb_file2','own_pdb_file3','own_pdb_file4','own_pdb_file5']
-    @ownpdbnames =  ['own_pdb_name1','own_pdb_name2','own_pdb_name3','own_pdb_name4','own_pdb_name5']
-    @ownpdbfiles.each_index  do |i|
-      ownpdbfile = File.join(job.job_dir, "#{params[@ownpdbnames[i]]}.pdb")
-      params_to_file(ownpdbfile, @ownpdbfiles[i])
-    end
+    params_to_file(@ownpdbfile, 'own_pdb_file')
     @commands = []
     
     @format = params["informat"].nil? ? 'fas' : params["informat"]
@@ -126,17 +112,13 @@ class ModellerAction < Action
     
     # get knowns
     knowns = ""
-    knowns_h = Hash.new
     lines = IO.readlines(@infile)
     lines.each do |line|
       line.scan(/^structureX:(.*?):/) do |name|
-        if (!knowns_h.has_key?(name))     
-          if (knowns == "")
-            knowns = "'#{name}'"
-          else
-            knowns += ", '#{name}'"
-          end
-	  knowns_h[name] = 1
+        if (knowns == "")
+          knowns = "'#{name}'"
+        else
+          knowns += ", '#{name}'"
         end
       end
     end
@@ -203,7 +185,7 @@ class ModellerAction < Action
     # work-around (TODO: Run commands without setting job status to error, if a command fails)
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'additional' => 'true'})
-    
+
   end
 
 end
