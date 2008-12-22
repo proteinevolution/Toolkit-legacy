@@ -51,45 +51,63 @@ class PcoilsAction < Action
   def perform
     params_dump
 
-    @commands << "#{HH}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
-    @commands << "#{PCOILS}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
+    # create the executables for the tool and the different matrices before running the tool
+    @commands << "gcc -lm -o #{PCOILS}/run_PCoils #{PCOILS}/src/ncoils_profile.c #{PCOILS}/src/read_log_matrix_public.c"
+    @commands << "gcc -lm -o #{PCOILS}/run_PCoils_iterated #{PCOILS}/src/ncoils_profile_iterated.c #{PCOILS}/src/read_log_matrix_public.c"
+    @commands << "gcc -lm -o #{PCOILS}/run_PCoils_pdb #{PCOILS}/src/ncoils_profile_pdb.c #{PCOILS}/src/read_log_matrix_public.c"
+    @commands << "gcc -lm -o #{PCOILS}/run_PCoils_old #{PCOILS}/src/ncoils_profile_old.c #{PCOILS}/src/read_log_matrix_public.c"
 
-    # case run PSI-BLAST
-    if (@inputmode == "0")
-
-      @commands << "#{PCOILS}/runpsipred_coils.pl #{@buffer}"
-      @commands << "#{UTILS}/alignhits.pl -psi -b 1.0 -e 1E-4 -q #{@infile} #{@psitmplog} #{@psi}"
-      @commands << "#{HH}/reformat.pl -uc -num #{@psi} #{@a3m_unfiltered}"
-      @commands << "#{HH}/hhfilter -i #{@a3m_unfiltered} -qid 40 -cov 20 -o #{@a3m}"
-      @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m fas #{@a3m} #{@infile}"
-      @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m psi #{@a3m} #{@psi}"
-
-    end
-
-    # calling psipred and ncoils
-    @commands << "#{HH}/reformat.pl fas a3m #{@infile} #{@a3m} -uc -num -r -M first"
-    @commands << "#{HH}/hhmake -i #{@a3m} -o #{@hhmake_output} -pcm 2 -pca 0.5 -pcb 2.5 -cov 20" 
-    @commands << "#{PCOILS}/deal_with_profile.pl #{@hhmake_output} #{@myhmmmake_output}"
-
-    #@matrix=0: iterated
-    #@matrix=1: PDB
-    #@matrix=2: MTIDK -> in sourcecode new.mat
-    #@matrix=3: MTK -> in sourcecode old.mat
     @program_for_matrix = ['run_PCoils_iterated', 'run_PCoils_pdb', 'run_PCoils', 'run_PCoils_old']
-    
-    #run Coils over the sequence in the buffer file
-    ['14', '21', '28'].each do |size|
-      @commands << "cd #{job.job_dir}; #{PCOILS}/#{@program_for_matrix[@matrix.to_i]} #{@weight} -win #{size} -prof #{@myhmmmake_output.sub(/^.*\/(.*)$/, '\1')} < #{@buffer.sub(/^.*\/(.*)$/, '\1')} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
-    end
 
-    #calling psipred
-    if (@psipred == "T" && @inputmode == "1")
-      @commands << "#{PCOILS}/runpsipred.pl #{@buffer}"
-    end
-    
-    # prepare for gnuplot
-    @commands << "#{PCOILS}/prepare_for_gnuplot.pl #{@basename} #{@psipred} #{@inputmode} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28 #{@horizfile}"
 
+    # case run COILS (no Alignment)
+    if (@inputmode == "0")
+      ['14', '21', '28'].each do |size|
+        @commands << "#{PCOILS}/#{@program_for_matrix[@matrix.to_i]} -win #{size} -prof #{@infile} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
+      end
+
+    # case run PCOILS (Run PSI-Blast or Use input alignment)
+    else
+
+      @commands << "#{HH}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
+      @commands << "#{PCOILS}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
+
+      # case run PSI-BLAST
+      if (@inputmode == "1")
+
+        @commands << "#{PCOILS}/runpsipred_coils.pl #{@buffer}"
+        @commands << "#{UTILS}/alignhits.pl -psi -b 1.0 -e 1E-4 -q #{@infile} #{@psitmplog} #{@psi}"
+        @commands << "#{HH}/reformat.pl -uc -num #{@psi} #{@a3m_unfiltered}"
+        @commands << "#{HH}/hhfilter -i #{@a3m_unfiltered} -qid 40 -cov 20 -o #{@a3m}"
+        @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m fas #{@a3m} #{@infile}"
+        @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m psi #{@a3m} #{@psi}"
+
+      end
+
+      # calling psipred and ncoils
+      @commands << "#{HH}/reformat.pl fas a3m #{@infile} #{@a3m} -uc -num -r -M first"
+      @commands << "#{HH}/hhmake -i #{@a3m} -o #{@hhmake_output} -pcm 2 -pca 0.5 -pcb 2.5 -cov 20" 
+      @commands << "#{PCOILS}/deal_with_profile.pl #{@hhmake_output} #{@myhmmmake_output}"
+
+      #@matrix=0: iterated
+      #@matrix=1: PDB
+      #@matrix=2: MTIDK -> in sourcecode new.mat
+      #@matrix=3: MTK -> in sourcecode old.mat
+      #@program_for_matrix = ['run_PCoils_iterated', 'run_PCoils_pdb', 'run_PCoils', 'run_PCoils_old']
+
+      #run Coils over the sequence in the buffer file
+      ['14', '21', '28'].each do |size|
+        @commands << "cd #{job.job_dir}; #{PCOILS}/#{@program_for_matrix[@matrix.to_i]} #{@weight} -win #{size} -prof #{@myhmmmake_output.sub(/^.*\/(.*)$/, '\1')} < #{@buffer.sub(/^.*\/(.*)$/, '\1')} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
+      end
+
+      #calling psipred
+      if (@psipred == "T" && @inputmode == "2")
+        @commands << "#{PCOILS}/runpsipred.pl #{@buffer}"
+      end
+    
+      # prepare for gnuplot
+      @commands << "#{PCOILS}/prepare_for_gnuplot.pl #{@basename} #{@psipred} #{@inputmode} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28 #{@horizfile}"
+    end
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
