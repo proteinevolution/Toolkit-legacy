@@ -54,7 +54,12 @@
         # SGE options
         f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
         f.write '#$' + " -q #{queue}\n"
-        f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
+        if RAILS_ENV == "development"
+          if queue == "express.q"
+	    f.write '#$' + " -l express=TRUE\n"
+	  end
+	end
+	f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -o #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
 #        f.write '#$' + " -j y\n";
