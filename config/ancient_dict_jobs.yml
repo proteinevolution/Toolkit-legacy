@@ -1,9 +1,10 @@
-ancient_dict_job: 
+ancient_dict_job:
   title: AncientDict
   hidden: false
   code: ANCI
-  resultsections:  
-    - name: results
-      title: Results
-      title_long: Show result
+  resultsections:
+    - name: search
+      title: Search
+      title_long: Search Database
       forwardsections:
+

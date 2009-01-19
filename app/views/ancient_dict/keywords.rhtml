@@ -1,0 +1,35 @@
+<h2><%= @page_title %></h2>
+
+<div id="jobsection">
+  <ul>
+    <li>
+      <a href="/ancient_dict/index" onmouseout="return nd();" onmouseover="return overlib('Description');">Description</a>
+    </li>
+    <li class="current">
+      <a href="/ancient_dict/motifs" onmouseout="return nd();" onmouseover="return overlib('Browse the database');">Browse Database</a>
+    </li>
+    <li>
+      <a href="/ancient_dict/update" onmouseout="return nd();" onmouseover="return overlib('Update the database');">Update Database</a>
+    </li>
+
+  </ul>
+</div>
+
+
+<%= render(:partial => "subitems") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<p style="font-size:14px; font-weight:bold;">Keywords</p>
+<table border="0">
+  <% for i in 0...@keywords.length%>
+    <tr>
+      <td style="font-size:12px; font-weight:bold;">
+        <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword"><%=@keywords[i]%></a>
+      </td>
+      <td style="font-size:12px">
+        <%=@keywd_description[i]%>
+      </td>
+    </tr>
+  <% end %>
+</table>

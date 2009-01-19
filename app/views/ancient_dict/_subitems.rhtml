@@ -1,0 +1,12 @@
+<div id="resultactions">
+   <ul>
+     <% for i in 0...@subitem.length%>
+       <li <% if @subitem[i] == @coloring %> class="current" <% end %> >
+         <a href="/ancient_dict/<%= @subitem_names[i] %>"><%= @subitem_names[i] %></a>
+       </li>
+     <% end %>
+  </ul>
+</div>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%> 
+

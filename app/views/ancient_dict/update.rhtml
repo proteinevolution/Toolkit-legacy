@@ -2,20 +2,21 @@
 
 <div id="jobsection">
   <ul>
-    <li class="current">
+    <li>
       <a href="/ancient_dict/index" onmouseout="return nd();" onmouseover="return overlib('Description');">Description</a>
     </li>
     <li>
       <a href="/ancient_dict/browse" onmouseout="return nd();" onmouseover="return overlib('Browse the database');">Browse Database</a>
     </li>
-    <li>
+    <li class="current">
       <a href="/ancient_dict/update" onmouseout="return nd();" onmouseover="return overlib('Update the database');">Update Database</a>
     </li>
 
   </ul>
 </div>
 
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
-<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%> 
+Dies soll zum updaten der mysql-Datenbank verwendet werden, allerdings nur für Administratoren sichtbar sein.
 
-Hier folgt die Beschreibung zu den Einzelheiten dieses Tools.
+

@@ -1,0 +1,143 @@
+<h2><%= @page_title %></h2>
+
+<div id="jobsection">
+  <ul>
+    <li class="current">
+      <a href="/ancient_dict/index" onmouseout="return nd();" onmouseover="return overlib('Description');">Description</a>
+    </li>
+    <li>
+      <a href="/ancient_dict/browse" onmouseout="return nd();" onmouseover="return overlib('Browse the database');">Browse Database</a>
+    </li>
+    <li>
+      <a href="/ancient_dict/update" onmouseout="return nd();" onmouseover="return overlib('Update the database');">Update Database</a>
+    </li>
+
+  </ul>
+</div>
+
+<%= render(:partial => "subitems") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<table>
+  <tr>
+    <td>
+      <p style="font-size:14px; font-weight:bold;"><%=@motif_names[0]%></p>
+    </td>
+    <td>
+    </td>
+  </tr>
+</table>
+<hr>
+
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Keywords</p>
+<table border="0">
+  <tr>
+    <td style="font-size:12px">
+      <%=@keywords[0]%>, <%=@keywords[1]%>, <%=@keywords[2]%>, <%=@keywords[3]%>
+    </td>
+  </tr>
+</table>
+<br/>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Description</p>
+<table border="0">
+  <colgroup>
+    <col width="400px">
+    <col width="20px">
+    <col width="250px">
+  </colgroup>
+  <tr>
+    <td style="font-size:12px" align="justify" valign="top">
+      <%=@descriptions[0]%>
+    </td>
+    <td> </td>
+    <td>
+      <%= image_tag 'ancient_dict/HelixStrandHelix.jpg', :size => '60x100'%>
+    </td>
+  </tr>
+</table>
+<br/>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Occurrence</p>
+<table border="0">
+  <colgroup>
+   <col width="100px">
+   <col width="250px">
+  </colgroup>
+  <% for i in 0...@scop_id.length%>
+    <tr>
+      <td style="font-size:12px">
+         <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=@scop_id[i]%>"><%=@scop_id[i]%></a>
+      </td>
+      <td style="font-size:12px">
+        <%=@superfam[i]%>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Structure Superposition</p>
+<table border="0">
+  <colgroup>
+    <col width="200px">
+    <col width="200px">
+  </colgroup>
+  <tr>
+    <td style="font-size:12px">
+      <a href="#" onclick="var win = window.open('<%= DOC_ROOTURL %>/ancient_dict/pdb_applet?file=<%= @page %>','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();"%style="margin: 5px 10px 10px 10px;"> Show PDB applet </a>
+    </td>
+    <td style="font-size:12px">
+      <a href="<%= @pdb_url %>">Download PDB-file</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+</table>
+<br/>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Sequence Alignment</p>
+<table border="0">
+  <colgroup>
+   <col width="100px">
+   <col width="100px">
+   <col width="50px">
+   <col width="50px">
+   <col width="20px">
+   <col width="200px">
+  </colgroup>
+  <% for i in 0...@seq_id.length%>
+    <tr>
+      <td style="font-size:12px">
+        <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=<%=@seq_id[i]%>"><%=@seq_id[i]%></a>
+      </td>
+      <td style="font-size:12px">
+        <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=@seq_scopid[i]%>"><%=@seq_scopid[i]%></a>
+      </td>
+      <td style="font-size:12px">
+        <%=@pos_beg[i]%>
+      </td>
+      <td style="font-size:12px">
+        <%=@pos_end[i]%>
+      </td>
+      <td style="font-size:12px;">
+        <font face="Courier">
+          <%=@sequence[i]%>
+        </font>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
+<table border="0">
+  <% for i in 0...@refs.length%>
+    <tr>
+      <td style="font-size:12px">
+        <%=@refs[i]%>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
