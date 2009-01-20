@@ -47,7 +47,7 @@ in at least two folds."
     getoccurrences
     @superpos = ["http://www.pdb.org/pdb/explore.do?structureId=1GW3", "Download PDB file"]
     getsequencealignment
-    @refs = ["Alva V, Ammelburg M, Soding J, Lupas AN. (2007) On the origin of the histone fold.  BMC Struct Biol 7: 17."]
+    @refs = ["Alva V, Ammelburg M, Soeding J, Lupas AN. (2007) On the origin of the histone fold.  BMC Struct Biol 7: 17."]
     @pdb_url = "http://www.tuebingen.mpg.de"
   end
 
@@ -89,7 +89,7 @@ in at least two folds."
 
   def getmotifs
     @motif_names = ["Helix-Strand-Helix motif","EF-Tu binding motif"]
-    @short_descriptions = ["The Histone fold, the N-terminal substrate recognition domain of Clp/Hsp100 proteins.", "The motif is remarkably similar with respect to fold, bulkiness, and charge distribution."]
+    @short_descriptions = ["A helix-strand-helix motif common to three folds", "EF-Tu binding alpha-hairpin"]
     @descriptions = ["The Histone fold, the N-terminal substrate recognition domain of Clp/Hsp100 proteins and the helical part of the extended AAA+ ATPase domain contain a homologous helix-strand-helix motif (HSH). The HSH motif  probably gave rise to a domain in both Hsp100 and AAA+ proteins. The histone fold arose subsequently from the latter through a 3D domain-swapping event.", "Elongation Factor Ts and Ribosomal Protein L7/12 contain a common EF-Tu binding helix-turn-helix motif. The motif is remarkably similar with respect to fold, bulkiness, and charge distribution."]
     @pics= ["Helix-Strand-Helix","EF-Tu_binding"]
   end
@@ -103,12 +103,12 @@ in at least two folds."
 
 
   def getkeywords
-    @keywords = ["DNA-binding", "Alpha-Beta-Alpha", "Helix-Strand-Helix"," Protein-Binding", "Protein-Protein interaction", "Helix-Turn-Helix", "Structural Repeat"]
-    @keywd_description = ["DNA-binding domains and thus have a specific or general affinity for either single or double stranded DNA.", "", "", "", "", "", ""]
+    @keywords = ["DNA-binding", "Alpha-Beta-Alpha", "Helix-Strand-Helix"," Protein-binding", "Protein-Protein interaction", "Helix-Turn-Helix", "Structural Repeat"]
+    @keywd_description = ["Binds SS/DS DNA in specific or non-specific way", "", "", "", "", "", ""]
   end
 
   def getoccurrences
-    @scop_id = ["a.174.1", "c.37.1", "a.22.1","a.22.1", "a.22.1", "a.22.1"]
+    @scop_id = ["a.174.1.1", "c.37.1.20", "a.22.1.1","a.22.1.2", "a.22.1.3", "a.22.1.4"]
     @superfam = ["Double Clp-N motif", "Extended AAA-ATPase domain", "Nucleosome core histones", "Archaeal histone", "TBP-associated factors, TAFs", "Bacterial histone-fold protein"]
     @pdb_applet= ["appleta.174.1", "appletc.37.1", "appleta.22.1", "appleta.22.1", "appleta.22.1", "appleta.22.1", "appleta.22.1"]
   end
