@@ -1,39 +1,46 @@
 class AncientDictController < ToolController
 
+# definitions of the different rhtml pages
   def browse
-    @subitem = ["mo", "ke"]
-    @subitem_names = ["motifs", "keywords"]
+    getlinks
+    getsubitems
+    @color = params['color'] ? params['color'] : "br"
     @coloring = params['coloring'] ? params['coloring'] : "mo"
-    getmotifs
-    getkeywords
-    getoccurrences
-    @superpos = ["http://www.pdb.org/pdb/explore.do?structureId=1GW3", "Download PDB file"]
-    getsequencealignment
-    @refs = ["Alva V, Ammelburg M, Soding J, Lupas AN. (2007) On the origin of the histone fold.  BMC Struct Biol 7: 17."]
+    @motif_description ="Fragments similar in structure and sequence, which are present
+in at least two folds."
+    @struct_motif_description="Fragments found in domains with internal repeats"
   end
 
   def index
-    @subitem = ["mo", "ke"]
-    @subitem_names = ["motifs", "keywords"]
-    @coloring = params['coloring'] ? params['coloring'] : "mo"
+    getlinks
+    @color = params['color'] ? params['color'] : "in"
   end
 
   def update
-    @subitem = ["mo", "ke"]
-    @subitem_names = ["motifs", "keywords"]
-    @coloring = params['coloring'] ? params['coloring'] : "mo"
+    getlinks
+    @color = params['color'] ? params['color'] : "up"
   end
 
   def motifs
-    getmotifs
-    @subitem = ["mo", "ke"]
-    @subitem_names = ["motifs", "keywords"]
+    getlinks
+    @color = params['color'] ? params['color'] : "br"
+    getsubitems
     @coloring = params['coloring'] ? params['coloring'] : "mo"
+    getmotifs
+  end
+
+  def struct_motifs
+    getlinks
+    @color = params['color'] ? params['color'] : "br"
+    getsubitems
+    @coloring = params['coloring'] ? params['coloring'] : "mo"
+    getstructmotifs
   end
 
   def motif
-    @subitem = ["mo", "ke"]
-    @subitem_names = ["motifs", "keywords"]
+    getlinks
+    @color = params['color'] ? params['color'] : "br"
+    getsubitems
     @coloring = params['coloring'] ? params['coloring'] : "mo"
     getmotifs
     getkeywords
@@ -41,14 +48,43 @@ class AncientDictController < ToolController
     @superpos = ["http://www.pdb.org/pdb/explore.do?structureId=1GW3", "Download PDB file"]
     getsequencealignment
     @refs = ["Alva V, Ammelburg M, Soding J, Lupas AN. (2007) On the origin of the histone fold.  BMC Struct Biol 7: 17."]
-    @pdb_url = "http://www.google.de"
+    @pdb_url = "http://www.tuebingen.mpg.de"
   end
 
   def keywords
-    getkeywords
-    @subitem = ["mo", "ke"]
-    @subitem_names = ["motifs", "keywords"]
+    getlinks
+    @color = params['color'] ? params['color'] : "br"
+    getsubitems
     @coloring = params['coloring'] ? params['coloring'] : "ke"
+    getkeywords
+  end
+
+  def keyword
+    getlinks
+    @color = params['color'] ? params['color'] : "br"
+    getsubitems
+    @coloring = params['coloring'] ? params['coloring'] : "ke"
+    getmotifs
+  end
+
+  def search
+    getlinks
+    @color = params['color'] ? params['color'] : "br"
+    getsubitems
+    @coloring = params['coloring'] ? params['coloring'] : "se"
+  end
+
+# functions
+  def getlinks
+    @shortlinks = ["in", "br", "up"]
+    @links = ["index", "browse", "update"]
+    @link_names = ["Description", "Browse Database", "Update Database"]
+    @link_text = ["Description", "Browse the database", "Update the database"]
+  end
+
+  def getsubitems
+    @subitem = ["mo", "ke", "se"]
+    @subitem_names = ["motifs", "keywords", "search"]
   end
 
   def getmotifs
@@ -58,12 +94,17 @@ class AncientDictController < ToolController
     @pics= ["Helix-Strand-Helix","EF-Tu_binding"]
   end
 
+  def getstructmotifs
+    @motif_names = ["Ankyrin repeat","Beta-propeller blade"]
+    @short_descriptions = ["33-residue alpha-hairpin motif", "4-stranded beta-sheet motif"]
+    @descriptions = ["Fehlt noch", "Fehlt noch"]
+    @pics= ["Bild2","Bild1"]
+  end
+
+
   def getkeywords
     @keywords = ["DNA-binding", "Alpha-Beta-Alpha", "Helix-Strand-Helix"," Protein-Binding", "Protein-Protein interaction", "Helix-Turn-Helix", "Structural Repeat"]
     @keywd_description = ["DNA-binding domains and thus have a specific or general affinity for either single or double stranded DNA.", "", "", "", "", "", ""]
-  end
-
-  def generatemotif
   end
 
   def getoccurrences

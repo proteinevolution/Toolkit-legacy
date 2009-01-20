@@ -1,19 +1,6 @@
-<h2><%= @page_title %></h2>
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
 
-<div id="jobsection">
-  <ul>
-    <li>
-      <a href="/ancient_dict/index" onmouseout="return nd();" onmouseover="return overlib('Description');">Description</a>
-    </li>
-    <li>
-      <a href="/ancient_dict/browse" onmouseout="return nd();" onmouseover="return overlib('Browse the database');">Browse Database</a>
-    </li>
-    <li class="current">
-      <a href="/ancient_dict/update" onmouseout="return nd();" onmouseover="return overlib('Update the database');">Update Database</a>
-    </li>
-
-  </ul>
-</div>
+<%= render(:partial => "links") %>
 
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 

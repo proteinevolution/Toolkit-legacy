@@ -1,34 +1,19 @@
-<h2><%= @page_title %></h2>
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
 
-<div id="jobsection">
-  <ul>
-    <li>
-      <a href="/ancient_dict/index" onmouseout="return nd();" onmouseover="return overlib('Description');">Description</a>
-    </li>
-    <li class="current">
-      <a href="/ancient_dict/motifs" onmouseout="return nd();" onmouseover="return overlib('Browse the database');">Browse Database</a>
-    </li>
-    <li>
-      <a href="/ancient_dict/update" onmouseout="return nd();" onmouseover="return overlib('Update the database');">Update Database</a>
-    </li>
-
-  </ul>
-</div>
-
+<%= render(:partial => "links") %>
 
 <%= render(:partial => "subitems") %>
 
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
 <p style="font-size:14px; font-weight:bold;">Motifs</p>
-<p style="font-size:14px; font-weight:bold;"><%= @singlemotif%></p>
-<table border="0">
+<table border="0" width="100%">
     <% for i in 0...1%>
       <tr>
-        <td style="font-size:12px; font-weight:bold;">
+        <td style="font-size:12px; font-weight:bold; width:25%">
           <%=@motif_names[i]%>
         </td>
-        <td style="font-size:12px">
+        <td style="font-size:12px; width:75%" align="justify">
           <%=@descriptions[i]%>
         </td>
       </tr>

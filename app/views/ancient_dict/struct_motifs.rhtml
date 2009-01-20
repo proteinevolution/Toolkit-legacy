@@ -6,16 +6,22 @@
 
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
-<p style="font-size:14px; font-weight:bold;">Keywords</p>
-<table border="0" style="width:100%">
-  <% for i in 0...@keywords.length%>
+<p style="font-size:14px; font-weight:bold;">Structural Motifs</p>
+<table border="0" width="100%">
+  <% for i in 0...@motif_names.length%>
+    <colgroup>
+      <col width="25%">
+      <col width="75%">
+    </colgroup>
     <tr>
-      <td style="font-size:12px; font-weight:bold; width:25%" >
-        <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword"><%=@keywords[i]%></a>
+      <td style="font-size:12px; font-weight:bold;">
+        <a href="<%= DOC_ROOTURL %>/ancient_dict/motif"><%=@motif_names[i]%></a>
       </td>
-      <td style="font-size:12px; width:75%;" align="justify">
-        <%=@keywd_description[i]%>
+      <td style="font-size:12px" align="justify">
+        <%=@short_descriptions[i]%>
       </td>
     </tr>
   <% end %>
 </table>
+
+
