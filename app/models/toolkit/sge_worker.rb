@@ -13,7 +13,7 @@
       self.queue_job.update_status
       
       tries = 0
-      command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
+      command = "#{QUEUE_DIR}/qsub -l h_vmem=6G #{self.wrapperfile}"
       res = `#{command}`.chomp
       self.qid = res.gsub(/Your job (\d+) .*$/, '\1')
       while (!$?.success? && tries < 3)
@@ -68,6 +68,8 @@
         if (queue == "toolkit_immediate")
           f.write '#$' + " -l immediate\n"
         end
+        
+        #f.write "-l h_vmem=2G\n"
 
 #        if (!cpus.nil?)
 #        f.write "#PBS -l nodes=1:ppn=#{cpus}\n"
@@ -80,7 +82,15 @@
 
         # SET STATUS OF THIS JOB TO RUNNING
         f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_RUNNING}\n"
+        if RAILS_ENV == "development"
+          f.write "echo 'Status set to running...' >> #{queue_job.action.job.statuslog_path}\n"
+        end
+
         # ALL THE SUBSHELL SCRIPT 
+        if RAILS_ENV == "development"
+          f.write "echo 'Before executing the commandfile...' #{self.commandfile} >> #{queue_job.action.job.statuslog_path}\n"
+        end
+
         f.write "#{self.commandfile}\n"
         # CAPTURE EXTISTATUS OF THE 'CHILD'-SHELL SCRIPT WHICH IS SAVED IN $? INTO A VARIABLE WITH THE SAME NAME IN THIS SHELL 
         f.write "exitstatus=$?\n"
@@ -91,6 +101,10 @@
           else
             f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
           end
+          if RAILS_ENV == "development"
+          f.write "echo 'Scheint prima zu funktionieren ... .' >> #{queue_job.action.job.statuslog_path}\n"
+          end
+
         else
           f.write "if [ ${exitstatus} -eq 0 ] ; then\n"
           if (LOCATION == "Munich")
@@ -127,7 +141,7 @@
         f = File.open(self.commandfile, 'w')
         f.write "#!/bin/sh\n"
         # FILE SIZE LIMIT 1Gb (1024 * 1000000), MEMORY LIMIT 6Gb (see man bash -> ulimit)
-        f.write "ulimit -f 1000000 -m 6000000\n"   
+        #f.write "ulimit -f 1000000 -m 6000000\n"
         f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"
         # print the process id of this shell execution
         f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 

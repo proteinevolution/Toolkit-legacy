@@ -50,31 +50,31 @@ class PcoilsAction < Action
 
   def perform
     params_dump
-    
+
     @commands << "#{HH}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
     @commands << "#{PCOILS}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
-    
+
     # case run PSI-BLAST
     if (@inputmode == "0")
-      
+
       @commands << "#{PCOILS}/runpsipred_coils.pl #{@buffer}"
       @commands << "#{UTILS}/alignhits.pl -psi -b 1.0 -e 1E-4 -q #{@infile} #{@psitmplog} #{@psi}"
       @commands << "#{HH}/reformat.pl -uc -num #{@psi} #{@a3m_unfiltered}"
       @commands << "#{HH}/hhfilter -i #{@a3m_unfiltered} -qid 40 -cov 20 -o #{@a3m}"
-      @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m fas #{@a3m} #{@infile}"      
+      @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m fas #{@a3m} #{@infile}"
       @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m psi #{@a3m} #{@psi}"
-      
+
     end
-    
+
     # calling psipred and ncoils
     @commands << "#{HH}/reformat.pl fas a3m #{@infile} #{@a3m} -uc -num -r -M first"
     @commands << "#{HH}/hhmake -i #{@a3m} -o #{@hhmake_output} -pcm 2 -pca 0.5 -pcb 2.5 -cov 20" 
     @commands << "#{PCOILS}/deal_with_profile.pl #{@hhmake_output} #{@myhmmmake_output}"
-      
+
     #@matrix=0: iterated
-    #@matrix=1: PDB 
-    #@matrix=2: MTIDK
-    #@matrix=3: MTK
+    #@matrix=1: PDB
+    #@matrix=2: MTIDK -> in sourcecode new.mat
+    #@matrix=3: MTK -> in sourcecode old.mat
     @program_for_matrix = ['run_PCoils_iterated', 'run_PCoils_pdb', 'run_PCoils', 'run_PCoils_old']
     
     #run Coils over the sequence in the buffer file
