@@ -1,0 +1,121 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "subitems") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<p style="font-size:18px; font-weight:bold;"><%=@fragment_names[0]%></p>
+
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Keywords</p>
+<table border="0" style="width=100%">
+  <tr>
+    <td style="font-size:12px">
+      <%=@keywords[0]%>, <%=@keywords[1]%>, <%=@keywords[2]%>, <%=@keywords[3]%>
+    </td>
+  </tr>
+</table>
+<br/>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Description</p>
+<table border="0" style="width=100%">
+  <colgroup>
+    <col width="75%">
+    <col width="5%">
+    <col width="20%">
+  </colgroup>
+  <tr>
+    <td style="font-size:12px" align="justify" valign="top">
+      <%=@descriptions[0]%>
+    </td>
+    <td> </td>
+    <td>
+      <%= image_tag 'ancient_dict/HelixStrandHelix.jpg', :size => '75x125'%>
+    </td>
+  </tr>
+</table>
+<br/>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Occurrence (SCOP accession)</p>
+<table border="0" style="width=100%">
+  <colgroup>
+   <col width="25%">
+   <col width="75%">
+  </colgroup>
+  <% for i in 0...@scop_id.length%>
+    <tr>
+      <td style="font-size:12px">
+         <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=@scop_id[i]%>"><%=@scop_id[i]%></a>
+      </td>
+      <td style="font-size:12px">
+        <%=@superfam[i]%>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<br/>
+<!--<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Structure Superposition</p>
+<table border="0" style="width=100%">
+  <colgroup>
+    <col width="50%">
+    <col width="50%">
+  </colgroup>
+  <tr>
+    <td style="font-size:12px">
+      <a href="#" onclick="var win = window.open('<%= DOC_ROOTURL %>/ancient_dict/pdb_applet?file=<%= @page %>','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();"%style="margin: 5px 10px 10px 10px;"> Show PDB applet </a>
+    </td>
+    <td style="font-size:12px">
+      <a href="<%= @pdb_url %>">Download PDB-file</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+</table>
+<br/>
+<br/>-->
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Sequence Alignment</p>
+<table border="0">
+  <colgroup>
+   <col width="20%">
+   <col width="20%">
+   <col width="8%">
+   <col width="8%">
+   <col width="4%">
+   <col width="40%">
+  </colgroup>
+  <% for i in 0...@seq_id.length%>
+    <tr>
+      <td style="font-size:12px">
+        <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=<%=@seq_id[i]%>"><%=@seq_id[i]%></a>
+      </td>
+      <td style="font-size:12px">
+        <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=@seq_scopid[i]%>"><%=@seq_scopid[i]%></a>
+      </td>
+      <td style="font-size:12px">
+        <%=@pos_beg[i]%>
+      </td>
+      <td style="font-size:12px">
+        <%=@pos_end[i]%>
+      </td>
+      <td style="font-size:12px;">
+        <font face="Courier">
+          <%=@sequence[i]%>
+        </font>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
+<table border="0">
+  <% for i in 0...@refs.length%>
+    <tr>
+      <td style="font-size:12px">
+        <%=@refs[i]%>
+      </td>
+    </tr>
+  <% end %>
+</table>
+

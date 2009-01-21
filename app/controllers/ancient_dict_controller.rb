@@ -29,11 +29,11 @@ in at least two folds."
     getfragments
   end
 
-  def struct_fragments
+  def repeats
     getlinks
     @color = params['color'] ? params['color'] : "br"
     getsubitems
-    @coloring = params['coloring'] ? params['coloring'] : "fr"
+    @coloring = params['coloring'] ? params['coloring'] : "re"
     getstructfragments
   end
 
@@ -50,6 +50,21 @@ in at least two folds."
     @refs = ["Alva V, Ammelburg M, Soeding J, Lupas AN. (2007) On the origin of the histone fold.  BMC Struct Biol 7: 17."]
     @pdb_url = "http://www.tuebingen.mpg.de"
   end
+
+  def repeat
+    getlinks
+    @color = params['color'] ? params['color'] : "br"
+    getsubitems
+    @coloring = params['coloring'] ? params['coloring'] : "re"
+    getfragments
+    getkeywords
+    getoccurrences
+    @superpos = ["http://www.pdb.org/pdb/explore.do?structureId=1GW3", "Download PDB file"]
+    getsequencealignment
+    @refs = ["Alva V, Ammelburg M, Soeding J, Lupas AN. (2007) On the origin of the histone fold.  BMC Struct Biol 7: 17."]
+    @pdb_url = "http://www.tuebingen.mpg.de"
+  end
+
 
   def keywords
     getlinks
@@ -83,9 +98,9 @@ in at least two folds."
   end
 
   def getsubitems
-    @subitem = ["fr", "ke", "se"]
-    @subitem_names = ["fragments", "keywords", "search"]
-    @subitem_text = ["Fragments", "Keywords", "Search"]
+    @subitem = ["fr", "re", "ke", "se"]
+    @subitem_names = ["fragments", "repeats", "keywords", "search"]
+    @subitem_text = ["Fragments", "Repeats", "Keywords", "Search"]
   end
 
   def getfragments
