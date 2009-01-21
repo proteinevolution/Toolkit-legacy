@@ -6,22 +6,22 @@
 
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
-<a style="font-size:14px; font-weight:bold;" href="<%= DOC_ROOTURL %>/ancient_dict/motifs">Fragments</a>
+<a style="font-size:14px; font-weight:bold;" href="<%= DOC_ROOTURL %>/ancient_dict/fragments">Fragments</a>
 <table border="0" width="100%">
   <tr>
     <td style="font-size:12px" align="justify">
-      <%=@motif_description%>
+      <%=@fragment_description%>
     </td>
   </tr>
 </table>
 
 <br/>
 <br/>
-<a style="font-size:14px; font-weight:bold;" href="<%= DOC_ROOTURL %>/ancient_dict/struct_motifs">Internal repeat fragements</a>
+<a style="font-size:14px; font-weight:bold;" href="<%= DOC_ROOTURL %>/ancient_dict/struct_fragments">Internal repeat fragements</a>
 <table border="0" width="100%">
   <tr>
     <td style="font-size:12px" align="justify">
-      <%=@struct_motif_description%>
+      <%=@struct_fragment_description%>
     </td>
   </tr>
 </table>

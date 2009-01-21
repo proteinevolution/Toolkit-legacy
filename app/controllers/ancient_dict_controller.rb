@@ -5,10 +5,10 @@ class AncientDictController < ToolController
     getlinks
     getsubitems
     @color = params['color'] ? params['color'] : "br"
-    @coloring = params['coloring'] ? params['coloring'] : "mo"
-    @motif_description ="Fragments similar in structure and sequence, which are present
+    @coloring = params['coloring'] ? params['coloring'] : "fr"
+    @fragment_description ="Fragments similar in structure and sequence, which are present
 in at least two folds."
-    @struct_motif_description="Fragments found in domains with internal repeats"
+    @struct_fragment_description="Fragments found in domains with internal repeats"
   end
 
   def index
@@ -21,28 +21,28 @@ in at least two folds."
     @color = params['color'] ? params['color'] : "up"
   end
 
-  def motifs
+  def fragments
     getlinks
     @color = params['color'] ? params['color'] : "br"
     getsubitems
-    @coloring = params['coloring'] ? params['coloring'] : "mo"
-    getmotifs
+    @coloring = params['coloring'] ? params['coloring'] : "fr"
+    getfragments
   end
 
-  def struct_motifs
+  def struct_fragments
     getlinks
     @color = params['color'] ? params['color'] : "br"
     getsubitems
-    @coloring = params['coloring'] ? params['coloring'] : "mo"
-    getstructmotifs
+    @coloring = params['coloring'] ? params['coloring'] : "fr"
+    getstructfragments
   end
 
-  def motif
+  def fragment
     getlinks
     @color = params['color'] ? params['color'] : "br"
     getsubitems
-    @coloring = params['coloring'] ? params['coloring'] : "mo"
-    getmotifs
+    @coloring = params['coloring'] ? params['coloring'] : "fr"
+    getfragments
     getkeywords
     getoccurrences
     @superpos = ["http://www.pdb.org/pdb/explore.do?structureId=1GW3", "Download PDB file"]
@@ -64,7 +64,7 @@ in at least two folds."
     @color = params['color'] ? params['color'] : "br"
     getsubitems
     @coloring = params['coloring'] ? params['coloring'] : "ke"
-    getmotifs
+    getfragments
   end
 
   def search
@@ -83,20 +83,21 @@ in at least two folds."
   end
 
   def getsubitems
-    @subitem = ["mo", "ke", "se"]
-    @subitem_names = ["motifs", "keywords", "search"]
+    @subitem = ["fr", "ke", "se"]
+    @subitem_names = ["fragments", "keywords", "search"]
+    @subitem_text = ["Fragments", "Keywords", "Search"]
   end
 
-  def getmotifs
-    @motif_names = ["Helix-Strand-Helix motif","EF-Tu binding motif"]
-    @short_descriptions = ["A helix-strand-helix motif common to three folds", "EF-Tu binding alpha-hairpin"]
+  def getfragments
+    @fragment_names = ["Helix-Strand-Helix fragment","EF-Tu binding fragment"]
+    @short_descriptions = ["A helix-strand-helix fragment common to three folds", "EF-Tu binding alpha-hairpin"]
     @descriptions = ["The Histone fold, the N-terminal substrate recognition domain of Clp/Hsp100 proteins and the helical part of the extended AAA+ ATPase domain contain a homologous helix-strand-helix motif (HSH). The HSH motif  probably gave rise to a domain in both Hsp100 and AAA+ proteins. The histone fold arose subsequently from the latter through a 3D domain-swapping event.", "Elongation Factor Ts and Ribosomal Protein L7/12 contain a common EF-Tu binding helix-turn-helix motif. The motif is remarkably similar with respect to fold, bulkiness, and charge distribution."]
     @pics= ["Helix-Strand-Helix","EF-Tu_binding"]
   end
 
-  def getstructmotifs
-    @motif_names = ["Ankyrin repeat","Beta-propeller blade"]
-    @short_descriptions = ["33-residue alpha-hairpin motif", "4-stranded beta-sheet motif"]
+  def getstructfragments
+    @fragment_names = ["Ankyrin repeat","Beta-propeller blade"]
+    @short_descriptions = ["33-residue alpha-hairpin fragment", "4-stranded beta-sheet fragment"]
     @descriptions = ["Fehlt noch", "Fehlt noch"]
     @pics= ["Bild2","Bild1"]
   end
@@ -109,7 +110,7 @@ in at least two folds."
 
   def getoccurrences
     @scop_id = ["a.174.1.1", "c.37.1.20", "a.22.1.1","a.22.1.2", "a.22.1.3", "a.22.1.4"]
-    @superfam = ["Double Clp-N motif", "Extended AAA-ATPase domain", "Nucleosome core histones", "Archaeal histone", "TBP-associated factors, TAFs", "Bacterial histone-fold protein"]
+    @superfam = ["Double Clp-N fragment", "Extended AAA-ATPase domain", "Nucleosome core histones", "Archaeal histone", "TBP-associated factors, TAFs", "Bacterial histone-fold protein"]
     @pdb_applet= ["appleta.174.1", "appletc.37.1", "appleta.22.1", "appleta.22.1", "appleta.22.1", "appleta.22.1", "appleta.22.1"]
   end
 
@@ -127,10 +128,11 @@ in at least two folds."
   end
 
   def keyword
-    @subitem = ["mo", "ke"]
-    @subitem_names = ["motifs", "keywords"]
+    getlinks
+    @color = params['color'] ? params['color'] : "br"
+    getsubitems
     @coloring = params['coloring'] ? params['coloring'] : "ke"
-    getmotifs
+    getfragments
   end
 
 end

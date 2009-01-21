@@ -6,12 +6,12 @@
 
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
-<p style="font-size:14px; font-weight:bold;">Motifs</p>
+<p style="font-size:14px; font-weight:bold;">Fragments</p>
 <table border="0" width="100%">
     <% for i in 0...1%>
       <tr>
         <td style="font-size:12px; font-weight:bold; width:25%">
-          <%=@motif_names[i]%>
+          <%=@fragment_names[i]%>
         </td>
         <td style="font-size:12px; width:75%" align="justify">
           <%=@descriptions[i]%>
