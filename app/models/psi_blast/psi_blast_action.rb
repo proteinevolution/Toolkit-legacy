@@ -2,9 +2,9 @@ class PsiBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
   UTILS = File.join(BIOPROGS, 'perl')
-  
+
   include GenomesModule
-  
+
   attr_accessor :jobid, :rounds, :evalue, :evalfirstit, :alignments, :informat, :inputmode,
                 :sequence_input, :sequence_file, :mail, :otheradvanced, :std_dbs, :user_dbs, :taxids
 
@@ -15,20 +15,20 @@ class PsiBlastAction < Action
                                                     :on => :create })
 
   validates_jobid(:jobid)
-  
+
   validates_email(:mail)
-  
+
   validates_db(:std_dbs, {:personal_dbs => :user_dbs, :genomes_dbs => 'taxids', :on => :create})
-  
+
   validates_shell_params(:jobid, :mail, :evalue, :evalfirstit, :alignments, :rounds, :otheradvanced,
                          {:on => :create})
-  
+
   validates_format_of(:evalue, :evalfirstit, {:with => /(^\d+\.?\d*(e|e-|E|E-|\.)?\d+$)|(^\d+$)/, 
                                               :on => :create,
                                               :message => 'Invalid value!' })
-  
+
   validates_format_of(:alignments, :rounds, {:with => /^\d+$/, :on => :create, :message => 'Invalid value! Only integer values are allowed!'}) 
-  
+
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)
     @infile = @basename+".fasta"    
@@ -165,10 +165,10 @@ class PsiBlastAction < Action
     # use nr70f for all but last round?
     if (@rounds.to_i > 1 && @fastmode == 'T')
       # first run with nr70f
-      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@basename}.psiblast_tmp -d \"#{DATABASES}/standard/nr70f\" #{@alignment} -I T -C #{@basename}.ksf #{@other_advanced} &> #{job.statuslog_path}"
-      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j 1 -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -R #{@basename}.ksf #{@other_advanced} &> #{job.statuslog_path}"
+      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@basename}.psiblast_tmp -d #{DATABASES}/standard/nr70f #{@alignment} -I T -C #{@basename}.ksf #{@other_advanced} &> #{job.statuslog_path}"
+      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j 1 -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@outfile} -d #{@db_path} -I T -R #{@basename}.ksf #{@other_advanced} &> #{job.statuslog_path}"
     else
-      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@outfile} -d \"#{@db_path}\" #{@alignment} -I T #{@other_advanced} &> #{job.statuslog_path}"
+      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@outfile} -d #{@db_path} #{@alignment} -I T #{@other_advanced} &> #{job.statuslog_path}"
     end
     
     ### KEEPING FORMER ROUNDS

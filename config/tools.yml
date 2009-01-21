@@ -353,9 +353,3 @@
   - member
   - internal
   - external
-- name: gdpred
-  title: GDpred
-  title_long: GDpred
-  section: secstruct
-  active: 
-  - internal
