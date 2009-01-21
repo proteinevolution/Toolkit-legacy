@@ -104,7 +104,7 @@ in at least two folds."
 
 
   def getkeywords
-    @keywords = ["DNA-binding", "Alpha-Beta-Alpha", "Helix-Strand-Helix"," Protein-binding", "Protein-Protein interaction", "Helix-Turn-Helix", "Structural Repeat"]
+    @keywords = ["DNA-binding", "Alpha-Beta-Alpha", "Helix-Strand-Helix", "Protein-Protein interaction", "Helix-Turn-Helix", "Structural Repeat"]
     @keywd_description = ["Binds SS/DS DNA in specific or non-specific way", "", "", "", "", "", ""]
   end
 
