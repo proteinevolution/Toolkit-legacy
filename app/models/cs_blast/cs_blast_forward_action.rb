@@ -36,7 +36,7 @@ class CsBlastForwardAction < Action
       logger.debug "result page!"
       infile = @basename + ".csblast"
       @res = IO.readlines(infile).map {|line| line.chomp}    
-      
+     
       @hits_start = @res.rindex(HITLIST_START_IDENT)+2
       @hits_end = @res.size-2 - @res[@hits_start..-1].reverse.rindex(HITLIST_END_IDENT)
       hit_lines = @res[@hits_start..@hits_end]
@@ -48,7 +48,7 @@ class CsBlastForwardAction < Action
         end
         @hits = []
         hit_lines.each do |hit_line|
-          hit_line.scan(/<a href = \#(\d+)>\s*\d+<\/a>\s+(\d+.*)$/) do |name, eval|
+          hit_line.scan(/<a href = \#(\d+)>\s*\d+<\/a>\s+(.*)$/) do |name, eval|
             if (eval.to_f < hitsevalue.to_f)
               @hits << name
             end
