@@ -13,8 +13,11 @@
       self.queue_job.update_status
       
       tries = 0
-#     command = "#{QUEUE_DIR}/qsub -l h_vmem=6G #{self.wrapperfile}"
-     command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
+      if LOCATION == "Tuebingen" && RAILS_ENV == "development"
+        command = "#{QUEUE_DIR}/qsub -l h_vmem=6G #{self.wrapperfile}"
+      else
+        command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
+      end
       res = `#{command}`.chomp
       self.qid = res.gsub(/Your job (\d+) .*$/, '\1')
       while (!$?.success? && tries < 3)
