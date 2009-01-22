@@ -616,7 +616,6 @@ class HhpredJob  < Job
          # line[b].sub!(/^(.* PDB:\s*)((\S+[^:]{0,1}\s+)+)/,"")
           left = $1
           middle = $2
-          l = ""
           line[b].sub!(/^([\s\S]*PDB:\s*)((\S+[\^:]{0,1}\s*)+)/,"")
           middle.sub!(/(\S\S\S\S)(\S*)/, "<a href=\"http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=\\1 \" target=\"_blank\" title=\"PDB\"> \\1 \\2<\/a>")# link to PDB
           line[b] =left+middle+line[b]
