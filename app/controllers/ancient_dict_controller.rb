@@ -2,6 +2,7 @@ class AncientDictController < ToolController
 
 # definitions of the different rhtml pages
   def browse
+    createfragments
     getlinks
     getsubitems
     @color = params['color'] ? params['color'] : "br"
@@ -90,6 +91,15 @@ in at least two folds."
   end
 
 # functions
+
+  def createfragments
+    mysql_frag = DAP_fragments.new
+    mysql_frag.fragment_name = "Helix-Strand-Helix fragment"
+    mysql_frag.save
+    mysql_frag.fragment_name = "EF-Tu binding fragment"
+    mysql_frag.save
+  end
+
   def getlinks
     @shortlinks = ["in", "br", "up"]
     @links = ["index", "browse", "update"]
@@ -104,7 +114,8 @@ in at least two folds."
   end
 
   def getfragments
-    @fragment_names = ["Helix-Strand-Helix fragment","EF-Tu binding fragment"]
+      @fragment_names = DAP_fragments.find(:all)
+#    @fragment_names = ["Helix-Strand-Helix fragment","EF-Tu binding fragment"]
     @short_descriptions = ["A helix-strand-helix fragment common to three folds", "EF-Tu binding alpha-hairpin"]
     @descriptions = ["The Histone fold, the N-terminal substrate recognition domain of Clp/Hsp100 proteins and the helical part of the extended AAA+ ATPase domain contain a homologous helix-strand-helix motif (HSH). The HSH motif  probably gave rise to a domain in both Hsp100 and AAA+ proteins. The histone fold arose subsequently from the latter through a 3D domain-swapping event.", "Elongation Factor Ts and Ribosomal Protein L7/12 contain a common EF-Tu binding helix-turn-helix motif. The motif is remarkably similar with respect to fold, bulkiness, and charge distribution."]
     @pics= ["Helix-Strand-Helix","EF-Tu_binding"]
