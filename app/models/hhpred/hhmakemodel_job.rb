@@ -38,15 +38,18 @@ class HhmakemodelJob  < Job
     program = ""
     coloring = "onlySS"
     hhcluster = false
-    makemodel = false
+    makemodel = false 
 
     coloring = controller_params[:mode] ? controller_params[:mode] : 'onlySS'
     program = controller_params[:action]
     if (!actions.first.flash.nil? && !actions.first.flash['hhcluster'].nil?)
       hhcluster = true
     end
-    
-    @results.push("<div id=\"hitlist_img\">\n")
+
+    @results.push("<p><br></p>")
+    @results.push("<input class=\"checkbutton\" id=\"hitlist_btn\" type=\"button\" value=\"Show graphical overview of hits\" onclick=\"toggle_hitlist(); \">\n")
+    @results.push("<p><br></p>")
+    @results.push("<div id=\"hitlist_img\" style=\"display:none;\">\n")    
     
     jobDir = job_dir 
     
@@ -73,7 +76,10 @@ class HhmakemodelJob  < Job
     neff = "?"
     command=""
     commandrealign =""
-    queryline=""
+    remarksingle =""
+    singleTemp=""
+    multiTemp =""
+    queryline =""
     paramline =""
     
     line.each do  |a| 
@@ -90,6 +96,11 @@ class HhmakemodelJob  < Job
         command = a
       elsif  a=~ /^Command.*hhrealign/  
         commandrealign = a
+      elsif  a=~ /^Remark.*single.*\:(.*)$/
+        remarksingle = $1
+	singleTemp = $1
+      elsif  a=~ /^Remark.*multiple.*\:(.*)$/
+        multiTemp = $1
       elsif  a=~/^\s*$/ 
         break
       end 
@@ -493,9 +504,12 @@ class HhmakemodelJob  < Job
           createmodel_diabled_checkboxes += "#{checkbox_counter},"
         end
         
-        #line[b] = "<input style=\"margin: 0px; padding: 0px;\" type=\"checkbox\" name=\"hit_checkbox#{checkbox_counter}\" id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"javascript:change(#{m}, 0)\"/>#{line[b]}"
-        line[b] = "<input style=\"margin: 0px; padding: 0px;\" type=\"checkbox\"    id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{@resultcounter+m-1}').checked = this.checked\">#{line[b]}"
-        
+	if remarksingle =~ /\s+#{m}\s+/
+           line[b] = "<input style=\"margin: 0px; padding: 0px;\" type=\"checkbox\"    id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" checked = \"true\" onclick=\"document.getElementById('hit_checkbox#{@resultcounter+m-1}').checked = this.checked; user_selected_templates()\">#{line[b]}"  
+	else 
+	  line[b] = "<input style=\"margin: 0px; padding: 0px;\" type=\"checkbox\"    id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{@resultcounter+m-1}').checked = this.checked; user_selected_templates()\">#{line[b]}"  
+        end
+
         checkbox_counter += 1
       end
       b+=1
@@ -999,20 +1013,22 @@ class HhmakemodelJob  < Job
           add_pubmed_logo(b,ucpdbcode, line, link_attr, logo_attr)
           
         end	
+ 
+#new: #######################################
+ 	if remarksingle =~ /\s+#{m}\s+/
+            line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"    id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" checked = \"true\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked; user_selected_templates()\">#{line[b]}"  
+ 	else 
+ 	  line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"  id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked; user_selected_templates()\"#{line[b]}"  
+         end 
+#old: #######################################
+#        line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"  id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked;\"#{line[b]}"
+
+#        elsif line[b] =~ /^>\S+/
+     
+#        line[b] = " <input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"   id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked;\"#{line[b]}"
+#############################################
         
-        #line[b] = "#{m}<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\" name=\"hit_checkbox#{checkbox_counter}\" id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"javascript:change(#{m}, 1)\"/>#{line[b]}"
-        line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"  id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked\"#{line[b]}"
-        
-        
-        checkbox_counter+=1
-        
-      elsif line[b] =~ /^>\S+/
-        
-        #line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\" name=\"hit_checkbox#{checkbox_counter}\" id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"javascript:change(#{m}, 1)\"/>#{line[b]}"
-        line[b] = " <input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"   id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked\"#{line[b]}"
-        
-        checkbox_counter+=1
-    
+        checkbox_counter+=1    
 		 
         ########################################################################################################
         # All other lines
@@ -1131,6 +1147,8 @@ class HhmakemodelJob  < Job
     @results.push("<BR><BR><i>PRODOM</i>: Bru, C. <i>et al.</i> (2005) The ProDom database of protein domain families: more emphasis on 3D. NAR 33: D212-215.") if (@cite_prodom  >0) 
     @results.push("<input type=\"hidden\" id=\"checkboxes\" name=\"checkboxes\" value=\"#{m}\" \>\n")
     @results.push("<input type=\"hidden\" id=\"createmodel_disabled_Checkboxes\" name=\"createmodel_disabled_Checkboxes\" value=\"#{createmodel_diabled_checkboxes}\" \>\n")
+    @results.push("<input type=\"hidden\" id=\"singleTemp\" name=\"singleTemp\" value=\"#{singleTemp}\" \>\n")
+    @results.push("<input type=\"hidden\" id=\"multiTemp\" name=\"multiTemp\" value=\"#{multiTemp}\" \>\n")
     #exit(0)
     
 end #end method

@@ -123,7 +123,7 @@ class ModellerAction < Action
       end
     end
     
-    # write the top-file		
+    # write the py-file		
     modeller_script = @basename + ".py"
     File.open(modeller_script, 'w') do |file|
       file.write("# Homology modeling by the automodel class\n")
@@ -132,10 +132,10 @@ class ModellerAction < Action
       file.write("log.verbose()\n")
       file.write("env = environ()                      # create a new MODELLER environment to build this model\n")
       file.write("# directories for input atom files\n")
-      file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{job.job_dir}'\n")
+      file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{job.job_dir}:#{job.parent.job_dir}'\n")
       file.write("a = automodel(env,\n")
       file.write("              alnfile  = '#{@infile}',    # alignment filename\n")
-      file.write("              knowns   = (#{knowns}),       # codes of the templates\n")
+      file.write("              knowns   = (#{knowns}),     # codes of the templates\n")
       file.write("              sequence = '#{@seq_name}')  # code of the target\n")
       file.write("a.starting_model= 1                       # index of the first model\n")
       file.write("a.ending_model = 1                        # index of the last model\n")
