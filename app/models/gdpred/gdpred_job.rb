@@ -1,10 +1,13 @@
 class GdpredJob < Job
   
+  @@majorTicks = 50
+  @@minorTicks    = 10
   @@linewidth = 80
   @@descr_width = 17
   @@metric_bgcolor = "#d9e0e0"
   @@helix_color = "#ff8284"
   @@sheet_color = "#739cff"
+  @@gd_color = "#04B404"
 
   @@export_ext = "export"
   def set_export_ext(val)
@@ -17,8 +20,8 @@ class GdpredJob < Job
   # export results
   def export
     query    = readQuery
-#    gdpred  = readGdpred
- #   psipred = readPsipred    
+    gdpred  = readGdpred
+    psipred = readPsipred    
 
     data     = ""
     len      = query['sequence'].length
@@ -29,8 +32,8 @@ class GdpredJob < Job
       logger.debug("Stop: "+stop+"\n")
       data += sprintf("%-#{@@descr_width}s", "QUERY")
       data += query['sequence'][i..(stop-1)] + "\n"
-  #    data += export_ss("SS PSIPRED", psipred, i, stop-1)
-   #   data += export_ss("GDPRED", gdpred, i, stop-1)
+      data += export_ss("SS PSIPRED", psipred, i, stop-1)
+      data += export_ss("GDPRED", gdpred, i, stop-1)
     end
     logger.debug("DATA: "+data+"\n")                     
     data
@@ -49,14 +52,15 @@ class GdpredJob < Job
     logger.debug("Header: "+@header+"\n")
     logger.debug("Sequence: "+@sequence+"\n")
     @data = getData
-    #@legend = printLegend
+#    logger.debug("data: "+@data+"\n")
+    @legend = printLegend
   end
   
 
   def getData
     query = readQuery
-    #psipred = readPsipred
-   # gdpred = readGdpred
+    psipred = readPsipred
+    gdpred = readGdpred
 
     data = ""
 
@@ -64,8 +68,8 @@ class GdpredJob < Job
     data += "\n"+'<script type="text/javascript">' +"\n"
     data += 'initInfo(); '+"\n"
     data += 'RESIDUES="' +query['sequence']+'"; '+"\n"
-  #  data += 'PSIPRED_CONF=new Array'+toJSArray( psipred['conf'] )+";\n"
-   # data += 'JNET_CONF=new Array'+toJSArray( jnet['conf'] )+";\n"
+    data += 'PSIPRED_CONF=new Array'+toJSArray( psipred['conf'] )+";\n"
+    #data += 'GD_CONF=new Array'+toJSArray( gdpred['pos'] )+";\n"
     data += '</script>' +"\n"
 
 
@@ -80,8 +84,8 @@ class GdpredJob < Job
       data += "<span style=\"background-color:#{@@metric_bgcolor};\">"+getMetricTicks(i, stop)+"</span>\n"
       data += printSEQHTML(query['sequence'].split(//),"aa",i,stop)
 
-   #   data += printSSHTML("SS PSIPRED", "psipred", psipred, i, stop)
-    #  data += printGDHTML("GDPRED", "gdpred", gdpred, i, stop)
+      data += printSSHTML("SS PSIPRED", "psipred", psipred, i, stop)
+      #data += printGDHTML("GDPRED", "gdpred", gdpred, i, stop)
 
       data += "\n"
       i += @@linewidth
@@ -90,7 +94,9 @@ class GdpredJob < Job
   end
 
   def printLegend
+    ret ="";
     ret += "<span>SS = </span><span style=\"background-color: #{@@helix_color};\"> Alpha-Helix </span><span style=\"background-color: #{@@sheet_color};\"> Beta-Sheet </span><span> Secondary Structure</span></br>"
+    ret += "<span>GD = </span><span style=\"background-color: #{@@gd_color};\"> GD Box </span></br>"
 
   end
 
@@ -119,6 +125,22 @@ class GdpredJob < Job
     data += "\n"
     data
   end
+
+  def printGDHTML(name, id_name, hash, a, b)
+  if( hash[0].nil?|| hash[0]=="") then return "" end
+    data = ""
+    data += sprintf("<span>%-#{@@descr_width}s</span>", name)
+    a.upto(b-1){ |j|
+      if(hash['pos'][j].chr=="X")
+        data += "<span id=\"#{j}#{id_name}\"style=\"background-color: #{@@gd_color};\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['pos'][j].chr}</span>"
+      else
+        data += "<span id=\"#{j}#{id_name}\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['pos'][j].chr}</span>"
+      end
+    }
+    data += "\n"
+    data
+  end
+
 
   def readQuery
     if( !File.exists?( self.actions[0].flash['queryfile'] ) ) then return {} end
@@ -149,6 +171,36 @@ class GdpredJob < Job
     end
     ret['pred'].gsub!(/C/, " ")
     ret
+  end
+
+  def readGdpred
+    if( !File.exists?( self.actions[0].flash['gdpredfile'] ) ) then return {} end
+    ret=Array.new
+    gd=Array.new
+    gdval=Array.new
+    ar = IO.readlines( self.actions[0].flash['gdpredfile'])
+    ar.each do |line|
+      tp=line.split(/\,/)
+      gd.push(tp[0])
+      gdval.push(tp[1])
+      logger.debug(gd)
+      logger.debug(gdval)
+      #ret = line.split(/\,/)
+      #logger.debug("GDPred: "+ret[0]+" und "+ret[1]+"\n")
+       end
+    ret.push(gd, gdval)
+    logger.debug(ret)
+    #ret['pos'].gsub!(/,/, " ")
+    ret
+  end
+
+
+  def min(a,b)
+    if( a<b ) then return a else return b end
+  end
+
+  def max(a,b)
+    if( a<b ) then return b else return a end
   end
 
   def getMetricPos(a,b)
@@ -192,17 +244,8 @@ class GdpredJob < Job
     ret
   end
 
-          
+end          
 
-  #your own data accessors for the result templates here! For example:
-  # attr_reader :some_results_data
-  
-  
-  # Overwrite before_results to fill you job object with result data before result display
-  # def before_results(controller_params)
-  #    @some_results_data = ">header\nsequence"
-  # end
   
   
   
-end
