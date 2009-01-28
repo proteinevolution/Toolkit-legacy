@@ -11,16 +11,23 @@ Link to predicted structure: <%= DOC_ROOTURL %>/modeller/results_model/<%= @para
 
 Thank You!
 Your PDBalert Team
+Gene Center Munich
+Ludwig-Maximilians-University Munich
+
+Reference: Agarwal, V., Remmert, M., Biegert, A., and Söding, J.  
+PDBalert: automatic, recurrent remote homology tracking and protein structure prediction.
+BMC Struc. Biol. 8:51, (2008). 
 _________________________________________________________________________________
 
 Notes: 
 A) When PDBalert confidently predicts a domain in a longer sequence, it is recommended to split the sequence at the boundaries of the discovered domain and upload the segments separately to PDBalert. Follow the given steps.
-   1) Redo a search with your sequence by clicking on 'Resubmit HMM' on the HHpred result page and changing the alignment mode to 'global'. Check if the new domain hit also appears with non-negligible probabilities in this global search.
-   2) Cut your sequence at the boundaries of the newly identified domain. Upload the two or three segments separately to PDBalert. If you can not determine the domain boundaries precisely, it may be useful to make the segments overlap by upto 30 residues.
+   1) Redo a search with your sequence by pressing 'Resubmit HMM' on the HHpred result page and changing the alignment mode to 'global'. Check if the new domain hit also appears with non-negligible probabilities in this global search.
+   2) Cut your sequence at the boundaries of the newly identified domain. Upload the two or three segments separately to PDBalert. If you can not determine the domain boundaries precisely, it may be useful to make the segments overlap by up to 30 residues.
 
-B) It is recommended that users create the models of protein structures themselves instead of using the automatically predicted structure by following given steps.
+B) The automatically predicted structure is only a first, rough model. It is recommended that users then build their model by hand for better reliability:
    1) Choose option 'Create Model' in the menu on the 'HHpred - Results' page.
    2) Select the template for structure prediction with 'Single Template model' 
    					OR
-      If more than one suitable template is available you may choose 'Multiple template model' and select templates on the 'HHpred makemodel - Results' page that appears after few minutes. Press 'Prepare for MODELLER' button.
+      If more than one suitable template is available you may choose 'Multiple template model' and select templates on the 'HHpred makemodel - Results' page that appears after a few minutes. Press 'Prepare for MODELLER' button.
    3) Put the MODELLER-key in the space provided and submit the job.
+   4) On the MODELLER results page, inspect the model, locate problematic region(s), press 'Resubmit', correct the query-to-template alignment on the input page, and submit again. Iterate until all problematic regions have been corrected.
