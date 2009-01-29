@@ -6,19 +6,44 @@
 
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
-<p style="font-size:14px; font-weight:bold;">Fragements</p>
+<p style="font-size:14px; font-weight:bold;">Fragments</p>
+
+<p style="font-size:13px; font-weight:bold;"><u><i>All Alpha</i></u></p>
+
 <table border="0" width="100%">
-  <% for i in 0...@fragment_names.length%>
+  <% for i in 0...@fragment_names.length-1%>
     <colgroup>
       <col width="25%">
       <col width="75%">
     </colgroup>
     <tr>
       <td style="font-size:12px; font-weight:bold;">
-        <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment"><%=@fragment_names[i]%></a>
+        <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment"><%=@fragment_names[1]%></a>
       </td>
       <td style="font-size:12px" align="justify">
-        <%=@short_descriptions[i]%>
+        <%=@short_descriptions[1]%>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+
+<p style="font-size:13px; font-weight:bold;"><u><i>All Beta</i></u></p>
+
+<p style="font-size:13px; font-weight:bold;"><u><i>Mixed</i></u></p>
+
+<table border="0" width="100%">
+  <% for i in 0...@fragment_names.length-1%>
+    <colgroup>
+      <col width="25%">
+      <col width="75%">
+    </colgroup>
+    <tr>
+      <td style="font-size:12px; font-weight:bold;">
+        <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment"><%=@fragment_names[0]%></a>
+      </td>
+      <td style="font-size:12px" align="justify">
+        <%=@short_descriptions[0]%>
       </td>
     </tr>
   <% end %>
