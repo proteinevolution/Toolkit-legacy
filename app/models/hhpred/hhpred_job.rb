@@ -51,6 +51,12 @@ class HhpredJob  < Job
       hhcluster = true
     end
 
+    logger.debug("PROGRAM: #{program}")
+
+    if program.eql?("results_makemodel") || program.eql?("histograms_makemodel")
+      makemodel = true
+    end
+
     @results.push("<div id=\"hitlist_img\">\n")
 
     jobDir = job_dir
@@ -294,7 +300,7 @@ class HhpredJob  < Job
     #################################################################################
     # profile_logos
 
-    if program.eql?( "histograms") && !File.exists?("#{basename}_1.png")
+    if (program.eql?("histograms") || program.eql?("histograms_makemodel")) && !File.exists?("#{basename}_1.png")
       system("tar -xzf #{basename}.tar.gz -C #{jobDir} &> /dev/null")
       logger.debug("tar -xzf #{basename}.tar.gz -C #{jobDir} &> /dev/null")
     elsif program.eql?( "results")
@@ -536,7 +542,7 @@ class HhpredJob  < Job
           line[b] += "<a href=\"#{DOC_ROOTURL}/hhcluster/makeHhpred/?id=#{hhcluster_id}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_HHpred_results.jpg\" alt=\"HHpred Results\" title=\"Show HHpred results\" #{logo_attr} height=\"30\"></a>\n"
         end
         # print image for profile logos
-        if  program.eql?( "histograms")
+        if (program.eql?("histograms") || program.eql?("histograms_makemodel"))
           line[b].chomp!
           if !makemodel
             line[b]+= "<a href=\"#{DOC_ROOTURL}/hhpred/results/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"></a>\n"

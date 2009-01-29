@@ -75,6 +75,8 @@ class HhpredController < ToolController
   end
   
   def histograms_makemodel
+    @mode = 'profile_logos'
+    @job.before_results(params)
     @widescreen = true
   end  
   
