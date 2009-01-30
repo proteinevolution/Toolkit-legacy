@@ -71,10 +71,12 @@ class HhpredController < ToolController
   def results_makemodel
     @widescreen = true
     @mode = params[:mode] ? params[:mode] : 'onlySS'
-    @js_onload = "select_first(1);"
+    #@js_onload = "select_first(1);"
   end
   
   def histograms_makemodel
+    @mode = 'profile_logos'
+    @job.before_results(params)
     @widescreen = true
   end  
   

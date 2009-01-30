@@ -16,7 +16,7 @@ class HhmakemodelAction < Action
     
     @hits = hits.split(' ')		
     @hits = @hits.uniq
-    @hits = @hits[0]
+    @hits = @hits.join(" ")
     
     @commands = []
   end
@@ -34,17 +34,18 @@ class HhmakemodelAction < Action
   def perform
     params_dump
     
-    if (@mode == 'cluster')
-      # hhmeta aufruden		
-      ####			@commands << "#{HH}/hhmeta.pl -v 2 -i #{@parent_basename}.hhr -o #{@basename} -pc -r '-local -shift 0 -pcb 3.5 -map -mapt 0.05 -nocons -nodssp -nopred' &> #{job.statuslog_path}"
-      @commands << "#{HH}/hhmeta.pl -v 3 -i #{@parent_basename}.hhr -o #{@basename} -pc -r '-realign -mapt 0.01' &> #{job.statuslog_path}"
-      
+    if (@mode == 'filter')
+      #old: @commands << "#{HH}/hhmeta.pl -v 2 -i #{@parent_basename}.hhr -o #{@basename} ... &> #{job.statuslog_path}"
+      @commands << "#{HH}/selectTemplates.pl -i #{@parent_basename} -o #{@basename} -mode 'm' &> #{job.statuslog_path}"      
       prepare_fasta_hhviz_histograms_etc
     else
-      # hhmakemodel aufrufen
-      @commands << "#{HH}/hhmakemodel.pl -v 2 -m #{@hits} -i #{@parent_basename}.hhr -pir #{@basename}.out"
+      #hhmakemodel aufrufen
+      #old: @commands << "#{HH}/hhmakemodel.pl -v 2 -m #{@hits} -i #{@parent_basename}.hhr -pir #{@basename}.out"
+      @commands << "#{HH}/checkTemplates.pl -i #{@parent_basename}.hhr -q #{@parent_basename}.a3m -pir #{@basename}.out -m #{@hits} &> #{job.statuslog_path}" 
     end    
     
+    prepare_fasta_hhviz_histograms_etc
+
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
