@@ -56,65 +56,15 @@
 </table>
 <br/>
 <br/>
-<!--<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Structure Superposition</p>
-<table border="0" style="width=100%">
-  <colgroup>
-    <col width="50%">
-    <col width="50%">
-  </colgroup>
-  <tr>
-    <td style="font-size:12px">
-      <a href="#" onclick="var win = window.open('<%= DOC_ROOTURL %>/ancient_dict/pdb_applet?file=<%= @page %>','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();"%style="margin: 5px 10px 10px 10px;"> Show PDB applet </a>
-    </td>
-    <td style="font-size:12px">
-      <a href="<%= @pdb_url %>">Download PDB-file</a>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-  </tr>
-</table>
-<br/>
-<br/>-->
 
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Sequence Alignment</p>
 
 <!--<p><%=@ali_file%></p>-->
-<p style="font-size:14px; font-weight:bold;"><font face="Courier"><%=@alignment%></font></p>
+<div class="alignres"><p style="font-size:14px; font-weight:bold;"><font face="Courier"><%=@alignment%></font></p></div>
 <!--<p><%=@test%></p>-->
+<br/>
+<br/>
 
-<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Sequence Alignment</p>
-<table border="0">
-  <colgroup>
-   <col width="20%">
-   <col width="20%">
-   <col width="8%">
-   <col width="8%">
-   <col width="4%">
-   <col width="40%">
-  </colgroup>
-  <% for i in 0...@seq_id.length%>
-    <tr>
-      <td style="font-size:12px">
-        <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=<%=@seq_id[i]%>"><%=@seq_id[i]%></a>
-      </td>
-      <td style="font-size:12px">
-        <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=@seq_scopid[i]%>"><%=@seq_scopid[i]%></a>
-      </td>
-      <td style="font-size:12px">
-        <%=@pos_beg[i]%>
-      </td>
-      <td style="font-size:12px">
-        <%=@pos_end[i]%>
-      </td>
-      <td style="font-size:12px;">
-        <font face="Courier">
-          <%=@sequence[i]%>
-        </font>
-      </td>
-    </tr>
-  <% end %>
-</table>
-<br/>
-<br/>
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
 <table border="0">
   <% for i in 0...@refs.length%>

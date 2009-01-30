@@ -155,7 +155,7 @@ in at least two folds."
     if (File.exists?(IMAGES + "/alignmentHelixStrandHelix.ali"))
         @test = true
     end
-    @alignment ="SFQRVLQRAVFHVQSSGRNEVTGANVLVAI\nLTAEILELAGNAARDNKKTRIIPRHLQLAV\nATEELGEKAAEYADEDGRKTVQGEDVEKAI\nFISFITSEASERCHQEKRKTINGEDILFAM\nYVTSILDDAKVYANHARKKTIDLDDVRLAT\nFIESVVTAACQLARHRKSSTLEVKDVQLHL\nKLKRIVQDAAKFMNHAKRQKLSVRDIDMSL\nFLENVIRDAVTYTEHAKRKTVTAMDVVYAL\nVFERIAGEASRLAHYNKRSTITSREIQTAV\nYLVALFEDTNLCAIHAKRVTIMPKDIQLAR\nLAIDILYRSAYAAQQNGRKHIAPEDVRKSS\nGELTLLRSARALAALEGATAVGRDHLKRVA\nDLANLVNEAALFAARGNKRVVSMVEFEKAK\nIAIRLTKRVRDMLTVVKADRINTDIVLKTM"
+    @alignment ="\sd1k6ka_\e\sa.174.1.1\e&nbsp;83&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;112&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SFQRVLQRAVFHVQSSGRNEVTGANVLVAI<br>\sd1kx5c_\e\s&nbsp;a.22.1.1\e&nbsp;58&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;87&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LTAEILELAGNAARDNKKTRIIPRHLQLAV<br>\sd1f1ea_\e\s&nbsp;a.22.1.2\e112&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;141&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ATEELGEKAAEYADEDGRKTVQGEDVEKAI<br>\sd1n1ja_\e\s&nbsp;a.22.1.3\e&nbsp;37&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;66&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FISFITSEASERCHQEKRKTINGEDILFAM<br>\sd1tafa_\e\s&nbsp;a.22.1.3\e&nbsp;34&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;63&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YVTSILDDAKVYANHARKKTIDLDDVRLAT<br>\sd1h3ob_\e\s&nbsp;a.22.1.3\e&nbsp;37&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;66&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIESVVTAACQLARHRKSSTLEVKDVQLHL<br>\sd1tafb_\e\s&nbsp;a.22.1.3\e&nbsp;39&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;68&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KLKRIVQDAAKFMNHAKRQKLSVRDIDMSL<br>\sd1kx5b_\e\s&nbsp;a.22.1.1\e&nbsp;61&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FLENVIRDAVTYTEHAKRKTVTAMDVVYAL<br>\sd1kx5d_\e\s&nbsp;a.22.1.1\e&nbsp;66&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;95&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VFERIAGEASRLAHYNKRSTITSREIQTAV<br>\sd1kx5a_\e\s&nbsp;a.22.1.1\e&nbsp;99&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;128&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YLVALFEDTNLCAIHAKRVTIMPKDIQLAR<br>\sd1fnna2\e\sc.37.1.20\e241&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;270&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LAIDILYRSAYAAQQNGRKHIAPEDVRKSS<br>\sd1g8pa_\e\sc.37.1.20\e273&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;302&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GELTLLRSARALAALEGATAVGRDHLKRVA<br>\sd1lv7a_\e\sc.37.1.20\e220&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;249&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DLANLVNEAALFAARGNKRVVSMVEFEKAK<br>\sd1in4a2\e\sc.37.1.20\e206&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;235&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IAIRLTKRVRDMLTVVKADRINTDIVLKTM"
     #if(@test)
      # if (File.exists?(@ali_file) && !File.zero?(@ali_file))
         #@alignment = ""
@@ -166,7 +166,8 @@ in at least two folds."
          #   @alignment += $1 + "\n"
          # end
         #end
-        @alignment.gsub!(/(\n)/, '<br>')
+        @alignment.gsub!(/(\s)/, '<a href="http://www.google.de">')
+	@alignment.gsub!(/(\e)/, '</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
         @alignment.gsub!(/([WYF]+)/, '<span style="background-color: #00a000;">\1</span>')
         @alignment.gsub!(/(C+)/, '<span style="background-color: #ffff00;">\1</span>')
         @alignment.gsub!(/([DE]+)/, '<span style="background-color: #c080ff;">\1</span>')
