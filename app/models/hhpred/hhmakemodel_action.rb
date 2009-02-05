@@ -44,8 +44,6 @@ class HhmakemodelAction < Action
       @commands << "#{HH}/checkTemplates.pl -i #{@parent_basename}.hhr -q #{@parent_basename}.a3m -pir #{@basename}.out -m #{@hits} &> #{job.statuslog_path}" 
     end    
     
-    prepare_fasta_hhviz_histograms_etc
-
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
