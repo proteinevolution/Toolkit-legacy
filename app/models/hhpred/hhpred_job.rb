@@ -1163,10 +1163,6 @@ def add_structure_database_logos(*params)
   href="http:\/\/www.ebi.ac.uk/msd-srv/atlas?id=#{pdbcode}"
   line[i-1] += "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_MSD.jpg\" alt=\"MSD\" title=\"MSD/EBI\" #{logo_attr} height=\"25\"></a>"
 
-  # Link to iMolTalk
-  href="http:\/\/protevo.eb.tuebingen.mpg.de\/iMolTalk\/pdb_information\/2\/PDB\/#{pdbcode}";
-  line[i-1] += "<a href=\"#{href}\" target=\"iMTContent\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_iMolTalk25.png\" alt=\"iMolTalk\" title=\"iMolTalk\" #{logo_attr}></a>";
-
   line[i-1] += "\n"
   return
 end
