@@ -2,7 +2,7 @@ class PcoilsAction < Action
   PCOILS = File.join(BIOPROGS, 'pcoils')
   UTILS = File.join(BIOPROGS, 'perl')
   HH = File.join(BIOPROGS, 'hhpred')
-  
+  COILSDIR = "COILSDIR=#{PCOILS}"
   attr_accessor :sequence_input, :sequence_file, :informat, :mail, :jobid
 
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
@@ -63,7 +63,8 @@ class PcoilsAction < Action
     # case run COILS (no Alignment)
     if (@inputmode == "0")
       ['14', '21', '28'].each do |size|
-        @commands << "#{PCOILS}/#{@program_for_matrix[@matrix.to_i]} -win #{size} -prof #{@infile} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
+        @commands << "export #{COILSDIR}"
+        @commands << "#{PCOILS}/run_Coils -f -win #{size} < #{@infile} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
       end
 
     # case run PCOILS (Run PSI-Blast or Use input alignment)
