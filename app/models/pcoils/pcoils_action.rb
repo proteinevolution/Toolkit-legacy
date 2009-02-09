@@ -64,7 +64,7 @@ class PcoilsAction < Action
     if (@inputmode == "0")
       ['14', '21', '28'].each do |size|
         @commands << "export #{COILSDIR}"
-        @commands << "#{PCOILS}/run_Coils -f -win #{size} < #{@infile} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
+        @commands << "#{PCOILS}/run_C -win #{size} < #{@infile} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
       end
 
     # case run PCOILS (Run PSI-Blast or Use input alignment)
