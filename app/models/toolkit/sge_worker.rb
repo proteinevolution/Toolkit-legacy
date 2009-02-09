@@ -13,7 +13,11 @@
       self.queue_job.update_status
       
       tries = 0
-      command = "#{QUEUE_DIR}/qsub -l h_vmem=6G #{self.wrapperfile}"
+      if LOCATION == "Tuebingen" && RAILS_ENV == "development"
+        command = "#{QUEUE_DIR}/qsub -l h_vmem=6G #{self.wrapperfile}"
+      else
+        command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
+      end
       res = `#{command}`.chomp
       self.qid = res.gsub(/Your job (\d+) .*$/, '\1')
       while (!$?.success? && tries < 3)
@@ -54,7 +58,12 @@
         # SGE options
         f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
         f.write '#$' + " -q #{queue}\n"
-        f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
+        if RAILS_ENV == "development"
+          if queue == "express.q"
+	    f.write '#$' + " -l express=TRUE\n"
+	  end
+	end
+	f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -o #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
 #        f.write '#$' + " -j y\n";

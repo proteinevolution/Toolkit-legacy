@@ -30,7 +30,7 @@ class CsBlastAction < Action
                          {:on=>:create})
 
   def before_perform
-         @basename = File.join(job.job_dir, job.jobid)
+    @basename = File.join(job.job_dir, job.jobid)
     @infile = @basename+".fasta"
     @outfile = @basename+".csblast"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
@@ -65,7 +65,7 @@ class CsBlastAction < Action
   def perform
     params_dump
 
-    @commands << "#{CSBLAST}/bin/csblast -i #{@infile} -D #{CSBLAST}/data/cluster.prf --blast-path #{BLAST}/bin/blastpgp -e #{@expect} -F #{@filter} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} &>#{job.statuslog_path}"
+    @commands << "#{CSBLAST}/bin/csblast -i #{@infile} -D #{CSBLAST}/data/clusters.prf --blast-path #{BLAST}/bin -e #{@expect} -F #{@filter} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} &>#{job.statuslog_path}"
     @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/fix_blast_errors.pl -i #{@outfile} &>#{@basename}.log_fix_errors"
     @commands << "#{UTILS}/blastviz.pl #{@outfile} #{job.jobid} #{job.job_dir} #{job.url_for_job_dir_abs} &> #{@basename}.blastvizlog";
