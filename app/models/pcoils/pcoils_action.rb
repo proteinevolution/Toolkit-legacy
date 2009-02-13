@@ -64,8 +64,9 @@ class PcoilsAction < Action
       @commands << "#{HH}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
       @commands << "#{PCOILS}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
 
+      @commands << "export #{COILSDIR}"
+
       ['14', '21', '28'].each do |size|
-        @commands << "export #{COILSDIR}"
         @commands << "#{PCOILS}/#{@program_for_matrix[@matrix.to_i]} -win #{size} < #{@buffer} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
       end
       @commands << "#{PCOILS}/prepare_coils_gnuplot.pl #{@basename} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28"
