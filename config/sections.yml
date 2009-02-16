@@ -16,7 +16,7 @@
 - name: secstruct
   title: 2ary Structure
   theme: blue
-  title_long: Secondary Structure Tools
+  title_long: Secondary Structure / Membrane Protein Prediction Tools
   active: true
 - name: tertstruct
   title: 3ary Structure
