@@ -48,7 +48,7 @@ class BlastclustAction < Action
     end
 	
     def perform
-      @commands << "#{BLAST}/blastclust -i #{@infile} -o #{@outfile} -p #{@norp} -L #{@lvalue} -b T -S #{@value}"
+      @commands << "#{BLAST}/blastclust -i #{@infile} -o #{@outfile} -p #{@norp} -L #{@lvalue} -b T -S #{@value} -e F"
       queue.submit(@commands)
     end
 

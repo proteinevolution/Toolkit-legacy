@@ -150,7 +150,13 @@ class ModellerAction < Action
       file.write("log.verbose()\n")
       file.write("env = environ()                      # create a new MODELLER environment to build this model\n")
       file.write("# directories for input atom files\n")
-      file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{job.job_dir}:#{job.parent.job_dir}'\n")
+      #file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{job.job_dir}:#{job.parent.job_dir}'\n")
+      parent_dir = ""
+      if !job.parent.nil?
+         parent_dir = ":#{job.parent.job_dir}"
+      end
+      file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{job.job_dir}#{parent_dir}'\n")
+
       file.write("a = automodel(env,\n")
       file.write("              alnfile  = '#{@infile}',    # alignment filename\n")
       file.write("              knowns   = (#{knowns}),     # codes of the templates\n")
