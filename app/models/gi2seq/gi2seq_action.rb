@@ -36,7 +36,7 @@ class Gi2seqAction < Action
     params_dump
 
    
-    @commands << "#{UTILS}/seq_retrieve.pl -i #{@infile} -o #{@outfile} -d #{@db_path} #{@unique} > #{@mainlog} 2> #{job.statuslog_path}"
+    @commands << "#{UTILS}/seq_retrieve.pl -i #{@infile} -o #{@outfile} -d \"#{@db_path}\" #{@unique} > #{@mainlog} 2> #{job.statuslog_path}"
  
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)

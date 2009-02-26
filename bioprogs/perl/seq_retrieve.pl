@@ -4,9 +4,7 @@
 # Usage:   seq_retrival.pl -i ident-file -o output-file -b blast-dir -d database-dir -m max-seqs -unique
 
 use strict;
-my @supportedDBs = ("nr_arc70f","nr_arc90","env90f","nr_eukf","nr_euk90","nr_euk90f","env","envf","env70f","nr70f","nr_arc70","nr_bac70f","nr_bac90f","nr_euk70","nr70","env70","pataa","nrf","nr_a\rcf","nr_bacf","nr_bac90","nr_euk70f","patnt","est_others","nr90","nr90f","nr_arc","nr_euk","nr","nr_arc90f","nr_bac","nr_bac70","env90","nt");
 
-my $rootdir=$ENV{TK_ROOT};
 my $infile;
 my $outfile;
 my $line;
@@ -14,7 +12,6 @@ my %id;
 my $num_fast = 1500;
 my $max_seqs = 100000;
 my $counter = 0;
-my $state = 0; 
 
 my $num_ident = 0;
 my $num_ident_unique = 0;
@@ -28,12 +25,13 @@ my %seqs;
 my $unique = "F";
 my $blast_dir = "/cluster/toolkit/production/bioprogs/blast";
 my $db_dir = "/cluster/toolkit/production/databases/standard";
-my $ruby_dir = "$rootdir/bioprogs/ruby/";
 
 # shall only ask to search a single database!
 #my $db = "'$db_dir/nre $db_dir/nt'";
 my $db = "'$db_dir/nre'";
-
+my @dbs;
+my @unsupported;
+my $rubydir = "/cluster/user/denis/toolkit/bioprogs/ruby";
 # check arguments
 if ( @ARGV < 2 ) {
 	error();
@@ -67,113 +65,107 @@ for ( my $j = 0 ; $j < @ARGV ; $j++ ) {
     }
 }
 
-### DB supported by cmd?#####                                                                                                                                                                        
-for (my $u = 0; $u< scalar(@supportedDBs);$u++){                                                                                                                                                    
-    if ($db eq "/cluster/user/denis/toolkit/databases/standard/$supportedDBs[$u]"){ 
-	
-	$state =1;                                                                                                                                                                                  
-	next;                                                                                                                                                                                       
-    }                                                                                                                                                                                               
-}           
-if $state == 1 ##if supported db!!!!!!!
-{
-    if ( !defined($infile) || $infile eq "" || !(-r $infile)) {
-	print("\nERROR: No or unreadable inputfile!!! \n\n");
-	error();
-	exit(1);
-    }
-    if (!defined($outfile) || $outfile eq "") {
-	print("\nERROR: No outputfile!!! \n\n");
-	error();
-	exit(1);
-    }
+#if ($db.length() > $db_dir.length()+7){
+ #   @dbs = split(/\s/, $db);
+  #  for(my $i = 0; $i>@dbs.length();$i++){
+	#if (($dbs[$i] =~ /Pfam-A.fasta/)  ||($dbs[$i] =~ /pdb_nr/) || ($dbs[$i] =~ /uniprot_sprot.fasta/) || ($dbs[$i] =~ /uniprot_trembl.fasta/) ){
+	 #   @unsupported = push(@unsupported,$dbs[$i]);
+#	}
+#    }
+#}
+
+ 
+
+if ( !defined($infile) || $infile eq "" || !(-r $infile)) {
+    print("\nERROR: No or unreadable inputfile!!! \n\n");
+    error();
+    exit(1);
+}
+if (!defined($outfile) || $outfile eq "") {
+    print("\nERROR: No outputfile!!! \n\n");
+    error();
+    exit(1);
+}
 
 # check for big input file
-    open (IN, "$infile" ) or die("Cannot open!");
-    my @array = <IN>;
-    close IN;
-    if (scalar(@array) > $num_fast) {
-	fast();
-	exit;
-    }                                                                                                                                          
-    
-    open (IN, "$infile" ) or die("Cannot open!");
-    open (OUT, ">$outfile") or die ("Cannot open!");
-    
-    while ($line = <IN>) {
+open (IN, "$infile" ) or die("Cannot open!");
+my @array = <IN>;
+close IN;
+if (scalar(@array) > $num_fast) {
+    fast();
+    exit;
+}
+
+open (IN, "$infile" ) or die("Cannot open!");
+open (OUT, ">$outfile") or die ("Cannot open!");
+
+while ($line = <IN>) {
+
+    if ($counter > $max_seqs) { last; }
+
+    $line =~ s/\s+/ /g;
+    $line =~ s/^\s+//g;
+    my @ids = split(/ /, $line);
+    foreach my $ident(@ids) {
+
+	$counter++;
+	$num_ident++;
+	my $tmp = $ident;
+	if ($ident =~ /gi\|(\d+)/ || $ident =~ /^\S*?\|(\S+?)\|/ || $ident =~ /^(\S+)\|/) {
+	    $ident = $1;
+	}
+	if ($unique eq "T") {
+	    if (exists $id{$ident}) {
+		next;
+	    } 
+	    $id{$ident} = 1;
+	    $num_ident_unique++;
+	}
+	my $command = "$blast_dir/fastacmd -d '$db' -s '$ident'";
+	$command = "ruby $rubydir/seq_retrieve_helper.rb '$db' '$ident'";
+	print "Command: $command\n";
+	my $ret = `$command`;
 	
-	if ($counter > $max_seqs) { last; }
-	
-	$line =~ s/\s+/ /g;
-	$line =~ s/^\s+//g;
-	my @ids = split(/ /, $line);
-	foreach my $ident(@ids) {
-	    
-	    $counter++;
-	    $num_ident++;
-	    my $tmp = $ident;
-	    if ($ident =~ /gi\|(\d+)/ || $ident =~ /^\S*?\|(\S+?)\|/ || $ident =~ /^(\S+)\|/) {
-		$ident = $1;
-	    }
-	    if ($unique eq "T") {
-		if (exists $id{$ident}) {
-		    next;
-		} 
-		$id{$ident} = 1;
-		$num_ident_unique++;
-	    }
-	    my $command = "";
-	    $command = "$blast_dir/fastacmd -d '$db' -s '$ident'";
-	    
-	    
-	    
-	    
-	    print "Command: $command\n";
-	    my $ret = `$command`;
-	    
-	    if ($ret eq "") {
-		print "Identifier $tmp not found!\n";
-		$num_unretrieve++;
+	if ($ret eq "") {
+	    print "Identifier $tmp not found!\n";
+	    $num_unretrieve++;
+	    next;
+ 	}
+	$num_extr++;
+
+	if ($unique eq "T") {
+	    $seq = $ret;
+	    $seq =~ s/^.*?\n//;
+	    if (exists $seqs{$seq}) {
 		next;
 	    }
-	    $num_extr++;
-	    
-	    if ($unique eq "T") {
-		$seq = $ret;
-		$seq =~ s/^.*?\n//;
-		if (exists $seqs{$seq}) {
-		    next;
-		}
-		$seqs{$seq} = 1;
-		$num_extr_unique++;
-	    }
-	    
-	    print OUT $ret;
-	    
+	    $seqs{$seq} = 1;
+	    $num_extr_unique++;
 	}
+
+	print OUT $ret;
+
     }
-    
-    close IN;
-    close OUT;
-    
-    print "\nSummary:\n";
-    
-    print "Number of given identifier: $num_ident\n";
-    if ($unique eq "T") {
-	print "Number of unique identifier: $num_ident_unique\n";
-    }
-    print "Number of unretrievable sequences: $num_unretrieve\n";
-    print "Number of extracted sequences: $num_extr\n";
-    if ($unique eq "T") {
-	print "Number of unique extracted sequences: $num_extr_unique\n";
-    }
-    
-    exit;
-}    
-else
-{    
-    system("$rootdir/converter.rb $infile $db $outfile") 
 }
+
+close IN;
+close OUT;
+
+print "\nSummary:\n";
+
+print "Number of given identifier: $num_ident\n";
+if ($unique eq "T") {
+    print "Number of unique identifier: $num_ident_unique\n";
+}
+print "Number of unretrievable sequences: $num_unretrieve\n";
+print "Number of extracted sequences: $num_extr\n";
+if ($unique eq "T") {
+    print "Number of unique extracted sequences: $num_extr_unique\n";
+}
+
+exit;
+
+
 
 
 #####################################################
