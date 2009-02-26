@@ -1,0 +1,13 @@
+<div id="jobsection">
+	<ul>
+		<li <%= params[:action].nil? || params[:action] == 'index' ? 'class="current"' : '' %>>
+			<%= link_to('Search database',{:action => 'index'}, {:onmouseover => "return overlib('Search Ancient Database');", :onmouseout => "return nd();"}) %>
+		</li>
+		<li <%= params[:action] == 'search' ? 'class="current"' : '' %>>
+			<%= link_to('Browse database',{:action => 'search'}, {:onmouseover => "return overlib('Browse Ancient Database');", :onmouseout => "return nd();"}) %>
+		</li>
+                <li <%= params[:action] == 'add' ? 'class="current"' : '' %>>
+                        <%= link_to('Add Entry',{:action => 'add'}, {:onmouseover => "return overlib('Add a new page of the dictionary');", :onmouseout => "return nd();"}) %>
+                </li>
+	</ul>
+</div>

@@ -179,3 +179,46 @@ function select_genomes() {
 
     }
 }
+
+function select_templates(val){
+    
+    var number = parseInt($('checkboxes').value, 10);
+   
+    if (val == 'single') {
+        deselect()
+	boxes = $('singleTemp').value;
+	boxes = boxes.replace(/ /i, "");
+	checkbox_idx = boxes.split(/ /);
+	for(j=0; j<=checkbox_idx.length; ++j){
+		idx = checkbox_idx[j]-1    
+		$('hit_checkbox'+idx).checked=true;
+		$('hit_checkbox'+(idx+number)).checked=true;			
+	}	
+    }
+    if (val == 'multi') {
+        deselect()
+	boxes = $('multiTemp').value;
+	boxes = boxes.replace(/ /i, "");
+	checkbox_idx = boxes.split(/ /);
+	for(j=0; j<=checkbox_idx.length; ++j){
+		idx = checkbox_idx[j]-1    
+		$('hit_checkbox'+idx).checked=true;
+		$('hit_checkbox'+(idx+number)).checked=true;		
+	}	
+    }   
+}
+
+function user_selected_templates(){
+    $('selectedtemplates_non').checked = true;
+}
+
+function toggle_hitlist(){
+
+	if( $('hitlist_btn').value=="Hide bar graph"){
+		Effect.Fade('hitlist_img');
+		$('hitlist_btn').value="Show graphical overview of hits";
+	}else{
+		Effect.Appear('hitlist_img');
+		$('hitlist_btn').value="Hide bar graph";
+	}
+}

@@ -151,6 +151,29 @@ h3 {
   padding: 2px 0px 4px 8px;
 }
 
+h3.search {
+  background-color: #F4EEDF;
+}
+h3.alignment {
+  background-color: #FFEECC;
+}
+h3.seqanal {
+  background-color: #CFE7B8;
+}
+h3.secstruct {
+  background-color: #E2EFF9;
+}
+h3.tertstruct {
+  background-color: #DCDCE7;
+}
+h3.classification {
+  background-color: #F1EBEB;
+}
+h3.utils {
+  background-color: #F3CFCF;
+}
+
+
 h4 {
   padding: 0;
   margin: 0px 0px 0px 8px;

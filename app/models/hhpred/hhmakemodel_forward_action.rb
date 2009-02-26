@@ -8,8 +8,9 @@ class HhmakemodelForwardAction < Action
 		
 		@commands = []
 		
-		# hhmakemodel aufrufen	
-		@commands << "#{HH}/hhmakemodel.pl #{@basename}.hhr -m #{@seq} -q #{@basename}.a3m -v 2 -pir #{@basename}.forward 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+		#hhmakemodel aufrufen	
+		#old: @commands << "#{HH}/hhmakemodel.pl #{@basename}.hhr -m #{@seq} -q #{@basename}.a3m -v 2 -pir #{@basename}.forward 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+		@commands << "#{HH}/checkTemplates.pl -i #{@basename}.hhr -q #{@basename}.a3m -pir #{@basename}.forward -m #{@seq}  1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"    
 		
 		logger.debug "Commands:\n"+@commands.join("\n")
 		queue.submit(@commands)

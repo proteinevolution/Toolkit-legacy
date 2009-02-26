@@ -2,7 +2,7 @@
 
 <div id="toolsection">
 	<ul class="<%= @section['theme'] -%>">
-		<li><a href="<%= url_for(:action => 'search') %>" onmouseover="return overlib('Submit new job');" onmouseout="return nd();">New job</a></li>
+		<li><a href="<%= url_for(:action => 'index') %>" onmouseover="return overlib('Submit new job');" onmouseout="return nd();">New job</a></li>
 		<li><a href="<%= url_for(:action => 'destroy', :jobid => @job)%>" onmouseover="return overlib('Delete this job!');" onmouseout="return nd();">Delete</a></li>		
 	</ul>
 </div>
