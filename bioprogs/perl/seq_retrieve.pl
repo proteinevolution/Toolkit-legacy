@@ -65,15 +65,6 @@ for ( my $j = 0 ; $j < @ARGV ; $j++ ) {
     }
 }
 
-#if ($db.length() > $db_dir.length()+7){
- #   @dbs = split(/\s/, $db);
-  #  for(my $i = 0; $i>@dbs.length();$i++){
-	#if (($dbs[$i] =~ /Pfam-A.fasta/)  ||($dbs[$i] =~ /pdb_nr/) || ($dbs[$i] =~ /uniprot_sprot.fasta/) || ($dbs[$i] =~ /uniprot_trembl.fasta/) ){
-	 #   @unsupported = push(@unsupported,$dbs[$i]);
-#	}
-#    }
-#}
-
  
 
 if ( !defined($infile) || $infile eq "" || !(-r $infile)) {
@@ -87,13 +78,16 @@ if (!defined($outfile) || $outfile eq "") {
     exit(1);
 }
 
+
 # check for big input file
 open (IN, "$infile" ) or die("Cannot open!");
 my @array = <IN>;
 close IN;
 if (scalar(@array) > $num_fast) {
-    fast();
-    exit;
+    if (!($db =~ /Pfam-A-fasta/) || !($db =~ /pdb_nr/) || !($db =~ /uniprot_trembl.fasta/)  || !($db =~ /uniprot_sprot.fasta/)) {
+	fast();
+	exit;
+    }
 }
 
 open (IN, "$infile" ) or die("Cannot open!");
@@ -121,8 +115,15 @@ while ($line = <IN>) {
 	    $id{$ident} = 1;
 	    $num_ident_unique++;
 	}
-	my $command = "$blast_dir/fastacmd -d '$db' -s '$ident'";
-	$command = "ruby $rubydir/seq_retrieve_helper.rb '$db' '$ident'";
+	my $command = "";
+	if (($db =~ /Pfam-A-fasta/) ||($db =~ /pdb_nr/) || ($db =~ /uniprot_trembl.fasta/)  || ($db =~ /uniprot_sprot.fasta/)) {
+	    $command = "ruby $rubydir/seq_retrieve_helper.rb '$db' '$ident'";
+	}
+	else {
+	    $command = "$blast_dir/fastacmd -d '$db' -s '$ident'";
+	    print $command
+	}
+
 	print "Command: $command\n";
 	my $ret = `$command`;
 	
