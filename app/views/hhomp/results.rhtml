@@ -65,6 +65,12 @@
 </pre></strong>
 </div>
 
+<% if @job.hitlist.empty? %>
+
+<div class="row"><strong>No hits found!</strong></div>
+
+<% else %>
+
 <div class="row">
 <pre>   <%= @job.hitlist_header %></pre><br/>
 <% num = 0 %>
@@ -84,6 +90,8 @@
 <% end %>
 
 </div>
+
+<% end %>
 
 <%= hidden_field_tag("checkboxes", count, {:id => "checkboxes"}) %>
 <%= hidden_field_tag("createmodel_disabled_Checkboxes", @job.no_pdb, {:id => "createmodel_disabled_Checkboxes"}) %>

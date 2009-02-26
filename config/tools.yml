@@ -297,7 +297,7 @@
 - name: hhomp
   title: HHomp
   title_long: HHomp - Homology detection of OMPs by HMM-HMM comparison
-  section: search
+  section: secstruct
   active: 
   - member
   - internal
@@ -353,9 +353,3 @@
   - member
   - internal
   - external
-- name: gdpred
-  title: GDpred
-  title_long: GDpred
-  section: secstruct
-  active: 
-  - internal

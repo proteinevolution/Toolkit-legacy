@@ -78,8 +78,8 @@ class HhblastAction < Action
   end
 
   def process_alignment
-	 reformat("fas", "psi", @infile, @psi_infile)
-	 @commands << "#{HH}/hhmake -i #{@infile} -o #{@hhm_infile} -M first" 
+    @commands << "#{HH}/reformat.pl fas psi #{@infile} #{@psi_infile} -M first -r"
+    @commands << "#{HH}/hhmake -i #{@infile} -o #{@hhm_infile} -M first" 
   end
   
   # Prepare FASTA files for 'Show Query Alignemt', HHviz bar graph, and HMM histograms 
