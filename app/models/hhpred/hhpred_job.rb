@@ -278,11 +278,11 @@ class HhpredJob  < Job
       @results.push("Repeat PSI-BLAST iterations until you have at least 10 sequences (if possible). ")
       @results.push("Use this seed alignment to jump-start HHpred.</font><br><br>")
     elsif  prob >40 && prob  < 90 && rand() >0.8
-      @results.push("<br><font color='blue'>\n<b>Need help to find out how to validate your hits? Click <a href=\"\#\" title=\"HHpred FAQs\" onclick=\"openHelpWindow('hhpred_help_faq','correct match');\">here.</a></b>\n</font>")
+      @results.push("<br><font color='blue'>\n<b>Need help to find out how to validate your hits? Click <a href=\"\#\" title=\"HHpred FAQs\" onclick=\"openHelpWindow('/hhpred/help_faq#correct match');\">here.</a></b>\n</font>")
     elsif rand() > 0.8
       @results.push("<br><font color='darkgreen'> <b>Note: Corrupted alignments are the most common source of high-scoring false positives. Check the query alignment by clicking </font><font color='black'>Show Query Alignment</font><font color='darkgreen'> above. To check the template alignments use the <img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" height=\"15\" align=\"middle\" /> logos.</b></font>")
     elsif  rand() > 0.8
-      @results.push("<br><font color='green'> <b>Need help on how to interpret your results? Click <a href=\"\#\" title=\"HHpred Results\" onclick=\"openHelpWindow('hhpred_help_results');\">here.</a></b></font>")
+      @results.push("<br><font color='green'> <b>Need help on how to interpret your results? Click <a href=\"\#\" title=\"HHpred Results\" onclick=\"openHelpWindow('/hhpred/help_results');\">here.</a></b></font>")
     end
 
     ##############################################################################
