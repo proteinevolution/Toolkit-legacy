@@ -30,13 +30,13 @@ class ProtBlastAction < Action
                          {:on=>:create})
 
   def before_perform  
-	 @basename = File.join(job.job_dir, job.jobid)
+    @basename = File.join(job.job_dir, job.jobid)
     @infile = @basename+".fasta"
     @outfile = @basename+".protblast"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @commands = []
-
-    @program            = params['program'] == 'blastpgp' ? 'blastpgp' : "blastall -p #{params[program]}" ;
+    
+    @program            = params['program'] == 'blastpgp' ? 'blastpgp' : "blastall -p #{params['program']}"
     @expect             = params['evalue']
     @filter             = params['filter'] ? 'T' : 'F'
     @mat_param          = params['matrix']
