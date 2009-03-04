@@ -1,6 +1,8 @@
 class Gi2seqAction < Action
   UTILS = File.join(BIOPROGS, 'perl')
 
+  include GenomesModule
+
   attr_accessor :sequence_input, :sequence_file , :std_dbs, :user_dbs
  
   attr_accessor :jobid, :mail
@@ -23,6 +25,10 @@ class Gi2seqAction < Action
     @mainlog = @basename+".mainlog"
     @db_path = params['std_dbs'].nil? ? "" : params['std_dbs'].join(' ')
     @db_path = params['user_dbs'].nil? ? @db_path : @db_path + ' ' + params['user_dbs'].join(' ')
+    # getDBs is part of the GenomesModule                                                                                                                                                
+    gdbs = getDBs('pep')
+    logger.debug gdbs.join('\n')
+    @db_path = @db_path+ ' ' + gdbs.join(' ')
 
    
     params_to_file(@infile, 'sequence_input', 'sequence_file')
@@ -36,7 +42,7 @@ class Gi2seqAction < Action
     params_dump
 
    
-    @commands << "#{UTILS}/seq_retrieve.pl -i #{@infile} -o #{@outfile} -d \"#{@db_path}\" #{@unique} > #{@mainlog} 2> #{job.statuslog_path}"
+    @commands << "#{UTILS}/seq_retrieve.pl -i #{@infile} -o #{@outfile} -d \"#{@db_path}\" #{@unique} > #{@mainlog} 2> #{@mainlog}"
  
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
