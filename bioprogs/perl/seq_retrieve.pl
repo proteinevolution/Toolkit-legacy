@@ -55,8 +55,7 @@ for ( my $j = 0 ; $j < @ARGV ; $j++ ) {
     } elsif ($ARGV[$j] eq "-d") { 
 	$j++;
 	$db = $ARGV[$j];
-	#make two arrays
-	@dbs = split(/\s/,$db);
+      	@dbs = split(/\s/,$db);
     } elsif ( $ARGV[$j] eq "-unique") {
 	$unique = "T";
     } else {
@@ -66,7 +65,6 @@ for ( my $j = 0 ; $j < @ARGV ; $j++ ) {
 	exit(1);
     }
 }
-
 if ( !defined($infile) || $infile eq "" || !(-r $infile)) {
     print("\nERROR: No or unreadable inputfile!!! \n\n");
     error();
@@ -133,14 +131,15 @@ for (my $dbI = 0; $dbI < scalar(@dbs); $dbI++){
 	}
 	else {
 	    $command = "$blast_dir/fastacmd -d '$db' -s '$ident'";
-	    print $command
+	   # print $command."\n"
 	}
-	
-	print "Command: $command\n";
+#	print $command."\n";
+	print "";
+	#print "Command: $command\n";
 	my $ret = `$command`;
-	print $ret;
-	if (chomp($ret) eq "" || $ret eq "###") {
-	    print "Identifier $tmp not found!\n";
+	#print "$ret";
+	if ($ret eq "" || $ret eq "###" ) {
+	 #   print "Identifier $tmp not found!\n";
 	    $num_unretrieve++;
 	    next;
 	}
@@ -150,12 +149,12 @@ for (my $dbI = 0; $dbI < scalar(@dbs); $dbI++){
 	    my @newids = ();
 	    for (my $n = 0; $n < scalar(@ids); $n++){
 		if ($ids[$n] eq $ident){
-		    print "deleted $ident";
+		   # print "deleted $ident";
 		    $i = $i-1;
 		    next;
 		}
 		else{
-		    print "pushed $ident";
+		   # print "pushed $ident";
 		    push(@newids, $ids[$n]);
 		}
 	    }
@@ -179,7 +178,13 @@ for (my $dbI = 0; $dbI < scalar(@dbs); $dbI++){
 }    
 close IN;
 close OUT;
+
+for (my $i = 0; $i< scalar(@ids);$i++) {
+    print "unlocated identifier: ".$ids[$i]."\n";
+}
     
+$num_unretrieve = $num_ident-$num_extr;
+
 print "\nSummary:\n";
 
 print "Number of given identifier: $num_ident\n";
