@@ -50,12 +50,13 @@ class Seq_Retrieve_Helper
         found = true
         next
       elsif found && !(line=~/^>/)
-        seq = seq+line.chomp
+        seq = seq+line
       elsif found && line=~ /^>/
         break
       end
     end
   }
-  puts seq
+ 
+  print seq
   
 end

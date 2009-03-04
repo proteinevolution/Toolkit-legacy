@@ -55,6 +55,8 @@ for ( my $j = 0 ; $j < @ARGV ; $j++ ) {
     } elsif ($ARGV[$j] eq "-d") { 
 	$j++;
 	$db = $ARGV[$j];
+	#make two arrays
+	@dbs = split(/\s/,$db);
     } elsif ( $ARGV[$j] eq "-unique") {
 	$unique = "T";
     } else {
@@ -64,8 +66,6 @@ for ( my $j = 0 ; $j < @ARGV ; $j++ ) {
 	exit(1);
     }
 }
-
- 
 
 if ( !defined($infile) || $infile eq "" || !(-r $infile)) {
     print("\nERROR: No or unreadable inputfile!!! \n\n");
@@ -79,34 +79,46 @@ if (!defined($outfile) || $outfile eq "") {
 }
 
 
-# check for big input file
+if (scalar(@dbs) < 1){
+    $dbs[0] = $db
+}
+
+open (OUT, ">$outfile") or die ("Cannot open!");
+
 open (IN, "$infile" ) or die("Cannot open!");
 my @array = <IN>;
 close IN;
-if (scalar(@array) > $num_fast) {
-    if (!($db =~ /Pfam-A-fasta/) || !($db =~ /pdb_nr/) || !($db =~ /uniprot_trembl.fasta/)  || !($db =~ /uniprot_sprot.fasta/)) {
-	fast();
-	exit;
-    }
-}
 
 open (IN, "$infile" ) or die("Cannot open!");
-open (OUT, ">$outfile") or die ("Cannot open!");
-
+my @ids;
 while ($line = <IN>) {
-
-    if ($counter > $max_seqs) { last; }
+    if (scalar(@ids) > $max_seqs) { last; }
 
     $line =~ s/\s+/ /g;
     $line =~ s/^\s+//g;
-    my @ids = split(/ /, $line);
-    foreach my $ident(@ids) {
+    my @e = split(/ /, $line);
+    push(@ids, @e);
+}
+$num_ident = scalar(@ids);
 
-	$counter++;
-	$num_ident++;
+for (my $dbI = 0; $dbI < scalar(@dbs); $dbI++){
+    $db = $dbs[$dbI];
+    
+# check for big input file
+    if (scalar(@array) > $num_fast) {
+	if (!($db =~ /Pfam-A-fasta/) || !($db =~ /pdb_nr/) || !($db =~ /uniprot_trembl.fasta/)  || !($db =~ /uniprot_sprot.fasta/)) {
+	    fast();
+	exit;
+	}
+    }
+    open (IN, "$infile" ) or die("Cannot open!");
+
+ 
+    for (my $i = 0; $i< scalar(@ids);$i++) {
+	my $ident = $ids[$i]; 
 	my $tmp = $ident;
 	if ($ident =~ /gi\|(\d+)/ || $ident =~ /^\S*?\|(\S+?)\|/ || $ident =~ /^(\S+)\|/) {
-	    $ident = $1;
+		$ident = $1;
 	}
 	if ($unique eq "T") {
 	    if (exists $id{$ident}) {
@@ -123,35 +135,51 @@ while ($line = <IN>) {
 	    $command = "$blast_dir/fastacmd -d '$db' -s '$ident'";
 	    print $command
 	}
-
+	
 	print "Command: $command\n";
 	my $ret = `$command`;
-	
-	if ($ret eq "") {
+	print $ret;
+	if (chomp($ret) eq "" || $ret eq "###") {
 	    print "Identifier $tmp not found!\n";
 	    $num_unretrieve++;
 	    next;
- 	}
-	$num_extr++;
-
+	}
+	else{ 
+	    $num_extr++;
+	    #delete $ident from @ids
+	    my @newids = ();
+	    for (my $n = 0; $n < scalar(@ids); $n++){
+		if ($ids[$n] eq $ident){
+		    print "deleted $ident";
+		    $i = $i-1;
+		    next;
+		}
+		else{
+		    print "pushed $ident";
+		    push(@newids, $ids[$n]);
+		}
+	    }
+	    @ids = @newids;
+	}
+	
 	if ($unique eq "T") {
 	    $seq = $ret;
 	    $seq =~ s/^.*?\n//;
 	    if (exists $seqs{$seq}) {
-		next;
+		    next;
 	    }
 	    $seqs{$seq} = 1;
 	    $num_extr_unique++;
 	}
-
-	print OUT $ret;
-
+	
+	print OUT $ret."\n";
+	
     }
-}
 
+}    
 close IN;
 close OUT;
-
+    
 print "\nSummary:\n";
 
 print "Number of given identifier: $num_ident\n";
