@@ -53,12 +53,6 @@ class PcoilsAction < Action
 
     # case run COILS (no Alignment)
     if (@inputmode == "0")
-    # create the executables for the tool (running Coils) and the different matrices before runningthe tool
-      @commands << "gcc -lm -o #{PCOILS}/run_Coils #{PCOILS}/src/ncoils/ncoils.c #{PCOILS}/src/ncoils/read_log_matrix.c"
-      @commands << "gcc -lm -o #{PCOILS}/run_Coils_iterated #{PCOILS}/src/ncoils/ncoils_iterated.c #{PCOILS}/src/ncoils/read_log_matrix.c"
-      @commands << "gcc -lm -o #{PCOILS}/run_Coils_pdb #{PCOILS}/src/ncoils/ncoils_pdb.c #{PCOILS}/src/ncoils/read_log_matrix.c"
-      @commands << "gcc -lm -o #{PCOILS}/run_Coils_old #{PCOILS}/src/ncoils/ncoils_old.c #{PCOILS}/src/ncoils/read_log_matrix.c"
-
       @program_for_matrix = ['run_Coils_iterated', 'run_Coils_pdb', 'run_Coils', 'run_Coils_old']
 
       @commands << "#{HH}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
@@ -75,12 +69,6 @@ class PcoilsAction < Action
 
     # case run PCOILS (Run PSI-Blast or Use input alignment)
     else
-      # create the executables for the tool (running PCoils) and the different matrices before running the tool
-      @commands << "gcc -lm -o #{PCOILS}/run_PCoils #{PCOILS}/src/ncoils_profile.c #{PCOILS}/src/read_log_matrix_public.c"
-      @commands << "gcc -lm -o #{PCOILS}/run_PCoils_iterated #{PCOILS}/src/ncoils_profile_iterated.c #{PCOILS}/src/read_log_matrix_public.c"
-      @commands << "gcc -lm -o #{PCOILS}/run_PCoils_pdb #{PCOILS}/src/ncoils_profile_pdb.c #{PCOILS}/src/read_log_matrix_public.c"
-      @commands << "gcc -lm -o #{PCOILS}/run_PCoils_old #{PCOILS}/src/ncoils_profile_old.c #{PCOILS}/src/read_log_matrix_public.c"
-
       @program_for_matrix = ['run_PCoils_iterated', 'run_PCoils_pdb', 'run_PCoils', 'run_PCoils_old']
 
 
