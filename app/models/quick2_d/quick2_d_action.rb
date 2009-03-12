@@ -1,5 +1,4 @@
 class Quick2DAction < Action
-
   #constants
   REFORMAT    = File.join(BIOPROGS, 'perl', 'reformat.pl')
   BUILDALI    = File.join(BIOPROGS, 'hhpred', 'buildali.pl')

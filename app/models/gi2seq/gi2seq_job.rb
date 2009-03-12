@@ -28,17 +28,20 @@ class Gi2seqJob < Job
     num = res.index("Summary:") + 1
     
     for i in num...res.size
-      res[i].sub!(/(\d+)/, '')
-      num = $1.to_i
-      @summary += "<tr><td>" + res[i] + "</td><td align=\"right\">"
-      if (res[i] =~ /unretrievable/ && num > 0)
-        @summary += "<font style=\"color: red; font-weight: bold;\">" + num.to_s + "</font>\n"
-      else
-        @summary += num.to_s + "\n"
+      if !(res[i]=~ /\[fastacmd\]/ || res[i] =~/^\s/)
+       if res[i] =~/(\d+)/
+        res[i].sub!(/(\d+)/, '')
+        num = $1.to_i
+        @summary += "<tr><td>" + res[i] + "</td><td align=\"right\">"
+        if (res[i] =~ /unretrievable/ && num > 0)
+          @summary += "<font style=\"color: red; font-weight: bold;\">" + num.to_s + "</font>\n"
+        else
+          @summary += num.to_s + "\n"
+        end
+        @summary += "</td></tr>\n"
+       end
       end
-      @summary += "</td></tr>\n"
     end
-    
     @summary += "</table>\n"
     
     

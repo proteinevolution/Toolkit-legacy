@@ -223,8 +223,8 @@
   - internal
   - external
 - name: pcoils
-  title: PCOILS
-  title_long: PCOILS
+  title: COILS/PCOILS
+  title_long: COILS/PCOILS
   section: seqanal
   active: 
   - member
@@ -297,7 +297,7 @@
 - name: hhomp
   title: HHomp
   title_long: HHomp - Homology detection of OMPs by HMM-HMM comparison
-  section: search
+  section: secstruct
   active: 
   - member
   - internal

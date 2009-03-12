@@ -45,8 +45,17 @@ class HhmakemodelJob  < Job
     if (!actions.first.flash.nil? && !actions.first.flash['hhcluster'].nil?)
       hhcluster = true
     end
-    
-    @results.push("<div id=\"hitlist_img\">\n")
+
+    logger.debug("PROGRAM: #{program}")
+
+    if program.eql?("results_makemodel") || program.eql?("histograms_makemodel")
+      makemodel = true
+    end
+
+    @results.push("<p><br></p>")
+    @results.push("<input class=\"checkbutton\" id=\"hitlist_btn\" type=\"button\" value=\"Show graphical overview of hits\" onclick=\"toggle_hitlist(); \">\n")
+    @results.push("<p><br></p>")
+    @results.push("<div id=\"hitlist_img\" style=\"display:none;\">\n")    
     
     jobDir = job_dir 
     
@@ -73,7 +82,10 @@ class HhmakemodelJob  < Job
     neff = "?"
     command=""
     commandrealign =""
-    queryline=""
+    remarksingle =""
+    singleTemp=""
+    multiTemp =""
+    queryline =""
     paramline =""
     
     line.each do  |a| 
@@ -90,6 +102,11 @@ class HhmakemodelJob  < Job
         command = a
       elsif  a=~ /^Command.*hhrealign/  
         commandrealign = a
+      elsif  a=~ /^Remark.*single.*\:(.*)$/
+        remarksingle = $1
+	singleTemp = $1
+      elsif  a=~ /^Remark.*multiple.*\:(.*)$/
+        multiTemp = $1
       elsif  a=~/^\s*$/ 
         break
       end 
@@ -289,7 +306,7 @@ class HhmakemodelJob  < Job
     #################################################################################
     # profile_logos
     
-    if program.eql?( "histograms") && !File.exists?("#{basename}_1.png")
+    if (program.eql?("histograms") || program.eql?("histograms_makemodel")) && !File.exists?("#{basename}_1.png")
       system("tar -xzf #{basename}.tar.gz -C #{jobDir} &> /dev/null")
       logger.debug("tar -xzf #{basename}.tar.gz -C #{jobDir} &> /dev/null")
     elsif program.eql?( "results")
@@ -493,9 +510,12 @@ class HhmakemodelJob  < Job
           createmodel_diabled_checkboxes += "#{checkbox_counter},"
         end
         
-        #line[b] = "<input style=\"margin: 0px; padding: 0px;\" type=\"checkbox\" name=\"hit_checkbox#{checkbox_counter}\" id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"javascript:change(#{m}, 0)\"/>#{line[b]}"
-        line[b] = "<input style=\"margin: 0px; padding: 0px;\" type=\"checkbox\"    id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{@resultcounter+m-1}').checked = this.checked\">#{line[b]}"
-        
+	if remarksingle =~ /\s+#{m}\s+/
+           line[b] = "<input style=\"margin: 0px; padding: 0px;\" type=\"checkbox\"    id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" checked = \"true\" onclick=\"document.getElementById('hit_checkbox#{@resultcounter+m-1}').checked = this.checked; user_selected_templates()\">#{line[b]}"  
+	else 
+	  line[b] = "<input style=\"margin: 0px; padding: 0px;\" type=\"checkbox\"    id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{@resultcounter+m-1}').checked = this.checked; user_selected_templates()\">#{line[b]}"  
+        end
+
         checkbox_counter += 1
       end
       b+=1
@@ -531,7 +551,7 @@ class HhmakemodelJob  < Job
           line[b] += "<a href=\"#{DOC_ROOTURL}/hhcluster/makeHhpred/?id=#{hhcluster_id}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_HHpred_results.jpg\" alt=\"HHpred Results\" title=\"Show HHpred results\" #{logo_attr} height=\"30\"></a>\n"
         end
         # print image for profile logos
-        if  program.eql?( "histograms")
+        if (program.eql?("histograms") || program.eql?("histograms_makemodel"))
           line[b].chomp!
           if !makemodel
             line[b]+= "<a href=\"#{DOC_ROOTURL}/hhpred/results/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"></a>\n"
@@ -999,20 +1019,22 @@ class HhmakemodelJob  < Job
           add_pubmed_logo(b,ucpdbcode, line, link_attr, logo_attr)
           
         end	
+ 
+#new: #######################################
+ 	if remarksingle =~ /\s+#{m}\s+/
+            line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"    id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" checked = \"true\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked; user_selected_templates()\">#{line[b]}"  
+ 	else 
+ 	  line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"  id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked; user_selected_templates()\"#{line[b]}"  
+         end 
+#old: #######################################
+#        line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"  id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked;\"#{line[b]}"
+
+#        elsif line[b] =~ /^>\S+/
+     
+#        line[b] = " <input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"   id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked;\"#{line[b]}"
+#############################################
         
-        #line[b] = "#{m}<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\" name=\"hit_checkbox#{checkbox_counter}\" id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"javascript:change(#{m}, 1)\"/>#{line[b]}"
-        line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"  id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked\"#{line[b]}"
-        
-        
-        checkbox_counter+=1
-        
-      elsif line[b] =~ /^>\S+/
-        
-        #line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\" name=\"hit_checkbox#{checkbox_counter}\" id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"javascript:change(#{m}, 1)\"/>#{line[b]}"
-        line[b] = " <input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"   id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked\"#{line[b]}"
-        
-        checkbox_counter+=1
-    
+        checkbox_counter+=1    
 		 
         ########################################################################################################
         # All other lines
@@ -1131,6 +1153,8 @@ class HhmakemodelJob  < Job
     @results.push("<BR><BR><i>PRODOM</i>: Bru, C. <i>et al.</i> (2005) The ProDom database of protein domain families: more emphasis on 3D. NAR 33: D212-215.") if (@cite_prodom  >0) 
     @results.push("<input type=\"hidden\" id=\"checkboxes\" name=\"checkboxes\" value=\"#{m}\" \>\n")
     @results.push("<input type=\"hidden\" id=\"createmodel_disabled_Checkboxes\" name=\"createmodel_disabled_Checkboxes\" value=\"#{createmodel_diabled_checkboxes}\" \>\n")
+    @results.push("<input type=\"hidden\" id=\"singleTemp\" name=\"singleTemp\" value=\"#{singleTemp}\" \>\n")
+    @results.push("<input type=\"hidden\" id=\"multiTemp\" name=\"multiTemp\" value=\"#{multiTemp}\" \>\n")
     #exit(0)
     
 end #end method
@@ -1157,10 +1181,6 @@ def add_structure_database_logos(*params)
   # Link to EBI MSD
   href="http:\/\/www.ebi.ac.uk/msd-srv/atlas?id=#{pdbcode}"
   line[i-1] += "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_MSD.jpg\" alt=\"MSD\" title=\"MSD/EBI\" #{logo_attr} height=\"25\"></a>"
-  
-  # Link to iMolTalk
-  href="http:\/\/protevo.eb.tuebingen.mpg.de\/iMolTalk\/pdb_information\/2\/PDB\/#{pdbcode}";
-  line[i-1] += "<a href=\"#{href}\" target=\"iMTContent\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_iMolTalk25.png\" alt=\"iMolTalk\" title=\"iMolTalk\" #{logo_attr}></a>";
   
   line[i-1] += "\n"   
   return

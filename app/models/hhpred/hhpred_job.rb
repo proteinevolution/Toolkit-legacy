@@ -51,6 +51,12 @@ class HhpredJob  < Job
       hhcluster = true
     end
 
+    logger.debug("PROGRAM: #{program}")
+
+    if program.eql?("results_makemodel") || program.eql?("histograms_makemodel")
+      makemodel = true
+    end
+
     @results.push("<div id=\"hitlist_img\">\n")
 
     jobDir = job_dir
@@ -126,21 +132,21 @@ class HhpredJob  < Job
     command =~ /\s-ssm\s(\d+)\s/
 
     if  $1.to_i == 0
-      paramline+="score SS:no "
+      paramline = paramline+"score SS:no "
     elsif  $1.to_i ==2
-      paramline+="score SS:yes "
+      paramline = paramline+"score SS:yes "
     elsif  $1.to_i ==4
-      paramline +="score SS:pred-pred "
+      paramline = paramline+"score SS:pred-pred "
     else
-      paramline += "score SS:? "
+      paramline = paramline+ "score SS:? "
     end  # end  if
 
     if command =~ /\s-local/
-      paramline+="search:local "
+      paramline=paramline+"search:local "
     elsif command =~/\s-global/
-      paramline+="search:global "
+      paramline= paramline+"search:global "
     else
-      paramline +="search:? "
+      paramline =paramline+ "search:? "
     end
 
     if  !(commandrealign.eql?(""))
@@ -148,14 +154,14 @@ class HhpredJob  < Job
     end #end if
 
     if command =~ /\s-realign/ || command=~/\s-map/
-      paramline+="realign with MAP:yes "
+      paramline=paramline+"realign with MAP:yes "
       if command =~/\s-mapt (\S+)/
-        paramline+= "MAP threshold=#{$1} "
+        paramline=paramline+ "MAP threshold=#{$1} "
       end
     elsif  command =~ /(-norealign)/
-      paramline +="realign with MAP:no "
+      paramline =paramline+"realign with MAP:no "
     else
-      paramline += "realign with MAP:? #{$1}"
+      paramline =paramline+ "realign with MAP:? #{$1}"
     end # end  if
 
     # Introduce line breaks when necessary
@@ -186,12 +192,12 @@ class HhpredJob  < Job
 
     #Go to first empty line
     while  line[i]!~/^\s*$/
-      i+=1
+      i = i+1
     end
 
     # Go to next non-empty line
     while line[i]=~/^\s*$/
-      i+=1
+      i = i+1
     end
     ifirst = i
 
@@ -272,11 +278,11 @@ class HhpredJob  < Job
       @results.push("Repeat PSI-BLAST iterations until you have at least 10 sequences (if possible). ")
       @results.push("Use this seed alignment to jump-start HHpred.</font><br><br>")
     elsif  prob >40 && prob  < 90 && rand() >0.8
-      @results.push("<br><font color='blue'>\n<b>Need help to find out how to validate your hits? Click <a href=\"\#\" title=\"HHpred FAQs\" onclick=\"openHelpWindow('hhpred_help_faq','correct match');\">here.</a></b>\n</font>")
+      @results.push("<br><font color='blue'>\n<b>Need help to find out how to validate your hits? Click <a href=\"\#\" title=\"HHpred FAQs\" onclick=\"openHelpWindow('/hhpred/help_faq#correct match');\">here.</a></b>\n</font>")
     elsif rand() > 0.8
       @results.push("<br><font color='darkgreen'> <b>Note: Corrupted alignments are the most common source of high-scoring false positives. Check the query alignment by clicking </font><font color='black'>Show Query Alignment</font><font color='darkgreen'> above. To check the template alignments use the <img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" height=\"15\" align=\"middle\" /> logos.</b></font>")
     elsif  rand() > 0.8
-      @results.push("<br><font color='green'> <b>Need help on how to interpret your results? Click <a href=\"\#\" title=\"HHpred Results\" onclick=\"openHelpWindow('hhpred_help_results');\">here.</a></b></font>")
+      @results.push("<br><font color='green'> <b>Need help on how to interpret your results? Click <a href=\"\#\" title=\"HHpred Results\" onclick=\"openHelpWindow('/hhpred/help_results');\">here.</a></b></font>")
     end
 
     ##############################################################################
@@ -294,7 +300,7 @@ class HhpredJob  < Job
     #################################################################################
     # profile_logos
 
-    if program.eql?( "histograms") && !File.exists?("#{basename}_1.png")
+    if (program.eql?("histograms") || program.eql?("histograms_makemodel")) && !File.exists?("#{basename}_1.png")
       system("tar -xzf #{basename}.tar.gz -C #{jobDir} &> /dev/null")
       logger.debug("tar -xzf #{basename}.tar.gz -C #{jobDir} &> /dev/null")
     elsif program.eql?( "results")
@@ -362,9 +368,9 @@ class HhpredJob  < Job
       end
 
       if line[c] =~ /^\s*(\d+)\s+(\S+)\s+(\S+)\s+/
-        @resultcounter +=1
+        @resultcounter = @resultcounter+1
       end
-      c +=1
+      c = c+1
     end
 
     while b<line.length
@@ -463,7 +469,7 @@ class HhpredJob  < Job
           ucpdbcode = $1.upcase
           pdbc      = $1
           if $2 != "_"
-            pdbc+="%20#{$2}"
+            pdbc=pdbc+"%20#{$2}"
           end
 
           # Link to SCOP at family level
@@ -495,15 +501,15 @@ class HhpredJob  < Job
         end
 
         if template !~ /^(\d[a-z0-9]{3})_?([A-Za-z0-9]?)$/ &&  template !~ /^[defgh](\d[a-z0-9]{3})[a-z0-9_\.][a-z0-9_]$/
-          createmodel_diabled_checkboxes += "#{checkbox_counter},"
+          createmodel_diabled_checkboxes =createmodel_diabled_checkboxes+"#{checkbox_counter},"
         end
 
         #line[b] = "<input style=\"margin: 0px; padding: 0px;\" type=\"checkbox\" name=\"hit_checkbox#{checkbox_counter}\" id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"javascript:change(#{m}, 0)\"/>#{line[b]}"
         line[b] = "<input style=\"margin: 0px; padding: 0px;\" type=\"checkbox\"    id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{@resultcounter+m-1}').checked = this.checked\">#{line[b]}"
 
-        checkbox_counter += 1
+        checkbox_counter =checkbox_counter+ 1
       end
-      b+=1
+      b= b+1
 
     end
 
@@ -533,15 +539,15 @@ class HhpredJob  < Job
           line[b+1] =~ /^>(\S+)\s+(\S+)\s*([^.;,\[\(\{]*)/
           hhcluster_id = $1
           line[b].chomp!
-          line[b] += "<a href=\"#{DOC_ROOTURL}/hhcluster/makeHhpred/?id=#{hhcluster_id}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_HHpred_results.jpg\" alt=\"HHpred Results\" title=\"Show HHpred results\" #{logo_attr} height=\"30\"></a>\n"
+          line[b] = line[b]+ "<a href=\"#{DOC_ROOTURL}/hhcluster/makeHhpred/?id=#{hhcluster_id}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_HHpred_results.jpg\" alt=\"HHpred Results\" title=\"Show HHpred results\" #{logo_attr} height=\"30\"></a>\n"
         end
         # print image for profile logos
-        if  program.eql?( "histograms")
+        if (program.eql?("histograms") || program.eql?("histograms_makemodel"))
           line[b].chomp!
           if !makemodel
-            line[b]+= "<a href=\"#{DOC_ROOTURL}/hhpred/results/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"></a>\n"
+            line[b]=line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/results/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"></a>\n"
           else
-            line[b]+= "<a href=\"#{DOC_ROOTURL}/hhpred/results_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"></a>\n\n"
+            line[b] = line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/results_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"></a>\n\n"
           end
 
           mapname="#{jobid}_#{m}"
@@ -551,7 +557,7 @@ class HhpredJob  < Job
 
           # Advance to first line of alignment
           while j<line.length && line[j]!~/^\s*$/
-            j+=1
+            j=j+1
           end
 
           # Insert Image
@@ -561,30 +567,30 @@ class HhpredJob  < Job
             map = (File.open(mapfile, "r")).readlines
             #~ line.push(map[j])
             insert_array(line,j,map)
-            j += map.length
+            j =j+ map.length
 
           else
             line.delete_at(j)
           end
 
           # Delete all lines of alignment up to beginning of next alignment
-          j+=1
+          j=j+1
           while j<line.length && line[j]!~/^No\s*\d+/
             line.delete_at(j)
           end
         else
           line[b].chomp!
           if !makemodel
-            line[b] += "<a href=\"#{DOC_ROOTURL}/hhpred/histograms/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"></a>\n";
+            line[b] =line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/histograms/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"></a>\n";
           else
-            line[b] += "<a href=\"#{DOC_ROOTURL}/hhpred/histograms_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"></a>\n\n";
+            line[b] =line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/histograms_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"></a>\n\n";
           end
         end
 
         # Add logo for template alignment
         line[b].chomp!
         if !makemodel
-          line[b]+="<a href=\"#{DOC_ROOTURL}/hhpred/run/#{jobid}?jobaction=hhpred_showtemplalign&forward_controller=hhpred&forward_action=results_showtemplalign&alformat=fasta&hits=#{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" title=\"Show template alignment\" #{logo_attr} /></a>\n"
+          line[b]=line[b]+"<a href=\"#{DOC_ROOTURL}/hhpred/run/#{jobid}?jobaction=hhpred_showtemplalign&forward_controller=hhpred&forward_action=results_showtemplalign&alformat=fasta&hits=#{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" title=\"Show template alignment\" #{logo_attr} /></a>\n"
         end
 
         ########################################################################################################
@@ -606,18 +612,19 @@ class HhpredJob  < Job
         shortname.sub!(/\s+The following Pfam-B.*/, "")
         longname.sub!(/\s+The following Pfam-B.*/, "")
         if longname.split(/\s+/).length <= 1
-          longname+= "[TI]"
+          longname = longname + "[TI]"
         end
         wrap(line[b], maxlinelen, space_for_checkbox)
         #break_lines(line[b],maxlinelen,space_for_checkbox)
 
         # If list of PDB codes is given, link them to NCBIs MMDB
-        if line[b]=~/^(.* PDB:\s*)((\S+[^:]\s+)+)/s
-          line[b].sub!(/^(.* PDB:\s*)((\S+[^:]\s+)+)/s,"")
-          left=$1;
-          middle=$2;
-          middle.sub!(/(\S\S\S\S)(\S*)/, "<a href=\"http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{$1}\" target=\"_blank\" title=\"PDB\">#{$1+$2}<\/a>/g; # link to PDB")
-          line[b] = left+middle+line[b]
+        if line[b]=~/^([\s\S]*PDB:\s*)((\S+[\^:]{0,1}\s*)+)/
+         # line[b].sub!(/^(.* PDB:\s*)((\S+[^:]{0,1}\s+)+)/,"")
+          left = $1
+          middle = $2
+          line[b].sub!(/^([\s\S]*PDB:\s*)((\S+[\^:]{0,1}\s*)+)/,"")
+          middle.sub!(/(\S\S\S\S)(\S*)/, "<a href=\"http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=\\1 \" target=\"_blank\" title=\"PDB\"> \\1 \\2<\/a>")# link to PDB
+          line[b] =left+middle+line[b]
         end
         # Pfam-A identifier? (PF01234)
         if  template=~/^PF\d{5}/ || template=~/^pfam\d{5}/
@@ -630,13 +637,13 @@ class HhpredJob  < Job
           href="http:\/\/pfam.sanger.ac.uk\/family?acc=#{pfamid}"
           line[b].sub!(/#{template}/, "<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>/g")
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_Pfam.jpg\" alt=\"Pfam\" title=\"Pfam\" #{logo_attr} height=\"20\" ></a>\n"
+          line[b-1]= line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_Pfam.jpg\" alt=\"Pfam\" title=\"Pfam\" #{logo_attr} height=\"20\" ></a>\n"
 
           if  template=~/^pfam\d{5}/
             # Link to CDD at NCBI
             href="http:\/\/www.ncbi.nlm.nih.gov\/Structure\/cdd\/cddsrv.cgi?uid=#{template}";
             line[b-1].chomp!
-            line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_CDD.jpg\" alt=\"CDD\" title=\"CDD\" #{logo_attr} height=\"20\"></a>\n"
+            line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_CDD.jpg\" alt=\"CDD\" title=\"CDD\" #{logo_attr} height=\"20\"></a>\n"
           end
 
           add_inter_pro_link_logo(b, line, link_attr, logo_attr);
@@ -653,7 +660,7 @@ class HhpredJob  < Job
           # link to PRODOM domain
           line[b].sub!(/#{template}/, "<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_ProDom.jpg\" alt=\"ProDom\" title=\"ProDom\" #{logo_attr} height=\"20\"></a>\n"
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_ProDom.jpg\" alt=\"ProDom\" title=\"ProDom\" #{logo_attr} height=\"20\"></a>\n"
 
           # SMART identifier? (smart00382)
         elsif  template=~/^SM\d{5}/ || template=~/^smart\d{5}/
@@ -669,13 +676,13 @@ class HhpredJob  < Job
                                 href="http:\/\/dylan.embl-heidelberg.de\/smart\/do_annotation.pl?DOMAIN=#{smartid}&START=#{first}&END=#{last}&E_VALUE=#{evalue}&TYPE=SMART"
           line[b].sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>/")
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SMART.jpg\" alt=\"SMART\" title=\"SMART\" #{logo_attr} height=\"14\"></a>\n";
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SMART.jpg\" alt=\"SMART\" title=\"SMART\" #{logo_attr} height=\"14\"></a>\n";
 
           if  template=~/^smart\d{5}/
             # Link to CDD at NCBI
             href="http:\/\/www.ncbi.nlm.nih.gov\/Structure\/cdd\/cddsrv.cgi?uid=#{template}"
             line[b-1].chomp!
-            line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_CDD.jpg\" alt=\"CDD\" title=\"CDD\" #{logo_attr} height=\"20\"></a>\n";
+            line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_CDD.jpg\" alt=\"CDD\" title=\"CDD\" #{logo_attr} height=\"20\"></a>\n";
           end
 
           if (longname != nil && shortname != nil)
@@ -689,12 +696,12 @@ class HhpredJob  < Job
           href="http:\/\/www.ncbi.nlm.nih.gov\/COG\/old\/palox.cgi?#{template}";
           line[b].sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_COGs.png\" alt=\"COGs\" title=\"COGs\" #{logo_attr} height=\"25\"></a>\n"
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_COGs.png\" alt=\"COGs\" title=\"COGs\" #{logo_attr} height=\"25\"></a>\n"
 
           # Link to CDD at NCBI
           href="http:\/\/www.ncbi.nlm.nih.gov\/Structure\/cdd\/cddsrv.cgi?uid=#{template}"
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_CDD.jpg\" alt=\"CDD\" title=\"CDD\" #{logo_attr} height=\"25\"></a>\n"
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_CDD.jpg\" alt=\"CDD\" title=\"CDD\" #{logo_attr} height=\"25\"></a>\n"
 
           if longname != nil  && shortname != nil
             add_pubmed_logo(b,"#{shortname} #{longname}", line, link_attr, logo_attr)
@@ -707,12 +714,12 @@ class HhpredJob  < Job
           href="http:\/\/www.ncbi.nlm.nih.gov/COG/grace/shokog.cgi?#{template}"
           line[b].sub!(/#{template}/, "<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_COGs.png\" alt=\"KOGs\" title=\"KOGs\" #{logo_attr} height=\"25\"></a>\n"
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_COGs.png\" alt=\"KOGs\" title=\"KOGs\" #{logo_attr} height=\"25\"></a>\n"
 
           # Link to CDD at NCBI
           href="http:\/\/www.ncbi.nlm.nih.gov\/Structure\/cdd\/cddsrv.cgi?uid=#{template}";
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_CDD.jpg\" alt=\"CDD\" title=\"CDD\" #{logo_attr} height=\"25\"></a>\n"
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_CDD.jpg\" alt=\"CDD\" title=\"CDD\" #{logo_attr} height=\"25\"></a>\n"
 
           if longname != nil && shortname != nil
             add_pubmed_logo(b,"#{shortname} #{longname}", line, link_attr, logo_attr)
@@ -726,7 +733,7 @@ class HhpredJob  < Job
           href="http:\/\/www.ncbi.nlm.nih.gov\/Structure\/cdd\/cddsrv.cgi?uid=#{template}"
           line[b].sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_CDD.jpg\" alt=\"CDD\" title=\"CDD\" #{logo_attr} height=\"20\"></a>\n"
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_CDD.jpg\" alt=\"CDD\" title=\"CDD\" #{logo_attr} height=\"20\"></a>\n"
 
           if longname != nil && shortname != nil
             add_pubmed_logo(b,"#{shortname} #{longname}", line, link_attr, logo_attr)
@@ -740,7 +747,7 @@ class HhpredJob  < Job
           href="http:\/\/www.pantherdb.org\/panther\/family.do?clsAccession=#{template}"
           line[b].sub!(/#{template}/, "<a href=\"href\" target=\"_blank\">template<\/a>")
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_panther.gif\" alt=\"PANTHER\" title=\"PANTHER\" #{logo_attr} height=\"25\"></a>\n"
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_panther.gif\" alt=\"PANTHER\" title=\"PANTHER\" #{logo_attr} height=\"25\"></a>\n"
 
           add_inter_pro_link_logo(b, line, link_attr, logo_attr)
 
@@ -756,7 +763,7 @@ class HhpredJob  < Job
           href="http:\/\/www.tigr.org\/tigr-scripts\/CMR2\/hmm_report.spl?acc=#{template}&user=access&password=access"
           line[b].sub!(/#{template}/, "<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_tigr.gif\" alt=\"TIGRFAM\" title=\"TIGRFAM\" #{logo_attr} height=\"20\"></a>\n"
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_tigr.gif\" alt=\"TIGRFAM\" title=\"TIGRFAM\" #{logo_attr} height=\"20\"></a>\n"
 
           add_inter_pro_link_logo(b, line, link_attr, logo_attr)
 
@@ -773,7 +780,7 @@ class HhpredJob  < Job
           href="http:\/\/pir.georgetown.edu\/cgi-bin\/ipcSF?id=#{family}";
           line[b].sub!(/#{template}/, "<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_pirsf.png\" alt=\"PIRSF\" title=\"PIRSF\" #{logo_attr} height=\"20\"></a>\n"
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_pirsf.png\" alt=\"PIRSF\" title=\"PIRSF\" #{logo_attr} height=\"20\"></a>\n"
 
           add_inter_pro_link_logo(b, line, link_attr, logo_attr)
 
@@ -804,12 +811,12 @@ class HhpredJob  < Job
 
           # Logo to SUPERFAMILY at family level
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_supfam.gif\" alt=\"Superfamily\" title=\"Superfamily\" #{logo_attr} height=\"30\"></a>"
+          line[b-1]= line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_supfam.gif\" alt=\"Superfamily\" title=\"Superfamily\" #{logo_attr} height=\"30\"></a>"
 
           # Link/logo to SCOP
           href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{scopid}"
           line[b-1].chomp!
-          line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"></a>"
+          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"></a>"
 
           add_inter_pro_link_logo(b,line, link_attr, logo_attr)
           add_structure_database_logos(b,template,pdbcode, line, link_attr, logo_attr)
@@ -831,7 +838,7 @@ class HhpredJob  < Job
           href="http:\/\/cathwww.biochem.ucl.ac.uk\/latest\/class #{c}\/#{a}\/#{t}\/#{h}\/index.html"
           line[b].sub!(/#{template}/, "<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
           line[b-1].chomp!
-          line[b-1] += "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_cath.gif\" alt=\"CATH/Gene3D\" title=\"CATH/Gene3D\" #{logo_attr} height=\"20\"></a>\n";
+          line[b-1] =line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_cath.gif\" alt=\"CATH/Gene3D\" title=\"CATH/Gene3D\" #{logo_attr} height=\"20\"></a>\n";
 
           # Link to PDB
           href="http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}"
@@ -850,7 +857,7 @@ class HhpredJob  < Job
           templpdb  = nil
           pdbc      = $1
           if $2 != "_"
-            pdbc+="%20#{$2}"
+            pdbc=pdbc+"%20#{$2}"
           end
           @cite_scop=1
 
@@ -858,14 +865,14 @@ class HhpredJob  < Job
           if  querypdb != ""
             dirs=Dir.glob("#{DATABASES}/hhpred/new_dbs/scop*")
             templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
-            if !File.exists?( templpdb)
+            if !File.exists?(templpdb)
               dirs=Dir.glob("#{DATABASES}/hhcluster/scop25*")
               templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
             end
 
             if  File.exists?(templpdb)
               line[b-1].chomp!
-              line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /></a>\n"
+              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /></a>\n"
 
             else
               logger.debug("WARNING in #{$0}: Could not find pdb file for SCOP sequence #{template}")
@@ -881,7 +888,7 @@ class HhpredJob  < Job
 
             if  File.exists?(templpdb)
               line[b-1].chomp!
-              line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /></a>\n"
+              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /></a>\n"
 
             else
               logger.debug("WARNING in #{0}: Could not find pdb file for SCOP sequence #{template}")
@@ -896,7 +903,7 @@ class HhpredJob  < Job
 
             line[b].sub!(/#{shortname}/,"<a href=\"#{href}\" target=\"_blank\">#{shortname}<\/a>")
             line[b-1].chomp!
-            line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"></a>\n"
+            line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"></a>\n"
 
             # Link to PDB
             href="http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}"
@@ -919,7 +926,7 @@ class HhpredJob  < Job
             templpdb=dirs[dirs.length-1]+"/#{template}.pdb";
             if  File.exists?(templpdb)
               line[b-1].chomp!
-              line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /></a>\n"
+              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /></a>\n"
 
             else logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
 
@@ -929,7 +936,7 @@ class HhpredJob  < Job
             templpdb=dirs[dirs.length-1]+"/#{template}.pdb";
             if  File.exists?(templpdb)
               line[b-1].chomp!
-              line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /></a>\n"
+              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /></a>\n"
 
             else
               logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
@@ -945,7 +952,7 @@ class HhpredJob  < Job
             # Link to SCOP with pdb code
             href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/pdb.cgi?pdb=#{pdbcode}"
             line[b-1].chomp!
-            line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"></a>\n"
+            line[b-1]= line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"></a>\n"
           end
 
           # Link to PDB
@@ -969,7 +976,7 @@ class HhpredJob  < Job
             templpdb=dirs[dirs.length-1]+"/#{template}.pdb";
             if  File.exists?(templpdb)
               line[b-1].chomp!
-              line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /></a>\n"
+              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /></a>\n"
             else
               logger.debug("WARNING in #{0}: Could not find pdb file for PDB sequence #{template}")
               logger.debug("Path: #{templpdb}")
@@ -979,7 +986,7 @@ class HhpredJob  < Job
             templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
             if  File.exists?(templpdb)
               line[b-1].chomp!
-              line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /></a>\n"
+              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /></a>\n"
 
             else
               logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
@@ -997,7 +1004,7 @@ class HhpredJob  < Job
             # Link to SCOP with pdb code
             href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/pdb.cgi?pdb=#{pdbcode}"
             line[b-1].chomp!
-            line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"></a>\n"
+            line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"></a>\n"
           end
 
           add_structure_database_logos(b,template,pdbcode, line,link_attr, logo_attr)
@@ -1006,17 +1013,16 @@ class HhpredJob  < Job
         end
 
         #line[b] = "#{m}<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\" name=\"hit_checkbox#{checkbox_counter}\" id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"javascript:change(#{m}, 1)\"/>#{line[b]}"
-        line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"  id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked\"#{line[b]}"
+        line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"  id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked\">"+line[b]
 
-
-        checkbox_counter+=1
+        checkbox_counter=checkbox_counter+1
 
       elsif line[b] =~ /^>\S+/
 
         #line[b] = "<input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\" name=\"hit_checkbox#{checkbox_counter}\" id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"javascript:change(#{m}, 1)\"/>#{line[b]}"
-        line[b] = " <input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"   id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked\"#{line[b]}"
+        line[b] = " <input style=\"margin: 0px 5px; padding: 0px;\" type=\"checkbox\"   id=\"hit_checkbox#{checkbox_counter}\" value=\"#{m}\" onclick=\"document.getElementById('hit_checkbox#{checkbox_counter-@resultcounter}').checked = this.checked\">"+line[b]
 
-        checkbox_counter+=1
+        checkbox_counter=checkbox_counter+1
 
 
         ########################################################################################################
@@ -1051,7 +1057,6 @@ class HhpredJob  < Job
           seq.gsub!(/(E+)/) {|match|  match = "<span style=\"background-color: #b0b0ff;\">#{$1}<\/span>"}
           line[b].sub!(/#{old_seq}/,"#{seq}")
         end
-
         # Found a consensus line?
       elsif  line[b] =~ /\s*(Q|T) Cons(-\S+|ensus)\s+\d+\s+(\S+)/
         seq     = $3
@@ -1105,14 +1110,14 @@ class HhpredJob  < Job
         # Found a ss_conf line?
       elsif  line[b] =~ /\s*(Q|T) ss_/
       end
-      b +=1
+      b = b+1
 
     end #end while
     #~ @results.push("<font size = 16><b> Hier!</b></font><br><br><br><br>")
     b = ifirst
     while b< line.length
       @results.push(line[b])
-      b +=1
+      b = b+1
     end #end while
 
 
@@ -1153,21 +1158,18 @@ def add_structure_database_logos(*params)
 
   # Link to PDB
   href="http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}";
-  line[i-1] += "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_PDB.jpg\" alt=\"PDB\" title=\"PDB\" #{logo_attr} height=\"20\"></a>"
+  line[i-1] =line[i-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_PDB.jpg\" alt=\"PDB\" title=\"PDB\" #{logo_attr} height=\"20\"></a>"
 
   # Link to NCBI MMDB
   href="http:\/\/www.ncbi.nlm.nih.gov\/entrez\/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=#{ucpdbcode}";
-  line[i-1] += "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_MMDB.jpg\" alt=\"MMDB\" title=\"MMDB/NCBI\" #{logo_attr} height=\"20\"></a>"
+  line[i-1] =line[i-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_MMDB.jpg\" alt=\"MMDB\" title=\"MMDB/NCBI\" #{logo_attr} height=\"20\"></a>"
 
   # Link to EBI MSD
   href="http:\/\/www.ebi.ac.uk/msd-srv/atlas?id=#{pdbcode}"
-  line[i-1] += "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_MSD.jpg\" alt=\"MSD\" title=\"MSD/EBI\" #{logo_attr} height=\"25\"></a>"
+  line[i-1] =line[i-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_MSD.jpg\" alt=\"MSD\" title=\"MSD/EBI\" #{logo_attr} height=\"25\"></a>"
 
-  # Link to iMolTalk
-  href="http:\/\/protevo.eb.tuebingen.mpg.de\/iMolTalk\/pdb_information\/2\/PDB\/#{pdbcode}";
-  line[i-1] += "<a href=\"#{href}\" target=\"iMTContent\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_iMolTalk25.png\" alt=\"iMolTalk\" title=\"iMolTalk\" #{logo_attr}></a>";
+  line[i-1] =line[i-1]+ "\n"
 
-  line[i-1] += "\n"
   return
 end
 
@@ -1181,7 +1183,7 @@ def add_inter_pro_link_logo(*params)
   logo_attr = params[3]
   if line[i].sub!(/InterPro:(\s+)(\S+)/, "InterPro:#{$1}<a href=\"#{href}#{$2}\" target=\"_blank\">#{$2}<\/a>")
     line[i-1].chomp!
-    line[i-1]+= "<a href=\"#{href}#{$2}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_InterPro.jpg\" alt=\"InterPro\" title=\"InterPro\" #{logo_attr} height=\"20\" ></a>\n"
+    line[i-1]=line[i-1]+ "<a href=\"#{href}#{$2}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_InterPro.jpg\" alt=\"InterPro\" title=\"InterPro\" #{logo_attr} height=\"20\" ></a>\n"
     @cite_ipro=1
   end
 end
@@ -1194,7 +1196,7 @@ def add_pubmed_logo(*params)
   logo_attr = params[4]
   line[i-1].chomp!
   href="http:\/\/www.ncbi.nlm.nih.gov\/entrez\/query.fcgi?CMD=search&db=pubmed&term=#{searchstring}";
-  line[i-1] += "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_pubmed.jpg\" alt=\"PubMed\" title=\"PubMed\" #{logo_attr} height=\"20\"></a>\n";
+  line[i-1] =line[i-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_pubmed.jpg\" alt=\"PubMed\" title=\"PubMed\" #{logo_attr} height=\"20\"></a>\n";
   return
 end
 
@@ -1206,11 +1208,11 @@ def break_lines(s, width, space)
     if chrs.fetch(a)==32 || chrs.fetch(a) ==124 || chrs.fetch(a) == 125 || chrs.fetch(a) == 93
       lastchr = a
     end  #end if
-    col+=1
+    col=col +1
     if col>width
       chrs[lastchr]=10
       col = 0
-      lastchr +=width
+      lastchr =lastchr+width
     end # end if
   end #end each
   s = chrs.pack('C*')

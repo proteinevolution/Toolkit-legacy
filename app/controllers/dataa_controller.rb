@@ -52,7 +52,7 @@ class DataaController < ToolController
 		img.binmode
 		@img = img.readlines.join
 		end
-		send_data (@img, :type => 'image/png', :disposition => 'inline')
+		send_data(@img, :type => 'image/png', :disposition => 'inline')
 
 	end	
 
@@ -64,7 +64,7 @@ class DataaController < ToolController
 		img.binmode
 		@img = img.readlines.join
 		end
-		send_data (@img, :type => 'image/png', :disposition => 'inline')
+		send_data(@img, :type => 'image/png', :disposition => 'inline')
 
 	end
 	
