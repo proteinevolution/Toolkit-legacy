@@ -11,21 +11,23 @@
 <p style="font-size:13px; font-weight:bold;"><u><i>All Alpha</i></u></p>
 
 <table border="0" width="100%">
-  <% for i in 0...@fragment_names.length-1%>
-    <colgroup>
-      <col width="25%">
-      <col width="75%">
-    </colgroup>
-    <tr>
-      <td style="font-size:12px; font-weight:bold;">
-        <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment"><%=@fragment_names[1]%></a>
-      </td>
-      <td style="font-size:12px" align="justify">
-        <%=@short_descriptions[1]%>
-      </td>
-    </tr>
+  <colgroup>
+    <col width="25%">
+    <col width="75%">
+  </colgroup>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'frag_AA'").each do |alpha|%>
+  <tr>
+    <td style="font-size:12px; font-weight:bold;">
+      <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment"><%=alpha.f_name%></a>
+    </td>
+    <td style="font-size:12px" align="justify">
+      <%=alpha.f_shortdesc%>
+    </td>
+  </tr>
   <% end %>
 </table>
+
+
 
 
 <p style="font-size:13px; font-weight:bold;"><u><i>All Beta</i></u></p>
@@ -33,19 +35,19 @@
 <p style="font-size:13px; font-weight:bold;"><u><i>Mixed</i></u></p>
 
 <table border="0" width="100%">
-  <% for i in 0...@fragment_names.length-1%>
-    <colgroup>
-      <col width="25%">
-      <col width="75%">
-    </colgroup>
-    <tr>
-      <td style="font-size:12px; font-weight:bold;">
-        <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment"><%=@fragment_names[0]%></a>
-      </td>
-      <td style="font-size:12px" align="justify">
-        <%=@short_descriptions[0]%>
-      </td>
-    </tr>
+  <colgroup>
+    <col width="25%">
+    <col width="75%">
+  </colgroup>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'frag_M'").each do |mixed|%>
+  <tr>
+    <td style="font-size:12px; font-weight:bold;">
+      <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment"><%=mixed.f_name%></a>
+    </td>
+    <td style="font-size:12px" align="justify">
+      <%=mixed.f_shortdesc%>
+    </td>
+  </tr>
   <% end %>
 </table>
 

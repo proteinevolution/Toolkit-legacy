@@ -8,14 +8,14 @@
 
 <p style="font-size:14px; font-weight:bold;">Keywords</p>
 <table border="0" style="width:100%">
-  <% for i in 0...@keywords.length%>
-    <tr>
-      <td style="font-size:12px; font-weight:bold; width:25%" >
-        <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword"><%=@keywords[i]%></a>
-      </td>
-      <td style="font-size:12px; width:75%;" align="justify">
-        <%=@keywd_description[i]%>
-      </td>
-    </tr>
+  <%Dapkey.find(:all).each do |key|%>
+  <tr>
+    <td style="font-size:12px; font-weight:bold; width:25%" >
+      <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword"><%=key.k_name%></a>
+    </td>
+    <td style="font-size:12px; width:75%;" align="justify">
+      <%=key.k_desc%>
+    </td>
+  </tr>
   <% end %>
 </table>

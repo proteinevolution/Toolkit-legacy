@@ -6,13 +6,14 @@
 
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
-<p style="font-size:18px; font-weight:bold;"><%=@fragment_names[0]%></p>
-
+<%Dapfragment.find(:all, :conditions => "id=1").each do |fragname|%>
+<p style="font-size:18px; font-weight:bold;"><%=fragname.f_name%></p>
+<%end%>
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Keywords</p>
 <table border="0" style="width=100%">
   <tr>
     <td style="font-size:12px">
-      <%=@keywords[2]%>, <%=@keywords[3]%>, <%=@keywords[4]%>, <%=@keywords[5]%>, <%=@keywords[6]%>
+      <%=@keywords[2]%>
     </td>
   </tr>
 </table>
@@ -25,15 +26,17 @@
     <col width="5%">
     <col width="20%">
   </colgroup>
+  <%Dapfragment.find(:all, :conditions => "id=1").each do |frag|%>
   <tr>
     <td style="font-size:12px" align="justify" valign="top">
-      <%=@descriptions[0]%>
+      <%=frag.f_desc%>
     </td>
     <td> </td>
     <td>
-      <%= image_tag 'ancient_dict/HelixStrandHelix.jpg', :size => '75x125'%>
+      <%= image_tag frag.f_figure, :size => '75x125'%>
     </td>
   </tr>
+  <%end%>
 </table>
 <br/>
 <br/>
@@ -67,10 +70,10 @@
 
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
 <table border="0">
-  <% for i in 0...@refs.length%>
+  <%Dapfragment.find(:all, :conditions => "id=1").each do |ref|%>
     <tr>
       <td style="font-size:12px">
-        <%=@refs[i]%>
+        <%=ref.f_ref%>
       </td>
     </tr>
   <% end %>

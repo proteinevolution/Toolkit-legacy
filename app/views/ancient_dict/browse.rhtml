@@ -6,11 +6,23 @@
 
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
+Hier kommt die Variable:
+
+<br/>
+<%=@ri%>
+
+
+<br/>
 <a style="font-size:14px; font-weight:bold;" href="<%= DOC_ROOTURL %>/ancient_dict/fragments">Fragments</a>
 <table border="0" width="100%">
   <tr>
     <td style="font-size:12px" align="justify">
       <%=@fragment_description%>
+      <br/>
+      <%=@nc%>
+      <%Dapname.find(:all).each do |hi|%>
+      <br/><%=hi.id%><br/><%=hi.name%> 
+      <%end%>
     </td>
   </tr>
 </table>
@@ -22,7 +34,26 @@
   <tr>
     <td style="font-size:12px" align="justify">
       <%=@struct_fragment_description%>
+      <br/>
+      <%=@rn%>
     </td>
   </tr>
+</table>
+
+
+<br/>
+<br/>
+<a style="font-size:14px; font-weight:bold;" href="<%= DOC_ROOTURL %>/ancient_dict/repeats">Tests</a>
+<table border="0" width="100%">
+  <%Dapname.find(:all, :conditions => "name = 'one'").each do |u|%>
+  <tr>
+    <td style="font-size:12px" align="justify">
+    <%=u.id%>
+    </td>
+    <td style="font-size:12px" align="justify">
+    <%=u.name%>
+    </td>
+  </tr>
+  <%end%>
 </table>
 
