@@ -8,16 +8,6 @@ require "activerecord"
   def browse
     getlinks
     getsubitems
-    @rrr = Dapname.find(:first)
-    @ri=@rrr.id
-    @ncat=Dapcat.find(:first)
-    @nc=@ncat.category
-    @nname=Dapname.find(:first)
-    @rn=@nname.name
-
-    
-
-
     @color = params['color'] ? params['color'] : "br"
     @coloring = params['coloring'] ? params['coloring'] : "fr"
     @fragment_description ="Fragments similar in structure and sequence, which are present
