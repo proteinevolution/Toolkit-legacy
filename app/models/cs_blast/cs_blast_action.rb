@@ -76,6 +76,8 @@ class CsBlastAction < Action
 
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "#{BLAST}/parse_jalview.rb -i #{@basename}.align -o #{@basename}.j.align"
+
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)

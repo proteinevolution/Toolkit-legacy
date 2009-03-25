@@ -1,0 +1,25 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#result">Result</a></li>
+	<li><a href="#jalview">View alignment with Jalview</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="result"></a>
+<h3 class="<%= @section["name"] %>">Result</h3> 
+<div class="row">
+At the top of the results page is a Jalview-button, that shows the multiple alignment of all hits. Then there is a list with brief information about all hits that were found. They are listed together with their scores and e-values. There you can select the ones, you want to work with. Below this you can find more information. There are all pairwise alignments and there is also additional information about the method, the identities and the positives. There you also have the possibility to select the hits, you want to work with. At the bottom you can find more information about the database and the matrix.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<a name="jalview"></a>
+<h3 class="<%= @section["name"] %>">View Alignment with Jalview</h3> 
+<div class="row">
+<img src="/images/blast/psiblast.jpg" alt="Jalview"/><br/>
+The Jalview-button shows the multiple alignment of all sequences which were found by PSI-BLAST. The different colours illustrate the identities between the different amino acids. With that help you can decide, if a sequence is really homologue. In this example the last sequence may not be homologue. So you could take it out of your list of result alignments.
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+

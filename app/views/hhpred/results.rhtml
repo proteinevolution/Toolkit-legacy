@@ -75,12 +75,23 @@
 	</div>
 	<div class="hr">&nbsp;</div>
 </div>
-	
+
 <div id="color_button" class="row">
-	<div class="label">
+<div id="jalview">
+	<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+	<PARAM NAME="label"  value="Alignment">
+	<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.tenrep_file">
+	<PARAM NAME="type"   value="URL">
+	<PARAM NAME="format" value="FASTA">
+	</APPLET> 
+</div>
+
+	<div id="help_jal"><a href="#" onclick="openHelpWindow('/hhpred/help_results#jalview');">View alignment</a></div>
+
+	<div class="labelj">
 		<a href="#" onclick="openHelpWindow('/hhpred/help_params#coloring');">Color alignments</a>
 	</div>
-	<div class="formw">
+	<div class="formwa">
 		<strong>
 			<%= radio_button_tag('coloring', 'onlySS', @mode == 'onlySS', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'onlySS')+"';"}) -%>&nbsp;color only SS &nbsp;&nbsp;&nbsp;&nbsp;
 			<%= radio_button_tag('coloring', 'letters', @mode == 'letters', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'letters')+"';"}) -%>&nbsp;	
@@ -91,7 +102,11 @@
 			<span style="background-color: white;">a</span><span style="background-color: #00ff00;">li</span><span style="background-color: #ffd070;">g</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: #00ff00;">m</span><span style="background-color: #c080ff;">e</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: white;">t</span><span style="background-color: white;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
 		</strong>
 	</div>
+
 </div>
+
+
+
 <div class="spacer">&nbsp;</div>	
   
 <div class="row">

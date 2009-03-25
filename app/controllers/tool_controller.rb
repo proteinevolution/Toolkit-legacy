@@ -202,7 +202,7 @@ class ToolController < ApplicationController
   end
   
   def help_results
-    render(:layout => "help")
+   render(:action => 'help_ov', :layout => "help")
   end
   
   def help_faq

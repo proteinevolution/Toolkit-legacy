@@ -28,7 +28,18 @@
 </div>
 
 <br/>
-<div style="width: 700px;">
+<div style="width: 727px;">
+
+	<div id="jalview">
+	<APPLET codebase="/applets/jalview_new/" ARCHIVE="jalviewApplet_new.jar" CODE="jalview.bin.JalviewLite" width=70 height=35>
+		<PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.j.align">
+		<PARAM NAME="type"   value="URL">
+		<PARAM NAME="format" value="FASTA">
+		<PARAM NAME="label" value="JalView">
+		<PARAM NAME="defaultColour" value="Taylor">
+	</APPLET></div>
+
+	<div id="help_jal"><a href="#" onclick="openHelpWindow('/nuc_blast/help_results#jalview');">View alignment</a></div>
 
 	<pre><%= @job.header.join("\n") %></pre>
 
