@@ -112,7 +112,7 @@ class HhblastAction < Action
   
     prepare_fasta_hhviz_histograms_etc    
     
-    @commands << "#{HH}/reformat.pl -i #{@basename}.fas -o #{@basename}.uc.fas -uc"
+    @commands << "#{HH}/reformat.pl fas fas #{@basename}.reduced.fas #{@basename}.uc.fas -uc -r"
     @commands << "#{BLAST}/parse_jalview.rb -i #{@basename}.uc.fas -o #{@basename}.j.fas"
 
 

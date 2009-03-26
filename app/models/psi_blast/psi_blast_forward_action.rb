@@ -17,7 +17,6 @@ class PsiBlastForwardAction < Action
     
   def perform
     logger.debug "Forward Action!"
-    
     @basename = File.join(job.job_dir, job.jobid)
     @outfile = @basename + ".forward"
     @commands = []
@@ -203,9 +202,9 @@ class PsiBlastForwardAction < Action
     logger.debug "Forward params!"
     res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
     mode = params['fw_mode']
-    inputmode = "sequence"
-    if (!mode.nil? && mode == "alignment")
-      inputmode = "alignment"
+    inputmode = "alignment"
+    if (!mode.nil? && mode == "sequence")
+      inputmode = "sequence"
     end
     if (params['forward_controller'] == "patsearch")
       {'db_input' => res.join, 'std_dbs' => ""}

@@ -1,6 +1,7 @@
 <ul id="helpindex" class="<%= @section['theme'] %>">
 	<li><a href="#result">Result</a></li>
 	<li><a href="#jalview">View alignment with Jalview</a></li>
+	<li><a href="#alignment">Alignment</a></li>
 </ul>
 
 <h2><%= @tool['title'] %> Parameters</h2>
@@ -22,4 +23,9 @@ The Jalview-button shows the multiple alignment of all sequences which were foun
 
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
-
+<div class="row">
+<a name="alignment"></a>
+<h3 class="<%= @section["name"] %>">Show alignment</h3>
+In the section "Alignment" you have two possibilities for a jalview-Alignment. The first one shows the complete alignment with inserted residues and the second one shows the 50 most distinct sequences without inserted residues. Additionally you have the whole alignment as text, which you can modify. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
