@@ -69,6 +69,8 @@ class NucBlastAction < Action
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"    
 
     @commands << "#{BLAST}/parse_jalview.rb -i #{@basename}.align -o #{@basename}.j.align"
+    @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
+
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
