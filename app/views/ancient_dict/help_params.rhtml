@@ -1,11 +1,127 @@
 <ul id="helpindex" class="<%= @section['theme'] %>">
-	<li><a href="#input">Input format</a></li>
+	<li><a href="#name">Name of fragment / repeat</a></li>
+        <li><a href="#id">ID of fragment / repeat</a></li>
+        <li><a href="#category">Category of fragment / repeat</a></li>
+        <li><a href="#keywd">Keywords for fragment / repeat</a></li>
+        <li><a href="#related">Entries to which the fragment / repeat is related</a></li>
+        <li><a href="#shortdc">Short description of fragment / repeat</a></li>
+        <li><a href="#dc">Description of fragment / repeat</a></li>
+        <li><a href="#occ">Occurrence of fragment / repeat</a></li>
+        <li><a href="#ref">References</a></li>
+        <li><a href="#img">Image of the fragment /repeat</a></li>
+        <li><a href="#upload">Upload all fragment / repeat entries from a file</a></li>
 </ul>
 
-<h2><%= @tool['title'] %> Parameters</h2>
+<h2><%= @tool['title'] %> Upload</h2>
 
-<a name="input"></a>
-<h3>Input Format</h3> 
+<a name="name"></a>
+<h3 class="<%= @section["name"] %>">Name of fragment / repeat</h3>
+<div class="row">
+The name of the fragment or repeat should have at most characters.
+</div>
+
+<a name="id"></a>
+<h3 class="<%= @section["name"] %>">ID of fragment / repeat</h3>
+<div class="row">
+The id of a fragment should have following prefix: FRAG</br>
+It is followed by an identification number of the fragment that has to be incremented.</br>
+Example: FRAG001</br></br>
+The id of a repeat should have following prefix: REP</br>
+It is followed by an identification number of the fragment that has to be incremented.</br>
+Example: REP001
+</div>
+
+<a name="category"></a>
+<h3 class="<%= @section["name"] %>">Category of fragment / repeat</h3>
+<div class="row">
+The categories of the fragments are describes as follows: </br>
+'frag_AA' for all alpha fragments</br>
+'frag_AB' for all beta fragments</br>
+'frag_M' for mixed fragments</br></br>
+'rep_AA' for all alpha repeats</br>
+'rep_AB' for all beta repeats</br>
+'rep_M' for mixed repeats
+</div>
+
+<a name="keywd"></a>
+<h3 class="<%= @section["name"] %>">Keywords for fragment / repeat</h3>
+<div class="row">
+The keywords for each fragment or repeat should be inserted as follows:</br>
+keyword\tdescription of the keyword</br>
+Each keyword should be written into a new line.
+</div>
+
+<a name="related"></a>
+<h3 class="<%= @section["name"] %>">Entries to which the fragment / repeat is related</h3>
+<div class="row">
+Each 'related to' item for each fragment or repeat should be inserted in one line. It is also possible, that there is no 'related to' entry.
+</div>
+
+<a name="shortdc"></a>
+<h3 class="<%= @section["name"] %>">Short description of fragment / repeat</h3>
+<div class="row">
+The short description should only consist some words.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="dc"></a>
+<h3 class="<%= @section["name"] %>">Description of fragment / repeat</h3>
 <div class="row">
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="occ"></a>
+<h3 class="<%= @section["name"] %>">Occurrence of fragment / repeat</h3>
+<div class="row">
+The occurrence for each fragment or repeat should be inserted as follows:</br>
+scop_id\tdescription of the scop entry</br>
+Each occurrence entry should be written into a new line.
+</div>
+
+<a name="ref"></a>
+<h3 class="<%= @section["name"] %>">References</h3>
+<div class="row">
+Each reference for the fragment or repeat should be inserted in one line.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="img"></a>
+<h3 class="<%= @section["name"] %>">Image of the fragment /repeat</h3>
+<div class="row">
+The image should be in .jpg format und have a width of at most 150px.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="upload"></a>
+<h3 class="<%= @section["name"] %>">Upload all fragment / repeat entries from a file</h3>
+<div class="row">
+There is also the possibility to upload all the information that is necessary for a new fragment or repeat input in one file. The file should be a .txt file and have following structure:</br></br>
+#name-begin</br>
+#name-end</br>
+#id-begin</br>
+FRAG001 or REP001</br>
+#id-end</br>
+#category-begin</br>
+frag_M / frag_AA / frag_AB or rep_M / rep_AA / rep_AB</br>
+#category-end</br>
+#keywords-begin</br>
+#keywords-end</br>
+#relatedto-begin</br>
+#relatedto-end</br>
+#shortdescription-begin</br>
+#shortdescription-end</br>
+#description-begin</br>
+#description-end</br>
+#occurrence-begin</br>
+BETWEEN SCOP_ID AND SCOP_DESCRIPTION ONLY ONE \t</br>
+#occurrence-end</br>
+#sequencealignment-begin</br>
+#sequencealignment-end</br>
+#references-begin</br>
+#references-end</br>
+#image-begin</br>
+FRAG001.jpg oder REP001.jpg</br>
+#image-end</br>
+
+</div>
+

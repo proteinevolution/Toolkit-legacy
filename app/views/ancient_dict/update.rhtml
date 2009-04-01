@@ -6,4 +6,77 @@
 
 Dies soll zum updaten der mysql-Datenbank verwendet werden, allerdings nur für Administratoren sichtbar sein.
 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+  <%= form_label("Enter the NAME of the fragment or repeat", "name") %>
+  <%= form_text_field("f_name", '', '', 80) %>
+</div>
+
+<div class="row">
+  <%= form_label("Enter the ID of the fragment or repeat", "id") %>
+  <%= form_text_field("f_id", '', '', 10) %>
+</div>
+
+<div class="row">
+  <%= form_label("Enter the CATEGORY of the fragment or repeat", "category") %>
+  <%= form_text_field("f_category", '', '', 10) %>
+</div>
+
+<div class="row">
+  <%= form_label("Enter the KEYWORDS of the fragment or repeat (each keyword in one line)", "keywd") %>
+  <%= form_text_area("keywords") %>
+</div>
+
+<div class="row">
+  <%= form_label("Enter a RELATED TO entry for the fragment or repeat", "related") %>
+  <%= form_text_area("relatedto") %>
+</div>
+
+<div class="row">
+  <%= form_label("Enter the SHORT DESCRIPTION of the fragment or repeat", "shortdc") %>
+  <%= form_text_area("f_shortdesc") %>
+</div>
+
+<div class="row">
+  <%= form_label("Enter the DESCRIPTION of the fragment or repeat", "dc") %>
+  <%= form_text_area("f_desc") %>
+</div>
+
+<div class="row">
+  <%= form_label("Enter the OCCURRENCE entry of the fragment or repeat (each occurrence entry in one line)", "occ") %>
+  <%= form_text_area("occurrence") %>
+</div>
+
+<div class="row">
+  <%= form_label("Enter the SEQUENCE ALIGNMENT for the fragment or repeat (see the format in the help)", "align") %>
+  <%= form_text_area("alignment") %>
+</div>
+
+<div class="row">
+  <%= form_label("Enter the REFERENCES of the fragment or repeat (each entry in one line)", "ref") %>
+  <%= form_text_area("f_ref") %>
+</div>
+
+<div class="row">
+  <%= form_label("Upload the IMAGE of the fragment or alignment", "img") %>
+  <%= form_file("image") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Upload</h3>
+
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+  <%= form_label("Upload the INPUT FILE of a fragment or repeat (Detailed information on the help page)", "upload") %>
+  <%= form_file("fragment_file") %>
+</div>
+
+<div class="row">
+  <%= form_submit_buttons %>
+</div>
+
+
+</form>
 
