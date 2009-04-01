@@ -2,6 +2,7 @@ class PsiBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
   UTILS = File.join(BIOPROGS, 'perl')
+  REFORMAT = File.join(BIOPROGS,'reformat')
 
   include GenomesModule
 
@@ -183,12 +184,13 @@ class PsiBlastAction < Action
     @commands << "#{UTILS}/blasthisto.pl  #{@outfile} #{job.jobid} #{job.job_dir} &> #{@basename}.blasthistolog";
     
     #create alignment
-    @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@infile} -e #{@expect} -fas -no_link"
+    @commands << "#{REFORMAT}/reformat.pl -i=phy -o=fas -f=#{@basename}.aln -a=#{@basename}.fas"
+    @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@basename}.fas -e #{@expect} -fas -no_link"
 
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
     @commands << "#{BLAST}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
+    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
 
     
     logger.debug "Commands:\n"+@commands.join("\n")
