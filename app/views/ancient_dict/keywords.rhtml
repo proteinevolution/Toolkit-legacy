@@ -11,7 +11,7 @@
   <%Dapkey.find(:all).each do |key|%>
   <tr>
     <td style="font-size:12px; font-weight:bold; width:25%" >
-      <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword"><%=key.k_name%></a>
+      <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword?key=<%=key.k_id%>"><%=key.k_name%></a>
     </td>
     <td style="font-size:12px; width:75%;" align="justify">
       <%=key.k_desc%>
