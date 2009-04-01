@@ -113,22 +113,6 @@
 </div>
 <div class="spacer">&nbsp;</div>	
 	
-<div class="row">	<div class="label">
-		<%= form_label("MEMSAT2") %>
-	</div>
-	<div class="formw">			
-		<table><tr><td align="left" valign="top">
-			<%= form_checkbox("memsat2_chk", '1', true, true) %>
-		</td><td>			
-			D. T. Jones, W. R. Taylor and J. M. Thornton (1994)
-			A model recognition approach to the prediction of all-helical 
-			membrane protein structure and topology
-			<em>Biochemistry</em> <b>33</b>, 3038-3049.
-		</td>
-		</tr></table>
-	</div>			
-</div>
-<div class="spacer">&nbsp;</div>
 
 <div class="row">	<div class="label">
 		<%= form_label("HMMTOP") %>
@@ -164,26 +148,7 @@
 </div>
 <div class="spacer">&nbsp;</div>
 
-<div class="row">
-	<div class="label">
-		<%= form_label("VSL2") %>	
-	</div>
-	<div class="formw">			
-		<table><tr><td align="left" valign="top">
-			<%= form_checkbox("vsl2_chk", '1', true, true) %>
-		</td><td>			
- 	 	 	K. Peng, P. Radivojac, S. Vucetic, A. K. Dunker, and Z. Obradovic (2006), 
- 	 	 	Length-Dependent Prediction of Protein Intrinsic Disorder, 
- 	 	 	<em>BMC Bioinformatics</em> <b>7</b>, 208.
-		</td></tr><td align="left" valign="top"></td><td>
-			Z. Obradovic, K. Peng, S. Vucetic, P. Radivojac, and A. K. Dunker, 
-			Exploiting Heterogeneous Sequence Properties Improves Prediction of Protein Disorder (2005), 
-			<em>Proteins </em> <b>61(S7)</b>, 176-182.
-		</td>
-		</tr></table>
-	</div>
-</div>
-<div class="spacer">&nbsp;</div>	
+
 
 <%= render(:partial => "shared/joboptions") %>
 
