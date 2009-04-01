@@ -5,15 +5,17 @@
 <%= render(:partial => "subitems") %>
 
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
-
-<p style="font-size:18px; font-weight:bold;"><%=@fragment_names[0]%></p>
-
+<%Dapfragment.find(:all, :conditions => ["f_id=?", @page]).each do |repeat|%>
+<p style="font-size:18px; font-weight:bold;"><%=repeat.f_name%></p>
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Keywords</p>
+
 <table border="0" style="width=100%">
   <tr>
-    <td style="font-size:12px">
-      <%=@keywords[0]%>, <%=@keywords[1]%>, <%=@keywords[2]%>, <%=@keywords[3]%>
-    </td>
+    <%DapfragmentDapkey.find(:all, :conditions => ["f_id=?", @page]).each do |keywd|%>
+      <td style="font-size:12px">
+        <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword?key=<%=keywd.k_id%>">'<%=Dapkey.find(:first, :conditions => ["k_id=?", keywd.k_id]).k_name%>' &nbsp;</a>
+      </td>
+    <%end%>
   </tr>
 </table>
 <br/>
@@ -27,29 +29,33 @@
   </colgroup>
   <tr>
     <td style="font-size:12px" align="justify" valign="top">
-      <%=@descriptions[0]%>
+      <%=repeat.f_desc%>
     </td>
     <td> </td>
-    <td>
-      <%= image_tag 'ancient_dict/HelixStrandHelix.jpg', :size => '75x125'%>
+    <td align="right">
+      <%= image_tag repeat.f_figure%>
     </td>
   </tr>
 </table>
 <br/>
+<%end%>
 <br/>
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Occurrence (SCOP accession)</p>
 <table border="0" style="width=100%">
-  <colgroup>
+  <!--<colgroup>
    <col width="25%">
    <col width="75%">
-  </colgroup>
-  <% for i in 0...@scop_id.length%>
+  </colgroup>-->
+  <%Dapoccurrence.find(:all, :conditions => ["f_id=?", @page]).each do |scop|%>
     <tr>
       <td style="font-size:12px">
-         <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=@scop_id[i]%>"><%=@scop_id[i]%></a>
+         <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=scop.scop_id%>"><%=scop.scop_id%></a>
+      </td>
+      <td>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td style="font-size:12px">
-        <%=@superfam[i]%>
+        <%=Dapscop.find(:first, :conditions => ["scop_id=?", scop.scop_id]).scop_desc%>
       </td>
     </tr>
   <% end %>
@@ -110,10 +116,10 @@
 <br/>
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
 <table border="0">
-  <% for i in 0...@refs.length%>
+  <%Dapfragment.find(:all, :conditions => ["f_id=?", @page]).each do |ref|%>
     <tr>
       <td style="font-size:12px">
-        <%=@refs[i]%>
+        <%=ref.f_ref%>
       </td>
     </tr>
   <% end %>
