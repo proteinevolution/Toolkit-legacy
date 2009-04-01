@@ -22,7 +22,7 @@ class CsBlastAction < Action
 
   validates_db(:std_dbs, {:personal_dbs => :user_dbs, :genomes_dbs => 'taxids', :on => :create})
 
-  validates_format_of(:evalue, {:with => /^\d+(e|e-|\.)?\d+$/, :on => :create})
+  validates_format_of(:evalue, {:with => /(^\d+\.?\d*(e|e-|E|E-|\.)?\d+$)|(^\d+$)/, :on => :create})
 
   validates_format_of(:descr, :alignments, {:with => /^\d+$/, :on => :create})
 
