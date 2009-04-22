@@ -1,7 +1,7 @@
 class HhblastAction < Action
   HHBLAST = File.join(BIOPROGS, 'hhblast')
-  HH = File.join(BIOPROGS, 'hhpred')
   BLAST = File.join(BIOPROGS, 'blast')
+  HH = File.join(BIOPROGS, 'hhblast', 'hh')
   
   attr_accessor :jobid, :hhblast_dbs, :informat, :inputmode, :maxit, :ss_scoring,
   					 :alignmode, :realign, :Epsiblastval, :mact, :maxseq, :width, :Pmin, :maxlines,
@@ -37,10 +37,11 @@ class HhblastAction < Action
     reformat(@informat, "fas", @infile)
     @commands = []
 
-    @dbs = params['hhblast_dbs'].join(" ")
+    @dbs = params['hhblast_dbs']
     @dbhhm = params['dbhhm']
         
     @maxit = params['maxit']
+    @E_hhblast = params["EvalHHblast"]
     @E_psiblast = params["Epsiblastval"]
     @ali_mode = params["alignmode"]
     @ss_scoring = "-ssm #{params['ss_scoring']}"
@@ -98,16 +99,16 @@ class HhblastAction < Action
     @commands << "#{HH}/hhviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
     
     # Generate profile histograms
-    @commands << "#{HH}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
+    @commands << "#{HH}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@dbhhm} > /dev/null"
   end  
   
   def perform
     params_dump
     
     if (@inputmode == "alignment")
-      @commands << "#{HHBLAST}/HHblast -cpu 4 -v #{@v} -psi #{@psi_infile} -hhm #{@hhm_infile} -write_query_hhm #{@hhm_infile} -db #{@dbs} -dbhhm #{@dbhhm} -o #{@outfile} -Oa3m #{@a3m_outfile} -Ohhm #{@hhm_outfile} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HHBLAST}/HHblast -cpu 4 -v #{@v} -psi #{@psi_infile} -hhm #{@hhm_infile} -write_query_hhm #{@hhm_infile} -db #{@dbs} -dbhhm #{@dbhhm} -o #{@outfile} -Oa3m #{@a3m_outfile} -Ohhm #{@hhm_outfile} -evalue #{@E_hhblast} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     else
-      @commands << "#{HHBLAST}/HHblast -cpu 4 -v #{@v} -i #{@infile} -write_query_hhm #{@hhm_infile} -db #{@dbs} -dbhhm #{@dbhhm} -o #{@outfile} -Oa3m #{@a3m_outfile} -Ohhm #{@hhm_outfile} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HHBLAST}/HHblast -cpu 4 -v #{@v} -i #{@infile} -write_query_hhm #{@hhm_infile} -db #{@dbs} -dbhhm #{@dbhhm} -o #{@outfile} -Oa3m #{@a3m_outfile} -Ohhm #{@hhm_outfile} -evalue #{@E_hhblast} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     end
   
     prepare_fasta_hhviz_histograms_etc    

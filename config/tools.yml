@@ -335,7 +335,7 @@
   title_long: HHblast - Homology detection by iterative HMM-HMM comparison
   section: search
   active: 
-  - member
+  - hhgroup
   - internal
 - name: cs_blast
   title: CS-BLAST
