@@ -1043,18 +1043,18 @@ class HhpredJob  < Job
         seq     = $3
         old_seq = $3
         if  coloring.eql?( "onlySS")
-          seq.gsub!(/(H+)/) {|match| match = "<span style=\"color: #D00000;\">#{$1}<\/span>"}
-          seq.gsub!(/(E+)/) {|match|  match ="<span style=\"color: #0000D0;\">#{$1}<\/span>"}
+          seq.gsub!(/([eE]+)/) {|match|  match ="<span style=\"color: #0000D0;\">#{$1}<\/span>"}
+          seq.gsub!(/([hH]+)/) {|match| match = "<span style=\"color: #D00000;\">#{$1}<\/span>"}
           line[b].sub!(/#{old_seq}/,"#{seq}")
 
         elsif  coloring.eql?( "letters")
-          seq.gsub!(/(H+)/) {|match|  match = "<span style=\"color: #D00000;\">#{$1}<\/span>"}
-          seq.gsub!(/(E+)/) {|match| match ="<span style=\"color: #0000D0;\">#{$1}<\/span>"}
+          seq.gsub!(/([eE]+)/) {|match| match ="<span style=\"color: #0000D0;\">#{$1}<\/span>"}
+          seq.gsub!(/([hH]+)/) {|match|  match = "<span style=\"color: #D00000;\">#{$1}<\/span>"}
           line[b].sub!(/#{old_seq}/,"#{seq}")
 
         elsif  coloring.eql?( "background")
-          seq.gsub!(/(H+)/) {|match|  match ="<span style=\"background-color: #ffb0b0;\">#{$1}<\/span>"}
-          seq.gsub!(/(E+)/) {|match|  match = "<span style=\"background-color: #b0b0ff;\">#{$1}<\/span>"}
+          seq.gsub!(/([eE]+)/) {|match|  match = "<span style=\"background-color: #b0b0ff;\">#{$1}<\/span>"}
+          seq.gsub!(/([hH]+)/) {|match|  match ="<span style=\"background-color: #ffb0b0;\">#{$1}<\/span>"}
           line[b].sub!(/#{old_seq}/,"#{seq}")
         end
         # Found a consensus line?
