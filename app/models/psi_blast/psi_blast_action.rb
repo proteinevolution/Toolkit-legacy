@@ -2,6 +2,7 @@ class PsiBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
   UTILS = File.join(BIOPROGS, 'perl')
+  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   REFORMAT = File.join(BIOPROGS,'reformat')
 
   include GenomesModule
@@ -193,7 +194,7 @@ class PsiBlastAction < Action
 
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
-    @commands << "#{BLAST}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
+    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
 
     
