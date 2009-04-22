@@ -50,4 +50,8 @@ class HhblastController < ToolController
     render(:layout => "help")
   end
   
+   def help_results
+    render(:layout => "help")
+  end
+  
 end

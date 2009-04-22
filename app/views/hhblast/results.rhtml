@@ -11,10 +11,20 @@
 <% end %>
 
 <div id="color_button" class="row">
-     	<div class="label">
+
+	<div id="jalview">
+	<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+	<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.j.fas">
+	<PARAM NAME="type"   value="URL">
+	<PARAM NAME="format" value="FASTA">
+	</APPLET> </div>
+
+	<div id="help_jal"><a href="#" onclick="openHelpWindow('/hhblast/help_results#jalview');">View alignment without inserts</a></div>
+
+     	<div class="labelj">
 		<a href="#" onclick="openHelpWindow('/hhblast/help_params#coloring');">Color alignments</a>
 	</div>
-	<div class="formw">
+	<div class="formwa">
 		<strong>
 			<%= radio_button_tag('coloring', 'onlySS', @mode == 'onlySS', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'onlySS')+"';"}) -%>&nbsp;color only SS &nbsp;&nbsp;&nbsp;&nbsp;
 			<%= radio_button_tag('coloring', 'letters', @mode == 'letters', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'letters')+"';"}) -%>&nbsp;	

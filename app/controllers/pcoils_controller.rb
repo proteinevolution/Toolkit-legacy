@@ -10,5 +10,10 @@ class PcoilsController < ToolController
 		@matrix_labels = ['MTIDK matrix', 'PDB matrix', 'Iterated matrix', 'MTK matrix']
 		@matrix_values = ['2', '1', '0', '3']
 	end
+	
+	def help_results
+		render(:layout => "help")
+	end
+  
   
 end

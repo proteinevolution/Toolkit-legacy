@@ -141,5 +141,10 @@ class HhpredController < ToolController
   def help_histograms
     render(:layout => "help")
   end
+  
+  def help_results
+    render(:layout => "help")
+  end
+  
 
 end

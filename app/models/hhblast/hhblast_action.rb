@@ -1,6 +1,7 @@
 class HhblastAction < Action
   HHBLAST = File.join(BIOPROGS, 'hhblast')
   HH = File.join(BIOPROGS, 'hhpred')
+  BLAST = File.join(BIOPROGS, 'blast')
   
   attr_accessor :jobid, :hhblast_dbs, :informat, :inputmode, :maxit, :ss_scoring,
   					 :alignmode, :realign, :Epsiblastval, :mact, :maxseq, :width, :Pmin, :maxlines,
@@ -110,6 +111,10 @@ class HhblastAction < Action
     end
   
     prepare_fasta_hhviz_histograms_etc    
+    
+    @commands << "#{HH}/reformat.pl fas fas #{@basename}.reduced.fas #{@basename}.uc.fas -uc -r"
+    @commands << "#{BLAST}/parse_jalview.rb -i #{@basename}.uc.fas -o #{@basename}.j.fas"
+
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'cpus' => '4'})

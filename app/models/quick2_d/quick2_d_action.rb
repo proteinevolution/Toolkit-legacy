@@ -7,7 +7,7 @@ class Quick2DAction < Action
 
   PSIPRED     = File.join(BIOPROGS, 'ruby', 'psipred.rb')
   JNET        = File.join(BIOPROGS, 'ruby', 'jnet.rb')
-  MEMSAT      = File.join(BIOPROGS, 'ruby', 'memsat.rb')
+ # MEMSAT      = File.join(BIOPROGS, 'ruby', 'memsat.rb')
   DISOPRED    = File.join(BIOPROGS, 'ruby', 'disopred.rb')
 
   HMMTOP      = File.join(BIOPROGS, 'hmmtop2.1', 'hmmtop')
@@ -22,7 +22,7 @@ class Quick2DAction < Action
 
   PROFROST    = File.join(BIOPROGS, 'ruby', 'profRost.rb')
 
-  VSL2        = JAVA_1_5_EXEC+" -jar "+File.join(BIOPROGS, 'VSL2', 'VSL2.jar')
+  #VSL2        = JAVA_1_5_EXEC+" -jar "+File.join(BIOPROGS, 'VSL2', 'VSL2.jar')
 
   DUMMYDB     = File.join(DATABASES, 'do_not_delete', 'do_not_delete')
 
@@ -54,10 +54,10 @@ class Quick2DAction < Action
     @coils       = params['coils_chk']     ? true : false
     @profouali   = params['profouali_chk'] ? true : false
     @profrost    = params['profrost_chk']  ? true : false
-    @memsat      = params['memsat2_chk']   ? true : false
+    #@memsat      = params['memsat2_chk']   ? true : false
     @hmmtop      = params['hmmtop_chk']    ? true : false
     @disopred    = params['disopred2_chk'] ? true : false
-    @vsl2        = params['vsl2_chk']      ? true : false
+    #@vsl2        = params['vsl2_chk']      ? true : false
     @informat    = params['informat']
     logger.debug("Format: "+@informat+"\n")
   end
@@ -90,14 +90,14 @@ class Quick2DAction < Action
     mem['psipredfile']  = basename+".psipred"
     mem['ss2file']      = basename+".ss2"
     mem['jnetfile']     = basename+".jnet"
-    mem['memsatfile']   = basename+".memsat2"
+  #  mem['memsatfile']   = basename+".memsat2"
     mem['hmmtopfile']   = basename+".hmmtop"
     mem['profoualifile']= basename+".profouali"
     mem['coilsfile']    = basename+".coils"
     mem['accfile']      = basename+".acc"
     mem['htmfile']      = basename+".htm"
     mem['secfile']      = basename+".sec"
-    mem['vsl2file']     = basename+".vsl2"
+    #mem['vsl2file']     = basename+".vsl2"
     mem['disopredfile'] = basename+".horiz_d"
     mem['headerfile']   = basename+".header"
     self.flash = mem
@@ -167,7 +167,7 @@ class Quick2DAction < Action
     commands = []
     if( @psipred )  then commands << "echo 'Running PSIPRED' >> #{flash['logfile']}; #{PSIPRED} #{flash['queryfile']} #{flash['chkfile']} #{flash['psipredfile']}" end
     if( @jnet )     then commands << "echo 'Running JNET' >> #{flash['logfile']}; #{JNET} #{flash['clufile']} #{flash['matrixfile']} #{flash['jnetfile']}" end
-    if( @memsat )   then commands << "echo 'Running MEMSAT' >> #{flash['logfile']}; #{MEMSAT} #{flash['queryfile']} #{flash['memsatfile']}" end
+ #   if( @memsat )   then commands << "echo 'Running MEMSAT' >> #{flash['logfile']}; #{MEMSAT} #{flash['queryfile']} #{flash['memsatfile']}" end
     if( @disopred ) then commands << "echo 'Running DISOPRED2' >> #{flash['logfile']}; #{DISOPRED} #{flash['queryfile']}" end
     if( @hmmtop )   then commands << "echo 'Running HMMTOP2.1' >> #{flash['logfile']}; export HMMTOP_ARCH=#{HMMTOPARCH}; export HMMTOP_PSV=#{HMMTOPPSV}; #{HMMTOP} -pi=mpred -pl -sf=FAS -if=#{flash['alnfasfile']} > #{flash['hmmtopfile']}" end
     if( @profouali )then commands << "echo 'Running PROFOUALI' >> #{flash['logfile']}; export PROF_DIR=#{PROFOUALIDIR}; #{PROFOUALI} -d -c -v -m 1 -a #{flash['clufile']} -p #{flash['matrixfile']} -o #{flash['profoualifile']}; echo 'Hide exitstate !=0 by this echo cmd'" end
@@ -176,7 +176,7 @@ class Quick2DAction < Action
 
     # vsl2 does better prediction with psipred results therefore execute vsl2 in a subsequent task if psipredresults are available
     if( !@psipred )
-      if( @vsl2 )  then commands <<     "echo 'Running VSL2' >> #{flash['logfile']}; #{VSL2} -s:#{flash['seqfile']} -p:#{flash['matrixfile']} > #{flash['vsl2file']}" end
+     # if( @vsl2 )  then commands <<     "echo 'Running VSL2' >> #{flash['logfile']}; #{VSL2} -s:#{flash['seqfile']} -p:#{flash['matrixfile']} > #{flash['vsl2file']}" end
       queue.submit_parallel(commands)
     else
       logger.debug( "doPredictions:\n"+commands.join("\n"))
@@ -193,7 +193,7 @@ class Quick2DAction < Action
     init_vars
     commands = []
     logger.debug( "doFinal:\n"+commands.join("\n"))
-    if( @vsl2 )  then commands <<       "echo 'Running VSL2' >> #{flash['logfile']}; #{VSL2} -s:#{flash['seqfile']} -i:#{flash['ss2file']} -p:#{flash['matrixfile']} > #{flash['vsl2file']}" end
+    #if( @vsl2 )  then commands <<       "echo 'Running VSL2' >> #{flash['logfile']}; #{VSL2} -s:#{flash['seqfile']} -i:#{flash['ss2file']} -p:#{flash['matrixfile']} > #{flash['vsl2file']}" end
     queue.submit(commands)
   end
 

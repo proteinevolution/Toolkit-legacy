@@ -295,5 +295,10 @@ class HhompController < ToolController
     @file = params['file'] ? params['file'] : ""
     render(:layout => 'plain')
   end
+  
+  def help_results
+    render(:layout => "help")
+  end
+  
 
 end
