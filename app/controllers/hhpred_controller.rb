@@ -22,6 +22,7 @@ class HhpredController < ToolController
     sortlist = Array["\/pdb70", "\/pdb_on_hold", "\/scop", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test56", "\/test18", "\/Pfalciparum" ]
     # Allow non-standard libraries only on internal server:
     if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
+    if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
     sortlist.each do |el|
       dbvalues_pre.each do |val|
         if (!val.index(/#{el}/).nil?)
@@ -71,10 +72,12 @@ class HhpredController < ToolController
   def results_makemodel
     @widescreen = true
     @mode = params[:mode] ? params[:mode] : 'onlySS'
-    @js_onload = "select_first(1);"
+    #@js_onload = "select_first(1);"
   end
   
   def histograms_makemodel
+    @mode = 'profile_logos'
+    @job.before_results(params)
     @widescreen = true
   end  
   
@@ -138,5 +141,10 @@ class HhpredController < ToolController
   def help_histograms
     render(:layout => "help")
   end
+  
+  def help_results
+    render(:layout => "help")
+  end
+  
 
 end

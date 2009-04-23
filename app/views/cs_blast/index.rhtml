@@ -25,7 +25,7 @@
 
   <div class="row">
     <%= form_label("E-Value", "evalue") %>
-    <%= form_text_field("evalue", '10') %>	
+    <%= form_text_field("evalue", '2', "(Note that CS-BLAST E-values are too optimistic by a factor of 3-5.)") %>
   </div>
   <div class="row">
     <%= form_label("Filter for low complexety regions", "filter") %>
@@ -53,3 +53,10 @@
   </form>
 
 
+<<<<<<< HEAD:app/views/cs_blast/index.rhtml
+=======
+<div class="row">
+  Biegert, A. and Soding, J. (2009) Sequence context-specific profiles for homology searching.
+  <em>Proc Natl Acad Sci USA</em>, <strong>106</strong> (10), 3770-3775
+</div>
+>>>>>>> next:app/views/cs_blast/index.rhtml

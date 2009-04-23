@@ -2,9 +2,11 @@ class PsiBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
   UTILS = File.join(BIOPROGS, 'perl')
-  
+  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
+  REFORMAT = File.join(BIOPROGS,'reformat')
+
   include GenomesModule
-  
+
   attr_accessor :jobid, :rounds, :evalue, :evalfirstit, :alignments, :informat, :inputmode,
                 :sequence_input, :sequence_file, :mail, :otheradvanced, :std_dbs, :user_dbs, :taxids
 
@@ -15,29 +17,29 @@ class PsiBlastAction < Action
                                                     :on => :create })
 
   validates_jobid(:jobid)
-  
+
   validates_email(:mail)
-  
+
   validates_db(:std_dbs, {:personal_dbs => :user_dbs, :genomes_dbs => 'taxids', :on => :create})
-  
+
   validates_shell_params(:jobid, :mail, :evalue, :evalfirstit, :alignments, :rounds, :otheradvanced,
                          {:on => :create})
-  
+
   validates_format_of(:evalue, :evalfirstit, {:with => /(^\d+\.?\d*(e|e-|E|E-|\.)?\d+$)|(^\d+$)/, 
                                               :on => :create,
                                               :message => 'Invalid value!' })
-  
+
   validates_format_of(:alignments, :rounds, {:with => /^\d+$/, :on => :create, :message => 'Invalid value! Only integer values are allowed!'}) 
-  
+
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)
     @infile = @basename+".fasta"    
     @outfile = @basename+".psiblast"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @informat = params['informat'] ? params['informat'] : 'fas'
-    reformat(@informat, "fas", @infile)
+    #reformat(@informat, "fas", @infile)
     @commands = []
-
+    
     @inputmode = params['inputmode']
     @expect = params['evalue']
     @mat_param = params['matrix']
@@ -165,7 +167,7 @@ class PsiBlastAction < Action
     # use nr70f for all but last round?
     if (@rounds.to_i > 1 && @fastmode == 'T')
       # first run with nr70f
-      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@basename}.psiblast_tmp -d \"#{DATABASES}/standard/nr70f\" #{@alignment} -I T -C #{@basename}.ksf #{@other_advanced} &> #{job.statuslog_path}"
+      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@basename}.psiblast_tmp -d #{DATABASES}/standard/nr70f #{@alignment} -I T -C #{@basename}.ksf #{@other_advanced} &> #{job.statuslog_path}"
       @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j 1 -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -R #{@basename}.ksf #{@other_advanced} &> #{job.statuslog_path}"
     else
       @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@outfile} -d \"#{@db_path}\" #{@alignment} -I T #{@other_advanced} &> #{job.statuslog_path}"
@@ -183,11 +185,19 @@ class PsiBlastAction < Action
     @commands << "#{UTILS}/blasthisto.pl  #{@outfile} #{job.jobid} #{job.job_dir} &> #{@basename}.blasthistolog";
     
     #create alignment
-    @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@infile} -e #{@expect} -fas -no_link"
+    if File.exist?("#{@basename}.aln") then
+	@commands << "#{REFORMAT}/reformat.pl -i=phy -o=fas -f=#{@basename}.aln -a=#{@basename}.fas"
+	@commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@basename}.fas -e #{@expect} -fas -no_link"
+    else
+	@commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@basename}.fasta -e #{@expect} -fas -no_link"   
+    end
 
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
+    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
 
+    
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'cpus' => '4'})
     

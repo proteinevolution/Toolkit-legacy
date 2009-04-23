@@ -31,7 +31,7 @@
     <table cellspacing="0">
     <tr align="center"><td><b>Standard</b></td></tr>
     <tr><td>
-    <%= form_select_multiple("hhblast_dbs", @dbvalues, @dblabels, @default_db, 5, false) %>	
+    <%= form_select_single("hhblast_dbs", @dbvalues, @dblabels, @default_db, 5, "change_db('#{@dbhhms.join(';')}');", false, true) %>	
     </td></tr>
     </table>
     <%= form_hidden_field("dbhhm", @default_dbhhm) %>
@@ -69,6 +69,11 @@
   <div class="row">
     <%= form_label("E-value threshold for PSI-BLAST prefiltering", "E_psiblast") %>
     <%= form_select_single("Epsiblastval", @epsiblastval, @epsiblastval, '100') %>	
+  </div>
+
+  <div class="row">
+    <%= form_label("E-value inclusion threshold for HHblast", "E_hhblast") %>
+    <%= form_select_single("EvalHHblast", @EvalHHblast, @EvalHHblast, '1e-3') %>	
   </div>
   
   <div class="row">

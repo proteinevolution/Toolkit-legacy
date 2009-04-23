@@ -46,5 +46,10 @@ class NucBlastController < ToolController
 			@job.actions.last.save!
 		end
 	end
+	
+	def help_results
+		render(:layout => "help")
+	end
+  
   
 end

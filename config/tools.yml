@@ -223,9 +223,9 @@
   - internal
   - external
 - name: pcoils
+  title: COILS/PCOILS
+  title_long: COILS/PCOILS
   section: seqanal
-  title: PCOILS
-  title_long: PCOILS
   active: 
   - member
   - internal
@@ -295,7 +295,7 @@
   - internal
   - external
 - name: hhomp
-  section: search
+  section: secstruct
   title: HHomp
   title_long: HHomp - Homology detection of OMPs by HMM-HMM comparison
   active: 
@@ -335,7 +335,7 @@
   title: HHblast
   title_long: HHblast - Homology detection by iterative HMM-HMM comparison
   active: 
-  - member
+  - hhgroup
   - internal
 - name: cs_blast
   section: search

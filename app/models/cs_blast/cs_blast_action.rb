@@ -2,6 +2,7 @@ class CsBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
   UTILS = File.join(BIOPROGS, 'perl')
+  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   CSBLAST = File.join(BIOPROGS, 'csblast')
   CSDB = File.join(DATABASES, 'csblast')
 
@@ -22,9 +23,9 @@ class CsBlastAction < Action
   validates_email(:mail)
   
   validates_db(:std_dbs, {:personal_dbs => :user_dbs, :genomes_dbs => 'taxids', :on => :create})
-  
-  validates_format_of(:evalue, {:with => /^\d+(e|e-|\.)?\d+$/, :on => :create})
-  
+
+  validates_format_of(:evalue, {:with => /(^\d+\.?\d*(e|e-|E|E-|\.)?\d+$)|(^\d+$)/, :on => :create})
+
   validates_format_of(:descr, :alignments, {:with => /^\d+$/, :on => :create})
   
   validates_shell_params(:jobid, :mail, :evalue, :descr, :alignments, :otheradvanced, 
@@ -77,6 +78,11 @@ class CsBlastAction < Action
     
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    
+    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
+    @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
+
+
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)

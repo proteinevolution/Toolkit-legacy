@@ -71,5 +71,10 @@ class HhsenserController < ToolController
 			redirect_to(:host => DOC_ROOTHOST, :action => "waiting", :jobid => job)
 		end
 	end
+	
+	def help_results
+		render(:layout => "help")
+	end
+  
   	
 end

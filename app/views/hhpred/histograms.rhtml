@@ -22,34 +22,41 @@
 	<div class="hr">&nbsp;</div>
 </div>
 
-<div id="createmodel" style="display: none;">
+<div id="createmodel" style="display: none;"> 
 	<input name="hits" id="hits" type="hidden" value=""/>
 	
 	<div class="row">
-		<input name="submitform" onmouseover="return overlib('Corresponds to HHpred1');" onmouseout="return nd();" type="submit" class="toolbutton" value="Create single-template model" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'modeller', :forward_action => 'forward', :mode => 'single', :increment_id => 'true') %>');" />		
+		<input name="submitform" type="submit" class="toolbutton" style="width:28%" value="Create model from&#x0A;manually selected template(s)" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'modeller', :forward_action => 'forward',  :increment_id => 'create', :mode => 'create') %>');" >
 		<strong>
-		For single-template modeling (fast), select one template with the check boxes. Selecting the best (default)
-		is equivalent to the successful HHpred1 server from 
-		<a target="_blank" href="http://<%= DOC_ROOTHOST %>/hhpred/CAFASP5_incl_times.html">CASP7</a>.
+		<ol>
+		<li><p  align="justify">
+		Manual template selection: Generate a PIR-alignment of your sequence with the selected template or templates in order to build a 3D model with MODELLER.</p></li>
+		</ol>
 		</strong>
 	</div>
+
 	<div class="row">
-		<input name="submitform" onmouseover="return overlib('Run time typically 8 min (up to hours depending strongly on alignment length). Corresponds to HHpred2.');" onmouseout="return nd();" type="submit" class="snailbutton" value="Create multi-template model" onClick="select_first(20); extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_makemodel', :mode => 'cluster', :increment_id => 'true') %>');" />
-		<strong>For multi-template modeling (slow), the checkboxes are ignored at this step. Templates will be clustered 
-		by structural similarity and super-HMMs generated. On the following page, a set of templates can 
-		then be selected. Using the default setting on that page corresponds to the HHpred2 server from 
-		<a target="_blank" href="http://<%= DOC_ROOTHOST %>/hhpred/CAFASP5_incl_times.html">CASP7</a>.
+		<input name="submitform" type="submit" class="toolbutton" style="width:28%" value="&nbsp Automatically select best templates &nbsp" onClick="select_first(20); extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_makemodel', :mode => 'filter', :increment_id => 'true') %>');" />
+		<strong>
+		<ol start = 2>
+		<li>
+		  <p  align="justify">
+		  Automatic template selection: Optimize diversities of query and template HMMs, rerank templates and automatically select best set. In further steps a multiple alignment is created from this set, and a 3D model is build with MODELLER using this alignment.
+		  </p>
+		</li>
+		</ol>
 		</strong>
 	</div>
+
 	<div class="row">
-<!--
+        <!--
 		<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a href="javascript:select_first(10)">Select the best ten</a>
--->
+        -->
 	</div>
-	<div class="row">
-		<p class="formerror">Only hits found in PDB or SCOP can be used to create a model (Other hits are disabled).</p>
+	<div class="row">		
+		<p class="formerror">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Only hits found in PDB or SCOP can be used to create a model (other hits are disabled).</p>	
 	</div>
 	<div class="hr">&nbsp;</div>
 </div>
