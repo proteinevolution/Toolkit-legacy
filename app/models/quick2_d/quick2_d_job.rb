@@ -41,10 +41,10 @@ class Quick2DJob < Job
     jnet     = readJNet
     prof_o   = readProfOuali	
     prof_r   = readProfRost
-    memsat   = readMemsat
+   # memsat   = readMemsat
     hmmtop   = readHMMTOP	
     disopred = readDisopred
-    vsl2     = readVSL2
+  #  vsl2     = readVSL2
     coils    = readCoils		
     
     data     = ""
@@ -186,10 +186,10 @@ class Quick2DJob < Job
     jnet     = readJNet
     prof_o   = readProfOuali	
     prof_r   = readProfRost
-    memsat   = readMemsat
+ #   memsat   = readMemsat
     hmmtop   = readHMMTOP	
     disopred = readDisopred
-    vsl2     = readVSL2
+# vsl2     = readVSL2
     coils    = readCoils		
     
     data     = ""
@@ -230,12 +230,12 @@ class Quick2DJob < Job
       
       data += printCCHTML("CC Coils", "coils", coils, i, stop)				
       
-      data += printTMHTML("TM MEMSAT2", "memsat", memsat, i, stop)	
+   #   data += printTMHTML("TM MEMSAT2", "memsat", memsat, i, stop)	
       data += printTMHTML("TM HMMTOP", "hmmtop", hmmtop, i, stop)
       data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)					
       
       data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)				
-      data += printDOHTML("DO VSL2", "vsl2", vsl2, i, stop)
+#      data += printDOHTML("DO VSL2", "vsl2", vsl2, i, stop)
       
       data += printSOLHTML("SO Prof (Rost)", "sol_prof", prof_r, i, stop)
       
@@ -468,22 +468,22 @@ class Quick2DJob < Job
     ret
   end
   
-  def readMemsat
-    if( !File.exists?( self.actions[0].flash['memsatfile'] ) ) then return {} end
-    ret={'conf'=>"", 'tmpred'=>""}
-    ar = IO.readlines( self.actions[0].flash['memsatfile'] )
-    bool = false
-    ar.each do |line|
-      if( line =~ /FINAL PREDICTION/ )
-        bool = true
-      elsif( bool && line =~ /^\s*([-\+IOSX]+)\s*$/ )
-        ret['tmpred']+=$1
-      end
-    end  	
-    ret['tmpred'].gsub!(/O/, "X")
-    ret['tmpred'].gsub!(/I/, "X")
-    ret
-  end
+  #~ def readMemsat
+    #~ if( !File.exists?( self.actions[0].flash['memsatfile'] ) ) then return {} end
+    #~ ret={'conf'=>"", 'tmpred'=>""}
+    #~ ar = IO.readlines( self.actions[0].flash['memsatfile'] )
+    #~ bool = false
+    #~ ar.each do |line|
+      #~ if( line =~ /FINAL PREDICTION/ )
+        #~ bool = true
+      #~ elsif( bool && line =~ /^\s*([-\+IOSX]+)\s*$/ )
+        #~ ret['tmpred']+=$1
+      #~ end
+    #~ end  	
+    #~ ret['tmpred'].gsub!(/O/, "X")
+    #~ ret['tmpred'].gsub!(/I/, "X")
+    #~ ret
+  #~ end
   
   def readDisopred
     if( !File.exists?( self.actions[0].flash['disopredfile'] ) ) then return {} end
@@ -501,18 +501,18 @@ class Quick2DJob < Job
     ret
   end
   
-  def readVSL2
-    if( !File.exists?( self.actions[0].flash['vsl2file'] ) ) then return {} end
-    ret={'dopred'=>""}
-    ar = IO.readlines( self.actions[0].flash['vsl2file'] )
-    ar.each do |line|
-      if( line =~ /^\d+\s+\S+\s+\S+\s+([D.])\s*$/ )
-        ret['dopred']+=$1
-      end	
-    end
-    ret['dopred'].gsub!(/\./, " ")
-    ret
-  end
+  #~ def readVSL2
+    #~ if( !File.exists?( self.actions[0].flash['vsl2file'] ) ) then return {} end
+    #~ ret={'dopred'=>""}
+    #~ ar = IO.readlines( self.actions[0].flash['vsl2file'] )
+    #~ ar.each do |line|
+      #~ if( line =~ /^\d+\s+\S+\s+\S+\s+([D.])\s*$/ )
+        #~ ret['dopred']+=$1
+      #~ end	
+    #~ end
+    #~ ret['dopred'].gsub!(/\./, " ")
+    #~ ret
+  #~ end
   
   def readHMMTOP
     if( !File.exists?( self.actions[0].flash['hmmtopfile'] ) ) then return {} end

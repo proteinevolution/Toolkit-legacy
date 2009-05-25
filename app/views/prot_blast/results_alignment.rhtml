@@ -24,14 +24,14 @@
 			<PARAM NAME="type"   value="URL">
 			<PARAM NAME="format" value="FASTA">
 			</APPLET> 
-			<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/prot_blast/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
 			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.ralign">
 			<PARAM NAME="type"   value="URL">
 			<PARAM NAME="format" value="FASTA">
 			</APPLET>
-			<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
+			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/prot_blast/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></span></strong>
 			
 		</div>
 	</div><div class="hr">&nbsp;</div>

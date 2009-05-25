@@ -117,6 +117,7 @@ class PcoilsJob < Job
     file28.close
 
     file = File.new(@basename + ".numerical", "w")
+
     if (@nums.length > 999)
       for index in (0...9)
         file.write("   #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")

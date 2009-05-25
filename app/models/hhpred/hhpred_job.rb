@@ -1043,18 +1043,18 @@ class HhpredJob  < Job
         seq     = $3
         old_seq = $3
         if  coloring.eql?( "onlySS")
-          seq.gsub!(/(H+)/) {|match| match = "<span style=\"color: #D00000;\">#{$1}<\/span>"}
-          seq.gsub!(/(E+)/) {|match|  match ="<span style=\"color: #0000D0;\">#{$1}<\/span>"}
+          seq.gsub!(/([eE]+)/) {|match|  match ="<span style=\"color: #0000D0;\">#{$1}<\/span>"}
+          seq.gsub!(/([hH]+)/) {|match| match = "<span style=\"color: #D00000;\">#{$1}<\/span>"}
           line[b].sub!(/#{old_seq}/,"#{seq}")
 
         elsif  coloring.eql?( "letters")
-          seq.gsub!(/(H+)/) {|match|  match = "<span style=\"color: #D00000;\">#{$1}<\/span>"}
-          seq.gsub!(/(E+)/) {|match| match ="<span style=\"color: #0000D0;\">#{$1}<\/span>"}
+          seq.gsub!(/([eE]+)/) {|match| match ="<span style=\"color: #0000D0;\">#{$1}<\/span>"}
+          seq.gsub!(/([hH]+)/) {|match|  match = "<span style=\"color: #D00000;\">#{$1}<\/span>"}
           line[b].sub!(/#{old_seq}/,"#{seq}")
 
         elsif  coloring.eql?( "background")
-          seq.gsub!(/(H+)/) {|match|  match ="<span style=\"background-color: #ffb0b0;\">#{$1}<\/span>"}
-          seq.gsub!(/(E+)/) {|match|  match = "<span style=\"background-color: #b0b0ff;\">#{$1}<\/span>"}
+          seq.gsub!(/([eE]+)/) {|match|  match = "<span style=\"background-color: #b0b0ff;\">#{$1}<\/span>"}
+          seq.gsub!(/([hH]+)/) {|match|  match ="<span style=\"background-color: #ffb0b0;\">#{$1}<\/span>"}
           line[b].sub!(/#{old_seq}/,"#{seq}")
         end
         # Found a consensus line?
@@ -1168,11 +1168,8 @@ def add_structure_database_logos(*params)
   href="http:\/\/www.ebi.ac.uk/msd-srv/atlas?id=#{pdbcode}"
   line[i-1] =line[i-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_MSD.jpg\" alt=\"MSD\" title=\"MSD/EBI\" #{logo_attr} height=\"25\"></a>"
 
-  # Link to iMolTalk
-  href="http:\/\/protevo.eb.tuebingen.mpg.de\/iMolTalk\/pdb_information\/2\/PDB\/#{pdbcode}";
-  line[i-1] =line[i-1]+ "<a href=\"#{href}\" target=\"iMTContent\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_iMolTalk25.png\" alt=\"iMolTalk\" title=\"iMolTalk\" #{logo_attr}></a>";
-
   line[i-1] =line[i-1]+ "\n"
+
   return
 end
 

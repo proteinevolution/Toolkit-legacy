@@ -2,6 +2,8 @@ class PsiBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
   UTILS = File.join(BIOPROGS, 'perl')
+  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
+  REFORMAT = File.join(BIOPROGS,'reformat')
 
   include GenomesModule
 
@@ -35,9 +37,9 @@ class PsiBlastAction < Action
     @outfile = @basename+".psiblast"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @informat = params['informat'] ? params['informat'] : 'fas'
-    reformat(@informat, "fas", @infile)
+    #reformat(@informat, "fas", @infile)
     @commands = []
-
+    
     @inputmode = params['inputmode']
     @expect = params['evalue']
     @mat_param = params['matrix']
@@ -183,11 +185,19 @@ class PsiBlastAction < Action
     @commands << "#{UTILS}/blasthisto.pl  #{@outfile} #{job.jobid} #{job.job_dir} &> #{@basename}.blasthistolog";
     
     #create alignment
-    @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@infile} -e #{@expect} -fas -no_link"
+    if File.exist?("#{@basename}.aln") then
+	@commands << "#{REFORMAT}/reformat.pl -i=phy -o=fas -f=#{@basename}.aln -a=#{@basename}.fas"
+	@commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@basename}.fas -e #{@expect} -fas -no_link"
+    else
+	@commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@basename}.fasta -e #{@expect} -fas -no_link"   
+    end
 
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
+    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
 
+    
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'cpus' => '4'})
     

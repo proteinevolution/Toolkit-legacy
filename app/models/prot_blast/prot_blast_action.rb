@@ -3,6 +3,7 @@ class ProtBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
   UTILS = File.join(BIOPROGS, 'perl')
+  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
 
   include GenomesModule
    
@@ -30,13 +31,13 @@ class ProtBlastAction < Action
                          {:on=>:create})
 
   def before_perform  
-	 @basename = File.join(job.job_dir, job.jobid)
+    @basename = File.join(job.job_dir, job.jobid)
     @infile = @basename+".fasta"
     @outfile = @basename+".protblast"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @commands = []
-
-    @program            = params['program'] == 'blastpgp' ? 'blastpgp' : "blastall -p #{params[program]}" ;
+    
+    @program            = params['program'] == 'blastpgp' ? 'blastpgp' : "blastall -p #{params['program']}"
     @expect             = params['evalue']
     @filter             = params['filter'] ? 'T' : 'F'
     @mat_param          = params['matrix']
@@ -78,6 +79,9 @@ class ProtBlastAction < Action
     
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
+    @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
+
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)

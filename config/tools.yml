@@ -223,8 +223,8 @@
   - internal
   - external
 - name: pcoils
-  title: PCOILS
-  title_long: PCOILS
+  title: COILS/PCOILS
+  title_long: COILS/PCOILS
   section: seqanal
   active: 
   - member
@@ -335,7 +335,7 @@
   title_long: HHblast - Homology detection by iterative HMM-HMM comparison
   section: search
   active: 
-  - member
+  - hhgroup
   - internal
 - name: cs_blast
   title: CS-BLAST

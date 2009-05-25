@@ -175,9 +175,6 @@ class ModellerAction < Action
     @commands << "mv #{@basename}_temp.*.pdb #{@basename}.pdb; rm -f #{@basename}_temp.*"
     @commands << "#{MODELLER}/repair_pdb.pl #{@basename}.pdb > #{@basename}.log_repair"
 
-    # put into iMolTalk server
-    ## @commands << "cd #{job.job_dir}; wget -O #{@basename}.imoltalk --post-file=#{@basename}.pdb http://protevo.eb.tuebingen.mpg.de/iMolTalk/batchupload.cgi ;\n"
- 
     logger.debug "Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'quality_check'

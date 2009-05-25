@@ -7,7 +7,7 @@
 <div id="forward" style="display: none;">
 	<div class="row">
 		<%= form_label("Forward results to") %>
-		<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+		<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[5]) %>
 		<div class="formw">
 			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
 		</div>
@@ -20,18 +20,18 @@
 
  		<div id="applet">
    		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
-			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.align">
+			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.j.align">
 			<PARAM NAME="type"   value="URL">
 			<PARAM NAME="format" value="FASTA">
 			</APPLET> 
-			<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/psi_blast/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
 			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.ralign">
 			<PARAM NAME="type"   value="URL">
 			<PARAM NAME="format" value="FASTA">
 			</APPLET>
-			<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
+			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/psi_blast/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></span></strong>
 			
 		</div>
 	</div><div class="hr">&nbsp;</div>
