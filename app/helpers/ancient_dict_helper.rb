@@ -1,0 +1,3 @@
+module AncientDictHelper
+
+end
