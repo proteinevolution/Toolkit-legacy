@@ -69,6 +69,10 @@
 #        f.write '#$' + " -j y\n";
         f.write '#$' + " -w n\n"
 
+        if (queue == "toolkit_long")
+          f.write '#$' + " -l long\n"
+        end
+
         if (queue == "toolkit_immediate")
           f.write '#$' + " -l immediate\n"
         end
