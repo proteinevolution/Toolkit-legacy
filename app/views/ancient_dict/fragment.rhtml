@@ -23,18 +23,24 @@
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Description</p>
 <table border="0" style="width=100%">
   <colgroup>
-    <col width="75%">
-    <col width="5%">
     <col width="20%">
+    <col width="5%">
+    <col width="75%">
   </colgroup>
+
   <tr>
-    <td style="font-size:12px" align="justify" valign="top">
-      <%=fragment.f_desc%>
-    </td>
-    <td> </td>
     <td align="right">
       <%= image_tag fragment.f_figure %>
     </td>
+    <td>
+    </td>
+    <td style="font-size:12px" align="justify" valign="top">
+      <%=fragment.f_desc%>
+    </td>
+    <!--<td> </td>
+    <td align="right">
+      <%= image_tag fragment.f_figure %>
+    </td>-->
   </tr>
 </table>
 <br/>
@@ -65,7 +71,8 @@
 
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Sequence Alignment</p>
 
-<div class="alignres"><p style="font-size:14px; font-weight:bold;"><font face="Courier"><%=@alignment%></font></p></div>
+<div><p style="font-size:14px; font-weight:bold;"><font face="monospace"><%=@alignment%></font></p></div>
+<!-- courier und monospace in Verbindung haben nicht funktioniert, daher nur monospace, da es sein kann, dass courier nicht bei allen Browsern funktioniert.-->
 <br/>
 <br/>
 

@@ -1,0 +1,84 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "update_items") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<!--<table>
+  <tr style="font-size:12px;" >
+    <td>Keyword name: </td><td><%= text_field("ancient_dict", "key")%></td>
+  </tr>
+  <br/>
+  <tr style="font-size:12px;">
+    <td>Keyword description: </td><td><%= text_area("ancient_dict", "key_desc") %></td>
+  </tr>
+</table>-->
+<br/>
+<!--<%= button_to "Update Keyword" %>-->
+
+<% if @keypage == "" %>
+  <p style="font-size:14px; font-weight:bold;">Select Keyword for Update</p>
+  </br>
+  <form action="/ancient_dict/up" method="post" name="keyyword">
+    <select name='keyyword' onChange="window.location = this.value;">
+      <option value="">Keywords</option>
+      <%Dapkey.find(:all, :order => "k_name").each do |key|%>
+        <%if is_active?(key)%>
+          <option value="<%= DOC_ROOTURL %>/ancient_dict/up?keypage=<%=key.k_id%>"><%=key.k_name%></option>
+        <%end%>
+      <% end %>
+    </select>
+  </form>
+<% else %>
+  <p style="font-size:14px; font-weight:bold;">Update Keyword</p>
+  <%@keyinfo=Dapkey.find(:first, :conditions => ["k_id=?", @keypage])%>
+  <h3 style="font-size:12px;"><%=@keypage%></h3>
+
+  <div>
+    <%= form_label("Mysql ID (Do not change!!!)") %>
+    <%= form_text_field("upid", @keyinfo.id, "", 10)%>
+  </div>
+
+  <div>
+    <%= form_label("Keyword ID (Do not change!!!)") %>
+    <%= form_text_field("k_upid", @keyinfo.k_id, "", 10)%>
+  </div>
+
+  <div>
+    <%= form_label("Keyword name") %>
+    <%= form_text_field("k_upname", @keyinfo.k_name, "", 80)%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Keyword description") %>
+    <%= form_text_area("k_updesc", @keyinfo.k_desc) %>
+  </div>
+
+
+<!-- <table>
+    <tr style="font-size:12px;" >
+      <td>Keyword name: </td><td><%= text_field(:ancient_dict, :key, :size => 5)%></td>
+    </tr>
+    <br/>
+    <tr style="font-size:12px;">
+      <td>Keyword description: </td><td><%= text_area(:ancient_dict, :key_desc, :size => "80x5") %></td>
+    </tr>
+  </table>-->
+
+  <!--<%Dapkey.find(:first, :conditions => ["k_id=?", @tst])%>
+  <br/>
+  <%= @tst %>-->
+
+  <div class="row">
+    <div id="gloading_lnk" style="display:none; text-decoration:blink; float: right; margin-right: 25px;" >Loading...</div>
+  </div>
+
+
+  <div class="row">
+    <input name="submitform" type="submit" class="toolbutton" value="Update Key" onclick="Effect.Appear('gloading_lnk');"/>
+    <!--<input name="resetform" type="reset" class="toolbutton" value="Reset"/>-->
+  </div>
+
+<%end%>

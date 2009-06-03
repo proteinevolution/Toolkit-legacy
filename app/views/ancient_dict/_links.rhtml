@@ -2,7 +2,7 @@
   <ul>
     <% for i in 0...@shortlinks.length%>
       <li <% if @shortlinks[i] == @color %> class="current" <% end %>>
-        <a href="/ancient_dict/<%= @links[i]%>" onmouseout="return nd();" onmouseover="return overlib(<%= @link_text[i]%>);"><%= @link_names[i]%></a>
+        <a href="/ancient_dict/<%= @links[i]%>" onmouseover="return overlib('<%= @link_text[i]%>');" onmouseout="return nd();"><%= @link_names[i]%></a>
       </li>
     <% end %>
   </ul>

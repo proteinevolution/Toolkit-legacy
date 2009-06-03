@@ -1,0 +1,39 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "update_items") %>
+
+<%= form_tag({:controller => "ancient_dict", :action => "addingKey"}, {:multipart => true})%>
+
+<div> 
+<h2>Add Keyword</h2>
+
+<div class="hr">&nbsp;</div>
+<div>
+  <%= form_label("Keyword name") %>
+  <%= form_text_field("k_name", "", "", 80)%>
+</div>
+
+<div class="row">
+  <%= form_label("Keyword description") %>
+  <%= form_text_area("k_desc") %>
+</div>
+
+
+<div class="row">
+  <div id="gloading_lnk" style="display:none; text-decoration:blink; float: right; margin-right: 25px;" >Loading...</div>
+</div>
+
+
+<div class="row">
+  <input name="submitform" type="submit" class="toolbutton" value="Add Key" onclick="Effect.Appear('gloading_lnk');"/>
+  <input name="resetform" type="reset" class="toolbutton" value="Reset"/>
+</div>
+
+</div>
+
+</form>
+
+
+

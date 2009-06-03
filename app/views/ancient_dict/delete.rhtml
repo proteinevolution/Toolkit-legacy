@@ -1,0 +1,82 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "update_items") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<% if @kpage == "" %>
+  <p style="font-size:14px; font-weight:bold;">Select Keyword for Deletion</p>
+  </br>
+  <form action="/ancient_dict/delete" method="post" name="keywd">
+    <select name='keywd' onChange="window.location = this.value;">
+      <option value="">Keywords</option>
+      <%Dapkey.find(:all, :order => "k_name").each do |key|%>
+        <%if is_active?(key)%>
+          <%@k_entry=key.k_id + ': ' + key.k_name %>
+          <option value="<%= DOC_ROOTURL %>/ancient_dict/delete?kpage=<%=key.k_id%>"><%=@k_entry%></option>
+        <%end%>
+      <% end %>
+    </select>
+  </form>
+<% else %>
+  <%@kinfo=Dapkey.find(:first, :conditions => ["k_id=?", @kpage])%>
+
+  <p style="font-size:14px; font-weight:bold;">Delete Keyword </p>
+
+  <div>
+    <%= form_label("Mysql ID (Do not change!!!)") %>
+    <%= form_text_field("delid", @kinfo.id, "", 10)%>
+  </div>
+
+  <div>
+    <%= form_label("Keyword ID (Do not change!!!)") %>
+    <%= form_text_field("k_delid", @kinfo.k_id, "", 10)%>
+  </div>
+
+  <!--<div>
+    <%= form_label("Keyword name") %>
+    <%= form_text_field("k_delname", @kinfo.k_name, "", 80)%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Keyword description") %>
+    <%= form_text_area("k_deldesc", @kinfo.k_desc) %>
+  </div>-->
+
+  <div class="row">
+    <div id="gloading_lnk" style="display:none; text-decoration:blink; float: right; margin-right: 25px;" >Loading...</div>
+  </div>
+
+  <div class="row">
+    <input name="submitform" type="submit" class="toolbutton" value="Delete Key" onclick="Effect.Appear('gloading_lnk');"/>
+  </div>
+
+<%end%>
+
+
+
+<!--<p style="font-size:14px; font-weight:bold;">Delete Keyword</p>
+
+<%Dapkey.find(:all, :order => "k_name").each do |key|%>
+  <p class="deleteKeyword" style="font-size:12px;"><input type="checkbox" name="delItem" value="deleteItem"/><%=key.k_name %></p>
+<% end %>-->
+
+
+<!--<table>
+  <tr style="font-size:12px;" >
+    <td>Keyword name: </td><td><%= text_field("ancient_dict", "key")%></td>
+  </tr>
+  <br/>
+  <tr style="font-size:12px;">
+    <td>Keyword description: </td><td><%= text_field("ancient_dict", "key_desc") %></td>
+  </tr>
+</table>
+<br/>
+<%= button_to "Delete Keyword" %>-->
+<!--button_to "Delete Keyword", { :action => "delete", :id => @image.id }, :confirm => "Are you sure?", :method => :delete%>-->
+
+
+
+

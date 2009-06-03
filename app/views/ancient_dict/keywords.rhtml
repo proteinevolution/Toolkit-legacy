@@ -8,7 +8,7 @@
 
 <p style="font-size:14px; font-weight:bold;">Keywords</p>
 <table border="0" style="width:100%">
-  <%Dapkey.find(:all).each do |key|%>
+  <%Dapkey.find(:all, :order => "k_name").each do |key|%>
   <tr>
     <td style="font-size:12px; font-weight:bold; width:25%" >
       <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword?key=<%=key.k_id%>"><%=key.k_name%></a>

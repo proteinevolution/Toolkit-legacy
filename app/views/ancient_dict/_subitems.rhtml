@@ -1,12 +1,12 @@
 <div id="resultactions">
    <ul>
-     <% for i in 0...@subitem.length%>
-       <li <% if @subitem[i] == @coloring %> class="current" <% end %> >
-         <a href="/ancient_dict/<%= @subitem_names[i] %>"><%= @subitem_text[i] %></a>
+     <% for i in 0...@short_subitems.length%>
+       <li <% if @short_subitems[i] == @coloring %> class="current" <% end %> >
+         <a href="/ancient_dict/<%= @subitems[i] %>"  onmouseover="return overlib('<%= @subitem_text[i]%>');" onmouseout="return nd();"><%= @subitem_names[i] %></a>
        </li>
      <% end %>
   </ul>
 </div>
 
-<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%> 
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 

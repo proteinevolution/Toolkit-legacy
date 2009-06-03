@@ -2,24 +2,26 @@
 
 <%= render(:partial => "links") %>
 
+<%= render(:partial => "update_items") %>
+
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
-Dies soll zum updaten der mysql-Datenbank verwendet werden, allerdings nur für Administratoren sichtbar sein.
+<p style="font-size:12px;">This page should only be visible for the administrators of the toolkit.<br/><br/>It has its sence in allowing a much easier insertion of new keywords, fragments or repeats into the mysql database as well as updating or deleting existing keywords, fragments or repeats.<br/>Following actions can be chosen: <%= link_to "add keyword", :controller => "ancient_dict", :action => "add" %>, <%=link_to "update keyword", :controller => "ancient_dict", :action => "up" %>, <%= link_to "delete keyword", :controller => "ancient_dict", :action => "delete"%>, <%= link_to "add item", :controller => "ancient_dict", :action => "addItem" %>, <%= link_to "update item", :controller => "ancient_dict", :action => "updateItem" %> and <%= link_to "delete item", :controller => "ancient_dict", :action => "deleteItem" %>.</p>
 
-<h3 class="<%= @section["name"] %>">Input</h3>
+<!--<h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
   <%= form_label("Enter the NAME of the fragment or repeat", "name") %>
   <%= form_text_field("f_name", '', '', 80) %>
 </div>
 
 <div class="row">
-  <%= form_label("Enter the ID of the fragment or repeat", "id") %>
-  <%= form_text_field("f_id", '', '', 10) %>
+  <%= form_label("Enter the CATEGORY of the fragment or repeat", "category") %>
+  <%= form_select_single("f_category", @category_values, @category_labels) %>
 </div>
 
 <div class="row">
-  <%= form_label("Enter the CATEGORY of the fragment or repeat", "category") %>
-  <%= form_text_field("f_category", '', '', 10) %>
+  <%= form_label("Enter the ID of the fragment or repeat", "id") %>
+  <%= form_text_field("f_id", @id_value, '', 10) %>
 </div>
 
 <div class="row">
@@ -60,9 +62,9 @@ Dies soll zum updaten der mysql-Datenbank verwendet werden, allerdings nur für 
 <div class="row">
   <%= form_label("Upload the IMAGE of the fragment or alignment", "img") %>
   <%= form_file("image") %>
-</div>
+</div> -->
 
-<div class="spacer">&nbsp;</div>
+<!--<div class="spacer">&nbsp;</div>
 
 <h3 class="<%= @section["name"] %>">Upload</h3>
 
@@ -75,7 +77,7 @@ Dies soll zum updaten der mysql-Datenbank verwendet werden, allerdings nur für 
 
 <div class="row">
   <%= form_submit_buttons %>
-</div>
+</div>-->
 
 
 </form>

@@ -13,7 +13,7 @@
   <tr>
     <%DapfragmentDapkey.find(:all, :conditions => ["f_id=?", @page]).each do |keywd|%>
       <td style="font-size:12px">
-        <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword?key=<%=keywd.k_id%>">'<%=Dapkey.find(:first, :conditions => ["k_id=?", keywd.k_id]).k_name%>' &nbsp;</a>
+        <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword?key=<%=keywd.k_id%>">'<%=Dapkey.find_by_k_id(keywd.k_id).k_name%>' &nbsp;</a>
       </td>
     <%end%>
   </tr>
@@ -116,12 +116,13 @@
 <br/>
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
 <table border="0">
-  <%Dapfragment.find(:all, :conditions => ["f_id=?", @page]).each do |ref|%>
+  <%Dapref.find(:all, :conditions => ["f_id=?", @page]).each do |ref|%>
     <tr>
       <td style="font-size:12px">
-        <%=ref.f_ref%>
+        <%=ref.r_reference%>
       </td>
     </tr>
   <% end %>
+
 </table>
 

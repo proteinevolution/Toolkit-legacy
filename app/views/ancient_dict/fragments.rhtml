@@ -8,14 +8,14 @@
 
 <p style="font-size:14px; font-weight:bold;">Fragments</p>
 
-<p style="font-size:13px; font-weight:bold;"><!--<u><i>-->All Alpha<!--</i></u>--></p>
+<p style="font-size:13px; font-weight:bold;">All Alpha</p>
 
 <table border="0" width="100%">
   <colgroup>
     <col width="40%">
     <col width="60%">
   </colgroup>
-  <%Dapfragment.find(:all, :conditions => "f_category = 'frag_AA'").each do |alpha|%>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'frag_AA'", :order => "f_name").each do |alpha|%>
   <tr>
     <td style="font-size:12px; font-weight:bold;">
       <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=alpha.f_id%>"><%=alpha.f_name%></a>
@@ -27,14 +27,14 @@
   <% end %>
 </table>
 
-<p style="font-size:13px; font-weight:bold;"><!--<u><i>-->All Beta<!--</i></u>--></p>
+<p style="font-size:13px; font-weight:bold;">All Beta</p>
 
 <table border="0" width="100%">
   <colgroup>
     <col width="40%">
     <col width="60%">
   </colgroup>
-  <%Dapfragment.find(:all, :conditions => "f_category = 'frag_AB'").each do |beta|%>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'frag_AB'", :order => "f_name").each do |beta|%>
   <tr>
     <td style="font-size:12px; font-weight:bold;">
       <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=beta.f_id%>"><%=beta.f_name%></a>
@@ -47,14 +47,14 @@
 </table>
 
 
-<p style="font-size:13px; font-weight:bold;"><!--<u><i>-->Mixed<!--</i></u>--></p>
+<p style="font-size:13px; font-weight:bold;">Mixed</p>
 
 <table border="0" width="100%">
   <colgroup>
     <col width="40%">
     <col width="60%">
   </colgroup>
-  <%Dapfragment.find(:all, :conditions => "f_category = 'frag_M'").each do |mixed|%>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'frag_M'", :order => "f_name").each do |mixed|%>
   <tr>
     <td style="font-size:12px; font-weight:bold;">
       <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=mixed.f_id%>"><%=mixed.f_name%></a>

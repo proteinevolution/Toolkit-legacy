@@ -15,7 +15,7 @@
     <col width="40%">
     <col width="60%">
   </colgroup>
-  <%Dapfragment.find(:all, :conditions => "f_category = 'rep_AA'").each do |alpha|%>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'rep_AA'", :order => "f_name").each do |alpha|%>
   <tr>
     <td style="font-size:12px; font-weight:bold;">
       <a href="<%= DOC_ROOTURL %>/ancient_dict/repeat?page=<%=alpha.f_id%>"><%=alpha.f_name%></a>
@@ -35,7 +35,7 @@
     <col width="40%">
     <col width="50%">
   </colgroup>
-  <%Dapfragment.find(:all, :conditions => "f_category = 'rep_AB'").each do |beta|%>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'rep_AB'", :order => "f_name").each do |beta|%>
   <tr>
     <td style="font-size:12px; font-weight:bold;">
       <a href="<%= DOC_ROOTURL %>/ancient_dict/repeat?page=<%=beta.f_id%>"><%=beta.f_name%></a>
@@ -54,7 +54,7 @@
     <col width="40%">
     <col width="60%">
   </colgroup>
-  <%Dapfragment.find(:all, :conditions => "f_category = 'rep_M'").each do |mixed|%>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'rep_M'", :order => "f_name").each do |mixed|%>
   <tr>
     <td style="font-size:12px; font-weight:bold;">
       <a href="<%= DOC_ROOTURL %>/ancient_dict/repeat?page=<%=mixed.f_id%>"><%=mixed.f_name%></a>
