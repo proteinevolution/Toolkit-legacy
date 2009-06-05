@@ -339,7 +339,7 @@
   - internal
 - name: cs_blast
   title: CS/CSI-BLAST
-  title_long: Context-specific BLAST/CSI BLAST
+  title_long: CS-/CSI-BLAST
   section: search
   active: 
   - member

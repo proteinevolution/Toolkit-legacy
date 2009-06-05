@@ -2,6 +2,10 @@
 
   <%= form_tag({:action => :run, :job => 'cs_blast', :parent => @parent_job}, {:id => 'form', :multipart => true})%>
 
+  <a target="_blank" href="ftp://toolkit.lmb.uni-muenchen.de/csblast/CS-BLAST-2.0.1/" title="Now CSI-BLAST">
+  &nbsp;&nbsp;CS-BLAST now with CSI-BLAST
+</a>
+
   <h3 class="<%= @section["name"] %>">Input</h3>
 
   <div class="row">
@@ -79,7 +83,7 @@
 <div class="hr">&nbsp;</div>
 <ul class="arrow-marker">
 <!--   <li><a href="#" title="About CS-BLAST" onclick="openHelpWindow('/cs_blast/help_ov');">About CS-BLAST</a></li> -->
-  <li><a target="_blank" href="ftp://toolkit.lmb.uni-muenchen.de/csblast" title="Download CS-BLAST"><B>Download CS-BLAST</B></a>
+  <li><a target="_blank" href="ftp://toolkit.lmb.uni-muenchen.de/csblast/CS-BLAST-2.0.1" title="Download CS/CSI-BLAST"><B>Download CS/CSI-BLAST</B></a>
 </ul>
 
 <div class="row">

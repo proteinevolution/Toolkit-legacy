@@ -188,6 +188,8 @@ class CsBlastAction < Action
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
     
+    @commands << "#{RUBY_UTILS}/parse_csiblast.rb -i #{@basename}.csblast -o #{@basename}.csblast"
+    
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
 
