@@ -44,6 +44,7 @@ class Quick2DJob < Job
    # memsat   = readMemsat
     hmmtop   = readHMMTOP	
     disopred = readDisopred
+    iupred = readIUPred
   #  vsl2     = readVSL2
     coils    = readCoils		
     
@@ -95,7 +96,8 @@ class Quick2DJob < Job
       data += export_tm("TM PROF (Rost)", prof_r, i, stop-1)
       
       data += export_do("DO DISOPRED2", disopred, i, stop-1)
-      data += export_do("DO VSL", vsl2, i, stop-1)			
+      data += export_do("DO IUPRED", iupred, i, stop-1)
+      #data += export_do("DO VSL", vsl2, i, stop-1)			
       
       data += export_so("SO PROF (Rost)", prof_r, i, stop-1)			
       data += export_so("SO JNET", jnet, i, stop-1)
@@ -189,6 +191,7 @@ class Quick2DJob < Job
  #   memsat   = readMemsat
     hmmtop   = readHMMTOP	
     disopred = readDisopred
+    iupred = readIUPred
 # vsl2     = readVSL2
     coils    = readCoils		
     
@@ -204,6 +207,7 @@ class Quick2DJob < Job
     data += 'PROFROST_TMCONF=new Array'+toJSArray( prof_r['tmconf'] )+";\n" 
     data += 'PROFOUALI_CONF=new Array'+toJSArray( prof_o['conf'] )+";\n" 
     data += 'DISOPRED2_CONF=new Array'+toJSArray( disopred['doconf'] )+";\n"
+    data += 'IUPRED_CONF=new Array'+toJSArray( iupred['doconf'] )+";\n"
     data += '</script>' +"\n"		
     
     
@@ -234,7 +238,8 @@ class Quick2DJob < Job
       data += printTMHTML("TM HMMTOP", "hmmtop", hmmtop, i, stop)
       data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)					
       
-      data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)				
+      data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)	
+      data += printDOHTML("DO IUPRED","iupred",iupred,i,stop)
 #      data += printDOHTML("DO VSL2", "vsl2", vsl2, i, stop)
       
       data += printSOLHTML("SO Prof (Rost)", "sol_prof", prof_r, i, stop)
@@ -498,6 +503,23 @@ class Quick2DJob < Job
     end
     ret['dopred'].gsub!(/\./, " ")
     ret['dopred'].gsub!(/\*/, "D")
+    ret
+  end
+  
+    def readIUPred
+    if( !File.exists?( self.actions[0].flash['iupredfile'] ) ) then return {} end
+    ret={'doconf'=>[], 'dopred'=>"" }
+    ar = IO.readlines( self.actions[0].flash['iupredfile'])
+    ar.each do |line|
+      if( line =~ /\s*\d+\s\w\s*(\d.\d*)/ )
+        if($1.to_f>=0.5)
+		ret['dopred']+="D"
+	else
+		ret['dopred']+=" "
+	end
+        ret['doconf']<<$1
+      end
+    end		
     ret
   end
   

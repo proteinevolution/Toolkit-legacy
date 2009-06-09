@@ -9,6 +9,9 @@ class Quick2DAction < Action
   JNET        = File.join(BIOPROGS, 'ruby', 'jnet.rb')
  # MEMSAT      = File.join(BIOPROGS, 'ruby', 'memsat.rb')
   DISOPRED    = File.join(BIOPROGS, 'ruby', 'disopred.rb')
+  IUPRED = File.join(BIOPROGS, 'iupred', 'iupred')
+  IUPREDDIR = File.join(BIOPROGS, 'iupred')
+
 
   HMMTOP      = File.join(BIOPROGS, 'hmmtop2.1', 'hmmtop')
   HMMTOPARCH  = File.join(BIOPROGS, 'hmmtop2.1', 'hmmtop.arch')
@@ -57,6 +60,7 @@ class Quick2DAction < Action
    # @memsat      = params['memsat2_chk']   ? true : false
     @hmmtop      = params['hmmtop_chk']    ? true : false
     @disopred    = params['disopred2_chk'] ? true : false
+    @iupred = params['iupred_chk'] ? true : false
  #   @vsl2        = params['vsl2_chk']      ? true : false
     @informat    = params['informat']
     logger.debug("Format: "+@informat+"\n")
@@ -99,6 +103,7 @@ class Quick2DAction < Action
     mem['secfile']      = basename+".sec"
 # mem['vsl2file']     = basename+".vsl2"
     mem['disopredfile'] = basename+".horiz_d"
+    mem['iupredfile'] = basename+".iupred"
     mem['headerfile']   = basename+".header"
     self.flash = mem
     self.save!
@@ -169,6 +174,7 @@ class Quick2DAction < Action
     if( @jnet )     then commands << "echo 'Running JNET' >> #{flash['logfile']}; #{JNET} #{flash['clufile']} #{flash['matrixfile']} #{flash['jnetfile']}" end
   # if( @memsat )   then commands << "echo 'Running MEMSAT' >> #{flash['logfile']}; #{MEMSAT} #{flash['queryfile']} #{flash['memsatfile']}" end
     if( @disopred ) then commands << "echo 'Running DISOPRED2' >> #{flash['logfile']}; #{DISOPRED} #{flash['queryfile']}" end
+    if( @iupred ) then commands << "echo 'Running IUPRED' >> #{flash['logfile']}; #{IUPRED} #{flash['queryfile']} long #{IUPREDDIR} > #{flash['iupredfile']}" end
     if( @hmmtop )   then commands << "echo 'Running HMMTOP2.1' >> #{flash['logfile']}; export HMMTOP_ARCH=#{HMMTOPARCH}; export HMMTOP_PSV=#{HMMTOPPSV}; #{HMMTOP} -pi=mpred -pl -sf=FAS -if=#{flash['alnfasfile']} > #{flash['hmmtopfile']}" end
     if( @profouali )then commands << "echo 'Running PROFOUALI' >> #{flash['logfile']}; export PROF_DIR=#{PROFOUALIDIR}; #{PROFOUALI} -d -c -v -m 1 -a #{flash['clufile']} -p #{flash['matrixfile']} -o #{flash['profoualifile']}; echo 'Hide exitstate !=0 by this echo cmd'" end
     if( @coils )    then commands <<    "echo 'Running NCOILS' >> #{flash['logfile']}; export COILSDIR=#{NCOILSDIR}; #{NCOILS} -f < #{flash['queryfile']} > #{flash['coilsfile']}" end
