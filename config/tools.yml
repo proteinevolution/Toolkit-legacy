@@ -338,8 +338,8 @@
   - hhgroup
   - internal
 - name: cs_blast
-  title: CS-BLAST
-  title_long: Context-specific BLAST
+  title: CS/CSI-BLAST
+  title_long: CS-/CSI-BLAST
   section: search
   active: 
   - member
