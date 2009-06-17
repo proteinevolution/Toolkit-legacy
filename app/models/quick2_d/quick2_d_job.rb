@@ -42,6 +42,7 @@ class Quick2DJob < Job
     prof_o   = readProfOuali	
     prof_r   = readProfRost
    # memsat   = readMemsat
+    memsat_svm = readMemsatSvm
     hmmtop   = readHMMTOP	
     disopred = readDisopred
     iupred = readIUPred
@@ -91,8 +92,9 @@ class Quick2DJob < Job
         data += "\n"
       end									
       
-      data += export_tm("TM MEMSAT2", memsat, i, stop-1)
+      #data += export_tm("TM MEMSAT2", memsat, i, stop-1)
       data += export_tm("TM HMMTOP", hmmtop, i, stop-1)
+      data += export_tm("TM MEMSATSVM",memsat_svm, i, stop-1)
       data += export_tm("TM PROF (Rost)", prof_r, i, stop-1)
       
       data += export_do("DO DISOPRED2", disopred, i, stop-1)
@@ -189,6 +191,7 @@ class Quick2DJob < Job
     prof_o   = readProfOuali	
     prof_r   = readProfRost
  #   memsat   = readMemsat
+    memsat_svm = readMemsatSvm
     hmmtop   = readHMMTOP	
     disopred = readDisopred
     iupred = readIUPred
@@ -205,6 +208,7 @@ class Quick2DJob < Job
     data += 'JNET_CONF=new Array'+toJSArray( jnet['conf'] )+";\n" 
     data += 'PROFROST_CONF=new Array'+toJSArray( prof_r['conf'] )+";\n" 
     data += 'PROFROST_TMCONF=new Array'+toJSArray( prof_r['tmconf'] )+";\n" 
+    #data += 'MEMSATSVM=new Array'+toJSArray(memsat_svm['tmconf'])+"; \n"
     data += 'PROFOUALI_CONF=new Array'+toJSArray( prof_o['conf'] )+";\n" 
     data += 'DISOPRED2_CONF=new Array'+toJSArray( disopred['doconf'] )+";\n"
     data += 'IUPRED_CONF=new Array'+toJSArray( iupred['doconf'] )+";\n"
@@ -236,7 +240,8 @@ class Quick2DJob < Job
       
    #   data += printTMHTML("TM MEMSAT2", "memsat", memsat, i, stop)	
       data += printTMHTML("TM HMMTOP", "hmmtop", hmmtop, i, stop)
-      data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)					
+      data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)		
+      data += printTMHTML("TM MEMSATSVM","memsat_svm", memsat_svm, i, stop)
       
       data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)	
       data += printDOHTML("DO IUPRED","iupred",iupred,i,stop)
@@ -550,6 +555,39 @@ class Quick2DJob < Job
     ret['tmpred'].gsub!(/[Oo]/, "--")
     ret['tmpred'].gsub!(/H/, "X")
     ret
+  end
+  
+  def readMemsatSvm
+	if( !File.exists?(self.actions[0].flash['memsatsvmfile'])) then return { } end
+	ret={'tmpred'=>""}
+	ar = IO.readlines(self.actions[0].flash['memsatsvmfile'])
+	
+	ar.each do |line|
+		line =~ /Topology:/
+		if $& then
+			pos = line
+			pos.gsub!(/Topology:\s*/,"")
+			i = 0
+			start_array = Array.new
+			end_array = Array.new
+			while true do
+				pos=~/(\d+)-(\d+)/
+				if $1==nil then break end
+					start_array[i]=$1
+					end_array[i] = $2
+					i+=1
+					pos.gsub!(/\A(\d+)-(\d+)\,*/,"")
+			end 
+			result = ""
+			start_array.length.times { |i|
+				(start_array[i].to_i-1-result.length).times { result +=" " }
+				(end_array[i].to_i-result.length).times { result += "X" }
+			}
+			(readQuery['sequence'].length-result.length+1).times{ result += " " }
+			ret['tmpred'] += result
+		end
+	end
+	ret
   end
   
   def readCoils
