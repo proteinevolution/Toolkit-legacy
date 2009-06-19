@@ -5,8 +5,8 @@ function initInfo(){
 	divObj.innerHTML = ""
 	divObj.style.left = "120px";
 	divObj.style.top = "120px";
-	divObj.style.width = "155px";
-	divObj.style.height = "170px";
+	divObj.style.width = "160px";
+	divObj.style.height = "190px";
 	divObj.style.backgroundColor="#eff5ef";
 	divObj.style.visibility="hidden";
 	divObj.style.border="solid 1px #cccccc";
@@ -62,6 +62,9 @@ function showInfo(id){
 	}
 	if( typeof(PROFROST_TMCONF)!="undefined" && PROFROST_TMCONF.length>0){
 		divObj.innerHTML += "TM(Rost)    : " + PROFROST_TMCONF[resPos] + "\n";
+	}
+	if( typeof(MEMSATSVM_TMCONF)!="undefined" && MEMSATSVM_TMCONF.length>0){
+		divObj.innerHTML += "MEMSAT-SVM  : " + MEMSATSVM_TMCONF[resPos] + "\n";
 	}
 	if( typeof(DISOPRED2_CONF)!="undefined" && DISOPRED2_CONF.length>0){
 		divObj.innerHTML += "DISOPRED2   : " + DISOPRED2_CONF[resPos] + "\n";
