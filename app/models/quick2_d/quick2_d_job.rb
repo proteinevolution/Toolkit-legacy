@@ -600,7 +600,7 @@ class Quick2DJob < Job
 		(readQuery['sequence'].length-result.length+1).times{ result += " "; ret['tmconf']<<"-" }
 		ret['tmpred'] += result
 	else
-		(readQuery['sequence'].length).times{ result += " ";  ret['tmconf']<<"-"}
+		(readQuery['sequence'].length).times{ result += " "}
 		ret['tmpred'] += result
 	end
 	ret
