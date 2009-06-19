@@ -208,7 +208,7 @@ class Quick2DJob < Job
     data += 'JNET_CONF=new Array'+toJSArray( jnet['conf'] )+";\n" 
     data += 'PROFROST_CONF=new Array'+toJSArray( prof_r['conf'] )+";\n" 
     data += 'PROFROST_TMCONF=new Array'+toJSArray( prof_r['tmconf'] )+";\n" 
-    #data += 'MEMSATSVM=new Array'+toJSArray(memsat_svm['tmconf'])+"; \n"
+    data += 'MEMSATSVM_TMCONF=new Array'+toJSArray(memsat_svm['tmconf'])+"; \n"
     data += 'PROFOUALI_CONF=new Array'+toJSArray( prof_o['conf'] )+";\n" 
     data += 'DISOPRED2_CONF=new Array'+toJSArray( disopred['doconf'] )+";\n"
     data += 'IUPRED_CONF=new Array'+toJSArray( iupred['doconf'] )+";\n"
@@ -241,7 +241,7 @@ class Quick2DJob < Job
    #   data += printTMHTML("TM MEMSAT2", "memsat", memsat, i, stop)	
       data += printTMHTML("TM HMMTOP", "hmmtop", hmmtop, i, stop)
       data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)		
-      data += printTMHTML("TM MEMSATSVM","memsat_svm", memsat_svm, i, stop)
+      data += printTMHTML("TM MEMSAT-SVM","memsat_svm", memsat_svm, i, stop)
       
       data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)	
       data += printDOHTML("DO IUPRED","iupred",iupred,i,stop)
@@ -559,33 +559,49 @@ class Quick2DJob < Job
   
   def readMemsatSvm
 	if( !File.exists?(self.actions[0].flash['memsatsvmfile'])) then return { } end
-	ret={'tmpred'=>""}
+	ret={'tmpred'=>"", 'tmconf'=>[]}
 	ar = IO.readlines(self.actions[0].flash['memsatsvmfile'])
+	pos = "", score="", result = ""
 	
+	#read positions and score
 	ar.each do |line|
 		line =~ /Topology:/
 		if $& then
 			pos = line
-			pos.gsub!(/Topology:\s*/,"")
-			i = 0
-			start_array = Array.new
-			end_array = Array.new
-			while true do
-				pos=~/(\d+)-(\d+)/
-				if $1==nil then break end
-					start_array[i]=$1
-					end_array[i] = $2
-					i+=1
-					pos.gsub!(/\A(\d+)-(\d+)\,*/,"")
-			end 
-			result = ""
-			start_array.length.times { |i|
-				(start_array[i].to_i-1-result.length).times { result +=" " }
-				(end_array[i].to_i-result.length).times { result += "X" }
-			}
-			(readQuery['sequence'].length-result.length+1).times{ result += " " }
-			ret['tmpred'] += result
 		end
+	
+		line =~ /Score:/
+		if $& then
+			line =~ /\-*\d+\.\d+/
+			score = $&
+		end
+	end
+	
+	if(score.to_f>=0) then
+		pos.gsub!(/Topology:\s*/,"")
+		i = 0
+		#Arrays for start-positions and end-positions and save them 
+		start_array = Array.new
+		end_array = Array.new
+		while true do
+			pos=~/(\d+)-(\d+)/
+			if $1==nil then break end
+				start_array[i]=$1
+				end_array[i] = $2
+				i+=1
+				pos.gsub!(/\A(\d+)-(\d+)\,*/,"")
+		end 
+	
+		#X for transmembrane and gap for none and putting the score to the javascript
+		start_array.length.times { |i|
+			(start_array[i].to_i-1-result.length).times { result +=" "; ret['tmconf']<<"-" }
+			(end_array[i].to_i-result.length).times { result += "X"; ret['tmconf'] << score }
+		}
+		(readQuery['sequence'].length-result.length+1).times{ result += " "; ret['tmconf']<<"-" }
+		ret['tmpred'] += result
+	else
+		(readQuery['sequence'].length).times{ result += " "}
+		ret['tmpred'] += result
 	end
 	ret
   end
