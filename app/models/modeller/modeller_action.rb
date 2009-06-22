@@ -62,7 +62,7 @@ class ModellerAction < Action
         reformat(@format, "fas", @seqfile)			
       
         # convert alignment in fasta-format
-        command = "#{MODELLER}/pir_converter.pl -i #{@seqfile} -o #{@infile} -fas -tmp #{job.job_dir}"
+        command = "export TK_ROOT=#{TOOLKIT_ROOT}; #{MODELLER}/pir_converter.pl -i #{@seqfile} -o #{@infile} -fas -tmp #{job.job_dir}"
         logger.debug "Command: #{command}"
         system(command)
         

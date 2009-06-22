@@ -129,7 +129,24 @@
 		</tr></table>
 	</div>			
 </div>
-<div class="spacer">&nbsp;</div>			
+<div class="spacer">&nbsp;</div>		
+
+<div class="row">
+	<div class="label">
+		<%= form_label("MEMSAT-SVM") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("memsatsvm_chk", '1', true, true) %>
+		</td><td>			
+			Timothy Nugent, David T. Jones (2009)
+			Transmembrane protein topology prediction using support vector machines
+			<em>BMC Bioinformatics 2009</em>
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>	
 			
 <div class="row">	<div class="label">
 		<%= form_label("DISOPRED2") %>
@@ -148,6 +165,24 @@
 </div>
 <div class="spacer">&nbsp;</div>
 
+
+<div class="row">
+	<div class="label">
+		<%= form_label("IUPRED") %>
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("iupred_chk", '1', true, true) %>
+		</td><td>			
+			Zsuzsanna Doszt&aacute;, Veronika Csizm&oacute;k, P&eacute;ter Tompa and Istv&aacute;n Simon (2005) 
+			The Pairwise Energy Content Estimated from Amino Acid Composition Discriminates 
+			between Folded and Intrinsically Unstructured Proteins
+			<em>J. Mol. Biol.</em> <b>347</b>, 827-839.
+		</td>
+		</tr></table>
+	</div>			
+</div>
+<div class="spacer">&nbsp;</div>
 
 
 <%= render(:partial => "shared/joboptions") %>

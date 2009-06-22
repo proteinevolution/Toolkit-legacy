@@ -1217,7 +1217,7 @@ def break_lines(s, width, space)
   end #end each
   s = chrs.pack('C*')
   s.gsub!(/\n\s*(\S)/, "\n#{space}#{$1}")
-  return
+  return  s
 
 end #end method
 
@@ -1229,10 +1229,29 @@ def insert_array(array, offset,  array2)
 end
 
 def wrap(s, width,space)
-  if s.length >= width
-    s.sub!(/(.{1,#{width}})(\s+|Z)/, "\\1\n#{space}")
-  end
-end
+  w = width
+  i = 0
+  
+  while width  <=  s.size
+    if s[width,1] =~ /\s/
+      s[width,1]= "\n"
+      s.insert(width+1,space)
+      width = width+w
+    else
+      i = width
+      while i > (width-w)
+        if s[i,1] =~ /\s/
+          s[i,1] = "\n"
+          s.insert(i+1,space) 
+          width = width+w
+          break
+        end
+        i= i-1
+      end
+    end
+   end
+  return s
+ end
 
  def export
     ret = IO.readlines(File.join(job_dir, jobid + @@export_ext)).join

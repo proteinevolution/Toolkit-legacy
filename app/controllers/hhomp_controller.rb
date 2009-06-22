@@ -38,7 +38,9 @@ class HhompController < ToolController
       Open3.popen3(command) do |stdin, stdout, stderr|
         @gi_seq = stdout.readlines
       end
-      @gi_seq[0].gsub!(/(.{70,100}\S\s)/, '\1'+"\n") 
+      if (!@gi_seq[0].nil?)
+        @gi_seq[0].gsub!(/(.{70,100}\S\s)/, '\1'+"\n") 
+      end
     end			
     
     if (@page == "")
