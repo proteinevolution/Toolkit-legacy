@@ -3,7 +3,7 @@ class DataaController < ToolController
 	BAD = File.join(BIOPROGS, 'dataa')
 
 	def search
-		@ret = ""
+		@ret = "aq2 #{BAD}/main2.cgi page=browse"
 		open("|#{BAD}/main.cgi") do |ret|
 			@ret = ret.readlines.join
 		end
