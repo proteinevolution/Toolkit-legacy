@@ -21,24 +21,16 @@ class AncientDictAction < Action
     @kdesc = params['k_desc'] ? params['k_desc'] : "NULL"
 
     logger.debug "k_name: #{@kname}"
-    logger.debug "k_desc: #{@kdesc}"
-
+    #logger.debug "k_desc: #{@kdesc}"
 
     if (@kname != 'NULL')
-      #@k_idnum=
-      #logger.debug "num: #{@k_idnum}"
       @keys = Dapkey.find(:all)
-      #@keys.each do |key|
-       # if(@k_idnum<=key.id)
       @k_idnum=@keys.length
-       # end
-      #end
       @startid = 0
       @keyid= convertID('KEY', @k_idnum, @startid)
 
-      logger.debug "idnum: #{@k_idnum}"
-      #logger.debug "numstring: #{@idnumstring}"
-      logger.debug "keyid: #{@keyid}"
+      #logger.debug "idnum: #{@k_idnum}"
+      #logger.debug "keyid: #{@keyid}"
     end
 
     # input add item (fragment or repeat)
@@ -53,39 +45,39 @@ class AncientDictAction < Action
     @fkeywords = params['f_keys'] ? params['f_keys'] : "NULL"
     @fscop = params['f_occ'] ? params['f_occ'] : "NULL"
 
-    logger.debug "fitem: #{@fitem}"
+    #logger.debug "fitem: #{@fitem}"
     logger.debug "f_name: #{@fname}"
-    logger.debug "f_desc: #{@fdesc}"
-    logger.debug "f_shortdesc: #{@fshortdesc}"
-    logger.debug "f_cat: #{@fcategory}"
-    logger.debug "f_ref: #{@fref}"
+    #logger.debug "f_desc: #{@fdesc}"
+    #logger.debug "f_shortdesc: #{@fshortdesc}"
+    #logger.debug "f_cat: #{@fcategory}"
+    #logger.debug "f_ref: #{@fref}"
     @fkeywords.each do |ks|
-      logger.debug "f_key: #{ks}"
+     # logger.debug "f_key: #{ks}"
     end
 
     @occ = @fscop.split('\n')
 
-    logger.debug "f_occ: #{@fscop}"
+    #logger.debug "f_occ: #{@fscop}"
 
     @occ.each do |oc|
-      logger.debug "occ_line: #{oc}"
+     # logger.debug "occ_line: #{oc}"
       occ = oc.split('\t')
-      logger.debug "occ_name: #{occ[0]}"
-      logger.debug "occ_desc: #{occ[1]}"
+     # logger.debug "occ_name: #{occ[0]}"
+     # logger.debug "occ_desc: #{occ[1]}"
     end
 
 
     @reference = @fref.split('\n')
 
     @reference.each do |refs|
-      logger.debug "refs: #{refs}"
+      #logger.debug "refs: #{refs}"
     end
 
     @itemid = ''
 
     if (@fname != 'NULL')
       @f_idnum=1
-      logger.debug "f_num: #{@f_idnum}"
+     # logger.debug "f_num: #{@f_idnum}"
       if (@fitem == 'Fragment')
        fragaa = Dapfragment.find(:all, :conditions => "f_category = 'frag_AA'")
        @f_idnum+=fragaa.length
@@ -93,53 +85,50 @@ class AncientDictAction < Action
        @f_idnum+=fragab.length
        fragm = Dapfragment.find(:all, :conditions => "f_category = 'frag_M'")
        @f_idnum+=fragm.length
-       logger.debug "Amout of fragments: #{@f_idnum}"
+      # logger.debug "Amout of fragments: #{@f_idnum}"
        @itemid = convertID('FRAG', @f_idnum, 0)
-       logger.debug "Converted ID: #{@itemid}"
-       #@itemid = "FRAG"+@id_numstring
+      # logger.debug "Converted ID: #{@itemid}"
       else
-       logger.debug "f_num: #{@f_idnum}"
+      # logger.debug "f_num: #{@f_idnum}"
        repaa = Dapfragment.find(:all, :conditions => "f_category = 'rep_AA'")
        @f_idnum+=repaa.length
        repab = Dapfragment.find(:all, :conditions => "f_category = 'rep_AB'")
        @f_idnum+=repab.length
        repm = Dapfragment.find(:all, :conditions => "f_category = 'rep_M'")
        @f_idnum+=repm.length
-       logger.debug "Amout of repeats: #{@f_idnum}"
+      # logger.debug "Amout of repeats: #{@f_idnum}"
        @itemid = convertID('REP', @f_idnum, 0)
-       #@itemid = "REP"+@id_numstring
       end
 
+      figure_file = @itemid + '.jpg'
+      @figure_mysql = 'ancient_dict/images/' + figure_file
+      @figure_filename = File.join(DATABASES, @figure_mysql)
+      logger.debug "figure_filename #{@figure_filename}"
+
+      ali_file = @itemid + '.ali'
+      @ali_mysql = 'ancient_dict/alignments/' + ali_file
+      @ali_filename = File.join(DATABASES, @ali_mysql)
+      logger.debug "ali_filename #{@ali_filename}"
+
+      @fali = params['f_ali'] ? params['f_ali'] : "NULL"
+
+      @ffigure = params['f_figure'] ? params['f_figure'] : "NULL"
+
+      if (@ffigure != 'NULL')
+        params_to_file(@figure_filename, 'f_figure')
+#        logger.debug "figure_mysql: worked!"
+      end
+
+      @alignment = ''
+      if (@fali != "NULL")
+        params_to_file(@ali_filename, 'f_ali')
+        logger.debug "ali_mysql: #{@ali_mysql}"
+        @alignment=print_alignment(@ali_filename)
+      end
     end
 
-    figure_file = @itemid + '.jpg'
-    @figure_mysql = 'ancient_dict/images/' + figure_file
-    @figure_filename = File.join(DATABASES, @figure_mysql)
-    logger.debug "figure_filename #{@figure_filename}"
 
-    #params_to_file(@infile, 'sequence_input', 'sequence_file')
-
-    ali_file = @itemid + '.ali'
-    ali_mysql = 'ancient_dict/' + ali_file
-    ali_filename = File.join(figure_directory, ali_file)
-    logger.debug "ali_filename #{ali_filename}"
-
-    params['f_ali'] = ali_filename
-    @fali = params['f_ali'] ? params['f_ali'] : "NULL"
-    #params['f_figure'] = figure_filename
-    @ffigure = params['f_figure'] ? params['f_figure'] : "NULL"
-
-
-    if (@ffigure != 'NULL')
-      params_to_file(@figure_filename, 'f_figure')
-      logger.debug "figure_mysql: worked!"
-    end
-
-#    logger.debug "figure_mysql: #{figure_mysql}"
-    logger.debug "ali_mysql: #{ali_mysql}"
-
-
-    # input update keyword
+   # input update keyword
 
     @kupname = params['k_upname'] ? params['k_upname'] : "NULL"
     @kupdesc = params['k_updesc'] ? params['k_updesc'] : "NULL"
@@ -148,9 +137,9 @@ class AncientDictAction < Action
 
 
     logger.debug "Update key_name: #{@kupname}"
-    logger.debug "Update key_desc: #{@kupdesc}"
-    logger.debug "Keyword ID: #{@kid}"
-    logger.debug "Mysql ID: #{@id}"
+#    logger.debug "Update key_desc: #{@kupdesc}"
+#    logger.debug "Keyword ID: #{@kid}"
+#    logger.debug "Mysql ID: #{@id}"
 
 
     # input update fragment (fragment/repeat)
@@ -166,26 +155,42 @@ class AncientDictAction < Action
     @frag_fig = params['f_upfigure'] ? params['f_upfigure'] : "NULL"
     @frag_align = params['f_upali'] ? params['f_upali'] : "NULL"
 
+
+    logger.debug "FIGUUUUURE: #{@frag_fig}"
     if (@frag_fig != 'NULL')
-      @frag_figure = 'ancient_dict/images/' + @frag_id + '.jpg'
+      @figures = read_dir_entries(@frag_id)
+      @len = @figures.length
+      if (@len == 1)
+        @frag_figure = 'ancient_dict/images/' + @frag_id + '_up.jpg'
+      else
+        @frag_figure = 'ancient_dict/images/' + @frag_id + '_up'+@figures.length.to_s()+'.jpg'
+      end
+      logger.debug "frag_figure: #{@frag_figure}"
       @figure_name = File.join(DATABASES, @frag_figure)
-      params_to_file(@figure_name, 'frag_fig')
+      params_to_file(@figure_name, 'f_upfigure')
     end
 
-    if (@frag_ali != 'NULL')
-      @frag_align = 'ancient_dict/alignments/' + @frag_id + '.ali'
-      @ali_name = File.join(DATABASES, @frag_align)
+    #logger.debug "AAAAAAAAAAAAAALLLLLLLLLLLLLLLIIIIIIIIII #{@frag_align}"
+    @up_alignment = ''
+    if (@frag_align != 'NULL')
+      @frag_ali = 'ancient_dict/alignments/' + @frag_id + '.ali'
+      @ali_name = File.join(DATABASES, @frag_ali)
       params_to_file(@ali_name, 'frag_align')
+     # logger.debug "ali_mysql: #{@ali_name}"
+      @up_alignment=print_alignment(@frag_align)#(@ali_name)
+     # logger.debug "Alignment update: #{@up_alignment}"
     end
+
+    @up_occ = @frag_occ.split('\n')
 
     @upreference = @frag_ref.split('\n')
 
-    logger.debug "Mysql frag ID: #{@fid}"
-    logger.debug "Fragment ID: #{@frag_id}"
-    logger.debug "Update frag_name: #{@frag_name}"
-    logger.debug "Update frag_desc: #{@frag_desc}"
-    logger.debug "Update frag_shortdesc: #{@frag_shortdesc}"
-    logger.debug "Update frag_occ: #{@frag_occ}"
+   # logger.debug "Mysql frag ID: #{@fid}"
+   # logger.debug "Fragment ID: #{@frag_id}"
+   # logger.debug "Update frag_name: #{@frag_name}"
+   # logger.debug "Update frag_desc: #{@frag_desc}"
+   # logger.debug "Update frag_shortdesc: #{@frag_shortdesc}"
+   # logger.debug "Update frag_occ: #{@frag_occ}"
     logger.debug "Update frag_ref: #{@frag_ref}"
     logger.debug "Update frag_figure: #{@frag_figure}"
     logger.debug "Update frag_align: #{@frag_align}"
@@ -196,16 +201,16 @@ class AncientDictAction < Action
     @delid = params['delid'] ? params['delid'] : "NULL"
     @k_delid = params['k_delid'] ? params['k_delid'] : "NULL"
 
-    logger.debug "Delete ID: #{@delid}"
-    logger.debug "Delete K_id: #{@k_delid}"
+   # logger.debug "Delete ID: #{@delid}"
+   # logger.debug "Delete K_id: #{@k_delid}"
 
     # input delete item (fragment/repeat)
 
     @del_f_id = params['del_f_id'] ? params['del_f_id'] : "NULL"
     @f_delid = params['f_delid'] ? params['f_delid'] : "NULL"
 
-    logger.debug "Delete ID: #{@del_f_id}"
-    logger.debug "Delete F_id: #{@f_delid}"
+   # logger.debug "Delete ID: #{@del_f_id}"
+   # logger.debug "Delete F_id: #{@f_delid}"
 
   end
 
@@ -225,9 +230,10 @@ class AncientDictAction < Action
     # add new fragment
 
     if (@fname != 'NULL')
-      additem=Dapfragment.new(:f_id => @itemid, :f_name => @fname, :f_desc => @fdesc, :f_shortdesc => @fshortdesc, :f_category => @fcategory, :f_ref => @fref, :f_figure => @figure_mysql, :f_align => @ali)
+      #logger.debug "alignment information: #{@fali}"
+      additem=Dapfragment.new(:f_id => @itemid, :f_name => @fname, :f_desc => @fdesc, :f_shortdesc => @fshortdesc, :f_category => @fcategory, :f_ref => @fref, :f_figure => @figure_mysql, :f_align => @alignment)#@ali_mysql)
       additem.save!
-      logger.debug "Dapfragment added! f_id: #{@itemid}, f_name: #{@fname}, f_desc: #{@fdesc}, f_shortdesc: #{@fshortdesc}, f_category: #{@fcategory}, f_ref: #{@fref}, f_figure: #{@figure_mysql}, f_align #{@fali}"
+      logger.debug "Dapfragment added! f_id: #{@itemid}, f_name: #{@fname}, f_desc: #{@fdesc}, f_shortdesc: #{@fshortdesc}, f_category: #{@fcategory}, f_ref: #{@fref}, f_figure: #{@figure_mysql}, f_align #{@alignment}"
       @fkeywords.each do |ky|
         addfragkey=DapfragmentDapkey.new(:f_id => @itemid, :k_id => ky)
         addfragkey.save!
@@ -274,9 +280,9 @@ class AncientDictAction < Action
       upfrag=Dapfragment.find(@fid)
       if (@frag_fig != 'NULL')
         if (@frag_align != 'NULL')
-          upfrag.update_attributes(:f_id => @frag_id, :f_name => @frag_name, :f_figure => @frag_figure, :f_shortdesc => @frag_shortdesc, :f_desc => @frag_desc, :f_align => @frag_align)
+          upfrag.update_attributes(:f_id => @frag_id, :f_name => @frag_name, :f_figure => @frag_figure, :f_shortdesc => @frag_shortdesc, :f_desc => @frag_desc, :f_align => @up_alignment)
           upfrag.save!
-          logger.debug "Dapfragment updated! f_id: #{@frag_id}, f_name: #{@frag_name}, f_figure: #{@frag_figure}, f_shortdesc: #{@frag_shortdesc}, f_desc: #{@frag_desc}, f_align: #{@frag_align}"
+          logger.debug "Dapfragment updated! f_id: #{@frag_id}, f_name: #{@frag_name}, f_figure: #{@frag_figure}, f_shortdesc: #{@frag_shortdesc}, f_desc: #{@frag_desc}, f_align: #{@up_alignment}"
         else
           upfrag.update_attributes(:f_id => @frag_id, :f_name => @frag_name, :f_figure => @frag_figure, :f_shortdesc => @frag_shortdesc, :f_desc => @frag_desc)
           upfrag.save!
@@ -284,9 +290,9 @@ class AncientDictAction < Action
         end
       else
         if (@frag_align != 'NULL')
-          upfrag.update_attributes(:f_id => @frag_id, :f_name => @frag_name, :f_shortdesc => @frag_shortdesc, :f_desc => @frag_desc, :f_align => @frag_align)
+          upfrag.update_attributes(:f_id => @frag_id, :f_name => @frag_name, :f_shortdesc => @frag_shortdesc, :f_desc => @frag_desc, :f_align => @up_alignment)
           upfrag.save!
-          logger.debug "Dapfragment updated! f_id: #{@frag_id}, f_name: #{@frag_name}, f_shortdesc: #{@frag_shortdesc}, f_desc: #{@frag_desc}, f_align: #{@frag_align}"
+          logger.debug "Dapfragment updated! f_id: #{@frag_id}, f_name: #{@frag_name}, f_shortdesc: #{@frag_shortdesc}, f_desc: #{@frag_desc}, f_align: #{@up_alignment}"
         else
           upfrag.update_attributes(:f_id => @frag_id, :f_name => @frag_name, :f_shortdesc => @frag_shortdesc, :f_desc => @frag_desc)
           upfrag.save!
@@ -294,47 +300,63 @@ class AncientDictAction < Action
         end
       end
 
-
+    if ( @frag_ref != 'NULL')
+      logger.debug "Reference available!!!"
       Dapref.find(:all, :conditions => ["f_id=?", @frag_id]).each do |delref|
         Dapref.delete(delref.id)
       end
 
       @upreference.each do |refup|
+        logger.debug "Reference: #{refup}"
         uprefid = generateRefID(1)
+        logger.debug "Ref ID; #{uprefid}"
         upref = Dapref.new(:r_id => uprefid, :r_reference => refup, :f_id => @frag_id)
         upref.save!
-        logger.debug "Dapref added: r_id: #{uprefid}, r_reference:  #{refup}, f_id #{@frag_id}"
+       # hlogger.debug "Dapref added: r_id: #{uprefid}, r_reference:  #{refup}, f_id #{@frag_id}"
       end
+    end
 
     if (@frag_key != 'NULL')
+
+      DapfragmentDapkey.find(:all, :conditions => ["f_id=?", @frag_id]).each do |delkey|
+        DapfragmentDapkey.delete(delkey.id)
+      end
+
       @frag_key.each do |frag_keys|
         addfragkey=DapfragmentDapkey.new(:f_id => @frag_id, :k_id => frag_keys)
         addfragkey.save!
-        logger.debug "DapfragmentDapkey added: f_id: #{@frag_id}, k_id: #{frag_keys}"
+       # logger.debug "DapfragmentDapkey added: f_id: #{@frag_id}, k_id: #{frag_keys}"
       end
     end
 
-    Dapoccurrence.find(:all, :conditions => ["f_id=?", @frag_id]).each do |delocc|
-        Dapref.delete(delocc.id)
-    end
+    if ( @frag_occ!= 'NULL')
+      Dapoccurrence.find(:all, :conditions => ["f_id=?", @frag_id]).each do |delocc|
+        Dapoccurrence.delete(delocc.id)
+      end
 
-    @frag_occ.each do |occup|
-      occ = occup.split('\t')
-      scop_id=occ[0]
-      upocc = Dapocc.new(:scop_id => scop_id, :f_id => @frag_id)
-      upocc.save!
-      logger.debug "Dapocc added: scop_id: #{scop_id}, f_id #{@frag_id}"
+      @up_occ.each do |occup|
+        occ = occup.split('\t')
+        scop_id=occ[0]
+        scop_desc=occ[1]
+        upocc = Dapoccurrence.new(:scop_id => scop_id, :f_id => @frag_id)
+        upocc.save!
+        #logger.debug "Dapocc added: scop_id: #{scop_id}, f_id #{@frag_id}"
+        if (!Dapscop.find(:first, :conditions => ["scop_id=?", scop_id]))
+          upscop = Dapscop.new(:scop_id => scop_id, :scop_desc => scop_desc)
+          upscop.save!
+         # logger.debug "Dapscop added: scop_id: #{scop_id}, scop_desc #{scop_desc}"
+        end
+      end
     end
-  end  
+  end
 
     # delete keyword
 
     if (@delid != "NULL")
       Dapkey.delete(@delid)
 
-      logger.debug "Dapkey deleted! id: #{@delid}, k_id: #{@k_delid}"
+     # logger.debug "Dapkey deleted! id: #{@delid}, k_id: #{@k_delid}"
 
-      #DapfragmentDapkey.find(:all, :conditions => ["k_id=?", @k_delid]).each do |delkey|
       if (DapfragmentDapkey.find(:first, :conditions => ["k_id=?", @k_delid]))
         DapfragmentDapkey.find(:all, :conditions => ["k_id=?", @k_delid]).each do |delkey|
           DapfragmentDapkey.delete(delkey.id)
@@ -346,13 +368,12 @@ class AncientDictAction < Action
     # delete fragment
 
     if (@del_f_id != "NULL")
-      #Dapfragment.delete(@del_f_id)
 
       #logger.debug "Dapfragment deleted! id: #{@del_f_id}, f_id: #{@f_delid}"
 
       #DapfragmentDapkey.find(:all, :conditions => ["f_id=?", @f_delid]).each do |delfrag|
       if (DapfragmentDapkey.find(:first, :conditions => ["f_id=?",@f_delid]))
-        logger.debug "Eintrag existiert!"
+      #  logger.debug "Eintrag existiert!"
         DapfragmentDapkey.find(:all, :conditions => ["f_id=?",@f_delid]).each do |delfrag|
           logger.debug "Delfrag: #{delfrag.f_id}, #{delfrag.k_id}"
           DapfragmentDapkey.delete(delfrag.id)
@@ -360,19 +381,26 @@ class AncientDictAction < Action
         end
       end
 
-      logger.debug "DapfragmentDapkey gelöscht!"
+      #logger.debug "DapfragmentDapkey gelöscht!"
 
       if (Dapoccurrence.find(:first, :conditions => ["f_id=?", @f_delid]))
-        logger.debug "Eintrag vorhanden!"
+       # logger.debug "Eintrag vorhanden!"
         Dapoccurrence.find(:all, :conditions => ["f_id=?", @f_delid]).each do |delocc|
           Dapoccurrence.delete(delocc.id)
           logger.debug "Dapoccurrence deleted! id: #{delocc.id}, f_id: #{delocc.f_id}, scop_id: #{delocc.scop_id}"
         end
       end
 
+      if (Dapref.find(:first, :conditions => ["f_id=?", @f_delid]))
+        Dapref.find(:all, :conditions => ["f_id=?", @f_delid]).each do |delref|
+          Dapref.delete(delref.id)
+        #  logger.debug "Dapref deleted! id #{delref.id}, f_id: #{delref.f_id}"
+        end
+      end
+
       Dapfragment.delete(@del_f_id)
 
-      logger.debug "Dapfragment deleted! id: #{@del_f_id}, f_id: #{@f_delid}"
+      #logger.debug "Dapfragment deleted! id: #{@del_f_id}, f_id: #{@f_delid}"
 
     end
   end
@@ -389,7 +417,7 @@ class AncientDictAction < Action
     else
       finid=string+length.to_s()
     end
-    logger.debug "ID: #{finid}"
+    #logger.debug "ID: #{finid}"
     if (string == 'KEY')
       if (Dapkey.find(:first, :conditions => ["k_id=?", finid]))
         finid=convertID(string, length, start_num+1)
@@ -407,11 +435,37 @@ class AncientDictAction < Action
     findref = Dapref.find(:all)
     refnum+=findref.length
     @refstring=convertID('REF', refnum, startnum)
-    #@refid="REF"+@refstring
-    #if (Dapref.find(:first, :conditions => ["r_id=?", @refid]))
-    #  @refid=generateRefID(startnum+1)
-    #end
     return @refid
+  end
+
+  def print_alignment(path)
+    a_line = IO.readlines(path)
+    alignm = ''
+    a_line.each do |aprint|
+      align_line=aprint.chop+'\n'
+      alignm += align_line
+     # logger.debug "#{align_line}"
+    end
+    #logger.debug "#{alignm}"
+    return alignm
+  end
+
+  def read_dir_entries(fragment_id)
+    filepath = File.join(IMAGES, "ancient_dict/images/")
+    logger.debug "filepath: #{filepath}"
+    direntry = Dir.entries(filepath)
+    #direntry = Dir.entries("/ebio/abt1/christina/toolkit/databases/ancient_dict/images/")
+    matches = Array.new()
+    expression = fragment_id
+    #logger.debug "Expression: #{expression}"
+    for i in 0..direntry.length-1
+      logger.debug "Entry #{i}: #{direntry[i]}"
+      if(direntry[i].match(expression))
+        logger.debug "Matching entry: #{direntry[i]}"
+        matches.push(direntry[i])
+      end
+    end
+    return matches
   end
 
   def create_entry_file

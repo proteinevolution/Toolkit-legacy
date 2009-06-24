@@ -77,9 +77,15 @@
       <%= form_text_area("f_upocc")%>
     </div>
 
+    <%@upref=""%>
+    <% Dapref.find(:all, :conditions => ["f_id=?", @fraginfo.f_id]).each do |upref|%>
+      <%ref_entry=upref.r_reference+'\n'%>
+      <%@upref+=ref_entry%>
+    <%end%>
+
     <div class="row">
       <%= form_label("Update the Reference of Fragment (separate the references with \\n)")%>
-      <%= form_text_area("f_ref")%>
+      <%= form_text_area("f_upref", @upref)%>
     </div>
 
     <div class="row">

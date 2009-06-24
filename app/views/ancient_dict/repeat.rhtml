@@ -23,18 +23,24 @@
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Description</p>
 <table border="0" style="width=100%">
   <colgroup>
-    <col width="75%">
-    <col width="5%">
     <col width="20%">
+    <col width="5%">
+    <col width="75%">
+    <!--<col width="5%">
+    <col width="20%">-->
   </colgroup>
   <tr>
-    <td style="font-size:12px" align="justify" valign="top">
-      <%=repeat.f_desc%>
-    </td>
-    <td> </td>
     <td align="right">
       <%= image_tag repeat.f_figure%>
     </td>
+    <td> </td>
+    <td style="font-size:12px" align="justify" valign="top">
+      <%=repeat.f_desc%>
+    </td>
+<!--    <td> </td>
+    <td align="right">
+      <%= image_tag repeat.f_figure%>
+    </td>-->
   </tr>
 </table>
 <br/>
@@ -80,7 +86,54 @@
 </table>
 <br/>
 <br/>-->
+
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Sequence Alignment</p>
+<div style="width:700px; height:300px; overflow:auto;">
+<table border="0">
+  <!--<colgroup>
+   <col width="9%">
+   <col width="1%">
+   <col width="9%">
+   <col width="1%">
+   <col width="5%">
+   <col width="2%">
+   <col width="5%">
+   <col width="2%">
+   <col width="66%">
+  </colgroup>-->
+  <%Dapfragment.find(:all, :conditions => ["f_id=?", @page]).each do |itemalign|%>
+      <!--<%=itemalign.f_align%>-->
+      <%align=itemalign.f_align.split('\n')%>
+      <%for i in 0...align.length%>
+      <tr>
+       <%eachline=align[i].split()%>
+       <%for j in 0...eachline.length%>
+        <%if i == 0%>
+          <%if j ==0%>
+            <td><font face="Monospace"><%=eachline[j]%></font></td><td>&nbsp;&nbsp;</td>
+          <%elsif j ==eachline.length-1%>
+            <td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td nowrap><font face="Monospace"><%=eachline[j]%></font></td>
+          <%end%>
+        <%else%>
+          <%if j !=eachline.length-1%>
+            <%if j ==0 %>
+              <td><font face="Monospace"><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=<%=eachline[j]%>"><%=eachline[j]%></a></font></td><td>&nbsp;&nbsp;</td>
+            <%elsif j == 1 %>
+              <td><font face="Monospace"><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=eachline[j]%>"><%=eachline[j]%></a></font></td><td>&nbsp;&nbsp;</td>
+            <%else%>
+              <td><font face="Monospace"><%=eachline[j]%></font></td><td>&nbsp;&nbsp;</td>
+            <%end%>
+          <%else%>
+            <td nowrap><font face="Monospace"><%=eachline[j]%></font></td><td>&nbsp;&nbsp;</td>
+          <%end%>
+        <%end%>
+      <%end%>
+      </tr>
+      <%end%>
+  <%end%>
+</table>
+</div>
+<!--</p>
 <table border="0">
   <colgroup>
    <col width="20%">
@@ -111,7 +164,7 @@
       </td>
     </tr>
   <% end %>
-</table>
+</table>-->
 <br/>
 <br/>
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
