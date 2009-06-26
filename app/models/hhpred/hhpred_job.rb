@@ -45,7 +45,7 @@ class HhpredJob  < Job
     last_hash = Hash.new
 
 
-    coloring = controller_params[:mode] ? controller_params[:mode] : 'onlySS'
+    coloring = controller_params[:mode] ? controller_params[:mode] : 'letters'
     program = controller_params[:action]
     if (!actions.first.flash.nil? && !actions.first.flash['hhcluster'].nil?)
       hhcluster = true

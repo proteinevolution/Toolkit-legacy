@@ -52,7 +52,7 @@ class HhpredController < ToolController
   
   def results
     @widescreen = true
-    @mode = params[:mode] ? params[:mode] : 'onlySS'
+    @mode = params[:mode] ? params[:mode] : 'letters'
     @hhcluster = false
     if (!@job.actions.first.flash.nil? && !@job.actions.first.flash['hhcluster'].nil?)
       @hhcluster = true
