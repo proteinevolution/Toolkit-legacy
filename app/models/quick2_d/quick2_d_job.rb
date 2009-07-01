@@ -43,6 +43,7 @@ class Quick2DJob < Job
     prof_r   = readProfRost
    # memsat   = readMemsat
     memsat_svm = readMemsatSvm
+    phobius = readPhobius
     hmmtop   = readHMMTOP	
     disopred = readDisopred
     iupred = readIUPred
@@ -95,6 +96,7 @@ class Quick2DJob < Job
       #data += export_tm("TM MEMSAT2", memsat, i, stop-1)
       data += export_tm("TM HMMTOP", hmmtop, i, stop-1)
       data += export_tm("TM MEMSATSVM",memsat_svm, i, stop-1)
+      data += export_tm("TM PHOBIUS", phobius, i, stop-1)
       data += export_tm("TM PROF (Rost)", prof_r, i, stop-1)
       
       data += export_do("DO DISOPRED2", disopred, i, stop-1)
@@ -192,6 +194,7 @@ class Quick2DJob < Job
     prof_r   = readProfRost
  #   memsat   = readMemsat
     memsat_svm = readMemsatSvm
+    phobius = readPhobius
     hmmtop   = readHMMTOP	
     disopred = readDisopred
     iupred = readIUPred
@@ -242,6 +245,7 @@ class Quick2DJob < Job
       data += printTMHTML("TM HMMTOP", "hmmtop", hmmtop, i, stop)
       data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)		
       data += printTMHTML("TM MEMSAT-SVM","memsat_svm", memsat_svm, i, stop)
+      data += printTMHTML("TM PHOBIUS","phobius", phobius, i, stop)
       
       data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)	
       data += printDOHTML("DO IUPRED","iupred",iupred,i,stop)
@@ -526,6 +530,32 @@ class Quick2DJob < Job
       end
     end		
     ret
+  end
+  
+  def readPhobius
+	if( !File.exists?( self.actions[0].flash['phobiusfile'] ) ) then return {} end
+	ret={'tmconf'=>[], 'tmpred'=>"" }
+	ar = IO.readlines( self.actions[0].flash['phobiusfile'])
+	start_array = Array.new
+	end_array = Array.new
+	result=""
+	ar.each do |line|
+		line=~ /TRANSMEM/
+		if $& then
+			line =~ /(\d+)\s+(\d+)/	
+			start_array.push($1)
+			end_array.push($2)
+		end
+	end
+	
+	start_array.length.times { |i|
+		(start_array[i].to_i-1-result.length).times { result +=" " }
+		(end_array[i].to_i-result.length).times { result += "X" }
+	}
+	(readQuery['sequence'].length-result.length+1).times{ result += " " }
+	ret['tmpred'] += result
+	
+	ret
   end
   
   #~ def readVSL2
