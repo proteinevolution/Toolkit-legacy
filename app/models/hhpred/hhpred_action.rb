@@ -1,6 +1,8 @@
 class HhpredAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
+  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
+  CSBLAST = File.join(BIOPROGS, 'csblast')
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
                 :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs
@@ -232,19 +234,36 @@ class HhpredAction < Action
       
       @commands << "#{HH}/hhrealign.pl -v 2 -resort -i #{@basename}_parent.hhr -o #{@basename}.hhr -q #{@basename}.hhm -d #{@dbs_realign} #{realign_options} #{@ss_scoring} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mapt} #{@compbiascorr} 1>> #{job.statuslog_path} 2>&1";
     else 
-      # Do we need to calibrate query HMM before search?
-      cal = '-cal'
-      if @dbs !~ /scop/
-        cal = ''
-        @commands << "echo 'Calibrating query HMM ...' >> #{job.statuslog_path}"
-        @commands << "#{HH}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d #{CAL_HHM} -cal -#{@ali_mode} #{@ss_scoring} #{@compbiascorr} -norealign 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
-      end
+
+      ####################################################
+      ### NO CALIBRATION WITH NEW HHSEARCH VERSION
+      #
+      #   # Do we need to calibrate query HMM before search?
+      #   cal = '-cal'
+      #   if @dbs !~ /scop/
+      #     cal = ''
+      #     @commands << "echo 'Calibrating query HMM ...' >> #{job.statuslog_path}"
+      #     @commands << "#{HH}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d #{CAL_HHM} -cal -#{@ali_mode} #{@ss_scoring} #{@compbiascorr} -norealign 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      #   end
+      #
+      #   # HHsearch with query HMM against HMM database
+      #   @commands << "echo 'Searching #{@dbnames} ...' >> #{job.statuslog_path}"
+      #   @commands << "#{HH}/hhsearch #{cal} -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mapt} #{@compbiascorr} -dbstrlen 10000 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      #
+      ####################################################      
+
       # HHsearch with query HMM against HMM database
       @commands << "echo 'Searching #{@dbnames} ...' >> #{job.statuslog_path}"
-      @commands << "#{HH}/hhsearch #{cal} -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mapt} #{@compbiascorr} -dbstrlen 10000 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HH}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mapt} #{@compbiascorr} -dbstrlen 10000 -cs #{CSBLAST}/data/clusters.prf 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     end
 
     prepare_fasta_hhviz_histograms_etc    
+    
+    @commands << "#{HH}/hhfilter -i #{@basename}.reduced.fas -o #{@basename}.top.a3m -id 90 -qid 0 -qsc 0 -cov 0 -diff 10 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "#{HH}/reformat.pl a3m fas #{@basename}.top.a3m #{@basename}.repseq.fas -uc 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "#{HH}/tenrep.rb -i #{@basename}.repseq.fas -h #{@basename}.hhr -p 40 -o #{@basename}.tenrep_file"
+    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.tenrep_file -o #{@basename}.tenrep_file"
+
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'cpus' => '3'})

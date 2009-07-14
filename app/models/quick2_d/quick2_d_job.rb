@@ -41,10 +41,13 @@ class Quick2DJob < Job
     jnet     = readJNet
     prof_o   = readProfOuali	
     prof_r   = readProfRost
-    memsat   = readMemsat
+   # memsat   = readMemsat
+    memsat_svm = readMemsatSvm
+    phobius = readPhobius
     hmmtop   = readHMMTOP	
     disopred = readDisopred
-    vsl2     = readVSL2
+    iupred = readIUPred
+  #  vsl2     = readVSL2
     coils    = readCoils		
     
     data     = ""
@@ -90,12 +93,15 @@ class Quick2DJob < Job
         data += "\n"
       end									
       
-      data += export_tm("TM MEMSAT2", memsat, i, stop-1)
+      #data += export_tm("TM MEMSAT2", memsat, i, stop-1)
       data += export_tm("TM HMMTOP", hmmtop, i, stop-1)
+      data += export_tm("TM MEMSATSVM",memsat_svm, i, stop-1)
+      data += export_tm("TM PHOBIUS", phobius, i, stop-1)
       data += export_tm("TM PROF (Rost)", prof_r, i, stop-1)
       
       data += export_do("DO DISOPRED2", disopred, i, stop-1)
-      data += export_do("DO VSL", vsl2, i, stop-1)			
+      data += export_do("DO IUPRED", iupred, i, stop-1)
+      #data += export_do("DO VSL", vsl2, i, stop-1)			
       
       data += export_so("SO PROF (Rost)", prof_r, i, stop-1)			
       data += export_so("SO JNET", jnet, i, stop-1)
@@ -186,10 +192,13 @@ class Quick2DJob < Job
     jnet     = readJNet
     prof_o   = readProfOuali	
     prof_r   = readProfRost
-    memsat   = readMemsat
+ #   memsat   = readMemsat
+    memsat_svm = readMemsatSvm
+    phobius = readPhobius
     hmmtop   = readHMMTOP	
     disopred = readDisopred
-    vsl2     = readVSL2
+    iupred = readIUPred
+# vsl2     = readVSL2
     coils    = readCoils		
     
     data     = ""
@@ -202,8 +211,10 @@ class Quick2DJob < Job
     data += 'JNET_CONF=new Array'+toJSArray( jnet['conf'] )+";\n" 
     data += 'PROFROST_CONF=new Array'+toJSArray( prof_r['conf'] )+";\n" 
     data += 'PROFROST_TMCONF=new Array'+toJSArray( prof_r['tmconf'] )+";\n" 
+    data += 'MEMSATSVM_TMCONF=new Array'+toJSArray(memsat_svm['tmconf'])+"; \n"
     data += 'PROFOUALI_CONF=new Array'+toJSArray( prof_o['conf'] )+";\n" 
     data += 'DISOPRED2_CONF=new Array'+toJSArray( disopred['doconf'] )+";\n"
+    data += 'IUPRED_CONF=new Array'+toJSArray( iupred['doconf'] )+";\n"
     data += '</script>' +"\n"		
     
     
@@ -230,12 +241,15 @@ class Quick2DJob < Job
       
       data += printCCHTML("CC Coils", "coils", coils, i, stop)				
       
-      data += printTMHTML("TM MEMSAT2", "memsat", memsat, i, stop)	
+   #   data += printTMHTML("TM MEMSAT2", "memsat", memsat, i, stop)	
       data += printTMHTML("TM HMMTOP", "hmmtop", hmmtop, i, stop)
-      data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)					
+      data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)		
+      data += printTMHTML("TM MEMSAT-SVM","memsat_svm", memsat_svm, i, stop)
+      data += printTMHTML("TM PHOBIUS","phobius", phobius, i, stop)
       
-      data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)				
-      data += printDOHTML("DO VSL2", "vsl2", vsl2, i, stop)
+      data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)	
+      data += printDOHTML("DO IUPRED","iupred",iupred,i,stop)
+#      data += printDOHTML("DO VSL2", "vsl2", vsl2, i, stop)
       
       data += printSOLHTML("SO Prof (Rost)", "sol_prof", prof_r, i, stop)
       
@@ -468,22 +482,22 @@ class Quick2DJob < Job
     ret
   end
   
-  def readMemsat
-    if( !File.exists?( self.actions[0].flash['memsatfile'] ) ) then return {} end
-    ret={'conf'=>"", 'tmpred'=>""}
-    ar = IO.readlines( self.actions[0].flash['memsatfile'] )
-    bool = false
-    ar.each do |line|
-      if( line =~ /FINAL PREDICTION/ )
-        bool = true
-      elsif( bool && line =~ /^\s*([-\+IOSX]+)\s*$/ )
-        ret['tmpred']+=$1
-      end
-    end  	
-    ret['tmpred'].gsub!(/O/, "X")
-    ret['tmpred'].gsub!(/I/, "X")
-    ret
-  end
+  #~ def readMemsat
+    #~ if( !File.exists?( self.actions[0].flash['memsatfile'] ) ) then return {} end
+    #~ ret={'conf'=>"", 'tmpred'=>""}
+    #~ ar = IO.readlines( self.actions[0].flash['memsatfile'] )
+    #~ bool = false
+    #~ ar.each do |line|
+      #~ if( line =~ /FINAL PREDICTION/ )
+        #~ bool = true
+      #~ elsif( bool && line =~ /^\s*([-\+IOSX]+)\s*$/ )
+        #~ ret['tmpred']+=$1
+      #~ end
+    #~ end  	
+    #~ ret['tmpred'].gsub!(/O/, "X")
+    #~ ret['tmpred'].gsub!(/I/, "X")
+    #~ ret
+  #~ end
   
   def readDisopred
     if( !File.exists?( self.actions[0].flash['disopredfile'] ) ) then return {} end
@@ -501,18 +515,61 @@ class Quick2DJob < Job
     ret
   end
   
-  def readVSL2
-    if( !File.exists?( self.actions[0].flash['vsl2file'] ) ) then return {} end
-    ret={'dopred'=>""}
-    ar = IO.readlines( self.actions[0].flash['vsl2file'] )
+    def readIUPred
+    if( !File.exists?( self.actions[0].flash['iupredfile'] ) ) then return {} end
+    ret={'doconf'=>[], 'dopred'=>"" }
+    ar = IO.readlines( self.actions[0].flash['iupredfile'])
     ar.each do |line|
-      if( line =~ /^\d+\s+\S+\s+\S+\s+([D.])\s*$/ )
-        ret['dopred']+=$1
-      end	
-    end
-    ret['dopred'].gsub!(/\./, " ")
+      if( line =~ /\s*\d+\s\w\s*(\d.\d*)/ )
+        if($1.to_f>=0.5)
+		ret['dopred']+="D"
+	else
+		ret['dopred']+=" "
+	end
+        ret['doconf']<<$1
+      end
+    end		
     ret
   end
+  
+  def readPhobius
+	if( !File.exists?( self.actions[0].flash['phobiusfile'] ) ) then return {} end
+	ret={'tmconf'=>[], 'tmpred'=>"" }
+	ar = IO.readlines( self.actions[0].flash['phobiusfile'])
+	start_array = Array.new
+	end_array = Array.new
+	result=""
+	ar.each do |line|
+		line=~ /TRANSMEM/
+		if $& then
+			line =~ /(\d+)\s+(\d+)/	
+			start_array.push($1)
+			end_array.push($2)
+		end
+	end
+	
+	start_array.length.times { |i|
+		(start_array[i].to_i-1-result.length).times { result +=" " }
+		(end_array[i].to_i-result.length).times { result += "X" }
+	}
+	(readQuery['sequence'].length-result.length+1).times{ result += " " }
+	ret['tmpred'] += result
+	
+	ret
+  end
+  
+  #~ def readVSL2
+    #~ if( !File.exists?( self.actions[0].flash['vsl2file'] ) ) then return {} end
+    #~ ret={'dopred'=>""}
+    #~ ar = IO.readlines( self.actions[0].flash['vsl2file'] )
+    #~ ar.each do |line|
+      #~ if( line =~ /^\d+\s+\S+\s+\S+\s+([D.])\s*$/ )
+        #~ ret['dopred']+=$1
+      #~ end	
+    #~ end
+    #~ ret['dopred'].gsub!(/\./, " ")
+    #~ ret
+  #~ end
   
   def readHMMTOP
     if( !File.exists?( self.actions[0].flash['hmmtopfile'] ) ) then return {} end
@@ -528,6 +585,55 @@ class Quick2DJob < Job
     ret['tmpred'].gsub!(/[Oo]/, "--")
     ret['tmpred'].gsub!(/H/, "X")
     ret
+  end
+  
+  def readMemsatSvm
+	if( !File.exists?(self.actions[0].flash['memsatsvmfile'])) then return { } end
+	ret={'tmpred'=>"", 'tmconf'=>[]}
+	ar = IO.readlines(self.actions[0].flash['memsatsvmfile'])
+	pos = "", score="", result = ""
+	
+	#read positions and score
+	ar.each do |line|
+		line =~ /Topology:/
+		if $& then
+			pos = line
+		end
+	
+		line =~ /Score:/
+		if $& then
+			line =~ /\-*\d+\.\d+/
+			score = $&
+		end
+	end
+	
+	if(score.to_f>=0) then
+		pos.gsub!(/Topology:\s*/,"")
+		i = 0
+		#Arrays for start-positions and end-positions and save them 
+		start_array = Array.new
+		end_array = Array.new
+		while true do
+			pos=~/(\d+)-(\d+)/
+			if $1==nil then break end
+				start_array[i]=$1
+				end_array[i] = $2
+				i+=1
+				pos.gsub!(/\A(\d+)-(\d+)\,*/,"")
+		end 
+	
+		#X for transmembrane and gap for none and putting the score to the javascript
+		start_array.length.times { |i|
+			(start_array[i].to_i-1-result.length).times { result +=" "; ret['tmconf']<<"-" }
+			(end_array[i].to_i-result.length).times { result += "X"; ret['tmconf'] << score }
+		}
+		(readQuery['sequence'].length-result.length+1).times{ result += " "; ret['tmconf']<<"-" }
+		ret['tmpred'] += result
+	else
+		(readQuery['sequence'].length).times{ result += " "}
+		ret['tmpred'] += result
+	end
+	ret
   end
   
   def readCoils

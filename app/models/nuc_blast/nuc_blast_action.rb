@@ -2,6 +2,7 @@ class NucBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
   UTILS = File.join(BIOPROGS, 'perl')
+  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
 
   include GenomesModule
    
@@ -67,6 +68,10 @@ class NucBlastAction < Action
     
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"    
+
+    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
+    @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
+
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)

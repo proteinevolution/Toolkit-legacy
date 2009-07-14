@@ -1,3 +1,15 @@
+function change_db(dbhhm)
+{
+    var dbhhms = dbhhm.split(";");
+    var dblist = $("hhblast_dbs");
+    for( i=0; i<dblist.length; i++ ) {
+	if (dblist.options[i].selected == true) {
+	    $('dbhhm').value = dbhhms[i];
+	}
+    }
+    
+}
+
 function appearForward(val)
 {
     var coloring = 'color_button';
