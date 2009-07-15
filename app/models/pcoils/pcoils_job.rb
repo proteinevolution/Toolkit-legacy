@@ -25,7 +25,18 @@ class PcoilsJob < Job
     @psipred = nil
     @coils = nil
     @alignment = nil
-    
+    @coils14 = @basename + ".coils_n14"
+    @coils21 = @basename + ".coils_n21"
+    @coils28 = @basename + ".coils_n28"
+    @nums=[]
+    @aas=[]
+    @pos14 = []
+    @val14=[]
+    @pos21 = []
+    @val21=[]
+    @pos28 = []
+    @val28=[]
+
     if (File.exists?(@basename + "_psipred.png"))
     	@psipred = true
     end
