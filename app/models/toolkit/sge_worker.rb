@@ -15,6 +15,7 @@
       tries = 0
       if LOCATION == "Tuebingen" && RAILS_ENV == "development"
         command = "#{QUEUE_DIR}/qsub -l h_vmem=6G #{self.wrapperfile}"
+	logger.debug "qsub command: #{command}"
       else
         command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
       end
@@ -57,26 +58,29 @@
 
         # SGE options
         f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
-        f.write '#$' + " -q #{queue}\n"
-        if RAILS_ENV == "development"
-          if queue == "express.q"
-	    f.write '#$' + " -l express=TRUE\n"
+        if LOCATION != "Tuebingen" && RAILS_ENV != "development"
+          f.write '#$' + " -q #{queue}\n"
+          if RAILS_ENV == "development"
+            if queue == "express.q"
+	      f.write '#$' + " -l express=TRUE\n"
+	    end
 	  end
 	end
-	f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
+        f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -o #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
 #        f.write '#$' + " -j y\n";
         f.write '#$' + " -w n\n"
 
-        if (queue == "toolkit_long")
-          f.write '#$' + " -l long\n"
-        end
+        if LOCATION != "Tuebingen" && RAILS_ENV != "development"
+          if (queue == "toolkit_long")
+            f.write '#$' + " -l long\n"
+          end
 
-        if (queue == "toolkit_immediate")
-          f.write '#$' + " -l immediate\n"
+          if (queue == "toolkit_immediate")
+            f.write '#$' + " -l immediate\n"
+          end
         end
-        
         #f.write "-l h_vmem=2G\n"
 
 #        if (!cpus.nil?)
