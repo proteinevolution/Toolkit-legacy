@@ -1,10 +1,18 @@
 <div id="jobsection">
   <ul>
-    <% for i in 0...@shortlinks.length%>
-      <li <% if @shortlinks[i] == @color %> class="current" <% end %>>
-        <a href="/ancient_dict/<%= @links[i]%>" onmouseover="return overlib('<%= @link_text[i]%>');" onmouseout="return nd();"><%= @link_names[i]%></a>
-      </li>
-    <% end %>
+    <% if request.remote_ip == "10.35.105.142" || request.remote_ip == "10.35.104.172"%>
+      <% for i in 0...@shortlinks_special.length%>
+        <li <% if @shortlinks_special[i] == @color %> class="current" <% end %>>
+          <a href="/ancient_dict/<%= @links[i]%>" onmouseover="return overlib('<%= @link_text[i]%>');" onmouseout="return nd();"><%= @link_names[i]%></a>
+        </li>
+      <% end %>
+    <% else %>
+      <% for i in 0...@shortlinks.length%>
+        <li <% if @shortlinks[i] == @color %> class="current" <% end %>>
+          <a href="/ancient_dict/<%= @links[i]%>" onmouseover="return overlib('<%= @link_text[i]%>');" onmouseout="return nd();"><%= @link_names[i]%></a>
+        </li>
+      <% end %>
+    <%end%>
   </ul>
 </div>
 

@@ -72,7 +72,7 @@
 
 <!--<div><p style="font-size:14px; font-weight:bold;"><font face="monospace"><%=@alignment%></font></p></div>-->
 <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Sequence Alignment</p>
-<div style="width:700px; height:300px; overflow:auto;">
+<div style="width:700px; height:200px; overflow:auto;">
 <table border="0">
 <!--<colgroup>
    <col width="9%">
@@ -86,18 +86,61 @@
    <col width="66%">
   </colgroup>-->
   <%Dapfragment.find(:all, :conditions => ["f_id=?", @page]).each do |itemalign|%>
-      <!--<%=itemalign.f_align%>-->
-      <%align=itemalign.f_align.split('\n')%>
-      <%for i in 0...align.length%>
+      <%align=itemalign.f_align.split('\n')-%>
+      <%for i in 0...align.length-%>
       <tr>
-       <%eachline=align[i].split()%>
-       <%for j in 0...eachline.length%>
-        <%if i == 0%>
-          <%if j ==0%>
-            <td><font face="Monospace"><%=eachline[j]%></font></td><td>&nbsp;&nbsp;</td>
-          <%elsif j ==eachline.length-1%>
-            <td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td nowrap><font
-face="Monospace"><%=eachline[j]%></font></td>
+       <%eachline=align[i].split()-%>
+       <%for j in 0...eachline.length-%>
+        <%if i == 0-%>
+          <%if j ==0-%>
+            <td>&nbsp;&nbsp;<!--<b><font face="Monospace"><%=eachline[j]%></font></b>--></td><td>&nbsp;&nbsp;</td>
+          <%elsif j ==eachline.length-1 -%>
+            <%firstline=eachline[j]-%>
+            <%charstart=0-%>
+            <%newfirstline = ""-%>
+            <%char=firstline[charstart].chr-%>
+            <%for l in 1..firstline.length-1 -%>
+              <%nextchar=firstline[l].chr-%>
+              <%if nextchar != char || l==firstline.length-1 -%>
+                <%if char=="h"-%>
+                  <%charstart-%>
+                  <%charend=l -%>
+                  <%if l==firstline.length-1 -%>
+                    <%charend+=1 -%>
+                  <%end -%>
+                  <%strlen=charend-charstart -%>
+                  <%subh=firstline[charstart, strlen] -%>
+                  <%substringh = "<span style=\"background-color:#d4d400;\">"+subh+"</span>" -%>
+                  <%newfirstline += substringh -%>
+                  <%charstart=l -%>
+                <%elsif char=="c" -%>
+                  <%charstart -%>
+                  <%charend=l -%>
+                  <%if l==firstline.length-1 -%>
+                    <%charend+=1 -%>
+                  <%end -%>
+                  <%strlen=charend-charstart -%>
+                  <%subc=firstline[charstart, strlen] -%>
+                  <%substringc = "<span style=\"background-color:#b5b5b5;\">"+subc+"</span>"-%>
+                  <%newfirstline += substringc -%>
+		  <%charstart=l -%>
+                <%elsif char=="b"-%>
+                  <%charstart -%>
+                  <%charend=l -%>
+                  <%if l==firstline.length-1 -%>
+                    <%charend+=1 -%>
+                  <%end -%>
+                  <%strlen=charend-charstart -%>
+                  <%subb=firstline[charstart, strlen] -%>
+                  <%substringb="<span style=\"background-color:#0de00d;\">"+subb+"</span>" -%>
+                  <%newfirstline += substringb -%>
+                  <%charstart=l -%>
+                <%else -%>
+                <%end -%>
+                <%char=firstline[charstart].chr -%>
+              <%end -%>
+            <%end -%>
+            <td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td nowrap><font face="Monospace"><%=newfirstline%></font></td>
           <%end%>
         <%else%>
           <%if j !=eachline.length-1%>

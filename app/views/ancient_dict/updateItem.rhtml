@@ -8,7 +8,7 @@
 
 <!--<p style="font-size:14px; font-weight:bold;">Update Item</p>-->
 
-<br/>
+<!--<br/>-->
 
 <!--<%= button_to "Update Item"%>-->
 
@@ -20,7 +20,8 @@
       <option value="">Items</option>
       <%Dapfragment.find(:all, :order => "f_name").each do |frag|%>
         <%if is_active?(frag)%>
-          <option value="<%= DOC_ROOTURL %>/ancient_dict/updateItem?itempage=<%=frag.f_id%>"><%=frag.f_name%></option>
+          <%@entry = frag.f_id + ": " + frag.f_name%>
+          <option value="<%= DOC_ROOTURL %>/ancient_dict/updateItem?itempage=<%=frag.f_id%>"><%=@entry%></option>
         <%end%>
       <% end %>
     </select>
@@ -58,6 +59,11 @@
     </div>
 
     <div class="row">
+      <%= form_label("Change the category of the Fragment") %>
+      <%= form_select_single("f_upcat", @cat_values, @cat_labels, @fraginfo.f_category)%>
+    </div>
+
+    <div class="row">
       <%= form_label("Select new keywords if necessary (the existing ones have to be selected as well)") %>
       <%= form_select_multiple("f_upkeys", @key_val, @key_lab) %>
     </div>
@@ -72,9 +78,16 @@
       <%= form_file("f_upfigure")%>
     </div>
 
+    <%@upocc=""%>
+    <% Dapoccurrence.find(:all, :conditions => ["f_id=?", @fraginfo.f_id]).each do |upocc|%>
+      <%upscop = Dapscop.find(:first, :conditions => ["scop_id=?", upocc.scop_id])%>
+      <%occ_entry=upscop.scop_id+'\t'+upscop.scop_desc+'\n'%>
+      <%@upocc+=occ_entry%>
+    <%end%>
+
     <div class="row">
       <%= form_label("Update the Occurrence of Fragment (separate the occurrence from the description with \\t and each occurrenc with \\n)")%>
-      <%= form_text_area("f_upocc")%>
+      <%= form_text_area("f_upocc", @upocc)%>
     </div>
 
     <%@upref=""%>

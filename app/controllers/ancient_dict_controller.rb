@@ -150,6 +150,8 @@ in at least two folds."
     @colors = params['colors'] ? params['colors'] : "uit"
     @color = params['color'] ? params['color'] : "up"
     @itempage = params['itempage'] ? params['itempage'] : ""
+    @cat_values = ['frag_AA', 'frag_AB', 'frag_M']
+    @cat_labels = ['all alpha (Frag)', 'all beta (Frag)', 'mixed (Frag)']
     @key_val = Array.new()
     @key_lab = Array.new()
     @key_arr = Dapkey.find(:all).each do |k_arr|
@@ -176,7 +178,8 @@ in at least two folds."
 # links that are used in multiple pages
 
   def getlinks
-    @shortlinks = ["in", "br", "up"]
+    @shortlinks = ["in", "br"] #, "up"]
+    @shortlinks_special = ["in", "br", "up"]
     @links = ["index", "browse", "update"]
     @link_names = ["Description", "Browse Database", "Update Database"]
     @link_text = ["Description", "Browse the database", "Update the database"]

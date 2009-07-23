@@ -20,15 +20,15 @@ class AncientDictJob < Job
 
   # Overwrite before_results to fill you job object with result data before result display
   def before_results(controller_params)
-    f = File.join(job_dir, jobid+'.sql')
-    logger.debug "path: #{f}"
-    file = IO.readlines(File.join(job_dir, jobid + '.sql')).join
-    logger.debug "das ist file: #{file}"
-    for i in file
-      logger.debug "das ist i: #{i}"
+    #f = File.join(job_dir, jobid+'.sql')
+    #logger.debug "path: #{f}"
+    #file = IO.readlines(File.join(job_dir, jobid + '.sql')).join
+    #logger.debug "das ist file: #{file}"
+    #for i in file
+    #  logger.debug "das ist i: #{i}"
       #system(i)
-    end
-    system("mysql toolkit_development #{f}")
+    #end
+    #system("mysql toolkit_development #{f}")
   end
 
 end

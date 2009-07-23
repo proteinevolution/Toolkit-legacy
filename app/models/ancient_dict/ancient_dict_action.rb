@@ -1,17 +1,8 @@
 class AncientDictAction < Action
   DAP = File.join(BIOPROGS, 'DAP')
 
-  #attr_accessor :f_name, :f_id, :f_category
   attr_accessor :k_name, :k_desc, :k_upname, :k_updesc
   attr_accessor :f_name, :f_desc, :f_shortdesc, :f_cat, :f_ref, :f_figure
-
-  #validates_presence_of(:f_name,
-	#		:message => "The field should not be empty. Please add a name.",
-	#		:on => :create)
-
-  #validates_presence_of(:f_id,
-	#		:message => "The field should not be empty. Please specify an ID.",
-	#		:on => :create)
 
 
   # Put action initialisation code in here
@@ -21,16 +12,17 @@ class AncientDictAction < Action
     @kdesc = params['k_desc'] ? params['k_desc'] : "NULL"
 
     logger.debug "k_name: #{@kname}"
-    #logger.debug "k_desc: #{@kdesc}"
+
+    @k_idnum=1
 
     if (@kname != 'NULL')
       @keys = Dapkey.find(:all)
-      @k_idnum=@keys.length
+      @k_idnum+=@keys.length
       @startid = 0
       @keyid= convertID('KEY', @k_idnum, @startid)
 
-      #logger.debug "idnum: #{@k_idnum}"
-      #logger.debug "keyid: #{@keyid}"
+      logger.debug "idnum: #{@k_idnum}"
+      logger.debug "keyid: #{@keyid}"
     end
 
     # input add item (fragment or repeat)
@@ -45,19 +37,12 @@ class AncientDictAction < Action
     @fkeywords = params['f_keys'] ? params['f_keys'] : "NULL"
     @fscop = params['f_occ'] ? params['f_occ'] : "NULL"
 
-    #logger.debug "fitem: #{@fitem}"
     logger.debug "f_name: #{@fname}"
-    #logger.debug "f_desc: #{@fdesc}"
-    #logger.debug "f_shortdesc: #{@fshortdesc}"
-    #logger.debug "f_cat: #{@fcategory}"
-    #logger.debug "f_ref: #{@fref}"
     @fkeywords.each do |ks|
      # logger.debug "f_key: #{ks}"
     end
 
     @occ = @fscop.split('\n')
-
-    #logger.debug "f_occ: #{@fscop}"
 
     @occ.each do |oc|
      # logger.debug "occ_line: #{oc}"
@@ -100,7 +85,8 @@ class AncientDictAction < Action
        @itemid = convertID('REP', @f_idnum, 0)
       end
 
-      figure_file = @itemid + '.jpg'
+      figure_file = @itemid + '.png'
+      #figure_file = @itemid + '.jpg'
       @figure_mysql = 'ancient_dict/images/' + figure_file
       @figure_filename = File.join(DATABASES, @figure_mysql)
       logger.debug "figure_filename #{@figure_filename}"
@@ -154,23 +140,23 @@ class AncientDictAction < Action
     @frag_key = params['f_upkeys'] ? params['f_upkeys'] : "NULL"
     @frag_fig = params['f_upfigure'] ? params['f_upfigure'] : "NULL"
     @frag_align = params['f_upali'] ? params['f_upali'] : "NULL"
+    @frag_cat = params['f_upcat'] ? params['f_upcat'] : "NULL"
 
-
-    logger.debug "FIGUUUUURE: #{@frag_fig}"
     if (@frag_fig != 'NULL')
       @figures = read_dir_entries(@frag_id)
       @len = @figures.length
       if (@len == 1)
-        @frag_figure = 'ancient_dict/images/' + @frag_id + '_up.jpg'
+        @frag_figure = 'ancient_dict/images/' + @frag_id + '_up.png'
+        #@frag_figure = 'ancient_dict/images/' + @frag_id + '_up.jpg'
       else
-        @frag_figure = 'ancient_dict/images/' + @frag_id + '_up'+@figures.length.to_s()+'.jpg'
+        @frag_figure = 'ancient_dict/images/' + @frag_id + '_up'+@figures.length.to_s()+'.png'
+        #@frag_figure = 'ancient_dict/images/' + @frag_id + '_up'+@figures.length.to_s()+'.jpg'
       end
       logger.debug "frag_figure: #{@frag_figure}"
       @figure_name = File.join(DATABASES, @frag_figure)
       params_to_file(@figure_name, 'f_upfigure')
     end
 
-    #logger.debug "AAAAAAAAAAAAAALLLLLLLLLLLLLLLIIIIIIIIII #{@frag_align}"
     @up_alignment = ''
     if (@frag_align != 'NULL')
       @frag_ali = 'ancient_dict/alignments/' + @frag_id + '.ali'
@@ -300,6 +286,13 @@ class AncientDictAction < Action
         end
       end
 
+    @previous_cat = Dapfragment.find(@fid).f_category
+    if (@frag_cat != 'NULL' && @previous_cat != @frag_cat)
+      upcatfrag=Dapfragment.find(@fid)
+      upcatfrag.update_attributes(:f_category => @frag_cat)
+      upcatfrag.save!
+    end
+
     if ( @frag_ref != 'NULL')
       logger.debug "Reference available!!!"
       Dapref.find(:all, :conditions => ["f_id=?", @frag_id]).each do |delref|
@@ -417,7 +410,7 @@ class AncientDictAction < Action
     else
       finid=string+length.to_s()
     end
-    #logger.debug "ID: #{finid}"
+    logger.debug "ID: #{finid}"
     if (string == 'KEY')
       if (Dapkey.find(:first, :conditions => ["k_id=?", finid]))
         finid=convertID(string, length, start_num+1)
@@ -438,6 +431,7 @@ class AncientDictAction < Action
     return @refid
   end
 
+  #Function to format the alignment file
   def print_alignment(path)
     a_line = IO.readlines(path)
     alignm = ''
