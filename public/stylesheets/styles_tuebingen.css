@@ -77,7 +77,7 @@ a {
 }
 
 
-#content div.label a {
+#content div.label, div.labelj a {
   font-weight: normal;
 }
 
@@ -501,6 +501,15 @@ div div.label {
   text-align: right;
 }
 
+div div.label {
+  padding: 4;
+  margin: 0;
+  float: left;
+  width: 200px;
+  font-weight: normal;
+  text-align: right;
+}
+
 div div.formw {
   margin: 0;
   padding: 0;
@@ -665,6 +674,19 @@ ul.arrow-marker li {
 }
 #resultactions li.current a {
   background-color: #C9DBD8;
+}
+
+#jalview{
+  float:right;
+}
+
+#help_jal{
+  float:right;
+  padding-top:10px;
+}
+
+#help_jal a{
+  font-weight:normal;
 }
 
 /* Front page */ 

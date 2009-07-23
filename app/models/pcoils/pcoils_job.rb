@@ -1,6 +1,6 @@
 class PcoilsJob < Job
   
-  @@export_ext = ".out"
+  @@export_ext = ".export"
   def set_export_ext(val)
     @@export_ext = val  
   end
@@ -10,7 +10,6 @@ class PcoilsJob < Job
   
   # export results
   def export
-    set_export_ext(".numerical" )
     ret = IO.readlines(File.join(job_dir, jobid + @@export_ext)).join
   end
   
@@ -141,9 +140,9 @@ class PcoilsJob < Job
       for index in (99...@nums.length)
         file.write("#{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
       end
+
     end
-    file.close
-
+  
   end
-
+  
 end

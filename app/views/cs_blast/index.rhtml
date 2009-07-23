@@ -2,6 +2,10 @@
 
   <%= form_tag({:action => :run, :job => 'cs_blast', :parent => @parent_job}, {:id => 'form', :multipart => true})%>
 
+  <a target="_blank" href="ftp://toolkit.lmb.uni-muenchen.de/csblast/CS-BLAST-2.0.3/" title="Now CSI-BLAST">
+  &nbsp;&nbsp;CS-BLAST now with CSI-BLAST
+</a>
+
   <h3 class="<%= @section["name"] %>">Input</h3>
 
   <div class="row">
@@ -12,25 +16,46 @@
     <%= form_label("or upload a local file") %>
     <%= form_file("sequence_file") %>
   </div>
+  <div class="row">
+	<%= form_label("Select input mode", "input") %>
+	<%= form_radio_buttons("inputmode", @inputmode_values, @inputmode_labels, @inputmode_values[0], "&nbsp;&nbsp;", "toggleDisabled('informat'); toggleDisabled('filter');") %>
+</div>
+<div class="row">
+	<%= form_label("Select alignment format", "input_format") %>
+	<% disable = true %>
+	<% if ((params['inputmode'] && params['inputmode'] == "alignment") || (@error_params['inputmode'] && @error_params['inputmode'] == "alignment")) then disable = false end %>
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "", disable) %>	
+</div>
   <div class="spacer">&nbsp;</div>
 
   <%= render(:partial => "shared/protein_dbs") %>
 
   <h3 class="<%= @section["name"] %>">Search Options</h3>
 
-  <div class="row">
-    <%= form_label("Matrix", "matrix") %>
-    <%= form_select_single("matrix", @matrices, @matrices, @matrices.find(@matrices.first) {|m| m =~ /62/}) %>
-  </div>
 
+<div class="row">
+	<%= form_label("Number of iterations", "numberiterations") %>
+	<%= form_text_field("rounds", '1') %>	
+</div>
   <div class="row">
     <%= form_label("E-Value", "evalue") %>
-    <%= form_text_field("evalue", '10') %>
+    <%= form_text_field("evalue", '2', "(Note that CS-BLAST E-values are too optimistic by a factor of 3-5.)") %>
   </div>
   <div class="row">
+	<%= form_label("E-value inclusion threshold", "evaluefirst") %>
+	<%= form_text_field("evalfirstit", '0.0002') %>	
+</div>
+  <div class="row">
     <%= form_label("Filter for low complexety regions", "filter") %>
+    <% if ((params['inputmode'] && params['inputmode'] == "alignment") || (@error_params['inputmode'] && @error_params['inputmode'] == "alignment")) then disable = true end %>
     <%= form_checkbox("filter", '1', false) %>
   </div>
+  
+  <div class="row">
+	<%= form_label("Perform ungapped alignment") %>
+	<%= form_checkbox("ungappedalign", '1', false) %>	
+</div>
+
   <div class="row">
     <%= form_label("Descriptions", "descriptions") %>
     <%= form_text_field("descr", '100') %>
@@ -55,10 +80,10 @@
 <div class="hr">&nbsp;</div>
 <ul class="arrow-marker">
 <!--   <li><a href="#" title="About CS-BLAST" onclick="openHelpWindow('/cs_blast/help_ov');">About CS-BLAST</a></li> -->
-  <li><a target="_blank" href="ftp://toolkit.lmb.uni-muenchen.de/csblast" title="Download CS-BLAST"><B>Download CS-BLAST</B></a>
+  <li><a target="_blank" href="ftp://toolkit.lmb.uni-muenchen.de/csblast/CS-BLAST-2.0.3" title="Download CS/CSI-BLAST"><B>Download CS/CSI-BLAST</B></a>
 </ul>
 
 <div class="row">
-  Biegert, A. and Soding, J. (2009) Sequence context-specific amino acid similarities: a powerful paradigm for protein sequence comparison.
-  <em>to be published</em>
+  Biegert, A. and Soding, J. (2009) Sequence context-specific profiles for homology searching.
+  <em>Proc Natl Acad Sci USA</em>, <strong>106</strong> (10), 3770-3775
 </div>

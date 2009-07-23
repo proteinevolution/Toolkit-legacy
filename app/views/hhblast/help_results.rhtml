@@ -3,6 +3,8 @@
 <li><a href="#bar diagram">Bar diagram</a></li>
 <li><a href="#hit list">Summary hit list</a></li>
 <li><a href="#alignments">Query-template alignments</a></li>
+<li><a href="#jalview">View alignment with Jalview</a></li>
+<li><a href="#alignment">Alignment</a></li>
 <li><a href="#references">References</a></li>
 <li><a href="#contact">Contact</a></li>
 </ul>
@@ -130,8 +132,8 @@ Indeed, closer analysis of the results would reveal that the first hit is a fals
 The fact that the four next best hits are all from the same the snake-toxin-like superfamily
 lends more weight to them, since chance doesn't like to occur bunched. 
 In this case, it would be necessary to look for confirming evidence for either the first hit or
-the next four. A detailed list with useful 'tips and tricks' is compiled in the HHpred FAQ section:
-<a href="/hhpred/help_faq#correct match" title="How to verify database match">
+the next four. A detailed list with useful 'tips and tricks' is compiled in the FAQ section:
+<a href="#" title="How to verify database match" onclick="openHelpWindow('hhpred_help_faq','correct match');">
 "How can I verify if a database match is really homologous?"</a>. I would strongly recommed
 reading through this list.
 </div>
@@ -313,7 +315,22 @@ amino acid distributions. It gives a valuable indication for the alignment quali
 </table>
 </p>
 </div>
+
+<div class="row">
+<a name="jalview"></a>
+<h3 class="<%= @section["name"] %>">View alignment with Jalview</h3>
+<img src="/images/blast/hhblast.jpg" border="0" alt="jalview"><br/>
+The Jalview-button shows the multiple alignment of the secondary structure information and all sequences that was found by HHBLAST. The different colours illustrate the identities between the different amino acids. In the example above you can see, that it is very difficult to decide, whether the sequences may be homologue. gi115958280 in the middle may be not homologue. So with the help of Jalview you can decide, with which sequences you want to go on.
+</div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 <br/>
+
+<div class="row">
+<a name="alignment"></a>
+<h3 class="<%= @section["name"] %>">Show alignment</h3>
+In the section "Alignment" you have two possibilities for a jalview-Alignment. The first one shows the complete alignment with inserted residues and the second one shows the 50 most distinct sequences without inserted residues. Additionally you have the whole alignment as text, which you can modify. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
 <%= render(:partial => "hhblast/references_and_contact") %>
 </div>
