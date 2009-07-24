@@ -15,7 +15,7 @@
       tries = 0
 
       if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
-        command = "#{QUEUE_DIR}/qsub -l h_vmem=6G #{self.wrapperfile}"
+        command = "#{QUEUE_DIR}/qsub -l h_vmem=10G #{self.wrapperfile}"
 	logger.debug "qsub command: #{command}"
       else
         command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
@@ -92,6 +92,7 @@
 #        f.write "#PBS -l nodes=1:ppn=#{cpus}\n"
 #        end
 
+        logger.debug "bei exec_host-Aufruf"
         f.write "hostname > #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
         if RAILS_ENV == "development"
           f.write "echo 'Starting job #{id.to_s}...' >> #{queue_job.action.job.statuslog_path}\n"
@@ -162,7 +163,7 @@
         f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"
         # print the process id of this shell execution
         f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 
-         
+        logger.debug "Exec_host file geschrieben."
         f.write "exitstatus=0;\n"
 
         commands.each do |cmd|
