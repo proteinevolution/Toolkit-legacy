@@ -57,7 +57,10 @@
 
         # SGE options
         f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
-        f.write '#$' + " -q #{queue}\n"
+        if LOCATION == "Tuebingen" && RAILS_ENV == "development"
+        else
+          f.write '#$' + " -q #{queue}\n"
+        end
         if RAILS_ENV == "development"
           if queue == "express.q"
 	    f.write '#$' + " -l express=TRUE\n"
@@ -69,6 +72,7 @@
 #        f.write '#$' + " -j y\n";
         f.write '#$' + " -w n\n"
 	
+        
 	if (queue == "toolkit_long")
           f.write '#$' + " -l long\n"
         end
@@ -83,6 +87,7 @@
 #        f.write "#PBS -l nodes=1:ppn=#{cpus}\n"
 #        end
 
+        
         f.write "hostname > #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
         if RAILS_ENV == "development"
           f.write "echo 'Starting job #{id.to_s}...' >> #{queue_job.action.job.statuslog_path}\n"
