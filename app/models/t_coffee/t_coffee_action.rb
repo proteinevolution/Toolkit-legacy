@@ -29,16 +29,14 @@ class TCoffeeAction < Action
     @outorder         = params['order']           ? "-outorder align"     : "-outorder input"
     @otheradvanced = params['otheradvanced'] ? params['otheradvanced'] : ""
     params_to_file(@infile, 'sequence_input', 'sequence_file')
+    @commands = []
     params_dump
   end	
 
   def perform
-    cmd = "cd #{job.job_dir.to_s}; export PATH=$PATH:#{CLUSTALW}; export DIR_4_TCOFFEE=.; export TMP_4_TCOFFEE=.; export CACHE_4_TCOFFEE=.; "
-    cmd += "#{TCOFFEE} -in #{@infile} #{@mlalign_id_pair} #{@mfast_pair} #{@mslow_pair} #{@mclustalw_pair} "
-    cmd += "#{@output} #{@charcase} #{@numbering} #{@outorder} #{@otheradvanced}"
-    cmd += "-run_name=#{job.jobid.to_s} -cache=no -quiet=stdout "
-    cmd += "&> #{@tclog}"		
-    @commands = [cmd]
+    @commands << "cd #{job.job_dir.to_s}; export PATH=$PATH:#{CLUSTALW}; export DIR_4_TCOFFEE=.; export TMP_4_TCOFFEE=.; export CACHE_4_TCOFFEE=.; "
+    @commands << "#{TCOFFEE} -in #{@infile} #{@mlalign_id_pair} #{@mfast_pair} #{@mslow_pair} #{@mclustalw_pair} #{@output} #{@charcase} #{@numbering} #{@outorder} #{@otheradvanced} -run_name=#{job.jobid.to_s} -cache=no -quiet=stdout &> #{@tclog}"
+    #@commands = [cmd]
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
