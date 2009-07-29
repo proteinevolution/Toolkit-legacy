@@ -58,16 +58,25 @@ class UserController < ApplicationController
   def change_password
     @meta_section = "change_password"  
     return if generate_filled_in
-    params['user'].delete('form')
-    begin
-      User.transaction do
-        @user.change_password(params['user']['password'], params['user']['password_confirmation'])
-        if @user.save
-          UserNotify.deliver_change_password(@user, params['user']['password'])
-          flash.now['notice'] = l(:user_updated_password, "#{@user.login}")
+    @key = params['key']
+    @user = User.find(params['user']['id']) 
+    if @user.security_token == @key
+      params['user'].delete('form')
+      begin
+        User.transaction do
+          logger.debug "User #{@user}"
+          @user.change_password(params['user']['password'], params['user']['password_confirmation'])
+          logger.debug "Password changed"
+          if @user.save
+            UserNotify.deliver_change_password(@user, params['user']['password'])
+            flash.now['notice'] = l(:user_updated_password, "#{@user.login}")
+          end
+          logger.debug "User saved"
         end
+      rescue
+        flash.now['message'] = l(:user_change_password_email_error)
       end
-    rescue
+    else
       flash.now['message'] = l(:user_change_password_email_error)
     end
   end

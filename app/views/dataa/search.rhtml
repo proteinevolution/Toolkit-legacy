@@ -4,35 +4,16 @@
 
 <%= render(:partial => "links") %>
 
-<%= form_tag({:action => :run, :job => 'dataa'}, {:multipart => true})%> 
+<% else %>
 
-<p style="font-size:12px; font-weight:bold;">Annotate your sequence:</p>
-<br/>
+<%= render(:partial => "dataajobspecs", :locals => {:title_extra => 'main page'}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
 
-<h3 class="<%= @section["name"] %>">Input</h3>
-<div class="row">
-	<%= form_label("Enter ONE sequence in fasta format", "input") %>
-	<%= form_text_area("sequence_input") %>
-</div>
-<div class="row">
-	<%= form_label("or upload a local file") %>
-	<%= form_file("sequence_file") %>
-</div>
-
-<div class="spacer">&nbsp;</div>
-
-<h3 class="<%= @section["name"] %>">Options</h3>
-<div class="row">
-        <%= form_label("This is a fragment. Do not check for presence of the membrane anchor.", "disc") %>
-        <%= form_checkbox("disc", '1', false) %>
-</div>
-
-<div class="spacer">&nbsp;</div>
-
-<%= render(:partial => "shared/joboptions") %>
+<% end %>
 
 <div class="row">
-	<%= form_submit_buttons %>
-</div>
 
-</form>
+<%= @ret %>
+
+</div>

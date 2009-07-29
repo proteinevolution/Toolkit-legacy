@@ -69,7 +69,7 @@
 #        f.write '#$' + " -j y\n";
         f.write '#$' + " -w n\n"
 	
-	if (queue == "toolkit_long")
+	if (queue == "toolkit_long" && LOCATION == "Tuebingen")
           f.write '#$' + " -l long\n"
         end
 
