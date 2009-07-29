@@ -37,8 +37,8 @@ class PsiBlastController < ToolController
                   fw_to_tool_url('psi_blast', 'kalign') + "&fw_mode=seqs", 
                   fw_to_tool_url('psi_blast', 'mafft') + "&fw_mode=seqs", 
                   fw_to_tool_url('psi_blast', 'muscle') + "&fw_mode=seqs",
-    					fw_to_tool_url('psi_blast', 'patsearch') + "&fw_mode=seqs",
-    					fw_to_tool_url('psi_blast', 'probcons') + "&fw_mode=seqs",
+		  fw_to_tool_url('psi_blast', 'patsearch') + "&fw_mode=seqs",
+    		  fw_to_tool_url('psi_blast', 'probcons') + "&fw_mode=seqs",
                   fw_to_tool_url('psi_blast', 'psi_blast') + "&fw_mode=alignment", 
                   fw_to_tool_url('psi_blast', 'quick2_d') + "&fw_mode=alignment",                   
                   fw_to_tool_url('psi_blast', 'reformat') + "&fw_mode=alignment",                   
@@ -97,5 +97,10 @@ class PsiBlastController < ToolController
       @job.actions.last.save!
     end
   end
+  
+  def help_results
+    render(:layout => "help")
+  end
+  
   
 end

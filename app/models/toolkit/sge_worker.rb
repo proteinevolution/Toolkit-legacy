@@ -13,8 +13,8 @@
       self.queue_job.update_status
       
       tries = 0
-      if LOCATION == "Tuebingen" && RAILS_ENV == "development"
-        command = "#{QUEUE_DIR}/qsub -l h_vmem=6G #{self.wrapperfile}"
+      if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
+        command = "#{QUEUE_DIR}/qsub -l h_vmem=10G #{self.wrapperfile}"
       else
         command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
       end
@@ -41,12 +41,12 @@
     # creates a shell wrapper file for all jobcomputations-commands that are executed on the queue, sets the status of the job
     # this must be a wrapper to be able to print to stdout and stderr files when disk file size limit is reached in the subshell.
     def writeShWrapperFile
-      queue = QUEUES[:normal]
+      queue = "toolkit_normal"
       cpus = nil
       additional = false
 
       if (!options.nil? || !options.empty?)
-        if (options['queue']) then queue = QUEUES[options['queue'].to_sym] end
+        if (options['queue']) then queue = options['queue'] end
         if (options['cpus']) then cpus = options['cpus'] end
         if (options['additional']) then additional = true end
       end
@@ -68,6 +68,10 @@
         f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
 #        f.write '#$' + " -j y\n";
         f.write '#$' + " -w n\n"
+	
+	if (queue == "toolkit_long" && LOCATION == "Tuebingen")
+          f.write '#$' + " -l long\n"
+        end
 
         if (queue == "toolkit_immediate")
           f.write '#$' + " -l immediate\n"

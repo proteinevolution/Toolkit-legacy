@@ -146,4 +146,5 @@ class SimshiftJob < Job
     @results.push("<BR><BR><B><i>SimShift</i>: Simon W. Ginzinger, Thomas Gräupl, Volker Heun (2007) SimShiftDB: <BR>\n ")
     @results.push("Chemical-Shift-Based Homology Modeling. <\/B>")
   end      
+  
 end
