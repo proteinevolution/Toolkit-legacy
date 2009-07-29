@@ -13,8 +13,10 @@
       self.queue_job.update_status
       
       tries = 0
+
       if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
         command = "#{QUEUE_DIR}/qsub -l h_vmem=10G #{self.wrapperfile}"
+        logger.debug "qsub command: #{command}"
       else
         command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
       end
@@ -57,10 +59,12 @@
 
         # SGE options
         f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
-        f.write '#$' + " -q #{queue}\n"
-        if RAILS_ENV == "development"
-          if queue == "express.q"
-	    f.write '#$' + " -l express=TRUE\n"
+        if LOCATION != "Tuebingen" && RAILS_ENV != "development"
+          f.write '#$' + " -q #{queue}\n"
+          if RAILS_ENV == "development"
+            if queue == "express.q"
+	      f.write '#$' + " -l express=TRUE\n"
+            end
 	  end
 	end
 	f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
