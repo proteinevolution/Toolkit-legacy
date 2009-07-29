@@ -79,7 +79,7 @@ class ClansAction < Action
     if (@searchtool == "blastp")
       @blastcommand = "#{BLAST}/blastall -p #{@searchtool} -e #{@evalue} -F #{@filter} -M #{@matrix} -G #{@gapopen} -E #{@gapext} -g #{@ungappedalignment} -v #{descriptions} -b #{descriptions} -T T -I T "
     else
-      @blastcommand = "#{BLAST}/blastpgp -e #{@evalue} -F #{@filter} -M #{@matrix} -G #{@gapopen} -E #{@gapext} -g #{@ungappedalignment} -v #{descriptions} -b #{descriptions} -T T -I T -h #{@evaluefirst} -j #{@numiterations}"
+      @blastcommand = "#{BLAST}/blastpgp -e #{@evalue} -F #{@filter} -M #{@matrix} -G #{@gapopen} -E #{@gapext} -v #{descriptions} -b #{descriptions} -T T -I T -h #{@evaluefirst} -j #{@numiterations}"
     end
     
     #now create the nxnblast command

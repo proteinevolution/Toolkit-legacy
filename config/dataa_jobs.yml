@@ -11,7 +11,7 @@ dataa_job:
       title: Browse database
       title_long: Browse database
       forwardsections:
-    - name: index
+    - name: search
       title: Description 
       title_long: Description
       forwardsections:

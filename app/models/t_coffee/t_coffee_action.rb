@@ -40,6 +40,17 @@ class TCoffeeAction < Action
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
+
+  #def perform
+  #  cmd = "cd #{job.job_dir.to_s}; export PATH=$PATH:#{CLUSTALW}; export DIR_4_TCOFFEE=.; export TMP_4_TCOFFEE=.; export CACHE_4_TCOFFEE=.; "
+  #  cmd += "#{TCOFFEE} -in #{@infile} #{@mlalign_id_pair} #{@mfast_pair} #{@mslow_pair} #{@mclustalw_pair} "
+  #  cmd += "#{@output} #{@charcase} #{@numbering} #{@outorder} #{@otheradvanced}"
+  #  cmd += "-run_name=#{job.jobid.to_s} -cache=no -quiet=stdout "
+  #  cmd += "&> #{@tclog}"		
+  #  @commands = [cmd]
+  #  logger.debug "Commands:\n"+@commands.join("\n")
+  #  queue.submit(@commands)
+  #end
 end
 
 

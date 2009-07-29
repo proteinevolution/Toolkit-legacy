@@ -13,8 +13,10 @@
       self.queue_job.update_status
       
       tries = 0
+
       if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
         command = "#{QUEUE_DIR}/qsub -l h_vmem=10G #{self.wrapperfile}"
+        logger.debug "qsub command: #{command}"
       else
         command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
       end
@@ -57,13 +59,24 @@
 
         # SGE options
         f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
+#<<<<<<< HEAD:app/models/toolkit/sge_worker.rb
         if LOCATION == "Tuebingen" && RAILS_ENV == "development"
         else
+#=======
+#        if LOCATION != "Tuebingen" && RAILS_ENV != "development"
+#>>>>>>> maint:app/models/toolkit/sge_worker.rb
           f.write '#$' + " -q #{queue}\n"
-        end
-        if RAILS_ENV == "development"
-          if queue == "express.q"
-	    f.write '#$' + " -l express=TRUE\n"
+#<<<<<<< HEAD:app/models/toolkit/sge_worker.rb
+#        end
+#        if RAILS_ENV == "development"
+#          if queue == "express.q"
+#	    f.write '#$' + " -l express=TRUE\n"
+#=======
+          if RAILS_ENV == "development"
+            if queue == "express.q"
+	      f.write '#$' + " -l express=TRUE\n"
+            end
+#>>>>>>> maint:app/models/toolkit/sge_worker.rb
 	  end
 	end
 	f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
@@ -72,8 +85,12 @@
 #        f.write '#$' + " -j y\n";
         f.write '#$' + " -w n\n"
 	
+#<<<<<<< HEAD:app/models/toolkit/sge_worker.rb
         
-	if (queue == "toolkit_long")
+#	if (queue == "toolkit_long")
+#=======
+	if (queue == "toolkit_long" && LOCATION == "Tuebingen")
+#>>>>>>> maint:app/models/toolkit/sge_worker.rb
           f.write '#$' + " -l long\n"
         end
 
