@@ -1,0 +1,12 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+
+<%= render(:partial => "shared/resultsections", :locals => {:export => 'false'}) %>
+
+<h3 class="<%= @section["name"] %>">COILS/PCOILS numerical output (window length 14 / 21 / 28 AAs)</h3>
+
+<div class="row">
+<pre><%= @job.render_file(@job.jobid+".numerical") %></pre>
+</div>
+
+</form>
+
