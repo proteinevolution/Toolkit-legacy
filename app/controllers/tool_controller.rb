@@ -181,7 +181,8 @@ class ToolController < ApplicationController
     ret = render_to_string(:action => function_name, :layout => false)
     #changed the following line to be able to set own extension /Chris
     #filename = @job.class.export_basename + "." + @job.class.export_file_ext
-    filename = @job.class.export_basename + "." + @job.get_export_ext
+    #Orginal: filename = @job.class.export_basename + "." + @job.get_export_ext
+    filename = @job.class.export_basename + @job.get_export_ext
     filename.gsub!(/JOBID/, @job.jobid)
     send_data(ret, :filename => filename, :type => @job.class.export_type)
   end
