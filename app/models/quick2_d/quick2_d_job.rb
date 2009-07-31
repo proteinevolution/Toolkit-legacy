@@ -24,7 +24,7 @@ class Quick2DJob < Job
   
   @@descr_width   = 17
   
-  @@export_ext    = "quick2d" 
+  @@export_ext    = ".quick2d" 
   
   def set_export_ext(val)
     @@export_ext = val  
@@ -137,7 +137,7 @@ class Quick2DJob < Job
       ret += "\n"
     end
     ret += sprintf("%-#{@@descr_width}s", "CONF")
-    if( !blub.nil? && !blub['tmconf'].nil? )
+    if( !blub.nil? && !blub['tmconf'].nil? && !blub['tmconf'].is_a?(Array))
       ret += blub['tmconf'][a..b] + "\n"
     else
       ret += "\n"
@@ -153,7 +153,7 @@ class Quick2DJob < Job
       ret += "\n"
     end
     ret += sprintf("%-#{@@descr_width}s", "CONF")
-    if( !blub.nil? && !blub['doconf'].nil? )
+    if( !blub.nil? && !blub['doconf'].nil? && !blub['doconf'].is_a?(Array))
       ret += blub['doconf'][a..b] + "\n"
     else
       ret += "\n"
@@ -588,52 +588,52 @@ class Quick2DJob < Job
   end
   
   def readMemsatSvm
-	if( !File.exists?(self.actions[0].flash['memsatsvmfile'])) then return { } end
-	ret={'tmpred'=>"", 'tmconf'=>[]}
-	ar = IO.readlines(self.actions[0].flash['memsatsvmfile'])
-	pos = "", score="", result = ""
-	
-	#read positions and score
-	ar.each do |line|
-		line =~ /Topology:/
-		if $& then
-			pos = line
-		end
-	
-		line =~ /Score:/
-		if $& then
-			line =~ /\-*\d+\.\d+/
-			score = $&
-		end
-	end
-	
-	if(score.to_f>=0) then
-		pos.gsub!(/Topology:\s*/,"")
-		i = 0
-		#Arrays for start-positions and end-positions and save them 
-		start_array = Array.new
-		end_array = Array.new
-		while true do
-			pos=~/(\d+)-(\d+)/
-			if $1==nil then break end
-				start_array[i]=$1
-				end_array[i] = $2
-				i+=1
-				pos.gsub!(/\A(\d+)-(\d+)\,*/,"")
-		end 
-	
-		#X for transmembrane and gap for none and putting the score to the javascript
-		start_array.length.times { |i|
-			(start_array[i].to_i-1-result.length).times { result +=" "; ret['tmconf']<<"-" }
-			(end_array[i].to_i-result.length).times { result += "X"; ret['tmconf'] << score }
-		}
-		(readQuery['sequence'].length-result.length+1).times{ result += " "; ret['tmconf']<<"-" }
-		ret['tmpred'] += result
-	else
-		(readQuery['sequence'].length).times{ result += " "}
-		ret['tmpred'] += result
-	end
-	ret
+    if( !File.exists?(self.actions[0].flash['memsatsvmfile'])) then return { } end
+    ret={'tmpred'=>"", 'tmconf'=>[]}
+    ar = IO.readlines(self.actions[0].flash['memsatsvmfile'])
+    pos = "", score="", result = ""
+    
+    #read positions and score
+    ar.each do |line|
+      line =~ /Topology:/
+      if $& then
+        pos = line
+      end
+      
+      line =~ /Score:/
+      if $& then
+        line =~ /\-*\d+\.\d+/
+        score = $&
+      end
+    end
+    
+    if(score.to_f>=0) then
+      pos.gsub!(/Topology:\s*/,"")
+      i = 0
+      #Arrays for start-positions and end-positions and save them 
+      start_array = Array.new
+      end_array = Array.new
+      while true do
+        pos=~/(\d+)-(\d+)/
+        if $1==nil then break end
+        start_array[i]=$1
+        end_array[i] = $2
+        i+=1
+        pos.gsub!(/\A(\d+)-(\d+)\,*/,"")
+      end 
+      
+      #X for transmembrane and gap for none and putting the score to the javascript
+      start_array.length.times { |i|
+        (start_array[i].to_i-1-result.length).times { result +=" "; ret['tmconf']<<"-" }
+        (end_array[i].to_i-result.length).times { result += "X"; ret['tmconf'] << score }
+      }
+      (readQuery['sequence'].length-result.length+1).times{ result += " "; ret['tmconf']<<"-" }
+      ret['tmpred'] += result
+    else
+      (readQuery['sequence'].length).times{ result += " "}
+      ret['tmpred'] += result
+    end
+    ret
   end
   
   def readCoils
