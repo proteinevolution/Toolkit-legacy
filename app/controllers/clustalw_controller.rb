@@ -8,7 +8,7 @@ class ClustalwController < ToolController
 		              fw_to_tool_url('clustalw', 'clans'), fw_to_tool_url('clustalw', 'seq2gi'),
 		              fw_to_tool_url('clustalw', 'fast_hmmer'), fw_to_tool_url('clustalw', 'frpred'),
 		              fw_to_tool_url('clustalw', 'hhpred'),
-		              fw_to_tool_url('clustalw', 'hhsenser'), fw_to_tool_url('clustalw', ''), fw_to_tool_url('clustalw', 'phylip'), fw_to_tool_url('clustalw', 'psi_blast'),
+		              fw_to_tool_url('clustalw', 'hhsenser'), fw_to_tool_url('clustalw', 'phylip'), fw_to_tool_url('clustalw', 'psi_blast'),
 		              fw_to_tool_url('clustalw', 'quick2_d'), fw_to_tool_url('clustalw', 'reformat'), 
 		              fw_to_tool_url('clustalw', 'repper')]
 		@fw_labels = [tool_title('alnviz'), tool_title('ancescon'), tool_title('blastclust'), 
