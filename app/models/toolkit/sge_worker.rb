@@ -59,12 +59,24 @@
 
         # SGE options
         f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
-        if LOCATION != "Tuebingen" && RAILS_ENV != "development"
+#<<<<<<< HEAD:app/models/toolkit/sge_worker.rb
+        if LOCATION == "Tuebingen" && RAILS_ENV == "development"
+        else
+#=======
+#        if LOCATION != "Tuebingen" && RAILS_ENV != "development"
+#>>>>>>> maint:app/models/toolkit/sge_worker.rb
           f.write '#$' + " -q #{queue}\n"
+#<<<<<<< HEAD:app/models/toolkit/sge_worker.rb
+#        end
+#        if RAILS_ENV == "development"
+#          if queue == "express.q"
+#	    f.write '#$' + " -l express=TRUE\n"
+#=======
           if RAILS_ENV == "development"
             if queue == "express.q"
 	      f.write '#$' + " -l express=TRUE\n"
             end
+#>>>>>>> maint:app/models/toolkit/sge_worker.rb
 	  end
 	end
 	f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
@@ -73,7 +85,12 @@
 #        f.write '#$' + " -j y\n";
         f.write '#$' + " -w n\n"
 	
+#<<<<<<< HEAD:app/models/toolkit/sge_worker.rb
+        
+#	if (queue == "toolkit_long")
+#=======
 	if (queue == "toolkit_long" && LOCATION == "Tuebingen")
+#>>>>>>> maint:app/models/toolkit/sge_worker.rb
           f.write '#$' + " -l long\n"
         end
 
@@ -87,6 +104,7 @@
 #        f.write "#PBS -l nodes=1:ppn=#{cpus}\n"
 #        end
 
+        
         f.write "hostname > #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
         if RAILS_ENV == "development"
           f.write "echo 'Starting job #{id.to_s}...' >> #{queue_job.action.job.statuslog_path}\n"
