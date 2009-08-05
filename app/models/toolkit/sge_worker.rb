@@ -15,8 +15,13 @@
       tries = 0
 
       if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
-        command = "#{QUEUE_DIR}/qsub -l h_vmem=10G #{self.wrapperfile}"
-        logger.debug "qsub command: #{command}"
+        if RAILS_ENV == "development"
+          command = "#{QUEUE_DIR}/qsub -l h_vmem=10G -p 10 #{self.wrapperfile}"
+          logger.debug "qsub command: #{command}"
+        else
+          command = "#{QUEUE_DIR}/qsub -l h_vmem=10G #{self.wrapperfile}"
+          logger.debug "qsub command: #{command}"
+        end
       else
         command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
       end
@@ -155,7 +160,7 @@
         f = File.open(self.commandfile, 'w')
         f.write "#!/bin/sh\n"
         # FILE SIZE LIMIT 1Gb (1024 * 1000000), MEMORY LIMIT 6Gb (see man bash -> ulimit)
-        #f.write "ulimit -f 1000000 -m 6000000\n"
+        f.write "ulimit -f 1000000\n" #-m 6000000\n"
         f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"
         # print the process id of this shell execution
         f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 
