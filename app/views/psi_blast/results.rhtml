@@ -38,7 +38,17 @@
 
 <br/>
 
-<div style="width: 700px;">
+<div style="width: 728px;">
+
+	<div id="jalview">
+	<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+		<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.j.align">
+		<PARAM NAME="type"   value="URL">
+		<PARAM NAME="format" value="FASTA">
+	</APPLET> 
+	</div>
+
+	<div id="help_jal"><a href="#" onclick="openHelpWindow('/psi_blast/help_results#jalview');">View alignment without inserts</a></div>
 
 	<pre><%= @job.header.join("\n") %></pre>
 

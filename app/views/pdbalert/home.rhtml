@@ -6,11 +6,6 @@
 <% elsif flash[:notice] %>
    <br /><div align="center" style="font-weight: bold; background-color: #ffffaa; width: 180px; height: 16px; font-size: 12px;"><%= flash[:notice] %></div>
 <% end %>
-<% if @userdbs.size > Watchlist::SEQ_LIMIT_SOFT %>
-   <br /><div align="center" style="font-weight: bold; background-color: #ffffaa; width: 180px; height: 16px; font-size: 12px;">
-   Your have reached the sequence limit of <%= Watchlist::SEQ_LIMIT_SOFT %> sequences. Please delete sequences before further uploads.
-   </div>
-<% end %>
 <span id="upload_form" style="display: <%= @upload_on ? 'true':'none' %>;">
 <h3 class="utils"><a href="javascript:hide_upload_form();" onclick="hide_upload_form();">Hide</a></h3>
 <%= render(:partial => "upload_userdb") %>
@@ -29,7 +24,6 @@
 <h2>Sequence Watchlist</h2>
 <div class="hr">&nbsp;</div>
 <%= form_tag({:controller => 'pdbalert', :action => 'delete_userdbs'}, {:multipart => true})%>
-
 <table style="border: 1px solid #79A4C4; margin-top: 10px" width="100%">
 <tr>
 <th width="10px"></th>
@@ -72,7 +66,7 @@
 <% end %>
 </table>
 <input name="submitform" type="submit" class="toolbutton" value="Delete selected sequences" />
-<p style="margin: 10px 0px 0px 5px;">The total number of your sequences may not exceed <span style="color: red; font-weight: bold;"><%= Watchlist::SEQ_LIMIT_SOFT %></span>.</p>
+<p style="margin: 10px 0px 0px 5px;">The total number of your sequences may not exceed <span style="color: red; font-weight: bold;">100</span>.</p>
 
 </form>
 <% end %>

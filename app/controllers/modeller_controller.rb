@@ -37,5 +37,10 @@ class ModellerController < ToolController
 		system(command)
 		redirect_to(:host => DOC_ROOTHOST, :controller => 'hhomp', :action => 'results', :jobid => hhomp_job)		
 	end
+	
+	def help_results
+		render(:layout => "help")
+	end
+  
   
 end
