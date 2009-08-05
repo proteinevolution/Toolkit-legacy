@@ -22,7 +22,7 @@
 			<tr><td align="left" valign="top"><%= form_checkbox("mlalign_id_pair", '1', true, true) %></td><td>Mlalign_id_pair</td></tr>
 			<tr><td align="left" valign="top"><%= form_checkbox("mfast_pair", '1', false, true) %></td><td>Mfast_pair</td></tr>
 			<tr><td align="left" valign="top"><%= form_checkbox("mslow_pair", '1', true, true) %></td><td>Mslow_pair</td></tr>
-			<tr><td align="left" valign="top"><%= form_checkbox("mclustalw_pair", '1', false, true) %></td><td>Mclustalw_pair</td></tr>
+		<!--	<tr><td align="left" valign="top"><%= form_checkbox("mclustalw_pair", '1', false, true) %></td><td>Mclustalw_pair</td></tr>-->
 		</table>
 	</div>
 	
@@ -36,7 +36,8 @@
 <h3 class="<%= @section["name"] %>">Output Options</h3>
 <div class="row">
 <%= form_label("Character transformation", "case") %>
-<%= form_select_single("case", ["upper", "lower"], ["upper case", "lower case"]) %>
+<%= form_select_single("case", ["upper"], ["upper case"]) %>
+<!--<%= form_select_single("case", ["upper", "lower"], ["upper case", "lower case"]) %>-->
 </div>
 <div class="row">
 <%= form_label("Residue number", "residue_number") %>

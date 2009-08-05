@@ -17,9 +17,9 @@ class TCoffeeAction < Action
   def before_perform
     @basename         = File.join(job.job_dir, job.jobid)
     @infile           = @basename+".in"
-    @outfile          = @basename+".aln"   
-    @tclog            = @basename+"_tcoffee.log" 
-    @mlalign_id_pair  = params['mlalign_id_pair'] ? "-in mlalign_id_pair" : "" 
+    @outfile          = @basename+".aln"
+    @tclog            = @basename+"_tcoffee.log"
+    @mlalign_id_pair  = params['mlalign_id_pair'] ? "-in mlalign_id_pair" : ""
     @mfast_pair       = params['mfast_pair']      ? "-in mfast_pair"      : ""
     @mslow_pair       = params['mslow_pair']      ? "-in mslow_pair"      : ""
     @mclustalw_pair   = params['mclustalw_pair']  ? "-in mclustalw_pair"  : ""
@@ -31,26 +31,17 @@ class TCoffeeAction < Action
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @commands = []
     params_dump
-  end	
+  end
 
   def perform
-    @commands << "cd #{job.job_dir.to_s}; export PATH=$PATH:#{CLUSTALW}; export DIR_4_TCOFFEE=.; export TMP_4_TCOFFEE=.; export CACHE_4_TCOFFEE=.; "
+    @commands << "cd #{job.job_dir.to_s};"
+    @commands << "export PATH=$PATH:#{CLUSTALW}; export DIR_4_TCOFFEE=.; export TMP_4_TCOFFEE=.; export CACHE_4_TCOFFEE=.;"
     @commands << "#{TCOFFEE} -in #{@infile} #{@mlalign_id_pair} #{@mfast_pair} #{@mslow_pair} #{@mclustalw_pair} #{@output} #{@charcase} #{@numbering} #{@outorder} #{@otheradvanced} -run_name=#{job.jobid.to_s} -cache=no -quiet=stdout &> #{@tclog}"
     #@commands = [cmd]
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
 
-  #def perform
-  #  cmd = "cd #{job.job_dir.to_s}; export PATH=$PATH:#{CLUSTALW}; export DIR_4_TCOFFEE=.; export TMP_4_TCOFFEE=.; export CACHE_4_TCOFFEE=.; "
-  #  cmd += "#{TCOFFEE} -in #{@infile} #{@mlalign_id_pair} #{@mfast_pair} #{@mslow_pair} #{@mclustalw_pair} "
-  #  cmd += "#{@output} #{@charcase} #{@numbering} #{@outorder} #{@otheradvanced}"
-  #  cmd += "-run_name=#{job.jobid.to_s} -cache=no -quiet=stdout "
-  #  cmd += "&> #{@tclog}"		
-  #  @commands = [cmd]
-  #  logger.debug "Commands:\n"+@commands.join("\n")
-  #  queue.submit(@commands)
-  #end
 end
 
 
