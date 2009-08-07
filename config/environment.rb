@@ -41,7 +41,7 @@ STATUS_QUEUED  = 'q'
 JAVA_1_5_EXEC = JAVA_EXEC
 
 #hhcluster settings
-HHCLUSTER_DB      = "scop25_1.69"
+HHCLUSTER_DB      = "scop20_1.75"
 HHCLUSTER_DB_PATH = DATABASES + "/hhcluster/" + HHCLUSTER_DB
 
 Rails::Initializer.run do |config|
