@@ -8,7 +8,7 @@ class HhrepidJob < Job
   # add your own data accessors for the result templates here! For example:
   attr_reader :qscs, :repfams, :plotfiles, :results, :mapfiles, :graphfiles
 
-  @@export_ext = "hhrepid"
+  @@export_ext = ".hhrepid"
   def set_export_ext(val)
     @@export_ext = val  
   end
@@ -18,7 +18,7 @@ class HhrepidJob < Job
   
   # export results
   def export
-    ret = IO.readlines(File.join(job_dir, jobid + ".#{@@export_ext}")).join
+    ret = IO.readlines(File.join(job_dir, jobid + "#{@@export_ext}")).join
   end
 
   # Overwrite before_results to fill you job object with result data before result display
