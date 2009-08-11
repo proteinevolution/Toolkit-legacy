@@ -26,9 +26,15 @@ class ModellerAction < Action
     @basename = File.join(job.job_dir, job.jobid)
     @seqfile = @basename + ".prepare"
     @infile = @basename + ".in"
-    @ownpdbfile = File.join(job.job_dir, "#{params['own_pdb_name']}.pdb")
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
-    params_to_file(@ownpdbfile, 'own_pdb_file')
+    
+    @ownpdbfiles = ['own_pdb_file1','own_pdb_file2','own_pdb_file3','own_pdb_file4','own_pdb_file5']
+    @ownpdbnames =  ['own_pdb_name1','own_pdb_name2','own_pdb_name3','own_pdb_name4','own_pdb_name5']
+    @ownpdbfiles.each_index  do |i|
+      ownpdbfile = File.join(job.job_dir, "#{params[@ownpdbnames[i]]}.pdb")
+      params_to_file(ownpdbfile, @ownpdbfiles[i])
+    end
+    
     @commands = []
     
     @format = params["informat"].nil? ? 'fas' : params["informat"]
