@@ -112,6 +112,7 @@ class HhclusterController < ToolController
     FileUtils.cp(@basename + ".fas", @hhpred_basename + ".fas")
     FileUtils.cp(@basename + ".reduced.fas", @hhpred_basename + ".reduced.fas")
     FileUtils.cp(@basename + ".pdb", @hhpred_basename + ".pdb")
+    FileUtils.cp(@basename + ".tenrep_file", @hhpred_basename + ".tenrep_file")
     
     res = IO.readlines(@hhpred_basename + ".fas")
     File.open(@hhpred_basename + ".in", "w") do |file|
