@@ -3,43 +3,41 @@ require 'open3'
 class HhclusterAction < Action
 
   BLAST32 = File.join(BIOPROGS, "blast32")
-  
-  attr_accessor :sequence_input, :text_search
-  
-  validates_shell_params(:sequence_input, :text_search, {:on => :create})
-  
+
+  attr_accessor :blast_input, :text_search
+
   def before_perform
-    
+
     @basename = File.join(job.job_dir, job.jobid)
-    
+
     @outfile = @basename + ".out"
-    
+
     @commands = []
-    
+
     @text_search = params['text_search'] ? params['text_search'] : ""
-    @sequence_input = params["sequence_input"] ? params['sequence_input'] : ""
+    @blast_input = params["blast_input"] ? params['blast_input'] : ""
     @crossbars = params["crossbars"] ? "-c" : ""
-    
+
     @scop_names = {}
-    
+
     if (!@text_search.empty?)
-      @sequence_input = ""
+      @blast_input = ""
     end
-    
+
     @results = []
     @marked = []
     @gis = []
     @evalue = []
-		
+
   end
-  
-  
+
+
   def perform
-    
+
     logger.debug "Search name: #{@text_search}"
-    
+
     # Text search in names of scop25 file
-    indexfile = HHCLUSTER_DB_PATH + "/" + HHCLUSTER_DB 
+    indexfile = HHCLUSTER_DB_PATH + "/" + HHCLUSTER_DB
     lines = IO.readlines(indexfile)
     lines.each do |line|
       if (line =~ /^>(.*)$/)
@@ -53,8 +51,8 @@ class HhclusterAction < Action
           @evalue << "-"
         end
       end
-		end
-    
+                end
+
     # Was search string @text_search given but no match found in scop25?
     if (!@text_search.empty? && @gis.empty?)
       index100file = HHCLUSTER_DB_PATH + "/" + HHCLUSTER_DB.sub(/scop25/, 'scop100')
@@ -62,36 +60,36 @@ class HhclusterAction < Action
       name = ""
       seq = ""
       lines.each do |line|
-        if (line =~ /^>/ || line =~ /^\s*$/) 
+        if (line =~ /^>/ || line =~ /^\s*$/)
           if (!name.empty? && name =~ /@text_search/i)
             break
           end
           name = line[1..-1]
-          seq = ""	
+          seq = ""
         else
           seq += line
         end
       end
       if (!name.empty? && name =~ /@text_search/i)
-        @sequence_input = seq
+        @blast_input = seq
       end
     end
-    
-    # Do BLAST search with @sequence_input sequence?
-    if (!@sequence_input.empty?)
+
+    # Do BLAST search with @blast_input sequence?
+    if (!@blast_input.empty?)
       stdin, stdout, stderr = Open3.popen3("#{BLAST32}/blastpgp -b 1 -d #{indexfile}")
-      stdin.puts @sequence_input
+      stdin.puts @blast_input
       stdin.close
       lines = stdout.readlines
       stdout.close
       stderr.close
-      
+
       mark = true
       i = 0
       while (i < lines.size)
         if (lines[i] =~ /Sequences producing/) then break end
         i += 1
-			end
+                        end
       if (i != lines.size)
         i += 2
         while (i < lines.size)
@@ -103,26 +101,26 @@ class HhclusterAction < Action
             mark = false
           else
             break
-          end				
+          end
           i += 1
         end
       end
     end
-    
+
     File.open(@outfile, "w") do |file|
       for i in 0...@results.size
         file.write ">#{@results[i]}\n"
         file.write "#{@marked[i]} #{@gis[i]} #{@evalue[i]}\n"
       end
     end
-    
+
     self.forward_action = "update"
     self.status = STATUS_DONE
     self.save!
     job.update_status
-    
+
   end
-  
+
 end
 
 
