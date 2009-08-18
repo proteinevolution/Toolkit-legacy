@@ -8,7 +8,7 @@ module UserGroupModule
       if ENV['RAILS_ENV'] == "development"
         ip = request.remote_ip
       else
-        ip = request.env['HTTP_X_FORWARDED_FOR']
+        ip = request.remote_ip
       end
 
       if is_internal?(ip) 

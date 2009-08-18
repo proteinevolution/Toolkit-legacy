@@ -174,7 +174,6 @@
   active: 
   - mpi
   - internal
-  - external
 - name: kalign
   section: alignment
   title: Kalign
