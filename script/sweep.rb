@@ -98,7 +98,13 @@ Dir.foreach(TMP) do |id|
       logger.debug("Deleting #{file} - no job for id='#{id}' in the db")
       puts "Deleting #{file} - no job for id='#{id}' in the db"
       system("rm -rf #{file}")
+    else
+	out = `more #{File.join(file,"*.hhr")}`
+	if out.include?("/cluster/user/michael/galaxy/")
+	   delete_job(res, logger)
+	end	
     end
+   
   end
 end
 
