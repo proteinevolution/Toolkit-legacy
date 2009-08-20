@@ -116,18 +116,26 @@
         # were there any errors?
         if (additional == true)
           if (LOCATION == "Munich")
-            f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            if RAILS_ENV == "development"
+              f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            else
+              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            end
           else
             f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
           end
           if RAILS_ENV == "development"
-          f.write "echo 'Scheint prima zu funktionieren ... .' >> #{queue_job.action.job.statuslog_path}\n"
+            f.write "echo 'Scheint prima zu funktionieren ... .' >> #{queue_job.action.job.statuslog_path}\n"
           end
 
         else
           f.write "if [ ${exitstatus} -eq 0 ] ; then\n"
           if (LOCATION == "Munich")
-            f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            if RAILS_ENV == "development"
+              f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            else
+              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            end
           else
             f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
           end
@@ -136,7 +144,11 @@
           end
           f.write "else\n"
           if (LOCATION == "Munich")
-            f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}'\n"
+            if RAILS_ENV == "development"
+              f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}'\n"
+            else
+              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}'\n"
+            end
           else
             f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}\n"
           end

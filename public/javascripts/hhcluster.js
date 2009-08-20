@@ -34,3 +34,7 @@ function select()
 		$(hhcluster_form).elements["hits[]"][i].checked = true;
 	}
 }
+function changeURL(key)
+{
+    $(key).href = "/hhcluster/makeHhpred?id=" + key;
+}
