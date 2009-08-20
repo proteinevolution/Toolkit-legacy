@@ -1,0 +1,13 @@
+<div id="resultactions">
+   <ul>
+     <% for i in 0...@update_item.length%>
+       <li <% if @update_item[i] == @colors %> class="current" <% end %> >
+         <a href="/ancient_dict/<%= @update_item_names[i] %>" onmouseover="return overlib('<%=@update_item_on_mouse[i]%>');" onmouseout="return nd();"><%= @update_item_text[i] %></a>
+       </li>
+     <% end %>
+  </ul>
+</div>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+

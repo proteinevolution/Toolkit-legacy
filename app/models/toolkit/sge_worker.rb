@@ -74,7 +74,7 @@
             end
 	  end
 	end
-	f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
+        f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -o #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -w n\n"
@@ -83,11 +83,17 @@
           f.write '#$' + " -l long\n"
         end
 
-        if (queue == "toolkit_immediate")
-          f.write '#$' + " -l immediate\n"
+        if LOCATION != "Tuebingen" && RAILS_ENV != "development"
+          if (queue == "toolkit_long")
+            f.write '#$' + " -l long\n"
+          end
+
+          if (queue == "toolkit_immediate")
+            f.write '#$' + " -l immediate\n"
+          end
         end
 
-        #f.write "-l h_vmem=2G\n"
+         #f.write "-l h_vmem=2G\n"
 
 #        if (!cpus.nil?)
 #        f.write "#PBS -l nodes=1:ppn=#{cpus}\n"
@@ -176,7 +182,7 @@
         f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"
         # print the process id of this shell execution
         f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 
-         
+        logger.debug "Exec_host file geschrieben."
         f.write "exitstatus=0;\n"
 
         commands.each do |cmd|

@@ -1,0 +1,45 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+        <li><a href="#general">General description</a></li>
+        <li><a href="#items">Database items</a></li>
+        <li><a href="#detailed">Detailed description</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Result page</h2>
+
+<a name="general"></a>
+<h3 class="<%= @section["name"] %>">General description</h3>
+<div class="row">
+DAP is a database of ancient peptides (fragments and repeats).</br>
+The entry pages of the DAP database can be found in the tab named with "Browse Database".
+Here you can make a choice between "Fragments" and "Repeats" by clicking at the according link. The first page of the fragments shows the collection of fragments, sorted by all alpha, all beta or mixed items. It is equivalent for the repeats.
+</br></br>
+</div>
+
+<a name="items"></a>
+<h3 class="<%= @section["name"] %>">Database items</h3>
+<div class="row">
+Each fragment or repeat has its own page in the database. The page includes the keywords for the item, a description with an image. The section "Occurrence" builds the connection from the item to the entries in the scop database, followed by a sequence alignment and the references of this item.
+</br></br>
+</div>
+
+<a name="detailed"></a>
+<h3 class="<%= @section["name"] %>">Detailed description</h3>
+<div class="row">
+More detailed description of the sections
+
+- Keywords
+
+- Description
+
+- Occurrence
+
+- Sequence Alignment
+
+
+- References
+All references that are connected with the item and important for the database, are collected in this section.
+</br></br>
+</div>
+
+
+

@@ -353,3 +353,12 @@
   - member
   - internal
   - external
+- name: ancient_dict
+  title: DAP
+  title_long: DAP - Dictionary of Ancestral Peptides
+  section: classification
+  active:
+  #- member
+  #- internal
+  #- external
+  - dap

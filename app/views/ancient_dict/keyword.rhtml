@@ -1,0 +1,89 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "subitems") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<%Dapkey.find(:all, :conditions => ["k_id=?", @word]).each do |kwdname|%>
+  <p style="font-size:18px; font-weight:bold;"><%=kwdname.k_name%></p>
+
+  <table border="0" style="width:100%">
+  <%is_item=0%>
+  <%DapfragmentDapkey.find(:all, :conditions => ["k_id=?", kwdname.k_id]).each do |fragkey|%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='frag_AA'", fragkey.f_id ]).each do |fragAA|%>
+      <tr>
+        <td style="font-size:12px; font-weight:bold; width:40%" >
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=fragAA.f_name%></a>
+        </td>
+        <td style="font-size:12px; width:60%;" align="justify">
+          <%=fragAA.f_shortdesc%>
+        </td>
+      </tr>
+      <%is_item=1%>
+    <%end%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='frag_AB'", fragkey.f_id ]).each do |fragAB|%>
+      <tr>
+        <td style="font-size:12px; font-weight:bold; width:40%" >
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=fragAB.f_name%></a>
+        </td>
+        <td style="font-size:12px; width:60%;" align="justify">
+          <%=fragAB.f_shortdesc%>
+        </td>
+      </tr>
+      <%is_item=1%>
+    <%end%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='frag_M'", fragkey.f_id ]).each do |fragM|%>
+      <tr>
+        <td style="font-size:12px; font-weight:bold; width:40%" >
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=fragM.f_name%></a>
+        </td>
+        <td style="font-size:12px; width:60%;" align="justify">
+          <%=fragM.f_shortdesc%>
+        </td>
+      </tr>
+      <%is_item=1%>
+    <%end%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='rep_AA'", fragkey.f_id ]).each do |repAA|%>
+      <tr>
+        <td style="font-size:12px; font-weight:bold; width:40%" >
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=repAA.f_name%></a>
+        </td>
+        <td style="font-size:12px; width:60%;" align="justify">
+          <%=repAA.f_shortdesc%>
+        </td>
+      </tr>
+      <%is_item=1%>
+    <%end%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='rep_AB'", fragkey.f_id ]).each do |repAB|%>
+      <tr>
+        <td style="font-size:12px; font-weight:bold; width:40%" >
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=repAB.f_name%></a>
+        </td>
+        <td style="font-size:12px; width:60%;" align="justify">
+          <%=repAB.f_shortdesc%>
+        </td>
+      </tr>
+      <%is_item=1%>
+    <%end%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='rep_M'", fragkey.f_id ]).each do |repM|%>
+      <tr>
+        <td style="font-size:12px; font-weight:bold; width:40%" >
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=repM.f_name%></a>
+        </td>
+        <td style="font-size:12px; width:60%;" align="justify">
+          <%=repM.f_shortdesc%>
+        </td>
+      </tr>
+      <%is_item=1%>
+    <%end%>
+  <%end%>
+  <% if is_item==0%>
+    For this keyword exists no item!
+  <%end%>
+</table>
+<%end%>
+<br/>
+
+

@@ -155,4 +155,10 @@ module ApplicationHelper
     ret = ret << "</div>\n" 
   end
 
+  #def form_add_button(name, options = {})
+  #  label = "#{name}"
+  #  #label = l(:"#{@controller.controller_name}_#{name}_button")
+  #  "#{self.send(:submit_tag, label, options)}"
+  #end
+
 end
