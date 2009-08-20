@@ -13,10 +13,10 @@
     <select name='item' onChange="window.location = this.value;">
       <option value="">Items</option>
       <%Dapfragment.find(:all, :order => "f_name").each do |frag|%>
-        <%if is_active?(frag)%>
+        if is_active?(frag)
           <%@entry = frag.f_id + ": " + frag.f_name%>
           <option value="<%= DOC_ROOTURL %>/ancient_dict/deleteItem?ipage=<%=frag.f_id%>"><%=@entry%></option>
-        <%end%>
+        end
       <% end %>
     </select>
   </form>
@@ -25,12 +25,12 @@
 
   <p style="font-size:14px; font-weight:bold;">Delete Item </p>
 
-  <div>
+  <div class="row">
     <%= form_label("Mysql ID (Do not change!!!)") %>
     <%= form_text_field("del_f_id", @finfo.id, "", 10)%>
   </div>
 
-  <div>
+  <div class="row">
     <%= form_label("Item ID (Do not change!!!)") %>
     <%= form_text_field("f_delid", @finfo.f_id, "", 10)%>
   </div>

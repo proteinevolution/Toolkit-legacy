@@ -1,6 +1,6 @@
 <div id="jobsection">
   <ul>
-    <% if request.remote_ip == "10.35.105.142" || request.remote_ip == "10.35.104.172"%>
+    <%if @user.groups.include?('dap')%>
       <% for i in 0...@shortlinks_special.length%>
         <li <% if @shortlinks_special[i] == @color %> class="current" <% end %>>
           <a href="/ancient_dict/<%= @links[i]%>" onmouseover="return overlib('<%= @link_text[i]%>');" onmouseout="return nd();"><%= @link_names[i]%></a>

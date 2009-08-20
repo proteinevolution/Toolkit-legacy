@@ -8,96 +8,79 @@
 
 <%Dapkey.find(:all, :conditions => ["k_id=?", @word]).each do |kwdname|%>
   <p style="font-size:18px; font-weight:bold;"><%=kwdname.k_name%></p>
-  <%frag=DapfragmentDapkey.find(:first, :conditions => ["k_id=?", kwdname.k_id])%>
-  <%@fragAAexists = Dapfragment.find(:first, :conditions => ["f_id=? and f_category='frag_AA'", frag.f_id]) %>
-  <%@fragABexists = Dapfragment.find(:first, :conditions => ["f_id=? and f_category='frag_AB'", frag.f_id]) %>
-  <%@fragMexists = Dapfragment.find(:first, :conditions => ["f_id=? and f_category='frag_M'", frag.f_id]) %>
-  <%@fragAAexists = "NULL" if @fragAAexists.nil?%>
-  <%@fragABexists = "NULL" if @fragABexists.nil?%>
-  <%@fragMexists = "NULL" if @fragMexists.nil?%>
-
-  <%@repAAexists = Dapfragment.find(:first, :conditions => ["f_id=? and f_category='rep_AA'", frag.f_id]) %>
-  <%@repABexists = Dapfragment.find(:first, :conditions => ["f_id=? and f_category='rep_AB'", frag.f_id]) %>
-  <%@repMexists = Dapfragment.find(:first, :conditions => ["f_id=? and f_category='rep_M'", frag.f_id]) %>
-  <%@repAAexists = "NULL" if @repAAexists.nil?%>
-  <%@repABexists = "NULL" if @repABexists.nil?%>
-  <%@repMexists = "NULL" if @repMexists.nil?%>
-
-
-  <%if @fragAAexists != "NULL" || @fragABexists != "NULL" || @fragMexists != "NULL" %>
-    <p style="font-size:14px; font-weight:bold;">Fragments</p>
-  <%end%>
-  <table border="0" style="width:100%">
-    <%DapfragmentDapkey.find(:all, :conditions => ["k_id=?", kwdname.k_id]).each do |fragkey|%>
-      <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='frag_AA'", fragkey.f_id ]).each do |fragAA|%>
-        <tr>
-          <td style="font-size:12px; font-weight:bold; width:40%" >
-	    <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=fragAA.f_name%></a>
-          </td>
-          <td style="font-size:12px; width:60%;" align="justify">
-            <%=fragAA.f_shortdesc%>
-          </td>
-        </tr>
-      <%end%>
-      <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='frag_AB'", fragkey.f_id ]).each do |fragAB|%>
-        <tr>
-          <td style="font-size:12px; font-weight:bold; width:40%" >
-            <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=fragAB.f_name%></a>
-          </td>
-          <td style="font-size:12px; width:60%;" align="justify">
-            <%=fragAB.f_shortdesc%>
-          </td>
-        </tr>
-      <%end%>
-      <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='frag_M'", fragkey.f_id ]).each do |fragM|%>
-        <tr>
-          <td style="font-size:12px; font-weight:bold; width:40%" >
-            <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=fragM.f_name%></a>
-          </td>
-          <td style="font-size:12px; width:60%;" align="justify">
-            <%=fragM.f_shortdesc%>
-          </td>
-        </tr>
-      <%end%>
-    <%end%>
-  </table>
-  </br>
-  <%if @repAAexists != "NULL" || @repABexists != "NULL" || @repMexists != "NULL" %>
-    <p style="font-size:14px; font-weight:bold;">Repeats</p>
-  <%end%>
 
   <table border="0" style="width:100%">
-  <%DapfragmentDapkey.find(:all, :conditions => ["k_id=?", kwdname.k_id]).each do |repkey|%>
-    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='rep_AA'", repkey.f_id ]).each do |repAA|%>
+  <%is_item=0%>
+  <%DapfragmentDapkey.find(:all, :conditions => ["k_id=?", kwdname.k_id]).each do |fragkey|%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='frag_AA'", fragkey.f_id ]).each do |fragAA|%>
       <tr>
         <td style="font-size:12px; font-weight:bold; width:40%" >
-          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=repkey.f_id%>"><%=repAA.f_name%></a>
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=fragAA.f_name%></a>
+        </td>
+        <td style="font-size:12px; width:60%;" align="justify">
+          <%=fragAA.f_shortdesc%>
+        </td>
+      </tr>
+      <%is_item=1%>
+    <%end%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='frag_AB'", fragkey.f_id ]).each do |fragAB|%>
+      <tr>
+        <td style="font-size:12px; font-weight:bold; width:40%" >
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=fragAB.f_name%></a>
+        </td>
+        <td style="font-size:12px; width:60%;" align="justify">
+          <%=fragAB.f_shortdesc%>
+        </td>
+      </tr>
+      <%is_item=1%>
+    <%end%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='frag_M'", fragkey.f_id ]).each do |fragM|%>
+      <tr>
+        <td style="font-size:12px; font-weight:bold; width:40%" >
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=fragM.f_name%></a>
+        </td>
+        <td style="font-size:12px; width:60%;" align="justify">
+          <%=fragM.f_shortdesc%>
+        </td>
+      </tr>
+      <%is_item=1%>
+    <%end%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='rep_AA'", fragkey.f_id ]).each do |repAA|%>
+      <tr>
+        <td style="font-size:12px; font-weight:bold; width:40%" >
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=repAA.f_name%></a>
         </td>
         <td style="font-size:12px; width:60%;" align="justify">
           <%=repAA.f_shortdesc%>
         </td>
       </tr>
+      <%is_item=1%>
     <%end%>
-    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='rep_AB'", repkey.f_id ]).each do |repAB|%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='rep_AB'", fragkey.f_id ]).each do |repAB|%>
       <tr>
         <td style="font-size:12px; font-weight:bold; width:40%" >
-          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=repkey.f_id%>"><%=repAB.f_name%></a>
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=repAB.f_name%></a>
         </td>
         <td style="font-size:12px; width:60%;" align="justify">
           <%=repAB.f_shortdesc%>
         </td>
       </tr>
+      <%is_item=1%>
     <%end%>
-    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='rep_M'", repkey.f_id ]).each do |repM|%>
+    <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='rep_M'", fragkey.f_id ]).each do |repM|%>
       <tr>
         <td style="font-size:12px; font-weight:bold; width:40%" >
-          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=repkey.f_id%>"><%=repM.f_name%></a>
+          <a href="<%= DOC_ROOTURL %>/ancient_dict/fragment?page=<%=fragkey.f_id%>"><%=repM.f_name%></a>
         </td>
         <td style="font-size:12px; width:60%;" align="justify">
           <%=repM.f_shortdesc%>
         </td>
       </tr>
+      <%is_item=1%>
     <%end%>
+  <%end%>
+  <% if is_item==0%>
+    For this keyword exists no item!
   <%end%>
 </table>
 <%end%>

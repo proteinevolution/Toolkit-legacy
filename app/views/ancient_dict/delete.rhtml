@@ -13,10 +13,10 @@
     <select name='keywd' onChange="window.location = this.value;">
       <option value="">Keywords</option>
       <%Dapkey.find(:all, :order => "k_name").each do |key|%>
-        <%if is_active?(key)%>
+        if is_active?(key)
           <%@k_entry=key.k_id + ': ' + key.k_name %>
           <option value="<%= DOC_ROOTURL %>/ancient_dict/delete?kpage=<%=key.k_id%>"><%=@k_entry%></option>
-        <%end%>
+        end
       <% end %>
     </select>
   </form>
@@ -25,12 +25,12 @@
 
   <p style="font-size:14px; font-weight:bold;">Delete Keyword </p>
 
-  <div>
+  <div class="row">
     <%= form_label("Mysql ID (Do not change!!!)") %>
     <%= form_text_field("delid", @kinfo.id, "", 10)%>
   </div>
 
-  <div>
+  <div class="row">
     <%= form_label("Keyword ID (Do not change!!!)") %>
     <%= form_text_field("k_delid", @kinfo.k_id, "", 10)%>
   </div>

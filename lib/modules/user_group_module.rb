@@ -19,10 +19,14 @@ module UserGroupModule
         return tool['active'].include?('external')
       end
     else
+      #logger.debug "User: "+ @user.login
+      #logger.debug "Groups: "+ @user.groups
       # get groups of the user
       groups = @user.groups.split(',')
       if groups.include?('admin') then return true end
       groups.each do |group|
+      #logger.debug "Group: " + group
+      #logger.debug tool["active"]
         if tool['active'].include?(group)
           return true
         end  	

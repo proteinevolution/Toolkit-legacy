@@ -4,8 +4,9 @@
 
 <%= render(:partial => "update_items") %>
 
-<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+<!--<%= form_tag({:controller => "ancient_dict", :action => "addingKey"}, {:multipart => true})%>-->
 
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
 <% if @item == "" %>
   <p style="font-size:14px; font-weight:bold;">Select type of the item</p></br>
@@ -13,9 +14,9 @@
     <select name='add_item' onChange="window.location = this.value;">
       <option value="">Item</option>
       <%@entry.each do |it|%>
-        <%if is_active?(it)%>
+        if is_active?(it)
           <option value="<%= DOC_ROOTURL %>/ancient_dict/addItem?item=<%=it%>"><%=it%></option>
-        <%end%>
+        end
       <% end %>
     </select>
   </form>
@@ -57,12 +58,12 @@
   </div>
 
   <div class="row">
-    <%= form_label("Upload an alignment file for the" + @item) %>
+    <%= form_label("Upload an alignment file for the " + @item) %>
     <%= form_file("f_ali")%>
   </div>
 
   <div class="row">
-    <%= form_label("Upload a figure for the" + @item) %>
+    <%= form_label("Upload a figure for the " + @item) %>
     <%= form_file("f_figure")%>
   </div>
 

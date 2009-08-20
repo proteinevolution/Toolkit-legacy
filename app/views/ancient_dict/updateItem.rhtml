@@ -19,10 +19,8 @@
     <select name='item' onChange="window.location = this.value;">
       <option value="">Items</option>
       <%Dapfragment.find(:all, :order => "f_name").each do |frag|%>
-        <%if is_active?(frag)%>
           <%@entry = frag.f_id + ": " + frag.f_name%>
           <option value="<%= DOC_ROOTURL %>/ancient_dict/updateItem?itempage=<%=frag.f_id%>"><%=@entry%></option>
-        <%end%>
       <% end %>
     </select>
   </form>
@@ -33,17 +31,17 @@
   <% if @fragid =~ /^FRAG/ %>
     <h3 style="font-size:12px"> Update Fragment</h3>
 
-    <div>
+    <div class="row">
       <%= form_label("Mysql ID (Do not change!!!)")%>
       <%= form_text_field("upfrid", @fraginfo.id, "", 10)%>
     </div>
 
-    <div>
+    <div class="row">
       <%= form_label("Fragment ID (Do not change!!!)") %>
       <%= form_text_field("f_upid", @fraginfo.f_id, "", 10)%>
     </div>
 
-    <div>
+    <div class="row">
       <%= form_label("Fragment name") %>
       <%= form_text_field("f_upname", @fraginfo.f_name, "", 80)%>
     </div>
@@ -114,17 +112,17 @@
   <% else %>
     <h3 style="font-size:12px;">Update Repeat</h3>
 
-    <div>
+    <div class="row">
       <%= form_label("Mysql ID (Do not change!!!)")%>
       <%= form_text_field("upfrid", @fraginfo.id, "", 10)%>
     </div>
 
-    <div>
+    <div class="row">
       <%= form_label("Repeat ID (Do not change!!!)") %>
       <%= form_text_field("f_upid", @fraginfo.f_id, "", 10)%>
     </div>
 
-    <div>
+    <div class="row">
       <%= form_label("Repeat name") %>
       <%= form_text_field("f_upname", @fraginfo.f_name, "", 80)%>
     </div>
