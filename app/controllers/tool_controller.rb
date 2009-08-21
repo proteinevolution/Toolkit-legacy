@@ -220,7 +220,7 @@ class ToolController < ApplicationController
   end
   
   def tool_title(tool)
-      logger.debug "Tools_hash ist gefuellt!"
+      @tools_hash[tool]['title']
   end
   
   def fw_to_tool_url(from, to)

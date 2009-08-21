@@ -12,10 +12,14 @@ class AncientDictAction < Action
     @kdesc = params['k_desc'] ? params['k_desc'] : "NULL"
 
     logger.debug "k_name: #{@kname}"
+    logger.debug "k_desc: #{@kdesc}"
 
     @k_idnum=1
 
     if (@kname != 'NULL')
+      logger.debug "vor Dapkey.find"
+      @firstkey = Dapkey.find(:first)
+      logger.debug "Findfirst: #{@firstkey}"
       @keys = Dapkey.find(:all)
       @k_idnum+=@keys.length
       @startid = 0
