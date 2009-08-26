@@ -1,9 +1,11 @@
 class AncientDictAction < Action
+
+#  require 'activerecord'
+
   DAP = File.join(BIOPROGS, 'DAP')
 
   attr_accessor :k_name, :k_desc, :k_upname, :k_updesc
   attr_accessor :f_name, :f_desc, :f_shortdesc, :f_cat, :f_ref, :f_figure
-
 
   # Put action initialisation code in here
   def before_perform
@@ -14,20 +16,8 @@ class AncientDictAction < Action
     logger.debug "k_name: #{@kname}"
     logger.debug "k_desc: #{@kdesc}"
 
-    @k_idnum=1
 
-    if (@kname != 'NULL')
-      logger.debug "vor Dapkey.find"
-      @firstkey = Dapkey.find(:first)
-      logger.debug "Findfirst: #{@firstkey}"
-      @keys = Dapkey.find(:all)
-      @k_idnum+=@keys.length
-      @startid = 0
-      @keyid= convertID('KEY', @k_idnum, @startid)
 
-      logger.debug "idnum: #{@k_idnum}"
-      logger.debug "keyid: #{@keyid}"
-    end
 
     # input add item (fragment or repeat)
     figure_directory = File.join(IMAGES, 'ancient_dict')
@@ -64,58 +54,6 @@ class AncientDictAction < Action
 
     @itemid = ''
 
-    if (@fname != 'NULL')
-      @f_idnum=1
-     # logger.debug "f_num: #{@f_idnum}"
-      if (@fitem == 'Fragment')
-       fragaa = Dapfragment.find(:all, :conditions => "f_category = 'frag_AA'")
-       @f_idnum+=fragaa.length
-       fragab = Dapfragment.find(:all, :conditions => "f_category = 'frag_AB'")
-       @f_idnum+=fragab.length
-       fragm = Dapfragment.find(:all, :conditions => "f_category = 'frag_M'")
-       @f_idnum+=fragm.length
-      # logger.debug "Amout of fragments: #{@f_idnum}"
-       @itemid = convertID('FRAG', @f_idnum, 0)
-      # logger.debug "Converted ID: #{@itemid}"
-      else
-      # logger.debug "f_num: #{@f_idnum}"
-       repaa = Dapfragment.find(:all, :conditions => "f_category = 'rep_AA'")
-       @f_idnum+=repaa.length
-       repab = Dapfragment.find(:all, :conditions => "f_category = 'rep_AB'")
-       @f_idnum+=repab.length
-       repm = Dapfragment.find(:all, :conditions => "f_category = 'rep_M'")
-       @f_idnum+=repm.length
-      # logger.debug "Amout of repeats: #{@f_idnum}"
-       @itemid = convertID('REP', @f_idnum, 0)
-      end
-
-      figure_file = @itemid + '.png'
-      #figure_file = @itemid + '.jpg'
-      @figure_mysql = 'ancient_dict/images/' + figure_file
-      @figure_filename = File.join(DATABASES, @figure_mysql)
-      logger.debug "figure_filename #{@figure_filename}"
-
-      ali_file = @itemid + '.ali'
-      @ali_mysql = 'ancient_dict/alignments/' + ali_file
-      @ali_filename = File.join(DATABASES, @ali_mysql)
-      logger.debug "ali_filename #{@ali_filename}"
-
-      @fali = params['f_ali'] ? params['f_ali'] : "NULL"
-
-      @ffigure = params['f_figure'] ? params['f_figure'] : "NULL"
-
-      if (@ffigure != 'NULL')
-        params_to_file(@figure_filename, 'f_figure')
-#        logger.debug "figure_mysql: worked!"
-      end
-
-      @alignment = ''
-      if (@fali != "NULL")
-        params_to_file(@ali_filename, 'f_ali')
-        logger.debug "ali_mysql: #{@ali_mysql}"
-        @alignment=print_alignment(@ali_filename)
-      end
-    end
 
 
    # input update keyword
@@ -188,7 +126,7 @@ class AncientDictAction < Action
 
     # input delete keyword
 
-    @delid = params['delid'] ? params['delid'] : "NULL"
+    @delid = params['delid'] ? params['deilid'] : "NULL"
     @k_delid = params['k_delid'] ? params['k_delid'] : "NULL"
 
    # logger.debug "Delete ID: #{@delid}"
@@ -212,6 +150,20 @@ class AncientDictAction < Action
     # add new keyword
 
     if (@kname != 'NULL')
+      @k_idnum=1
+      logger.debug "vor Dapkey.find"
+      @keys=Dapkey.find(:all)
+      logger.debug "nach Dapkey.find"
+      if @keys
+        @k_idnum+=@keys.length
+        logger.debug "@k_idnum #{@k_idnum}"
+      end
+      @startid = 0
+      @keyid= convertID('KEY', @k_idnum, @startid)
+#
+      logger.debug "idnum: #{@k_idnum}"
+      logger.debug "keyid: #{@keyid}"
+#
       addkey=Dapkey.new(:k_id => @keyid, :k_name => @kname, :k_desc => @kdesc)
       addkey.save!
       logger.debug "Dapkey added! k_id: #{@keyid}, k_name: #{@kname}, k_desc #{@kdesc}"
@@ -220,7 +172,59 @@ class AncientDictAction < Action
     # add new fragment
 
     if (@fname != 'NULL')
-      #logger.debug "alignment information: #{@fali}"
+
+      @f_idnum=1
+      # logger.debug "f_num: #{@f_idnum}"
+      if (@fitem == 'Fragment')
+       fragaa = Dapfragment.find(:all, :conditions => "f_category = 'frag_AA'")
+       @f_idnum+=fragaa.length
+       fragab = Dapfragment.find(:all, :conditions => "f_category = 'frag_AB'")
+       @f_idnum+=fragab.length
+       fragm = Dapfragment.find(:all, :conditions => "f_category = 'frag_M'")
+       @f_idnum+=fragm.length
+      # logger.debug "Amout of fragments: #{@f_idnum}"
+       @itemid = convertID('FRAG', @f_idnum, 0)
+      # logger.debug "Converted ID: #{@itemid}"
+      else
+      # logger.debug "f_num: #{@f_idnum}"
+       repaa = Dapfragment.find(:all, :conditions => "f_category = 'rep_AA'")
+       @f_idnum+=repaa.length
+       repab = Dapfragment.find(:all, :conditions => "f_category = 'rep_AB'")
+       @f_idnum+=repab.length
+       repm = Dapfragment.find(:all, :conditions => "f_category = 'rep_M'")
+       @f_idnum+=repm.length
+      # logger.debug "Amout of repeats: #{@f_idnum}"
+       @itemid = convertID('REP', @f_idnum, 0)
+      end
+
+      figure_file = @itemid + '.png'
+      @figure_mysql = 'ancient_dict/images/' + figure_file
+      @figure_filename = File.join(DATABASES, @figure_mysql)
+      logger.debug "figure_filename #{@figure_filename}"
+
+      ali_file = @itemid + '.ali'
+      @ali_mysql = 'ancient_dict/alignments/' + ali_file
+      @ali_filename = File.join(DATABASES, @ali_mysql)
+      logger.debug "ali_filename #{@ali_filename}"
+
+      @fali = params['f_ali'] ? params['f_ali'] : "NULL"
+
+      @ffigure = params['f_figure'] ? params['f_figure'] : "NULL"
+
+      if (@ffigure != 'NULL')
+        params_to_file(@figure_filename, 'f_figure')
+#        logger.debug "figure_mysql: worked!"
+      end
+
+      @alignment = ''
+      if (@fali != "NULL")
+        params_to_file(@ali_filename, 'f_ali')
+        logger.debug "ali_mysql: #{@ali_mysql}"
+        @alignment=print_alignment(@ali_filename)
+     end
+
+
+      # #logger.debug "alignment information: #{@fali}"
       additem=Dapfragment.new(:f_id => @itemid, :f_name => @fname, :f_desc => @fdesc, :f_shortdesc => @fshortdesc, :f_category => @fcategory, :f_ref => @fref, :f_figure => @figure_mysql, :f_align => @alignment)#@ali_mysql)
       additem.save!
       logger.debug "Dapfragment added! f_id: #{@itemid}, f_name: #{@fname}, f_desc: #{@fdesc}, f_shortdesc: #{@fshortdesc}, f_category: #{@fcategory}, f_ref: #{@fref}, f_figure: #{@figure_mysql}, f_align #{@alignment}"
@@ -452,7 +456,6 @@ class AncientDictAction < Action
     filepath = File.join(IMAGES, "ancient_dict/images/")
     logger.debug "filepath: #{filepath}"
     direntry = Dir.entries(filepath)
-    #direntry = Dir.entries("/ebio/abt1/christina/toolkit/databases/ancient_dict/images/")
     matches = Array.new()
     expression = fragment_id
     #logger.debug "Expression: #{expression}"
