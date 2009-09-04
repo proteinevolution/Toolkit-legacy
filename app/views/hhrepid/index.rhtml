@@ -5,7 +5,7 @@
 <%= form_tag({:action => :run, :job => 'hhrepid'}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-  <%= form_label("Paste input sequence", "input") %>
+  <%= form_label("Paste protein sequence or multiple alignment", "input") %>
   <%= form_text_area("sequence_input") %>
 </div>
 <div class="row">

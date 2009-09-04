@@ -8,6 +8,8 @@ class HhblastShowtemplalignAction < Action
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)
     
+    @dbhhm = job.params_main_action["dbhhm"]
+
     @mode = params["alformat"]
     @hit = params["hits"]
     
@@ -30,12 +32,12 @@ class HhblastShowtemplalignAction < Action
 
     # Search in NR30 database
     subdir = @seq_name[0..1]
-    @dir = "/databases/nr30/#{subdir}"
+    @dir = "#{@dbhhm}/#{subdir}"
     if File.exist?(File.join(@dir, @seq_name + ".a3m"))
       logger.debug "File #{@seq_name}.a3m found in #{@dir}"
     else
-      logger.error "ERROR! File #{@seq_name}.a3m not found in databases!"
-      raise "ERROR! File #{@seq_name}.a3m not found in databases!"
+      logger.error "ERROR! File #{@seq_name}.a3m not found in databases #{@dir}!"
+      raise "ERROR! File #{@seq_name}.a3m not found in databases #{@dir}!"
     end
 
     # If oldhit number is the same as requested hit number, set $oldhit to something ne ""

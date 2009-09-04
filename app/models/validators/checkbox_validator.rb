@@ -26,7 +26,7 @@ module Toolkit
                 if (configuration[:include].nil?)
                   record.errors.add(attr, configuration[:message])
                 else
-                  if (record.params[configuration[:include]].nil? || record.params[configuration[:include]] != "byevalue")
+                  if (record.params[configuration[:include].to_s].nil? || record.params[configuration[:include].to_s] != "byevalue")
                     record.errors.add(attr, configuration[:message])	
                   end
                 end

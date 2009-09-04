@@ -24,7 +24,7 @@ class HhblastJob < Job
     coloring = "onlySS"
     makemodel = false
 	  
-    coloring = controller_params[:mode] ? controller_params[:mode] : 'onlySS'
+    coloring = controller_params[:mode] ? controller_params[:mode] : 'letters'
     program = controller_params[:action]
     
     basename= File.join(job_dir, jobid)
@@ -130,7 +130,9 @@ class HhblastJob < Job
     
     ###############################################################
     # Reformat HHblast output
-    
+
+    @results.push("<div id=\"hitlist_img\">\n")
+
     # Make array with description of matches, to be used as  html mouse-over titles
     
     descr    = []

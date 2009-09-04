@@ -22,6 +22,12 @@
         <%= form_text_field("text_search", "", "", 30) %>
 </div>
 <div class="row">
+  <div class="formw">
+    Special characters (e.g. .*+[]) need to be escaped, <br/>
+    type 'a\\.102\\.' to search for SCOP fold a.102.
+  </div>
+</div>
+<div class="row">
         <%= form_label("or enter plain sequence for BLAST search", "input") %>
         <%= form_text_area("blast_input") %>
 </div>
