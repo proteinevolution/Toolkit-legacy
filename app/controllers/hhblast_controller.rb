@@ -26,15 +26,57 @@ class HhblastController < ToolController
   
   def results
     @widescreen = true
-    @mode = params[:mode] ? params[:mode] : 'onlySS'
+    @mode = params[:mode] ? params[:mode] : 'letters'
+    @fw_values = [fw_to_tool_url('hhblast', 'aln2plot') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'alnviz') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'blastclust') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'seq2gi') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhfilter') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhomp') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhpred') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhrep') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhrepid') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhsenser') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'psi_blast') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'quick2_d') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'reformat') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'repper') + "&fw_mode=forward"]
+
+    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('seq2gi'), tool_title('hhfilter'),
+                  tool_title('hhomp'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid'), tool_title('hhsenser'),
+                  tool_title('psi_blast'), tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
   end
   
   def histograms
     @widescreen = true
     @job.before_results(params)
+    @fw_values = [fw_to_tool_url('hhblast', 'aln2plot') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'alnviz') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'blastclust') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'seq2gi') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhfilter') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhomp') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhpred') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhrep') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhrepid') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhsenser') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'psi_blast') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'quick2_d') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'reformat') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'repper') + "&fw_mode=forward"]
+
+    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('seq2gi'), tool_title('hhfilter'),
+                  tool_title('hhomp'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid'), tool_title('hhsenser'),
+                  tool_title('psi_blast'), tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
   end
   
   def showalign
+    @widescreen = true
+  end
+
+  def results_showtemplalign
+    @job.actions.last.active = false
+    @job.actions.last.save!
     @widescreen = true
   end
   

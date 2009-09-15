@@ -87,7 +87,7 @@
           f.write '#$' + " -l immediate\n"
         end
 
-        if LOCATION != "Tuebingen" && RAILS_ENV != "development"
+        if LOCATION != "Tuebingen"
           if (queue == "toolkit_long")
             f.write '#$' + " -l long\n"
           end

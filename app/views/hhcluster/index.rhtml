@@ -32,3 +32,37 @@
 <img name="galaxy" src="<%= @images['default'] %>" border="0" usemap="#cluster"/>
 <br>
 <input id="infolabel" name="infolabel" type="text" size="200" value="" style="font-size: 11px; background-color: #FFF; margin-bottom: 10px; width: 99%;" />
+
+<%= form_tag({:action => :run, :job => 'hhcluster'}, {:multipart => true})%>
+
+<h3 class="<%= @section["name"] %>">Input</h3>
+
+<div class="row">
+        <%= form_label("Enter string for text search", "input") %>
+        <%= form_text_field("text_search", "", "", 30) %>
+</div>
+<div class="row">
+  <div class="formw">
+    Special characters (e.g. .*+[]) need to be escaped, <br/>
+    type 'a\.102\.' to search for SCOP fold a.102.
+  </div>
+</div>
+<div class="row">
+        <%= form_label("or enter plain sequence for BLAST search", "input") %>
+        <%= form_text_area("blast_input") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+        <%= form_label("Mark selected sequences with crossbars", "crossbars") %>
+        <%= form_checkbox("crossbars") %>
+</div>
+
+<div class="row">
+        <%= form_submit_buttons %>
+</div>
+
+</form>

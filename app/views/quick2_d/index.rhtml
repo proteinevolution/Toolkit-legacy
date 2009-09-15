@@ -25,7 +25,9 @@
 <h3 class="<%= @section["name"] %>">Options</h3>
 <div class="row">
 	<%= form_label("Do PSI-BLAST Search", "psiblast_search") %>
-	<%= form_checkbox("psiblast_chk", '1', true) %>
+	<% active = true %>
+	<% if ((params['psiblast_check'] && params['psiblast_check'] == 0)) then active = false end %>
+	<%= form_checkbox("psiblast_chk", '1', active) %>
 </div>
 <div class="spacer">&nbsp;</div>
 

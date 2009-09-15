@@ -4,37 +4,36 @@
 
 <%= form_tag({:action => :run, :jobaction => 'hhblast_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}) %>
 
-	<div class="row">
+<div class="row">
 
- 		<div id="applet">
-   		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
-			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.fas">
-			<PARAM NAME="type"   value="URL">
-			<PARAM NAME="format" value="FASTA">
-			</APPLET> 
-			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhblast/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
-			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.reduced.fas">
-			<PARAM NAME="type"   value="URL">
-			<PARAM NAME="format" value="FASTA">
-			</APPLET>
-			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhblast/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></span></strong>
-			
-		</div>
-		<div class="hr">&nbsp;</div>
+  <div id="applet">
+    <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+      <PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.fas">
+      <PARAM NAME="type"   value="URL">
+      <PARAM NAME="format" value="FASTA">
+    </APPLET>
+    <strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhblast/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+      <PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.reduced.fas">
+      <PARAM NAME="type"   value="URL">
+      <PARAM NAME="format" value="FASTA">
+    </APPLET>
+    <strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhblast/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></span></strong>
 
-	  	<input name="submitform" type="submit" class="feedbutton" value="Start HHpred with this alignment" /> 
-   	<input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
-   	<strong>You may edit the template alignment below and submit it to HHpred&nbsp;&nbsp;</strong>
-   	<br/>
-	</div>
+  </div>
+  <div class="hr">&nbsp;</div>
 
-	<div class="spacer">&nbsp;</div>	
+  <input name="submitform" type="submit" class="feedbutton" value="Start HHpred with this alignment" />
+  <input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
+  <strong>You may edit the template alignment below and submit it to HHpred&nbsp;&nbsp;</strong>
+  <br/>
+</div>
 
-	<div class="row">
-		<%= text_area_tag("result_textbox_to_file", @job.render_file(@job.jobid+".fas"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
-	</div>	
-	
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+  <%= text_area_tag("result_textbox_to_file", @job.render_file(@job.jobid+".fas"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
+</div>
 
 </form>

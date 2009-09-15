@@ -89,7 +89,7 @@ class HhclusterController < ToolController
       img_in_file = File.join(TOOLKIT_ROOT, 'public', 'images', 'hhcluster', HHCLUSTER_DB, HHCLUSTER_DB + "_" + cs + ".png")
       img_out_file = @basename + "_" + cs + ".gif"
       
-      command = "#{HHCLUSTER}/hhcluster_imgprocessor.pl #{@cb} #{hhcluster_file} #{img_in_file} #{img_out_file} #{gifile}"
+      command = "#{HHCLUSTER}/hhcluster_imgprocessor.pl #{@cb} #{hhcluster_file} #{img_in_file} #{img_out_file} #{gifile} > #{File.join(@job.job_dir,'status.log')}"
       logger.debug "###### Command: #{command}"
       system(command)
       

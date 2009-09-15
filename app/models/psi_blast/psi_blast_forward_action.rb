@@ -209,8 +209,8 @@ class PsiBlastForwardAction < Action
     if (params['forward_controller'] == "patsearch")
       {'db_input' => res.join, 'std_dbs' => ""}
     else
-	   {'sequence_input' => res.join, 'inputmode' => inputmode}
-	 end
+      {'sequence_input' => res.join, 'inputmode' => inputmode}
+    end
   end
     
 end

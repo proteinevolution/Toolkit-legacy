@@ -1,55 +1,57 @@
 class Quick2DJob < Job
-  
+
   @@majorTicks    = 50
   @@minorTicks    = 10
   @@linewidth     = 80
   #@@helix_color   = "#FFD4D9"
   #@@sheet_color   = "#C4D6FF"
-  
+
   @@helix_color   = "#ff8284"
   @@sheet_color   = "#739cff"
-  
+
   @@loop_color    = "#FFFFFF"
   @@query_color   = "#FFFAE0"
   #@@tm_color      = "#E2FFEA"
   @@tm_color      = "#74e25f"
   #@@do_color      = "#e4f5f7"#"#EDEEEB"
   @@do_color      = "#ddc57c"
-  #@@cc_color      = "#F0E0FF" 
+  #@@cc_color      = "#F0E0FF"
   @@cc_color      = "#be80ff"
-  
-  @@sol_color     = "#ffff69"  
-  
-  @@metric_bgcolor = "#d9e0e0"  
-  
+
+  @@sol_color     = "#ffff69"
+
+  @@metric_bgcolor = "#d9e0e0"
+
   @@descr_width   = 17
-  
-  @@export_ext    = ".quick2d" 
-  
+
+  @@export_ext    = ".quick2d"
+
   def set_export_ext(val)
-    @@export_ext = val  
+    @@export_ext = val
   end
-  
+
+
   def get_export_ext
     @@export_ext
   end
-  
+
+
   # export results
   def export
     query    = readQuery
     psipred  = readPsipred
     jnet     = readJNet
-    prof_o   = readProfOuali	
+    prof_o   = readProfOuali
     prof_r   = readProfRost
    # memsat   = readMemsat
     memsat_svm = readMemsatSvm
     phobius = readPhobius
-    hmmtop   = readHMMTOP	
+    hmmtop   = readHMMTOP
     disopred = readDisopred
     iupred = readIUPred
   #  vsl2     = readVSL2
-    coils    = readCoils		
-    
+    coils    = readCoils
+
     data     = ""
     len      = query['sequence'].length
     i        = 0
@@ -57,18 +59,18 @@ class Quick2DJob < Job
       stop = min(i+@@linewidth, len)
       data += sprintf("%-#{@@descr_width}s", "QUERY")
       data += query['sequence'][i..(stop-1)] + "\n"
-      
+
       data += export_ss("SS PSIPRED", psipred, i, stop-1)
       data += export_ss("SS JNET", psipred, i, stop-1)
-      
+
       data += sprintf("%-#{@@descr_width}s", "SS PROF (Ouali)")
-      if( !prof_o.nil? && !prof_o['pred'].nil? ) 
+      if( !prof_o.nil? && !prof_o['pred'].nil? )
         data += prof_o['pred'][i..(stop-1)] + "\n"
       else
         data += "\n"
-      end	
+      end
       data += sprintf("%-#{@@descr_width}s", "CONF")
-      if( !prof_o.nil? && !prof_o['conf'].nil? ) 
+      if( !prof_o.nil? && !prof_o['conf'].nil? )
         tmp = prof_o['conf'][i..(stop-1)]
         0.upto(tmp.size-1){|ii|
           tmp[ii] = ((tmp[ii].to_f)*9.0).floor
@@ -76,43 +78,43 @@ class Quick2DJob < Job
         data +=  tmp.to_s + "\n"
       else
         data += "\n"
-      end	
-      
+      end
+
       data += export_ss("SS PROF (Rost)", psipred, i, stop-1)
-      
+
       data += sprintf("%-#{@@descr_width}s", "CC COILS")
-      if( !coils.nil? && !coils['ccpred'].nil? ) 
+      if( !coils.nil? && !coils['ccpred'].nil? )
         data += coils['ccpred'][i..(stop-1)] + "\n"
       else
         data += "\n"
-      end	
+      end
       data += sprintf("%-#{@@descr_width}s", "CONF")
-      if( !coils.nil? && !coils['conf'].nil? ) 
+      if( !coils.nil? && !coils['conf'].nil? )
         data += coils['conf'][i..(stop-1)] + "\n"
       else
         data += "\n"
-      end									
-      
+      end
+
       #data += export_tm("TM MEMSAT2", memsat, i, stop-1)
       data += export_tm("TM HMMTOP", hmmtop, i, stop-1)
       data += export_tm("TM MEMSATSVM",memsat_svm, i, stop-1)
       data += export_tm("TM PHOBIUS", phobius, i, stop-1)
       data += export_tm("TM PROF (Rost)", prof_r, i, stop-1)
-      
+
       data += export_do("DO DISOPRED2", disopred, i, stop-1)
       data += export_do("DO IUPRED", iupred, i, stop-1)
-      #data += export_do("DO VSL", vsl2, i, stop-1)			
-      
-      data += export_so("SO PROF (Rost)", prof_r, i, stop-1)			
+      #data += export_do("DO VSL", vsl2, i, stop-1)
+
+      data += export_so("SO PROF (Rost)", prof_r, i, stop-1)
       data += export_so("SO JNET", jnet, i, stop-1)
-      
+
       data += "\n\n"
       i += @@linewidth
     end
     data
   end
-  
-  
+
+
   def export_ss(name, blub, a, b)
     ret = sprintf("%-#{@@descr_width}s", name)
     if( !blub.nil? && !blub['pred'].nil? )
@@ -123,12 +125,13 @@ class Quick2DJob < Job
     ret += sprintf("%-#{@@descr_width}s", "CONF")
     if( !blub.nil? && !blub['conf'].nil? )
       ret += blub['conf'][a..b] + "\n"
-    else 
+    else
       ret += "\n"
     end
     ret
-  end  
-  
+  end
+
+
   def export_tm(name, blub, a, b)
     ret = sprintf("%-#{@@descr_width}s", name)
     if( !blub.nil? && !blub['tmpred'].nil? )
@@ -143,8 +146,9 @@ class Quick2DJob < Job
       ret += "\n"
     end
     ret
-  end  
-  
+  end
+
+
   def export_do(name, blub, a, b)
     ret = sprintf("%-#{@@descr_width}s", name)
     if( !blub.nil? && !blub['dopred'].nil? )
@@ -159,8 +163,9 @@ class Quick2DJob < Job
       ret += "\n"
 		end
     ret
-  end 
-  
+  end
+
+
   def export_so(name, blub, a, b)
     ret = sprintf("%-#{@@descr_width}s", name)
     if( !blub.nil? && !blub['sol'].nil? )
@@ -169,99 +174,98 @@ class Quick2DJob < Job
       ret += "\n"
     end
     ret
-  end 
-  
+  end
+
   # add your own data accessors for the result templates here! For example:
   attr_reader :legend, :data, :header, :sequence
-  
-  
+
+
   # Overwrite before_results to fill you job object with result data before result display
   def before_results(controller_params)
     h = readQuery
-    @header   = h['header'] 
+    @header   = h['header']
     @sequence = h['seq']
     @data     = getData
     @legend   = printLegend
   end
-  
-  
+
+
   def getData
-    
+
     query    = readQuery
     psipred  = readPsipred
     jnet     = readJNet
-    prof_o   = readProfOuali	
+    prof_o   = readProfOuali
     prof_r   = readProfRost
  #   memsat   = readMemsat
     memsat_svm = readMemsatSvm
     phobius = readPhobius
-    hmmtop   = readHMMTOP	
+    hmmtop   = readHMMTOP
     disopred = readDisopred
     iupred = readIUPred
 # vsl2     = readVSL2
-    coils    = readCoils		
-    
+    coils    = readCoils
+
     data     = ""
-    
+
     # write javascript
     data += "\n"+'<script type="text/javascript">' +"\n"
     data += 'initInfo(); '+"\n"
     data += 'RESIDUES="' +query['sequence']+'"; '+"\n"
     data += 'PSIPRED_CONF=new Array'+toJSArray( psipred['conf'] )+";\n"
-    data += 'JNET_CONF=new Array'+toJSArray( jnet['conf'] )+";\n" 
-    data += 'PROFROST_CONF=new Array'+toJSArray( prof_r['conf'] )+";\n" 
-    data += 'PROFROST_TMCONF=new Array'+toJSArray( prof_r['tmconf'] )+";\n" 
+    data += 'JNET_CONF=new Array'+toJSArray( jnet['conf'] )+";\n"
+    data += 'PROFROST_CONF=new Array'+toJSArray( prof_r['conf'] )+";\n"
+    data += 'PROFROST_TMCONF=new Array'+toJSArray( prof_r['tmconf'] )+";\n"
     data += 'MEMSATSVM_TMCONF=new Array'+toJSArray(memsat_svm['tmconf'])+"; \n"
-    data += 'PROFOUALI_CONF=new Array'+toJSArray( prof_o['conf'] )+";\n" 
+    data += 'PROFOUALI_CONF=new Array'+toJSArray( prof_o['conf'] )+";\n"
     data += 'DISOPRED2_CONF=new Array'+toJSArray( disopred['doconf'] )+";\n"
     data += 'IUPRED_CONF=new Array'+toJSArray( iupred['doconf'] )+";\n"
-    data += '</script>' +"\n"		
-    
-    
+    data += '</script>' +"\n"
+
+
     len      = query['sequence'].length
     i        = 0
     while( i<len )
       stop = min(i+@@linewidth, len)
-      
-      data += sprintf("<span>%-#{@@descr_width}s</span>", "")	
-      data += "<span style=\"background-color:#{@@metric_bgcolor};\">"+getMetricPos(i, stop)+"</span>\n" 
-      
-      data += sprintf("<span>%-#{@@descr_width}s</span>", "")		
-      data += "<span style=\"background-color:#{@@metric_bgcolor};\">"+getMetricTicks(i, stop)+"</span>\n" 
-      
-      #data += sprintf("<span>%-#{@@descr_width}s</span>", "")						
+
+      data += sprintf("<span>%-#{@@descr_width}s</span>", "")
+      data += "<span style=\"background-color:#{@@metric_bgcolor};\">"+getMetricPos(i, stop)+"</span>\n"
+
+      data += sprintf("<span>%-#{@@descr_width}s</span>", "")
+      data += "<span style=\"background-color:#{@@metric_bgcolor};\">"+getMetricTicks(i, stop)+"</span>\n"
+
+      #data += sprintf("<span>%-#{@@descr_width}s</span>", "")
       #data += query['sequence'][i..(min(i+@@linewidth, len)-1)]+"\n"
-      
-      data += printSEQHTML(query['sequence'].split(//),"aa",i,stop)			
-      
+
+      data += printSEQHTML(query['sequence'].split(//),"aa",i,stop)
       data += printSSHTML("SS PSIPRED", "psipred", psipred, i, stop)
       data += printSSHTML("SS JNET", "jnet", jnet, i, stop)
       data += printSSHTML("SS Prof (Ouali)", "prof_o", prof_o, i, stop)
       data += printSSHTML("SS Prof (Rost)", "prof_r", prof_r, i, stop)
-      
-      data += printCCHTML("CC Coils", "coils", coils, i, stop)				
-      
-   #   data += printTMHTML("TM MEMSAT2", "memsat", memsat, i, stop)	
+      data += printCCHTML("CC Coils", "coils", coils, i, stop)
+
+   #   data += printTMHTML("TM MEMSAT2", "memsat", memsat, i, stop)
       data += printTMHTML("TM HMMTOP", "hmmtop", hmmtop, i, stop)
-      data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)		
+      data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)
       data += printTMHTML("TM MEMSAT-SVM","memsat_svm", memsat_svm, i, stop)
       data += printTMHTML("TM PHOBIUS","phobius", phobius, i, stop)
-      
-      data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)	
+
+      data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)
       data += printDOHTML("DO IUPRED","iupred",iupred,i,stop)
 #      data += printDOHTML("DO VSL2", "vsl2", vsl2, i, stop)
-      
+
       data += printSOLHTML("SO Prof (Rost)", "sol_prof", prof_r, i, stop)
-      
+
       data += printSOLHTML("SO JNET", "sol_jnet", jnet, i, stop)
-      
-      
+
+
       data += "\n"
       i += @@linewidth
 		end
     data
-  end  
-  
+  end
+
+
   def printLegend
     ret = "";
     ret += "<span>SS = </span><span style=\"background-color: #{@@helix_color};\"> Alpha-Helix </span><span style=\"background-color: #{@@sheet_color};\"> Beta-Sheet </span><span> Secondary Structure</span></br>"
@@ -269,17 +273,19 @@ class Quick2DJob < Job
     ret += "<span>TM = </span><span style=\"background-color: #{@@tm_color};\">Transmembrane</span><span> (\'+\'=outside, \'-\'=inside)</span></br>"
     ret += "<span>DO = </span><span style=\"background-color: #{@@do_color};\">Disorder</span></br>"
     ret += "<span>SO = </span><span style=\"background-color: #{@@sol_color};\">Solvent accessibility</span><span> (A <b>b</b>urried residue has at most 25% of its surface exposed to the solvent.)</span></br>"
-  end  
-  
+  end
+
+
   def printSEQHTML(seq, id_name, a, b)
-    data = sprintf("<span>%-#{@@descr_width}s</span>", "")					
+    data = sprintf("<span>%-#{@@descr_width}s</span>", "")
     a.upto(b-1){ |j|
       data += "<span id=\"#{j}#{id_name}\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{seq[j]}</span>"
     }
     data +="\n"
     data
   end
-  	
+
+
   def printSSHTML(name, id_name, hash, a, b)
     if( hash['pred'].nil?|| hash['pred']=="") then return "" end
     data = ""
@@ -288,16 +294,16 @@ class Quick2DJob < Job
       if(hash['pred'][j].chr=="H")
         data += "<span id=\"#{j}#{id_name}\"style=\"background-color: #{@@helix_color};\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['pred'][j].chr}</span>"
       elsif(hash['pred'][j].chr=="E")
-        data += "<span id=\"#{j}#{id_name}\" style=\"background-color: #{@@sheet_color};\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['pred'][j].chr}</span>"	
+        data += "<span id=\"#{j}#{id_name}\" style=\"background-color: #{@@sheet_color};\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['pred'][j].chr}</span>"
       else
         data += "<span id=\"#{j}#{id_name}\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['pred'][j].chr}</span>"
       end
     }
     data += "\n"
     data
-  end 
-  
-  
+  end
+
+
   def printTMHTML(name, id_name, hash, a, b)
     if( hash['tmpred'].nil?|| hash['tmpred']=="") then return "" end
     data = ""
@@ -311,8 +317,9 @@ class Quick2DJob < Job
     }
     data += "\n"
     data
-  end  
-  
+  end
+
+
   def printDOHTML(name, id_name, hash, a, b)
     if( hash['dopred'].nil?|| hash['dopred']=="") then return "" end
     data = ""
@@ -326,8 +333,9 @@ class Quick2DJob < Job
     }
     data += "\n"
     data
-  end    
-  
+  end
+
+
   def printCCHTML(name, id_name, hash, a, b)
     if( hash['ccpred'].nil?|| hash['ccpred']=="") then return "" end
     data = ""
@@ -341,8 +349,9 @@ class Quick2DJob < Job
     }
     data += "\n"
     data
-  end  
-  
+  end
+
+
   def printSOLHTML(name, id_name, hash, a, b)
     if( hash['sol'].nil?|| hash['sol']=="") then return "" end
     data = ""
@@ -356,9 +365,10 @@ class Quick2DJob < Job
     }
     data += "\n"
     data
-  end  
-  
-  def readQuery 	
+  end
+
+
+  def readQuery
     if( !File.exists?( self.actions[0].flash['queryfile'] ) ) then return {} end
     ret={'header'=>"", 'sequence'=>"" }
     ar = IO.readlines( self.actions[0].flash['queryfile'])
@@ -374,7 +384,8 @@ class Quick2DJob < Job
     ret['sequence'].gsub!(/\s+/,"")
     ret
   end
-  
+
+
   def readPsipred
     if( !File.exists?( self.actions[0].flash['psipredfile'] ) ) then return {} end
     ret={'conf'=>"", 'pred'=>"" }
@@ -386,10 +397,11 @@ class Quick2DJob < Job
         ret['pred']+=$1
       end
     end
-    ret['pred'].gsub!(/C/, " ")  		
+    ret['pred'].gsub!(/C/, " ")
     ret
   end
-  
+
+
   def readProfOuali
     if( !File.exists?( self.actions[0].flash['profoualifile'] ) ) then return {} end
     ret={'conf'=>[], 'pred'=>"" }
@@ -400,16 +412,17 @@ class Quick2DJob < Job
         ret['conf']<<$2
       end
     end
-    ret['pred'].gsub!(/C/, " ")  		
+    ret['pred'].gsub!(/C/, " ")
     ret
   end
-  
+
+
   def readJNet
     if( !File.exists?( self.actions[0].flash['jnetfile'] ) ) then return {} end
     ret={'conf'=>"", 'pred'=>"", 'sol'=>""}
     sol25 = ""
     sol5  = ""
-    sol0  = ""	
+    sol0  = ""
     ar = IO.readlines( self.actions[0].flash['jnetfile'] )
     ar.each do |line|
       if( line =~ /\s*CONF\s+:\s+(\S+)\s*$/ )
@@ -424,7 +437,7 @@ class Quick2DJob < Job
         sol0 += $1
       end
     end
-    ret['pred'].gsub!(/-/, " ")  
+    ret['pred'].gsub!(/-/, " ")
     #sol25.gsub!(/B/,'1')
     sol25.gsub!(/-/,' ')
     #for i in 0..(sol25.length-1)
@@ -433,14 +446,15 @@ class Quick2DJob < Job
     #	elsif( sol5[i]=='B'[0] )
     #		sol25[i]='2'
     #	end
-    #end		
+    #end
     ret['sol']=sol25
     ret
   end
-  
+
+
   def readProfRost
     ret={'conf'=>"", 'pred'=>"", 'sol'=>"", 'tmpred'=>"", 'tmconf'=>""}
-    
+
     sol = []
     if( !File.exists?( self.actions[0].flash['accfile'] ) ) then return {} end
     ar = IO.readlines( self.actions[0].flash['accfile'] )
@@ -448,7 +462,7 @@ class Quick2DJob < Job
       if( line =~ /^\d+\s+\S+\s+\d+\s+(\d+)\s+\d+\s+(\S)\s+/ )
         sol << $1
       end
-    end  	
+    end
     0.upto(sol.size-1){ |i|
       if( sol[i].to_i <= 25 )
         sol[i] = "B"
@@ -457,7 +471,7 @@ class Quick2DJob < Job
       end
     }
     ret['sol']= sol.join
-    
+
     if( !File.exists?( self.actions[0].flash['htmfile'] ) ) then return {} end
     ar = IO.readlines( self.actions[0].flash['htmfile'] )
     ar.each do |line|
@@ -465,11 +479,11 @@ class Quick2DJob < Job
         ret['tmpred'] += $1
         ret['tmconf'] += $2
       end
-    end  	
+    end
     ret['tmpred'].gsub!(/i/, "-")
     ret['tmpred'].gsub!(/o/, "+")
     ret['tmpred'].gsub!(/T/, "X")
-    
+
     if( !File.exists?( self.actions[0].flash['secfile'] ) ) then return {} end
     ar = IO.readlines( self.actions[0].flash['secfile'] )
     ar.each do |line|
@@ -477,11 +491,12 @@ class Quick2DJob < Job
         ret['pred'] += $1
         ret['conf'] += $2
       end
-    end  	
-    ret['pred'].gsub!(/L/, " ")  		
+    end
+    ret['pred'].gsub!(/L/, " ")
     ret
   end
-  
+
+
   #~ def readMemsat
     #~ if( !File.exists?( self.actions[0].flash['memsatfile'] ) ) then return {} end
     #~ ret={'conf'=>"", 'tmpred'=>""}
@@ -493,12 +508,13 @@ class Quick2DJob < Job
       #~ elsif( bool && line =~ /^\s*([-\+IOSX]+)\s*$/ )
         #~ ret['tmpred']+=$1
       #~ end
-    #~ end  	
+    #~ end
     #~ ret['tmpred'].gsub!(/O/, "X")
     #~ ret['tmpred'].gsub!(/I/, "X")
     #~ ret
   #~ end
-  
+
+
   def readDisopred
     if( !File.exists?( self.actions[0].flash['disopredfile'] ) ) then return {} end
     ret={'doconf'=>"", 'dopred'=>""}
@@ -508,14 +524,15 @@ class Quick2DJob < Job
         ret['doconf']+=$1
       elsif( line =~ /pred\s*?:\s*?(\S*)\s*$/ )
         ret['dopred']+=$1
-      end	
+      end
     end
     ret['dopred'].gsub!(/\./, " ")
     ret['dopred'].gsub!(/\*/, "D")
     ret
   end
-  
-    def readIUPred
+
+
+  def readIUPred
     if( !File.exists?( self.actions[0].flash['iupredfile'] ) ) then return {} end
     ret={'doconf'=>[], 'dopred'=>"" }
     ar = IO.readlines( self.actions[0].flash['iupredfile'])
@@ -528,10 +545,11 @@ class Quick2DJob < Job
 	end
         ret['doconf']<<$1
       end
-    end		
+    end
     ret
   end
-  
+
+
   def readPhobius
 	if( !File.exists?( self.actions[0].flash['phobiusfile'] ) ) then return {} end
 	ret={'tmconf'=>[], 'tmpred'=>"" }
@@ -542,22 +560,22 @@ class Quick2DJob < Job
 	ar.each do |line|
 		line=~ /TRANSMEM/
 		if $& then
-			line =~ /(\d+)\s+(\d+)/	
+			line =~ /(\d+)\s+(\d+)/
 			start_array.push($1)
 			end_array.push($2)
 		end
 	end
-	
+
 	start_array.length.times { |i|
 		(start_array[i].to_i-1-result.length).times { result +=" " }
 		(end_array[i].to_i-result.length).times { result += "X" }
 	}
 	(readQuery['sequence'].length-result.length+1).times{ result += " " }
 	ret['tmpred'] += result
-	
+
 	ret
   end
-  
+
   #~ def readVSL2
     #~ if( !File.exists?( self.actions[0].flash['vsl2file'] ) ) then return {} end
     #~ ret={'dopred'=>""}
@@ -565,12 +583,13 @@ class Quick2DJob < Job
     #~ ar.each do |line|
       #~ if( line =~ /^\d+\s+\S+\s+\S+\s+([D.])\s*$/ )
         #~ ret['dopred']+=$1
-      #~ end	
+      #~ end
     #~ end
     #~ ret['dopred'].gsub!(/\./, " ")
     #~ ret
   #~ end
-  
+
+
   def readHMMTOP
     if( !File.exists?( self.actions[0].flash['hmmtopfile'] ) ) then return {} end
     ret={'tmpred'=>""}
@@ -578,39 +597,42 @@ class Quick2DJob < Job
     ar.each do |line|
       if( line =~ /^\s*pred\s*?(.*)$/ )
         ret['tmpred']+=$1
-      end	
+      end
     end
+    logger.debug "#{ret['tmpred']}"
     ret['tmpred'].gsub!(/\s+/, "")
-    ret['tmpred'].gsub!(/[Ii]/, "++")
-    ret['tmpred'].gsub!(/[Oo]/, "--")
+    ret['tmpred'].gsub!(/[Ii]/, "-")
+    ret['tmpred'].gsub!(/[Oo]/, "+")
     ret['tmpred'].gsub!(/H/, "X")
+    logger.debug "#{ret['tmpred']}"
     ret
   end
-  
+
+
   def readMemsatSvm
     if( !File.exists?(self.actions[0].flash['memsatsvmfile'])) then return { } end
     ret={'tmpred'=>"", 'tmconf'=>[]}
     ar = IO.readlines(self.actions[0].flash['memsatsvmfile'])
     pos = "", score="", result = ""
-    
+
     #read positions and score
     ar.each do |line|
       line =~ /Topology:/
       if $& then
         pos = line
       end
-      
+
       line =~ /Score:/
       if $& then
         line =~ /\-*\d+\.\d+/
         score = $&
       end
     end
-    
+
     if(score.to_f>=0) then
       pos.gsub!(/Topology:\s*/,"")
       i = 0
-      #Arrays for start-positions and end-positions and save them 
+      #Arrays for start-positions and end-positions and save them
       start_array = Array.new
       end_array = Array.new
       while true do
@@ -620,8 +642,8 @@ class Quick2DJob < Job
         end_array[i] = $2
         i+=1
         pos.gsub!(/\A(\d+)-(\d+)\,*/,"")
-      end 
-      
+      end
+
       #X for transmembrane and gap for none and putting the score to the javascript
       start_array.length.times { |i|
         (start_array[i].to_i-1-result.length).times { result +=" "; ret['tmconf']<<"-" }
@@ -635,7 +657,8 @@ class Quick2DJob < Job
     end
     ret
   end
-  
+
+
   def readCoils
     if( !File.exists?( self.actions[0].flash['coilsfile'] ) ) then return {} end
     ret={'ccpred'=>""}
@@ -643,43 +666,46 @@ class Quick2DJob < Job
     ar.each do |line|
       if( line !~ /^>/ )
         ret['ccpred']+=line
-      end	
+      end
     end
     ret['ccpred'].gsub!(/\s+/, "")
     ret['ccpred'].gsub!(/[^x]/, " ")
     ret['ccpred'].gsub!(/[x]/, "C")
     ret
   end
-  
+
+
   def min(a,b)
     if( a<b ) then return a else return b end
   end
-  
+
   def max(a,b)
     if( a<b ) then return b else return a end
-  end  
-  
+  end
+
+
   def toJSArray(ar)
-    if( ar.nil? || ar.size==0 ) 
+    if( ar.nil? || ar.size==0 )
       return "()"
     else
       if( !ar.kind_of? Array ) then ar = ar.split(//) end
       ret = "("
-      for i in 0..max(0,(ar.size-2)) do 	
+      for i in 0..max(0,(ar.size-2)) do
         ret += "'"+ar[i].to_s+"',"
       end
       ret += "'"+ar.last.to_s+"')"
     end
     ret
-  end  
-  
+  end
+
+
   def getMetricPos(a,b)
     ret = ""
     i=a
     while(i<b)
       k = i+1
       if( (k%@@majorTicks)==0 && i<(b-k.to_s.length) )
-        ret += k.to_s		
+        ret += k.to_s
         i   += k.to_s.length-1
       else
         ret += " "
@@ -690,7 +716,8 @@ class Quick2DJob < Job
     #ret += " " * trailing_blancs
     ret
   end
-	
+
+
   def getMetricTicks(a,b)
     ret = ""
     f = ((b-a)/@@minorTicks).to_i
@@ -701,6 +728,6 @@ class Quick2DJob < Job
     ret += " " * trailing_blancs
     ret
   end
-  
-  
+
+
 end

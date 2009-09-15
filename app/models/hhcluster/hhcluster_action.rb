@@ -55,13 +55,14 @@ class HhclusterAction < Action
 
     # Was search string @text_search given but no match found in scop25?
     if (!@text_search.empty? && @gis.empty?)
-      index100file = HHCLUSTER_DB_PATH + "/" + HHCLUSTER_DB.sub(/scop25/, 'scop100')
+      index100file = HHCLUSTER_DB_PATH + "/" + HHCLUSTER_DB.sub(/scop\d+/, 'scop100')
+      logger.debug "Search SCOP 100 (#{index100file}) with #{@text_search}"
       lines = IO.readlines(index100file)
       name = ""
       seq = ""
       lines.each do |line|
         if (line =~ /^>/ || line =~ /^\s*$/)
-          if (!name.empty? && name =~ /@text_search/i)
+          if (!name.empty? && name =~ /#{@text_search}/i)
             break
           end
           name = line[1..-1]
@@ -70,7 +71,7 @@ class HhclusterAction < Action
           seq += line
         end
       end
-      if (!name.empty? && name =~ /@text_search/i)
+      if (!name.empty? && name =~ /#{@text_search}/i)
         @blast_input = seq
       end
     end

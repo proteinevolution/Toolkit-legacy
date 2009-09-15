@@ -51,6 +51,7 @@ class HhblastAction < Action
     @ali_mode = params["alignmode"]
     @ss_scoring = "-ssm #{params['ss_scoring']}"
     @realign = params["realign"] ? "-realign" : "-norealign"
+    @filter = params["nofilter"] ? "-nofilter" : ""
     if @realign == '-norealign' 
       @mact = ''
     else
@@ -106,9 +107,9 @@ class HhblastAction < Action
     params_dump
     
     if (@inputmode == "alignment")
-      @commands << "#{HHBLAST}/hhblast -cpu 4 -v #{@v} -a3m #{@a3mfile} -db #{@dbs} -dbhhm #{@dbhhm} -blast #{BLAST}/bin -csblast #{CSBLAST} -csblast_db #{CSBLASTDB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -qhhm #{@hhmfile} -oa3m #{@a3m_outfile} -ohhm #{@hhm_outfile} -e_hh #{@E_hhblast} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HHBLAST}/hhblast -cpu 4 -v #{@v} -a3m #{@a3mfile} -hh #{HHBLAST} -db #{@dbs} -dbhhm #{@dbhhm} -blast #{BLAST}/bin -csblast #{CSBLAST} -csblast_db #{CSBLASTDB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -qhhm #{@hhmfile} -oa3m #{@a3m_outfile} -ohhm #{@hhm_outfile} -e_hh #{@E_hhblast} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     else
-      @commands << "#{HHBLAST}/hhblast -cpu 4 -v #{@v} -i #{@infile} -db #{@dbs} -dbhhm #{@dbhhm} -blast #{BLAST}/bin -csblast #{CSBLAST} -csblast_db #{CSBLASTDB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -qhhm #{@hhmfile} -oa3m #{@a3m_outfile} -ohhm #{@hhm_outfile} -e_hh #{@E_hhblast} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HHBLAST}/hhblast -cpu 4 -v #{@v} -i #{@infile} -hh #{HHBLAST} -db #{@dbs} -dbhhm #{@dbhhm} -blast #{BLAST}/bin -csblast #{CSBLAST} -csblast_db #{CSBLASTDB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -qhhm #{@hhmfile} -oa3m #{@a3m_outfile} -ohhm #{@hhm_outfile} -e_hh #{@E_hhblast} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     end
 
     prepare_fasta_hhviz_histograms_etc    

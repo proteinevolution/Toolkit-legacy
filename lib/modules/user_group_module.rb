@@ -30,7 +30,11 @@ module UserGroupModule
         if tool['active'].include?(group)
           return true
         end  	
-      end	
+      end
+      ip = request.remote_ip
+      if is_internal?(ip)
+        return tool['active'].include?('internal')
+      end
     end
     return false
   end

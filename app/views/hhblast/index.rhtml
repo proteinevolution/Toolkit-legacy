@@ -77,6 +77,11 @@
   </div>
   
   <div class="row">
+    <%= form_label("Disable filters (more sensitive, but slow!)", "no_filter") %>
+    <%= form_checkbox("nofilter", '1', false) %>
+  </div>
+
+  <div class="row">
     <%= form_label("Score secondary structure", "ss_scoring") %>
     <%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, "2", "&nbsp;") %>	
   </div>

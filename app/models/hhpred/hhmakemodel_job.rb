@@ -480,9 +480,9 @@ class HhmakemodelJob  < Job
           
           # Link to SCOP at family level
           if  template =~ /^[eu]/ 
-            line[b] .sub!(/#{family}/, "<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{template}&lev=fa\" target=\"_blank\">#{family}<\/a>")
-          else 
             line[b].sub!(/#{family}/, "<a href=\"http:\/\/www.mrc-lmb.cam.ac.uk\/agm\/cgi-bin\/find2.cgi?search_text=#{pdbc}&index=pox-SCOP_1_72\" target=\"_blank\">#{family}<\/a>")
+          else 
+            line[b] .sub!(/#{family}/, "<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{template}&lev=fa\" target=\"_blank\">#{family}<\/a>")
           end
           
           # Link to NCBI MMDB

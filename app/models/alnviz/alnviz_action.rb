@@ -30,6 +30,7 @@ class AlnvizAction < Action
     params_dump
     
     @commands << "#{HH}/reformat.pl clu fas #{@basename}.out #{@basename}.align"
+    @commands << "#{HH}/reformat.pl clu a3m #{@basename}.out #{@basename}.a3m"
     @commands << "#{HH}/reformat.pl clu fas #{@basename}.out #{@basename}.ralign -M first -r"
     @commands << "#{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50"
 
