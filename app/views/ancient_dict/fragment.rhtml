@@ -110,7 +110,8 @@
                   <%end -%>
                   <%strlen=charend-charstart -%>
                   <%subh=firstline[charstart, strlen] -%>
-                  <%substringh = "<span style=\"background-color:#d4d400;\">"+subh+"</span>" -%>
+                  <!--<%substringh = "<span style=\"background-color:#d4d400;\">"+subh+"</span>" -%>-->
+                  <%substringh = "<span style=\"background-color:#ffffff;\">"+subh+"</span>" -%>
                   <%newfirstline += substringh -%>
                   <%charstart=l -%>
                 <%elsif char=="c" -%>
@@ -121,7 +122,8 @@
                   <%end -%>
                   <%strlen=charend-charstart -%>
                   <%subc=firstline[charstart, strlen] -%>
-                  <%substringc = "<span style=\"background-color:#b5b5b5;\">"+subc+"</span>"-%>
+                  <!--<%substringc = "<span style=\"background-color:#b5b5b5;\">"+subc+"</span>"-%>-->
+                  <%substringc = "<span style=\"background-color:#ffffff;\">"+subc+"</span>"-%>
                   <%newfirstline += substringc -%>
 		  <%charstart=l -%>
                 <%elsif char=="b"-%>
@@ -132,7 +134,8 @@
                   <%end -%>
                   <%strlen=charend-charstart -%>
                   <%subb=firstline[charstart, strlen] -%>
-                  <%substringb="<span style=\"background-color:#0de00d;\">"+subb+"</span>" -%>
+                  <!--<%substringb="<span style=\"background-color:#0de00d;\">"+subb+"</span>" -%>-->
+                  <%substringb="<span style=\"background-color:#ffffff;\">"+subb+"</span>" -%>
                   <%newfirstline += substringb -%>
                   <%charstart=l -%>
                 <%else -%>
