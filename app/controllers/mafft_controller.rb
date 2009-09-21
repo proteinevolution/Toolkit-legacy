@@ -5,14 +5,14 @@ class MafftController < ToolController
   
   def results
     @fullscreen = true
-    @fw_values = [fw_to_tool_url('mafft', 'alnviz'), fw_to_tool_url('mafft', 'blastclust'), 
+    @fw_values = [fw_to_tool_url('mafft', 'ali2d'), fw_to_tool_url('mafft', 'alnviz'), fw_to_tool_url('mafft', 'blastclust'), 
                   fw_to_tool_url('mafft', 'clans'), fw_to_tool_url('mafft', 'seq2gi'),
                   fw_to_tool_url('mafft', 'fast_hmmer'), fw_to_tool_url('mafft', 'frpred'),
                   fw_to_tool_url('mafft', 'hhpred'),
                   fw_to_tool_url('mafft', 'hhsenser'), fw_to_tool_url('mafft', 'psi_blast'),
                   fw_to_tool_url('mafft', 'quick2_d'), fw_to_tool_url('mafft', 'reformat'), 
                   fw_to_tool_url('mafft', 'repper')]
-    @fw_labels = [tool_title('alnviz'), tool_title('blastclust'), 
+    @fw_labels = [tool_title('ali2d'), tool_title('alnviz'), tool_title('blastclust'), 
                   tool_title('clans'), tool_title('seq2gi'),
                   tool_title('fast_hmmer'), tool_title('frpred'),
                   tool_title('hhpred'),
