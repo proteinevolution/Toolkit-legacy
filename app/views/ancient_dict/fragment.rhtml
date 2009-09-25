@@ -46,13 +46,13 @@
 <br/>
 <%end%>
 <br/>
-<!--<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Occurrence (SCOP accession)</p>-->
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Occurrence (SCOP accession)</p>
 <table border="0" style="width=100%">
   <!--<colgroup>
    <col width="25%">
    <col width="75%">
   </colgroup>-->
-  <%Dapoccurrence.find(:all, :conditions => ["f_id=?", @page]).each do |scop|%>
+  <%Dapoccurrence.find(:all, :conditions => ["f_id=?", @page], :order => "scop_id").each do |scop|%>
     <tr>
       <td style="font-size:12px">
         <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=scop.scop_id%>"><%=scop.scop_id%></a>
