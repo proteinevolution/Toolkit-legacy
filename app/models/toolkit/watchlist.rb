@@ -1,4 +1,7 @@
 class Watchlist < ActiveRecord::Base
+
+  MAX_SEQS=1000
+
   include Dbhack
   belongs_to :user, :dependent => false
   serialize :params
@@ -8,7 +11,7 @@ class Watchlist < ActiveRecord::Base
   validates_db_seq(:db_seq, :db_file, {:informat_field => :informat,
                                                     :informat => 'fas',
                                                     :inputmode => 'alignment',
-                                                    :max_seqs => 10,
+                                                    :max_seqs => 50,
                                                     :on => :create })
 
   validates_format_of(:width, :Pmin, :maxlines, {:with => /^\d+$/, :on => :create, :message => 'Invalid value! Only integer values are allowed!'})
@@ -16,16 +19,15 @@ class Watchlist < ActiveRecord::Base
   validates_presence_of(:db_name, {:on => :create})
   
   def validate_on_create
-logger.info "USERID:#{informat} #{db_name} #{userid} #{width} #{maxlines}"
+    logger.info "USERID:#{informat} #{db_name} #{userid} #{width} #{maxlines}"
     if (userid.to_i > 0)
       userdbs = Watchlist.find(:all, :conditions => [ "user_id = ?", userid.to_i ])
     end
 
     # check size
-    max_size = 50 
     dbs_size = userdbs.length+1
-    if (dbs_size > max_size)
-      errors.add("db_seq","Size limit reached! You can upload maximum #{max_size} sequences.")
+    if (dbs_size > MAX_SEQS)
+      errors.add("db_seq","Size limit reached! You can upload maximum #{MAX_SEQS} sequences.")
     end
 
     # check name
