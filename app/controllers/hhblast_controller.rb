@@ -31,6 +31,7 @@ class HhblastController < ToolController
                   fw_to_tool_url('hhblast', 'alnviz') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'blastclust') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'seq2gi') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhblast') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'hhfilter') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'hhomp') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'hhpred') + "&fw_mode=forward",
@@ -42,7 +43,7 @@ class HhblastController < ToolController
                   fw_to_tool_url('hhblast', 'reformat') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'repper') + "&fw_mode=forward"]
 
-    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('seq2gi'), tool_title('hhfilter'),
+    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('seq2gi'), tool_title('hhblast'), tool_title('hhfilter'),
                   tool_title('hhomp'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid'), tool_title('hhsenser'),
                   tool_title('psi_blast'), tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
   end
@@ -54,6 +55,7 @@ class HhblastController < ToolController
                   fw_to_tool_url('hhblast', 'alnviz') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'blastclust') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'seq2gi') + "&fw_mode=forward",
+                  fw_to_tool_url('hhblast', 'hhblast') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'hhfilter') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'hhomp') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'hhpred') + "&fw_mode=forward",
@@ -65,7 +67,7 @@ class HhblastController < ToolController
                   fw_to_tool_url('hhblast', 'reformat') + "&fw_mode=forward",
                   fw_to_tool_url('hhblast', 'repper') + "&fw_mode=forward"]
 
-    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('seq2gi'), tool_title('hhfilter'),
+    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('seq2gi'), tool_title('hhblast'), tool_title('hhfilter'),
                   tool_title('hhomp'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid'), tool_title('hhsenser'),
                   tool_title('psi_blast'), tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
   end
