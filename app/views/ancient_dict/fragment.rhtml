@@ -52,7 +52,7 @@
    <col width="25%">
    <col width="75%">
   </colgroup>-->
-  <%Dapoccurrence.find(:all, :conditions => ["f_id=?", @page]).each do |scop|%>
+  <%Dapoccurrence.find(:all, :conditions => ["f_id=?", @page], :order => "scop_id").each do |scop|%>
     <tr>
       <td style="font-size:12px">
         <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=scop.scop_id%>"><%=scop.scop_id%></a>
