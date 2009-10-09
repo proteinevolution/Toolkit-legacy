@@ -177,12 +177,15 @@ class AncientDictAction < Action
       # logger.debug "f_num: #{@f_idnum}"
       if (@fitem == 'Fragment')
        fragaa = Dapfragment.find(:all, :conditions => "f_category = 'frag_AA'")
+       logger.debug "Amount AA: #{fragaa.length}"
        @f_idnum+=fragaa.length
        fragab = Dapfragment.find(:all, :conditions => "f_category = 'frag_AB'")
+       logger.debug "Amount AB #{fragab.length}"
        @f_idnum+=fragab.length
        fragm = Dapfragment.find(:all, :conditions => "f_category = 'frag_M'")
+       logger.debug "Amount M #{fragm.length}"
        @f_idnum+=fragm.length
-      # logger.debug "Amout of fragments: #{@f_idnum}"
+       logger.debug "Amount of fragments: #{@f_idnum}"
        @itemid = convertID('FRAG', @f_idnum, 0)
       # logger.debug "Converted ID: #{@itemid}"
       else
@@ -426,6 +429,7 @@ class AncientDictAction < Action
     else
       if (Dapfragment.find(:first, :conditions => ["f_id=?", finid]))
         finid=convertID(string, length, start_num+1)
+        logger.debug "found ID: #{finid}"
       end
     end
     return finid
