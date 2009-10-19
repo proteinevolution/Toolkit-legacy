@@ -1,0 +1,9 @@
+samcc_job: 
+  title: SamCC
+  hidden: false
+  code: SAMC
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
