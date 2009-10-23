@@ -1,0 +1,75 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+<li><a href="#result">Results</a></li>
+<li><a href="#example">Example</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> - Results</h2>
+
+<br/>
+<div class="row">
+<a name="result"></a>
+<h3 class="<%= @section["name"] %>">Results</h3>
+<br/>
+As output, the program returns a plot showing the Crick angle deviations (observed Crick angle - expected Crick angle) in each helix at every layer. In addition, axial shift and rotation plots are displayed. The last two describe at which positions and to what extent the analyzed coiled-coil was adjusted to achieve an ideal state. For detailed information refer to the method description.
+	All plots are generated in two versions: 1) raw values are plotted directly, 2) values are averaged over a 3-layer window before plotting. In all cases, values approaching 0 indicates that a given parameter of the analyzed coiled-coil is as expected from theoretical models at given positions. Raw values and averages used to generate these plots are also returned. They can be easily pasted into Exel or OpenOffice Calc spreadsheet for further analyzes.
+	Two PDB files can be downloaded. The first contains the adjusted (idealized) coiled-coil structure and the second coordinates of the alpha helical and coiled-coil axes that were used for Crick angle calculations.
+</div>
+
+<br/>
+<div class="row">
+<a name="example"></a>
+<h3 class="<%= @section["name"] %>">Examples</h3>
+<br/>
+Example 1. GCN4 pIL, a parallel canonical coiled-coil
+
+1)Download the PDB file: http://www.rcsb.org/pdb/explore/explore.do?structureId=1GCL
+2)Examine the file in structure viewer as PyMol or SwissPDB
+3)GCN4 pIL has a 7 periodicity (heptad abcdefg)
+4)Define core of the coiled-coil bundle.
+
+1.The first core residue is Ile-4 (heptad position d), see Figure 1
+2.The last core residue is Leu-29 (heptad position a)
+
+5)Define region to be analyzed. Note that most of the first and last residues are omitted.
+
+1.The first layer is Lys-2 (position b)
+2.The last layer is Leu-28
+
+6)Define helices (see Figure 1)
+7)Now you have all necessary parameters, namely:
+
+1.Periodicity = 7
+2.Helix 1 = chain A, positions from 2 to 28
+3.Helix 2 = chain B, positions from 2 to 28
+4.Helix 3 = chain C, positions from 2 to 28
+5.Helix 4 = chain D, positions from 2 to 28
+6.Heptad register of the first position = b
+
+8)Results show that Crick angle deviation oscillates around 0, which corresponds to the canonical coiled-coil.
+
+Example 2. GCN4-pAeL. This example is more complicated and deals with an antiparallel coiled coil.
+
+1)Download the PDB file: http://www.rcsb.org/pdb/explore/explore.do?structureId=2R2V
+2)Examine the file in structure viewer as PyMol or SwissPDB
+3)GCN4-pAeL is antiparallel and has a 7 periodicity (abcdefg). It adopts unusual packing called Alacoil. In this packing a hydrophobic core is formed by a-d-e or a-d-g residues of the heptad.
+4)The first/last core residues are Val-6 (position d) and Met-31 (position a), see Figure 2. 
+5)Define helices (see Figure 2) and regions to be analyzed. Note that most of the first and last residues are omitted. 
+6)Now you have all necessary parameters, namely:
+
+1.Periodicity = 7
+2.Helix 1 = chain A, positions from 4 to 33
+3.Helix 2 = chain B, positions from 33 to 4 (antiparallel helix)
+4.Helix 3 = chain C, positions from 4 to 33
+5.Helix 4 = chain D, positions from 33 to 4 (antiparallel helix)
+6.Heptad registers of the first layer are b (parallel helices) and c (antiparallel helices)
+7)Results show that Crick angle deviation oscillates between -20/-30 degrees (this corresponds to the a-d-e core)
+
+</div>
+
+<br/>
+<div class="row">
+<a name="example"></a>
+<h3 class="<%= @section["name"] %>">Contact</h3>
+<br/>
+</div>

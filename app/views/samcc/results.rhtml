@@ -1,10 +1,27 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
-  
-<%= render(:partial => "shared/resultsections") %>
 
-<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
-  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<h3 class="<%= @section["name"] %>">Plots</h3>
+
 <div class="row">
-<pre><%= @job.render_file(@job.jobid+".out") %></pre>
+<%filepath=@job.job_dir+"/"%>
+<%direntry = Dir.entries(filepath)%>
+<%matches=Array.new()%>
+<%sortmatches=Array.new()%>
+<%expression = "png" %>
+<%for i in 0..direntry.length-1%>
+  <%if direntry[i].match(expression)%>
+    <%matches.push(direntry[i])%>
+  <%end%>
+<%end%>
+<%sortmatches=matches.sort()%>
+<%for i in 0..sortmatches.length-1%>
+  <%matches[i]%>
+  <%sortmatches[i]%>
+  <p><img src="<%= @job.url_for_job_dir %>/<%=sortmatches[i]%>" alt="description of the image" style="background-color: #FFF;"></img></p><br/>
+<%end%>
 </div>
+
+</form>
 

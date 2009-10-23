@@ -1,9 +1,17 @@
-samcc_job: 
+samcc_job:
   title: SamCC
   hidden: false
   code: SAMC
-  resultsections:  
+  resultsections:
     - name: results
+      title: Plots
+      title_long: Show plots
+      forwardsections:
+    - name: results_numerical
       title: Results
       title_long: Show result
+      forwardsections:
+    - name: results_pdbs
+      title: Pdbs
+      title_long: show pdbs
       forwardsections:

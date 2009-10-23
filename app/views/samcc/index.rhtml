@@ -16,15 +16,25 @@
 </div>
 
 <div class="row">
-	<%= form_label("Upload a pdb file", "pdbfile") %>
+	<%= form_label("Upload a pdb file", "input") %>
 	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+        <%= form_label("Examples") %>
+        <div class="formw">
+                <strong>1GCL</strong> <a href="#" onClick="javascript:paste1GCL();">paste</a>/<a target="_blank" href="/samcc/results/tu_1GCL">results</a>&nbsp;&nbsp;
+                <strong>2R2V</strong> <a href="#" onClick="javascript:paste2R2V();">paste</a>/<a target="_blank" href="/samcc/results/tu_2R2V">results</a>&nbsp;&nbsp;
+        </div>
 </div>
 
 <div class="spacer">&nbsp;</div>
 
 <h3 class="<%= @section["name"] %>">Input parameters (obligatory)</h3>
 <div class="row">
-	<%= form_label("Definition for helix 1", "helix1_4") %>
+	<%= form_label("Definition for helix 1", "helix") %>
 	<div class="formw">
 		<table>
 			<tr>
@@ -35,7 +45,7 @@
 </div>
 
 <div class="row">
-        <%= form_label("Definition for helix 2", "helix1_4") %>
+        <%= form_label("Definition for helix 2", "helix") %>
 	<div class="formw">
 		<table>
 			<tr>
@@ -46,7 +56,7 @@
 </div>
 
 <div class="row">
-        <%= form_label("Definition for helix 3", "helix1_4") %>
+        <%= form_label("Definition for helix 3", "helix") %>
         <div class="formw">
                 <table>
                         <tr>
@@ -57,7 +67,7 @@
 </div>
 
 <div class="row">
-        <%= form_label("Definition for helix 4", "helix1_4") %>
+        <%= form_label("Definition for helix 4", "helix") %>
 	<div class="formw">
                 <table>
                         <tr>
@@ -73,13 +83,13 @@
 </div>
 
 <div class="row">
-        <%= form_label("First position", "firstposition") %>
+        <%= form_label("First position", "first_pos") %>
         <%= form_text_field("first_position", @first_pos, "", 2) %>
 </div>
 
 <div class="row">
-        <%= form_label("First position AP", "firstpositionAP") %>
-        <%= form_text_field("first_position_AP", @first_pos_AP, "", 2) %>
+        <%= form_label("First position AP", "first_pos_AP") %>
+        <%= form_text_field("first_position_AP", ' ') %>
 </div>
 
 

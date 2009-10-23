@@ -14,7 +14,7 @@ module Toolkit
           configuration = { :on => :create,
             :include => nil,
             :alternative => nil,
-            :message => "Please a file in PDB Format!" }
+            :message => "Please insert a file in PDB Format!" }
 
           configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
 
@@ -47,10 +47,10 @@ module Toolkit
 	    lines = value.split()
 	    lines.each do |line|
 	      if (line =~ /^ATOM/)
-                logger.debug "Num_Atoms: #{num_atoms}"
+                logger.debug "**************************Num_Atoms: #{num_atoms}"
 		num_atoms+=1
 	      else
-                logger.debug "Num_Atoms: #{num_atoms}"
+                logger.debug "**************************Num_Atoms: #{num_atoms}"
 	      end
 	    end
             if (num_atoms == 0)

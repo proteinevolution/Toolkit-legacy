@@ -24,7 +24,6 @@ module Toolkit
             :on => :create,
             :message => "Input ERROR!" }
           configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
-          
           # check input fields
           if (attr_names[1].nil?)
             validates_input_fields(attr_names[0], {:allow_nil => configuration[:allow_nil]})
@@ -37,6 +36,7 @@ module Toolkit
           end
           
           # run format validators
+
           if (!configuration[:informat_field].nil?)
             if configuration[:max_seqs].nil?
               validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})
