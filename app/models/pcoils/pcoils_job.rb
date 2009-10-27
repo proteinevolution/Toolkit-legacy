@@ -1,26 +1,26 @@
 class PcoilsJob < Job
-  
+
   @@export_ext = ".export"
   def set_export_ext(val)
-    @@export_ext = val  
+    @@export_ext = val
   end
   def get_export_ext
     @@export_ext
   end
-  
+
   # export results
   def export
     ret = IO.readlines(File.join(job_dir, jobid + @@export_ext)).join
   end
-  
-  
-  
-  
+
+
+
+
   attr_reader :psipred, :coils, :alignment
-  
-  
+
+
   def before_results(controller_params)
-  
+
     @basename = File.join(job_dir, jobid)
     @psipred = nil
     @coils = nil
@@ -40,11 +40,11 @@ class PcoilsJob < Job
     if (File.exists?(@basename + "_psipred.png"))
     	@psipred = true
     end
-    
+
     if (File.exists?(@basename + "_ncoils.png"))
     	@coils = true
     end
-  
+
     if (File.exists?(@basename + ".alignment.psi") && !File.zero?(@basename + ".alignment.psi"))
       @alignment = ""
       res = IO.readlines(@basename + ".alignment.psi")
@@ -53,7 +53,7 @@ class PcoilsJob < Job
           @alignment += $1 + "\n"
         end
       end
-      
+
       @alignment.gsub!(/([WYF]+)/, '<span style="background-color: #00a000;">\1</span>')
       @alignment.gsub!(/(C+)/, '<span style="background-color: #ffff00;">\1</span>')
       @alignment.gsub!(/([DE]+)/, '<span style="background-color: #c080ff;">\1</span>')
@@ -62,7 +62,7 @@ class PcoilsJob < Job
       @alignment.gsub!(/([QN]+)/, '<span style="background-color: #ffc0ff;">\1</span>')
       @alignment.gsub!(/(H+)/, '<span style="background-color: #d00000;">\1</span>')
       @alignment.gsub!(/(P+)/, '<span style="background-color: #808080;">\1</span>')
-      @alignment.gsub!(/(G+)/, '<span style="background-color: #ffd070;">\1</span>') 
+      @alignment.gsub!(/(G+)/, '<span style="background-color: #ffd070;">\1</span>')
     end
 
     #numerical output
@@ -142,7 +142,7 @@ class PcoilsJob < Job
       end
 
     end
-  
+
   end
-  
+
 end
