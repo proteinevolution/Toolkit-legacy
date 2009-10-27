@@ -3,6 +3,7 @@
 <li><a href="#bar diagram">Bar diagram</a></li>
 <li><a href="#hit list">Summary hit list</a></li>
 <li><a href="#alignments">Query-template alignments</a></li>
+<li><a href="#alignment">Alignment</a></li>
 <li><a href="#references">References</a></li>
 <li><a href="#contact">Contact</a></li>
 </ul>
@@ -317,5 +318,11 @@ amino acid distributions. It gives a valuable indication for the alignment quali
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 <br/>
+<div class="row">
+<a name="alignment"></a>
+<h3 class="<%= @section["name"] %>">Show alignment</h3>
+In the section "Alignment" you have two possibilities for a jalview-Alignment. The first one shows the complete alignment with inserted residues and the second one shows the 50 most distinct sequences without inserted residues. Additionally you have the whole alignment as text, which you can modify. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div><br/>
 <%= render(:partial => "hhomp/references_and_contact") %>
 </div>

@@ -89,5 +89,10 @@ class HhrepController < ToolController
 		redirect_to(:host => DOC_ROOTHOST, :controller => 'hhrep', :action => 'results', :jobid => @job)
 	
 	end	
+
+	def help_results
+		render(:layout => "help")
+	end
+  
   
 end

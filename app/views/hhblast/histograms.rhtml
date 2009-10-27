@@ -1,18 +1,38 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => "Results"}) %>
-
 <%= render(:partial => "shared/resultsections", :locals => {:forward => false}) %>
 
 <%= form_tag( "", {:id => @job.tool+"_form"}) %>
 
 <% if @errors['hits'] %>
 <div class="row">
-	<p class="formerror"><%= @errors['hits'] %></p>
+  <p class="formerror"><%= @errors['hits'] %></p>
 </div><div class="hr">&nbsp;</div>
 <% end %>
 
-<div class="row">
-	<%=  @job.results.join  %>
+<div id="forward" style="display: none;">
+  <input name="hits" id="hits" type="hidden" value=""/>
+
+  <div class="row">
+    <%= form_label("Forward results to") %>
+    <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[1], 1, "toggle_seqlen('destination');") %>
+  </div>
+
+  <div class="row">
+    <%= form_label("Select hits to forward") %>
+    <div class="formw">
+      <input name="includehits" type="radio" value="selected" checked="checked" />&nbsp;selected hits<br/>
+      <input name="submitform" type="submit" class="feedbutton" onClick="extract_selected(); setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+
+      <input name="includehits" type="radio" value="byevalue" />&nbsp;hits with e-value better than&nbsp;
+      <input name="hitsevalue" type="text" value="0.001" />
+    </div>
+  </div>
+
+  <div class="hr">&nbsp;</div>
 </div>
 
+<div class="row">
+  <%=  @job.results.join  %>
+</div>
 
 </form>

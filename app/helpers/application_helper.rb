@@ -74,7 +74,8 @@ module ApplicationHelper
   end
 
   def form_select_single(name, values, labels, default="", maxsize=1, onchange="", disable=false, noformw=false)
-    size = maxsize > values.length ? values.length : maxsize 
+    #size = maxsize > values.length ? values.length : maxsize 
+    size = maxsize
     selected = (params['reviewing']||params[name]) ? params[name] : default.to_s
     selected = @error_params[name] ? @error_params[name] : selected
     options = ""
@@ -153,5 +154,11 @@ module ApplicationHelper
     ret = ret << content
     ret = ret << "</div>\n" 
   end
+
+  #def form_add_button(name, options = {})
+  #  label = "#{name}"
+  #  #label = l(:"#{@controller.controller_name}_#{name}_button")
+  #  "#{self.send(:submit_tag, label, options)}"
+  #end
 
 end

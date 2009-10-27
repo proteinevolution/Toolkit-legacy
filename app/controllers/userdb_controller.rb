@@ -95,6 +95,8 @@ class UserdbController < ApplicationController
     updatedb_commmand = File.join(TOOLKIT_ROOT,"script","update_userdb.rb")+" #{db_id};"
 
     command_file = path + ".sh"
+    path.sub!(/^(.*)\/.+?$/, '\1')
+
     File.open(command_file, "w") do |f|
       f.write "#!/bin/sh\n"
       f.write '#$' + " -N TOOLKIT_userdb\n"
@@ -102,6 +104,7 @@ class UserdbController < ApplicationController
       f.write '#$' + " -o /dev/null\n"
       f.write '#$' + " -e /dev/null\n"
       f.write '#$' + " -w n\n"
+      f.write '#$' + " -wd #{path}\n"
       f.write '#$' + " -l immediate\n\n"
       f.write("#{format_command} #{updatedb_commmand}")
     end

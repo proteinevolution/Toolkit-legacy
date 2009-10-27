@@ -1,0 +1,32 @@
+<P ALIGN="Center">
+<TABLE BORDER=0 ALIGN="center">
+<TR>
+        <TD>
+        <APPLET codebase="/applets/Chemis3D/" ARCHIVE="Chemis3D.jar" CODE="Chemis3D.class" NAME="C3D" WIDTH="800" HEIGHT="800" ALT='Problem! Check your Security Options. There is a Java applet here. To use it, you need a Java aware browser with Java enabled.'>
+                <PARAM NAME="model" VALUE="<%= DOC_ROOTURL %>/ancient_dict_pdb/<%= @file %>.pdb">
+                <PARAM NAME="format" VALUE="x-pdb">
+                <PARAM NAME="display" VALUE="backbone">
+                <PARAM NAME="color" VALUE="group">
+        </APPLET><BR>
+        </TD>
+</TR>
+<TR>
+<TD VALIGN="top"  ALIGN="center">
+        <FORM NAME="manipulateform">&nbsp; &nbsp;
+
+        <INPUT TYPE=radio NAME="manipulate" VALUE="Rotate" CHECKED Onclick="javascript:document.C3D.setMouse(this.value)"> <b>Rotate</b> &nbsp; &nbsp; &nbsp;
+		   &nbsp; &nbsp;
+        <INPUT TYPE=radio NAME="manipulate" VALUE="Zoom" Onclick="javascript:document.C3D.setMouse(this.value)"><b>Scale</b> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+        <INPUT TYPe=radio NAME="manipulate" VALUE="Translate" Onclick="javascript:document.C3D.setMouse(this.value)"><b>Translate</b> &nbsp; &nbsp; &nbsp;
+        </FORM>
+</TD>
+</TR>
+</TABLE>
+</P>
+<p style="margin-left: 10px;">
+Click the right mouse key to change the style (wireframe, stick, ball,...), coloring (CPK, group, temperature,...) and more.<br/>
+For documentation on the Chemis3D Java applet please go to <a target="_blank" href="http://www.mol3d.com">http://www.mol3d.com</a>
+</p>
+<div class="hr">&nbsp;</div>
+<a style="margin-left: 10px;" href="<%= DOC_ROOTURL %>/ancient_dict_pdb/<%= @file %>.pdb">Download pdb-file</a><br/><br/>

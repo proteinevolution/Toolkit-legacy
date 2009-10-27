@@ -3,13 +3,11 @@
 <%= render(:partial => "shared/resultsections", :locals => {:export_action => 'gi2seq_export'}) %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
-  
 <% if @errors['hits'] %>
 <div class="row">
 	<p class="formerror"><%= @errors['hits'] %></p>
 </div><div class="hr">&nbsp;</div>
 <% end %>
-
 <div id="forward" style="display: none;">
 	<div class="row">
 		<div class="label">Forward results to</div>
@@ -54,7 +52,7 @@
 		</tr>
 			
 	<% end %>
-	</table>
+	</table> 
 	
 </div>
 

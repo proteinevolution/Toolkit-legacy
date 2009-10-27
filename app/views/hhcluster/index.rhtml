@@ -1,34 +1,68 @@
 <a href="#" onClick="openHelpWindow('/hhcluster/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
 
 <div id="jobsection">
-	<ul>
-		<li class="current">
-			<a href="/hhcluster/index" onmouseout="return nd();" onmouseover="return overlib('Show Galaxy of Folds');">Galaxy of Folds</a>
-		</li>
-		<li>
-			<a href="/hhcluster/search" onmouseout="return nd();" onmouseover="return overlib('Search domains');">Search domains</a>
-		</li>
-	</ul>
+  <ul>
+    <li class="current">
+      <a href="/hhcluster/index" onmouseout="return nd();" onmouseover="return overlib('Show Galaxy of Folds');">Galaxy of Folds</a>
+    </li>
+    <li>
+      <a href="/hhcluster/search" onmouseout="return nd();" onmouseover="return overlib('Search domains');">Search domains</a>
+    </li>
+  </ul>
 </div>
 
 <div id="resultactions">
-	<ul>
-		<% for i in 0...@color_scheme.length %>	
-			<li <% if @color_scheme[i] == @coloring %> class="current" <% end %> >
-				<a href="/hhcluster?coloring=<%= @color_scheme[i] %>" 
-				<% if @color_scheme[i] != @coloring %> 
-					onmouseover="imgOn('galaxy','<%= @images[@color_scheme[i]] %>');" onmouseout="imgOn('galaxy','<%= @images['default'] %>');"
-				<% end %> >Color by <%= @color_scheme_names[i] %> 
-				</a>
-			</li>
-		<% end %>
+  <ul>
+    <% for i in 0...@color_scheme.length %>	
+    <li <% if @color_scheme[i] == @coloring %> class="current" <% end %> >
+      <a href="/hhcluster?coloring=<%= @color_scheme[i] %>" 
+	 <% if @color_scheme[i] != @coloring %> 
+	 onmouseover="imgOn('galaxy','<%= @images[@color_scheme[i]] %>');" onmouseout="imgOn('galaxy','<%= @images['default'] %>');"
+	 <% end %> >Color by <%= @color_scheme_names[i] %> 
+      </a>
+    </li>
+    <% end %>
 	</ul>
 </div>
 
 <map name="cluster">
-	<%= @map %>
+  <%= @map %>
 </map>
 
 <img name="galaxy" src="<%= @images['default'] %>" border="0" usemap="#cluster"/>
 <br>
 <input id="infolabel" name="infolabel" type="text" size="200" value="" style="font-size: 11px; background-color: #FFF; margin-bottom: 10px; width: 99%;" />
+
+<%= form_tag({:action => :run, :job => 'hhcluster'}, {:multipart => true})%>
+
+<h3 class="<%= @section["name"] %>">Input</h3>
+
+<div class="row">
+        <%= form_label("Enter string for text search", "input") %>
+        <%= form_text_field("text_search", "", "", 30) %>
+</div>
+<div class="row">
+  <div class="formw">
+    Special characters (e.g. .*+[]) need to be escaped, <br/>
+    type 'a\.102\.' to search for SCOP fold a.102.
+  </div>
+</div>
+<div class="row">
+        <%= form_label("or enter plain sequence for BLAST search", "input") %>
+        <%= form_text_area("blast_input") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+        <%= form_label("Mark selected sequences with crossbars", "crossbars") %>
+        <%= form_checkbox("crossbars") %>
+</div>
+
+<div class="row">
+        <%= form_submit_buttons %>
+</div>
+
+</form>

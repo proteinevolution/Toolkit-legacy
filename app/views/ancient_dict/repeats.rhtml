@@ -1,0 +1,68 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "subitems") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<p style="font-size:14px; font-weight:bold;">Internal repeat Fragments</p>
+
+<p style="font-size:13px; font-weight:bold;"><!--<u><i>-->All Alpha<!--</i></u>--></p>
+
+<table border="0" width="100%">
+  <colgroup>
+    <col width="40%">
+    <col width="60%">
+  </colgroup>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'rep_AA'", :order => "f_name").each do |alpha|%>
+  <tr>
+    <td style="font-size:12px; font-weight:bold;">
+      <a href="<%= DOC_ROOTURL %>/ancient_dict/repeat?page=<%=alpha.f_id%>"><%=alpha.f_name%></a>
+    </td>
+    <td style="font-size:12px" align="justify">
+      <%=alpha.f_shortdesc%>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+
+<p style="font-size:13px; font-weight:bold;"><!--<u><i>-->All Beta<!--</i></u>--></p>
+
+<table border="0" width="100%">
+  <colgroup>
+    <col width="40%">
+    <col width="50%">
+  </colgroup>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'rep_AB'", :order => "f_name").each do |beta|%>
+  <tr>
+    <td style="font-size:12px; font-weight:bold;">
+      <a href="<%= DOC_ROOTURL %>/ancient_dict/repeat?page=<%=beta.f_id%>"><%=beta.f_name%></a>
+    </td>
+    <td style="font-size:12px" align="justify">
+      <%=beta.f_shortdesc%>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<p style="font-size:13px; font-weight:bold;"><!--<u><i>-->Mixed<!--</i></u>--></p>
+
+<table border="0" width="100%">
+  <colgroup>
+    <col width="40%">
+    <col width="60%">
+  </colgroup>
+  <%Dapfragment.find(:all, :conditions => "f_category = 'rep_M'", :order => "f_name").each do |mixed|%>
+  <tr>
+    <td style="font-size:12px; font-weight:bold;">
+      <a href="<%= DOC_ROOTURL %>/ancient_dict/repeat?page=<%=mixed.f_id%>"><%=mixed.f_name%></a>
+    </td>
+    <td style="font-size:12px" align="justify">
+      <%=mixed.f_shortdesc%>
+    </td>
+  </tr>
+  <% end %>
+</table>
+

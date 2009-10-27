@@ -1,0 +1,91 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "update_items") %>
+
+<!--<%= form_tag({:controller => "ancient_dict", :action => "addingKey"}, {:multipart => true})%>-->
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<% if @item == "" %>
+  <p style="font-size:14px; font-weight:bold;">Select type of the item</p></br>
+    <form action="/ancient_dict/addItem" method="post" name="add_item">
+    <select name='add_item' onChange="window.location = this.value;">
+      <option value="">Item</option>
+      <%@entry.each do |it|%>
+        if is_active?(it)
+          <option value="<%= DOC_ROOTURL %>/ancient_dict/addItem?item=<%=it%>"><%=it%></option>
+        end
+      <% end %>
+    </select>
+  </form>
+<%else%>
+  <p style="font-size:14px; font-weight:bold;">Add <%=@item%></p><br/>
+
+  <div class="row">
+    <%= form_label("Selected item")%>
+    <%= form_text_field("fitem", @item, "", 8)%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Name of "+ @item)%>
+    <%= form_text_field("f_name", "", "", 80)%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Description of "+ @item)%>
+    <%= form_text_area("f_desc")%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Short description of "+ @item)%>
+    <%= form_text_area("f_shortdesc")%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Select category of " + @item) %>
+    <%if(@item=='Fragment')%>
+      <%= form_select_single("f_cat", @cat_values, @cat_labels, @cat_values[0]) %>
+    <%else%>
+      <%= form_select_single("f_cat", @catrep_values, @catrep_labels, @catrep_values[0]) %>
+    <%end%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Select the keywords for the " + @item) %>
+    <%= form_select_multiple("f_keys", @key_values, @key_labels, @key_values[0]) %>
+  </div>
+
+  <div class="row">
+    <%= form_label("Upload an alignment file for the " + @item) %>
+    <%= form_file("f_ali")%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Upload a figure for the " + @item) %>
+    <%= form_file("f_figure")%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Occurrence of "+ @item + " (separate the occurrence from the description with \\t and each occurrenc with \\n)")%>
+    <%= form_text_area("f_occ")%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Reference of "+ @item + " (separate the references with \\n)")%>
+    <%= form_text_area("f_ref")%>
+  </div>
+
+
+  <div class="row">
+    <div id="gloading_lnk" style="display:none; text-decoration:blink; float: right; margin-right: 25px;" >Loading...</div>
+  </div>
+
+
+  <div class="row">
+    <input name="submitform" type="submit" class="toolbutton" value="Add Item" onclick="Effect.Appear('gloading_lnk');"/>
+    <input name="resetform" type="reset" class="toolbutton" value="Reset"/>
+  </div>
+
+<%end%>

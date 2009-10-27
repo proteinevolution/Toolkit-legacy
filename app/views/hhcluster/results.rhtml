@@ -39,36 +39,71 @@
 	<div class="row">No hits found!</div>
 <% else %>
 
-	<%= form_tag({:action => 'update', :jobid => @job}, {:multipart => true, :id => @job.tool+"_form", :name => @job.tool+"_form"})%>
-	<div class="row">
-		<input name="submitform" type="submit" class="feedbutton" value="Update cluster" />
-		<input name="resetform" type="reset" class="feedbutton" value="Reset" /><br />
-	</div>
-	<div class="spacer">&nbsp;</div>
-	<table style="width: 100%;">
-		<tr>
-			<td width="25px"> </td>
-			<td width="32px">E-value</td>
-			<td width="600px">Domain name</td>
-		</tr>
-		<% for i in 0...@job.results.size %>
-		<tr>
-			<td width="25px"><input type="checkbox" name="hits[]" value="<%= @job.gis[i] %>" <% if @job.marked[i] == "true" %> checked="checked" <% end %> /></td>
-			<td width="32px"><%= @job.evalue[i] %></td>
-			<td width="600px"><a href="/hhcluster/makeHhpred?id=<%= @job.gis[i] %>" title="View HHpred results for this domain"><pre><%= @job.results[i] %></pre></a></td>
-		</tr>
-		<% end %>
-	</table>
-	<div class="spacer">&nbsp;</div>
-	<div class="spacer">&nbsp;</div>
-	<a href="javascript:select()" >Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:deselect()" >Deselect all</a>
+<%= form_tag({:action => 'update', :jobid => @job}, {:multipart => true, :id => @job.tool+"_form", :name => @job.tool+"_form"})%>
 
-	<div class="row">
-		<input name="submitform" type="submit" class="feedbutton" value="Update cluster" />
-		<input name="resetform" type="reset" class="feedbutton" value="Reset" /><br />&nbsp;
-	</div>
-	
-	<input type="hidden" name="userUpdateCluster" value="1">
-	<input type="hidden" id="checkboxes" name="checkboxes" value="<%= @job.results.size %>">
-	</form>
+<a href="javascript:select()" >Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:deselect()" >Deselect all</a>
+<div class="row">
+  <input name="submitform" type="submit" class="feedbutton" value="Update cluster" />
+  <input name="resetform" type="reset" class="feedbutton" value="Reset" /><br />
+</div>
+<div class="spacer">&nbsp;</div>
+<table style="width: 100%;">
+  <tr>
+    <td width="25px"> </td>
+    <td width="32px">E-value</td>
+    <td width="600px">Domain name</td>
+  </tr>
+  <% for i in 0...@job.results.size %>
+  <tr>
+    <td width="25px"><input type="checkbox" name="hits[]" value="<%= @job.gis[i] %>" <% if @job.marked[i] == "true" %> checked="checked" <% end %> /></td>
+    <td width="32px"><%= @job.evalue[i] %></td>
+    <td width="600px"><a href="/hhcluster/makeHhpred?id=<%= @job.gis[i] %>" title="View HHpred results for this domain"><pre><%= @job.results[i] %></pre></a></td>
+  </tr>
+  <% end %>
+</table>
+<div class="spacer">&nbsp;</div>
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+  <input name="submitform" type="submit" class="feedbutton" value="Update cluster" />
+  <input name="resetform" type="reset" class="feedbutton" value="Reset" /><br />&nbsp;
+</div>
+
+<input type="hidden" name="userUpdateCluster" value="1">
+<input type="hidden" id="checkboxes" name="checkboxes" value="<%= @job.results.size %>">
+</form>
 <% end %>
+
+<%= form_tag({:action => :run, :job => 'hhcluster'}, {:multipart => true})%>
+
+<h3 class="<%= @section["name"] %>">Input</h3>
+
+<div class="row">
+        <%= form_label("Enter string for text search", "input") %>
+        <%= form_text_field("text_search", "", "", 30) %>
+</div>
+<div class="row">
+  <div class="formw">
+    Special characters (e.g. .*+[]) need to be escaped, <br/>
+    type 'a\.102\.' to search for SCOP fold a.102.
+  </div>
+</div>
+<div class="row">
+        <%= form_label("or enter plain sequence for BLAST search", "input") %>
+        <%= form_text_area("blast_input") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+        <%= form_label("Mark selected sequences with crossbars", "crossbars") %>
+        <%= form_checkbox("crossbars") %>
+</div>
+
+<div class="row">
+        <%= form_submit_buttons %>
+</div>
+
+</form>

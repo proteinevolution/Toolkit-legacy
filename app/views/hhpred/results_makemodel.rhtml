@@ -9,23 +9,50 @@
 </div><div class="hr">&nbsp;</div>
 <% end %>
 
+
 <div id="createmodel">
-  <div class="row">
-    <input name="submitform" type="submit" class="toolbutton" value="Prepare for MODELLER" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => 'hhmakemodel_forward', :jobid => @job, :forward_action => "forward", :forward_controller => 'modeller') %>');" />
-    <input name="hits" id="hits" type="hidden" value=""/>
-    <strong>
-      Please press "Prepare for MODELLER" to generate a PIR alignment for MODELLER.		
-      (Using the default setting corresponds to HHpred2's procedure.) The alignments on this page 
-      represent groups of structurally similar templates (with permuted master templates). 
-      It is recommended to select only complementary template groups, i.e. those with small or no overlaps.
+
+  <div id="selectTemplate_button" class="row">
+    <div class="label">
+      <a href="#" onclick="openHelpWindow('hhpred_help_params', 'selectTemplates');">Select templates</a>
+    </div>
+    <div class="formw">
+      <strong>
+	<!--radio_button_tag(name, value, checkval.eql?(value), :onchange => onchange, :id=>value) << "&nbsp;" << label-->
+	<%= radio_button_tag('selectedtemplates', 'single', true, {:onclick => "javascript:select_templates('single');"}) -%>&nbsp;optimal single template &nbsp;&nbsp;&nbsp;&nbsp;
+	<%= radio_button_tag('selectedtemplates', 'multi', false, {:onclick => "javascript:select_templates('multi');"}) -%>&nbsp;optimal multiple templates &nbsp;&nbsp;&nbsp;&nbsp;
+	<%= radio_button_tag('selectedtemplates', 'non', false) -%>&nbsp;user-defined&nbsp;&nbsp;&nbsp;&nbsp;    
     </strong>
+    </div>
   </div>
+  <br><br>
+
+  <div class="row">
+      <strong>
+      <p  align="justify">
+      You can build your model using an optimal single template per query sequence domain (HHpred4 in CASP8), optimal multiple templates (HHpred5 in CASP8) or your own selected templates. We recommend not to select more than 5 template matches per query sequence domain.<br><br>
+      The hit list below may contain several matches per template with similar alignments. These differ by the diversity (thickness) of the query and template HMMs used to generate the HMM-HMM alignment. A neural network is used to predict the expected TMScore for each alignment (column 6) and template alignments are reranked by this score. (TMScore &isin [0,1]; TMScore &ge 0.4 corresponds to meaningful predictions.)<br><br>
+      Press "Generate alignment for MODELLER" to generate an PIR-alignment from the (automatically or manually) selected alignments.
+      </p> 
+      </strong>
+  </div>
+
+  <div class="row">
+    <input name="submitform" type="submit" class="toolbutton" value="Generate alignment for MODELLER" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => 'hhmakemodel_forward', :jobid => @job, :forward_action => "forward", :forward_controller => 'modeller') %>');" />
+    <input name="hits" id="hits" type="hidden" value=""/>
+    
+  </div>
+  
+  <div class="spacer">&nbsp;</div>
+
   <div class="hr">&nbsp;</div>
 </div>
 
+<div class="spacer">&nbsp;</div>
+
 <div id="color_button" class="row">
   <div class="label">
-    <a href="#" onclick="openHelpWindow('/hhpred/help_params#coloring');">Color alignments</a>
+    <a href="#" onclick="openHelpWindow('hhpred_help_params', 'coloring');">Color alignments</a>
   </div>
   <div class="formw">
     <strong>

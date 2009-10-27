@@ -3,22 +3,14 @@ class ModellerAction < Action
   MODEL_QUALITY = File.join(BIOPROGS, 'model-quality')
   MOD_BIN = File.join(BIOPROGS, 'modeller', 'bin', 'modeller')
 
-  attr_accessor :informat, :sequence_input, :sequence_file, :modeller_key, :jobid, :mail , :own_pdb_file1 ,  :own_pdb_file2, :own_pdb_file3, :own_pdb_file4, :own_pdb_file5, :own_pdb_name1 , :own_pdb_name2 , :own_pdb_name3 , :own_pdb_name4 , :own_pdb_name5 , :sequence1 , :sequence2 , :sequence3 , :sequence4 , :sequence5
+  attr_accessor :informat, :sequence_input, :sequence_file, :modeller_key, :jobid, :mail , :own_pdb_name , :own_pdb_file
+
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
                                                     :informat => 'fas', 
                                                     :inputmode => 'alignment',
                                                     :min_seqs => 2,
                                                     :max_seqs => 1000,
                                                     :on => :create })
-
-  
-
-  validates_input( :sequence1  , :own_pdb_file1, {:informat => 'pdb'})
-  validates_input( :sequence2  , :own_pdb_file2, {:informat => 'pdb'})
-  validates_input( :sequence3  , :own_pdb_file3, {:informat => 'pdb'})
-#  validates_input( :sequence4  , :own_pdb_file4, {:informat => 'pdb'})
- # validates_input( :sequence5  , :own_pdb_file5, {:informat => 'pdb'})
-
 
   validates_jobid(:jobid)
   
@@ -28,8 +20,6 @@ class ModellerAction < Action
   
   validates_shell_params(:jobid, :mail, {:on => :create})
   
-  validates_modeller_option( :own_pdb_name1, :own_pdb_file1)
-#  validates_modeller_option( :sequence1, {:pdb_file => :own_pdb_file1 ,:allow_nil => false})
   # Put action initialisation code in here
   def before_perform
     
@@ -37,12 +27,14 @@ class ModellerAction < Action
     @seqfile = @basename + ".prepare"
     @infile = @basename + ".in"
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
+    
     @ownpdbfiles = ['own_pdb_file1','own_pdb_file2','own_pdb_file3','own_pdb_file4','own_pdb_file5']
     @ownpdbnames =  ['own_pdb_name1','own_pdb_name2','own_pdb_name3','own_pdb_name4','own_pdb_name5']
     @ownpdbfiles.each_index  do |i|
       ownpdbfile = File.join(job.job_dir, "#{params[@ownpdbnames[i]]}.pdb")
       params_to_file(ownpdbfile, @ownpdbfiles[i])
     end
+    
     @commands = []
     
     @format = params["informat"].nil? ? 'fas' : params["informat"]
@@ -76,7 +68,7 @@ class ModellerAction < Action
         reformat(@format, "fas", @seqfile)			
       
         # convert alignment in fasta-format
-        command = "#{MODELLER}/pir_converter.pl -i #{@seqfile} -o #{@infile} -fas -tmp #{job.job_dir}"
+        command = "export TK_ROOT=#{TOOLKIT_ROOT}; #{MODELLER}/pir_converter.pl -i #{@seqfile} -o #{@infile} -fas -tmp #{job.job_dir}"
         logger.debug "Command: #{command}"
         system(command)
         
@@ -126,22 +118,18 @@ class ModellerAction < Action
     
     # get knowns
     knowns = ""
-    knowns_h = Hash.new
     lines = IO.readlines(@infile)
     lines.each do |line|
       line.scan(/^structureX:(.*?):/) do |name|
-        if (!knowns_h.has_key?(name))     
-          if (knowns == "")
-            knowns = "'#{name}'"
-          else
-            knowns += ", '#{name}'"
-          end
-	  knowns_h[name] = 1
+        if (knowns == "")
+          knowns = "'#{name}'"
+        else
+          knowns += ", '#{name}'"
         end
       end
     end
     
-    # write the top-file		
+    # write the py-file		
     modeller_script = @basename + ".py"
     File.open(modeller_script, 'w') do |file|
       file.write("# Homology modeling by the automodel class\n")
@@ -150,10 +138,16 @@ class ModellerAction < Action
       file.write("log.verbose()\n")
       file.write("env = environ()                      # create a new MODELLER environment to build this model\n")
       file.write("# directories for input atom files\n")
-      file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{job.job_dir}'\n")
+      #file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{job.job_dir}:#{job.parent.job_dir}'\n")
+      parent_dir = ""
+      if !job.parent.nil?
+         parent_dir = ":#{job.parent.job_dir}"
+      end
+      file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{job.job_dir}#{parent_dir}'\n")
+
       file.write("a = automodel(env,\n")
       file.write("              alnfile  = '#{@infile}',    # alignment filename\n")
-      file.write("              knowns   = (#{knowns}),       # codes of the templates\n")
+      file.write("              knowns   = (#{knowns}),     # codes of the templates\n")
       file.write("              sequence = '#{@seq_name}')  # code of the target\n")
       file.write("a.starting_model= 1                       # index of the first model\n")
       file.write("a.ending_model = 1                        # index of the last model\n")
@@ -169,9 +163,6 @@ class ModellerAction < Action
     @commands << "mv #{@basename}_temp.*.pdb #{@basename}.pdb; rm -f #{@basename}_temp.*"
     @commands << "#{MODELLER}/repair_pdb.pl #{@basename}.pdb > #{@basename}.log_repair"
 
-    # put into iMolTalk server
-    ## @commands << "cd #{job.job_dir}; wget -O #{@basename}.imoltalk --post-file=#{@basename}.pdb http://protevo.eb.tuebingen.mpg.de/iMolTalk/batchupload.cgi ;\n"
- 
     logger.debug "Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'quality_check'
@@ -203,7 +194,7 @@ class ModellerAction < Action
     # work-around (TODO: Run commands without setting job status to error, if a command fails)
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'additional' => 'true'})
-    
+
   end
 
 end

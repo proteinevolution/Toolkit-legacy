@@ -15,8 +15,9 @@ user_login_succeeded: Login successful
 user_login_failed: Login unsuccessful
 user_signup_succeeded: Signup successful! Please check your registered email account to verify your account registration and continue with the login.
 user_confirmation_email_error: 'Error creating account: confirmation email not sent'
-user_updated_password: Your updated password has been emailed to %s.
+user_updated_password: Your password has changed and a notification has been emailed to %s. You can now login with your new password.
 user_change_password_email_error: Your password could not be changed at this time. Please retry.
+user_change_password_key_error: Your password could not be verified by the given key. Please retry.
 user_enter_valid_email_address: Please enter a valid email address.
 user_email_address_not_found: We could not find a user with the email address %s.
 user_forgotten_password_emailed: Instructions on resetting your password have been emailed to %s.
@@ -57,7 +58,7 @@ user_logout_login_link: '&#171; login'
 
 # Change password
 user_change_password_head: Change Password
-user_change_message: Enter your new password in the fields below and click 'Change Password' to have a new password sent to your email inbox.
+user_change_message: Enter your new password in the fields below and click 'Change Password' to change your password. A notification will be sent to your email inbox.
 user_change_password_button: Change password
 user_change_cancel_welcome_link: Cancel
 
@@ -83,3 +84,4 @@ user_street_form: Street
 user_city_form: City
 user_country_form: Country
 user_modeller_key_form: Modeller-key
+

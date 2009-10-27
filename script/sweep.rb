@@ -48,7 +48,7 @@ jobs.each do |job|
   if( !(Watchlist.find(:first, :conditions => [ "job_id = ?", job.jobid])).nil? || !(Watchlist.find(:first, :conditions => [ "str_id = ?", job.jobid])).nil?)
     next
   end
-  if( (NOW-job[:updated_on]) > TWOWEEKS )
+  if( (NOW.to_f-job[:updated_on].to_f) > TWOWEEKS )
     logger.debug("Deleting job(id='#{job[:id]}') - older than 2 weeks and not owned by a user")
     puts "Deleting job(id='#{job[:id]}') - older than 2 weeks and not owned by a user"
     delete_job(job, logger)
@@ -61,7 +61,7 @@ jobs.each do |job|
   if( !(Watchlist.find(:first, :conditions => [ "job_id = ?", job.jobid])).nil? || !(Watchlist.find(:first, :conditions => [ "str_id = ?", job.jobid])).nil?)
     next
   end
-  if( (NOW-job[:updated_on]) > TWOMONTHS )
+  if( (NOW.to_f-job[:updated_on].to_f) > TWOMONTHS )
     user = User.find(:first, :conditions=>"id='#{job[:user_id]}'")
     if (user.nil?) 
       logger.debug("Deleting job(id='#{job[:id]}') - older than 2 months and owned by user which no longer exists")
@@ -78,7 +78,7 @@ end
 Dir.foreach(USERDBDIR) do |dir| 
   if(dir =~ /^\.+$/) then next end
   file = File.join(USERDBDIR, dir)
-  if( (NOW-File.ctime(file))>WEEK )
+  if( (NOW.to_f-File.ctime(file).to_f)>WEEK )
     logger.debug("Deleting userdb #{dir} - older than 1 week")
     puts "Deleting userdb #{dir} - older than 1 week"
     system("rm -f #{file}")
@@ -98,7 +98,13 @@ Dir.foreach(TMP) do |id|
       logger.debug("Deleting #{file} - no job for id='#{id}' in the db")
       puts "Deleting #{file} - no job for id='#{id}' in the db"
       system("rm -rf #{file}")
+    else
+	out = `more #{File.join(file,"*.hhr")}`
+	if out.include?("/cluster/user/michael/galaxy/")
+	   delete_job(res, logger)
+	end	
     end
+   
   end
 end
 

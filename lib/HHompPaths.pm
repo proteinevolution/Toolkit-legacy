@@ -29,7 +29,7 @@ our $pdbdir = "/cluster/databases/pdb/all";
 our $database_dir = "/cluster/databases";
 our $bioprogs_dir = "/cluster/www/toolkit/bioprogs";
 our $proftmb_dir = "/cluster/user/michael/tools/proftmb";
-our $prof_db = "$database_dir/scop25_1.69 $database_dir/uniprot_sprot $database_dir/uniprot_trembl";
+our $prof_db = "$database_dir/standard/uniprot_sprot.fasta $database_dir/standard/uniprot_trembl.fasta";
 
 my $rootdir;
 
@@ -49,7 +49,7 @@ if (defined $ENV{TK_ROOT}) {
     $hh=       "$bioprogs_dir/hhomp"; 
     $calhhm=   "$database_dir/hhpred/cal.hhm"; 
     $proftmb_dir = "$bioprogs_dir/proftmb";
-    $prof_db = "$database_dir/standard/scop25_1.69 $database_dir/standard/uniprot_sprot $database_dir/standard/uniprot_trembl";
+    $prof_db = "$database_dir/standard/uniprot_sprot.fasta $database_dir/standard/uniprot_trembl.fasta";
     $nr    =   "$database_dir/standard/nr";             # nr database to be used
     $nre   =   "$database_dir/standard/nre";            # nr database to be used
     $nrf   =   "$database_dir/standard/nrf";            # nr database to be used

@@ -145,10 +145,7 @@ module Toolkit
               logger.debug "##### SHIFTX!"
               
               validates_shx(attr_names, {:on => :create })
-            
-            when "pdb"
-              logger.debug "##### PDB"
-              validates_pdb(attr_names, {:on => :create})
+              
             else
               logger.debug "##### Wrong format!"
             end

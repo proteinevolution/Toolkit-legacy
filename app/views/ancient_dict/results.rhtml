@@ -1,0 +1,22 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections") %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row">
+  Updated fragment / repeat
+  </br></br>
+  Name:
+  </br>
+  <!--<%= %>-->
+  </br></br>
+  ID:
+  </br>
+  <!--<%= %>-->
+  </br></br>
+  Category:
+  </br>
+  <!--<%= %>-->
+</div>
+

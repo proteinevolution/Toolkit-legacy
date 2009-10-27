@@ -25,7 +25,9 @@
 <h3 class="<%= @section["name"] %>">Options</h3>
 <div class="row">
 	<%= form_label("Do PSI-BLAST Search", "psiblast_search") %>
-	<%= form_checkbox("psiblast_chk", '1', true) %>
+	<% active = true %>
+	<% if ((params['psiblast_check'] && params['psiblast_check'] == 0)) then active = false end %>
+	<%= form_checkbox("psiblast_chk", '1', active) %>
 </div>
 <div class="spacer">&nbsp;</div>
 
@@ -113,22 +115,6 @@
 </div>
 <div class="spacer">&nbsp;</div>	
 	
-<div class="row">	<div class="label">
-		<%= form_label("MEMSAT2") %>
-	</div>
-	<div class="formw">			
-		<table><tr><td align="left" valign="top">
-			<%= form_checkbox("memsat2_chk", '1', true, true) %>
-		</td><td>			
-			D. T. Jones, W. R. Taylor and J. M. Thornton (1994)
-			A model recognition approach to the prediction of all-helical 
-			membrane protein structure and topology
-			<em>Biochemistry</em> <b>33</b>, 3038-3049.
-		</td>
-		</tr></table>
-	</div>			
-</div>
-<div class="spacer">&nbsp;</div>
 
 <div class="row">	<div class="label">
 		<%= form_label("HMMTOP") %>
@@ -145,7 +131,41 @@
 		</tr></table>
 	</div>			
 </div>
-<div class="spacer">&nbsp;</div>			
+<div class="spacer">&nbsp;</div>		
+
+<div class="row">
+	<div class="label">
+		<%= form_label("MEMSAT-SVM") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("memsatsvm_chk", '1', true, true) %>
+		</td><td>			
+			Timothy Nugent, David T. Jones (2009)
+			Transmembrane protein topology prediction using support vector machines
+			<em>BMC Bioinformatics 2009</em>
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>	
+
+<div class="row">
+	<div class="label">
+		<%= form_label("PHOBIUS") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("phobius_chk", '1', true, true) %>
+		</td><td>			
+			Lukas K&auml;ll, Anders Krogh and Erik L. L. Sonnhammer.
+			A Combined Transmembrane Topology and Signal Peptide Prediction Method.
+			<em>Journal of Molecular Biology</em> <b>338(5):1027-1036</b>, May 2004.
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>
 			
 <div class="row">	<div class="label">
 		<%= form_label("DISOPRED2") %>
@@ -164,26 +184,25 @@
 </div>
 <div class="spacer">&nbsp;</div>
 
+
 <div class="row">
 	<div class="label">
-		<%= form_label("VSL2") %>	
+		<%= form_label("IUPRED") %>
 	</div>
 	<div class="formw">			
 		<table><tr><td align="left" valign="top">
-			<%= form_checkbox("vsl2_chk", '1', true, true) %>
+			<%= form_checkbox("iupred_chk", '1', true, true) %>
 		</td><td>			
- 	 	 	K. Peng, P. Radivojac, S. Vucetic, A. K. Dunker, and Z. Obradovic (2006), 
- 	 	 	Length-Dependent Prediction of Protein Intrinsic Disorder, 
- 	 	 	<em>BMC Bioinformatics</em> <b>7</b>, 208.
-		</td></tr><td align="left" valign="top"></td><td>
-			Z. Obradovic, K. Peng, S. Vucetic, P. Radivojac, and A. K. Dunker, 
-			Exploiting Heterogeneous Sequence Properties Improves Prediction of Protein Disorder (2005), 
-			<em>Proteins </em> <b>61(S7)</b>, 176-182.
+			Zsuzsanna Doszt&aacute;, Veronika Csizm&oacute;k, P&eacute;ter Tompa and Istv&aacute;n Simon (2005) 
+			The Pairwise Energy Content Estimated from Amino Acid Composition Discriminates 
+			between Folded and Intrinsically Unstructured Proteins
+			<em>J. Mol. Biol.</em> <b>347</b>, 827-839.
 		</td>
 		</tr></table>
-	</div>
+	</div>			
 </div>
-<div class="spacer">&nbsp;</div>	
+<div class="spacer">&nbsp;</div>
+
 
 <%= render(:partial => "shared/joboptions") %>
 

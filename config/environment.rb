@@ -20,7 +20,7 @@ memcache_options = {
 memcache_servers = [ '127.0.0.1:11211' ]
 
 #global settings
-TOOLKIT_RELEASE = '2.5.0'
+TOOLKIT_RELEASE = '2.9.14'
 DOC_ROOTURL     = 'http://' + DOC_ROOTHOST
 BIOPROGS        = TOOLKIT_ROOT+'/bioprogs'
 TMP             = TOOLKIT_ROOT+'/tmp/'+RAILS_ENV
@@ -41,7 +41,7 @@ STATUS_QUEUED  = 'q'
 JAVA_1_5_EXEC = JAVA_EXEC
 
 #hhcluster settings
-HHCLUSTER_DB      = "scop25_1.69"
+HHCLUSTER_DB      = "scop20_1.75"
 HHCLUSTER_DB_PATH = DATABASES + "/hhcluster/" + HHCLUSTER_DB
 
 Rails::Initializer.run do |config|
