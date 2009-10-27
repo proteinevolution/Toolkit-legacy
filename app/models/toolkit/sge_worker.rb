@@ -83,18 +83,8 @@
           f.write '#$' + " -l long\n"
         end
 
-        if (queue == "toolkit_immediate" && LOCATION == "Tuebingen")
+        if (queue == "toolkit_immediate")
           f.write '#$' + " -l immediate\n"
-        end
-
-        if LOCATION != "Tuebingen"
-          if (queue == "toolkit_long")
-            f.write '#$' + " -l long\n"
-          end
-
-          if (queue == "toolkit_immediate")
-            f.write '#$' + " -l immediate\n"
-          end
         end
 
          #f.write "-l h_vmem=2G\n"
