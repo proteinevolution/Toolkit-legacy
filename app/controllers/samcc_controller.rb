@@ -45,4 +45,8 @@ class SamccController < ToolController
     send_data(ret, :filename => filename, :type => @job.class.export_type)
   end
 
+  def help_results
+    render(:layout => "help")
+  end
+
 end

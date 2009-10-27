@@ -18,7 +18,7 @@ module Toolkit
 
           configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
 
-          logger.debug "##### PDB Validation!"
+          logger.debug "##### PDB Validation! *****************************+++++++++++++++"
 
           validates_each(attr_names, configuration) do | record, attr, value |
 
