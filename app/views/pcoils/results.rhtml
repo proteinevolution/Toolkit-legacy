@@ -1,6 +1,6 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
   
-<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+<%= render(:partial => "shared/resultsections", :locals => {:export => false})%>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
   
