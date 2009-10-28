@@ -53,6 +53,7 @@
    <col width="75%">
   </colgroup>-->
   <%Dapoccurrence.find(:all, :conditions => ["f_id=?", @page], :order => "scop_id").each do |scop|%>
+    <%if Dapscop.find(:first, :conditions => ["scop_id=?", scop.scop_id])%>
     <tr>
       <td style="font-size:12px">
         <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=scop.scop_id%>"><%=scop.scop_id%></a>
@@ -64,6 +65,7 @@
         <%=Dapscop.find(:first, :conditions => ["scop_id=?", scop.scop_id]).scop_desc%>
       </td>
     </tr>
+    <%end%>
   <% end %>
 </table>
 <br/>
@@ -170,15 +172,18 @@ href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=eachline[j]%>"><%=ea
 <!-- courier und monospace in Verbindung haben nicht funktioniert, daher nur monospace, da es sein kann, dass courier nicht bei allen Browsern funktioniert.-->
 <br/>
 <br/>
-<%if Dapref.find(:first, :conditions => ["f_id=?", @page]).r_reference != "NULL"%>
-<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
-<table border="0">
-  <%Dapref.find(:all, :conditions => ["f_id=?", @page]).each do |ref|%>
-    <tr>
-      <td style="font-size:12px">
-        <%=ref.r_reference%>
-      </td>
-    </tr>
-  <% end %>
-</table>
+<%if Dapref.find(:first, :conditions => ["f_id=?", @page])%>
+  <%if Dapref.find(:first, :conditions => ["f_id=?", @page]).r_reference != "NULL"%>
+  <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
+  <table border="0">
+    <%Dapref.find(:all, :conditions => ["f_id=?", @page]).each do |ref|%>
+      <tr>
+        <td style="font-size:12px">
+          <%=ref.r_reference%>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <%end%>
+<%else%>
 <%end%>
