@@ -427,7 +427,7 @@ class Quick2DJob < Job
     ar.each do |line|
       if( line =~ /\s*CONF\s+:\s+(\S+)\s*$/ )
         ret['conf']+=$1
-      elsif( line =~ /\s*FINAL\s+:\s+(\S+)\s*$/ )
+      elsif( line =~ /\s*ALIGN\s+:\s+(\S+)\s*$/ )
         ret['pred']+=$1
       elsif( line =~ /\s*SOL25\s+:\s+(\S+)\s*$/ )
         sol25 += $1

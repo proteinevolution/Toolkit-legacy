@@ -60,12 +60,12 @@ class Quick2DAction < Action
     @coils       = params['coils_chk']     ? true : false
     @profouali   = params['profouali_chk'] ? true : false
     @profrost    = params['profrost_chk']  ? true : false
-    @memsatsvm = params['memsatsvm_chk'] ? true : false
-    @phobius = params['phobius_chk'] ? true : false
+    @memsatsvm   = params['memsatsvm_chk'] ? true : false
+    @phobius     = params['phobius_chk'] ? true : false
     #@memsat      = params['memsat2_chk']   ? true : false
     @hmmtop      = params['hmmtop_chk']    ? true : false
     @disopred    = params['disopred2_chk'] ? true : false
-     @iupred = params['iupred_chk'] ? true : false
+    @iupred      = params['iupred_chk'] ? true : false
     #@vsl2        = params['vsl2_chk']      ? true : false
     @informat    = params['informat']
     logger.debug("Format: "+@informat+"\n")
@@ -153,6 +153,7 @@ class Quick2DAction < Action
         commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
         if !File.exist?(flash['a3mfile'])
           commands << "#{REFORMAT} -i=fas -o=a3m -f=#{flash['fasfile']} -a=#{flash['a3mfile']} -M first"
+
         end
         commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
         commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['fasfile']}"

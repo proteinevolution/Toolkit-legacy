@@ -107,7 +107,7 @@ class User < ActiveRecord::Base
   end
 
   validates_presence_of :login, :on => :create
-  validates_length_of :login, :within => 3..40, :on => :create
+  validates_length_of :login, :within => 3..80, :on => :create
   validates_uniqueness_of :login, :on => :create
 
   validates_presence_of :password, :if => :validate_password?
@@ -117,4 +117,3 @@ class User < ActiveRecord::Base
   
   validates_presence_of :lastname, :on => :create
 end
-
