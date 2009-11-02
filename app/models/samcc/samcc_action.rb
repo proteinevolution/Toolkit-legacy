@@ -20,9 +20,9 @@ class SamccAction < Action
 
   validates_format_of(:chain1_end, :chain2_end, :chain3_end, :chain4_end, {:on => :create, :with => /\d/, :message => 'Field must be a number.'})
 
-  validates_format_of(:first_position, {:on => :create, :with => /[ABCDEFGHIJKLMNOPQRSTUVWXYZabgdefghijklmnopqrstuvwxyz]/, :message => 'Field must be an alphabetical character.'})
+  validates_format_of(:first_position1, :first_position2, :first_position3, :first_position4, {:on => :create, :with => /[ABCDEFGHIJKLMNOPQRSTUVWXYZabgdefghijklmnopqrstuvwxyz]/, :message => 'Field must be an alphabetical character.'})
 
-  validates_format_of(:first_position_AP, {:on => :create, :with => /[ABCDEFGHIJKLMNOPQRSTUVWXYZabgdefghijklmnopqrstuvwxyz\s]/, :message => 'Field must be an alphabetical character or empty.'})
+  #validates_format_of(:first_position_AP, {:on => :create, :with => /[ABCDEFGHIJKLMNOPQRSTUVWXYZabgdefghijklmnopqrstuvwxyz\s]/, :message => 'Field must be an alphabetical character or empty.'})
 
   # Put action initialisation code in here
   def before_perform
@@ -55,18 +55,20 @@ class SamccAction < Action
     @chain4_start = params['chain4_start'] ? params['chain4_start'] : ""
     @chain4_end = params['chain4_end'] ? params['chain4_end'] : ""
     @periodicity = params['periodicity'] ? params['periodicity'] : ""
-    @firstpos = params['first_position'] ? params['first_position'] : ""
-    @firstposAP = params['first_position_AP'] ? params['first_position_AP'] : "a"
-    if(@firstposAP == ' ')
-      @firstposAP = "a"
-    end
+    @firstpos1 = params['first_position1'] ? params['first_position1'] : ""
+    @firstpos2 = params['first_position2'] ? params['first_position2'] : ""
+    @firstpos3 = params['first_position3'] ? params['first_position3'] : ""
+    @firstpos4 = params['first_position4'] ? params['first_position4'] : ""
+    #@firstposAP = params['first_position_AP'] ? params['first_position_AP'] : "a"
+    #if(@firstposAP == ' ')
+    #  @firstposAP = "a"
+    #end
     logger.debug "Chain1: letter #{@chain1_letter}; start #{@chain1_start}; end #{@chain1_end}"
     logger.debug "Chain2: letter #{@chain2_letter}; start #{@chain2_start}; end #{@chain2_end}"
     logger.debug "Chain3: letter #{@chain3_letter}; start #{@chain3_start}; end #{@chain3_end}"
     logger.debug "Chain4: letter #{@chain4_letter}; start #{@chain4_start}; end #{@chain4_end}"
     logger.debug "Periodicity: #{@periodicity}"
-    logger.debug "First Position: #{@firstpos}"
-    logger.debug "First Position AP: #{@firstposAP}"
+    #logger.debug "First Position: #{@firstpos}"
 
     save_parameters
   end
@@ -92,8 +94,8 @@ class SamccAction < Action
   def save_parameters
     res = []
     res << "!:periodicity:#{@periodicity}\n"
-    res << "!:firstpos:#{@firstpos}\n"
-    res << "!:firstpos2:#{@firstposAP}\n"
+    res << "!:firstpos:#{@firstpos1},#{@firstpos2},#{@firstpos3},#{@firstpos4}\n"
+    #res << "!:firstpos2:#{@firstposAP}\n"
     res << "!:pdb:#{@pdbfile}\n"
     res << "#{@chain1_letter}:1:#{@chain1_start}-#{@chain1_end}\n"
     res << "#{@chain2_letter}:2:#{@chain2_start}-#{@chain2_end}\n"

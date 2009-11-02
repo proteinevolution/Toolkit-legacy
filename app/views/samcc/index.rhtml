@@ -38,7 +38,7 @@
 	<div class="formw">
 		<table>
 			<tr>
-				<td>one letter</td><td><%= form_text_field("chain1_letter", @ch1_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain1_start", @ch1_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain1_end", @ch1_end, "", 4, false, "", true)%>
+				<td>first position</td><td><%= form_text_field("first_position", @first_pos1, "", 2, false, "", true) %></td><td>one letter</td><td><%= form_text_field("chain1_letter", @ch1_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain1_start", @ch1_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain1_end", @ch1_end, "", 4, false, "", true)%>
 			</tr>
 		</table>
 	</div>
@@ -49,7 +49,7 @@
 	<div class="formw">
 		<table>
 			<tr>
-				<td>one letter</td><td><%= form_text_field("chain2_letter", @ch2_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain2_start", @ch2_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain2_end", @ch2_end, "", 4, false, "", true)%></td>
+				<td>first position</td><td><%= form_text_field("first_position", @first_pos2, "", 2, false, "", true) %></td><td>one letter</td><td><%= form_text_field("chain2_letter", @ch2_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain2_start", @ch2_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain2_end", @ch2_end, "", 4, false, "", true)%></td>
 			</tr>
 		</table>
 	</div>
@@ -60,7 +60,7 @@
         <div class="formw">
                 <table>
                         <tr>
-                                <td>one letter</td><td><%= form_text_field("chain3_letter", @ch3_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain3_start", @ch3_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain3_end", @ch3_end, "", 4, false, "", true)%></td>
+                                <td>first position</td><td><%= form_text_field("first_position", @first_pos3, "", 2, false, "", true) %></td><td>one letter</td><td><%= form_text_field("chain3_letter", @ch3_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain3_start", @ch3_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain3_end", @ch3_end, "", 4, false, "", true)%></td>
 			</tr>
 		</table>
 	</div>
@@ -71,7 +71,7 @@
 	<div class="formw">
                 <table>
                         <tr>
-                                <td>one letter</td><td><%= form_text_field("chain4_letter", @ch4_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain4_start", @ch4_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain4_end", @ch4_end, "", 4, false, "", true)%></td>
+                                <td>first position</td><td><%= form_text_field("first_position", @first_pos4, "", 2, false, "", true) %></td><td>one letter</td><td><%= form_text_field("chain4_letter", @ch4_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain4_start", @ch4_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain4_end", @ch4_end, "", 4, false, "", true)%></td>
                         </tr>
                 </table>
         </div>
@@ -82,7 +82,7 @@
         <%= form_select_single("periodicity", @periodicity_values, @periodicity_labels, @periodicity_values[0]) %>
 </div>
 
-<div class="row">
+<!--<div class="row">
         <%= form_label("First position", "first_pos") %>
         <%= form_text_field("first_position", @first_pos, "", 2) %>
 </div>
@@ -90,7 +90,7 @@
 <div class="row">
         <%= form_label("First position AP", "first_pos_AP") %>
         <%= form_text_field("first_position_AP", ' ') %>
-</div>
+</div>-->
 
 
 <div class="spacer">&nbsp;</div>
