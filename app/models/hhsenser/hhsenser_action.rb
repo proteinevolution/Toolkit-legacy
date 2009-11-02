@@ -229,7 +229,7 @@ class HhsenserAction < Action
       
       subseq = subseq - 1
       outFile = File.new(@basename + ".subseq#{subseq}", "w+")
-      outFile.write(">#{name}:#{subseq} (#{i1}-#{i2})\n#{seq[(i1-1)..(i2-i1+1)]}\n")
+      outFile.write(">#{name}:#{subseq} (#{i1}-#{i2})\n#{seq[(i1-1)..(i2-2)]}\n")
 
       logger.debug "Subseqs erzeugt!"
 

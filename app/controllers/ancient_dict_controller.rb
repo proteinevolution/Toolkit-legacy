@@ -161,6 +161,37 @@ in at least two folds."
     @ipage = params['ipage'] ? params['ipage'] : ""
   end
 
+  def addscop
+    getlinks
+    getupdate_items
+    @colors = params['colors'] ? params['colors'] : "asc"
+    @color = params['color'] ? params['color'] : "up"
+    @scopname="null"
+  end
+
+  def updatescop
+    getlinks
+    getupdate_items
+    @colors = params['colors'] ? params['colors'] : "usc"
+    @color = params['color'] ? params['color'] : "up"
+    @scoppage = params['scoppage'] ? params['scoppage'] : ""
+
+    if (@scoppage == "")
+      @tst = "kein Wert für keypage"
+    else
+      @tst = @scoppage
+    end
+
+  end
+
+  def deletescop
+    getlinks
+    getupdate_items
+    @colors = params['colors'] ? params['colors'] : "dsc"
+    @color = params['color'] ? params['color'] : "up"
+    @spage = params['spage'] ? params['spage'] : ""
+  end
+
 # links that are used in multiple pages
 
   def getlinks
@@ -179,10 +210,10 @@ in at least two folds."
   end
 
   def getupdate_items
-    @update_item = ["aky", "uky", "dky", "ait", "uit", "del"]
-    @update_item_names = ["add", "up", "delete", "addItem", "updateItem", "deleteItem"]
-    @update_item_text = ["Add Key", "Update Key", "Delete Key", "Add Item", "Update Item", "Delete Item"]
-    @update_item_on_mouse = ["Add a new keyword", "Update an existing keyword", "Delete an existing keyword", "Add a new item (Fragment/Repeat)", "Update an existing item (Fragment/Repeat)", "Delete an existing item"]
+    @update_item = ["aky", "uky", "dky", "ait", "uit", "del", "asc", "usc", "dsc"]
+    @update_item_names = ["add", "up", "delete", "addItem", "updateItem", "deleteItem", "addscop", "updatescop", "deletescop"]
+    @update_item_text = ["Add Key", "Update Key", "Delete Key", "Add Item", "Update Item", "Delete Item", "Add Scop", "Update Scop", "Delete Scop"]
+    @update_item_on_mouse = ["Add a new keyword", "Update an existing keyword", "Delete an existing keyword", "Add a new item (Fragment/Repeat)", "Update an existing item (Fragment/Repeat)", "Delete an existing item", "Add a new scop entry", "Update an existing scop entry", "Delete an existing scop entry"]
   end
 
 

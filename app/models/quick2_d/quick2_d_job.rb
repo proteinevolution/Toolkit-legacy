@@ -117,13 +117,13 @@ class Quick2DJob < Job
 
   def export_ss(name, blub, a, b)
     ret = sprintf("%-#{@@descr_width}s", name)
-    if( !blub.nil? && !blub['pred'].nil? )
+    if( !blub.nil? && !blub['pred'].nil?)
       ret += blub['pred'][a..b] + "\n"
     else
       ret += "\n"
     end
     ret += sprintf("%-#{@@descr_width}s", "CONF")
-    if( !blub.nil? && !blub['conf'].nil? )
+    if( !blub.nil? && !blub['conf'].nil?)
       ret += blub['conf'][a..b] + "\n"
     else
       ret += "\n"
@@ -134,7 +134,7 @@ class Quick2DJob < Job
 
   def export_tm(name, blub, a, b)
     ret = sprintf("%-#{@@descr_width}s", name)
-    if( !blub.nil? && !blub['tmpred'].nil? )
+    if( !blub.nil? && !blub['tmpred'].nil?)
       ret += blub['tmpred'][a..b] + "\n"
     else
       ret += "\n"
@@ -427,7 +427,7 @@ class Quick2DJob < Job
     ar.each do |line|
       if( line =~ /\s*CONF\s+:\s+(\S+)\s*$/ )
         ret['conf']+=$1
-      elsif( line =~ /\s*FINAL\s+:\s+(\S+)\s*$/ )
+      elsif( line =~ /\s*ALIGN\s+:\s+(\S+)\s*$/ )
         ret['pred']+=$1
       elsif( line =~ /\s*SOL25\s+:\s+(\S+)\s*$/ )
         sol25 += $1
@@ -483,6 +483,9 @@ class Quick2DJob < Job
     ret['tmpred'].gsub!(/i/, "-")
     ret['tmpred'].gsub!(/o/, "+")
     ret['tmpred'].gsub!(/T/, "X")
+
+    if (ret['tmpred']=="") then ret['tmpred'] = nil end
+    if (ret['tmconf']=="") then ret['tmconf'] = nil end
 
     if( !File.exists?( self.actions[0].flash['secfile'] ) ) then return {} end
     ar = IO.readlines( self.actions[0].flash['secfile'] )
