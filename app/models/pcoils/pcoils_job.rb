@@ -1,6 +1,6 @@
 class PcoilsJob < Job
 
-  @@export_ext = ".export"
+  @@export_ext = ".numerical"
   def set_export_ext(val)
     @@export_ext = val
   end
@@ -67,78 +67,82 @@ class PcoilsJob < Job
 
     #numerical output
 
-    #input file
-    #file *.coils_n14
-    if (!File.exists?(@coils14)) then return {} end
-    file14 = File.open(@coils14)
-    file14.each do |line|
-      nl = line.gsub(/^\s+/, '')
-      ln = nl.gsub(/^\D+/, '')
-      if (!ln.empty?)
-        spl = ln.split(/\s+/)
-        @nums << spl[0]
-        @aas << spl[1]
-        @pos14 << spl[2]
-        @val14 << spl[4]
-      end
-    end
-    file14.closed?
-    file14.close
+    if (!File.exists?(@basename + ".numerical"))
 
-    #file *.coils_n21
-    if (!File.exists?(@coils21)) then return {} end
-    file21 = File.open(@coils21)
-    file21.each do |line|
-      nl = line.gsub(/^\s+/, '')
-      ln = nl.gsub(/^\D+/, '')
-      if (!ln.empty?)
-        spl = ln.split(/\s+/)
-        @pos21 << spl[2]
-        @val21 << spl[4]
+      #input file
+      #file *.coils_n14
+      if (!File.exists?(@coils14)) then return {} end
+      file14 = File.open(@coils14)
+      file14.each do |line|
+        nl = line.gsub(/^\s+/, '')
+        ln = nl.gsub(/^\D+/, '')
+        if (!ln.empty?)
+          spl = ln.split(/\s+/)
+          @nums << spl[0]
+          @aas << spl[1]
+          @pos14 << spl[2]
+          @val14 << spl[4]
+        end
       end
-    end
-    file21.closed?
-    file21.close
+      file14.closed?
+      file14.close
 
-    #file *.coils_n28
-    if (!File.exists?(@coils28)) then return {} end
-    file28 = File.open(@coils28)
-    file28.each do |line|
-      nl = line.gsub(/^\s+/, '')
-      ln = nl.gsub(/^\D+/, '')
-      if (!ln.empty?)
-        spl = ln.split(/\s+/)
-        @pos28 << spl[2]
-        @val28 << spl[4]
+      #file *.coils_n21
+      if (!File.exists?(@coils21)) then return {} end
+      file21 = File.open(@coils21)
+      file21.each do |line|
+        nl = line.gsub(/^\s+/, '')
+        ln = nl.gsub(/^\D+/, '')
+        if (!ln.empty?)
+          spl = ln.split(/\s+/)
+          @pos21 << spl[2]
+          @val21 << spl[4]
+        end
       end
-    end
-    file28.closed?
-    file28.close
+      file21.closed?
+      file21.close
 
-    file = File.new(@basename + ".numerical", "w")
+      #file *.coils_n28
+      if (!File.exists?(@coils28)) then return {} end
+      file28 = File.open(@coils28)
+      file28.each do |line|
+        nl = line.gsub(/^\s+/, '')
+        ln = nl.gsub(/^\D+/, '')
+        if (!ln.empty?)
+          spl = ln.split(/\s+/)
+          @pos28 << spl[2]
+          @val28 << spl[4]
+        end
+      end
+      file28.closed?
+      file28.close
 
-    if (@nums.length > 999)
-      for index in (0...9)
-        file.write("   #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
-      end
-      for index in (9...99)
-        file.write("  #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
-      end
-      for index in (99...999)
-        file.write(" #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
-      end
-      for index in (999...@nums.length)
-        file.write("#{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
-      end
-    else
-      for index in (0...9)
-        file.write("  #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
-      end
-      for index in (9...99)
-        file.write(" #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
-      end
-      for index in (99...@nums.length)
-        file.write("#{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
+      file = File.new(@basename + ".numerical", "w")
+
+      if (@nums.length > 999)
+        for index in (0...9)
+          file.write("   #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
+        end
+        for index in (9...99)
+          file.write("  #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
+        end
+        for index in (99...999)
+          file.write(" #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
+        end
+        for index in (999...@nums.length)
+          file.write("#{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
+        end
+      else
+        for index in (0...9)
+          file.write("  #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
+        end
+        for index in (9...99)
+          file.write(" #{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
+        end
+        for index in (99...@nums.length)
+          file.write("#{@nums[index]} #{@aas[index]}     #{@pos14[index]} #{@val14[index]}     #{@pos21[index]} #{@val21[index]}     #{@pos28[index]} #{@val28[index]} \n")
+        end
+
       end
 
     end
