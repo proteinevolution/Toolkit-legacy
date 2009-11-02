@@ -7,14 +7,14 @@
 <%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
 
 <% if @spage == "" %>
-  <p style="font-size:14px; font-weight:bold;">Select Keyword for Deletion</p>
+  <p style="font-size:14px; font-weight:bold;">Select ScopID for Deletion</p>
   </br>
   <form action="/ancient_dict/delete" method="post" name="scp">
     <select name='scp' onChange="window.location = this.value;">
-      <option value="">Keywords</option>
+      <option value="">Scop entries</option>
       <%Dapscop.find(:all, :order => "scop_id").each do |scop|%>
         if is_active?(scop)
-          <%@scop_entry=scop.scop_id + ': ' + scop.scop_desc %>
+          <%@scop_entry=scop.scop_id%>
           <option value="<%= DOC_ROOTURL %>/ancient_dict/deletescop?spage=<%=scop.scop_id%>"><%=@scop_entry%></option>
         end
       <% end %>
