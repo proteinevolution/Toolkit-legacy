@@ -13,7 +13,7 @@
 	<%= form_label("Mode", "clusterby") %>
 	<div class="formw">
 		<input name="datatype" type="radio" value="1" checked="checked" onchange="setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'cluster', :parent => @job, :forward_controller => 'clans', :forward_action => 'results_clustering', :increment_id => 'true') %>'); Effect.Appear('cluster'); Effect.Fade('clans'); init_cluster();">&nbsp; Clustering &nbsp; &nbsp;
-		<input name="datatype" type="radio" value="2" onchange="setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'view_clans', :parent => @job, :forward_controller => 'clans', :forward_action => 'results_view_clans', :increment_id => 'true') %>');  Effect.Appear('clans'); Effect.Fade('cluster'); init_clans();"> &nbsp; View in <a href="http://protevo.eb.tuebingen.mpg.de/miscpages/clans/">CLANS</a>
+		<input name="datatype" type="radio" value="2" onchange="setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'view_clans', :parent => @job, :forward_controller => 'clans', :forward_action => 'results_view_clans', :increment_id => 'true') %>');  Effect.Appear('clans'); Effect.Fade('cluster'); init_clans();"> &nbsp; View in <a href="http://www.eb.tuebingen.mpg.de/departments/1-protein-evolution/software/clans">CLANS</a>
 	</div>
 </div>
 
