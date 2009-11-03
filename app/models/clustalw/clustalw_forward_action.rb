@@ -20,17 +20,17 @@ class ClustalwForwardAction < Action
 		out = File.new(outfile, "w+")
 		    
 		res.each do |line|
-      	if (line =~ /^CLUSTAL/ || line =~ /^\s*$/)
-      		num = 0
-      		out.write(line)
-      	elsif (line =~ /^\s+/)
-      		next
-      	else
-      		if hits.include?(num.to_s)
-      			out.write(line)
-      		end
-      		num += 1
-      	end
+      			if (line =~ /^CLUSTAL/ || line =~ /^\s*$/)
+      				num = 0
+      				out.write(line)
+      			elsif (line =~ /^\s+/)
+      				next
+      			else
+      				if hits.include?(num.to_s)
+      					out.write(line)
+      				end
+      				num += 1
+      			end
 		end
 		out.close
 		
