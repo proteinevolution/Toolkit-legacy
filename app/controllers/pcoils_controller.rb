@@ -14,6 +14,12 @@ class PcoilsController < ToolController
 	def help_results
 		render(:layout => "help")
 	end
+
+        def results
+        end
+
+        def results_numerical
+        end
   
   
 end

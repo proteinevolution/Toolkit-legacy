@@ -1,0 +1,47 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "update_items") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<% if @spage == "" %>
+  <p style="font-size:14px; font-weight:bold;">Select ScopID for Deletion</p>
+  </br>
+  <form action="/ancient_dict/delete" method="post" name="scp">
+    <select name='scp' onChange="window.location = this.value;">
+      <option value="">Scop entries</option>
+      <%Dapscop.find(:all, :order => "scop_id").each do |scop|%>
+        if is_active?(scop)
+          <%@scop_entry=scop.scop_id%>
+          <option value="<%= DOC_ROOTURL %>/ancient_dict/deletescop?spage=<%=scop.scop_id%>"><%=@scop_entry%></option>
+        end
+      <% end %>
+    </select>
+  </form>
+<% else %>
+  <%@sinfo=Dapscop.find(:first, :conditions => ["scop_id=?", @spage])%>
+
+  <p style="font-size:14px; font-weight:bold;">Delete Scop Entry</p>
+
+  <div class="row">
+    <%= form_label("Mysql ID (Do not change!!!)") %>
+    <%= form_text_field("delsid", @sinfo.id, "", 10)%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Scop ID (Do not change!!!)") %>
+    <%= form_text_field("s_delsid", @sinfo.scop_id, "", 10)%>
+  </div>
+
+  <div class="row">
+    <div id="gloading_lnk" style="display:none; text-decoration:blink; float: right; margin-right: 25px;" >Loading...</div>
+  </div>
+
+  <div class="row">
+    <input name="submitform" type="submit" class="toolbutton" value="Delete Scop Entry" onclick="Effect.Appear('gloading_lnk');"/>
+  </div>
+
+<%end%>
+
