@@ -5,25 +5,25 @@
 <h2><%= @tool['title'] %> Parameters</h2>
 
 <a name="input"></a>
-<h3 class="<%= @section["name"] %>">Input</h3> 
+<h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-Enter single protein sequence or protein sequence alignment and choose its format from the dropdown menu. 
-By default the 'Do PSI-BLAST' check-box is enabled and a profile of homologous sequences is generated for the input. 
-If an alignent is provided, PSI-BLAST tries to extend the alignment. 
-The first sequence in the alignment is the query! 
-The predictions are based on the 200 most divergent sequences of the alignment. 
+Enter either a single protein sequence or a protein sequence alignment and choose its format from the dropdown menu.
+By default the 'Do PSI-BLAST' check-box is enabled and a profile of homologous sequences is generated for the input.
+If an alignment is provided, PSI-BLAST tries to extend the alignment.
+The first sequence in the alignment is the query!
+The predictions are based on the 200 most divergent sequences of the alignment.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 <a name="format"></a>
-<h3 class="<%= @section["name"] %>">Input Format</h3> 
+<h3 class="<%= @section["name"] %>">Input Format</h3>
 <div class="row">
 Select the format of your protein sequence(s) from the dropdown menu. The FASTA format accepts a single raw sequence without headers as well. More details about different sequence formats can be found <a href="/reformat/help_params">here</a>.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 <a name="psiblast_search"></a>
-<h3 class="<%= @section["name"] %>">Do PSI-BLAST Search</h3> 
+<h3 class="<%= @section["name"] %>">Do PSI-BLAST Search</h3>
 <div class="row">
 Search for homologous protein sequences and generate a profile for the predictions. Alignments are extended using the jump-start option of PSI-BLAST.</div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
