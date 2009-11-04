@@ -84,7 +84,7 @@ def perform_hhsearch ( hmm_file=nil )
 							  
       if userdb.nil?
         system("rm #{path}")
-        system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhr/,'.hhm')}")
+        system("rm #{hhm_file}")
       else
         params = userdb.params
         @mapt = ''
@@ -96,11 +96,11 @@ def perform_hhsearch ( hmm_file=nil )
             @mapt = params["mapt"].nil? ? '' : '-mapt '+params["mapt"]
           end
         end
-        STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file}......\n")
-        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
+#        STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file}......\n")
+#        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
         STDOUT.write("\n#{Time.now} - Performing HHsearch for #{hhm_file}......\n")
         system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{pdb_database} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
-        system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
+#        system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
       end
     end
   end
@@ -123,6 +123,7 @@ def analyse_result
       if userdb.nil?
         system("rm #{path}")
         system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhr/,'.hhm')}")
+        system("rm #{PDB_ALERT_TMP}/hhr/#{file}")
       elsif ( ARGV[0].nil? || ( !ARGV[0].nil? && ( ARGV[0].to_i == userdb.id || ARGV[0].to_i == 0 ) ) )
         present_prob = userdb.probability
 	if !userdb.params['Emax'].nil?
@@ -415,11 +416,11 @@ def on_hold_sequence_search(hmm_file=nil)
           @mapt = params["mapt"].nil? ? '' : '-mapt '+params["mapt"]
         end
       end
-      STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file} for on-hold sequences......\n")
-      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
+#      STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file} for on-hold sequences......\n")
+#      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
       STDOUT.write("\n#{Time.now} - Performing HHsearch for #{hhm_file} with on-hold sequence database (#{on_hold_db})......\n")
       system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{on_hold_db} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
-      system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
+#      system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
     end
   end
   
@@ -455,7 +456,7 @@ def on_hold_sequence_search(hmm_file=nil)
       @name = @lines[cut+1].gsub(/>/,'')
       imin = @lines[cut+2].gsub(/^.*Identities=(.*)\%.*$/,'\1').to_f
       if(prob > present_prob + 0.1 && emax < present_Emax - 0.01 && imin > present_Imin + 0.1)
-        @matches.push(file)
+        @matches.push(file.gsub(/\.hhm/,'.hhr'))
         userdb.params['match_name'] = @name
         userdb.save!
         @results.push(userdb)
