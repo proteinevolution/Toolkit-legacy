@@ -4,7 +4,7 @@ class SamccAction < Action
 
   attr_accessor :mail, :jobid, :sequence_input, :sequence_file
   attr_accessor :chain1_letter, :chain1_start, :chain1_end, :chain2_letter, :chain2_start, :chain2_end, :chain3_letter, :chain3_start, :chain3_end, :chain4_letter, :chain4_start, :chain4_end
-  attr_accessor :first_position, :first_position_AP
+  attr_accessor :first_position1, :first_position2, :first_position3, :first_position4
 
   validates_input(:sequence_input, :sequence_file, {:informat => 'pdb', :on => :create})
 
@@ -31,7 +31,7 @@ class SamccAction < Action
     init
 
     @pdbfile = @basename+".pdb"
-    params_to_file(@pdbfile, 'sequence_file')
+    params_to_file(@pdbfile, 'sequence_input', 'sequence_file')
     @outfile = @basename+".out"
     logger.debug "Outfile: #{@outfile}"
     @paramsfile = @basename+".params"
