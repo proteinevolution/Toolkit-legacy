@@ -12,7 +12,10 @@ function paste1GCL() {
 	$('chain4_letter').value = "D";
 	$('chain4_start').value = "2";
 	$('chain4_end').value = "28";
-	$('first_position').value = "b";
+	$('first_position1').value = "a";
+        $('first_position2').value = "a";
+	$('first_position3').value = "a";
+	$('first_position4').value = "a";
 	$('periodicity').value = "7";
 }
 
@@ -30,7 +33,9 @@ function paste2R2V() {
 	$('chain4_letter').value = "D";
 	$('chain4_start').value = "33";
 	$('chain4_end').value = "4";
-	$('first_position').value = "b";
-	$('first_position_AP').value = "c"
+	$('first_position1').value = "b";
+	$('first_position2').value = "c";
+	$('first_position3').value = "b";
+	$('first_position4').value = "c";
 	$('periodicity').value = "7";
 }

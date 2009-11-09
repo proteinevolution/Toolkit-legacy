@@ -20,7 +20,7 @@ class SamccAction < Action
 
   validates_format_of(:chain1_end, :chain2_end, :chain3_end, :chain4_end, {:on => :create, :with => /\d/, :message => 'Field must be a number.'})
 
-  validates_format_of(:first_position1, :first_position2, :first_position3, :first_position4, {:on => :create, :with => /[ABCDEFGHIJKLMNOPQRSTUVWXYZabgdefghijklmnopqrstuvwxyz]/, :message => 'Field must be an alphabetical character.'})
+  validates_format_of(:first_position1, :first_position2, :first_position3, :first_position4, {:on => :create, :with => /[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]/, :message => 'Field must be an alphabetical character.'})
 
   #validates_format_of(:first_position_AP, {:on => :create, :with => /[ABCDEFGHIJKLMNOPQRSTUVWXYZabgdefghijklmnopqrstuvwxyz\s]/, :message => 'Field must be an alphabetical character or empty.'})
 
@@ -79,7 +79,7 @@ class SamccAction < Action
     @commands << "/usr/bin/python #{SAMCC}/samcc.py #{@paramsfile} #{@outfile}"
     filepath=@job.job_dir+"/"
     dir=Dir.entries(filepath)
-    for i in 0..dir.length-1
+    for i in 0..dir.length
       @commands << "cd #{job.job_dir}; /usr/bin/gnuplot temp#{i}.run"
     end
     logger.debug "Commands:\n"+@commands.join("\n")
