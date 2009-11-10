@@ -126,7 +126,7 @@ class HhrepJob < Job
     for i in 1...@res.size
       if (@res[i] =~ /^Done!/) 
         break
-      elsif (@res[i] =~ /^\s*$/) 
+      elsif (@res[i] =~ /^\s*$/ || @res[i].nil?)
         next
       elsif (@res[i] =~ /^\s*No\s+Hit/)
         # Format title line from summary hit list
@@ -172,7 +172,7 @@ class HhrepJob < Job
         hits = hits.join(' ')
         @res[i] = "<input type=\"checkbox\" #{checked} name=\"hits[]\" value=\"#{@num}\" onclick=\"document.location.href='/hhrep/hhrep_reload/#{jobid}?mode=#{@mode}&qid=#{@qid}&dwin=#{@dwin}&dthr=#{@dthr}&hits=#{hits}';\" />" + @res[i]
       else
-				@res[i] = space_for_checkbox + @res[i]
+        @res[i] = space_for_checkbox + @res[i]
       end
     end
     
