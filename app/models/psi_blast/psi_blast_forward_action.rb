@@ -84,7 +84,8 @@ class PsiBlastForwardAction < Action
       job.update_status
     else
       logger.debug "Commands:\n"+@commands.join("\n")
-      queue.submit(@commands, true, {'queue' => 'toolkit_immediate'})
+      #queue.submit(@commands, true, {'queue' => 'toolkit_immediate'})
+      queue.submit(@commands, true, {'queue' => :immediate})
     end
 
   end
@@ -206,8 +207,50 @@ class PsiBlastForwardAction < Action
     if (!mode.nil? && mode == "sequence")
       inputmode = "sequence"
     end
-    if (params['forward_controller'] == "patsearch")
+
+    if (params['forward_controller'] == "psi_blast")
+      job_params = @job.actions.first.params
+      job_params.each_key do |key|
+        if (key =~ /^(\S+)_file$/) 
+          if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
+            params[$1+'_input'] = IO.readlines(job_params[key]).join
+          end
+        else
+          params[key] = job_params[key]
+        end
+      end
+      params[:jobid] = ''
+      #index
+      #render(:action => 'index')
+
+      logger.debug "vor alignment!"
+      expect = params['evalue']
+      logger.debug "expect: #{expect}"
+      mat_param = params['matrix']
+      logger.debug "mat_param: #{mat_param}"
+      ungapped_alignment = params['ungappedalign']
+      logger.debug "ungapped_alignment: #{ungapped_alignment}"
+      other_advanced = params['otheradvanced']
+      logger.debug "otheradvanced: #{other_advanced}"
+      descriptions = params['alignments']
+      logger.debug "descriptions: #{descriptions}"
+      e_thresh = params['evalfirstit']
+      logger.debug "evalfirstit: #{e_thresh}"
+      smith_wat = params['smithwat']
+      logger.debug "smith_wat: #{smith_wat}"
+      rounds = params['rounds']
+      logger.debug "rounds: #{rounds}"
+      filter = params['filter']
+      logger.debug "filter: #{filter}"
+      fastmode = params['fastmode']
+      logger.debug "fastmode: #{fastmode}"
+      db_path = params['std_dbs'].nil? ? "" : params['std_dbs'].join(' ')
+      #db_path = params['user_dbs'].nil? ? @db_path : @db_path + ' ' + params['user_dbs'].join(' ')
+      {'sequence_input' => res.join, 'inputmode' => inputmode, 'evalue' => expect, 'matrix' => mat_param, 'ungappedalign' => ungapped_alignment, 'otheradvanced' => other_advanced, 'alignments' => descriptions, 'evalfirstit' => e_thresh, 'smithwat' => smith_wat, 'rounds' => rounds, 'filter' => filter, 'fastmode' => fastmode, 'std_dbs' => db_path}
+    elsif (params['forward_controller'] == "patsearch")
       {'db_input' => res.join, 'std_dbs' => ""}
+    #elsif (params['forward_controller'] == "psi_blast")
+      #{'sequence_input' => res.join, 'inputmode' => inputmode, 'alignments' => descriptions}#'evalue' => expect, 'matrix' => mat_param, 'ungappedalign' => ungapped_alignment, 'otheradvanced' => other_advanced, 'alignments' => descriptions, 'evalfirstit' => e_thresh, 'smithwat' => smith_wat, 'rounds' => rounds, 'filter' => filter, 'fastmode' => fastmode}
     else
       {'sequence_input' => res.join, 'inputmode' => inputmode}
     end
