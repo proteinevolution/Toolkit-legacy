@@ -84,8 +84,8 @@ class PsiBlastForwardAction < Action
       job.update_status
     else
       logger.debug "Commands:\n"+@commands.join("\n")
-      #queue.submit(@commands, true, {'queue' => 'toolkit_immediate'})
-      queue.submit(@commands, true, {'queue' => :immediate})
+      queue.submit(@commands, true, {'queue' => 'toolkit_immediate'})
+      #queue.submit(@commands, true, {'queue' => :immediate})
     end
 
   end
