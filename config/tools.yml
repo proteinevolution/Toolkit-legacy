@@ -309,12 +309,6 @@
   title_long: Peaks
   active: 
   - internal
-- name: t_coffee_combine
-  section: alignment
-  title: TCoffeeCombine
-  title_long: TCoffeeCombine
-  active: 
-  - member
 - name: hhrepid
   section: seqanal
   title: HHrepID
