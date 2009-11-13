@@ -48,7 +48,7 @@
     # creates a shell wrapper file for all jobcomputations-commands that are executed on the queue, sets the status of the job
     # this must be a wrapper to be able to print to stdout and stderr files when disk file size limit is reached in the subshell.
     def writeShWrapperFile
-      queue = "toolkit_normal"
+      queue = QUEUES[:normal]
       cpus = nil
       additional = false
 
@@ -79,20 +79,13 @@
         f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -w n\n"
 
-	if (queue == "toolkit_long" && LOCATION == "Tuebingen")
+	if (queue == QUEUES[:long] && LOCATION == "Tuebingen")
           f.write '#$' + " -l long\n"
         end
 
-        if (queue == "toolkit_immediate")
+        if (queue == QUEUES[:immediate])
           f.write '#$' + " -l immediate\n"
         end
-
-         #f.write "-l h_vmem=2G\n"
-
-#        if (!cpus.nil?)
-#        f.write "#PBS -l nodes=1:ppn=#{cpus}\n"
-#        end
-
 
         f.write "hostname > #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
         if RAILS_ENV == "development"

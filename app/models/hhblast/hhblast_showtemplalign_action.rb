@@ -76,7 +76,7 @@ class HhblastShowtemplalignAction < Action
     end
     
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'queue' => 'toolkit_immediate'})   
+    queue.submit(@commands, true, {'queue' => QUEUES[:immediate]})
   end
   
 end
