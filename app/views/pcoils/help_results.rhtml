@@ -4,36 +4,36 @@
 	<li><a href="#contact">Contact</a></li>
 </ul>
 
-<h2><%= @tool['title'] %> Example Results</h2> 
+<h2><%= @tool['title'] %> Example Results</h2>
 
 <a name="psipredcoils"></a>
 <h3 class="<%= @section["name"] %>">PSIPRED and COILS</h3>
 <img src="/images/pcoils/psipred.png">
 <div class="row">
-PSIPRED - secondary structure prediction. This graph shows the prediction confidence over the sequence. 
+PSIPRED - secondary structure prediction. This graph shows the prediction confidence over the sequence.
 Alpha-helices are depicted in red, beta-sheets in green.
 </div>
 <img src="/images/pcoils/ncoils_large.png">
 <div>
-COILS - coiled coil prediction. This graph shows the coiled coil probability over the sequence or the 
+COILS - coiled coil prediction. This graph shows the coiled coil probability over the sequence or the
 sequence alignment. COILS uses sliding windows of 28 (red), 21 (blue), and 14 (green).
 </div>
 
 <a name="alignment"></a>
 <h3 class="<%= @section["name"] %>">Corresponding alignment</h3>
 <div class="row">
-In this section you see the alignment that corresponds to your PSI-Blast run 
-(given that you used the PSI-Blast option). PSI-Blast is run with two iterations, the E-value for the 
-inclusion in the first iteration is 0.001. The COILS output is based on this alignment, i.e. that you can 
-only trust the COILS output if you trust the given alignment. If you do not think that the alignment is 
-reasonable, you may get your own curated alignment and run COILS again with that alignment using the 
+In this section you see the alignment that corresponds to your PSI-Blast run
+(given that you used the PSI-Blast option). PSI-Blast is run with two iterations, the E-value for the
+inclusion in the first iteration is 0.001. The COILS output is based on this alignment, i.e. that you can
+only trust the COILS output if you trust the given alignment. If you do not think that the alignment is
+reasonable, you may get your own curated alignment and run COILS again with that alignment using the
 "use input as given" mode.
 </div>
 
 <a name="contact"></a>
 <h3 class="<%= @section["name"] %>">Contact</h3>
 <div class="row">
-We are committed to improve this service for you. Please inform us of problems, or send comments or 
-feedback to <a target="_blank" href="http://www.eb.tuebingen.mpg.de/dept1/staff/Gruber.html">Markus Gruber</a>.
+We are committed to improve this service for you. Please inform us of problems, or send comments or
+feedback to <a target="_blank" href="/common/contact">us</a>.
 </div>
 

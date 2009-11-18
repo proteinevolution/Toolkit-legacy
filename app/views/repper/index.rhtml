@@ -4,12 +4,12 @@
 <div class="spacer">&nbsp;</div>
 
 <div class="row">
-It finds PERiodicities by Fourier Transform 
-(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#ftwin');" onmouseover="return overlib('Help');" onmouseout="return nd();">FTwin</a>) and internal homology analysis 
-(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#repwin');" onmouseover="return overlib('Help');" onmouseout="return nd();">REPwin</a>). The exact locations of the 
-periodic patterns are traced by a sliding window. The output is complemented by coiled coil prediction 
-(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#coils');" onmouseover="return overlib('Help');" onmouseout="return nd();">COILS</a>) and optionally by secondary 
-structure prediction according to Jones 
+It finds PERiodicities by Fourier Transform
+(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#ftwin');" onmouseover="return overlib('Help');" onmouseout="return nd();">FTwin</a>) and internal homology analysis
+(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#repwin');" onmouseover="return overlib('Help');" onmouseout="return nd();">REPwin</a>). The exact locations of the
+periodic patterns are traced by a sliding window. The output is complemented by coiled coil prediction
+(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#coils');" onmouseover="return overlib('Help');" onmouseout="return nd();">COILS</a>) and optionally by secondary
+structure prediction according to Jones
 (<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#psipred');" onmouseover="return overlib('Help');" onmouseout="return nd();">PSIPRED</a>).
 </div>
 
@@ -32,7 +32,7 @@ structure prediction according to Jones
 </div>
 <div class="row">
 	<%= form_label("Select alignment format", "input_format") %>
-	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>
 </div>
 <div class="row">
 	<%= form_submit_buttons %>
@@ -44,7 +44,7 @@ structure prediction according to Jones
 
 <div class="row">
 	<%= form_label("Input mode", "inputmode") %>
-	<%= form_radio_buttons("inputmode", @inputmode_values, @inputmode_labels, @inputmode_values[0], "&nbsp;&nbsp;") %>	
+	<%= form_radio_buttons("inputmode", @inputmode_values, @inputmode_labels, @inputmode_values[0], "&nbsp;&nbsp;") %>
 </div>
 
 <div class="row">
@@ -63,7 +63,7 @@ structure prediction according to Jones
 
 <div class="row">
 	<%= form_label("Criteria for periodicity search", "criteria") %>
-	<%= form_radio_buttons("criteria", @criteria_values, @criteria_labels, @criteria_values[0], "&nbsp;&nbsp;", "setHydro();") %>	
+	<%= form_radio_buttons("criteria", @criteria_values, @criteria_labels, @criteria_values[0], "&nbsp;&nbsp;", "setHydro();") %>
 </div>
 
 <div class="row">
@@ -147,15 +147,15 @@ structure prediction according to Jones
 
 <div class="row">
 	<%= form_label("COILS Parameters", "coils_param") %>
-	<%= form_radio_buttons("weighting", @weighting_values, @weighting_labels, @weighting_values[0], "&nbsp;&nbsp;") %>	
+	<%= form_radio_buttons("weighting", @weighting_values, @weighting_labels, @weighting_values[0], "&nbsp;&nbsp;") %>
 </div>
 <div class="row">
-	<%= form_radio_buttons("matrix", @matrix_values, @matrix_labels, @matrix_values[0], "&nbsp;&nbsp;") %>	
+	<%= form_radio_buttons("matrix", @matrix_values, @matrix_labels, @matrix_values[0], "&nbsp;&nbsp;") %>
 </div>
 
 <div class="row">
 	<%= form_label("Run PSIPRED") %>
-	<%= form_checkbox("psipred", 1, false) %>	
+	<%= form_checkbox("psipred", 1, false) %>
 </div>
 
 <div class="spacer">&nbsp;</div>
@@ -171,12 +171,12 @@ structure prediction according to Jones
 <div class="hr">&nbsp;</div>
 	<ul class="arrow-marker">
 		<li><a href="#" title="About REPPER" onClick="openHelpWindow('/repper/help_ov');">About REPPER</a></li>
-		<li><a target="_blank" href="http://protevo.eb.tuebingen.mpg.de/download">Downloads</a></li>
-		<li><a target="_blank" href="http://www.eb.tuebingen.mpg.de/dept1/staff/Gruber.html">Send feedback</a></li>
+		<li><a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/">Downloads</a></li>
+		<li><a target="_blank" href="/common/contact">Send feedback</a></li>
 	</ul>
 </form>
 <div class="hr">&nbsp;</div>
 <div class="row">
-	M.Gruber, J.S&ouml;ding, and A.N.Lupas (2005) REPPER - repeats and their periodicities in fibrous proteins <em>Nucl. Acids Res.</em>, <strong>33</strong>(2), W239-43 
+	M.Gruber, J.S&ouml;ding, and A.N.Lupas (2005) REPPER - repeats and their periodicities in fibrous proteins <em>Nucl. Acids Res.</em>, <strong>33</strong>(2), W239-43
 	<a target="_blank" href="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W239">FREE PDF</a>
 </div>
