@@ -24,37 +24,6 @@
 		</div>
 		<div class="hr">&nbsp;</div>
 
-		<br/>
-		<strong>You may forward the query alignment to some tools&nbsp;&nbsp;</strong>
-		<br/>
-		<div id="forward">
-        		<div class="row">
-                		<%= form_label("Forward results to") %>
-                		<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0], 1, "toggle_seqlen('destination');") %>
-        		</div>
-
-        		<div class="row">
-	                	<%= form_label("Select hits to forward") %>
-        	        	<div class="formw">
-                	        	<input name="includehits" type="radio" value="selected" checked="checked" />&nbsp;selected hits<br/>
-                        		<input name="includehits" type="radio" value="byevalue" />&nbsp;hits with e-value better than&nbsp;
-                        		<input name="hitsevalue" type="text" value="0.001" />
-                		</div>
-        		</div>
-
-	        	<div class="row">
-        	        	<div class="label">Select sequence length</div>
-                		<div class="formw">
-                        		<input id="seqlen_hsp" name="seqlen" type="radio" value="hsp" checked="checked" disabled=true />&nbsp;Use HSPs<br/>
-                        		<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
-                        		<input id="seqlen_complete" name="seqlen" type="radio" value="complete" disabled=true />&nbsp;Use full length sequences&nbsp;
-                		</div>
-        		</div>
-
-        		<div class="hr">&nbsp;</div>
-		</div>
-
-		<br/>
 	  	<input name="submitform" type="submit" class="feedbutton" value="Restart HHpred with this alignment" /> 
    	<input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
    	<strong>You may edit the template alignment below and submit it to HHpred&nbsp;&nbsp;</strong>
