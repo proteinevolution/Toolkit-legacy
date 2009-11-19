@@ -91,6 +91,11 @@ class HhpredController < ToolController
   
   def showalign
     @widescreen = true
+    @fw_values = [fw_to_tool_url('psi_blast', 'hhrep')]
+ 
+    @fw_labels = [tool_title('hhrep')]
+
+
   end
   
   def results_showtemplalign
