@@ -276,14 +276,14 @@ class HhompController < ToolController
   end
   
   def hhomp_export_browser
-    if @job.actions.last.type.to_s.include?("Export")
+    if @job.actions.last.class.to_s.include?("Export")
       @job.actions.last.active = false
       @job.actions.last.save!
     end
   end
   
   def hhomp_export_file
-    if @job.actions.last.type.to_s.include?("Export")
+    if @job.actions.last.class.to_s.include?("Export")
       @job.actions.last.active = false
       @job.actions.last.save!
     end

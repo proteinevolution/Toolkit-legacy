@@ -4,3 +4,4 @@
 User-agent: *
 Disallow: /hhcluster/makeHhpred
 Disallow: /hhcluster
+Disallow: /hhomp/browse
