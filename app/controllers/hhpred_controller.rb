@@ -96,6 +96,10 @@ class HhpredController < ToolController
   
   def showalign
     @widescreen = true
+    @fw_values = [fw_to_tool_url('hhpred', 'hhrep'), fw_to_tool_url('hhpred', 'hhrepid'),
+		  fw_to_tool_url('hhpred', 'hhomp')]
+    @fw_labels = [tool_title('hhrep'), tool_title('hhrepid'),
+		  tool_title('hhomp')]
   end
   
   def results_showtemplalign
