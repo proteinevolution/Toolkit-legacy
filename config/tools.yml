@@ -309,12 +309,6 @@
   section: utils
   active: 
   - internal
-- name: t_coffee_combine
-  title: TCoffeeCombine
-  title_long: TCoffeeCombine
-  section: alignment
-  active: 
-  - member
 - name: hhrepid
   title: HHrepID
   title_long: HHrepID

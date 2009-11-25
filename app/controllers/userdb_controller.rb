@@ -100,7 +100,7 @@ class UserdbController < ApplicationController
     File.open(command_file, "w") do |f|
       f.write "#!/bin/sh\n"
       f.write '#$' + " -N TOOLKIT_userdb\n"
-      f.write '#$' + " -q toolkit_immediate\n"
+      f.write '#$' + " -q #{QUEUES[:immediate]}\n"
       f.write '#$' + " -o /dev/null\n"
       f.write '#$' + " -e /dev/null\n"
       f.write '#$' + " -w n\n"

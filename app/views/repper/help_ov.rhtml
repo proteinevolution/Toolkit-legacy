@@ -6,73 +6,73 @@
 	<li><a href="#contact">Contact</a></li>
 </ul>
 
-<h2><%= @tool['title'] %> Overview</h2> 
+<h2><%= @tool['title'] %> Overview</h2>
 
 <div class="row">
-REPPER is a server that detects and analyses regions with short gapless REPeats in protein sequences. 
-It finds PERiodicities by Fourier Transform (FTwin) and internal homology analysis (REPwin). The exact 
-locations of the periodic patterns are traced by a sliding window. The output is complemented by coiled 
+REPPER is a server that detects and analyses regions with short gapless REPeats in protein sequences.
+It finds PERiodicities by Fourier Transform (FTwin) and internal homology analysis (REPwin). The exact
+locations of the periodic patterns are traced by a sliding window. The output is complemented by coiled
 coil prediction (COILS) and optionally by secondary structure prediction (PSIPRED).
 </div>
 
 <a name="ftwin"></a>
 <h3 class="<%= @section["name"] %>">FTwin</h3>
 <div class="row">
-Sequence analysis by a sliding window Fourier transform (FT) method calculating the periodicity spectra 
-for all possible sequence windows. The overview graph shows all significant periodicities and where in 
-the sequence they are located. Periodicities are considered to be significant if their FT intensity is 
+Sequence analysis by a sliding window Fourier transform (FT) method calculating the periodicity spectra
+for all possible sequence windows. The overview graph shows all significant periodicities and where in
+the sequence they are located. Periodicities are considered to be significant if their FT intensity is
 above the given <a href="/repper/help_params#intensity">threshold</a>.
 </div>
 <div class="row">
-Clicking on a colored line on the output graph provides the complete FT spectrum for the sequence fragment 
-defined by the line (the fragment may include closely neighbored lines as well). Alternatively, 
-an arbitrary sequence range may be given (in the boxes under the output graph) in order to get a FT 
-spectrum of this particular sequence fragment. 
-<a target="_blank" href="http://protevo.eb.tuebingen.mpg.de/download">Download</a>
+Clicking on a colored line on the output graph provides the complete FT spectrum for the sequence fragment
+defined by the line (the fragment may include closely neighbored lines as well). Alternatively,
+an arbitrary sequence range may be given (in the boxes under the output graph) in order to get a FT
+spectrum of this particular sequence fragment.
+<a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/FTwin/">Download</a>
 </div>
 
 <a name="repwin"></a>
 <h3 class="<%= @section["name"] %>">REPwin</h3>
 <div class="row">
 REPWin compares a protein sequence with itself within a sliding window of choosable length W.
-For each window starting position i and periodicity p it calculates 
+For each window starting position i and periodicity p it calculates
 </div><div class="row">
      Score(i,p) = Sum_k Sum_j S(x[j],x[j+kp]).
 </div><div class="row">
-S(x[j],x[j+kp]) is the Gonnet substitution matrix element for residues x[j] and x[j+kp]. 
+S(x[j],x[j+kp]) is the Gonnet substitution matrix element for residues x[j] and x[j+kp].
 The sum runs over all k and j such that j and j+kp are inside the window [i,..,i+W-1].
-The score S(i,p) is normalized by dividing through the standard deviation of S(i,p) for nonperiodic 
-sequences. The final score value for each residue number i and periodicity p is the maximum over all 
+The score S(i,p) is normalized by dividing through the standard deviation of S(i,p) for nonperiodic
+sequences. The final score value for each residue number i and periodicity p is the maximum over all
 windows containing residue i.
 </div>
 <div class="row">
-Clicking on a colored line on the output graph displays the corresponding alignment that shows the 
-internal homology. <a target="_blank" href="http://protevo.eb.tuebingen.mpg.de/download">Download</a>
+Clicking on a colored line on the output graph displays the corresponding alignment that shows the
+internal homology. <a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/REPwin/">Download</a>
 </div>
 
 <a name="coils"></a>
 <h3 class="<%= @section["name"] %>">COILS</h3>
 <div class="row">
-COILS is a program that compares a sequence to a database of known parallel two-stranded coiled-coils and 
-derives a similarity score. By comparing this score to the distribution of scores in globular and 
-coiled-coil proteins, the program then calculates the probability that the sequence will adopt a 
-coiled-coil conformation. COILS is described in 
-<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=2031185">Lupas, Science 252: 1162-1164 (1991)</a> 
-and Lupas, Meth. Enzymology 266: 513-525 (1996). 
-It is based on a prediction protocol proposed by <a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=7165792">Parry, Biosci. Rep. 2: 1017-1024 (1982)</a>. 
-You can also <a target="_blank" href="http://protevo.eb.tuebingen.mpg.de/download">download</a> the software.
+COILS is a program that compares a sequence to a database of known parallel two-stranded coiled-coils and
+derives a similarity score. By comparing this score to the distribution of scores in globular and
+coiled-coil proteins, the program then calculates the probability that the sequence will adopt a
+coiled-coil conformation. COILS is described in
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=2031185">Lupas, Science 252: 1162-1164 (1991)</a>
+and Lupas, Meth. Enzymology 266: 513-525 (1996).
+It is based on a prediction protocol proposed by <a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=7165792">Parry, Biosci. Rep. 2: 1017-1024 (1982)</a>.
+You can also <a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/COILS/">download</a> the software.
 </div>
 
 <a name="psipred"></a>
 <h3 class="<%= @section["name"] %>">PSIPRED</h3>
 <div class="row">
-PSIPRED predicts the secondary structure as described in 
+PSIPRED predicts the secondary structure as described in
 <a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=10493868">Jones, J.Mol.Biol. 292:195-202 (1999)</a>.
 </div>
 
 <a name="contact"></a>
 <h3 class="<%= @section["name"] %>">Contact</h3>
 <div class="row">
-We are committed to improve this service for you. Please inform us of problems, or send comments or 
-feedback to <a target="_blank" href="http://www.eb.tuebingen.mpg.de/dept1/staff/Gruber.html">Markus Gruber</a>.
+We are committed to improve this service for you. Please inform us of problems, or send comments or
+feedback to <a target="_blank" href="/common/contact">us</a>.
 </div>

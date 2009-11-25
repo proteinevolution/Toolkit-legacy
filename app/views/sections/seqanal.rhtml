@@ -2,41 +2,41 @@
 
 <%= render(:partial => "shared/tool_descriptions") %>
 
-<h3 class="seqanal">External servers for predicting functional sites</h3>		
+<h3 class="seqanal">External servers for predicting functional sites</h3>
 
-<h4><a target="_blank" href="http://conseq.bioinfo.tau.ac.il/">ConSeq</a></h4>
+<h4><a target="_blank" href="http://conseq.tau.ac.il/">ConSeq</a></h4>
 <p class="tooldescr">
-	Identification of functionally and structurally important residues in protein 
-	sequences. This server scores residues by a combination of evolutionary 
+	Identification of functionally and structurally important residues in protein
+	sequences. This server scores residues by a combination of evolutionary
 	conservation and solvent accessability prediction. (No structure required.)
 </p>
 <div class="hr">&nbsp;</div>
 
 <h4><a target="_blank" href="http://consurf.tau.ac.il/">ConSurf</a></h4>
 <p class="tooldescr">
-	Identification of functionally important residues in protein structures. 	
+	Identification of functionally important residues in protein structures.
 	Very similiar to ConSeq, but scores are also mapped onto 3D protein structure.
 </p>
 <div class="hr">&nbsp;</div>
 
 <h4><a target="_blank" href="http://www-cryst.bioc.cam.ac.uk/~jiye/evoltrace/evoltrace.html">ET</a></h4>
 <p class="tooldescr">
-	Identification of functionally important residues in protein structures. 	
-	As ConSurf, the "Evolutionary Trace" method calculates a score from a multiple 
-	sequence alignment (MSA) and maps the scores onto 3D protein structure. But the score is	
+	Identification of functionally important residues in protein structures.
+	As ConSurf, the "Evolutionary Trace" method calculates a score from a multiple
+	sequence alignment (MSA) and maps the scores onto 3D protein structure. But the score is
 	a mixture of conservation and subtyping score: columns which are only conserved
-	WITHIN some clades of the phylogenetic tree underlying the MSA will count as partially 
-	conserved and will also tend to get good scores. (These residues are supposed to 	
+	WITHIN some clades of the phylogenetic tree underlying the MSA will count as partially
+	conserved and will also tend to get good scores. (These residues are supposed to
 	specify 'subtypes' within the family of homologs.)
 </p>
 <div class="hr">&nbsp;</div>
 
 
-<h3 class="seqanal">External function prediction servers</h3>		
+<h3 class="seqanal">External function prediction servers</h3>
 
 <h4><a target="_blank" href="http://theseed.uchicago.edu/FIG/index.cgi">The SEED</a></h4>
 <p class="tooldescr">
-	Gene/protein annotation tool that can find the gene cluster a gene/protein 
+	Gene/protein annotation tool that can find the gene cluster a gene/protein
 	belongs to, finds similar clusters in other organisms (with similar genes highlighted
 	in similar colors), provides a gene's upstream and downstream regions, and much more.
 	For an introductory tutorial, click "FIG tutorials" and then "Why Use the SEED".
@@ -54,27 +54,27 @@
 
 <h4><a target="_blank" href="http://wolfpsort.seq.cbrc.jp/">WoLF_PSORT</a></h4>
 <p class="tooldescr">
-	Predict the subcellular localization of a protein based on its amino acid sequence 
-  	(e.g. cytosol, nucleus, mitochondria). Predictions are based on both known sorting 
-	signal motifs and some correlative sequence features such as amino acid content. 
+	Predict the subcellular localization of a protein based on its amino acid sequence
+  	(e.g. cytosol, nucleus, mitochondria). Predictions are based on both known sorting
+	signal motifs and some correlative sequence features such as amino acid content.
 	The overall prediction accuracy is claimed to be over 80%.
 </p>
 <div class="hr">&nbsp;</div>
 
-<h3 class="seqanal">External de-novo repeat detection servers</h3>		
+<h3 class="seqanal">External de-novo repeat detection servers</h3>
 
 <h4><a target="_blank" href="http://www.ebi.ac.uk/Radar/">RADAR</a></h4>
 <p class="tooldescr">
-	Fast automatic server for <i>de novo</i> repeat detection that determines optimal repeat 
-	boundaries and uses iterative alignment of the query protein sequence to 
-	the repeat profile(s). Good for short composition-biased repeats and complex repeat 
+	Fast automatic server for <i>de novo</i> repeat detection that determines optimal repeat
+	boundaries and uses iterative alignment of the query protein sequence to
+	the repeat profile(s). Good for short composition-biased repeats and complex repeat
 	architectures involving many different types of repeats.
 </p>
 <div class="hr">&nbsp;</div>
 
 <h4><a target="_blank" href="http://ibivu.cs.vu.nl/programs/trustwww/">TRUST</a></h4>
 <p class="tooldescr">
-	Tracking Repeats Using Significance and Transitivity. 
+	Tracking Repeats Using Significance and Transitivity.
 	<i>De novo</i> repeat detection server based on sequence-sequence comparison
 	that is able to exploit the information from transitivity. Fast.
 </p>

@@ -6,19 +6,19 @@ class HhpredCoilsAction < Action
   	end
   
   	def perform
-   	@basename = File.join(job.job_dir, job.jobid)
-    	@infile = @basename+".a3m"
-    	@prepfile = @basename+"_filtered_for_coils.a3m" 
-    	@outfile = @basename+"_filtered_for_coils.fas"
-    	@commands = []
-		# Filter query alignment		
-		@commands << "#{HH}/hhfilter -i #{@infile} -o #{@prepfile} -qsc 0.7 -diff 0 &> /dev/null"
-		
-		# Reformat
-		@commands << "#{HH}/reformat.pl a3m fas #{@prepfile} #{@outfile} -r -noss &> /dev/null"
-		
-		logger.debug "Commands:\n"+@commands.join("\n")
-    	queue.submit(@commands, true, {'queue' => 'toolkit_immediate'})	
+          @basename = File.join(job.job_dir, job.jobid)
+          @infile = @basename+".a3m"
+          @prepfile = @basename+"_filtered_for_coils.a3m"
+          @outfile = @basename+"_filtered_for_coils.fas"
+          @commands = []
+          # Filter query alignment
+          @commands << "#{HH}/hhfilter -i #{@infile} -o #{@prepfile} -qsc 0.7 -diff 0 &> /dev/null"
+
+          # Reformat
+          @commands << "#{HH}/reformat.pl a3m fas #{@prepfile} #{@outfile} -r -noss &> /dev/null"
+
+          logger.debug "Commands:\n"+@commands.join("\n")
+          queue.submit(@commands, true, {'queue' => QUEUES[:immediate]})
   	end
   
   	def forward_params

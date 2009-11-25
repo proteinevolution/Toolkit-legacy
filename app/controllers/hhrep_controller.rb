@@ -80,11 +80,11 @@ class HhrepController < ToolController
 		system("rm -f #{@basename}.reduced.fas; ln -s #{@basename}.#{@qid}.reduced.fas #{@basename}.reduced.fas")
 		
 		# hhalign HMM with itself
-		logger.debug "#{hh}/hhalign32 -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 600 -v 1 -i #{@basename}.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -png #{@basename}.png -dwin #{@dwin} -dali #{@hits} -dthr #{@dthr} 1>>#{@job.statuslog_path} 2>&1"
-		system("#{hh}/hhalign32 -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 600 -v 1 -i #{@basename}.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -png #{@basename}.png -dwin #{@dwin} -dali #{@hits} -dthr #{@dthr} 1>>#{@job.statuslog_path} 2>&1")
+		logger.debug "#{hh}/hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 600 -v 1 -i #{@basename}.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -png #{@basename}.png -dwin #{@dwin} -dali #{@hits} -dthr #{@dthr} 1>>#{@job.statuslog_path} 2>&1"
+		system("#{hh}/hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 600 -v 1 -i #{@basename}.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -png #{@basename}.png -dwin #{@dwin} -dali #{@hits} -dthr #{@dthr} 1>>#{@job.statuslog_path} 2>&1")
 		# create png-file with factor 3
-		logger.debug "#{hh}/hhalign32 -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 3 -i #{@basename}.hhm -png #{@basename}_factor3.png -dwin #{@dwin} -dali #{@hits} -dthr #{@dthr} 1>>#{@job.statuslog_path} 2>&1"
-		system("#{hh}/hhalign32 -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 3 -i #{@basename}.hhm -png #{@basename}_factor3.png -dwin #{@dwin} -dali #{@hits} -dthr #{@dthr} 1>>#{@job.statuslog_path} 2>&1")
+		logger.debug "#{hh}/hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 3 -i #{@basename}.hhm -png #{@basename}_factor3.png -dwin #{@dwin} -dali #{@hits} -dthr #{@dthr} 1>>#{@job.statuslog_path} 2>&1"
+		system("#{hh}/hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 3 -i #{@basename}.hhm -png #{@basename}_factor3.png -dwin #{@dwin} -dali #{@hits} -dthr #{@dthr} 1>>#{@job.statuslog_path} 2>&1")
 
 		redirect_to(:host => DOC_ROOTHOST, :controller => 'hhrep', :action => 'results', :jobid => @job)
 	
