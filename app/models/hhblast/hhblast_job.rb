@@ -203,7 +203,7 @@ class HhblastJob < Job
       @results.push("<div id=\"slider_bar_span\" class=\"span\"</div>\n")
       @results.push("</div>\n")
       @results.push("</div>\n")
-      @results.push("<div class=\"row\" style=\"position:absolute; top:45px; width:785px;\">\n")
+      @results.push("<div class=\"row\" style=\"position:absolute; top:50px; width:785px;\">\n")
       @results.push("<form action=\"/hhblast/resubmit_domain/#{jobid}\" method=\"post\">\n")
       @results.push("<input type=\"hidden\" id=\"domain_start\" name=\"domain_start\"/>\n")
       @results.push("<input type=\"hidden\" id=\"domain_end\" name=\"domain_end\"/>\n")
