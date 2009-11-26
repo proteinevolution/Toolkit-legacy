@@ -18,12 +18,11 @@ module Toolkit
 
           configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
 
-          logger.debug "##### PDB Validation! *****************************+++++++++++++++"
+          logger.debug "##### PDB Validation! *****************************"
 
           validates_each(attr_names, configuration) do | record, attr, value |
 
             # Upload file or input field?
-
             if (value.nil?) then next end
             if (attr.to_s.include?('_file'))
               if value.instance_of?(ActionController::UploadedStringIO) || value.instance_of?(Tempfile) || value.instance_of?(ActionController::UploadedTempfile)
@@ -44,18 +43,22 @@ module Toolkit
 
 	    ### start validation
 	    num_atoms = 0
-	    lines = value.split()
-	    lines.each do |line|
-	      if (line =~ /^ATOM/)
-                logger.debug "**************************Num_Atoms: #{num_atoms}"
+	    lines = value.split("\n")
+            len= lines.length()
+	    for i in 1..len
+	      if (lines[i] =~ /^ATOM/)
+               # logger.debug "***********::::::************ Num_Atoms: #{num_atoms}"
+		#logger.debug "*******####??????#####******* Line: #{lines[i]}"
 		num_atoms+=1
-	      else
-                logger.debug "**************************Num_Atoms: #{num_atoms}"
 	      end
 	    end
+	    logger.debug "*********Number of ATOMs: #{num_atoms}"
             if (num_atoms == 0)
 	      error = "Input file is not in pdb format!"
+	    else
+              #error = "Validator is running correctly!"
             end
+
 
             if (!error.nil?)
               if (attr.to_s.include?('_file'))
