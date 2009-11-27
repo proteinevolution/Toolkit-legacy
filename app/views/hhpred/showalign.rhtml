@@ -2,7 +2,7 @@
 
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'queryalign'}) %>
 
-<%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}) %>
+<%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
 
 	<div class="row">
 
@@ -25,55 +25,30 @@
 		<div class="hr">&nbsp;</div>
 
                 <br/>
-                <strong>You may forward the query alignment to some tools&nbsp;&nbsp;</strong>
+                <strong>You may edit the query alignment below and forward it to some tools&nbsp;&nbsp;</strong>
                 <br/>
                 <div id="forward">
-                        <div class="row">
-                                <%= form_label("Forward results to") %>
-                                <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0], 1, "toggle_seqlen('destination');") %>
-                        	<div class="formw">
-                                        <input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
-				</div>
-			</div>
-
-                        <!--<div class="row">
-                                <%= form_label("Select hits to forward") %>
-                                <div class="formw">
-                                        <input name="includehits" type="radio" value="selected" checked="checked" />&nbsp;selected hits<br/>
-                                        <input name="includehits" type="radio" value="byevalue" />&nbsp;hits with e-value better than&nbsp;
-                                        <input name="hitsevalue" type="text" value="0.001" />
-                                </div>
-                        </div>-->
-
-                       <!--<div class="row">
-                               <div class="label">Select sequence length</div>
-                                <div class="formw">
-                                        <input id="seqlen_hsp" name="seqlen" type="radio" value="hsp" checked="checked" disabled=true />&nbsp;Use HSPs<br/>
-                                        <input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
-                                        <input id="seqlen_complete" name="seqlen" type="radio" value="complete" disabled=true />&nbsp;Use full length sequences&nbsp;
-                                </div>
-                        </div>-->
-
-                        <div class="hr">&nbsp;</div>
-                </div>
-
+                  <div class="row">
+                    <%= form_label("Forward results to") %>
+                    <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0], 1, "toggle_seqlen('destination');") %>
+                    <div class="formw">
+                      <input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+		    </div>
+		  </div>
+		</div>
                 <br/>
+		<div class="hr">&nbsp;</div>
 
-
-	  	<input name="submitform" type="submit" class="feedbutton" value="Restart HHpred with this alignment" /> 
-   	<input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
-   	<strong>You may edit the template alignment below and submit it to HHpred&nbsp;&nbsp;</strong>
-   	<br/>
+		<input name="submitform" type="submit" class="feedbutton" value="Restart HHpred with this alignment" />
+		<input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
+		<strong>You may edit the query alignment below and submit it to HHpred&nbsp;&nbsp;</strong>
+		<br/>
 	</div>
 
-	<div class="spacer">&nbsp;</div>	
-
-
-
+	<div class="spacer">&nbsp;</div>
 
 	<div class="row">
 		<%= text_area_tag("result_textbox_to_file", @job.render_file(@job.jobid+".fas"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
-	</div>	
-	
+	</div>
 
 </form>

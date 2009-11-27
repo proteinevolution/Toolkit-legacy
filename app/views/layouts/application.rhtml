@@ -44,8 +44,9 @@
     <% end %>
     
     <%= javascript_include_tag "toolkit", "browser_sniffer", "overlib", "overlib_cssstyle"%>
-    <%= javascript_include_tag :defaults %>
-    
+    <%= javascript_include_tag :defaults %>    
+    <%= javascript_include_tag "scriptaculous.js" %>
+
     <%= if @tool then javascript_include_tag(@tool['name']) end -%>
     <% if @include_js && !@include_js.empty? -%>
     <% if @include_js.kind_of?(Array) %>

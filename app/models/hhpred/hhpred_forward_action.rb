@@ -15,7 +15,7 @@ class HhpredForwardAction < Action
       end
       res.gsub!(/>ss_pred.*?\n(.*\n)*?>/, '>')
       res.gsub!(/>ss_conf.*?\n(.*\n)*?>/, '>')      
-      hash = { 'sequence_input' => res }
+      hash = { 'sequence_input' => res, 'maxpsiblastit' => '0' }
     else
       res = IO.readlines(job.params_main_action['sequence_file']).join("\n")
       hash = { 'sequence_input' => res, 'informat' => job.params_main_action['informat'] }
