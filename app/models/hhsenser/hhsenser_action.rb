@@ -241,7 +241,7 @@ class HhsenserAction < Action
     else
       
       logger.debug "run hhsenser!"
-      @commands << "#{HH}/buildali.pl -v #{@v} -cpu 2 -n 1 -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} -db #{@db} #{@basename}.a3m &> #{job.statuslog_path}"
+      @commands << "#{HH}/buildali.pl -v #{@v} -cpu 2 -n 1 -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -db #{@db} #{@basename}.a3m &> #{job.statuslog_path}"
       run_hhsenser
       
     end

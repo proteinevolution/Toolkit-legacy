@@ -75,6 +75,11 @@
     <%= form_label("E-value inclusion threshold for HHblast", "E_hhblast") %>
     <%= form_select_single("EvalHHblast", @EvalHHblast, @EvalHHblast, '1e-3') %>	
   </div>
+
+  <div class="row">
+    <%= form_label("Min. coverage of hits included in evolving profile", "cov_min") %>
+    <%= form_select_single("cov_min", @cov_minval, @cov_minval, '0') %>
+  </div>
   
   <div class="row">
     <%= form_label("Disable filters (more sensitive, but slow!)", "no_filter") %>

@@ -6,6 +6,7 @@ class HhblastController < ToolController
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
     @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
     @maxit = ['1','2','3','4','5','6','8','10']
+    @cov_minval = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90']
     @epsiblastval = ['10', '100', '1000']
     @EvalHHblast  = ['1e-4', '1e-3', '1e-2', '0.1']
     @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
