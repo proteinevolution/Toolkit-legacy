@@ -116,11 +116,27 @@ class ModellerAction < Action
       
     end
     
+    # replace special character (Selenocystein U)
+    lines = IO.readlines(@infile)
+    lines.each do |line|
+      if (line !~ /^>/ && line !~ /^sequence/ && line !~ /^structure/) # each sequence line
+        line.gsub!(/U/, 'X')
+      end
+    end
+    File.open(@infile, 'w') do |file|
+      file.write(lines.join(''))
+    end
+
     # get knowns
+    knowns_hash = Hash.new()
     knowns = ""
     lines = IO.readlines(@infile)
     lines.each do |line|
       line.scan(/^structureX:(.*?):/) do |name|
+        if (knowns_hash.include?(name))
+          next
+        end
+        knowns_hash[name]=1
         if (knowns == "")
           knowns = "'#{name}'"
         else
