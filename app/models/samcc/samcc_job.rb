@@ -22,11 +22,11 @@ class SamccJob < Job
   end
 
   def export_pdb
-    ret = IO.readlines(File.join(job_dir, jobid + @@export_pdb)).join
+    ret = IO.readlines(File.join(job_dir, "out"+ @@export_pdb)).join
   end
 
   def export_axis
-    ret = IO.readlines(File.join(job_dir, jobid + @@export_pdb)).join
+    ret = IO.readlines(File.join(job_dir, "out_axes" + @@export_pdb)).join
   end
 
   # add your own data accessors for the result templates here! For example:

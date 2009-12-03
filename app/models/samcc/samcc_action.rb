@@ -77,9 +77,9 @@ class SamccAction < Action
   # Put action code in here
   def perform
     @commands << "/usr/bin/python #{SAMCC}/samcc.py #{@paramsfile} #{@outfile}"
-    filepath=@job.job_dir+"/"
-    dir=Dir.entries(filepath)
-    for i in 0..dir.length
+    #filepath=@job.job_dir+"/"
+    #dir=Dir.entries(filepath)
+    for i in 0..3
       @commands << "cd #{job.job_dir}; /usr/bin/gnuplot temp#{i}.run"
     end
     logger.debug "Commands:\n"+@commands.join("\n")

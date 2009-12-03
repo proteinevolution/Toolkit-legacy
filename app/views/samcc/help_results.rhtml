@@ -14,11 +14,7 @@
 <br/>
 As output, the program returns a plot showing the Crick angle deviations (observed Crick angle - expected Crick angle) in each helix at every layer. In addition, axial shift and rotation plots are displayed. The last two describe at which positions and to what extent the analyzed coiled-coil was adjusted to achieve an ideal state. For detailed information refer to the method description.
 <br/><br/>
-All plots are generated in two versions:
-<br/>
-1) raw values are plotted directly,
-<br/>
-2) values are averaged over a 3-layer window before plotting. In all cases, values approaching 0 indicates that a given parameter of the analyzed coiled-coil is as expected from theoretical models at given positions. Raw values and averages used to generate these plots are also returned. They can be easily pasted into Exel or OpenOffice Calc spreadsheet for further analyzes.
+Values approaching 0 indicates that a given parameter of the analyzed bundle is as expected from theoretical models at given positions. Raw values and averages used to generate these plots are also returned. They can be easily pasted into Exel or OpenOffice Calc spreadsheet for further analysis.
 <br/><br/>
 Two PDB files can be downloaded. The first contains the adjusted (idealized) coiled-coil structure and the second coordinates of the alpha helical and coiled-coil axes that were used for Crick angle calculations.
 </div>
@@ -32,38 +28,35 @@ Two PDB files can be downloaded. The first contains the adjusted (idealized) coi
 <br/>
 <b>Example 1. GCN4 pIL, a parallel canonical coiled-coil</b>
 <br/><br/>
-1)Download the <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=1GCL">PDB file</a>:<br/><br/>
-2)Examine the file in structure viewer as PyMol or SwissPDB<br/><br/>
-3)GCN4 pIL has a 7 periodicity (heptad <i>abcdefg</i>)<br/><br/>
-4)Define core of the coiled-coil bundle.<br/><br/>
-1.The first core residue is Ile-4 (heptad position <i>d</i>), see Figure 1<br/>
-2.The last core residue is Leu-29 (heptad position <i>a</i>)<br/><br/>
-5)Define region to be analyzed. Note that most of the first and last residues are omitted.<br/>
-1.The first layer is Lys-2 (position <i>b</i>)<br/>
-2.The last layer is Leu-28<br/><br/>
-6)Define helices (see Figure 1)<br/><br/>
-7)Now you have all necessary parameters, namely:<br/><br/>
+1) Download the <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=1GCL">PDB file</a>:<br/><br/>
+2) Examine the file in structure viewer as PyMol or SwissPDB<br/><br/>
+3) GCN4 pIL has a 7 periodicity (heptad <i>abcdefg</i>)<br/><br/>
+4) Define region to be analyzed.<br/><br/>
+1.The first layer is Met-2 (position <i>a</i>), see Figure 1<br/>
+2.The last layer is Leu-30 (position <i>a</i>)<br/><br/>
+5) Define helices (see Figure 1)<br/><br/>
+6) Now you have all necessary parameters, namely:<br/><br/>
 1.Periodicity = 7<br/>
-2.Helix 1 = chain A, positions from 2 to 28, Heptad register of the first position: <i>b</i><br/>
-3.Helix 2 = chain B, positions from 2 to 28, Heptad register of the first position: <i>b</i><br/>
-4.Helix 3 = chain C, positions from 2 to 28, Heptad register of the first position: <i>b</i><br/>
-5.Helix 4 = chain D, positions from 2 to 28, Heptad register of the first position: <i>b</i><br/><br/>
-8)Results show that Crick angle deviation oscillates around 0, which corresponds to the canonical coiled-coil.
+2.Helix 1 = chain A, positions from 2 to 30, Heptad register of the first position: <i>a</i><br/>
+3.Helix 2 = chain B, positions from 2 to 30, Heptad register of the first position: <i>a</i><br/>
+4.Helix 3 = chain C, positions from 2 to 30, Heptad register of the first position: <i>a</i><br/>
+5.Helix 4 = chain D, positions from 2 to 30, Heptad register of the first position: <i>a</i><br/><br/>
+8)Results show that Crick angle deviation oscillates around +8, which corresponds to the canonical coiled-coil slightly rotated towards a-d-g core.
 <br/><br/>
-<b>Example 2. GCN4-pAeL. This example is more complicated and deals with an antiparallel coiled coil.</b>
+</br><b>Example 2. GCN4-pAeL. This example is more complicated and deals with an antiparallel coiled coil.</b>
 <br/><br/>
-1)Download the <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=2R2V">PBD file</a>:<br/><br/>
-2)Examine the file in structure viewer as PyMol or SwissPDB<br/><br/>
-3)GCN4-pAeL is antiparallel and has a 7 periodicity (<i>abcdefg</i>). It adopts unusual packing called Alacoil. In this packing a hydrophobic core is formed by <i>a-d-e</i> or <i>a-d-g</i> residues of the heptad.<br/><br/>
-4)The first/last core residues are Val-6 (position <i>d</i>) and Met-31 (position <i>a</i>), see Figure 2.<br/><br/>
-5)Define helices (see Figure 2) and regions to be analyzed. Note that most of the first and last resiues are omitted.<br/><br/>
-6)Now you have all necessary parameters, namely:<br/><br/>
+1) Download the <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=2R2V">PBD file</a>:<br/><br/>
+2) Examine the file in structure viewer as PyMol or SwissPDB<br/><br/>
+3) GCN4-pAeL is antiparallel and has a 7 periodicity (<i>abcdefg</i>). It adopts unusual packing called Alacoil. In this packing a hydrophobic core is formed by <i>a-d-e</i> or <i>a-d-g</i> residues of the heptad.<br/><br/>
+4) The first/last core residues are Val-6 (position <i>d</i>) and Met-31 (position <i>a</i>), see Figure 2.<br/><br/>
+5) Define helices (see Figure 2) and regions to be analyzed. Note that most of the first and last resiues are omitted.<br/><br/>
+6) Now you have all necessary parameters, namely:<br/><br/>
 1.Periodicity = 7<br/>
 2.Helix 1 = chain A, positions from 4 to 33, heptad register of the first position: <i>b</i><br/>
 3.Helix 2 = chain B, positions from 33 to 4 (antiparallel helix), heptad register of the first position: <i>c</i><br/>
 4.Helix 3 = chain C, positions from 4 to 33, heptad register of the first position: <i>b</i><br/>
 5.Helix 4 = chain D, positions from 33 to 4 (antiparallel helix), heptad register of the first position: <i>c</i><br/>
-7)Results show that Crick angle deviation oscillates between -20/-30 degrees (this corresponds to the <i>a-d-e</i> core)
+7) Results show that Crick angle deviation oscillates between -20 degrees (this corresponds to the <i>a-d-e</i> core)
 </div>
 
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
@@ -82,11 +75,10 @@ Figure 2:<br/>
 
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
-<br/>
-<div class="row">
-<a name="contact"></a>
-<h3 class="<%= @section["name"] %>">Contact</h3>
-<br/>
+</br>
+
+<%= render(:partial => "samcc/references_and_contact") %>
 
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 </div>
+

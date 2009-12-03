@@ -356,7 +356,7 @@
   - dap
 - name: samcc
   title: SamCC
-  title_long: Coiled-Coil prediction Tool
+  title_long: Four-helical bundle analysis tool
   section: tertstruct
   active: 
   - member

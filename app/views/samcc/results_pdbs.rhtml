@@ -15,8 +15,8 @@
 
   <div id="resultactions" class="<%= @section["name"] %>">
     <ul>
-      <li><a href="<%= url_for({:action => :export_pdb_to_file, :jobid => @job}) %>" onmouseover="return overlib('Export pdb to file');" onmouseout="return nd();">Save PDB</a></li>
-      <li><a href="<%= url_for({:action => :export_axis_to_file, :jobid => @job}) %>" onmouseover="return overlib('Export pdb axes to file');" onmouseout="return nd();">Save PDB Axes</a></li>
+      <li><a href="<%= url_for({:action => :export_pdb_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Export pdb to file');" onmouseout="return nd();">Save PDB</a></li>
+      <li><a href="<%= url_for({:action => :export_axis_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Export pdb axes to file');" onmouseout="return nd();">Save PDB Axes</a></li>
     </ul>
   </div>
 

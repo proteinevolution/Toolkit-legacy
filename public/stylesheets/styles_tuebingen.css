@@ -689,6 +689,124 @@ ul.arrow-marker li {
   font-weight:normal;
 }
 
+/* jobsection/resultsection colors for the different sections */
+
+
+/* search section */
+#jobsection.search ul li a {
+  border: 1px solid #D0BA89;		   
+  border-bottom: 0px;
+}
+#jobsection.search li.current a, #resultactions.search li.current a {
+  background-color: #F4EEDF;
+}
+#jobsection.search li a:hover, #resultactions.search li a:hover {
+  background-color: #E8DCC2;
+}
+#content #resultactions.search {
+  background-color: #F4EEDF;
+  border: 1px solid #D0BA89;
+}
+
+/* alignment section */
+#jobsection.alignment ul li a {
+  border: 1px solid #FFCC66;		   
+  border-bottom: 0px;
+}
+#jobsection.alignment li.current a, #resultactions.alignment li.current a {
+  background-color: #FFEECC;
+}
+#jobsection.alignment li a:hover, #resultactions.alignment li a:hover {
+  background-color: #FFE09F;
+}
+#content #resultactions.alignment {
+  background-color: #FFEECC;
+  border: 1px solid #FFCC66;
+}
+
+/* seqanal section */
+#jobsection.seqanal ul li a {
+  border: 1px solid #669933;		   
+  border-bottom: 0px;
+}
+#jobsection.seqanal li.current a, #resultactions.seqanal li.current a {
+  background-color: #CFE7B8;
+}
+#jobsection.seqanal li a:hover, #resultactions.seqanal li a:hover {
+  background-color: #99CC66;
+}
+#content #resultactions.seqanal {
+  background-color: #CFE7B8;
+  border: 1px solid #669933;
+}
+
+/* secstruct section */
+#jobsection.secstruct ul li a {
+  border: 1px solid #79A4C4;		   
+  border-bottom: 0px;
+}
+#jobsection.secstruct li.current a, #resultactions.secstruct li.current a {
+  background-color: #E2EFF9;
+}
+#jobsection.secstruct li a:hover, #resultactions.secstruct li a:hover {
+  background-color: #C8DCEC;
+}
+#content #resultactions.secstruct {
+  background-color: #E2EFF9;
+  border: 1px solid #79A4C4;
+}
+
+/* tertstruct section */
+#jobsection.tertstruct ul li a {
+  border: 1px solid #666699;		   
+  border-bottom: 0px;
+}
+#jobsection.tertstruct li.current a, #resultactions.tertstruct li.current a {
+  background-color: #DCDCE7;
+}
+#jobsection.tertstruct li a:hover, #resultactions.tertstruct li a:hover {
+  background-color: #BEBED3;
+}
+#content #resultactions.tertstruct {
+  background-color: #DCDCE7;
+  border: 1px solid #666699;
+}
+
+/* classification section */
+#jobsection.classification ul li a {
+  border: 1px solid #D6ABAB;		   
+  border-bottom: 0px;
+}
+#jobsection.classification li.current a, #resultactions.classification li.current a {
+  background-color: #F1EBEB;
+}
+#jobsection.classification li a:hover, #resultactions.classification li a:hover {
+  background-color: #E9D5D5;
+}
+#content #resultactions.classification {
+  background-color: #F1EBEB;
+  border: 1px solid #D6ABAB;
+}
+
+/* utils section */
+#jobsection.utils ul li a {
+  border: 1px solid #CC3333;		   
+  border-bottom: 0px;
+}
+#jobsection.utils li.current a, #resultactions.utils li.current a {
+  background-color: #F3CFCF;
+}
+#jobsection.utils li a:hover, #resultactions.utils li a:hover {
+  background-color: #E89F9F;
+}
+#content #resultactions.utils {
+  background-color: #F3CFCF;
+  border: 1px solid #CC3333;
+}
+
+
+
+
 /* Front page */ 
 
 body div.sub {

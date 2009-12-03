@@ -5,29 +5,37 @@
 </ul>
 
 <h2><%= @tool['title'] %> Parameters</h2>
-
-In order to perform measurements, you have to provide the program with few parameters (see also examples below):
-
-<a name="input"></a>
-<h3>Input Format</h3>
+</br>
+In order to perform measurements, you have to provide the program with few parameters (see also examples):
+</br>
 <div class="row">
-PDB file:
-	A PDB file containing a coiled-coil motif. Missing or unusual residues, like selenomethionine, are not allowed.
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input Format</h3>
+</br>PDB file</br>
+A PDB file containing a four-helical bundle motif. Missing or unusual residues, like selenomethionine, are not allowed. The structure should not contain alternative conformations.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
-<a name="helix"></a>
-<h3>Definition line for helix 1-4</h3>
 <div class="row">
-In these four lines, every helix of a four helical bundle is defined. In each line you need to enter the chain identifier of each helix (one character or digit) and its start and end positions (use PDB file numbering). Residues localized at positions defined by "from" values form the first layer of the bundle, while those in "to" the last one. You also need to provide the register of residues located in the first defined layer (one letter, a-g for 7 periodicity, a-k for 11 periodicity etc.). The registers of subsequent layers are automatically defined based on periodicity and helix direction (parallel vs antiparallel).<br/>
+<a name="helix"></a>
+<h3 class="<%= @section["name"] %>">Definition line for helix 1-4</h3>
+</br>In these four lines, every helix of a four helical bundle is defined. In each line you need to enter the chain identifier of each helix (one character or digit) and its start and end positions (use PDB file numbering). Residues localized at positions defined by "from" values form the first layer of the bundle, while those in "to" the last one. You also need to provide the register of residues located in the first defined layer (one letter, a-g for 7 periodicity, a-k for 11 periodicity etc.). The registers of subsequent layers are automatically defined based on periodicity and helix direction (parallel vs antiparallel).<br/>
 IMPORTANT NOTE #1: If the "from" value is larger than "to" then program assumes that given helix is antiparallel (see also Example 2).<br/>
 IMPORTANT NOTE #2: Helices pairs 1&2 and 3&4 have to be located on the diagonals (see Figures 1 and 2).
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
-<a name="periodicity"></a>
-<h3>Periodicity</h3>
 <div class="row">
-The program needs to know the periodicity in order to calculate Crick angle deviation (observed Crick angle - expected Crick angle).
+<a name="periodicity"></a>
+<h3 class="<%= @section["name"] %>">Periodicity</h3>
+</br>The program needs to know the periodicity in order to calculate Crick angle deviation (observed Crick angle - expected Crick angle).
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+</br>
+
+<%= render(:partial => "samcc/references_and_contact") %>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+</div>
+
