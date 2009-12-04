@@ -12,8 +12,6 @@ class SamccAction < Action
 
   validates_email(:mail)
 
-  #validates_format_of(:sequence_file, {:on => :create, :with => /^\s*[A-Z123]?\s*$/, :message => 'Identifier must be a character in upper case.'})
-
   validates_format_of(:chain1_letter, :chain2_letter, :chain3_letter, :chain4_letter, {:on => :create, :with => /\w/, :message => 'Field must be a character.'})
 
   validates_format_of(:chain1_start, :chain2_start, :chain3_start, :chain4_start, {:on => :create, :with => /\d/, :message => 'Field must be a number.'})
@@ -22,12 +20,9 @@ class SamccAction < Action
 
   validates_format_of(:first_position1, :first_position2, :first_position3, :first_position4, {:on => :create, :with => /[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]/, :message => 'Field must be an alphabetical character.'})
 
-  #validates_format_of(:first_position_AP, {:on => :create, :with => /[ABCDEFGHIJKLMNOPQRSTUVWXYZabgdefghijklmnopqrstuvwxyz\s]/, :message => 'Field must be an alphabetical character or empty.'})
 
   # Put action initialisation code in here
   def before_perform
-    logger.debug "*****************************jetzt in der Funktion"
-
     init
 
     @pdbfile = @basename+".pdb"
@@ -59,16 +54,12 @@ class SamccAction < Action
     @firstpos2 = params['first_position2'] ? params['first_position2'] : ""
     @firstpos3 = params['first_position3'] ? params['first_position3'] : ""
     @firstpos4 = params['first_position4'] ? params['first_position4'] : ""
-    #@firstposAP = params['first_position_AP'] ? params['first_position_AP'] : "a"
-    #if(@firstposAP == ' ')
-    #  @firstposAP = "a"
-    #end
+
     logger.debug "Chain1: letter #{@chain1_letter}; start #{@chain1_start}; end #{@chain1_end}"
     logger.debug "Chain2: letter #{@chain2_letter}; start #{@chain2_start}; end #{@chain2_end}"
     logger.debug "Chain3: letter #{@chain3_letter}; start #{@chain3_start}; end #{@chain3_end}"
     logger.debug "Chain4: letter #{@chain4_letter}; start #{@chain4_start}; end #{@chain4_end}"
     logger.debug "Periodicity: #{@periodicity}"
-    #logger.debug "First Position: #{@firstpos}"
 
     save_parameters
   end
@@ -77,8 +68,7 @@ class SamccAction < Action
   # Put action code in here
   def perform
     @commands << "/usr/bin/python #{SAMCC}/samcc.py #{@paramsfile} #{@outfile}"
-    #filepath=@job.job_dir+"/"
-    #dir=Dir.entries(filepath)
+
     for i in 0..3
       @commands << "cd #{job.job_dir}; /usr/bin/gnuplot temp#{i}.run"
     end
