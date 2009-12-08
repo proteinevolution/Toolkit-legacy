@@ -80,11 +80,11 @@
         f.write '#$' + " -w n\n"
 
 	if (queue == QUEUES[:long] && LOCATION == "Tuebingen")
-          f.write '#$' + " -l long\n"
+	  f.write '#$' + " -l long\n"
         end
 
         if (queue == QUEUES[:immediate])
-          f.write '#$' + " -l immediate\n"
+	  f.write '#$' + " -l immediate\n"
         end
 
         f.write "hostname > #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
