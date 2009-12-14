@@ -15,7 +15,7 @@ module Toolkit
           configuration = { :max_seqs => 10000,
             :min_seqs => 1,
             :max_length => 20000,
-            :white_list => "ABUCZDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwyzxbuX-",
+            :white_list => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/,+&\\-",
             :informat_field => nil,
             :informat => nil,
             :inputmode => "sequence",
@@ -131,11 +131,20 @@ module Toolkit
                 seq.gsub!(/ /, '')
                 seq.tr!('_~.*', '-')
                 
+		logger.debug "Vor allen Aenderungen: #{seq}"
+ 
+                seq.gsub!(/[JOUZjouz]/, 'X')
+                logger.debug "Nach Buchstaben: #{seq}"
+
+                seq.gsub!(/[\/,+&\\]/, '')
+                logger.debug "Nach Sonderzeichen: #{seq}"
+
 					 # for singe sequence
 					 if (configuration[:max_seqs] == 1)
 					 	seq.gsub!(/-/, '')
 					 end          
-                
+              
+ 
                 # for grouped fasta
                 if (format == "gfas")
                   change = seq.gsub!(/\#$/, '')
