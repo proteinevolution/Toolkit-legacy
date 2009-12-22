@@ -354,6 +354,9 @@
   section: classification
   active: 
   - dap
+  - member
+  - internal
+  - external
 - name: samcc
   title: SamCC
   title_long: Four-helical bundle analysis tool
