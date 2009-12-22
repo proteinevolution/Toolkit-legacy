@@ -1,4 +1,4 @@
-<div id="jobsection">
+<div id="jobsection" class="<%= @section["name"] %>">
   <ul>
     <%if @user && @user.groups.include?('dap')%>
       <% for i in 0...@shortlinks_special.length%>
