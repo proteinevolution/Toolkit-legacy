@@ -29,7 +29,7 @@
   <% @frag = @fraginfo.f_name %>
   <% @fragid = @fraginfo.f_id %>
   <% if @fragid =~ /^FRAG/ %>
-    <h3 style="font-size:12px"> Update Fragment</h3>
+    <h3 style="font-size:14px" class="<%= @section["name"] %>"> Update Fragment</h3>
 
     <div class="row">
       <%= form_label("Mysql ID (Do not change!!!)")%>
@@ -110,7 +110,7 @@
     </div>
 
   <% else %>
-    <h3 style="font-size:12px;">Update Repeat</h3>
+    <h3 style="font-size:14px;" class="<%= @section["name"] %>">Update Repeat</h3>
 
     <div class="row">
       <%= form_label("Mysql ID (Do not change!!!)")%>

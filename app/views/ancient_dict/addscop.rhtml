@@ -7,9 +7,8 @@
 <%= form_tag({:controller => "ancient_dict", :action => "addingKey"}, {:multipart => true})%>
 
 <div>
-<p style="font-size:14px; font-weight:bold;">Add Scop Entry</p>
+<p style="font-size:14px; font-weight:bold;">Add Scop Entry</p></br>
 
-<div class="hr">&nbsp;</div>
 <div>
   <%= form_label("Scop ID") %>
   <%= form_text_field("scop_id", "", "", 80)%>
