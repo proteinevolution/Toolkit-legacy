@@ -78,22 +78,10 @@
         f.write '#$' + " -o #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -w n\n"
-<<<<<<< HEAD:app/models/toolkit/sge_worker.rb
-
-	if (queue == "toolkit_long" && LOCATION == "Tuebingen")
-          f.write '#$' + " -l long\n"
-        end
-=======
->>>>>>> maint:app/models/toolkit/sge_worker.rb
 
 	if (queue == QUEUES[:long] && LOCATION == "Tuebingen")
 	  f.write '#$' + " -l long\n"
         end
-<<<<<<< HEAD:app/models/toolkit/sge_worker.rb
-
-        #f.write "-l h_vmem=2G\n"
-=======
->>>>>>> maint:app/models/toolkit/sge_worker.rb
 
         if (queue == QUEUES[:immediate])
 	  f.write '#$' + " -l immediate\n"
