@@ -14,13 +14,13 @@ class HhsenserController < ToolController
   
 	def results
 		@widescreen = true
-		@fw_values = [fw_to_tool_url('hhsenser', 'hhpred') + "&alignment_mode=strict", fw_to_tool_url('hhsenser', 'psi_blast') + "&alignment_mode=strict"]
+		@fw_values = [fw_to_tool_url('hhsenser', 'hhpred') + "&alignment_mode=strict", fw_to_tool_url('hhsenser', 'psi_blast') + "&fw_mode=alignment" + "&alignment_mode=strict"]
 		@fw_labels = [tool_title('hhpred'), tool_title('psi_blast')]  
 	end
 	
 	def results_permissive
 		@widescreen = true
-		@fw_values = [fw_to_tool_url('hhsenser', 'hhpred') + "&alignment_mode=permissive", fw_to_tool_url('hhsenser', 'psi_blast') + "&alignment_mode=permissive"]
+		@fw_values = [fw_to_tool_url('hhsenser', 'hhpred') + "&alignment_mode=permissive", fw_to_tool_url('hhsenser', 'psi_blast') + "&fw_mode=alignment" + "&alignment_mode=permissive"]
 		@fw_labels = [tool_title('hhpred'), tool_title('psi_blast')]  
 	end
 

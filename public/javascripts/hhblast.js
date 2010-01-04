@@ -14,75 +14,22 @@ function appearForward(val)
 {
     var coloring = 'color_button';
     var image = 'hitlist_img';
-    var create = 'createmodel';
-    var merge = 'mergeali';
+    var forward = 'forward';
     
-    if (Element.getStyle(val, 'display') == "none" && Element.getStyle('noPdb', 'display') == "none") {
+    if (Element.getStyle(val, 'display') == "none") {
 	if ($(coloring) != null) {
 	    new Effect.Fade(coloring);
 	}
-	new Effect.Fade(create);
-	new Effect.Fade(merge);
+	new Effect.Fade(forward);
 	new Effect.Fade(image);
-	new Effect.Fade('noPdb');		
 	sleep(1000);
 	new Effect.Appear(val);
-	if (val == 'createmodel') {
-	    checkbox_createmodel(true);
-	    select_first_not_disabled();
-	} else {
-	    checkbox_createmodel(false);
-	}
     } else {
 	new Effect.Fade(val);
-	new Effect.Fade('noPdb');
 	if ($(coloring) != null) {
 	    new Effect.Appear(coloring);
 	}
 	new Effect.Appear(image);
-	checkbox_createmodel(false);
-    }
-}
-
-function select_first_not_disabled()
-{
-    var checked = false;
-    var number = parseInt($('checkboxes').value, 10);
-    for(i = 0; i < number; i++) {
-	if ($('hit_checkbox'+i).disabled == false) {
-	    if (checked == false) {
-		$('hit_checkbox'+i).checked=true;
-		$('hit_checkbox'+(number+i)).checked=true;
-		checked = true;
-	    } else {
-		$('hit_checkbox'+i).checked=false;
-		$('hit_checkbox'+(number+i)).checked=false;
-	    }
-	}
-    }
-    if (checked == false) {
-	new Effect.Fade('createmodel');
-	new Effect.Appear('noPdb');
-    }	
-}
-
-function checkbox_createmodel(mode)
-{
-    boxes = $('createmodel_disabled_Checkboxes').value;
-    if (boxes == "") return; 
-    checkbox_idx = boxes.split(',');
-    number = parseInt(($('checkboxes').value),10);
-    for(i=0; i<checkbox_idx.length-1; ++i){
-	idx = parseInt(checkbox_idx[i],10);
-	if (mode == true) {
-	    $('hit_checkbox'+idx).checked=false;
-	    $('hit_checkbox'+idx).disabled=true;
-	    $('hit_checkbox'+(number+idx)).checked=false;
-	    $('hit_checkbox'+(number+idx)).disabled=true;
-	} else {
-	    $('hit_checkbox'+idx).disabled=false;
-	    $('hit_checkbox'+(number+idx)).disabled=false; 
-	}
     }
 }
 
@@ -195,4 +142,10 @@ function select_genomes() {
         for( i=0; i<dblist.length; i++ ) dblist.options[i].selected = false;
 
     }
+}
+
+function change_resubmit_form_to_hhblast() {
+    var expression = /(.+)hhpred(.+)/;
+    expression.exec(document.forms[2].action);
+    document.forms[2].action = RegExp.$1 + "hhblast" + RegExp.$2;
 }

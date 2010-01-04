@@ -26,7 +26,14 @@ class HhsenserForwardAction < Action
       prescreen = false
     end
     logger.debug "Screen: #{prescreen}"
-    {'sequence_input' => IO.readlines(File.join(job.job_dir, job.jobid) + ".forward").join, 'screen' => prescreen }
+    mode = params['fw_mode']
+    inputmode = "alignment"
+    if (!mode.nil? && mode == "sequence")
+     logger.debug "mode == sequence"
+     inputmode = "sequence"
+    end
+    logger.debug "Input mode: #{inputmode}"
+    {'sequence_input' => IO.readlines(File.join(job.job_dir, job.jobid) + ".forward").join, 'screen' => prescreen, 'inputmode' => inputmode }
   end
 end
 

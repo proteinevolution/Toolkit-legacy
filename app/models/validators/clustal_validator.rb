@@ -90,7 +90,11 @@ module Toolkit
             lines.each do |line|
               
               if (line =~ /^\s*$/ && !flag) then next end
-              if (line =~ /^\s*clustal/i)
+              if (line =~ /^\s*clustal/i)# || line =~ /^\s*kalign/i)
+                logger.debug"*****************************in if ... ****************************"
+                #if (line =~ /^\s*kalign/i)
+                #  line.gsub!(/^\s*kalign/i, /^\s*clustal/i)
+		#end
                 flag = true
               elsif (flag)
                 if (line =~ /^\s*$/)

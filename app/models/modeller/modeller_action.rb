@@ -26,9 +26,15 @@ class ModellerAction < Action
     @basename = File.join(job.job_dir, job.jobid)
     @seqfile = @basename + ".prepare"
     @infile = @basename + ".in"
-    @ownpdbfile = File.join(job.job_dir, "#{params['own_pdb_name']}.pdb")
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
-    params_to_file(@ownpdbfile, 'own_pdb_file')
+    
+    @ownpdbfiles = ['own_pdb_file1','own_pdb_file2','own_pdb_file3','own_pdb_file4','own_pdb_file5']
+    @ownpdbnames =  ['own_pdb_name1','own_pdb_name2','own_pdb_name3','own_pdb_name4','own_pdb_name5']
+    @ownpdbfiles.each_index  do |i|
+      ownpdbfile = File.join(job.job_dir, "#{params[@ownpdbnames[i]]}.pdb")
+      params_to_file(ownpdbfile, @ownpdbfiles[i])
+    end
+    
     @commands = []
     
     @format = params["informat"].nil? ? 'fas' : params["informat"]
@@ -80,8 +86,8 @@ class ModellerAction < Action
         if line =~ /^sequence:/
           i = lines.index(line)
         end
-        line.sub!(/>P1;(\S\S\S\S)_\S/, '>P1;\1')
-        line.sub!(/structureX:\s*(\S\S\S\S)_\S/, 'structureX:\1')		
+        line.sub!(/>P1;(\S\S\S\S)_\S\s*$/, '>P1;\1')
+        line.sub!(/structureX:\s*(\S\S\S\S)_\S:/, 'structureX:\1:')
       end
       if i.nil? then raise "ERROR! Wrong format!" end
       
@@ -99,8 +105,8 @@ class ModellerAction < Action
       input.gsub!(/\13/, '')
       
       # remove chain identifiers
-      input.gsub!(/>P1;(\S\S\S\S)_\S/, '>P1;\1')
-      input.gsub!(/structureX:\s*(\S\S\S\S)_\S/, 'structureX:\1')
+      input.gsub!(/>P1;(\S\S\S\S)_\S\s*$/, '>P1;\1')
+      input.gsub!(/structureX:\s*(\S\S\S\S)_\S:/, 'structureX:\1:')
       # change sequence name
       input.sub!(/^[^\n]*/, ">P1;#{@seq_name}")
       
@@ -110,11 +116,27 @@ class ModellerAction < Action
       
     end
     
+    # replace special character (Selenocystein U)
+    lines = IO.readlines(@infile)
+    lines.each do |line|
+      if (line !~ /^>/ && line !~ /^sequence/ && line !~ /^structure/) # each sequence line
+        line.gsub!(/U/, 'X')
+      end
+    end
+    File.open(@infile, 'w') do |file|
+      file.write(lines.join(''))
+    end
+
     # get knowns
+    knowns_hash = Hash.new()
     knowns = ""
     lines = IO.readlines(@infile)
     lines.each do |line|
       line.scan(/^structureX:(.*?):/) do |name|
+        if (knowns_hash.include?(name))
+          next
+        end
+        knowns_hash[name]=1
         if (knowns == "")
           knowns = "'#{name}'"
         else

@@ -1,0 +1,46 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "update_items") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<% if @ipage == "" %>
+  <p style="font-size:14px; font-weight:bold;">Select Item for Deletion</p>
+  </br>
+  <form action="/ancient_dict/deleteItem" method="post" name="item">
+    <select name='item' onChange="window.location = this.value;">
+      <option value="">Items</option>
+      <%Dapfragment.find(:all, :order => "f_name").each do |frag|%>
+        if is_active?(frag)
+          <%@entry = frag.f_id + ": " + frag.f_name%>
+          <option value="<%= DOC_ROOTURL %>/ancient_dict/deleteItem?ipage=<%=frag.f_id%>"><%=@entry%></option>
+        end
+      <% end %>
+    </select>
+  </form>
+<% else %>
+  <%@finfo=Dapfragment.find(:first, :conditions => ["f_id=?", @ipage])%>
+
+  <p style="font-size:14px; font-weight:bold;">Delete Item </p>
+
+  <div class="row">
+    <%= form_label("Mysql ID (Do not change!!!)") %>
+    <%= form_text_field("del_f_id", @finfo.id, "", 10)%>
+  </div>
+
+  <div class="row">
+    <%= form_label("Item ID (Do not change!!!)") %>
+    <%= form_text_field("f_delid", @finfo.f_id, "", 10)%>
+  </div>
+
+  <div class="row">
+    <div id="gloading_lnk" style="display:none; text-decoration:blink; float: right; margin-right: 25px;" >Loading...</div>
+  </div>
+
+  <div class="row">
+    <input name="submitform" type="submit" class="toolbutton" value="Delete Item" onclick="Effect.Appear('gloading_lnk');"/>
+  </div>
+
+<%end%>

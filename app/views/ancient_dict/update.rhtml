@@ -1,0 +1,12 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "update_items") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<p style="font-size:12px;">This page should only be visible for the administrators of the toolkit.<br/><br/>It has its sence in allowing a much easier insertion of new keywords, fragments or repeats into the mysql database as well as updating or deleting existing keywords, fragments or repeats.<br/>Following actions can be chosen: <%= link_to "add keyword", :controller => "ancient_dict", :action => "add" %>, <%=link_to "update keyword", :controller => "ancient_dict", :action => "up" %>, <%= link_to "delete keyword", :controller => "ancient_dict", :action => "delete"%>, <%= link_to "add item", :controller => "ancient_dict", :action => "addItem" %>, <%= link_to "update item", :controller => "ancient_dict", :action => "updateItem" %> and <%= link_to "delete item", :controller => "ancient_dict", :action => "deleteItem" %>.<br/>For a better handling of the scop entries, following pages are inserted: <%= link_to "add scop entry", :controller => "ancient_dict", :action => "addscop" %>, <%= link_to "update scop entry", :controller => "ancient_dict", :action => "updatescop" %> and <%= link_to "delete scop entry", :controller => "ancient_dict", :action => "deletescop" %>.</p>
+
+</form>
+

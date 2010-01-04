@@ -1,9 +1,10 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
-  
+
+<!--<%= render(:partial => "shared/resultsections")%>-->
 <%= render(:partial => "shared/resultsections", :locals => {:export => true}) %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
-  
+
 <div id="results" class="row">
 	<p id="queryname" style="font-size:14px; font-weight:bold; padding:5px;"<%= @job.header%></p>
 	<br><br>

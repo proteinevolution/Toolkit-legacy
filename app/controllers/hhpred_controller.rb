@@ -1,3 +1,5 @@
+require 'fasta_reader.rb'
+
 class HhpredController < ToolController
 
   def index
@@ -19,7 +21,7 @@ class HhpredController < ToolController
     @dbvalues = Array.new
     
     # Sort list of directories according to order given in sortlist 
-    sortlist = Array["\/pdb70", "\/pdb_on_hold", "\/scop", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test56", "\/test18", "\/Pfalciparum" ]
+    sortlist = Array["\/pdb70", "\/pdb_on_hold", "\/scop", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test", "\/Pfalciparum" ]
     # Allow non-standard libraries only on internal server:
     if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
     if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
@@ -91,6 +93,10 @@ class HhpredController < ToolController
   
   def showalign
     @widescreen = true
+    @fw_values = [fw_to_tool_url('hhpred', 'hhrep'), fw_to_tool_url('hhpred', 'hhrepid'),
+		  fw_to_tool_url('hhpred', 'hhomp')]
+    @fw_labels = [tool_title('hhrep'), tool_title('hhrepid'),
+		  tool_title('hhomp')]
   end
   
   def results_showtemplalign
@@ -145,6 +151,45 @@ class HhpredController < ToolController
   def help_results
     render(:layout => "help")
   end
-  
+
+  def resubmit_domain
+    job_params = @job.actions.first.params
+    job_params.each_key do |key|
+      if (key =~ /^(\S+)_file$/) 
+        if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
+          params[$1+'_input'] = IO.readlines(job_params[key]).join
+        end
+      else
+        params[key] = job_params[key]
+      end
+    end
+
+    start_seq = params[:domain_start].to_i
+    end_seq = params[:domain_end].to_i - start_seq
+    start_ali = -1
+    end_ali = 0
+    ali = FastaReader.new(File.join(@job.job_dir, @job.jobid + '.in'))
+    ali.next do |h, s|
+      while start_seq > 0
+	start_ali = start_ali + 1
+	start_seq = start_seq - 1 if s[start_ali] != ?-
+      end
+      end_ali = start_ali
+      while end_seq > 0
+	end_ali = end_ali + 1
+	end_seq = end_seq - 1 if s[end_ali] != ?-
+      end
+    end
+    ali.rewind
+    domain = ''
+    ali.each do |h, s|
+      domain = domain + h + "\n"
+      domain = domain + s[start_ali..end_ali] + "\n"
+    end
+    params[:sequence_input] = domain
+    params[:jobid] = ''
+    index
+    render(:action => 'index')
+  end
 
 end

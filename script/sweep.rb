@@ -45,7 +45,7 @@ end
 #delete all jobs of not logged in users that are older than 2 weeks
 jobs = Job.find( :all, :conditions => "user_id IS NULL" )
 jobs.each do |job|
-  if( !(Watchlist.find(:first, :conditions => [ "job_id = ?", job.jobid])).nil? || !(Watchlist.find(:first, :conditions => [ "str_id = ?", job.jobid])).nil?)
+  if( job.jobid =~ /^\d+$/ && (!(Watchlist.find(:first, :conditions => [ "job_id = ?", job.jobid])).nil? || !(Watchlist.find(:first, :conditions => [ "str_id = ?", job.jobid])).nil?))
     next
   end
   if( (NOW.to_f-job[:updated_on].to_f) > TWOWEEKS )
@@ -58,7 +58,7 @@ end
 #delete all jobs of useres that are older than 2 months
 jobs = Job.find( :all, :conditions => "user_id IS NOT NULL" )
 jobs.each do |job|
-  if( !(Watchlist.find(:first, :conditions => [ "job_id = ?", job.jobid])).nil? || !(Watchlist.find(:first, :conditions => [ "str_id = ?", job.jobid])).nil?)
+  if( job.jobid =~ /^\d+$/ && (!(Watchlist.find(:first, :conditions => [ "job_id = ?", job.jobid])).nil? || !(Watchlist.find(:first, :conditions => [ "str_id = ?", job.jobid])).nil?))
     next
   end
   if( (NOW.to_f-job[:updated_on].to_f) > TWOMONTHS )
@@ -98,7 +98,13 @@ Dir.foreach(TMP) do |id|
       logger.debug("Deleting #{file} - no job for id='#{id}' in the db")
       puts "Deleting #{file} - no job for id='#{id}' in the db"
       system("rm -rf #{file}")
+    else
+	out = `more #{File.join(file,"*.hhr")}`
+	if out.include?("/cluster/user/michael/galaxy/")
+	   delete_job(res, logger)
+	end	
     end
+   
   end
 end
 

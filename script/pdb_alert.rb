@@ -1,5 +1,6 @@
 #!/usr/bin/ruby  
 require File.join(File.dirname(__FILE__), '../config/environment')
+require 'tempfile'
 
 #######################################################################################################################################################################
 ## PDBalert script - runs weekly to find homologous sequences to user's watchlist
@@ -9,8 +10,10 @@ require File.join(File.dirname(__FILE__), '../config/environment')
 ##	For running when previous run was missed due to some reason: ./pdb_alert.rb 0 <Name of database of missed date (in /cluster/databases/pdbwatchlist/archives/ folder)> (e.g. ./pdb_alert.rb 0 pdb70_19Jul08)
 #######################################################################################################################################################################
 
+
+RSUB_LOG_TEMPFILE = Tempfile.new('rsub')
 RSUB_PATH = TOOLKIT_ROOT+"/script/rsub"
-RSUB_OPTS = "--logfile #{TMP}/rsub/pdb_alert.log --jobspath #{TMP}/rsub -a '-o #{TMP}/rsub -wd #{TMP}/rsub'"
+RSUB_OPTS = "--logfile #{RSUB_LOG_TEMPFILE.path} --jobspath #{TMP}/rsub -a '-o #{TMP}/rsub -wd #{TMP}/rsub'"
 PDB_ALERT_TMP = TMP+"/pdbalert"
 HHPRED = BIOPROGS+"/hhpred"
 CAL_DATABASE = DATABASES+"/hhpred/cal.hhm"
@@ -84,7 +87,7 @@ def perform_hhsearch ( hmm_file=nil )
 							  
       if userdb.nil?
         system("rm #{path}")
-        system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhr/,'.hhm')}")
+        system("rm #{hhm_file}")
       else
         params = userdb.params
         @mapt = ''
@@ -96,11 +99,11 @@ def perform_hhsearch ( hmm_file=nil )
             @mapt = params["mapt"].nil? ? '' : '-mapt '+params["mapt"]
           end
         end
-        STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file}......\n")
-        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
+#        STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file}......\n")
+#        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
         STDOUT.write("\n#{Time.now} - Performing HHsearch for #{hhm_file}......\n")
         system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{pdb_database} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
-        system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
+#        system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
       end
     end
   end
@@ -123,6 +126,7 @@ def analyse_result
       if userdb.nil?
         system("rm #{path}")
         system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhr/,'.hhm')}")
+        system("rm #{PDB_ALERT_TMP}/hhr/#{file}")
       elsif ( ARGV[0].nil? || ( !ARGV[0].nil? && ( ARGV[0].to_i == userdb.id || ARGV[0].to_i == 0 ) ) )
         present_prob = userdb.probability
 	if !userdb.params['Emax'].nil?
@@ -415,11 +419,11 @@ def on_hold_sequence_search(hmm_file=nil)
           @mapt = params["mapt"].nil? ? '' : '-mapt '+params["mapt"]
         end
       end
-      STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file} for on-hold sequences......\n")
-      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
+#      STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file} for on-hold sequences......\n")
+#      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
       STDOUT.write("\n#{Time.now} - Performing HHsearch for #{hhm_file} with on-hold sequence database (#{on_hold_db})......\n")
       system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{on_hold_db} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
-      system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
+#      system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
     end
   end
   
@@ -441,25 +445,28 @@ def on_hold_sequence_search(hmm_file=nil)
         present_Imin = 20
       end
       
-      hhr = File.new(File.join(PDB_ALERT_TMP,'hhr2',file.gsub(/\.hhm/,'.hhr')))
-      @lines = hhr.readlines
-      @line = @lines[9]
-      prob = @line[35..39].to_f
-      emax = @line[44..47].to_f
-      cut = 0
-      @lines.each_index do |i|
-        if @lines[i]=~/^No 1\s*$/
-          cut = i
+      hhr_file = File.join(PDB_ALERT_TMP,'hhr2',file.gsub(/\.hhm/,'.hhr'))
+      if File.exists?(hhr_file) && File.readable?(hhr_file)
+        hhr = File.new(hhr_file)
+        @lines = hhr.readlines
+        @line = @lines[9]
+        prob = @line[35..39].to_f
+        emax = @line[44..47].to_f
+        cut = 0
+        @lines.each_index do |i|
+          if @lines[i]=~/^No 1\s*$/
+            cut = i
+          end
         end
-      end
-      @name = @lines[cut+1].gsub(/>/,'')
-      imin = @lines[cut+2].gsub(/^.*Identities=(.*)\%.*$/,'\1').to_f
-      if(prob > present_prob + 0.1 && emax < present_Emax - 0.01 && imin > present_Imin + 0.1)
-        @matches.push(file)
-        userdb.params['match_name'] = @name
-        userdb.save!
-        @results.push(userdb)
-        STDOUT.write("\n#{Time.now} - Match found for #{file}\n")
+        @name = @lines[cut+1].gsub(/>/,'')
+        imin = @lines[cut+2].gsub(/^.*Identities=(.*)\%.*$/,'\1').to_f
+        if(prob > present_prob + 0.1 && emax < present_Emax - 0.01 && imin > present_Imin + 0.1)
+          @matches.push(file.gsub(/\.hhm/,'.hhr'))
+          userdb.params['match_name'] = @name
+          userdb.save!
+          @results.push(userdb)
+          STDOUT.write("\n#{Time.now} - Match found for #{file}\n")
+        end
       end
     end
   end

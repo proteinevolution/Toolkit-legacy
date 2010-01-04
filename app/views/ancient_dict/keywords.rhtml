@@ -1,0 +1,21 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "subitems") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<p style="font-size:14px; font-weight:bold;">Keywords</p>
+<table border="0" style="width:100%">
+  <%Dapkey.find(:all, :order => "k_name").each do |key|%>
+  <tr>
+    <td style="font-size:12px; font-weight:bold; width:25%" >
+      <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword?key=<%=key.k_id%>"><%=key.k_name%></a>
+    </td>
+    <td style="font-size:12px; width:75%;" align="justify">
+      <%=key.k_desc%>
+    </td>
+  </tr>
+  <% end %>
+</table>

@@ -1,5 +1,4 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => 'Results'}) %>
-  
 <%= render(:partial => "shared/resultsections") %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
@@ -10,36 +9,58 @@
 </div><div class="hr">&nbsp;</div>
 <% end %>
 
+<div id="forward" style="display: none;">
+  <input name="hits" id="hits" type="hidden" value=""/>
+
+  <div class="row">
+    <%= form_label("Forward results to") %>
+    <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[1], 1, "toggle_seqlen('destination');") %>
+  </div>
+
+  <div class="row">
+    <%= form_label("Select hits to forward") %>
+    <div class="formw">
+      <input name="includehits" type="radio" value="selected" checked="checked" />&nbsp;selected hits<br/>
+      <input name="submitform" type="submit" class="feedbutton" onClick="extract_selected(); setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+      <input name="includehits" type="radio" value="byevalue" />&nbsp;hits with e-value better than&nbsp;
+      <input name="hitsevalue" type="text" value="0.001" />
+    </div>
+  </div>
+
+  <div class="hr">&nbsp;</div>
+</div>
+
 <div id="color_button" class="row">
 
-	<div id="jalview">
-	<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
-	<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.j.fas">
-	<PARAM NAME="type"   value="URL">
-	<PARAM NAME="format" value="FASTA">
-	</APPLET> </div>
+  <div id="jalview">
+    <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+      <PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.j.fas">
+      <PARAM NAME="type"   value="URL">
+      <PARAM NAME="format" value="FASTA">
+  </APPLET> </div>
 
-	<div id="help_jal"><a href="#" onclick="openHelpWindow('/hhblast/help_results#jalview');">View alignment</a></div>
+  <div id="help_jal"><a href="#" onclick="openHelpWindow('/hhblast/help_results#jalview');">View alignment</a></div>
 
-     	<div class="labelj">
-		<a href="#" onclick="openHelpWindow('/hhblast/help_params#coloring');">Color alignments</a>
-	</div>
-	<div class="formwa">
-		<strong>
-			<%= radio_button_tag('coloring', 'onlySS', @mode == 'onlySS', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'onlySS')+"';"}) -%>&nbsp;color only SS &nbsp;&nbsp;&nbsp;&nbsp;
-			<%= radio_button_tag('coloring', 'letters', @mode == 'letters', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'letters')+"';"}) -%>&nbsp;	
-			<span style="color: orange;">c</span><span style="color: black;">o</span><span style="color: green;">l</span><span style="color: black;">o</span><span style="color: red;">r&nbsp;</span>
-			<span style="color: grey;">a</span><span style="color: green;">li</span><span style="color: maroon;">g</span><span style="color: purple;">n</span><span style="color: green;">m</span><span style="color: blue;">e</span><span style="color: purple;">n</span><span style="color: grey;">t</span><span style="color: grey;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
-			<%= radio_button_tag('coloring', 'background', @mode == 'background', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'background')+"';"}) -%>&nbsp;
-			<span style="background-color: #ffff00;">c</span><span style="background-color: white;">o</span><span style="background-color: #00ff00;">l</span><span style="background-color: white;">o</span><span style="background-color: #ff0000;">r&nbsp;</span>
-			<span style="background-color: white;">a</span><span style="background-color: #00ff00;">li</span><span style="background-color: #ffd070;">g</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: #00ff00;">m</span><span style="background-color: #c080ff;">e</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: white;">t</span><span style="background-color: white;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
-		</strong>
-	</div>
+  <div class="labelj">
+    <a href="#" onclick="openHelpWindow('/hhblast/help_params#coloring');">Color alignments</a>
+  </div>
+  <div class="formwa">
+    <strong>
+      <%= radio_button_tag('coloring', 'onlySS', @mode == 'onlySS', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'onlySS')+"';"}) -%>&nbsp;color only SS &nbsp;&nbsp;&nbsp;&nbsp;
+      <%= radio_button_tag('coloring', 'letters', @mode == 'letters', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'letters')+"';"}) -%>&nbsp;
+      <span style="color: orange;">c</span><span style="color: black;">o</span><span style="color: green;">l</span><span style="color: black;">o</span><span style="color: red;">r&nbsp;</span>
+      <span style="color: grey;">a</span><span style="color: green;">li</span><span style="color: maroon;">g</span><span style="color: purple;">n</span><span style="color: green;">m</span><span style="color: blue;">e</span><span style="color: purple;">n</span><span style="color: grey;">t</span><span style="color: grey;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
+      <%= radio_button_tag('coloring', 'background', @mode == 'background', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'background')+"';"}) -%>&nbsp;
+      <span style="background-color: #ffff00;">c</span><span style="background-color: white;">o</span><span style="background-color: #00ff00;">l</span><span style="background-color: white;">o</span><span style="background-color: #ff0000;">r&nbsp;</span>
+      <span style="background-color: white;">a</span><span style="background-color: #00ff00;">li</span><span style="background-color: #ffd070;">g</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: #00ff00;">m</span><span style="background-color: #c080ff;">e</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: white;">t</span><span style="background-color: white;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </strong>
+  </div>
 </div>
+<form></form>
 <div class="spacer">&nbsp;</div>	
-  
+
 <div class="row">
-	<%= @job.results.join %>
+  <%= @job.results.join %>
 </div>
 
 </form>

@@ -89,7 +89,7 @@ class HhsenserAction < Action
     @commands << "#{HH}/reformat.pl fas clu #{@basename}_permissive_masterslave.reduced.fas #{@basename}_permissive_masterslave.reduced.clu -v #{@v} &> #{job.statuslog_path}_reform"
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'queue' => 'toolkit_long'})    
+    queue.submit(@commands, true, {'queue' => QUEUES[:long]})
   end
 
   def run_screening
@@ -229,7 +229,7 @@ class HhsenserAction < Action
       
       subseq = subseq - 1
       outFile = File.new(@basename + ".subseq#{subseq}", "w+")
-      outFile.write(">#{name}:#{subseq} (#{i1}-#{i2})\n#{seq[(i1-1)..(i2-i1+1)]}\n")
+      outFile.write(">#{name}:#{subseq} (#{i1}-#{i2})\n#{seq[(i1-1)..(i2-2)]}\n")
 
       logger.debug "Subseqs erzeugt!"
 
@@ -241,7 +241,7 @@ class HhsenserAction < Action
     else
       
       logger.debug "run hhsenser!"
-      @commands << "#{HH}/buildali.pl -v #{@v} -cpu 2 -n 1 -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} -db #{@db} #{@basename}.a3m &> #{job.statuslog_path}"
+      @commands << "#{HH}/buildali.pl -v #{@v} -cpu 2 -n 1 -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -db #{@db} #{@basename}.a3m &> #{job.statuslog_path}"
       run_hhsenser
       
     end

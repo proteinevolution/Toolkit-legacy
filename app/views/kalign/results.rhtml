@@ -35,21 +35,23 @@
 	<br/><br/>
 	<strong>Number of sequences: <%= @job.num_seqs %></strong>
 	<br/><br/>
-
 	<table>
-	<% for i in 0...@job.header.size %>
-		<tr>
-		<td><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= i %>" checked="checked" /></td>
-		<td><pre><%= @job.header[i] %></pre></td>
-		</tr>
-		<tr>
-		<td></td>
-		<td><pre><%= @job.aln_blocks[i] %></pre></td>
-		</tr>
-		
+	<% @job.aln_blocks.each do |block| %>
+          <% block.each do |line| %>
+	    <tr>
+            <% if line =~ /^[\s\.\:\*]+$/ %>
+              <td></td>
+            <% else %>
+	      <td ><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= block.index(line) %>" checked="checked" onclick="javascript:change(<%=block.index(line) %>, <%= @job.aln_blocks.index(block) %>)"/>
+              </td>
+            <% end %>
+            <td><pre><%= line %></pre></td>
+            </tr>
+          <%end%>
+	  <tr><td></td><td>&nbsp;<br/>&nbsp;</td></tr>
 	<% end %>
 	</table>
-	
+
 </div>
 
 <%= form_hidden_field('CHECKBOXES', @job.num_seqs) %>

@@ -15,8 +15,13 @@
       tries = 0
 
       if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
-        command = "#{QUEUE_DIR}/qsub -l h_vmem=10G #{self.wrapperfile}"
-        logger.debug "qsub command: #{command}"
+        if RAILS_ENV == "development"
+          command = "#{QUEUE_DIR}/qsub -l h_vmem=10G -p 10 #{self.wrapperfile}"
+          logger.debug "qsub command: #{command}"
+        else
+          command = "#{QUEUE_DIR}/qsub -l h_vmem=10G #{self.wrapperfile}"
+          logger.debug "qsub command: #{command}"
+        end
       else
         command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
       end
@@ -43,7 +48,7 @@
     # creates a shell wrapper file for all jobcomputations-commands that are executed on the queue, sets the status of the job
     # this must be a wrapper to be able to print to stdout and stderr files when disk file size limit is reached in the subshell.
     def writeShWrapperFile
-      queue = "toolkit_normal"
+      queue = QUEUES[:normal]
       cpus = nil
       additional = false
 
@@ -69,24 +74,30 @@
             end
 	  end
 	end
-	f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
+        f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -o #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
         f.write '#$' + " -w n\n"
+<<<<<<< HEAD:app/models/toolkit/sge_worker.rb
 
 	if (queue == "toolkit_long" && LOCATION == "Tuebingen")
           f.write '#$' + " -l long\n"
         end
+=======
+>>>>>>> maint:app/models/toolkit/sge_worker.rb
 
-        if (queue == "toolkit_immediate")
-          f.write '#$' + " -l immediate\n"
+	if (queue == QUEUES[:long] && LOCATION == "Tuebingen")
+	  f.write '#$' + " -l long\n"
         end
+<<<<<<< HEAD:app/models/toolkit/sge_worker.rb
 
         #f.write "-l h_vmem=2G\n"
+=======
+>>>>>>> maint:app/models/toolkit/sge_worker.rb
 
-#        if (!cpus.nil?)
-#        f.write "#PBS -l nodes=1:ppn=#{cpus}\n"
-#        end
+        if (queue == QUEUES[:immediate])
+	  f.write '#$' + " -l immediate\n"
+        end
 
 
         f.write "hostname > #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
@@ -111,18 +122,26 @@
         # were there any errors?
         if (additional == true)
           if (LOCATION == "Munich")
-            f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            if RAILS_ENV == "development"
+              f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            else
+              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            end
           else
             f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
           end
           if RAILS_ENV == "development"
-          f.write "echo 'Scheint prima zu funktionieren ... .' >> #{queue_job.action.job.statuslog_path}\n"
+            f.write "echo 'Scheint prima zu funktionieren ... .' >> #{queue_job.action.job.statuslog_path}\n"
           end
 
         else
           f.write "if [ ${exitstatus} -eq 0 ] ; then\n"
           if (LOCATION == "Munich")
-            f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            if RAILS_ENV == "development"
+              f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            else
+              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+            end
           else
             f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
           end
@@ -131,7 +150,11 @@
           end
           f.write "else\n"
           if (LOCATION == "Munich")
-            f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}'\n"
+            if RAILS_ENV == "development"
+              f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}'\n"
+            else
+              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}'\n"
+            end
           else
             f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}\n"
           end
@@ -155,11 +178,11 @@
         f = File.open(self.commandfile, 'w')
         f.write "#!/bin/sh\n"
         # FILE SIZE LIMIT 1Gb (1024 * 1000000), MEMORY LIMIT 6Gb (see man bash -> ulimit)
-        #f.write "ulimit -f 1000000 -m 6000000\n"
+        f.write "ulimit -f 1000000\n" #-m 6000000\n"
         f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"
         # print the process id of this shell execution
         f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 
-         
+        logger.debug "Exec_host file geschrieben."
         f.write "exitstatus=0;\n"
 
         commands.each do |cmd|

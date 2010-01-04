@@ -1,19 +1,19 @@
-<h3 class="<%= @section["name"] %>">User-statistics</h3>
+<h3 >User-statistics</h3>
 </br>
 <p>(This page is restricted to requests from 10.35.*)</p>
 </br>
 <div class="hr">&nbsp;</div>
-<div class="row">	
+<div class="row">
 
 	<h4>User</h4>
 	<table style="text-align:center;" border="1" cellspacing="0" cellpadding="2">
 		<tr><td><b>Username</b></td><td><b>firstname</b></td><td><b>lastname</b></td><td><b>institute</b></td>
-		<td><b>country</b></td><td><b>groups</b></td><td><b>email</b></td><td><b>job-counts</b></td></tr>
+		<td><b>country</b></td><td><b>groups</b></td><td><b>job-counts</b></td></tr>
 		<% User.find(:all).each do |u| %>
 		<% count = Job.find(:all, :conditions => [ "user_id = ?", u.id]).size %>
 		<tr><td><%= u.login %></td><td><%= u.firstname %></td><td><%= u.lastname %></td><td><%= u.institute %></td>
-		<td><%= u.country %></td><td><%= u.groups %></td><td><%= u.email %></td><td><%= count %></td></tr>	
-		<% end %>	
+		<td><%= u.country %></td><td><%= u.groups %></td><td><%= count %></td></tr>
+		<% end %>
 	</table>
 	<div class="hr">&nbsp;</div>
 

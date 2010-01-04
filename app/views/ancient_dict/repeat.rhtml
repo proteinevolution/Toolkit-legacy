@@ -1,0 +1,228 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "subitems") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+<%Dapfragment.find(:all, :conditions => ["f_id=?", @page]).each do |repeat|%>
+<p style="font-size:18px; font-weight:bold;"><%=repeat.f_name%></p>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Keywords</p>
+
+<table border="0" style="width=100%">
+  <tr>
+    <%DapfragmentDapkey.find(:all, :conditions => ["f_id=?", @page]).each do |keywd|%>
+      <td style="font-size:12px">
+        <a href="<%= DOC_ROOTURL %>/ancient_dict/keyword?key=<%=keywd.k_id%>">'<%=Dapkey.find_by_k_id(keywd.k_id).k_name%>' &nbsp;</a>
+      </td>
+    <%end%>
+  </tr>
+</table>
+<br/>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Description</p>
+<table border="0" style="width=100%">
+  <colgroup>
+    <col width="20%">
+    <col width="5%">
+    <col width="75%">
+    <!--<col width="5%">
+    <col width="20%">-->
+  </colgroup>
+  <tr>
+    <td align="right">
+      <%= image_tag repeat.f_figure%>
+    </td>
+    <td> </td>
+    <td style="font-size:12px" align="justify" valign="top">
+      <%=repeat.f_desc%>
+    </td>
+<!--    <td> </td>
+    <td align="right">
+      <%= image_tag repeat.f_figure%>
+    </td>-->
+  </tr>
+</table>
+<br/>
+<%end%>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Occurrence (SCOP accession)</p>
+<table border="0" style="width=100%">
+  <!--<colgroup>
+   <col width="25%">
+   <col width="75%">
+  </colgroup>-->
+  <%Dapoccurrence.find(:all, :conditions => ["f_id=?", @page]).each do |scop|%>
+    <tr>
+      <td style="font-size:12px">
+         <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=scop.scop_id%>"><%=scop.scop_id%></a>
+      </td>
+      <td>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </td>
+      <td style="font-size:12px">
+        <%=Dapscop.find(:first, :conditions => ["scop_id=?", scop.scop_id]).scop_desc%>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<br/>
+<!--<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Structure Superposition</p>
+<table border="0" style="width=100%">
+  <colgroup>
+    <col width="50%">
+    <col width="50%">
+  </colgroup>
+  <tr>
+    <td style="font-size:12px">
+      <a href="#" onclick="var win = window.open('<%= DOC_ROOTURL %>/ancient_dict/pdb_applet?file=<%= @page %>','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();"%style="margin: 5px 10px 10px 10px;"> Show PDB applet </a>
+    </td>
+    <td style="font-size:12px">
+      <a href="<%= @pdb_url %>">Download PDB-file</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+</table>
+<br/>
+<br/>-->
+
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Sequence Alignment</p>
+<div style="width:700px; height:300px; overflow:auto;">
+<table border="0">
+  <!--<colgroup>
+   <col width="9%">
+   <col width="1%">
+   <col width="9%">
+   <col width="1%">
+   <col width="5%">
+   <col width="2%">
+   <col width="5%">
+   <col width="2%">
+   <col width="66%">
+  </colgroup>-->
+  <%Dapfragment.find(:all, :conditions => ["f_id=?", @page]).each do |itemalign|%>
+      <%align=itemalign.f_align.split('\n')-%>
+      <%for i in 0...align.length-%>
+      <tr>
+       <%eachline=align[i].split()-%>
+       <%for j in 0...eachline.length-%>
+        <%if i == 0-%>
+          <%if j ==0-%>
+            <td>&nbsp;&nbsp;<!--<font face="Monospace"><%=eachline[j]%></font>--></td><td>&nbsp;&nbsp;</td>
+          <%elsif j ==eachline.length-1-%>
+            <%firstline=eachline[j]-%>
+            <%charstart=0-%>
+            <%newfirstline = ""-%>
+            <%char=firstline[charstart].chr-%>
+            <%for l in 1..firstline.length-1 -%>
+              <%nextchar=firstline[l].chr-%>
+              <%if nextchar != char || l==firstline.length-1 -%>
+                <%if char=="h"-%>
+                  <%charstart-%>
+                  <%charend=l -%>
+                  <%if l==firstline.length-1 -%>
+                    <%charend+=1 -%>
+                  <%end -%>
+                  <%strlen=charend-charstart -%>
+                  <%subh=firstline[charstart, strlen] -%>
+                  <!--<%substringh = "<span style=\"background-color:#d4d400;\">"+subh+"</span>" -%>--> 
+                  <%substringh = "<span style=\"background-color:#ffffff;\">"+subh+"</span>" -%>
+                  <%newfirstline += substringh -%>
+                  <%charstart=l -%>
+                <%elsif char=="c" -%>
+                  <%charstart -%>
+                  <%charend=l -%>
+                  <%if l==firstline.length-1 -%>
+                    <%charend+=1 -%>
+                  <%end -%>
+                  <%strlen=charend-charstart -%>
+                  <%subc=firstline[charstart, strlen] -%>
+                  <!--<%substringc = "<span style=\"background-color:#b5b5b5;\">"+subc+"</span>"-%>-->
+                  <%substringc = "<span style=\"background-color:#ffffff;\">"+subc+"</span>"-%>
+                  <%newfirstline += substringc -%>
+                  <%charstart=l -%>
+                <%elsif char=="b"-%>
+                  <%charstart -%>
+                  <%charend=l -%>
+                  <%if l==firstline.length-1 -%>
+                    <%charend+=1 -%>
+                  <%end -%>
+                  <%strlen=charend-charstart -%>
+                  <%subb=firstline[charstart, strlen] -%>
+                  <!--<%substringb="<span style=\"background-color:#0de00d;\">"+subb+"</span>" -%>-->
+                  <%substringb="<span style=\"background-color:#ffffff;\">"+subb+"</span>" -%>
+                  <%newfirstline += substringb -%>
+                  <%charstart=l -%>
+                <%else -%>
+                <%end -%>
+                <%char=firstline[charstart].chr -%>
+              <%end -%>
+            <%end -%>
+            <td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td nowrap><font face="Monospace"><%=newfirstline%><!--<%=eachline[j]%>--></font></td>
+          <%end%>
+        <%else%>
+          <%if j !=eachline.length-1%>
+            <%if j ==0 %>
+              <td><font face="Monospace"><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=<%=eachline[j]%>"><%=eachline[j]%></a></font></td><td>&nbsp;&nbsp;</td>
+            <%elsif j == 1 %>
+              <td><font face="Monospace"><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=eachline[j]%>"><%=eachline[j]%></a></font></td><td>&nbsp;&nbsp;</td>
+            <%else%>
+              <td><font face="Monospace"><%=eachline[j]%></font></td><td>&nbsp;&nbsp;</td>
+            <%end%>
+          <%else%>
+            <td nowrap><font face="Monospace"><%=eachline[j]%></font></td><td>&nbsp;&nbsp;</td>
+          <%end%>
+        <%end%>
+      <%end%>
+      </tr>
+      <%end%>
+  <%end%>
+</table>
+</div>
+<!--</p>
+<table border="0">
+  <colgroup>
+   <col width="20%">
+   <col width="20%">
+   <col width="8%">
+   <col width="8%">
+   <col width="4%">
+   <col width="40%">
+  </colgroup>
+  <% for i in 0...@seq_id.length%>
+    <tr>
+      <td style="font-size:12px">
+        <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=<%=@seq_id[i]%>"><%=@seq_id[i]%></a>
+      </td>
+      <td style="font-size:12px">
+        <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=@seq_scopid[i]%>"><%=@seq_scopid[i]%></a>
+      </td>
+      <td style="font-size:12px">
+        <%=@pos_beg[i]%>
+      </td>
+      <td style="font-size:12px">
+        <%=@pos_end[i]%>
+      </td>
+      <td style="font-size:12px;">
+        <font face="Courier">
+          <%=@sequence[i]%>
+        </font>
+      </td>
+    </tr>
+  <% end %>
+</table>-->
+<br/>
+<br/>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
+<table border="0">
+  <%Dapref.find(:all, :conditions => ["f_id=?", @page]).each do |ref|%>
+    <tr>
+      <td style="font-size:12px">
+        <%=ref.r_reference%>
+      </td>
+    </tr>
+  <% end %>
+
+</table>
+

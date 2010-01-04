@@ -3,7 +3,6 @@
 
 <%= form_tag({:action => :run, :job => 'hhpred', :parent => @parent_job}, {:multipart => true})%> 
 <center>
-<a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/HHsearch" title="Download HHsearch 1.6.0">
   HHpred now runs with HHsearch 1.6.0.0
 </a></center>
 
@@ -189,11 +188,9 @@
 <div class="hr">&nbsp;</div>
 <ul class="arrow-marker">
   <li><a href="#" title="About HHpred" onclick="openHelpWindow('/hhpred/help_ov');">About HHpred</a></li>
-  <li><a target="_blank" href="http://<%= DOC_ROOTHOST %>/CAFASP5_incl_times.html">CASP7/CAFASP5 preliminary server ranking</a></li>
-  <li><a target="_blank" href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&Cmd=ShowDetailView&TermToSearch=17894354"><font color="red">Official server results for CASP7 structure prediction benchmark</font></a></li> 
-	&nbsp;&nbsp;&nbsp; (See Fig. 1: HHpred1, 2, 3, and BayesHH have group
-	codes 212, 213, 418, and 214, respectively)
-  <li><a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/HHsearch" title="Download HHsearch 1.5.0"><B>Download HHsearch 1.5.0</B></a>
+  <li><a target="_blank" href="http://www.genzentrum.lmu.de/soeding/pdf/Proteins-2009-Soeding-R1b.pdf">HHpred results in CASP8 (Proteins 2009)</a></li>
+  <li><a target="_blank" href="http://predictioncenter.org/casp8/groups_analysis.cgi?target_type=0&gr_type=server&domain_classifications_id=1,2,3,4&field=sum_z_gdt_ts_server_pos">Official server results for CASP8 structure prediction benchmark</a></li> 
+  <li><a target="_blank" href="ftp://toolkit.lmb.uni-muenchen.de/HHsearch/" title="Download HHsearch 1.5.0"><B>Download HHsearch 1.5.0</B></a>
   <li><a target="_self" href="pdbalert">PDBalert automatic remote homology tracking and structure prediction</a></li>
   <li><a target="_blank" href="http://www.lmb.uni-muenchen.de/soeding/index.htm">S&ouml;ding group at Gene Center in Munich</a></li>
 </ul>

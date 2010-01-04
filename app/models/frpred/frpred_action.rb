@@ -3,7 +3,7 @@ class FrpredAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
   REFORMAT = File.join(BIOPROGS, 'hhpred', 'reformat.pl')
   
-  attr_accessor :sequence_input, :sequence_file, :informat, :mail, :jobid, :minCoverage, :minIdentity
+  attr_accessor :sequence_input, :sequence_file, :informat, :inputmode, :mail, :jobid, :minCoverage, :minIdentity
   attr_accessor :pdb_chain
 
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
@@ -134,6 +134,23 @@ class FrpredAction < Action
     init
     @infile = flash['infile']
     @manual_subgroups = flash['manual_subgroups']
+
+    # check for only one sequence
+    num_seqs = 0
+    res = IO.readlines(@infile).map {|line| line.chomp}
+    res.each do |line|
+      if (line =~ /^>/)
+        num_seqs += 1
+      end
+    end
+    if (num_seqs < 2)
+      system("echo \"\nERROR! No homologs found!\" >> #{job.statuslog_path}")
+      self.status = STATUS_ERROR
+      self.save
+      job.update_status
+      exit
+    end
+
     @in_f = @infile.gsub(/^\S+\/(\S+.\S+)$/,'\1')
     @pdb_f = nil
     if @pdb

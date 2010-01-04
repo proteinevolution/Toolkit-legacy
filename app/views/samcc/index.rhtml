@@ -1,0 +1,108 @@
+<a href="#" onClick="openHelpWindow('/samcc/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+
+<h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'samcc'}, {:multipart => true})%>
+<h3 class="<%= @section["name"] %>">Input</h3>
+
+<!--<div class="row">
+  <%= form_text_field("sequence_input","") %>
+  <%= form_hidden_field("sequence_input","") %>
+</div>-->
+
+<div class="row">
+	<%= form_label("Paste pdb input", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+
+<div class="row">
+	<%= form_label("Upload a pdb file", "input") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+        <%= form_label("Examples") %>
+        <div class="formw">
+                <strong>1GCL</strong> <a href="#" onClick="javascript:paste1GCL();">paste</a>/<a target="_blank" href="/samcc/results/tu_1GCL">results</a>&nbsp;&nbsp;
+                <strong>2R2V</strong> <a href="#" onClick="javascript:paste2R2V();">paste</a>/<a target="_blank" href="/samcc/results/tu_2R2V">results</a>&nbsp;&nbsp;
+        </div>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Input parameters (obligatory)</h3>
+<div class="row">
+	<%= form_label("Definition for helix 1", "helix") %>
+	<div class="formw">
+		<table>
+			<tr>
+				<td>first position</td><td><%= form_text_field("first_position1", @first_pos1, "", 2, false, "", true) %></td><td>chain</td><td><%= form_text_field("chain1_letter", @ch1_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain1_start", @ch1_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain1_end", @ch1_end, "", 4, false, "", true)%>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+        <%= form_label("Definition for helix 2", "helix") %>
+	<div class="formw">
+		<table>
+			<tr>
+				<td>first position</td><td><%= form_text_field("first_position2", @first_pos2, "", 2, false, "", true) %></td><td>chain</td><td><%= form_text_field("chain2_letter", @ch2_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain2_start", @ch2_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain2_end", @ch2_end, "", 4, false, "", true)%></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+        <%= form_label("Definition for helix 3", "helix") %>
+        <div class="formw">
+                <table>
+                        <tr>
+                                <td>first position</td><td><%= form_text_field("first_position3", @first_pos3, "", 2, false, "", true) %></td><td>chain</td><td><%= form_text_field("chain3_letter", @ch3_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain3_start", @ch3_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain3_end", @ch3_end, "", 4, false, "", true)%></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+        <%= form_label("Definition for helix 4", "helix") %>
+	<div class="formw">
+                <table>
+                        <tr>
+                                <td>first position</td><td><%= form_text_field("first_position4", @first_pos4, "", 2, false, "", true) %></td><td>chain</td><td><%= form_text_field("chain4_letter", @ch4_letter, "", 2, false, "", true)%></td><td width="15px">from</td><td><%= form_text_field("chain4_start", @ch4_start, "", 4, false, "", true)%></td><td width="15px">to</td><td><%= form_text_field("chain4_end", @ch4_end, "", 4, false, "", true)%></td>
+                        </tr>
+                </table>
+        </div>
+</div>
+
+<div class="row">
+        <%= form_label("Periodicity", "periodicity") %>
+        <%= form_select_single("periodicity", @periodicity_values, @periodicity_labels, @periodicity_values[0]) %>
+</div>
+
+<!--<div class="row">
+        <%= form_label("First position", "first_pos") %>
+        <%= form_text_field("first_position", @first_pos, "", 2) %>
+</div>
+
+<div class="row">
+        <%= form_label("First position AP", "first_pos_AP") %>
+        <%= form_text_field("first_position_AP", ' ') %>
+</div>-->
+
+
+<div class="spacer">&nbsp;</div>
+
+<!--<h3 class="<%= @section["name"] %>">Options</h3>-->
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

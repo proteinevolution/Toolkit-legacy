@@ -1,0 +1,10 @@
+ancient_dict_job:
+  title: DAP
+  hidden: false
+  code: DAP
+  resultsections:
+    - name: search
+      title: Search
+      title_long: Search Database
+      forwardsections:
+

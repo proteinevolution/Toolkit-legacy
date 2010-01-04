@@ -1,8 +1,8 @@
 class FrpredController < ToolController
 
 	def index
-		@inputmode_values = ["sequence", "alignment"]
-		@inputmode_labels = ["single FASTA sequence", "alignment"]
+          @inputmode_values = ["sequence", "alignment"]
+          @inputmode_labels = ["single FASTA sequence", "alignment"]
 		@informat_values = ['fas', 'gfas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
 		@informat_labels = ['FASTA', 'grouped FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
 #		@matrix_values = ['B50', 'B62', 'B80', 'Gonnet']

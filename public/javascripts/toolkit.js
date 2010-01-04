@@ -167,3 +167,29 @@ function sleep(numberMillis)
 	    return;
     }
 }
+
+//Creates slider with to handles for selecting domains of a sequence (see hhpred or hhblast result page).
+function domain_slider_show(sequence_length, start, end) {
+  var s = $('slider_bar');
+  new Control.Slider(s.select(".handle"), s, {
+    range: $R(1, sequence_length, false),
+    step: 1,
+    sliderValue: [start, end],
+    spans: [s.down('.span')],
+    restricted: true,
+    onSlide: function(v) {domain_slider_update(v);}
+  });
+  domain_slider_update(new Array(start, end));
+}
+
+function domain_slider_update(v) {
+  var i = Math.floor(v[0]);
+  $('domain_start').value = i;
+  $('slider_label_left').innerHTML = i;
+  $('slider_label_left').style.left = parseInt($('slider_bar_handle_left').style.left) - 17;
+  var i = Math.floor(v[1]);
+  $('domain_end').value = i;
+  $('slider_label_right').innerHTML = i;
+  $('slider_label_right').style.left = parseInt($('slider_bar_handle_right').style.left) + 2;
+}
+

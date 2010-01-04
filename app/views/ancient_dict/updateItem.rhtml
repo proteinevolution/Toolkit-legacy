@@ -1,0 +1,194 @@
+<a href="#" onClick="openHelpWindow('/ancient_dict/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= render(:partial => "update_items") %>
+
+<%= form_tag({:action => :run, :job => 'ancient_dict'}, {:multipart => true})%>
+
+<!--<p style="font-size:14px; font-weight:bold;">Update Item</p>-->
+
+<!--<br/>-->
+
+<!--<%= button_to "Update Item"%>-->
+
+<% if @itempage == "" %>
+  <p style="font-size:14px; font-weight:bold;">Select Item for Update</p>
+  </br>
+  <form action="/ancient_dict/updateItem" method="post" name="item">
+    <select name='item' onChange="window.location = this.value;">
+      <option value="">Items</option>
+      <%Dapfragment.find(:all, :order => "f_name").each do |frag|%>
+          <%@entry = frag.f_id + ": " + frag.f_name%>
+          <option value="<%= DOC_ROOTURL %>/ancient_dict/updateItem?itempage=<%=frag.f_id%>"><%=@entry%></option>
+      <% end %>
+    </select>
+  </form>
+<% else %>
+  <%@fraginfo=Dapfragment.find(:first, :conditions => ["f_id=?", @itempage])%>
+  <% @frag = @fraginfo.f_name %>
+  <% @fragid = @fraginfo.f_id %>
+  <% if @fragid =~ /^FRAG/ %>
+    <h3 style="font-size:12px"> Update Fragment</h3>
+
+    <div class="row">
+      <%= form_label("Mysql ID (Do not change!!!)")%>
+      <%= form_text_field("upfrid", @fraginfo.id, "", 10)%>
+    </div>
+
+    <div class="row">
+      <%= form_label("Fragment ID (Do not change!!!)") %>
+      <%= form_text_field("f_upid", @fraginfo.f_id, "", 10)%>
+    </div>
+
+    <div class="row">
+      <%= form_label("Fragment name") %>
+      <%= form_text_field("f_upname", @fraginfo.f_name, "", 80)%>
+    </div>
+
+    <div class="row">
+      <%= form_label("Fragment description") %>
+      <%= form_text_area("f_updesc", @fraginfo.f_desc) %>
+    </div>
+
+    <div class="row">
+      <%= form_label("Short description of Fragment") %>
+      <%= form_text_area("f_upshortdesc", @fraginfo.f_shortdesc) %>
+    </div>
+
+    <div class="row">
+      <%= form_label("Change the category of the Fragment") %>
+      <%= form_select_single("f_upcat", @cat_values, @cat_labels, @fraginfo.f_category)%>
+    </div>
+
+    <div class="row">
+      <%= form_label("Select new keywords if necessary (the existing ones have to be selected as well)") %>
+      <%= form_select_multiple("f_upkeys", @key_val, @key_lab) %>
+    </div>
+
+    <div class="row">
+      <%= form_label("Add a new alignment file for Fragment (if necessary)") %>
+      <%= form_file("f_upali")%>
+    </div>
+
+    <div class="row">
+      <%= form_label("Add a new figure for Fragment (if necessary)") %>
+      <%= form_file("f_upfigure")%>
+    </div>
+
+    <%@upocc=""%>
+    <% Dapoccurrence.find(:all, :conditions => ["f_id=?", @fraginfo.f_id]).each do |upocc|%>
+      <%upscop = Dapscop.find(:first, :conditions => ["scop_id=?", upocc.scop_id])%>
+      <%occ_entry=upscop.scop_id+'\t'+upscop.scop_desc+'\n'%>
+      <%@upocc+=occ_entry%>
+    <%end%>
+
+    <div class="row">
+      <%= form_label("Update the Occurrence of Fragment (separate the occurrence from the description with \\t and each occurrenc with \\n)")%>
+      <%= form_text_area("f_upocc", @upocc)%>
+    </div>
+
+    <%@upref=""%>
+    <% Dapref.find(:all, :conditions => ["f_id=?", @fraginfo.f_id]).each do |upref|%>
+      <%ref_entry=upref.r_reference+'\n'%>
+      <%@upref+=ref_entry%>
+    <%end%>
+
+    <div class="row">
+      <%= form_label("Update the Reference of Fragment (separate the references with \\n)")%>
+      <%= form_text_area("f_upref", @upref)%>
+    </div>
+
+    <div class="row">
+      <div id="gloading_lnk" style="display:none; text-decoration:blink; float: right; margin-right: 25px;" >Loading...</div>
+    </div>
+
+
+    <div class="row">
+      <input name="submitform" type="submit" class="toolbutton" value="Update Fragment" onclick="Effect.Appear('gloading_lnk');"/>
+      <!--<input name="resetform" type="reset" class="toolbutton" value="Reset"/>-->
+    </div>
+
+  <% else %>
+    <h3 style="font-size:12px;">Update Repeat</h3>
+
+    <div class="row">
+      <%= form_label("Mysql ID (Do not change!!!)")%>
+      <%= form_text_field("upfrid", @fraginfo.id, "", 10)%>
+    </div>
+
+    <div class="row">
+      <%= form_label("Repeat ID (Do not change!!!)") %>
+      <%= form_text_field("f_upid", @fraginfo.f_id, "", 10)%>
+    </div>
+
+    <div class="row">
+      <%= form_label("Repeat name") %>
+      <%= form_text_field("f_upname", @fraginfo.f_name, "", 80)%>
+    </div>
+
+    <div class="row">
+      <%= form_label("Repeat description") %>
+      <%= form_text_area("f_updesc", @fraginfo.f_desc) %>
+    </div>
+
+    <div class="row">
+      <%= form_label("Short description of Repeat") %>
+      <%= form_text_area("f_upshortdesc", @fraginfo.f_shortdesc) %>
+    </div>
+
+    <div class="row">
+      <%= form_label("Select new keywords if necessary (the existing ones have to be selected as well)") %>
+      <%= form_select_multiple("f_upkeys", @key_val, @key_lab) %>
+    </div>
+
+
+    <div class="row">
+      <%= form_label("Add a new alignment file for Repeat") %>
+      <%= form_file("f_upali", @fraginfo.f_align)%>
+    </div>
+
+    <div class="row">
+      <%= form_label("Add a new figure for Repeat") %>
+      <%= form_file("f_upfigure", @fraginfo.f_figure)%>
+    </div>
+
+    <%@upocc=""%>
+    <% Dapoccurrence.find(:all, :conditions => ["f_id=?", @fraginfo.f_id]).each do |upocc|%>
+      <% sc_desc = Dapscop.find(:first, :conditions => ["scop_id=?", upocc.scop_id]).scop_desc%>
+      <% sc_entry = upocc.scop_id + '\t' + sc_desc + '\n'%>
+      <%@upocc+=sc_entry%>
+    <%end%>
+
+    <div class="row">
+      <%= form_label("Update the Occurrence of Repeat (separate the occurrence from the description with \\t and each occurrenc with \\n)")%>
+      <%= form_text_area("f_upocc", @upocc)%>
+    </div>
+
+    <%@upref=""%>
+    <% Dapref.find(:all, :conditions => ["f_id=?", @fraginfo.f_id]).each do |upref|%>
+      <%ref_entry=upref.r_reference+'\n'%>
+      <%@upref+=ref_entry%>
+    <%end%>
+
+
+    <div class="row">
+      <%= form_label("Reference of Repeat (separate the references with \\n)")%>
+      <%= form_text_area("f_upref", @upref)%>
+    </div>
+
+    <div class="row">
+      <div id="gloading_lnk" style="display:none; text-decoration:blink; float: right; margin-right: 25px;" >Loading...</div>
+    </div>
+
+
+    <div class="row">
+      <input name="submitform" type="submit" class="toolbutton" value="Update Repeat" onclick="Effect.Appear('gloading_lnk');"/>
+      <!--<input name="resetform" type="reset" class="toolbutton" value="Reset"/>-->
+    </div>
+
+
+  <%end%>
+<%end%>
+
+

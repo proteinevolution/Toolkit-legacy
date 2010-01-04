@@ -18,25 +18,30 @@ class HhpredShowtemplalignAction < Action
     @local_dir="/tmp"
 
     lines = IO.readlines(@basename + ".hhr")
-
+    
     lines.each do |line|
       line.scan(/^\s*(\d+)\s+(\S+)\s+/) do |a,b|
-        if (a && b && a == @hit)
-          @seq_name = b
-          break
-        end
+	if (a && b && a == @hit)
+	  @seq_name = b.gsub(/(\|)|(\.)/, '_')
+	  break
+	end
       end
     end
-
-    # Search in all databases $database_dir/hhpred/new_dbs/* for a3m file
+   
+    #Search in selected databases for a3m file
     @dir = ""
-    Dir.foreach(File.join(DATABASES, 'hhpred/new_dbs')) do |dir|
-      if File.exist?(File.join(DATABASES, 'hhpred/new_dbs', dir, @seq_name + ".a3m"))
-        logger.debug "File #{@seq_name}.a3m found in #{dir}"
-        @dir = File.join(DATABASES, 'hhpred/new_dbs', dir)
-        break
+    action_params = HhpredAction.find(:first, :conditions=>{:job_id=>job_id}).params
+    dbs_dir = []
+    dbs_dir.concat(action_params['hhpred_dbs']) if !action_params['hhpred_dbs'].nil?
+    dbs_dir.concat(action_params['genomes_hhpred_dbs']) if !action_params['genomes_hhpred_dbs'].nil?
+    dbs_dir.each do |db_dir|
+      if File.exist?(File.join(db_dir, @seq_name + ".a3m"))
+	logger.debug "File #{@seq_name}.a3m found in #{db_dir}"
+	@dir = db_dir
+	break
       end
-    end
+    end 
+
 
     if !File.exist?(File.join(@dir, @seq_name + ".a3m"))
       logger.error "ERROR! File #{@seq_name}.a3m not found in databases!"
@@ -79,7 +84,7 @@ class HhpredShowtemplalignAction < Action
     end
     
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'queue' => 'toolkit_immediate'})   
+    queue.submit(@commands, true, {'queue' => QUEUES[:immediate]})
   end
   
 end

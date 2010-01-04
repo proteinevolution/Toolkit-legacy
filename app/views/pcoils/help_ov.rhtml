@@ -9,59 +9,59 @@
 <a name="recommendations"></a>
 <h3 class="<%= @section["name"] %>">Recommendations</h3>
 <div class="row">
-COILS with the MTIDK matrix is specific for solvent-exposed, left-handed coiled coils. Other types of 
-coiled-coil structure, such as buried coiled coils (e.g the central coiled coil in catabolite repressor 
+COILS with the MTIDK matrix is specific for solvent-exposed, left-handed coiled coils. Other types of
+coiled-coil structure, such as buried coiled coils (e.g the central coiled coil in catabolite repressor
 protein, or some transmembrane domains) and right-handed coiled coils, are not detected.
 <br/>
-COILS does not reach yes-or-no decisions based on a threshold value. 
-Rather, it yields a set of probabilities that presumably reflect the coiled-coil forming potential of a 
-sequence. This means that even at high probabilities (e.g. >90%), there will be (and should be) sequences 
+COILS does not reach yes-or-no decisions based on a threshold value.
+Rather, it yields a set of probabilities that presumably reflect the coiled-coil forming potential of a
+sequence. This means that even at high probabilities (e.g. >90%), there will be (and should be) sequences
 that in fact do not form a coiled coil, though they may have the potential to do so in a different context.
 <br/>
-COILS is biased towards hydrophilic, highly charged sequences. For this reason, all scans should be 
-performed with a weighted and an unweighted matrix, and the results compared. Differences of more than 
-20-30 percentage points in the probabilities should be taken to indicate that a coiled-coil structure is 
-unlikely, the elevated scores being mainly due to the high incidence of charged residues (note, though, 
+COILS is biased towards hydrophilic, highly charged sequences. For this reason, all scans should be
+performed with a weighted and an unweighted matrix, and the results compared. Differences of more than
+20-30 percentage points in the probabilities should be taken to indicate that a coiled-coil structure is
+unlikely, the elevated scores being mainly due to the high incidence of charged residues (note, though,
 that this would have marked human mannose-binding protein as a false positive).
 <br/>
-The MTIDK matrix assigns high probabilities to known coiled coils segments, but identifies different 
-helices at high probability in a database of globular proteins. This is a surprising feature whose reason 
-is as yet unclear, but which can be exploited for predictive purposes. It is therefore useful to compare 
-the results of scans made with the two matrices. Again, differences of more than 20-30 percentage 
-points in the probabilities should be taken to indicate that a coiled-coil structure is unlikely 
+The MTIDK matrix assigns high probabilities to known coiled coils segments, but identifies different
+helices at high probability in a database of globular proteins. This is a surprising feature whose reason
+is as yet unclear, but which can be exploited for predictive purposes. It is therefore useful to compare
+the results of scans made with the two matrices. Again, differences of more than 20-30 percentage
+points in the probabilities should be taken to indicate that a coiled-coil structure is unlikely
 (note, though, that this threshold would make the replication terminator protein a border-line case).
 <br/>
-The resolution between globular and coiled-coil score distributions decreases strongly with a decreasing 
-size of the scanning window. The prediction of new coiled-coil segments should therefore be made using a 
-28 residue window, or in special cases a 21 residue window. 14 residue windows should normally be reserved 
+The resolution between globular and coiled-coil score distributions decreases strongly with a decreasing
+size of the scanning window. The prediction of new coiled-coil segments should therefore be made using a
+28 residue window, or in special cases a 21 residue window. 14 residue windows should normally be reserved
 for the analysis of local parameters (such as the frame) in known or predicted coiled coils.
 <br/>
-The ends of coiled-coil segments appear to be most accurately identified in a 21 residue window. 
+The ends of coiled-coil segments appear to be most accurately identified in a 21 residue window.
 In general, it is assumed that residues with probabilities >50% are part of a coiled-coil segment.
 <br/>
-Sequences with high coiled-coil probabilitiy from globular proteins rarely exceed a length of 30 residues. 
-None is longer than 35 residues. Sequences with probabilities >80-90% that extend for more than 35 residues 
+Sequences with high coiled-coil probabilitiy from globular proteins rarely exceed a length of 30 residues.
+None is longer than 35 residues. Sequences with probabilities >80-90% that extend for more than 35 residues
 are therefore more likely to assume a coiled-coil structure than is indicated by the obtained probabilities.
 <br/>
-Where possible, sequences related to the protein of interest should also be analyzed for predicted 
-coiled-coil segments (e.g. by using a sequence alignment instead of a single sequence as input). 
-It should be kept in mind, though, that the sequences must be related in the region of high scores in 
+Where possible, sequences related to the protein of interest should also be analyzed for predicted
+coiled-coil segments (e.g. by using a sequence alignment instead of a single sequence as input).
+It should be kept in mind, though, that the sequences must be related in the region of high scores in
 order for the comparison to be significant.
 </div>
 
 <a name="psipred"></a>
 <h3 class="<%= @section["name"] %>">PSIPRED</h3>
 <div class="row">
-Comparison of the coiled-coil prediction with predictions of the secondary structure are generally useful, 
+Comparison of the coiled-coil prediction with predictions of the secondary structure are generally useful,
 particularly if multiple related sequences are available.
 <br/>
-PSIPRED predicts the secondary structure as described in 
+PSIPRED predicts the secondary structure as described in
 <a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=10493868">Jones, J.Mol.Biol. 292:195-202 (1999)</a>.
 </div>
 
 <a name="contact"></a>
 <h3 class="<%= @section["name"] %>">Contact</h3>
 <div class="row">
-We are committed to improve this service for you. Please inform us of problems, or send comments or 
-feedback to <a target="_blank" href="http://www.eb.tuebingen.mpg.de/dept1/staff/Gruber.html">Markus Gruber</a>.
+We are committed to improve this service for you. Please inform us of problems, or send comments or
+feedback to <a target="_blank" href="/common/contact">us</a>.
 </div>

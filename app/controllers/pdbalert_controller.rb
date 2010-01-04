@@ -8,9 +8,9 @@ class PdbalertController < ApplicationController
   end
 
   def index
-        if !@user.nil?
-               redirect_to(:host => DOC_ROOTHOST, :controller => 'pdbalert', :action => 'home') 
-        end
+    if !@user.nil?
+      redirect_to(:host => DOC_ROOTHOST, :controller => 'pdbalert', :action => 'home')
+    end
   end
 
   def logger
@@ -407,20 +407,29 @@ class PdbalertController < ApplicationController
 
   def delete_userdbs
     if @user.nil?
-	redirect_to :action => "index" 
+      redirect_to :action => "index"
     end         
    
     @userdbs = params['userdb']
     if !@userdbs.nil?
       @userdbs.each do |userdb|
-      db = Watchlist.find(:first, :conditions => [ "user_id = ? AND id = ?", @user.id, userdb ])
-      command = "rm -f #{db.path}"
-      system(command)
-      hhmfile = File.join(TMP, 'pdbalert', 'hhm', "#{@user.login}:,#{db.name.gsub(/\W+/, '_')}.hhm")
-      if File.exists?(hhmfile)
-        system("rm -f #{hhmfile}")
-      end
-      Watchlist.delete(db.id)
+        db = Watchlist.find(:first, :conditions => [ "user_id = ? AND id = ?", @user.id, userdb ])
+        command = "rm -f #{db.path}"
+        system(command)
+        hhmfile = File.join(TMP, 'pdbalert', 'hhm', "#{@user.login}:,#{db.name.gsub(/\W+/, '_')}.hhm")
+        if File.exists?(hhmfile)
+          system("rm -f #{hhmfile}")
+        end
+        hhrfile = File.join(TMP, 'pdbalert', 'hhr', "#{@user.login}:,#{db.name.gsub(/\W+/, '_')}.hhr")
+        if File.exists?(hhrfile)
+          system("rm -f #{hhrfile}")
+        end
+        hhrfile = File.join(TMP, 'pdbalert', 'hhr2', "#{@user.login}:,#{db.name.gsub(/\W+/, '_')}.hhr")
+        if File.exists?(hhrfile)
+          system("rm -f #{hhrfile}")
+        end
+
+        Watchlist.delete(db.id)
       end
     else
       flash[:notice] = "No Database is selected"

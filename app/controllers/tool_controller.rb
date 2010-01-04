@@ -140,6 +140,21 @@ class ToolController < ApplicationController
 
   def forward
     logger.debug "Forward!"
+    logger.debug "Toolkit Job: #{params['controller']}"
+    logger.debug "Parent Toolkit Job: #{@parent_job.tool}"
+
+    if (params['controller']==@parent_job.tool)
+      job_params = @parent_job.actions.first.params
+      job_params.each_key do |key|
+        if (key =~ /^(\S+)_file$/)
+          if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
+            params[$1+'_input'] = IO.readlines(job_params[key]).join
+          end
+        else
+          params[key] = job_params[key]
+        end
+      end
+    end
     fw_params = @parent_job.forward_params
 #    logger.debug "forward_params: #{fw_params.inspect}"
     fw_params.each_key do |key|
@@ -220,7 +235,7 @@ class ToolController < ApplicationController
   end
   
   def tool_title(tool)
-    @tools_hash[tool]['title']
+      @tools_hash[tool]['title']
   end
   
   def fw_to_tool_url(from, to)
