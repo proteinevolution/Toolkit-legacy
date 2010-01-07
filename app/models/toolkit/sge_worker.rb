@@ -171,6 +171,9 @@
         # print the process id of this shell execution
         f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 
         logger.debug "Exec_host file geschrieben."
+	if(queue_job.action.job.tool == "t_coffee")
+          f.write "env\n"
+        end
         f.write "exitstatus=0;\n"
 
         commands.each do |cmd|
