@@ -1,5 +1,5 @@
-<div id="jobsection" class="<%= @section["name"] %>">
-  <ul> <!--class="<%= @section["name"] %>"-->
+<div id="jobsection"  class="<%= @section["name"] %>">
+  <ul class="<%= @section["name"] %>">
     <%if @user && @user.groups.include?('dap')%>
       <% for i in 0...@shortlinks_special.length%>
         <li <% if @shortlinks_special[i] == @color %> class="current" <% end %>>
