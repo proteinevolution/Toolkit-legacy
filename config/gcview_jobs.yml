@@ -1,0 +1,9 @@
+gcview_job: 
+  title: Gcview
+  hidden: false
+  code: GCVI
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
