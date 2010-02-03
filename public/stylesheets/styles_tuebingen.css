@@ -459,7 +459,7 @@ span.small {
 #jobtable input.jobcheckbox{
   padding: 0px;
   margin: 0px;
-  margin-right: -9px;
+  margin-right: -5px;
 }
 
 #sidebar a:hover, #sidebar a#current {
