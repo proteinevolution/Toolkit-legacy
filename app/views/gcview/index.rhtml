@@ -2,7 +2,7 @@
 
 <h2><%= @page_title %></h2>
 
-<%= form_tag({:action => :run, :job => 'gcview'}, {:multipart => true})%> 
+<%= form_tag({:action => :run, :job => 'gcview'}, {:multipart => true})%>
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
 	<%= form_label("Paste input sequence", "input") %>
@@ -13,9 +13,23 @@
 	<%= form_file("sequence_file") %>
 </div>
 
+<div class="row">
+  <%= form_label("Select input format", "format") %>
+  <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>
+</div>
 <div class="spacer">&nbsp;</div>
 
 <h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+  <%= form_label("Select number", "number") %>
+  <%= form_select_single("show_number", @numvalues, @numlabels, @numvalues[0]) %>
+</div>
+<div class="row">
+  <%= form_label("Select type", "type") %>
+  <%= form_select_single("show_type", @typevalues, @typelabels, @typevalues[0]) %>
+</div>
+
 
 <div class="spacer">&nbsp;</div>
 
