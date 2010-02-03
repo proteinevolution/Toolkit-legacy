@@ -5,6 +5,6 @@
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
   
 <div class="row">
-	# Put your results here!
+	<%= @job.render_file(@job.jobid+"_gcvout.html") %>
 </div>
 

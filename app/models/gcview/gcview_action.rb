@@ -33,7 +33,7 @@ class GcviewAction < Action
 
     logger.debug "Infile: #{@input}"
 
-    @outfile = @basename+".out"
+    @outfile = @basename
 
     logger.debug "Outfile: #{@outfile}"
 
@@ -114,7 +114,7 @@ class GcviewAction < Action
       end
       #@commands << "cp "
     end
-    #@commands << "python #{GCVIEW}/tool.py #{@configfile}"
+    @commands << "python #{GCVIEW}/tool.py #{@configfile}"
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
@@ -122,6 +122,7 @@ class GcviewAction < Action
   def init
     @basename = File.join(job.job_dir, job.jobid)
     @tmpdir = job.job_dir
+    @outurl = job.url_for_job_dir_abs
     @commands = []
   end
 
@@ -158,7 +159,8 @@ class GcviewAction < Action
     res << "db_path=#{@db_path}\n"
     res << "show_number=#{@show_number}\n"
     res << "show_type=#{@show_type}\n"
-    res << "outfile=#{@outfile}\n"
+    res << "outfile_url=#{@outurl}/\n"
+    res << "outfile=#{job.jobid}\n"
     for i in 0..@inputSequences_length-1
       infile = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
       res << "infile_#{i} = #{infile}\n"#{@inputSequences[i]}.txt\n"
