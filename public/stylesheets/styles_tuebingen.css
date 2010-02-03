@@ -600,7 +600,7 @@ ul.arrow-marker li {
 #content #jobsection {
   clear: both;
   position: relative;
-  background-image: url(../images/tab_border_bottom.gif);
+  /*background-image: url(../images/tab_border_bottom.gif);*/
   background-position: bottom;
   background-repeat: repeat-x;
   height: 30px;
