@@ -9,4 +9,14 @@ class GcviewController < ToolController
     @typelabels = ['genes', 'kilobase']
   end
 
+  def results
+  end
+
+  def results_taxonomy
+  end
+
+  def help_results
+    render(:layout => "help")
+  end
+
 end

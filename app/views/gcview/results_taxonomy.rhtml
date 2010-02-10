@@ -1,0 +1,10 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Result Taxonomy', :toolname => @job.tool}) %>
+
+<%= render(:partial => "shared/resultsections") %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+
+<div class="row">
+	<%= @job.render_file(@job.jobid+"_gcvout.html") %>
+</div>
+
