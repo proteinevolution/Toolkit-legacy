@@ -1,6 +1,7 @@
 class GcviewAction < Action
 
   GCVIEW = File.join(BIOPROGS, 'gcview')
+  BLAST = File.join(BIOPROGS, 'blast')
 
   attr_accessor :mail, :jobid, :sequence_input, :sequence_file
 
@@ -25,7 +26,7 @@ class GcviewAction < Action
     @show_number = params['show_number'] ? params['show_number'] : "10"
     @show_type = params['show_type'] ? params['show_type'] : "genes"
 
-    logger.debug "DB path: #{@db_path}; number: #{@show_number}; type: #{@show_type}"
+    #logger.debug "DB path: #{@db_path}; number: #{@show_number}; type: #{@show_type}"
     logger.debug "Inputformat: #{@inputformat}"
 
     @input = @basename+".in"
@@ -49,6 +50,11 @@ class GcviewAction < Action
         @inputSequences[i]=@inputSequences[i].gsub(/\s+$/, '')
         logger.debug "#{@inputSequences[i]}"
       end
+    end
+
+    if (@inputformat=='fas')
+      @inputSequences.push(job.jobid)
+      logger.debug "#{@inputSequences[0]}"
     end
 
     @inputSequences_length = @inputSequences.length
@@ -113,6 +119,17 @@ class GcviewAction < Action
         @commands << "python #{GCVIEW}/psiblast_parser.py #{psiblast_file} #{output_file}"
       end
       #@commands << "cp "
+    end
+
+    if (@inputformat=='fas')
+      psiblast_file = File.join(@tmpdir, job.jobid+".psiblast")
+      database = File.join(DATABASES, "standard/nr")
+      output_file = File.join(job.job_dir, "#{@inputSequences[0]}.txt")
+      @commands << "#{BLAST}/blastpgp -a 4 -i #{@input} -F F -h 0.001 -s F -e 10 -M BLOSUM62 -G 11 -E 1 -j 1 -m 0 -v 100 -b 100 -T T -o #{psiblast_file} -d \"#{database}\" -I T &> #{job.statuslog_path}"
+      #@commands << "#{UTILS}/shorten_psiblast_output.pl #{@outfile} #{@outfile} &> #{job.statuslog_path}_shorten_psiblast"
+      @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
+      
+      @commands << "python #{GCVIEW}/psiblast_parser.py #{psiblast_file} #{output_file}"
     end
     @commands << "python #{GCVIEW}/tool.py #{@configfile}"
     logger.debug "Commands:\n"+@commands.join("\n")
