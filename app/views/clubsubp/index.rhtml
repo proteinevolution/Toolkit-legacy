@@ -2,27 +2,19 @@
 
 <h2><%= @page_title %></h2>
 
-<%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%> 
-<h3 class="<%= @section["name"] %>">Input</h3>
-<div class="row">
-	<%= form_label("Paste input sequence", "input") %>
-	<%= form_text_area("sequence_input") %>
-</div>
-<div class="row">
-	<%= form_label("or upload a local file") %>
-	<%= form_file("sequence_file") %>
-</div>
+<%= render(:partial => "links") %>
 
-<div class="spacer">&nbsp;</div>
+<%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
 
-<h3 class="<%= @section["name"] %>">Options</h3>
-
-<div class="spacer">&nbsp;</div>
-
-<%= render(:partial => "shared/joboptions") %>
-
-<div class="row">
-	<%= form_submit_buttons %>
+<div>
+  <br/>
+  clst-M-scl is clustering based meta-prediction subcellular location database for gram negative bacterial proteins<br/>
+    <h3>Clustering</h3><br/>Uses <a href=http://www.bioinformatics.org/cd-hit/>CD-HIT</a> for clustering the proteomes.<br/><br/>
+    <h3>Subcellular Location</h3><br/>Uses SignalP 3.0, LipoP 1.0, Phobius, PrediSi, TMHMM 2.0, BOMP, HHomp, TaTFind 1.4, TatP 1.0, EffectiveT3, T3SS_Prediction and Psortb v.2.0 in the predicton pipline.<br/><br/>
+    <h3>Signal Peptide prediction</h3><br/>We used LipoP 1.0 to identify the <B>Type SpII peptides</B> in the proteins and Tatp 1.0 and TatFind 1.4 to identify <B>TatPetide</B>. <B>General signal peptide(SpI)</B> were identified using SignalP3.0, Phobius, TMHMM 2.0 and PrediSi. T3SS_prediction and EffectiveT3 were used to indetify <B>Type III secretion system peptides</B>. SignalP cleavage score were used to conform the general signal peptide cleavage. TatP's Max D scores were used to conform the Tatpeptide cleavage<br/><br/>
+    <h3>Outermembrane Beta-barrel Proteins</h3><br/>Since HHomp takes time to analyse a protein, a filter was applied to select proteins for HHomp runs. At least one positive predictions from BOMP or PSORTb for outermembrane were used to select the first set of proteins to run for HHomp and all the proteins in a cluster where selected for HHomp run where atleast one sequence in the cluster presents in the first set of proteins.<br/><br/>
+    <h3>Transmembrane Proteins</h3><br/>Consensus results from TMHMM 2.0 and Phobius were used to conform the transmembrane proteins.<br/><br/>
+    <h3>Extracellular Proteins</h3><br/>Consensus results from Type III signal peptide predictions or PSORTb's extracellular prediction were used to identify extracellular proteins.
 </div>
 
 </form>
