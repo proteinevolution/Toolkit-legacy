@@ -33,6 +33,15 @@
 <div class="spacer">&nbsp;</div>
 
 <h3 class="<%= @section["name"] %>">Input parameters (obligatory)</h3>
+
+<div class="formw">
+<b>Note:</b> The helices need to be entered according to their sequential
+position <br/> in the bundle (it is not relevant whether this done clockwise
+or counterclockwise,<br/> and whether one starts with the N-terminal helix or
+any other one), and not in<br/> their order from N- to C-terminus. For
+helices in anti-parallel orientation, the residue<br/> range should be given
+with the larger residue number before the smaller one.<br/><br/>
+</div>
 <div class="row">
 	<%= form_label("Definition for helix 1", "helix") %>
 	<div class="formw">
@@ -80,6 +89,11 @@
 <div class="row">
         <%= form_label("Periodicity", "periodicity") %>
         <%= form_select_single("periodicity", @periodicity_values, @periodicity_labels, @periodicity_values[0]) %>
+</div>
+
+<div class="row">
+	<%= form_label("Effective Crick angle", "crick") %>
+	<%= form_checkbox("crick", '1', true) %>
 </div>
 
 <!--<div class="row">
