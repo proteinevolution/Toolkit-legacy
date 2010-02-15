@@ -86,8 +86,8 @@ class ModellerAction < Action
         if line =~ /^sequence:/
           i = lines.index(line)
         end
-        line.sub!(/>P1;(\S\S\S\S)_\S/, '>P1;\1')
-        line.sub!(/structureX:\s*(\S\S\S\S)_\S/, 'structureX:\1')		
+        line.sub!(/>P1;(\S\S\S\S)_\S\s*$/, '>P1;\1')
+        line.sub!(/structureX:\s*(\S\S\S\S)_\S:/, 'structureX:\1:')
       end
       if i.nil? then raise "ERROR! Wrong format!" end
       
@@ -105,8 +105,8 @@ class ModellerAction < Action
       input.gsub!(/\13/, '')
       
       # remove chain identifiers
-      input.gsub!(/>P1;(\S\S\S\S)_\S/, '>P1;\1')
-      input.gsub!(/structureX:\s*(\S\S\S\S)_\S/, 'structureX:\1')
+      input.gsub!(/>P1;(\S\S\S\S)_\S\s*$/, '>P1;\1')
+      input.gsub!(/structureX:\s*(\S\S\S\S)_\S:/, 'structureX:\1:')
       # change sequence name
       input.sub!(/^[^\n]*/, ">P1;#{@seq_name}")
       

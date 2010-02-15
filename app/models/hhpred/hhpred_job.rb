@@ -241,11 +241,11 @@ class HhpredJob  < Job
       end
       dirs=  Dir.glob(DATABASES+"/hhpred/new_dbs/pdb70*")
       querypdb = basename+".pdb"
-      if !File.exists?("#{dirs.last}/#{pdbid}#{chain}.pdb")
+      if !File.exists?("#{dirs.first}/#{pdbid}#{chain}.pdb")
         logger.debug("WARNING in #{$0}: Could not find pdb file for sequence #{query}. Interpreted as pdbcore=#{pdbid}, chain=#{chain}");
         querypdb=""
       else
-        system("cp"+dirs.last+"/"+pdbid+chain+".pdb"+" "+querypdb)
+        system("cp"+dirs.first+"/"+pdbid+chain+".pdb"+" "+querypdb)
       end
     end
 
@@ -965,23 +965,25 @@ class HhpredJob  < Job
           # Is query AND template structure known?
           if querypdb != ""
             dirs=Dir.glob("#{DATABASES}/hhpred/new_dbs/pdb*");
-            templpdb=dirs[dirs.length-1]+"/#{template}.pdb";
-            if  File.exists?(templpdb)
-              line[b-1].chomp!
-              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
-
-            else logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
-
+            dirs.each do |dir|
+              templpdb=dir+"/#{template}.pdb";
+              if  File.exists?(templpdb)
+                line[b-1].chomp!
+                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
+                break
+              end
             end
+          #else logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
+
           else
             dirs=Dir.glob("#{DATABASES}/hhpred/new_dbs/pdb*")
-            templpdb=dirs[dirs.length-1]+"/#{template}.pdb";
-            if  File.exists?(templpdb)
-              line[b-1].chomp!
-              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
-
-            else
-              logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
+            dirs.each do |dir|
+              templpdb=dir+"/#{template}.pdb";
+              if  File.exists?(templpdb)
+                line[b-1].chomp!
+                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
+                break
+              end
             end
           end
 
@@ -1015,23 +1017,29 @@ class HhpredJob  < Job
           # Is query AND template structure known?
           if querypdb != ""
             dirs=Dir.glob("#{DATABASES}/hhpred/new_dbs/pdb*")
-            templpdb=dirs[dirs.length-1]+"/#{template}.pdb";
-            if  File.exists?(templpdb)
-              line[b-1].chomp!
-              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
-            else
-              logger.debug("WARNING in #{0}: Could not find pdb file for PDB sequence #{template}")
-              logger.debug("Path: #{templpdb}")
+            dirs.each do |dir|
+              templpdb=dir+"/#{template}.pdb";
+              if  File.exists?(templpdb)
+                line[b-1].chomp!
+                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
+#            else
+#              logger.debug("WARNING in #{0}: Could not find pdb file for PDB sequence #{template}")
+#              logger.debug("Path: #{templpdb}")
+                break
+              end
             end
           else
             dirs=Dir.glob("#{DATABASES}/hhpred/new_dbs/pdb*")
-            templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
-            if  File.exists?(templpdb)
-              line[b-1].chomp!
-              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
+            dirs.each do |dir|
+              templpdb=dir+"/#{template}.pdb"
+              if  File.exists?(templpdb)
+                line[b-1].chomp!
+                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
 
-            else
-              logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
+#            else
+#              logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
+                break
+              end
             end
           end
 

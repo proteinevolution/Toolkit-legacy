@@ -1,5 +1,6 @@
 class TCoffeeAction < Action
-  TCOFFEE  = File.join(BIOPROGS, 'TCoffee', 'current', 'bin', 't_coffee')   
+  TCOFFEE  = File.join(BIOPROGS, 'TCoffee', 'current', 'bin', 'binaries', 'linux', 't_coffee')
+ # TCOFFEE  = File.join(BIOPROGS, 'TCoffee', 'current', 'bin', 't_coffee')   
   CLUSTALW = File.join(BIOPROGS, 'clustal', 'clustalw')  
   #Validation
   attr_accessor :sequence_input, :sequence_file, :jobid, :mail, :otheradvanced
@@ -19,10 +20,14 @@ class TCoffeeAction < Action
     @infile           = @basename+".in"
     @outfile          = @basename+".aln"
     @tclog            = @basename+"_tcoffee.log"
-    @mlalign_id_pair  = params['mlalign_id_pair'] ? "-in mlalign_id_pair" : ""
-    @mfast_pair       = params['mfast_pair']      ? "-in mfast_pair"      : ""
-    @mslow_pair       = params['mslow_pair']      ? "-in mslow_pair"      : ""
-    @mclustalw_pair   = params['mclustalw_pair']  ? "-in mclustalw_pair"  : ""
+    @mlalign_id_pair  = params['mlalign_id_pair'] ? "-in Mlalign_id_pair" : ""
+    @mfast_pair       = params['mfast_pair']      ? "-in Mfast_pair"      : ""
+    @mslow_pair       = params['mslow_pair']      ? "-in Mslow_pair"      : ""
+    @mclustalw_pair   = params['mclustalw_pair']  ? "-in Mclustalw_pair"  : ""
+    #@mlalign_id_pair  = params['mlalign_id_pair'] ? "-in mlalign_id_pair" : ""
+    #@mfast_pair       = params['mfast_pair']      ? "-in mfast_pair"      : ""
+    #@mslow_pair       = params['mslow_pair']      ? "-in mslow_pair"      : ""
+    #@mclustalw_pair   = params['mclustalw_pair']  ? "-in mclustalw_pair"  : ""
     @output           = "-output clustalw_aln score_pdf score_html"
     @charcase         = params['case']
     @numbering        = params['residue_number']  ? "-seqnos on"          : "-seqnos off"

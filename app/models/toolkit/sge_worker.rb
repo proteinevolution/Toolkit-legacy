@@ -87,6 +87,7 @@
 	  f.write '#$' + " -l immediate\n"
         end
 
+
         f.write "hostname > #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
         if RAILS_ENV == "development"
           f.write "echo 'Starting job #{id.to_s}...' >> #{queue_job.action.job.statuslog_path}\n"
@@ -167,6 +168,9 @@
         # FILE SIZE LIMIT 1Gb (1024 * 1000000), MEMORY LIMIT 6Gb (see man bash -> ulimit)
         f.write "ulimit -f 1000000\n" #-m 6000000\n"
         f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"
+        if (LOCATION == "Tuebingen" && RAILS_ENV == "development")
+          f.write "export PATH=/usr/local/bin:/usr/bin:/bin:\n"
+        end
         # print the process id of this shell execution
         f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 
         logger.debug "Exec_host file geschrieben."

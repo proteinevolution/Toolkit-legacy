@@ -31,7 +31,9 @@ class BlammerAction < Action
      	if (blastjob.tool == "psi_blast")
      	  blast_file += ".psiblast"  
      	elsif (blastjob.tool == "prot_blast")
-     	  blast_file += ".protblast"     	
+     	  blast_file += ".protblast"
+	elsif (blastjob.tool == "cs_blast")
+	  blast_file += ".csblast"
      	else
      	  blast_file += ".nucblast"     	
      	end
