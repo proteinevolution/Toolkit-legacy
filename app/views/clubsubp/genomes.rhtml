@@ -1,0 +1,51 @@
+<a href="#" onClick="openHelpWindow('/clubsubp/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+
+<h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
+
+<body>
+        <table align='center' border='0' align='center' cellpadding='2' cellspacing='3' style="font-family: arial, 'lucida console', sans-serif">
+        <tr bgcolor='#CC9900'>
+                <th rowspan='2' width='180'>Cluster</th>
+                <th rowspan='2' width='100'>NCBI's GI</th>
+                <th rowspan='2' width='500'>Description</th>
+                <th colspan='2' width='200'>Subcellular location</th>
+                <th rowspan='2' width='300'>Conserved Over</th>
+        </tr>
+        <tr bgcolor='#CC9900'>
+                <th>Cluster's</th>
+                <th>GI's</th>
+        </tr>
+
+
+<%@gis=Array.new%>
+
+<%Clubproteinheaderinfo.find(:all, :conditions => ["accession=?", @accession]).each do |accession|%>
+    <%@gis.push(accession.gi)%>
+<%end%>
+
+
+<%@gis.each do |gi_subloc|%>
+  <%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", gi_subloc])%>
+    <TR>
+    <%if subloc%>
+      <%clst=Clubclstprediction.find(:first, :conditions => ["cluster=?", subloc.cluster])%>
+     
+      <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=clst.cluster%>'><%=clst.cluster%></A></TD>
+      <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi_subloc%>'><%=gi_subloc%></A></TD>
+      <TD><%=clst.title%> </TD>
+      <TD><%=clst.finalscl%></TD>
+      <TD><%=subloc.subloc%></TD>
+      <TD><%=clst.conservedover%></TD>
+    <%else%>
+	<TD>Singleton</TD><TD><%=gi_subloc%></TD><TD></TD><TD></TD><TD></TD><TD></TD>
+    <%end%>
+    </TR>
+<%end%>
+
+<%=@gis.length%>
+
+</body>
