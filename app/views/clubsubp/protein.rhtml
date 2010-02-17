@@ -6,3 +6,229 @@
 
 <%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
 
+
+
+<FORM action='http://abt1-nagarajan.eb.local/cgi-bin/search_clst.cgi' name='form_search' method=post>
+  <TABLE align='right'>
+   <TR>
+    <TD>
+     <SELECT NAME='list'>
+      <OPTION value="select" selected="selected">Select a search option</OPTION>
+      <OPTION value="gi_genome_refseq">NCBI GI/Genome Refseq</OPTION>
+      <OPTION value="keyword">Protein/Organism Name</OPTION>
+     </SELECT></TD>
+    <TD><INPUT TYPE='text' NAME='key' VALUE='' SIZE='20' MAXLENGTH='150'></TD>
+    <TD><INPUT TYPE='submit' NAME='submit' VALUE='Search'></TD>
+   </TR>
+ </TABLE>
+</FORM>
+<BR><BR>
+
+
+<%Clubproteinheaderinfo.find(:all, :conditions => ["gi=?", @gi]).each do |protein|%>
+  <H5><%=protein.header%>&nbsp
+    <A HREF='http://www.ncbi.nlm.nih.gov/protein/<%=protein.gi%>?report=genpept&log$=seqview'>NCBI</A>
+  </H5> 
+  Belongs to <A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=protein.cluster%>'>Cluster <%=protein.cluster%></A>
+
+  
+  <%Clubtaxtree.find(:all, :conditions => ["accession=?", protein.accession]).each do |tax_tree|%>
+    <P>
+    <TABLE name='gi_details' width='100%' align='center'>
+      <TR>
+        <TD width='15%' bgcolor='#cc9933'>Taxonomy</TD>
+        <TD bgcolor='#E8E8E8'>
+          <%=tax_tree.superkingdom %><BR/>
+          <%=tax_tree.phylum %><BR/>
+          <%=tax_tree.class %><BR/>
+          <%=tax_tree.order %><BR/>
+          <%=tax_tree.family %><BR/>
+        </TD>  
+      </TR>
+    
+      <TR>
+        <TD bgcolor='#cc9933'>Organism</TD>
+        <TD bgcolor='#E8E8E8'><A HREF='http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<%=tax_tree.taxon%>&lvl=3&lin=f&keep=1&srchmode=1&unlock'><%=protein.organism%></A></TD>
+      </TR>
+  
+      <TR>
+        <TD bgcolor='#cc9933'>Subcellular localization</TD>
+        <TD bgcolor='#E8E8E8'>
+          <%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", protein.gi])%><%=subloc.subloc%>
+        </TD>
+      </TR>
+    
+      <TR>
+        <TD bgcolor='#cc9933'>Reason</TD>
+        <TD bgcolor='#E8E8E8'>
+          <%gi_comment=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%><%=gi_comment.reasons%>
+        </TD>
+      </TR>
+
+      <TR>
+        <TD bgcolor='#cc9933'>Signal Peptide</TD>
+        <TD bgcolor='#E8E8E8'>
+          <%=gi_comment.spfound%><BR/><%=gi_comment.spcleaved%>
+          <DIV id="sp_table">
+            <button type='button' onClick='toggle_sp_table()'; value='Show SP_table'; style = "border: 1px solid #C9DBD8; background-color:#EBFAF8">Show details</button>
+          </DIV>
+
+          <DIV id='sp' style='display:none'; value='Hide SP_table';>
+            <%metascl=Clubmetascl.find(:first, :conditions => ["gi=?", protein.gi])%>
+            <TABLE style='text-align:center;' BORDer=1>
+              <TR>
+                <TD bgcolor='#cc9933' rowspan='2'>Lipo-Peptide (LipoP 1.0)</TD>
+                <TD colspan='3'>Best Prediction</TD>
+                <TD colspan='3'>Margin</TD>
+                <TD colspan='3'>Signal Peptide Ends</TD>
+                <TD colspan='3'>Seq after SpII Cleavage site</TD>
+              </TR>
+              <TR bgcolor='#ffcc66'>
+                <TD colspan='3'><%=metascl.lipop_bestprediction%></TD>
+                <TD colspan='3'><%=metascl.lipopmargin%></TD>
+                <TD colspan='3'><%=metascl.lipopspends%></TD>
+                <TD colspan='3'><%=metascl.lipopaftercleavage%></TD>
+              </TR>
+           
+              <TR>
+                <TD  bgcolor='#cc9933' rowspan='3'>Tat-Peptide</TD>
+                <TD colspan='8' style='text-align:center;'>TatP 1.0 Server</TD>
+                <TD style='text-align:center;' colspan='4'>TatFind 1.4</TD>
+              </TR>
+              <TR>
+                <TD colspan='1'>Prediction</TD>
+                <TD colspan='2'>MaxDsore</TD>
+                <TD colspan='2'>Signal Peptide Ends</TD>
+                <TD colspan='2'>Comment</TD>
+                <TD colspan='1'>Prediction</TD>
+                <TD colspan='2'>Twin arginine pattern</TD>
+                <TD colspan='2'>Rule</TD>
+              </TR>
+              <TR bgcolor='#ffcc66'>
+                <TD colspan='1'><%=metascl.tatpsp%></TD>
+                <TD colspan='2'><%=metascl.tatpmaxdvalue%></TD>
+                <TD colspan='2'><%=metascl.tatpspends%></TD>
+                <TD colspan='2'><%=metascl.tatpcomment%></TD>
+                <TD colspan='1'><%=metascl.tatfindprediction%></TD>
+                <TD colspan='2'><%=metascl.tatfindtwinrrpattern%></TD>
+                <TD colspan='2'><%=metascl.tatfindwhichrule%></TD>
+              </TR>
+
+              <TR>
+                <TD rowspan='4'  bgcolor='#cc9933'>General signal Peptide</TD>
+                <TD colspan='8'>SignalP 3.0</TD>
+                <TD colspan='2' rowspan='2'>PrediSi Server</TD>
+                <TD colspan='2' rowspan='2'>Phobius</TD>
+              </TR>
+              <TR>
+                <TD colspan='4'>SignalP-NN</TD>
+                <TD colspan='4'>SignalP-HMM</TD>
+              </TR>
+              <TR>
+                <TD>Prediction</TD>
+                <TD>MaxYscore</TD>
+                <TD>MaxDscore</TD>
+                <TD>Signal peptide ends</TD>
+                <TD>Prediction</TD>
+                <TD>Cleavage site probability</TD>
+                <TD>Signal peptide probability</TD>
+                <TD>Signal peptide ends</TD>
+                <TD>Signal peptide</TD>
+                <TD>Cleavage site</TD>
+                <TD>Signal peptide</TD>
+                <TD>Signal peptide ends</TD>
+              </TR>
+              <TR bgcolor='#ffcc66'>
+                <TD><%=metascl.signalpnnprediction%></TD>
+                <TD><%=metascl.signalpnnmaxyvalue%></TD>
+                <TD><%=metascl.signalpnn_maxdvalue%></TD>
+                <TD><%=metascl.signalpnnspends%></TD>
+                <TD><%=metascl.signalphmm_prediction%></TD>
+                <TD><%=metascl.signalphmmcsprob%></TD>
+                <TD><%=metascl.signalphmmprob%></TD>
+                <TD><%=metascl.signalphmm_spends%></TD>
+                <TD><%=metascl.predisi_signalpeptide%></TD>
+                <TD><%=metascl.prediscleavagesite%></TD>
+                <TD><%=metascl.phobiussp%></TD>
+                <TD><%=metascl.phobiusspends%></TD>
+              </TR>
+
+              <TR>
+                <TD rowspan='2' bgcolor='#cc9933'>T3SS</TD>
+                <TD colspan='6'>EffectiveT3</TD>
+                <TD colspan='6'>T3SS_Prediction</TD>
+              </TR>
+              <TR bgcolor='#ffcc66'>
+                <TD colspan='6'><%=metascl.effectivet3_prediction%></TD>
+                <TD colspan='6'><%=metascl.t3ssprediction%></TD>
+              </TR>
+            </TABLE>
+          </DIV>
+        </TD>
+        <TR>
+          <TD bgcolor='#CC3300'>Comment</TD>
+          <TD bgcolor='#999999'><%=gi_comment.comment%></TD>
+        </TR>
+      </TR>
+    </TABLE>
+    </BR>
+
+     <%omp_display=Clubgioutextratmdisplay.find(:first, :conditions => ["gi=?", protein.gi])%>
+    <TABLE width='100%' style='text-align:center';>
+      <TR bgcolor='#CCCCCC'>
+        <TD rowspan='3' width='15%' style='text-align:left;'  bgcolor='#cc9933'>Outer membrane beta-barrel</TD>
+        <TD colspan='2'>BOMP</TD>
+        <TD>PSORTb v.2.0.</TD>
+        <TD colspan='2'>HHomp</TD>
+      </TR>
+      <TR bgcolor='#E8E8E8'>
+        <TD>Prediction</TD>
+        <TD>Category</TD>
+        <TD>Outermembrane score</TD>
+        <TD>Run</TD>
+        <TD>Probability</TD>
+      </TR>
+      <TR bgcolor='#ffcc66'>
+        <TD><%=omp_display.bompprediction%></TD>
+        <TD><%=omp_display.bompcategory%></TD>
+        <TD><%=omp_display.psortbOutermembrane%></TD>
+        <TD><%=omp_display.hhomprun%></TD>
+        <TD><%=omp_display.hhompprobability%></TD>
+      </TR>
+    </TABLE>
+    <BR/>
+
+    <TABLE width='100%' style='text-align:center;'>
+      <TR bgcolor='#CCCCCC'>
+        <TD rowspan='3'  width='15%' style='text-align:left;'  bgcolor='#cc9933'>Transmembrane</TD>
+        <TD colspan='2'>TMHMM 2.0</TD>
+        <TD colspan='2'>Phobius</TD>
+      </TR>
+      <TR bgcolor='#E8E8E8'>
+        <TD>No. of TMHs before SP cleavage</TD>
+        <TD>Topology</TD>
+        <TD>No. of TMHs before SP cleavage</TD>
+        <TD>Topology</TD>
+      </TR>
+      <TR bgcolor='#ffcc66'>
+        <TD><%=omp_display.tmhmmtmhs%></TD>
+        <TD><%=omp_display.tmhmmtopology%></TD>
+        <TD><%=omp_display.phobiustmhs%></TD>
+        <TD><%=omp_display.phobiustopology%></TD> 
+      </TR>
+    </TABLE>
+    </BR>
+
+    <TABLE  width='100%' style='text-align:center;'>
+      <TR bgcolor='#CCCCCC'>
+        <TD rowspan='2'  width='15%' style='text-align:left;'  bgcolor='#cc9933'>Extracellular</TD>
+        <TD>PSORTb v.2.0.</BR>Extracellular Score</TD>
+        <TD>Type III signal peptide</TD>
+      </TR>
+      <TR bgcolor='#ffcc66'>
+        <TD><%=omp_display.psortbextracellular%></TD>
+        <TD><%=gi_comment.type3spprediction%></TD>
+      </TR>
+    </TABLE>
+  <%end%>
+<%end%>
