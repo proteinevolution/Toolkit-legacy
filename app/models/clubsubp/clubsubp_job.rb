@@ -24,6 +24,6 @@ class ClubsubpJob < Job
   #    @some_results_data = ">header\nsequence"
   # end
   
-  
+
   
 end

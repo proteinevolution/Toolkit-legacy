@@ -1,6 +1,11 @@
 class ClubsubpAction < Action
 
-  CLUB = File.join(BIOPROGS, 'clubsubp')
+  BLAST  = File.join(BIOPROGS, 'blast')
+  DBPATH = File.join(DATABASES, 'clubsubp', 'clst_m_scl')
+  PARSER = File.join(BIOPROGS, 'clubsubp')
+
+
+  attr_accessor :mail, :jobid, :sequence_input, :sequence_file
 
   # Put action initialisation code in here
   def before_perform
@@ -22,7 +27,10 @@ class ClubsubpAction < Action
   
   # Put action code in here
   def perform
-    @commands << "/usr/bin/perl #{CLUB}/blast_search.pl #{@infile} #{@outfile} &> #{job.statuslog_path}"
+    @commands << "#{BLAST}/blastall -p blastp -i #{@infile} -d #{DBPATH} -o #{@outfile} -I t &>#{job.statuslog_path}"
+    @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
+    @commands << "/usr/bin/perl #{PARSER}/blast_parser.pl #{@outfile} #{@basename} >> #{job.statuslog_path}"
+    @commands << "echo 'Blast ouput parsed !' >> #{job.statuslog_path}"
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
@@ -34,9 +42,4 @@ class ClubsubpAction < Action
     @commands = []
   end
 
-
 end
-
-
-
-

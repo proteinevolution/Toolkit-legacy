@@ -8,7 +8,7 @@ class ClubsubpController < ToolController
     getlinks
   end
 
-  def search
+  def description
     getlinks
   end
 
@@ -27,9 +27,14 @@ class ClubsubpController < ToolController
     @gi=params['gi']
   end
 
+  def search
+    getlinks
+    @key=params['key']
+  end
+
   def getlinks
-    @shortlinks = ["in", "br", "se"]
-    @links = ["index", "browse", "search"]
+    @shortlinks = ["de", "br", "in"]
+    @links = ["description", "browse", "index"]
     @link_names = ["Description", "Browse Genomes", "Search Genomes"]
     @link_text = ["Description", "Browse the genomes", "Search the genomes"]
   end

@@ -4,27 +4,5 @@
 
 <%= render(:partial => "links") %>
 
-<%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%> 
-<h3 class="<%= @section["name"] %>">Input</h3>
-<div class="row">
-	<%= form_label("Paste input sequence", "input") %>
-	<%= form_text_area("sequence_input") %>
-</div>
-<div class="row">
-	<%= form_label("or upload a local file") %>
-	<%= form_file("sequence_file") %>
-</div>
+<%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
 
-<div class="spacer">&nbsp;</div>
-
-<h3 class="<%= @section["name"] %>">Options</h3>
-
-<div class="spacer">&nbsp;</div>
-
-<%= render(:partial => "shared/joboptions") %>
-
-<div class="row">
-	<%= form_submit_buttons %>
-</div>
-
-</form>
