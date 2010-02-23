@@ -24,4 +24,7 @@ class HhrepidController < ToolController
     @widescreen = true
   end
   
+  def help_params
+    render(:layout => "help")
+  end
 end

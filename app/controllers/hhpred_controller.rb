@@ -152,6 +152,14 @@ class HhpredController < ToolController
     render(:layout => "help")
   end
 
+  def help_faq
+    render(:layout => "help")
+  end
+
+  def help_params
+    render(:layout => "help")
+  end
+
   def resubmit_domain
     job_params = @job.actions.first.params
     job_params.each_key do |key|
