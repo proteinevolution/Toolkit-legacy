@@ -10,9 +10,11 @@ class GcviewController < ToolController
   end
 
   def results
+    @widescreen = true
   end
 
   def results_taxonomy
+   @fullscreen = true 
   end
 
   def help_results

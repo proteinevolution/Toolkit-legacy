@@ -1,1 +1,1 @@
-// Put your javascript code here!
+/ebio/abt1/christina/iwantool/gcview.js
