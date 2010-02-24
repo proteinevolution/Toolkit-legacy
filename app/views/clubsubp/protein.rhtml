@@ -7,24 +7,6 @@
 <%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
 
 
-
-<FORM action='http://abt1-nagarajan.eb.local/cgi-bin/search_clst.cgi' name='form_search' method=post>
-  <TABLE align='right'>
-   <TR>
-    <TD>
-     <SELECT NAME='list'>
-      <OPTION value="select" selected="selected">Select a search option</OPTION>
-      <OPTION value="gi_genome_refseq">NCBI GI/Genome Refseq</OPTION>
-      <OPTION value="keyword">Protein/Organism Name</OPTION>
-     </SELECT></TD>
-    <TD><INPUT TYPE='text' NAME='key' VALUE='' SIZE='20' MAXLENGTH='150'></TD>
-    <TD><INPUT TYPE='submit' NAME='submit' VALUE='Search'></TD>
-   </TR>
- </TABLE>
-</FORM>
-<BR><BR>
-
-
 <%Clubproteinheaderinfo.find(:all, :conditions => ["gi=?", @gi]).each do |protein|%>
   <H5><%=protein.header%>&nbsp
     <A HREF='http://www.ncbi.nlm.nih.gov/protein/<%=protein.gi%>?report=genpept&log$=seqview'>NCBI</A>

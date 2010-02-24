@@ -7,25 +7,6 @@
 <%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
 
 
-
-<body>
-<form action=search_clst.cgi name='form_search' method=post>
-  <table align='right'>
-   <tr>
-    <td>
-     <SELECT NAME='list'>
-      <OPTION value="select" selected="selected">Select a search option</OPTION>
-      <OPTION value="gi_genome_refseq">NCBI GI/Genome Refseq</OPTION>
-      <OPTION value="keyword">Protein/Organism Name</OPTION>
-     </SELECT></td>
-    <td><INPUT TYPE='text' NAME='key' VALUE='' SIZE='20' MAXLENGTH='150'></td>
-    <td><INPUT TYPE='submit' NAME='submit' VALUE='Search'></td>
-   </tr>
- </table>
-</form>
-<BR><BR>
-
-
 <table align='center' border='0' align='center' cellpadding='2' cellspacing='3' style='font-family: arial, 'lucida console', sans-serif'>
  <tr bgcolor='#CC9900'>
   <th>Organism</th>
