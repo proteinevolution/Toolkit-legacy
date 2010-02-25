@@ -51,15 +51,21 @@ class SamccAction < Action
     @chain4_end = params['chain4_end'] ? params['chain4_end'] : ""
     @periodicity = params['periodicity'] ? params['periodicity'] : ""
     @firstpos1 = params['first_position1'] ? params['first_position1'] : ""
+    @firstpos1.downcase!
     @firstpos2 = params['first_position2'] ? params['first_position2'] : ""
+    @firstpos2.downcase!
     @firstpos3 = params['first_position3'] ? params['first_position3'] : ""
+    @firstpos3.downcase!
     @firstpos4 = params['first_position4'] ? params['first_position4'] : ""
+    @firstpos4.downcase!
+    @crick = params['crick'] ? "1" : "0"
 
     logger.debug "Chain1: letter #{@chain1_letter}; start #{@chain1_start}; end #{@chain1_end}"
     logger.debug "Chain2: letter #{@chain2_letter}; start #{@chain2_start}; end #{@chain2_end}"
     logger.debug "Chain3: letter #{@chain3_letter}; start #{@chain3_start}; end #{@chain3_end}"
     logger.debug "Chain4: letter #{@chain4_letter}; start #{@chain4_start}; end #{@chain4_end}"
     logger.debug "Periodicity: #{@periodicity}"
+    logger.debug "Crick: #{@crick}"
 
     save_parameters
   end
@@ -83,6 +89,7 @@ class SamccAction < Action
 
   def save_parameters
     res = []
+    res << "!:crick:#{@crick}\n"
     res << "!:periodicity:#{@periodicity}\n"
     res << "!:firstpos:#{@firstpos1},#{@firstpos2},#{@firstpos3},#{@firstpos4}\n"
     #res << "!:firstpos2:#{@firstposAP}\n"
