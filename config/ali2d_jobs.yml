@@ -1,8 +1,8 @@
-ali2d_job: 
+ali2d_job:
   title: Ali2D
   hidden: false
   code: ALI2
-  resultsections:  
+  resultsections:
     - name: results
       title: Results
       title_long: Show result
@@ -11,4 +11,7 @@ ali2d_job:
       title: Alignment Viewer Applet
       title_long: Show Alignment Viewer Applet
       forwardsections:
-
+    - name: results_color
+      title: Colored Results
+      title_long: Show results colored and with confidence of the secondary structure
+      forwardsections:
