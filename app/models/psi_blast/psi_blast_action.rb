@@ -37,7 +37,7 @@ class PsiBlastAction < Action
     @outfile = @basename+".psiblast"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @informat = params['informat'] ? params['informat'] : 'fas'
-    #reformat(@informat, "fas", @infile)
+    reformat(@informat, "fas", @infile)
     @commands = []
     
     @inputmode = params['inputmode']

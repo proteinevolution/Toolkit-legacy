@@ -459,7 +459,7 @@ span.small {
 #jobtable input.jobcheckbox{
   padding: 0px;
   margin: 0px;
-  margin-right: -9px;
+  margin-right: -5px;
 }
 
 #sidebar a:hover, #sidebar a#current {
@@ -600,7 +600,7 @@ ul.arrow-marker li {
 #content #jobsection {
   clear: both;
   position: relative;
-  background-image: url(../images/tab_border_bottom.gif);
+  /*background-image: url(../images/tab_border_bottom.gif);*/
   background-position: bottom;
   background-repeat: repeat-x;
   height: 30px;
