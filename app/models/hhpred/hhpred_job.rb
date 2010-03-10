@@ -1164,6 +1164,10 @@ class HhpredJob  < Job
 
     end #end while
     #~ @results.push("<font size = 16><b> Hier!</b></font><br><br><br><br>")
+
+    @results.push("<input type=\"hidden\" id=\"checkboxes\" name=\"checkboxes\" value=\"#{m}\" \>\n")
+    @results.push("<input type=\"hidden\" id=\"createmodel_disabled_Checkboxes\" name=\"createmodel_disabled_Checkboxes\" value=\"#{createmodel_diabled_checkboxes}\" \>\n")
+
     b = ifirst
     while b< line.length
       @results.push(line[b])
@@ -1189,8 +1193,6 @@ class HhpredJob  < Job
     @results.push("<BR><BR><i>Superfamily</i>: Madera M, Vogel C, Kummerfeld SK, Chothia C and Gough J. (2004) The SUPERFAMILY database in 2004: additions and improvements. NAR 32: D235-D239.") if (@cite_supfam  >0)
     @results.push("<BR><BR><i>CATH/Gene3D</i>: Pearl F, Todd A, Sillitoe I, Dibley M, Redfern O, Lewis T, Bennett C, Marsden R, Grant A, Lee D, Akpor A, Maibaum M, Harrison A, Dallman T, Reeves G, Diboun I, Addou S, Lise S, Johnston C, Sillero A, Thornton J, Orengo C. (2005) The CATH Domain Structure Database and related resources Gene3D and DHS provide comprehensive domain family information for genome analysis. NAR 33: D247-D251") if (@cite_CATH  >0 )
     @results.push("<BR><BR><i>PRODOM</i>: Bru, C. <i>et al.</i> (2005) The ProDom database of protein domain families: more emphasis on 3D. NAR 33: D212-215.") if (@cite_prodom  >0)
-    @results.push("<input type=\"hidden\" id=\"checkboxes\" name=\"checkboxes\" value=\"#{m}\" \>\n")
-    @results.push("<input type=\"hidden\" id=\"createmodel_disabled_Checkboxes\" name=\"createmodel_disabled_Checkboxes\" value=\"#{createmodel_diabled_checkboxes}\" \>\n")
     #exit(0)
 
 end #end method
