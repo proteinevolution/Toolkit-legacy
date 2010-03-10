@@ -33,6 +33,15 @@
 <div class="spacer">&nbsp;</div>
 
 <h3 class="<%= @section["name"] %>">Input parameters (obligatory)</h3>
+
+<div class="formw">
+<b>Note:</b> The helices need to be entered according to their sequential
+position <br/> in the bundle (it is not relevant whether this done clockwise
+or counterclockwise,<br/> and whether one starts with the N-terminal helix or
+any other one), and not in<br/> their order from N- to C-terminus. For
+helices in anti-parallel orientation, the residue<br/> range should be given
+with the larger residue number before the smaller one.<br/><br/>
+</div>
 <div class="row">
 	<%= form_label("Definition for helix 1", "helix") %>
 	<div class="formw">
@@ -82,15 +91,11 @@
         <%= form_select_single("periodicity", @periodicity_values, @periodicity_labels, @periodicity_values[0]) %>
 </div>
 
-<!--<div class="row">
-        <%= form_label("First position", "first_pos") %>
-        <%= form_text_field("first_position", @first_pos, "", 2) %>
+<div class="row">
+	<%= form_label("Effective Crick angle", "crick") %>
+	<%= form_checkbox("crick", '1', true) %>
 </div>
 
-<div class="row">
-        <%= form_label("First position AP", "first_pos_AP") %>
-        <%= form_text_field("first_position_AP", ' ') %>
-</div>-->
 
 
 <div class="spacer">&nbsp;</div>
@@ -106,3 +111,13 @@
 </div>
 
 </form>
+
+
+<div class="hr">&nbsp;</div>
+<div class="row">
+        <strong>
+        Dunin-Horkawicz S, Lupas AN. (2010)
+        Measuring the conformational space of square four-helical bundles with the program samCC.
+        <em>Journal of Structural Biology.</em>
+        </strong>
+</div>

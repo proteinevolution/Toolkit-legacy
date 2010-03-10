@@ -1,0 +1,12 @@
+<div id="resultactions" class="<%= @section["name"] %>">
+   <ul>
+     <% for i in 0...@colresults.length%>
+       <li <% if @colresults[i] == @coloring %> class="current" <% end %> >
+         <a href="<%= url_for({:action  => @colitems[i], :jobid => @job.jobid}) %> "  onmouseover="return overlib('<%= @col_text[i]%>');" onmouseout="return nd();"><%= @col_names[i] %></a>
+       </li>
+     <% end %>
+  </ul>
+</div>
+
+<%= form_tag({:action => :run, :job => 'ali2d'}, {:multipart => true})%>
+
