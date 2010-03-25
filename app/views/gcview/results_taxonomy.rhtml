@@ -2,7 +2,7 @@
 
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Result Taxonomy', :toolname => @job.tool}) %>
 
-<%= render(:partial => "shared/resultsections") %>
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
 
