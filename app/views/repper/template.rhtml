@@ -1,0 +1,29 @@
+<hr>
+
+<h2><%= @tool["title"] %></h2>
+
+<br/>
+
+<h3>Upload own scale for the Option 'Criteria for periodicity search'</h3>
+
+<br/>
+For inserting your own values in 'Scales', you can either modify the given parameters of 'Kyte-Doolittle hydrophobicity' / 'Standard Binary' or use this template.
+When using this template, paste in your scales in the following format:</br>
+[AA]['space'][Number][Return]</br>
+Your have to write the amino acid in one-letter-code.</br></br>Example:</br>V 1.5</br>A 4<!--just insert the value for each amino acid behind the one-letter-code of the amino acid, then press the button.-->
+<br/>
+<!--This is the template to use when inserting an own scale into the Repper options.
+It is important to insert the values for the amino acids as displayed and then click the button.
+<br/>-->
+<br/>
+
+<%= form_tag("", {:name => "repper_form"})%>
+<div class="row">
+	<%= form_text_area("template", "") %>
+	<!--<%= form_text_area("template", "I \nV \nL \nF \nC \nM \nA \nG \nT \nS \nW \nY \nP \nH \nE \nQ \nD \nN \nK \nR ") %>-->
+</div>
+
+<br/> <br/>
+
+<input type="button" value="Save values and close window!" onClick="closeRepperWindow()">
+
