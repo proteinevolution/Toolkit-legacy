@@ -293,6 +293,10 @@ class HhompController < ToolController
     render(:layout => "help")
   end
 
+  def help_params
+    render(:layout => "help")
+  end
+
   def pdb_applet
     @file = params['file'] ? params['file'] : ""
     render(:layout => 'plain')

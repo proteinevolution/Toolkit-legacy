@@ -51,10 +51,11 @@ class HhsenserAction < Action
   def perform
     params_dump
     
+    @commands << "#{HH}/buildali.pl -v #{@v} -cpu 2 -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} -db #{@db} #{@seqfile} &> #{job.statuslog_path}"
+
     if (@screen)
       run_screening
     else
-      @commands << "#{HH}/buildali.pl -v #{@v} -cpu 2 -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} -db #{@db} #{@seqfile} &> #{job.statuslog_path}"
       run_hhsenser
     end
 
@@ -97,7 +98,7 @@ class HhsenserAction < Action
     run_hhpred
     
     # Read query sequence and determine its length
-    resfile = @basename + ".a3m"
+    resfile = @basename + ".hhpred.a3m"
     return false if !File.readable?(resfile) || !File.exists?(resfile)
     @res = IO.readlines(resfile, ">")
     
@@ -122,14 +123,14 @@ class HhsenserAction < Action
     
     # Make HMM file
     @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-    @commands << "#{HH}/hhmake -v #{@v} -diff 100 -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "#{HH}/hhmake -v #{@v} -diff 100 -i #{@basename}.hhpred.a3m -o #{@basename}.hhpred.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     
     # Find SCOP database
     scop_db = Dir.glob(File.join(DATABASES, 'hhpred/new_dbs/scop*'))[0]
     
     # HHsearch with query HMM against SCOP database
     @commands << "echo 'Searching #{scop_db.sub(/^.*\/(.*)$/, '\1')} database ...' >> #{job.statuslog_path}"
-    @commands << "#{HH}/hhsearch -cpu 2 -v #{@v} -i #{@basename}.hhm -d #{scop_db}/db/scop.hhm -o #{@basename}.hhr -global 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "#{HH}/hhsearch -cpu 2 -v #{@v} -i #{@basename}.hhpred.hhm -d #{scop_db}/db/scop.hhm -o #{@basename}.hhpred.hhr -global 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     
     # Submit hhmake/hhsearch as subjob and wait
     @hash = {}
@@ -182,7 +183,7 @@ class HhsenserAction < Action
     
     @seqfile = flash["seqfile"]
     
-    resfile = File.join(job.job_dir, job.jobid+".hhr")
+    resfile = File.join(job.job_dir, job.jobid+".hhpred.hhr")
     return false if !File.readable?(resfile) || !File.exists?(resfile)
     @res = IO.readlines(resfile)
 
@@ -241,7 +242,7 @@ class HhsenserAction < Action
     else
       
       logger.debug "run hhsenser!"
-      @commands << "#{HH}/buildali.pl -v #{@v} -cpu 2 -n 1 -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -db #{@db} #{@basename}.a3m &> #{job.statuslog_path}"
+#      @commands << "#{HH}/buildali.pl -v #{@v} -cpu 2 -n 1 -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -db #{@db} #{@basename}.a3m &> #{job.statuslog_path}"
       run_hhsenser
       
     end
@@ -277,7 +278,7 @@ class HhsenserAction < Action
     end
 
     system("echo '#{hhpred_job.jobid}' > #{@basename}.hhpred_id")
-    FileUtils.cp(File.join(hhpred_job.job_dir, hhpred_job.jobid) + ".a3m", @basename + ".a3m")
+    FileUtils.cp(File.join(hhpred_job.job_dir, hhpred_job.jobid) + ".a3m", @basename + ".hhpred.a3m")
 
   end
   

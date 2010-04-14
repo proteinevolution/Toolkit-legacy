@@ -4,7 +4,7 @@
 	<li><a href="#inputmode">Input mode</a></li>
 	<li><a href="#windowsize">Window size</a></li>
 	<li><a href="#periodicity">Periodicity range</a></li>
-	<li><a href="#criteria">Criteria for periodicity search</a></li>
+	<li><a href="#criteria">Scale<!--Criteria for periodicity search--></a></li>
 	<li><a href="#intensity">FTwin threshold</a></li>
 	<li><a href="#repperthres">REPwin threshold</a></li>
 	<li><a href="#coils_param">COILS Parameters</a></li>
@@ -60,13 +60,14 @@ should not exceed the window size (otherwise it is set to window size automatica
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 <a name="criteria"></a>
-<h3 class="<%= @section["name"] %>">Criteria for periodicity search (FTwin)</h3>
+<h3 class="<%= @section["name"] %>">Scale (FTwin)<!--Criteria for periodicity search (FTwin)--></h3>
 <div class="row">
 A Fourier Transform cannot deal with amino acids. Amino acids are therefore represented by numbers. 
 Depending on what one is looking for (e.g. repeat patterns of hydrophobic residues), those numbers 
 represent a certain property (in this case hydrophobicity). The default values are set to the 
 Kyte-Doolittle hydrophobicity scale, but you can also switch to an empirical set of binary hydrophobic 
-values (standard binary) by clicking the button or you can manually put in values for your own purposes.
+values (standard binary) by clicking the button or you can manually put in values for your own purposes
+, either by changing each value manually or by pasting all amino acids into the prepared form (own scale).
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
