@@ -168,18 +168,52 @@ class GcviewAction < Action
   end
 
   def perform
-    logger.debug "In 'perform'"
     if (@input_jobid && !@input_sequence)
     #if (@inputformat=='jid')
       logger.debug "Directory: #{job.job_dir}"
+      logger.debug "Jobtype length: #{@jobtype.length}"
+      logger.debug "inputSequences length: #{@inputSequences.length}"
       for i in 0..@inputSequences_length-1
-        tmp_id=Job.find(:first, :conditions => [ "jobid = ?", @inputSequences[i]]).id
-        old_tmp_dir=File.join(job.job_dir, "../#{tmp_id}")
-        old_tmp_file = File.join(old_tmp_dir, "#{@inputSequences[i]}.psiblast")
-        psiblast_file = File.join(@tmpdir, "#{@inputSequences[i]}.psiblast")
-        output_file = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
-        @commands << "cp #{old_tmp_file} #{@tmpdir}"
-        @commands << "python #{GCVIEW}/psiblast_parser.py #{psiblast_file} #{output_file}"
+
+        logger.debug "%%%%%%%%% #{@inputSequences[i]} %%%%%%%%%%%"
+
+        #tmp_id=Job.find(:first, :conditions => [ "jobid = ?", @inputSequences[i]]).id
+        jobending = ''
+        if (@jobtype[i] == 'psi_blast')
+          jobending = 'psiblast'
+        end
+        if (@jobtype[i] == 'cs_blast')
+          jobending = 'csblast'
+        end
+        if (@jobtype[i] == 'prot_blast')
+          jobending = 'protblast'
+          logger.debug "Jobending: #{jobending}"
+	end
+        if (@jobtype[i] == 'gcview')
+	  logger.debug @inputSequences[i]
+	  tmp_id = @inputSequences[i].split('/')
+	  for f in 0..tmp_id.length-1
+            logger.debug "tmp_id: #{tmp_id[f]}"
+	  end
+          old_tmp_dir = File.join(job.job_dir, "../#{tmp_id[0]}")
+	  old_tmp_file = File.join(old_tmp_dir, "#{tmp_id[1]}")
+          #blast_file = File.join(@tmpdir, "#{tmp_id[1]}")
+	  out_id = tmp_id[1].split('.')
+          for f in 0..out_id.length-1
+            logger.debug "out_id: #{out_id[f]}"
+          end
+	  output_file = File.join(job.job_dir, "#{out_id[0]}.txt")
+	  @commands << "cp #{old_tmp_file} #{@tmpdir}"
+          #@commands << "python #{GCVIEW}/psiblast_parser.py #{blast_file} #{output_file}"
+        elsif (@jobtype[i] == 'psi_blast' || @jobtype[i] == 'cs_blast' || @jobtype[i] == 'prot_blast')
+          tmp_id=Job.find(:first, :conditions => [ "jobid = ?", @inputSequences[i]]).id
+          old_tmp_dir=File.join(job.job_dir, "../#{tmp_id}")
+          old_tmp_file = File.join(old_tmp_dir, "#{@inputSequences[i]}.#{jobending}")
+          blast_file = File.join(@tmpdir, "#{@inputSequences[i]}.#{jobending}")
+          output_file = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
+          @commands << "cp #{old_tmp_file} #{@tmpdir}"
+          @commands << "python #{GCVIEW}/psiblast_parser.py #{blast_file} #{output_file}"
+        end
       end
     end
 
@@ -211,23 +245,48 @@ class GcviewAction < Action
 
   def parse_sequencefile
     @tmparray = Array.new
+    @jobtype = Array.new
     logger.debug "Inputfile: #{@input}"
     idfile = File.open("#{@input}")
     idfile.each { |line| @tmparray.push(line) }
     for i in 0..@tmparray.length-1
       logger.debug "---------------------------------"
+      logger.debug "*** tmparray *** #{@tmparray[i]}"
       @tmparray[i]=@tmparray[i].gsub(/\s+$/, '')
       existingjob = Job.find(:first, :conditions => [ "jobid = ?", @tmparray[i]])
       logger.debug "Existing Job: #{existingjob}, #{@tmparray[i]}"
       if existingjob
-        psiblastjob = Job.find(:first, :conditions => [ "jobid = ?", @tmparray[i]]).tool
-        logger.debug "Job with valid JobID: #{psiblastjob}"
-        if (psiblastjob=="psi_blast")
+        @formerjob = Job.find(:first, :conditions => [ "jobid = ?", @tmparray[i]]).tool
+        logger.debug "Job with valid JobID: #{@formerjob}"
+        if (@formerjob=="psi_blast" || @formerjob=="cs_blast" || @formerjob=="prot_blast")
           @inputSequences.push(@tmparray[i])
-          logger.debug "Valid PsiblastJob: #{@tmparray[i]}"
+          logger.debug "Valid Psiblasti, ProtBlast or CSBlast Job: #{@tmparray[i]}"
           logger.debug "Arraylength: #{@inputSequences.length}"
+	  @jobtype.push(@formerjob)
+        elsif (@formerjob=="gcview")
+          tmp_gcviewjob=Job.find(:first, :conditions => [ "jobid = ?", @tmparray[i]]).id
+	  logger.debug "gcview-Job: #{@tmparray[i]}"
+          tmp_id=Job.find(:first, :conditions => [ "jobid = ?", @tmparray[i]]).id
+          old_tmp_dir=File.join(job.job_dir, "../#{tmp_id}")
+          logger.debug "Old tmp dir #{old_tmp_dir}"
+          file = File.join(old_tmp_dir, "*.txt")
+          files = Dir.glob(file)
+          for j in 0..files.length-1
+            logger.debug "*** #{files[j]} ***"
+            files[j].gsub!(old_tmp_dir, '')
+	    files[j].gsub!('/', '')
+	    logger.debug "+++ #{files[j]} +++"
+            #files[j].gsub!(".csblast", '')
+	    #logger.debug "~~~ #{files[j]} ~~~"
+            testfile = File.join(tmp_id.to_s, files[j])
+	    logger.debug "§§§ #{testfile} §§§"
+	    @inputSequences.push(testfile)
+	    @jobtype.push(@formerjob)
+          end
         end
       end
+      #@jobtype.push(@formerjob)
+      logger.debug "Formerjob: #{@formerjob}"
       logger.debug "\n"
     end
     idfile.closed?
@@ -246,9 +305,21 @@ class GcviewAction < Action
     res << "outfile_url=#{@outurl}/\n"
     res << "outfile=#{job.jobid}\n"
     for i in 0..@inputSequences_length-1
-      infile = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
+      if (@jobtype[i]=="gcview")
+	filename = @inputSequences[i].split('/')
+        for k in 0..filename.length-1
+	  logger.debug "Filename: #{filename[k]}"
+	end
+        jobname = filename[1].split('.')
+        #infile = File.join(job.job_dir, "#{jobname[0]}.txt")
+        #colornum = i % 9
+        res << "infile_#{i} = #{jobname[0]}.txt\n"
+      else
+        #infile = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
+        #colornum = i % 9
+        res << "infile_#{i} = #{@inputSequences[i]}.txt\n"
+      end
       colornum = i % 9
-      res << "infile_#{i} = #{@inputSequences[i]}.txt\n"
       res << "infile_#{i}_color = #{@colors[colornum]}\n"
     end
 
