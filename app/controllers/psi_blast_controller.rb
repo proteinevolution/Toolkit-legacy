@@ -32,7 +32,7 @@ class PsiBlastController < ToolController
                   fw_to_tool_url('psi_blast', 'clustalw') + "&fw_mode=seqs", 
                   fw_to_tool_url('psi_blast', 'seq2gi') + "&fw_mode=alignment",
                   fw_to_tool_url('psi_blast', 'frpred') + "&fw_mode=alignment",                  
-                  fw_to_tool_url('psi_blast', 'hhblast') + "&fw_mode=alignment",
+                  fw_to_tool_url('psi_blast', 'hhblits') + "&fw_mode=alignment",
                   fw_to_tool_url('psi_blast', 'hhpred') + "&fw_mode=alignment",
                   fw_to_tool_url('psi_blast', 'hhsenser') + "&fw_mode=alignment", 
                   fw_to_tool_url('psi_blast', 'kalign') + "&fw_mode=seqs", 
@@ -47,7 +47,7 @@ class PsiBlastController < ToolController
                   
     @fw_labels = [tool_title('blammer'), tool_title('blastclust'), tool_title('clans'), 
                   tool_title('clustalw'), tool_title('seq2gi'), tool_title('frpred'),
-                  tool_title('hhblast'), tool_title('hhpred'),
+                  tool_title('hhblits'), tool_title('hhpred'),
                   tool_title('hhsenser'), tool_title('kalign'), tool_title('mafft'), 
                   tool_title('muscle'), tool_title('patsearch'), tool_title('probcons'), 
                   tool_title('psi_blast'), tool_title('quick2_d'), tool_title('reformat'), 

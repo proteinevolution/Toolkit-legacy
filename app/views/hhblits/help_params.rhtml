@@ -21,7 +21,7 @@
 <div class="row">
 Paste the query <i>sequence</i> with which you want to do the search either as raw sequence 
 (e.g. 'ELRLRYCAPAGFALLKCN...') or as FASTA sequence (i.e. with a single line '>sequence_name optional description' 
-preceding the raw sequence, see next subsection). HHblast will use PSI-BLAST searches
+preceding the raw sequence, see next subsection). HHblits will use PSI-BLAST searches
 against the non-redundant sequence database from NCBI to build a multiple alignment from it. This 
 alignment will then be used to construct a concise statistical representation (a hidden Markov 
 model or HMM) and to search the selected HMM databases for homologs. <br>
@@ -609,4 +609,4 @@ by physico-chemical properties of the amino acids, either by using colored fonts
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 <BR>
 
-<%= render(:partial => "hhblast/references_and_contact") %>
+<%= render(:partial => "hhblits/references_and_contact") %>

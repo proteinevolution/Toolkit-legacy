@@ -1,5 +1,5 @@
-hhblast_job: 
-  title: HHblast
+hhblits_job:
+  title: HHblits
   hidden: false
   code: HHBL
   resultsections:  

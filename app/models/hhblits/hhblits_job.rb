@@ -1,4 +1,4 @@
-class HhblastJob < Job
+class HhblitsJob < Job
   
   @@export_ext = ".hhr"
   def set_export_ext(val)
@@ -129,7 +129,7 @@ class HhblastJob < Job
     paramline = break_lines(paramline,maxlinelen+7, "       ")
     
     ###############################################################
-    # Reformat HHblast output
+    # Reformat HHblits output
 
     @results.push("<div id=\"hitlist_img\">\n")
 
@@ -204,7 +204,7 @@ class HhblastJob < Job
       @results.push("</div>\n")
       @results.push("</div>\n")
       @results.push("<div class=\"row\" style=\"position:absolute; top:50px; width:785px;\">\n")
-      @results.push("<form action=\"/hhblast/resubmit_domain/#{jobid}\" method=\"post\">\n")
+      @results.push("<form action=\"/hhblits/resubmit_domain/#{jobid}\" method=\"post\">\n")
       @results.push("<input type=\"hidden\" id=\"domain_start\" name=\"domain_start\"/>\n")
       @results.push("<input type=\"hidden\" id=\"domain_end\" name=\"domain_end\"/>\n")
       @results.push("<input type=\"submit\" class=\"feedbutton\" style=\"border-width:2px;\" value=\"Resubmit\"/>\n")
@@ -294,7 +294,7 @@ class HhblastJob < Job
         # profile logos
         if  program.eql?("histograms")
           line[b].chomp!
-          line[b]+= "<a href=\"#{DOC_ROOTURL}/hhblast/results/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"></a>\n"
+          line[b]+= "<a href=\"#{DOC_ROOTURL}/hhblits/results/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"></a>\n"
           
           mapname="#{jobid}_#{m}"
           mapfile="#{job_dir}/#{mapname}.map"
@@ -323,12 +323,12 @@ class HhblastJob < Job
           end
         else
           line[b].chomp!
-          line[b] += "<a href=\"#{DOC_ROOTURL}/hhblast/histograms/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"></a>\n";
+          line[b] += "<a href=\"#{DOC_ROOTURL}/hhblits/histograms/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"></a>\n";
         end
         
         # Add logo for template alignment
         line[b].chomp!
-        line[b]+="<a href=\"#{DOC_ROOTURL}/hhblast/run/#{jobid}?jobaction=hhblast_showtemplalign&forward_controller=hhblast&forward_action=results_showtemplalign&alformat=fasta&hits=#{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" title=\"Show template alignment\" #{logo_attr} /></a>\n"
+        line[b]+="<a href=\"#{DOC_ROOTURL}/hhblits/run/#{jobid}?jobaction=hhblits_showtemplalign&forward_controller=hhblits&forward_action=results_showtemplalign&alformat=fasta&hits=#{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" title=\"Show template alignment\" #{logo_attr} /></a>\n"
         
         ########################################################################################################
         # '>name and description' line before each query-target alignment
@@ -465,7 +465,7 @@ class HhblastJob < Job
 	
     @results.push("<br></pre>\n")
     @results.push("Please cite as appropriate: \n")
-    @results.push("<BR><BR><B><i>HHblast</i>: Remmert, M. [unpublished]</B>")
+    @results.push("<BR><BR><B><i>HHblits</i>: Remmert, M. [unpublished]</B>")
     @results.push("<BR><BR><i>PSIPRED</i>: Jones, D.T. (1999) Protein secondary structure prediction based on position-specific scoring matrices. JMB 292: 195-202.")
     @results.push("<input type=\"hidden\" id=\"checkboxes\" name=\"checkboxes\" value=\"#{m}\" \>\n")
 	
