@@ -1,10 +1,34 @@
+<%= stylesheet_link_tag "gcview", :media => 'all' %>
+
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
-  
+
 <%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
-  
+
+<div id="forward" style="display: none;">
+        <div class="row">
+                <div class="label">Forward results to</div>
+                <div class="formw">
+                        <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+                </div>
+        </div>
+    
+        <div class="row">
+                <div class="label"></div>
+                <div class="formw">
+                        <input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+                </div>
+        </div>
+        <div class="hr">&nbsp;</div>
+        
+</div>
+
+
 <div class="row">
 	<%= @job.render_file(@job.jobid+"_gcvout.html") %>
+
+<div id="gi_list_container" style="right:20px"><a id="gi_list_switch"  onClick=javascript:scroll_start()>&gt;<br/>&gt;</a><p id="gi_list" ></p></div>
+
 </div>
 

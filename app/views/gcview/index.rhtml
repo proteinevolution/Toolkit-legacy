@@ -2,44 +2,128 @@
 
 <h2><%= @page_title %></h2>
 
+<!--<%= form_tag({:action => :run, :job => 'gcview'}, {:multipart => true})%>-->
+
+<% if @gi == "" %>
+
 <%= form_tag({:action => :run, :job => 'gcview'}, {:multipart => true})%>
-<h3 class="<%= @section["name"] %>">Input</h3>
-<div class="row">
+
+  <h3 class="<%= @section["name"] %>">Input</h3>
+
+  <div class="row">
 	<%= form_label("Paste input sequence", "input") %>
 	<%= form_text_area("sequence_input") %>
-</div>
-<div class="row">
+  </div>
+  <div class="row">
 	<%= form_label("or upload a local file") %>
 	<%= form_file("sequence_file") %>
-</div>
+  </div>
 
-<div class="row">
-  <%= form_label("Select input format", "format") %>
-  <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>
-</div>
-<div class="spacer">&nbsp;</div>
+  <div class="row">
+    <%= form_label("Select input format", "format") %>
+    <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>
+  </div>
+  <div class="spacer">&nbsp;</div>
 
-<div class="row">
+  <div class="row">
         <%= form_label("Paste Job IDs", "jobinput") %>
         <%= form_text_area("jobid_input") %>
-</div>
+  </div>
 
 
-<h3 class="<%= @section["name"] %>">Options</h3>
+  <h3 class="<%= @section["name"] %>">Options</h3>
 
-<div class="row">
-  <%= form_label("Select number", "number") %>
-  <%= form_select_single("show_number", @numvalues, @numlabels, @numvalues[0]) %>
-</div>
-<div class="row">
-  <%= form_label("Select type", "type") %>
-  <%= form_select_single("show_type", @typevalues, @typelabels, @typevalues[0]) %>
-</div>
+  <div class="row">
+    <%= form_label("Select number", "number") %>
+    <%= form_select_single("show_number", @numvalues, @numlabels, @numvalues[0]) %>
+  </div>
+  <div class="row">
+    <%= form_label("Select type", "type") %>
+    <%= form_select_single("show_type", @typevalues, @typelabels, @typevalues[0]) %>
+  </div>
+
+  <div class="spacer">&nbsp;</div>
+
+  <%= render(:partial => "shared/joboptions", :locals => {:jobid => @jobid} ) %>
+
+<% else %>
+
+<%= form_tag({:action => :run, :job => 'gcview', :parent => @job, :increment_id => 'true'}, {:multipart => true})%>
+
+  <%@gi_array = @gi.split('x')%>
+
+  <%@seq_entry=""%>
+
+  <%@gi_array.each do |gi_num|%>
+    <%@seq_entry += gi_num +"\n"%>
+  <%end%>
+
+  <!--<%@id_array=@oldjob.split('_') %>-->
+
+  <!--<%if (@id_array[@id_array.length-1].to_i > 0 && @id_array[@id_array.length-1].to_i<100)%>-->
+    <!--<%@id_ending = @id_array[@id_array.length-1].to_i+1%>-->
+    <!--<%@id_suffix = @id_ending.to_s%>-->
+    <!--<%if @id_array.length==2%>-->
+      <!--<%@jobid = @id_array[0]+'_'+@id_suffix%>-->
+    <!--<%else%>-->
+      <!--<%@id_prefix=''%>-->
+      <!--<%for i in 0..@id_array.length-2%>-->
+        <!--<%@id_prefix+=@id_array[i]+'_'%>-->
+      <!--<%end%>-->
+      <!--<%@jobid = @id_prefix + @id_suffix%>-->
+    <!--<%end%>-->
+  <!--<%else%>-->
+    <!--<%@id_suffix = '_1'%>-->
+    <!--<%@jobid = @oldjob+@id_suffix%>-->
+  <!--<%end%>-->
+
+  <h3 class="<%= @section["name"] %>">Input</h3>
+
+  <div class="row">
+        <%= form_label("Paste input sequence", "input") %>
+        <%= form_text_area("sequence_input", @seq_entry) %>
+  </div>
+  <div class="row">
+        <%= form_label("or upload a local file") %>
+        <%= form_file("sequence_file") %>
+  </div>
+
+  <div class="row">
+    <%= form_label("Select input format", "format") %>
+    <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[1]) %>
+  </div>
+  <div class="spacer">&nbsp;</div>
+
+  <div class="row">
+        <%= form_label("Paste Job IDs", "jobinput") %>
+        <%= form_text_area("jobid_input", @oldjob) %>
+  </div>
+
+  <h3 class="<%= @section["name"] %>">Options</h3>
+
+  <div class="row">
+    <%= form_label("Select number", "number") %>
+    <%= form_select_single("show_number", @numvalues, @numlabels, @numvalues[0]) %>
+  </div>
+  <div class="row">
+    <%= form_label("Select type", "type") %>
+    <%= form_select_single("show_type", @typevalues, @typelabels, @typevalues[0]) %>
+  </div>
+
+  <div class="spacer">&nbsp;</div>
+
+  <h3 class="<%= @section["name"] %>">Job Options</h3>
+  <div class="row">
+        <%= form_label("Job-ID") %>
+        <%= form_text_field("jobid", @jobid, '(leave empty for automatic creation)', 10) %> 
+  </div>
+  <div class="row">
+        <%= form_label("Send notification to (optional)") %>
+        <%= form_text_field("mail", '', '', 50) %>
+  </div>
 
 
-<div class="spacer">&nbsp;</div>
-
-<%= render(:partial => "shared/joboptions") %>
+<% end %>
 
 <div class="row">
 	<%= form_submit_buttons %>
