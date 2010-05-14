@@ -325,9 +325,9 @@
   - member
   - internal
   - external
-- name: hhblast
-  title: HHblast
-  title_long: HHblast - Homology detection by iterative HMM-HMM comparison
+- name: hhblits
+  title: HHblits
+  title_long: HHblits - Homology detection by iterative HMM-HMM comparison
   section: search
   active: 
   - hhgroup

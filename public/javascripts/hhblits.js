@@ -1,7 +1,7 @@
 function change_db(dbhhm)
 {
     var dbhhms = dbhhm.split(";");
-    var dblist = $("hhblast_dbs");
+    var dblist = $("hhblits_dbs");
     for( i=0; i<dblist.length; i++ ) {
 	if (dblist.options[i].selected == true) {
 	    $('dbhhm').value = dbhhms[i];
@@ -144,8 +144,8 @@ function select_genomes() {
     }
 }
 
-function change_resubmit_form_to_hhblast() {
+function change_resubmit_form_to_hhblits() {
     var expression = /(.+)hhpred(.+)/;
     expression.exec(document.forms[2].action);
-    document.forms[2].action = RegExp.$1 + "hhblast" + RegExp.$2;
+    document.forms[2].action = RegExp.$1 + "hhblits" + RegExp.$2;
 }

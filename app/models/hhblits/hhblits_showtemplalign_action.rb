@@ -1,4 +1,4 @@
-class HhblastShowtemplalignAction < Action
+class HhblitsShowtemplalignAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
   
   def do_fork?

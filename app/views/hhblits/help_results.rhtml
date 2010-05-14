@@ -17,7 +17,7 @@
 <a name="example"></a>
 <h3 class="<%= @section["name"] %>">Example results for Retroactive protein</h3>
 <br>
-Look at the following results from an HHblast search of the Retroactive protein from the fruit fly against the SCOP database.
+Look at the following results from an HHblits search of the Retroactive protein from the fruit fly against the SCOP database.
 The output is organized into three sections: 1. A <i>bar graph</i> summarizing the positions and color-coded significances of the
 database matches with more than 40% probability.  2. A tabular <i>hit list</i> with probabilities, E-values, scores, and match 
 regions in query and templates.  3. The pairwise <i>query-templates alignments</i> with annotation for secondary structure, 
@@ -247,7 +247,7 @@ T ss_conf             97345414--36221------------221111484034217738
 <br>
 
 <br> 
-In the top row, you find many useful links to access more information in HHblast or to link to external resources.
+In the top row, you find many useful links to access more information in HHblits or to link to external resources.
 The first logo will bring you to the histogram view of the query-template alignments. 
 The second logo lets you view and check the template alignment, to modify and submit it to HHpred 
 (for manual 'intermediate HMM searching'). The third button allows you to view the structure of the template
@@ -320,7 +320,7 @@ amino acid distributions. It gives a valuable indication for the alignment quali
 <a name="jalview"></a>
 <h3 class="<%= @section["name"] %>">View alignment with Jalview</h3>
 <img src="/images/blast/hhblast.jpg" border="0" alt="jalview"><br/>
-The Jalview-button shows the multiple alignment of the secondary structure information and all sequences that was found by HHBLAST. The different colours illustrate the identities between the different amino acids. In the example above you can see, that it is very difficult to decide, whether the sequences may be homologue. gi115958280 in the middle may be not homologue. So with the help of Jalview you can decide, with which sequences you want to go on.
+The Jalview-button shows the multiple alignment of the secondary structure information and all sequences that was found by HHblits. The different colours illustrate the identities between the different amino acids. In the example above you can see, that it is very difficult to decide, whether the sequences may be homologue. gi115958280 in the middle may be not homologue. So with the help of Jalview you can decide, with which sequences you want to go on.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 <br/>
@@ -332,5 +332,5 @@ In the section "Alignment" you have two possibilities for a jalview-Alignment. T
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
-<%= render(:partial => "hhblast/references_and_contact") %>
+<%= render(:partial => "hhblits/references_and_contact") %>
 </div>

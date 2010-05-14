@@ -1,14 +1,14 @@
-class HhblastAction < Action
-  HHBLAST = File.join(BIOPROGS, 'hhblast')
+class HhblitsAction < Action
+  HHBLITS = File.join(BIOPROGS, 'hhblits')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   HH = File.join(BIOPROGS, 'hhpred')
   BLAST = File.join(BIOPROGS, 'blast')
-  CSBLAST = File.join(BIOPROGS, 'csblast', 'bin')
-  CSBLASTDB = File.join(BIOPROGS, 'csblast', 'data', 'K4000.lib')
+  CSBLAST = File.join(BIOPROGS, 'hhblits')
+  CSBLASTDB = File.join(BIOPROGS, 'hhblits', 'K4000.lib')
   PSIPRED = File.join(BIOPROGS, 'psipred')
 
   
-  attr_accessor :jobid, :hhblast_dbs, :informat, :inputmode, :maxit, :ss_scoring,
+  attr_accessor :jobid, :hhblits_dbs, :informat, :inputmode, :maxit, :ss_scoring,
   					 :alignmode, :realign, :Epsiblastval, :mact, :maxseq, :width, :Pmin, :maxlines,
                 :sequence_input, :sequence_file, :mail, :otheradvanced
 
@@ -22,7 +22,7 @@ class HhblastAction < Action
   
   validates_email(:mail)
   
-  validates_db(:hhblast_dbs, {:on => :create})
+  validates_db(:hhblits_dbs, {:on => :create})
   
   validates_shell_params(:jobid, :mail, :width, :Pmin, :maxlines, {:on => :create})
   
@@ -42,11 +42,11 @@ class HhblastAction < Action
     reformat(@informat, "fas", @infile)
     @commands = []
 
-    @dbs = params['hhblast_dbs']
+    @dbs = params['hhblits_dbs']
     @dbhhm = params['dbhhm']
         
     @maxit = params['maxit']
-    @E_hhblast = params["EvalHHblast"]
+    @E_hhblits = params["EvalHHblits"]
     @E_psiblast = params["Epsiblastval"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
     @ali_mode = params["alignmode"]
@@ -108,9 +108,9 @@ class HhblastAction < Action
     params_dump
     
     if (@inputmode == "alignment")
-      @commands << "#{HHBLAST}/hhblast -cpu 4 -v #{@v} -a3m #{@a3mfile} -hh #{HHBLAST} -db #{@dbs} -dbhhm #{@dbhhm} -blast #{BLAST}/bin -csblast #{CSBLAST} -csblast_db #{CSBLASTDB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -qhhm #{@hhmfile} -oa3m #{@a3m_outfile} -ohhm #{@hhm_outfile} -e_hh #{@E_hhblast} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HHBLITS}/hhblits -cpu 4 -v #{@v} -a3m #{@a3mfile} -hh #{HHBLITS} -db #{@dbs} -dbhhm #{@dbhhm} -blast #{BLAST}/bin -csblast #{CSBLAST} -csblast_db #{CSBLASTDB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -qhhm #{@hhmfile} -oa3m #{@a3m_outfile} -ohhm #{@hhm_outfile} -e_hh #{@E_hhblits} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     else
-      @commands << "#{HHBLAST}/hhblast -cpu 4 -v #{@v} -i #{@infile} -hh #{HHBLAST} -db #{@dbs} -dbhhm #{@dbhhm} -blast #{BLAST}/bin -csblast #{CSBLAST} -csblast_db #{CSBLASTDB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -qhhm #{@hhmfile} -oa3m #{@a3m_outfile} -ohhm #{@hhm_outfile} -e_hh #{@E_hhblast} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HHBLITS}/hhblits -cpu 4 -v #{@v} -i #{@infile} -hh #{HHBLITS} -db #{@dbs} -dbhhm #{@dbhhm} -blast #{BLAST}/bin -csblast #{CSBLAST} -csblast_db #{CSBLASTDB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -qhhm #{@hhmfile} -oa3m #{@a3m_outfile} -ohhm #{@hhm_outfile} -e_hh #{@E_hhblits} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     end
 
     prepare_fasta_hhviz_histograms_etc    

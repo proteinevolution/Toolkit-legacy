@@ -1,4 +1,4 @@
-class HhblastForwardAction < Action
+class HhblitsForwardAction < Action
   HH=File.join(BIOPROGS, "hhpred")
 
   def do_fork?
