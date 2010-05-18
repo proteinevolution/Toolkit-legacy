@@ -56,10 +56,10 @@ class HhpredAction < Action
       end
     end
     @compbiascorr = params["compbiascorr"].nil? ? '' : (params["compbiascorr"]=='1'? '-sc 1' : '-sc 0 -shift -0.1')
-    @Pmin = params["Pmin"]
-    @max_lines = params["maxlines"]
-    @max_seqs = params["maxseq"]
-    @aliwidth = params["width"]
+    @Pmin = params["Pmin"].nil? ? 20 : params["Pmin"]
+    @max_lines = params["maxlines"].nil? ? 100 : params["maxlines"]
+    @max_seqs = params["maxseq"].nil? ? 1 : params["maxseq"]
+    @aliwidth = params["width"].nil? ? 80 : params["width"]
     @relaunch = params["relaunch"]
     @hhviz = params["hhviz"]
     @inputmode = params["inputmode"]
