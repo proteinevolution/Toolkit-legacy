@@ -24,6 +24,7 @@ logger = Logger.new( File.join(File.dirname(__FILE__), '..', 'log' ,'sweep.log')
 
 def delete_job(job, logger)
   if( job[:jobid]=~/^tu_/ ) then return end
+  if( job[:jobid]=~/^HH_/ ) then return end
   logger.debug("DELETING JOB ID:#{job[:id]} JOBID: #{job[:jobid]}")
   job.actions.each do |action|
     action.queue_jobs.each do |qj|

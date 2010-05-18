@@ -95,7 +95,7 @@ class ApplicationController < ActionController::Base
     if (!(params[:jobid].nil? || params[:jobid].empty?))
       params[:jobid].each do |jobid| 
         @job = Job.find(:first, :conditions => [ "jobid = ?", jobid])
-        if (!@job.nil? && (@job.jobid !~ /^tu_/ || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin'))) )        
+        if (!@job.nil? && ((@job.jobid !~ /^tu_/ && @job.jobid !~ /^HH_/) || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin'))) )        
           @job.remove
           logger.debug "Delete job in jobs_cart"
           @jobs_cart.delete(@job.id)

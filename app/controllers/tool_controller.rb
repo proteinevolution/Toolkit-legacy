@@ -124,7 +124,7 @@ class ToolController < ApplicationController
     @job = Job.find(:first, :conditions => [ "jobid = ?", params[:jobid]])
     tool = @job.tool
     
-    if (@job.jobid !~ /^tu_/ || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin')) ) 
+    if ((@job.jobid !~ /^tu_/ && @job.jobid !~ /^HH_/) || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin')) ) 
       
       @job.remove
       
