@@ -136,7 +136,7 @@ C<autoflush>, if set to a true value, triggers flushing the data
 out to the file on every call to C<log()>.
 
 The C<log()> method takes a single scalar. If a newline character
-should terminate the message, it has to be added explicitely.
+should terminate the message, it has to be added explicitly.
 
 Upon destruction of the object, the filehandle to access the
 file is flushed and closed.

@@ -995,7 +995,7 @@ certainly override it:
     log4perl.appender.A1.layout=Log::Log4perl::Layout::SimpleLayout
 
 C<write> is the C<mode> that has C<Log::Log4perl::Appender::File>
-explicitely clobber the log file if it exists.
+explicitly clobber the log file if it exists.
 
 =head1 AUTHOR
 
