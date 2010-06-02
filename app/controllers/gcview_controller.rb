@@ -15,7 +15,7 @@ class GcviewController < ToolController
   end
 
   def results
-    @widescreen = true
+    @fullscreen = true
     @fw_values = [fw_to_tool_url('gcview', 'gcview'), fw_to_tool_url('gcview', 'seq2gi')]
     @fw_labels = [tool_title('gcview'), tool_title('seq2gi')]
   end
@@ -25,7 +25,7 @@ class GcviewController < ToolController
   end
 
   def results_tab3
-   @widescreen = true
+   @fullscreen = true
   end
 
   def help_results

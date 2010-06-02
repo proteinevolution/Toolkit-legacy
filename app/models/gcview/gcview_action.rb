@@ -29,6 +29,8 @@ class GcviewAction < Action
     @db_path = File.join(GCVIEW, 'tool.db')
     @show_number = params['show_number'] ? params['show_number'] : "10"
     @show_type = params['show_type'] ? params['show_type'] : "genes"
+    @cut_off = params['evalue_cutoff'] ? params['evalue_cutoff'] : "1e-3"
+    @one_line = params['one_line'] ? "1" : "0"
 
     @input = @basename+".in"
     params_to_file(@input, 'sequence_input', 'sequence_file', 'jobid_input')
@@ -43,6 +45,10 @@ class GcviewAction < Action
     @input_jobid = false
     if (params['jobid_input']!=nil)
       @input_jobid = true
+    end
+
+    if (@cut_off =~ /^e.*$/)
+      @cut_off = "1" + @cut_off
     end
 
 
@@ -96,6 +102,8 @@ class GcviewAction < Action
         check_GI
       end
     end
+
+    
 
     # Angabe, wie viele Inputsequences bzw. JobIDs gegeben sind
     @inputSequences_length = @inputSequences.length
@@ -310,6 +318,8 @@ class GcviewAction < Action
     res << "db_path=#{@db_path}\n"
     res << "show_number=#{@show_number}\n"
     res << "show_type=#{@show_type}\n"
+    res << "evalue_cutoff=#{@cut_off}\n"
+    res << "one_line=#{@one_line}\n"
     res << "outfile_url=#{@outurl}/\n"
     res << "outfile=#{job.jobid}\n"
     for i in 0..@inputSequences_length-1

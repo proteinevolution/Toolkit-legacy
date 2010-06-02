@@ -41,6 +41,15 @@
     <%= form_label("Select type", "type") %>
     <%= form_select_single("show_type", @typevalues, @typelabels, @typevalues[0]) %>
   </div>
+  <div class="row">
+        <%= form_label("E-value cutoff", "evaluecutoff") %>
+        <%= form_text_field("evalue_cutoff", '1e-3') %>
+  </div>
+  <div class="row">
+        <%= form_label("Use one line", "one_line") %>
+        <%= form_checkbox("one_line", '0', false) %>
+  </div>
+
 
   <div class="spacer">&nbsp;</div>
 
