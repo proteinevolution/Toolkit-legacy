@@ -1,6 +1,8 @@
-<a href="#" onClick="openHelpWindow('/dataa/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 20px;"></a>
-<%= render(:partial => "dataajobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
-  
+<!--<a href="#" onClick="openHelpWindow('/dataa/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 20px;"></a>-->
+<!-- render(:partial => "dataajobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) -->
+
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+
 <%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
 
 <div class="row">
