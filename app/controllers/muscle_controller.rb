@@ -18,7 +18,7 @@ class MuscleController < ToolController
                   fw_to_tool_url('muscle', 'qick2_d'), fw_to_tool_url('muscle', 'reformat'),
                   fw_to_tool_url('muscle', 'repper')]
     @fw_labels = [tool_title('ali2d'), tool_title('alnviz'),
-                  tool_title ('ancescon'), tool_title('blastclust'),
+                  tool_title('ancescon'), tool_title('blastclust'),
                   tool_title('clans'), tool_title('seq2gi'),
                   tool_title('fast_hmmer'), tool_title('frpred'),
                   tool_title('hhpred'), tool_title('hhsenser'),
