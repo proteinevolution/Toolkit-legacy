@@ -1359,7 +1359,7 @@ This is a convenient way to define two appenders with the same layout
 without having to retype the pattern definitions.
 
 Variable substitution via C<${varname}> 
-will first try to find an explicitely defined 
+will first try to find an explicitly defined 
 variable. If that fails, it will check your shell's environment
 for a variable of that name. If that also fails, the program will C<die()>.
 
