@@ -32,7 +32,7 @@ class SimshiftController < ToolController
   end
 
   def help_residue_output
-    render (:layout => "help")
+    render(:layout => "help")
   end
   
 end

@@ -362,3 +362,9 @@
   - member
   - internal
   - external
+- name: gcview
+  title: GCView
+  title_long: Genomic Context Viewer
+  section: classification
+  active: 
+  - internal
