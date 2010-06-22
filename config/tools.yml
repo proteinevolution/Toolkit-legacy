@@ -368,3 +368,11 @@
   section: classification
   active: 
   - internal
+- name: bfit
+  title: bFit
+  title_long: bFit
+  section: tertstruct
+  active: 
+  - member
+  - internal
+  - external

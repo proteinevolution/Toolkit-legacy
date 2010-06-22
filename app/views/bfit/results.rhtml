@@ -1,0 +1,35 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<!--<%= render(:partial => "shared/resultsections") %>-->
+
+<div id="jobsection" class="<%= @section["name"] %>">
+    <ul>
+      <% sections = @job.config['resultsections'] %>
+                <% @cur_section = nil %>
+      <% sections.each do |section| %>
+      <% if (section['name'] == params[:action]) then @cur_section = section end %>
+      <li <%= section['name'] == params[:action] ? 'class="current"' : '' %>>
+                        <%= link_to(section['title'], {:action => section['name'], :jobid => @job.jobid}, {:onmouseover => "return overlib('#{section['title_long']}');", :onmouseout => "return nd();"}) %>
+      </li>
+      <% end %>
+    </ul>
+</div>
+
+  <div id="resultactions" class="<%= @section["name"] %>">
+    <ul>
+      <li><a href="<%= url_for({:action => :export_pdb1_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Save first pdb file');" onmouseout="return nd();">Save PDB1</a></li>
+      <li><a href="<%= url_for({:action => :export_pdb2_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Save second pdb file');" onmouseout="return nd();">Save PDB2</a></li>
+    </ul>
+  </div>
+
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row">
+	<%@pic = "scales.png"%>
+	<p><img src="<%= @job.url_for_job_dir %>/<%=@pic%>" width="650px"></img></p><br/>
+        <!--<%@pic = "scales.png"%>
+	 <%= image_tag (@pic) %>-->
+</div>
+
+</form>
