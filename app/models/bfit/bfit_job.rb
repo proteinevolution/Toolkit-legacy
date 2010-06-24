@@ -22,11 +22,11 @@ class BfitJob < Job
   end
   
   def export_pdb1
-    ret = IO.readlines(File.join(job_dir, "pdb1"+ @@export_pdb)).join
+    ret = IO.readlines(File.join(job_dir, jobid + "_1_fit"+ @@export_pdb)).join
   end
 
   def export_pdb2
-    ret = IO.readlines(File.join(job_dir, "pdb2"+ @@export_pdb)).join
+    ret = IO.readlines(File.join(job_dir, jobid + "_2_fit"+ @@export_pdb)).join
   end
 
 

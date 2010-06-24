@@ -26,9 +26,22 @@ class BfitController < ToolController
     ret = render_to_string(:action => function_name, :layout => false)
     logger.debug "Hallo #{ret}"
     @job.class.export_file_ext
-    filename = "#{@job.jobid}_1_fit.pdb"
+    filename = "#{@job.jobid}_2_fit.pdb"
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>#{filename}"
     send_data(ret, :filename => filename, :type => @job.class.export_type)
   end
+
+  def export_ensemble_to_file
+    function_name = @job.stripped_class_name.to_us + '_export_ensemble'
+    logger.debug "Hihihihi #{function_name}"
+    if self.respond_to?(function_name) then send(function_name) end
+    ret = render_to_string(:action => function_name, :layout => false)
+    logger.debug "Hallo #{ret}"
+    @job.class.export_file_ext
+    filename = "#{@job.jobid}_1_all.pdb"
+    logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>#{filename}"
+    send_data(ret, :filename => filename, :type => @job.class.export_type)
+  end
+
 
 end
