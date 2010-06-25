@@ -1,0 +1,9 @@
+bfit_job: 
+  title: bFit
+  hidden: false
+  code: BFIT
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
