@@ -373,4 +373,6 @@
   title_long: bFit
   section: tertstruct
   active: 
+  - member
   - internal
+  - external
