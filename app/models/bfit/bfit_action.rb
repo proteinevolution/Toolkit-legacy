@@ -7,6 +7,11 @@ class BfitAction < Action
 
   validates_input(:pdb_file1, :pdb_file2, {:informat => 'pdb', :on => :create})
 
+  validates_jobid(:jobid)
+
+  validates_email(:mail)
+
+
   # Put action initialisation code in here
   def before_perform
     init

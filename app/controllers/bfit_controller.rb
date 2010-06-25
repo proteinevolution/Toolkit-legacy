@@ -15,6 +15,9 @@ class BfitController < ToolController
     ret = render_to_string(:action => function_name, :layout => false)
     logger.debug " Hallo #{ret}"
     filename = "#{@job.jobid}_1_fit.pdb"
+#    if (!File.exists?(File.join(@job.job_dir, @job.jobid + "_2_fit.pdb")))
+#      filename = "#{@job.jobid}_1_all.pdb"
+#    end
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#{filename}"
     send_data(ret, :filename => filename, :type => @job.class.export_type)
   end

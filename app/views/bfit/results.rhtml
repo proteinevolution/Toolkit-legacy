@@ -1,3 +1,5 @@
+<a href="#" onClick="openHelpWindow('/bfit/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 20px;"></a>
+
 <%= render(:partial => "bfitjobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
 
 <!--<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>-->  
@@ -22,7 +24,6 @@
     <ul>
       <li><a href="<%= url_for({:action => :export_pdb1_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Save first pdb file');" onmouseout="return nd();">Save PDB1</a></li>
       <li><a href="<%= url_for({:action => :export_pdb2_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Save second pdb file');" onmouseout="return nd();">Save PDB2</a></li>
-      <li><%=File.join(@job.job_dir, @job.jobid + "_2_fit.pdb")%></li>
     </ul>
   </div>
 

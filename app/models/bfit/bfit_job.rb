@@ -29,7 +29,9 @@ class BfitJob < Job
     ret = IO.readlines(File.join(job_dir, jobid + "_2_fit"+ @@export_pdb)).join
   end
 
-
+  def export_ensemble
+    ret = IO.readlines(File.join(job_dir, jobid + "_1_all"+ @@export_pdb)).join
+  end
 
   
   
