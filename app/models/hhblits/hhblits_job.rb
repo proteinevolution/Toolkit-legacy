@@ -378,7 +378,7 @@ class HhblitsJob < Job
       # Color alignments 
       
       # Found a ss_dssp or ss_pred line?
-      if  line[b] =~ /\s*(Q|T) ss_(dssp|pred)\s+(\S+)/
+      if  line[b] =~ /^\s*(Q|T) ss_(dssp|pred)\s+(\S+)/
         seq     = $3
         old_seq = $3
         if  coloring.eql?( "onlySS")
@@ -399,7 +399,7 @@ class HhblitsJob < Job
         
         
         # Found a consensus line?
-      elsif  line[b] =~ /\s*(Q|T) Cons(-\S+|ensus)\s+\d+\s+(\S+)/ 
+      elsif  line[b] =~ /^\s*(Q|T) Cons(-\S+|ensus)\s+\d+\s+(\S+)/ 
         seq     = $3
         old_seq = $3
         if coloring.eql?( "onlySS")
@@ -419,7 +419,7 @@ class HhblitsJob < Job
         
         
         # Found a sequence line?
-      elsif line[b] =~ /\s*(Q|T) (\S+)\s+\d+\s+(\S+)/ 
+      elsif line[b] =~ /^\s*(Q|T) (\S+)\s+\d+\s+(\S+)/ 
         seq     = $3
         old_seq = $3
         if coloring.eql?( "letters")
@@ -449,7 +449,7 @@ class HhblitsJob < Job
         end
                 
         # Found a ss_conf line?
-      elsif  line[b] =~ /\s*(Q|T) ss_/ 
+      elsif  line[b] =~ /^\s*(Q|T) ss_/ 
       end
       
       b +=1

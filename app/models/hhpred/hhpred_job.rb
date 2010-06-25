@@ -245,7 +245,7 @@ class HhpredJob  < Job
         logger.debug("WARNING in #{$0}: Could not find pdb file for sequence #{query}. Interpreted as pdbcore=#{pdbid}, chain=#{chain}");
         querypdb=""
       else
-        system("cp"+dirs.first+"/"+pdbid+chain+".pdb"+" "+querypdb)
+        system("cp "+dirs.first+"/"+pdbid+chain+".pdb"+" "+querypdb)
       end
     end
 
