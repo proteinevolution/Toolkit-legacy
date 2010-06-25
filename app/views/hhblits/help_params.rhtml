@@ -79,7 +79,7 @@ If you already have a query alignment (you may insert the manually edited query 
 HHsearch/HHpred for example) then you can enter it here. The PsiBlast search will then be kickstarted 
 with this alignment. (If you choose the maximum number of PsiBlast iterations to be 0 then only the 
 predicted secondary structured will be added to your alignment.) The query sequence is the first sequence. 
-It is not marked explicitely.
+It is not marked explicitly.
 </p>
 
 <br>
@@ -326,7 +326,7 @@ and motifs in which identifiable features from known proteins can be applied to 
 In the version offered through HHpred, the PRINTS and PROSITE sequene motif databases are excluded,
 as are <i>explicit</i> transmembrane helix prediction by TMHMM and signal peptide prediction by SignalP.
 InterPro_12.0 contains already more than 31000 HMMs, therefore a search will take a few minutes.
-(InterPro offers only HMMs and not the underlying alignments. Therefore, HHpred has not access to
+(InterPro offers only HMMs and not the underlying alignments. Therefore, HHpred does not have access to
 alignments for PANTHER, TIGRFAMs, PIRSF, SUPERFAMILY, and CATH/Gene3D. Hence, when using the option 
 "Merge query and template alignments", only the single consensus sequences instead of full template 
 alignments can be merged with your query alignment.)
@@ -493,9 +493,9 @@ remote homologs. If you have already identified your template with a previous ru
 to get global alignments with an already identified template. <BR><BR>
 
 HHpred was shown to be significantly more sensitive 
-to detect remote homolgs in local than in global mode. The reason is that most remote homolgs are really only 
-homologous in a commom core that define their superfamily. This core has been adorned by other secondary 
-structure elements in different ways in different famlies. Also, the statistical evalutation is more error-prone 
+to detect remote homologs in local than in global mode. The reason is that most remote homologs are really only 
+homologous in a common core that define their superfamily. This core has been adorned by other secondary 
+structure elements in different ways in different families. Also, the statistical evaluation is more error-prone 
 for the global alignment mode, since the negatives score distribution for global alignments does not follow 
 an extreme-value distribution.<BR><BR>
 
@@ -509,7 +509,7 @@ setting the 'MAC realignment threshold' to 0.0 (hidden under 'More options').
 <a name="realign"></a>
 <h3 class="<%= @section["name"] %>">Realign with MAC algorithm</h3>
 <div class="row">
-After the serach with the standard Viterbi algorith, this option will cause HHpred to realign all 
+After the search with the standard Viterbi algorithm, this option will cause HHpred to realign all 
 query-template alignments with the more accurate Maximum ACcuracy alignment algorithm. <br><br>
 
 Since for technical reasons the scores, E-values, and probabilities from the Viterbi alignment 
