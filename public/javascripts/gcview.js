@@ -55,7 +55,6 @@ function gcv_select(gi)
 
   gcv_write_array();
 
-  document.title="GI Liste";
 }
 
 
@@ -76,7 +75,7 @@ function gcv_write_array()
   {
     temp += "<tr><td>"+gi_array[i]+"</td><td><a onClick=\"gcv_delete("+i+")\">X</a></td></tr>";
   }
-  document.getElementById("gi_list").innerHTML = temp + "</table><p align=right><a href=\"http://"+window.location.host+"/gcview/?gi="+gi_array.join('x')+"&oldjob="+window.location.href.split("/").reverse()[0]+"\">New Search</a></p>";
+  document.getElementById("gi_list").innerHTML = temp + "</table><p align=\"center\" style=\"border: 2px solid blue; padding: 1px; margin: 5px;\"><a href=\"http://"+window.location.host+"/gcview/?gi="+gi_array.join('x')+"&parentjob="+window.location.href.split("/").reverse()[0]+"\">Search again</a></p> <p align=\"center\" style=\"border: 2px solid blue; padding: 1px; margin: 5px;\"><a href=\"http://"+window.location.host+"/gi2seq/?gi="+gi_array.join('x')+"&parentjob="+window.location.href.split("/").reverse()[0]+"\">Retrieve Sequence</a></p>";
 }
 
 
@@ -94,7 +93,8 @@ document.getElementById("gi_list_container").style.right=position+"px";
 if ((inx < 0 && position <=-140) || (inx >0 && position >= 20))
         {
         inx=inx*-1;
-        document.getElementById("gi_list_switch").innerHTML=(inx>0)?"&lt;<br/>&lt;":"&gt;<br/>&gt;";
+
+        document.getElementById("gi_list_switch").innerHTML= (inx>0)?"&lt;<br/>&lt;":"&gt;<br/>&gt;";
         window.clearInterval(scrolling);
         }
 }
