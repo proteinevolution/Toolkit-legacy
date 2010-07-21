@@ -60,7 +60,7 @@ class PsiBlastController < ToolController
     # mode aignment: use alignment of alignhits.pl
     @fw_values = [fw_to_tool_url('psi_blast', 'blastclust'),
                   fw_to_tool_url('psi_blast', 'clans'),
-                  fw_to_tool_url('psi_blast', 'psi_blast'),
+                  fw_to_tool_url('psi_blast', 'cs_blast'),
 		  fw_to_tool_url('psi_blast', 'seq2gi'),
                   fw_to_tool_url('psi_blast', 'hhpred'),
                   fw_to_tool_url('psi_blast', 'hhsenser'),
