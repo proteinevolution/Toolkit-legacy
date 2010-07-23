@@ -8,7 +8,7 @@
 
 <%Dapfragment.find(:all, :conditions => ["f_id=?", @page]).each do |fragment|%>
 <p style="font-size:18px; font-weight:bold;"><%=fragment.f_name%></p>
-<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Keywords</p>
+<p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Keywords</p>
 <table border="0" style="width=100%">
   <tr>
     <%DapfragmentDapkey.find(:all, :conditions => ["f_id=?", @page]).each do |keywd|%>
@@ -20,7 +20,7 @@
 </table>
 <br/>
 <br/>
-<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Description</p>
+<p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Description</p>
 <table border="0" style="width=100%">
   <colgroup>
     <col width="20%">
@@ -46,7 +46,7 @@
 <br/>
 <%end%>
 <br/>
-<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Occurrence (SCOP accession)</p>
+<p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Occurrence (SCOP accession)</p>
 <table border="0" style="width=100%">
   <!--<colgroup>
    <col width="25%">
@@ -73,7 +73,7 @@
 
 
 <!--<div><p style="font-size:14px; font-weight:bold;"><font face="monospace"><%=@alignment%></font></p></div>-->
-<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Sequence Alignment</p>
+<p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Sequence Alignment</p>
 <div style="width:700px; height:200px; overflow:auto;">
 <table border="0">
 <!--<colgroup>
@@ -174,7 +174,7 @@ href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=eachline[j]%>"><%=ea
 <br/>
 <%if Dapref.find(:first, :conditions => ["f_id=?", @page])%>
   <%if Dapref.find(:first, :conditions => ["f_id=?", @page]).r_reference != "NULL"%>
-  <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
+  <p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">References</p>
   <table border="0">
     <%Dapref.find(:all, :conditions => ["f_id=?", @page]).each do |ref|%>
       <tr>

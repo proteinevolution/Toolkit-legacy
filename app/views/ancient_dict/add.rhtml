@@ -7,9 +7,9 @@
 <%= form_tag({:controller => "ancient_dict", :action => "addingKey"}, {:multipart => true})%>
 
 <div>
-<p style="font-size:14px; font-weight:bold;">Add Keyword</p>
+<p style="font-size:14px; font-weight:bold;">Add Keyword</p></br>
 
-<div class="hr">&nbsp;</div>
+<!--<div class="hr">&nbsp;</div>-->
 <div>
   <%= form_label("Keyword name") %>
   <%= form_text_field("k_name", "", "", 80)%>

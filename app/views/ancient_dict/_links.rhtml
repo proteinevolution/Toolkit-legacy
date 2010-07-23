@@ -1,12 +1,12 @@
-<div id="jobsection">
-  <ul>
-    <%if @user.groups.include?('dap')%>
+<div id="jobsection"  class="<%= @section["name"] %>">
+  <ul class="<%= @section["name"] %>">
+    <%if @user && @user.groups.include?('dap')%>
       <% for i in 0...@shortlinks_special.length%>
         <li <% if @shortlinks_special[i] == @color %> class="current" <% end %>>
-          <a href="/ancient_dict/<%= @links[i]%>" onmouseover="return overlib('<%= @link_text[i]%>');" onmouseout="return nd();"><%= @link_names[i]%></a>
+          <a href="/ancient_dict/<%= @links[i]%>" onmouseover="return overlib('<%= @link_text[i]%>');" onmouseout="return nd();" class="<%= @section["name"] %>"><%= @link_names[i]%></a>
         </li>
       <% end %>
-    <% else %>
+    <%else%>
       <% for i in 0...@shortlinks.length%>
         <li <% if @shortlinks[i] == @color %> class="current" <% end %>>
           <a href="/ancient_dict/<%= @links[i]%>" onmouseover="return overlib('<%= @link_text[i]%>');" onmouseout="return nd();"><%= @link_names[i]%></a>

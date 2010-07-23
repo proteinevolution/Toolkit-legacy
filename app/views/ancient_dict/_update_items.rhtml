@@ -1,4 +1,4 @@
-<div id="resultactions">
+<div id="resultactions" class="<%= @section["name"] %>">
    <ul>
      <% for i in 0...@update_item.length%>
        <li <% if @update_item[i] == @colors %> class="current" <% end %> >

@@ -22,7 +22,7 @@
 <% else %>
   <p style="font-size:14px; font-weight:bold;">Update Keyword</p>
   <%@keyinfo=Dapkey.find(:first, :conditions => ["k_id=?", @keypage])%>
-  <h3 style="font-size:12px;"><%=@keypage%></h3>
+  <h3 style="font-size:12px;" class="<%= @section["name"] %>"><%=@keypage%></h3>
 
   <div class="row">
     <%= form_label("Mysql ID (Do not change!!!)") %>

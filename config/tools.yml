@@ -354,10 +354,21 @@
   section: classification
   active: 
   - dap
+  - member
+  - internal
+  - external
 - name: samcc
   title: SamCC
   title_long: Four-helical bundle analysis tool
   section: tertstruct
+  active: 
+  - member
+  - internal
+  - external
+- name: clubsubp
+  title: ClubSub-P
+  title_long: Cluster-based Subcellular localisation prediction
+  section: classification
   active: 
   - member
   - internal

@@ -123,6 +123,30 @@ p.message {
   font-size: 12px;
 }
 
+p.search {
+  background-color: #F4EEDF;
+}
+p.alignment {
+  background-color: #FFEECC;
+}
+p.seqanal {
+  background-color: #CFE7B8;
+}
+p.secstruct {
+  background-color: #E2EFF9;
+}
+p.tertstruct {
+  background-color: #DCDCE7;
+}
+
+p.classification {
+  background-color: #F1EBEB;
+}
+p.utils {
+  background-color: #F3CFCF;
+}
+
+
 h1 {
   font-weight: bold;
   font-size: 11px;
@@ -595,6 +619,32 @@ ul.arrow-marker li {
   font-size: 11px;
   color: #005FA9;
 }
+
+
+ul.search {
+  background-color: #F4EEDF;
+}
+ul.alignment {
+  background-color: #FFEECC;
+}
+ul.seqanal {
+  background-color: #CFE7B8;
+}
+ul.secstruct {
+  background-color: #E2EFF9;
+}
+ul.tertstruct {
+  background-color: #DCDCE7;
+}
+
+ul.classification {
+  background-color: #F1EBEB;
+}
+ul.utils {
+  background-color: #F3CFCF;
+}
+
+
 
 /*  Für Tool/Job Menu */
 #content #jobsection {
