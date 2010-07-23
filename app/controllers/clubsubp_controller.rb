@@ -8,10 +8,6 @@ class ClubsubpController < ToolController
     getlinks
   end
 
-  def description
-    getlinks
-  end
-
   def genomes
     getlinks
     @accession=params['accession']
@@ -33,10 +29,10 @@ class ClubsubpController < ToolController
   end
 
   def getlinks
-    @shortlinks = ["de", "br", "in"]
-    @links = ["description", "browse", "index"]
-    @link_names = ["Description", "Browse Genomes", "Search Genomes"]
-    @link_text = ["Description", "Browse the genomes", "Search the genomes"]
+    @shortlinks = ["br", "in"]
+    @links = ["browse", "index"]
+    @link_names = ["Browse Genomes", "Search Genomes"]
+    @link_text = ["Browse the genomes", "Search the genomes"]
   end
 
 end

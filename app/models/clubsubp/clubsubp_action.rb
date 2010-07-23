@@ -20,7 +20,7 @@ class ClubsubpAction < Action
 
     if(!@text_search.empty?)
       @infile=""
-    end  
+    end 
   end
 
 
@@ -38,11 +38,16 @@ class ClubsubpAction < Action
       @commands << "echo #{@basename} &> #{job.statuslog_path}"
       @commands << "/usr/bin/perl #{CLUB}/search_clubsub.pl #{@basename} #{@text_search} >> #{job.statuslog_path}" 
       @commands << "echo #{@text_search} >> #{job.statuslog_path}"
+#     ./qupdate.rb 2316 d      
+#     @temp_id   = QueueJob.find(:first, :conditions => ["action_id=?", @action_id])
+#     logger.debug @temp_id
+
+#      @commands << "echo #{@temp_id} >> #{job.statuslog_path}"
     end
 
     # Blast search if we have sequence input 
     if(!@infile.empty?)
-      @commands << "#{BLAST}/blastall -p blastp -i #{@infile} -d #{DBPATH} -o #{@outfile} -I t &>#{job.statuslog_path}"
+      @commands << "#{BLAST}/blastall -p blastp -i #{@infile} -d #{DBPATH} -o #{@outfile} -I t &> #{job.statuslog_path}"
       @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
       @commands << "/usr/bin/perl #{CLUB}/blast_parser.pl #{@outfile} #{@basename} >> #{job.statuslog_path}"
       @commands << "echo 'Blast output parsed !' >> #{job.statuslog_path}"
@@ -62,6 +67,13 @@ class ClubsubpAction < Action
   def init
     @basename = File.join(job.job_dir, job.jobid)
     @commands = []
+    olt
+  end
+
+  def olt
+    @action_id = job.id
+#    @temp_id   = QueueJob.find(:first, :conditions => ["action_id=?", @action_id])
+#    logger.debug @temp_id
   end
 
 end

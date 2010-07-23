@@ -1,5 +1,24 @@
 <h2><%= @tool['title'] %> Overview</h2> 
-<div class="row">
-Tool Description for the incredible ClubSub-P Tool, which can be used for almost every computation. It was designed to fit especially your personal needs and makes your life tremendiously easier. If you are not able to use this tool, try our mirrored page <a href="http://www.google.de">Mirror</a>
+<div>
+  <br/><h5><br>ClubSub-P is clustering based meta-prediction of subcellular localization (SCL) database for gram negative bacterial proteins.<br/></h5>
+Gene prediction programs show severe start codon assignment problems. Secretory signals which are present at the N-terminal region will be missed or wrongly interpreted in cases where the start codon is assigned wrongly, leading to a wrong subcellular localization prediction. Integrating information from multiple proteomes will reduce the N-terminal misassignment problem and increase the reliability of signal peptide prediction, where quality of the prediction not only depends on the performance of the tool, but also on the quality of the input sequences. In addition to protein's SCL prediction, protein clustering was performed and SCL was assigned to each cluster by averaging its member's SCL.<br/>
+    <H3 class="<%= @section["name"]%>">Clustering</H3>
+      <BR/><a href=http://www.bioinformatics.org/cd-hit/>CD-HIT</a> program was used for clustering the proteomes.<br/><br/>
+    <H3 class="<%= @section["name"]%>">Tools used in SCL prediction</H3><br/>Uses <a href=http://www.cbs.dtu.dk/services/SignalP/>SignalP 3.0</a>, <a href=http://www.cbs.dtu.dk/services/LipoP/>LipoP 1.0</a>, <a href=http://phobius.sbc.su.se/>Phobius</a>, <a href=http://www.predisi.de/>PrediSi</a>, <a href=http://www.cbs.dtu.dk/services/TMHMM/>TMHMM 2.0</a>, <a href=http://services.cbu.uib.no/tools/bomp>BOMP</a>, <a href=http://toolkit.tuebingen.mpg.de/hhomp>HHomp</a>, <a href=http://signalfind.org/tatfind.html>TaTFind 1.4</a>, <a href=http://www.cbs.dtu.dk/services/TatP/>TatP 1.0</a>, <a href=http://www.effectors.org/>Effective 1.0.1</a>, <a href=http://gecco.org.chemie.uni-frankfurt.de/T3SS_prediction/T3SS_prediction.html>T3SS_Prediction</a> and <a href=http://www.psort.org/psortb/>PSORTbv.3.0.2</a> in the predicton pipline.<br/><br/>
+    
+<H3 class="<%= @section["name"]%>">Signal Peptide prediction</H3>
+<P><B>Lipoprotein signal peptide</B><BR>We used 'best prediction' in LipoP 1.0 to identify the <B>Lipoprotein signal peptides</B> in the proteins. Since +2 retention signal is species specific, we have provided the sequence after SPII cleavage site without predicting to which membrane(inner/outer) the protein binds.</P><BR>
+<P><B>TAT signal peptide</B><BR>Both of the Tatp 1.0 and TatFind 1.4 should be positive prediction to identify <B>twin argining translocation (TAT) signal petides</B>. Presence of a charged residue in position +2 and +5 relative to the twin argenines were identified by TATFIND 1.4's rule 3a and 3b respectively and rule 4 searches for a basic residue immediately preceeding the hydrophbic stretch, which follows the twin argenines. TatP's MaxD scores were used to confirm the Tat peptide cleavage.</P><BR>
+<P><B>General signal peptide</B><BR><B>General secretory pathway signal peptides</B> were identified using consensus prediction of SignalP3.0-NN, SignalP3.0-HMM, Phobius and PrediSi. At least 3 of the above tools should have positive prediction to confirm the consensus prediction. SignalP-NN's MaxD score and SignalP-HMM's cleavage probability  were used to confirm the the cleavage of general signal peptides. The MaxD score is calculated from maximum "cleavage site" score and mean "signal peptide" score and it shows superior discrimination between the secretory and non-secretory proteins.</P></BR>
+<P><B>T3SS signal peptide</B><BR>T3SS_prediction and Effective were used to indetify <B>Type III secretion system peptides.</B> To reduce the false positive type III signal peptide prediction, a positive prediction from Effective and T3SS_prediction with scores equal to 1 were considered.</P><BR> 
+
+    <H3 class="<%= @section["name"]%>">Rules of subcellular localization annotation</H3>
+    <h5>Periplasmic and Lipo proteins</h5>Confirmed general secretory pathway signal peptides, or TaT signal peptides and lipoprotein signal peptide without TM domains were annotated as Periplasmic proteins or outer/inner membrane lipoproteins respectively.<br/><br/>
+
+    <h5>Outer membrane beta-barrel proteins</h5>Two positive prediction from either BOMP, PSORTbv3.0's outer membrane, CELLOv2.5's outer membrane or with single positive prediction HHOmp were necessary to confirm the annotation as outer membrane beta-barrel protein. Bomp's category has range from 0 to 5, increasing order hints about the confidence of the prediction. HHomp's run hints whether a HHomp prediction was done on the protein or not.<br/><br/>
+
+    <H5>Transmembrane Proteins</H5>Consensus in the results from TMHMM 2.0, HMMTOP and Phobius were necessary to confirm the annotation as transmembrane protein.<br/><br/>
+
+    <H5>Extracellular Proteins</H5>Consensus in the results from Type III signal peptide predictions or PSORTbv3.0's extracellular prediction were used to annotate proteins as extracellular.<br/><br/>
 </div>
 
