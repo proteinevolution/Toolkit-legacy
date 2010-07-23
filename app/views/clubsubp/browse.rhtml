@@ -6,259 +6,270 @@
 
 <%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
 
+<!--
+
+          <DIV id="genome_tree">
+            <button type='button' onClick='toggle_sp_table()'; value='Show genome_tree'; style = "border: 1px solid #C9DBD8; background-color:#EBFAF8">Root(157)</button>
+          </DIV>
+
+          <DIV id='tree' style='display:none'; value='Hide genome_tree';>
+            Bacteria(157)
+	  </DIV>
+
+-->
 
 <table align='center' border='0' align='center' cellpadding='2' cellspacing='3' style='font-family: arial, 'lucida console', sans-serif'>
- <tr bgcolor='#CC9900'>
-  <th>Organism</th>
-  <th>RefSeq</th>
+ <tr bgcolor='#97697C'>
+  <th><FONT color='white'>Organism</th>
+  <th><FONT color='white'>RefSeq</th>
  </tr>
 
-<tr bgcolor='#C9C299'><td>Acidovorax avenae subsp. citrulli AAC00-1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008752'>NC_008752</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Acidovorax avenae subsp. citrulli AAC00-1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008752'>NC_008752</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Acinetobacter baumannii ATCC 17978</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009083'>NC_009083</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Acinetobacter baumannii ATCC 17978</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009083'>NC_009083</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009084'>NC_009084</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009085'>NC_009085</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Actinobacillus pleuropneumoniae L20</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009053'>NC_009053</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Actinobacillus pleuropneumoniae L20</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009053'>NC_009053</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Aeromonas hydrophila subsp. hydrophila ATCC 7966</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008570'>NC_008570</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Aeromonas hydrophila subsp. hydrophila ATCC 7966</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008570'>NC_008570</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Agrobacterium tumefaciens str. C58</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003062'>NC_003062</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Agrobacterium tumefaciens str. C58</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003062'>NC_003062</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003063'>NC_003063</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003064'>NC_003064</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003065'>NC_003065</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Alcanivorax borkumensis SK2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008260'>NC_008260</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Alcanivorax borkumensis SK2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008260'>NC_008260</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Alkalilimnicola ehrlichei MLHE-1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008340'>NC_008340</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Alkalilimnicola ehrlichei MLHE-1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008340'>NC_008340</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Anaeromyxobacter dehalogenans 2CP-C</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007760'>NC_007760</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Anaeromyxobacter dehalogenans 2CP-C</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007760'>NC_007760</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Anaplasma marginale str. St. Maries</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004842'>NC_004842</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Anaplasma marginale str. St. Maries</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004842'>NC_004842</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Anaplasma phagocytophilum HZ</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007797'>NC_007797</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Anaplasma phagocytophilum HZ</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007797'>NC_007797</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Azoarcus sp. BH72</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008702'>NC_008702</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Azoarcus sp. BH72</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008702'>NC_008702</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Bartonella bacilliformis KC583</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008783'>NC_008783</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Bartonella bacilliformis KC583</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008783'>NC_008783</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Bartonella henselae str. Houston-1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005956'>NC_005956</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Bartonella henselae str. Houston-1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005956'>NC_005956</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Bartonella quintana str. Toulouse</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005955'>NC_005955</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Bartonella quintana str. Toulouse</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005955'>NC_005955</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Baumannia cicadellinicola str. Hc (Homalodisca coagulata)</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007984'>NC_007984</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Baumannia cicadellinicola str. Hc (Homalodisca coagulata)</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007984'>NC_007984</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Bdellovibrio bacteriovorus HD100</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005363'>NC_005363</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Bdellovibrio bacteriovorus HD100</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005363'>NC_005363</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Bordetella bronchiseptica RB50</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002927'>NC_002927</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Bordetella bronchiseptica RB50</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002927'>NC_002927</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Bordetella parapertussis 12822</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002928'>NC_002928</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Bordetella parapertussis 12822</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002928'>NC_002928</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Bordetella pertussis Tohama I</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002929'>NC_002929</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Bordetella pertussis Tohama I</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002929'>NC_002929</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Bradyrhizobium japonicum USDA 110</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004463'>NC_004463</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Bradyrhizobium japonicum USDA 110</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004463'>NC_004463</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Brucella abortus bv. 1 str. 9-941</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006932'>NC_006932</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Brucella abortus bv. 1 str. 9-941</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006932'>NC_006932</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006933'>NC_006933</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Brucella melitensis 16M</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003317'>NC_003317</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Brucella melitensis 16M</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003317'>NC_003317</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003318'>NC_003318</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Brucella suis 1330</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004310'>NC_004310</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Brucella suis 1330</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004310'>NC_004310</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004311'>NC_004311</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Buchnera aphidicola str. 5A (Acyrthosiphon pisum)</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_011833'>NC_011833</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Buchnera aphidicola str. 5A (Acyrthosiphon pisum)</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_011833'>NC_011833</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Burkholderia ambifaria AMMD</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008390'>NC_008390</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Burkholderia ambifaria AMMD</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008390'>NC_008390</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008391'>NC_008391</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008392'>NC_008392</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008385'>NC_008385</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Burkholderia cenocepacia AU 1054</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008060'>NC_008060</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Burkholderia cenocepacia AU 1054</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008060'>NC_008060</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008061'>NC_008061</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008062'>NC_008062</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Burkholderia mallei ATCC 23344</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006348'>NC_006348</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Burkholderia mallei ATCC 23344</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006348'>NC_006348</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006349'>NC_006349</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Burkholderia pseudomallei 1106a</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009076'>NC_009076</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Burkholderia pseudomallei 1106a</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009076'>NC_009076</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009078'>NC_009078</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Burkholderia thailandensis E264</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007650'>NC_007650</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Burkholderia thailandensis E264</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007650'>NC_007650</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007651'>NC_007651</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Burkholderia xenovorans LB400</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007951'>NC_007951</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Burkholderia xenovorans LB400</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007951'>NC_007951</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007952'>NC_007952</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007953'>NC_007953</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Campylobacter fetus subsp. fetus 82-40</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008599'>NC_008599</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Campylobacter fetus subsp. fetus 82-40</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008599'>NC_008599</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Campylobacter jejuni RM1221</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003912'>NC_003912</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Campylobacter jejuni RM1221</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003912'>NC_003912</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Candidatus Blochmannia floridanus</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005061'>NC_005061</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Candidatus Blochmannia floridanus</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005061'>NC_005061</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Candidatus Carsonella ruddii PV</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008512'>NC_008512</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Candidatus Carsonella ruddii PV</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008512'>NC_008512</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Candidatus Pelagibacter ubique HTCC1062</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007205'>NC_007205</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Candidatus Pelagibacter ubique HTCC1062</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007205'>NC_007205</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Candidatus Ruthia magnifica str. Cm (Calyptogena magnifica)</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008610'>NC_008610</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Candidatus Ruthia magnifica str. Cm (Calyptogena magnifica)</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008610'>NC_008610</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Caulobacter crescentus CB15</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002696'>NC_002696</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Caulobacter crescentus CB15</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002696'>NC_002696</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Chromobacterium violaceum ATCC 12472</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005085'>NC_005085</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Chromobacterium violaceum ATCC 12472</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005085'>NC_005085</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Chromohalobacter salexigens DSM 3043</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007963'>NC_007963</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Chromohalobacter salexigens DSM 3043</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007963'>NC_007963</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Colwellia psychrerythraea 34H</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003910'>NC_003910</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Colwellia psychrerythraea 34H</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003910'>NC_003910</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Coxiella burnetii RSA 493</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002971'>NC_002971</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Coxiella burnetii RSA 493</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002971'>NC_002971</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004704'>NC_004704</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Dechloromonas aromatica RCB</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007298'>NC_007298</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Dechloromonas aromatica RCB</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007298'>NC_007298</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Desulfotalea psychrophila LSv54</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006138'>NC_006138</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Desulfotalea psychrophila LSv54</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006138'>NC_006138</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006139'>NC_006139</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006140'>NC_006140</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Desulfovibrio desulfuricans subsp. desulfuricans str. G20</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007519'>NC_007519</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Desulfovibrio desulfuricans subsp. desulfuricans str. G20</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007519'>NC_007519</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Desulfovibrio vulgaris subsp. vulgaris DP4</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008741'>NC_008741</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Desulfovibrio vulgaris subsp. vulgaris DP4</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008741'>NC_008741</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008751'>NC_008751</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Ehrlichia canis str. Jake</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007354'>NC_007354</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Ehrlichia canis str. Jake</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007354'>NC_007354</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Ehrlichia chaffeensis str. Arkansas</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007799'>NC_007799</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Ehrlichia chaffeensis str. Arkansas</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007799'>NC_007799</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Ehrlichia ruminantium str. Gardel</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006831'>NC_006831</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Ehrlichia ruminantium str. Gardel</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006831'>NC_006831</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Erythrobacter litoralis HTCC2594</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007722'>NC_007722</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Erythrobacter litoralis HTCC2594</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007722'>NC_007722</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Escherichia coli CFT073</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004431'>NC_004431</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Escherichia coli CFT073</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004431'>NC_004431</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Francisella tularensis subsp. holarctica OSU18</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008369'>NC_008369</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Francisella tularensis subsp. holarctica OSU18</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008369'>NC_008369</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Geobacter metallireducens GS-15</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007515'>NC_007515</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Geobacter metallireducens GS-15</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007515'>NC_007515</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007517'>NC_007517</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Geobacter sulfurreducens PCA</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002939'>NC_002939</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Geobacter sulfurreducens PCA</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002939'>NC_002939</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Gluconobacter oxydans 621H</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006672'>NC_006672</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Gluconobacter oxydans 621H</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006672'>NC_006672</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006673'>NC_006673</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006674'>NC_006674</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006675'>NC_006675</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006676'>NC_006676</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006677'>NC_006677</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Granulibacter bethesdensis CGDNIH1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008343'>NC_008343</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Granulibacter bethesdensis CGDNIH1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008343'>NC_008343</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Haemophilus ducreyi 35000HP</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002940'>NC_002940</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Haemophilus ducreyi 35000HP</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002940'>NC_002940</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Haemophilus influenzae 86-028NP</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007146'>NC_007146</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Haemophilus influenzae 86-028NP</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007146'>NC_007146</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Haemophilus somnus 129PT</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006298'>NC_006298</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Haemophilus somnus 129PT</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006298'>NC_006298</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008309'>NC_008309</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Hahella chejuensis KCTC 2396</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007645'>NC_007645</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Hahella chejuensis KCTC 2396</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007645'>NC_007645</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Halorhodospira halophila SL1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008789'>NC_008789</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Halorhodospira halophila SL1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008789'>NC_008789</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Helicobacter acinonychis str. Sheeba</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008229'>NC_008229</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Helicobacter acinonychis str. Sheeba</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008229'>NC_008229</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008230'>NC_008230</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Helicobacter hepaticus ATCC 51449</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004917'>NC_004917</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Helicobacter hepaticus ATCC 51449</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004917'>NC_004917</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Helicobacter pylori 26695</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_000915'>NC_000915</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Helicobacter pylori 26695</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_000915'>NC_000915</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Hyphomonas neptunium ATCC 15444</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008358'>NC_008358</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Hyphomonas neptunium ATCC 15444</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008358'>NC_008358</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Idiomarina loihiensis L2TR</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006512'>NC_006512</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Idiomarina loihiensis L2TR</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006512'>NC_006512</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Jannaschia sp. CCS1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007801'>NC_007801</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Jannaschia sp. CCS1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007801'>NC_007801</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007802'>NC_007802</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Lawsonia intracellularis PHE/MN1-00</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008011'>NC_008011</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Lawsonia intracellularis PHE/MN1-00</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008011'>NC_008011</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008012'>NC_008012</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008013'>NC_008013</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008014'>NC_008014</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Legionella pneumophila str. Lens</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006366'>NC_006366</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Legionella pneumophila str. Lens</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006366'>NC_006366</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006369'>NC_006369</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Magnetospirillum magneticum AMB-1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007626'>NC_007626</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Magnetospirillum magneticum AMB-1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007626'>NC_007626</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Mannheimia succiniciproducens MBEL55E</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006300'>NC_006300</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Mannheimia succiniciproducens MBEL55E</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006300'>NC_006300</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Maricaulis maris MCS10</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008347'>NC_008347</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Maricaulis maris MCS10</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008347'>NC_008347</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Marinobacter aquaeolei VT8</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008738'>NC_008738</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Marinobacter aquaeolei VT8</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008738'>NC_008738</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008739'>NC_008739</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008740'>NC_008740</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Mesorhizobium loti MAFF303099</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002678'>NC_002678</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Mesorhizobium loti MAFF303099</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002678'>NC_002678</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002679'>NC_002679</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002682'>NC_002682</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Methylibium petroleiphilum PM1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008825'>NC_008825</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Methylibium petroleiphilum PM1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008825'>NC_008825</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008826'>NC_008826</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Methylobacillus flagellatus KT</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007947'>NC_007947</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Methylobacillus flagellatus KT</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007947'>NC_007947</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Methylococcus capsulatus str. Bath</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002977'>NC_002977</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Methylococcus capsulatus str. Bath</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002977'>NC_002977</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Myxococcus xanthus DK 1622</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008095'>NC_008095</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Myxococcus xanthus DK 1622</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008095'>NC_008095</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Neisseria gonorrhoeae FA 1090</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002946'>NC_002946</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Neisseria gonorrhoeae FA 1090</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002946'>NC_002946</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Neisseria meningitidis FAM18</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008767'>NC_008767</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Neisseria meningitidis FAM18</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008767'>NC_008767</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Neorickettsia sennetsu str. Miyayama</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007798'>NC_007798</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Neorickettsia sennetsu str. Miyayama</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007798'>NC_007798</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Nitrobacter hamburgensis X14</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007959'>NC_007959</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Nitrobacter hamburgensis X14</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007959'>NC_007959</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007960'>NC_007960</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007961'>NC_007961</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007964'>NC_007964</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Nitrobacter winogradskyi Nb-255</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007406'>NC_007406</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Nitrobacter winogradskyi Nb-255</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007406'>NC_007406</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Nitrosococcus oceani ATCC 19707</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007483'>NC_007483</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Nitrosococcus oceani ATCC 19707</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007483'>NC_007483</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007484'>NC_007484</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Nitrosomonas europaea ATCC 19718</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004757'>NC_004757</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Nitrosomonas europaea ATCC 19718</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004757'>NC_004757</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Nitrosomonas eutropha C91</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008341'>NC_008341</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Nitrosomonas eutropha C91</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008341'>NC_008341</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008342'>NC_008342</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008344'>NC_008344</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Nitrosospira multiformis ATCC 25196</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007614'>NC_007614</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Nitrosospira multiformis ATCC 25196</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007614'>NC_007614</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007615'>NC_007615</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007616'>NC_007616</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007617'>NC_007617</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Novosphingobium aromaticivorans DSM 12444</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007794'>NC_007794</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Novosphingobium aromaticivorans DSM 12444</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007794'>NC_007794</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009426'>NC_009426</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009427'>NC_009427</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Paracoccus denitrificans PD1222</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008686'>NC_008686</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Paracoccus denitrificans PD1222</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008686'>NC_008686</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008687'>NC_008687</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008688'>NC_008688</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pasteurella multocida subsp. multocida str. Pm70</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002663'>NC_002663</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pasteurella multocida subsp. multocida str. Pm70</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002663'>NC_002663</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pectobacterium atrosepticum SCRI1043</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004547'>NC_004547</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pectobacterium atrosepticum SCRI1043</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004547'>NC_004547</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pelobacter carbinolicus DSM 2380</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007498'>NC_007498</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pelobacter carbinolicus DSM 2380</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007498'>NC_007498</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pelobacter propionicus DSM 2379</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008607'>NC_008607</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pelobacter propionicus DSM 2379</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008607'>NC_008607</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008608'>NC_008608</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008609'>NC_008609</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Photobacterium profundum SS9</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006370'>NC_006370</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Photobacterium profundum SS9</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006370'>NC_006370</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006371'>NC_006371</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005871'>NC_005871</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Photorhabdus luminescens subsp. laumondii TTO1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005126'>NC_005126</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Photorhabdus luminescens subsp. laumondii TTO1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005126'>NC_005126</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Polaromonas naphthalenivorans CJ2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008757'>NC_008757</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Polaromonas naphthalenivorans CJ2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008757'>NC_008757</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008758'>NC_008758</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008759'>NC_008759</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008760'>NC_008760</a>&nbsp;&nbsp;&nbsp;
@@ -267,43 +278,43 @@
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008763'>NC_008763</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008781'>NC_008781</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pseudoalteromonas atlantica T6c</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008228'>NC_008228</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pseudoalteromonas atlantica T6c</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008228'>NC_008228</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pseudoalteromonas haloplanktis TAC125</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007481'>NC_007481</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pseudoalteromonas haloplanktis TAC125</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007481'>NC_007481</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007482'>NC_007482</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pseudomonas aeruginosa PAO1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002516'>NC_002516</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pseudomonas aeruginosa PAO1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002516'>NC_002516</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pseudomonas entomophila L48</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008027'>NC_008027</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pseudomonas entomophila L48</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008027'>NC_008027</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pseudomonas fluorescens Pf-5</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004129'>NC_004129</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pseudomonas fluorescens Pf-5</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004129'>NC_004129</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pseudomonas putida KT2440</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002947'>NC_002947</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pseudomonas putida KT2440</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002947'>NC_002947</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Pseudomonas syringae pv. phaseolicola 1448A</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007274'>NC_007274</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Pseudomonas syringae pv. phaseolicola 1448A</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007274'>NC_007274</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007275'>NC_007275</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005773'>NC_005773</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Psychrobacter arcticus 273-4</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007204'>NC_007204</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Psychrobacter arcticus 273-4</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007204'>NC_007204</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Psychrobacter cryohalolentis K5</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007968'>NC_007968</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Psychrobacter cryohalolentis K5</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007968'>NC_007968</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007969'>NC_007969</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Psychromonas ingrahamii 37</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008709'>NC_008709</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Psychromonas ingrahamii 37</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008709'>NC_008709</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Ralstonia eutropha H16</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008313'>NC_008313</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Ralstonia eutropha H16</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008313'>NC_008313</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008314'>NC_008314</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005241'>NC_005241</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Ralstonia metallidurans CH34</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007971'>NC_007971</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Ralstonia metallidurans CH34</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007971'>NC_007971</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007972'>NC_007972</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007973'>NC_007973</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007974'>NC_007974</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Ralstonia solanacearum GMI1000</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003295'>NC_003295</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Ralstonia solanacearum GMI1000</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003295'>NC_003295</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003296'>NC_003296</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rhizobium etli CFN 42</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007761'>NC_007761</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rhizobium etli CFN 42</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007761'>NC_007761</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007762'>NC_007762</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007763'>NC_007763</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007764'>NC_007764</a>&nbsp;&nbsp;&nbsp;
@@ -311,7 +322,7 @@
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007766'>NC_007766</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004041'>NC_004041</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rhizobium leguminosarum bv. viciae 3841</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008378'>NC_008378</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rhizobium leguminosarum bv. viciae 3841</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008378'>NC_008378</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008379'>NC_008379</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008380'>NC_008380</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008381'>NC_008381</a>&nbsp;&nbsp;&nbsp;
@@ -319,7 +330,7 @@
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008383'>NC_008383</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008384'>NC_008384</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rhodobacter sphaeroides 2.4.1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007488'>NC_007488</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rhodobacter sphaeroides 2.4.1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007488'>NC_007488</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007489'>NC_007489</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007490'>NC_007490</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007493'>NC_007493</a>&nbsp;&nbsp;&nbsp;
@@ -327,153 +338,141 @@
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009007'>NC_009007</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009008'>NC_009008</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rhodoferax ferrireducens T118</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007901'>NC_007901</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rhodoferax ferrireducens T118</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007901'>NC_007901</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007908'>NC_007908</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rhodopseudomonas palustris BisA53</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008435'>NC_008435</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rhodopseudomonas palustris BisA53</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008435'>NC_008435</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rhodospirillum rubrum ATCC 11170</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007641'>NC_007641</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rhodospirillum rubrum ATCC 11170</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007641'>NC_007641</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007643'>NC_007643</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rickettsia bellii RML369-C</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007940'>NC_007940</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rickettsia bellii RML369-C</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007940'>NC_007940</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rickettsia conorii str. Malish 7</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003103'>NC_003103</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rickettsia conorii str. Malish 7</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003103'>NC_003103</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rickettsia felis URRWXCal2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007109'>NC_007109</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rickettsia felis URRWXCal2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007109'>NC_007109</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007110'>NC_007110</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007111'>NC_007111</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rickettsia prowazekii str. Madrid E</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_000963'>NC_000963</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rickettsia prowazekii str. Madrid E</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_000963'>NC_000963</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Rickettsia typhi str. Wilmington</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006142'>NC_006142</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Rickettsia typhi str. Wilmington</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006142'>NC_006142</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Roseobacter denitrificans OCh 114</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008386'>NC_008386</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Roseobacter denitrificans OCh 114</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008386'>NC_008386</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008387'>NC_008387</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008388'>NC_008388</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008389'>NC_008389</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008209'>NC_008209</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Saccharophagus degradans 2-40</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007912'>NC_007912</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Saccharophagus degradans 2-40</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007912'>NC_007912</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Salmonella enterica subsp. enterica serovar Choleraesuis str. SC-B67</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006855'>NC_006855</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Salmonella enterica subsp. enterica serovar Choleraesuis str. SC-B67</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006855'>NC_006855</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006856'>NC_006856</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006905'>NC_006905</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Salmonella typhimurium LT2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003197'>NC_003197</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Salmonella typhimurium LT2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003197'>NC_003197</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003277'>NC_003277</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Shewanella amazonensis SB2B</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008700'>NC_008700</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Shewanella amazonensis SB2B</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008700'>NC_008700</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Shewanella baltica OS155</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009035'>NC_009035</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Shewanella baltica OS155</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009035'>NC_009035</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Shewanella denitrificans OS217</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007954'>NC_007954</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Shewanella denitrificans OS217</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007954'>NC_007954</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Shewanella frigidimarina NCIMB 400</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008345'>NC_008345</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Shewanella frigidimarina NCIMB 400</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008345'>NC_008345</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Shewanella loihica PV-4</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009092'>NC_009092</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Shewanella loihica PV-4</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009092'>NC_009092</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Shewanella oneidensis MR-1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004347'>NC_004347</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Shewanella oneidensis MR-1</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004347'>NC_004347</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004349'>NC_004349</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Shigella boydii Sb227</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007613'>NC_007613</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Shigella boydii Sb227</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007613'>NC_007613</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007608'>NC_007608</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Shigella dysenteriae Sd197</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007606'>NC_007606</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Shigella dysenteriae Sd197</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007606'>NC_007606</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007607'>NC_007607</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009344'>NC_009344</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Shigella flexneri 2a str. 2457T</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004741'>NC_004741</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Shigella flexneri 2a str. 2457T</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004741'>NC_004741</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Shigella sonnei Ss046</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009345'>NC_009345</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Shigella sonnei Ss046</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009345'>NC_009345</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_009346'>NC_009346</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007384'>NC_007384</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007385'>NC_007385</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Silicibacter pomeroyi DSS-3</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006569'>NC_006569</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Silicibacter pomeroyi DSS-3</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006569'>NC_006569</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003911'>NC_003911</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Sinorhizobium meliloti 1021</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003037'>NC_003037</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Sinorhizobium meliloti 1021</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003037'>NC_003037</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003047'>NC_003047</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003078'>NC_003078</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Sodalis glossinidius str. 'morsitans'</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007712'>NC_007712</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Sodalis glossinidius str. 'morsitans'</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007712'>NC_007712</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007713'>NC_007713</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007714'>NC_007714</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007715'>NC_007715</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Sphingopyxis alaskensis RB2256</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008036'>NC_008036</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Sphingopyxis alaskensis RB2256</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008036'>NC_008036</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008048'>NC_008048</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Sulfurimonas denitrificans DSM 1251</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007575'>NC_007575</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Sulfurimonas denitrificans DSM 1251</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007575'>NC_007575</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Syntrophobacter fumaroxidans MPOB</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008554'>NC_008554</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Syntrophobacter fumaroxidans MPOB</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008554'>NC_008554</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Syntrophus aciditrophicus SB</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007759'>NC_007759</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Syntrophus aciditrophicus SB</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007759'>NC_007759</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Thiobacillus denitrificans ATCC 25259</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007404'>NC_007404</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Thiobacillus denitrificans ATCC 25259</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007404'>NC_007404</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Thiomicrospira crunogena XCL-2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007520'>NC_007520</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Thiomicrospira crunogena XCL-2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007520'>NC_007520</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Verminephrobacter eiseniae EF01-2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008771'>NC_008771</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Verminephrobacter eiseniae EF01-2</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008771'>NC_008771</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008786'>NC_008786</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Vibrio cholerae O1 biovar eltor str. N16961</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002505'>NC_002505</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Vibrio cholerae O1 biovar eltor str. N16961</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002505'>NC_002505</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002506'>NC_002506</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Vibrio fischeri ES114</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006840'>NC_006840</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Vibrio fischeri ES114</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006840'>NC_006840</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006841'>NC_006841</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006842'>NC_006842</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Vibrio parahaemolyticus RIMD 2210633</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004603'>NC_004603</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Vibrio parahaemolyticus RIMD 2210633</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004603'>NC_004603</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004605'>NC_004605</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Vibrio vulnificus CMCP6</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004459'>NC_004459</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Vibrio vulnificus CMCP6</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004459'>NC_004459</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004460'>NC_004460</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Wigglesworthia glossinidia endosymbiont of Glossina brevipalpis</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003425'>NC_003425</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Wigglesworthia glossinidia endosymbiont of Glossina brevipalpis</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003425'>NC_003425</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_004344'>NC_004344</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Wolbachia endosymbiont of Drosophila melanogaster</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002978'>NC_002978</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Wolbachia endosymbiont of Drosophila melanogaster</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002978'>NC_002978</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Wolinella succinogenes DSM 1740</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005090'>NC_005090</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Wolinella succinogenes DSM 1740</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_005090'>NC_005090</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Xanthomonas axonopodis pv. citri str. 306</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003919'>NC_003919</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Xanthomonas axonopodis pv. citri str. 306</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003919'>NC_003919</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003921'>NC_003921</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_003922'>NC_003922</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Xanthomonas campestris pv. campestris str. 8004</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007086'>NC_007086</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Xanthomonas campestris pv. campestris str. 8004</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_007086'>NC_007086</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Xanthomonas oryzae pv. oryzae KACC10331</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006834'>NC_006834</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Xanthomonas oryzae pv. oryzae KACC10331</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006834'>NC_006834</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Xylella fastidiosa 9a5c</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002488'>NC_002488</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Xylella fastidiosa 9a5c</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002488'>NC_002488</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002489'>NC_002489</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_002490'>NC_002490</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Yersinia enterocolitica subsp. enterocolitica 8081</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008791'>NC_008791</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Yersinia enterocolitica subsp. enterocolitica 8081</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008791'>NC_008791</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008800'>NC_008800</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Yersinia pestis Antiqua</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008120'>NC_008120</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Yersinia pestis Antiqua</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008120'>NC_008120</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008121'>NC_008121</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008122'>NC_008122</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_008150'>NC_008150</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Yersinia pseudotuberculosis IP 32953</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006153'>NC_006153</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Yersinia pseudotuberculosis IP 32953</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006153'>NC_006153</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006154'>NC_006154</a>&nbsp;&nbsp;&nbsp;
 <a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006155'>NC_006155</a>&nbsp;&nbsp;&nbsp;
 </td>
-<tr bgcolor='#C9C299'><td>Zymomonas mobilis subsp. mobilis ZM4</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006526'>NC_006526</a>&nbsp;&nbsp;&nbsp;
+<tr bgcolor='#E8E8E8'><td>Zymomonas mobilis subsp. mobilis ZM4</td><td><a href='<%= DOC_ROOTURL %>/clubsubp/genomes?accession=NC_006526'>NC_006526</a>&nbsp;&nbsp;&nbsp;
 </td>
 </table>
 <BR><BR>
-<footer>
-<hr>
-<center>
- <b><a href='http://www.eb.tuebingen.mpg.de/departments/1-protein-evolution/department-1-protein-evolution'>Max Planck Institute for Developmental Biology</a></b>
- <br><font size='2'><a href='mailto:dirk.linke@tuebingen.mpg.de'>Dirk Linke</a>
- <br><a href='mailto:nagarajan.paramasivam@tuebingen.mpg.de'>Nagarajan Paramasivam</a></font>
- 
-
-</footer>
-</body>
-</html>
-

@@ -9,22 +9,25 @@
 <div class="row">
 
   <% lines = IO.readlines(blast_parsed_outfile)%>
+  <%if(lines.first =~/NOHITS/)%>
+	<B>No hits found.</B>
+  <%end%>
   <%if(lines.first =~/KEYWORD/)%>
-    <TABLE border='0' cellpadding='2' cellspacing='3'>
-      <TR bgcolor='#CC9900'>
+      <TABLE border='0' cellpadding='2' cellspacing='3'>
+      <TR bgcolor='#85637F'>
         <TH rowspan='2' >Cluster</TH>
         <TH rowspan='2' >Blast Hit NCBI's GI</TH>
         <TH rowspan='2' >Description</TH>
         <TH rowspan='2' >Organism</TH>
         <TH colspan='2' >Subcellular location</TH>
       </TR>
-      <TR bgcolor='#CC9900'>
+      <TR bgcolor='#85637F'>
         <TH>Cluster's</TH>
         <TH>Protein's</TH>
       </TR>
         <%File.open(blast_parsed_outfile, "r").each do |hit| %>
           <%Clubgiprediction.find(:all, :conditions => ["gi=?", hit]).each do |gi|%>
-	    <TR bgcolor='#C9C299'>
+	    <TR bgcolor='#E8E8E8'>
               <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=gi.cluster%>'>cluster <%=gi.cluster%></A></TD>
               <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi.gi%>'><%=gi.gi%></A></TD>
               <%header_org=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", gi.gi])%>
@@ -42,18 +45,19 @@
   <%if(lines.first =~/BLAST SEARCH/)%>
 
     <TABLE border='0' cellpadding='2' cellspacing='3'>
-      <TR bgcolor='#CC9900'>
+      <TR bgcolor='#97697C'>
         <TH rowspan='2' >Cluster</TH>
         <TH rowspan='2' >Blast Hit NCBI's GI</TH>
         <TH rowspan='2' >Description</TH>
         <TH rowspan='2' >Organism</TH>
         <TH colspan='2' >Subcellular location</TH>
-        <TH rowspan='2' bgcolor='#805817'><FONT color='white'>Number of Identical residues</FONT></TH>
-        <TH rowspan='2' bgcolor='#805817'><FONT color='white'>Number of conserved residues</FONT></TH>
-        <TH rowspan='2' bgcolor='#805817'><FONT color='white'>Evalue</FONT></TH>
-        <TH rowspan='2' bgcolor='#805817'><FONT color='white'>HSP Length</FONT></TH>
+        <TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Number of Identical residues</FONT></TH>
+        <TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Number of conserved residues</FONT></TH>
+        <TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Evalue</FONT></TH>
+        <TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Percentage of query covered in the PW-alingment</FONT></TH>
+	<TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Percentage of hit covered in the PW-alingment</FONT></TH>
       </TR>
-      <TR bgcolor='#CC9900'>
+      <TR bgcolor='#97697C'>
         <TH>Cluster's</TH>
         <TH>Protein's</TH>
       </TR> 
@@ -61,7 +65,7 @@
         <%cols=hit.split("\t")%>
 
         <%Clubproteinheaderinfo.find(:all, :conditions => ["gi=?", cols[0]]).each do |gi|%>
-          <TR bgcolor='#C9C299'>
+          <TR bgcolor='#E8E8E8'>
             <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=gi.cluster%>'>Cluster <%=gi.cluster%></A></TD>
             <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi.gi%>'><%=gi.gi%></A></TD>
             <TD><%=gi.header%></TD>
@@ -74,6 +78,7 @@
             <TD><%=cols[3]%></TD>
             <TD><%=cols[4]%></TD>
             <TD><%=cols[5]%></TD>
+            <TD><%=cols[6]%></TD>
           </TR>
         <%end%>
       <%end%>
