@@ -35,4 +35,9 @@ class ClubsubpController < ToolController
     @link_text = ["Browse the genomes", "Search the genomes"]
   end
 
+  def results
+    @fw_values = [fw_to_tool_url('clubsubp', 'gi2seq')]
+    @fw_labels = [tool_title('gi2seq')]
+  end
+
 end

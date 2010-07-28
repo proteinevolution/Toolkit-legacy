@@ -3,10 +3,35 @@
 <%= render(:partial => "shared/resultsections") %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
-  
+
+
 <%blast_parsed_outfile = File.join(@job.job_dir, @job.jobid+".temp")%>
 
+
+
+<div id="forward" style="display: none;">
+        <div class="row">
+                <div class="label">Forward results to</div>
+                <div class="formw">
+                        <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+                </div>
+        </div>
+
+        <div class="row">
+                <div class="label"></div>
+                <div class="formw">
+                        <input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+                </div>
+        </div>
+        <div class="hr">&nbsp;</div>
+
+</div>
+
+
+
 <div class="row">
+  <a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
   <% lines = IO.readlines(blast_parsed_outfile)%>
   <%if(lines.first =~/NOHITS/)%>
@@ -48,7 +73,7 @@
       <TR bgcolor='#97697C'>
         <TH rowspan='2' >Cluster</TH>
         <TH rowspan='2' >Blast Hit NCBI's GI</TH>
-        <TH rowspan='2' >Description</TH>
+        <TH rowspan='2' width='35%'>Description</TH>
         <TH rowspan='2' >Organism</TH>
         <TH colspan='2' >Subcellular location</TH>
         <TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Number of Identical residues</FONT></TH>
