@@ -41,6 +41,7 @@ class CsBlastController < ToolController
                   fw_to_tool_url('cs_blast', 'muscle') + "&fw_mode=seqs",
                   fw_to_tool_url('cs_blast', 'patsearch') + "&fw_mode=seqs",
                   fw_to_tool_url('cs_blast', 'probcons') + "&fw_mode=seqs",
+                  fw_to_tool_url('cs_blast', 'psi_blast') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'quick2_d') + "&fw_mode=alignment",                   
                   fw_to_tool_url('cs_blast', 'reformat') + "&fw_mode=alignment",                   
                   fw_to_tool_url('cs_blast', 'repper') + "&fw_mode=alignment"]
@@ -50,8 +51,9 @@ class CsBlastController < ToolController
 		  tool_title('seq2gi'), tool_title('frpred'),
                   tool_title('hhblits'), tool_title('hhpred'),
                   tool_title('hhsenser'), tool_title('kalign'), tool_title('mafft'), 
-                  tool_title('muscle'), tool_title('patsearch'), tool_title('probcons'), 
-                  tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
+                  tool_title('muscle'), tool_title('patsearch'),
+		  tool_title('probcons'), tool_title('psi_blast'),
+		  tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
                       					
   end
   
