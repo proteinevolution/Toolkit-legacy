@@ -1,4 +1,17 @@
-<h2><%= @tool['title'] %> Overview</h2> 
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#whatfor">What is HHrepID good for</a></li>
+	<li><a href="#length">Length of submitted sequences</a></li>
+	<li><a href="#alignment">Submitting an alignment</a></li>
+	<li><a href="#sensitive">Why is HHrepID so sensitive?</a></li>
+	<li><a href="#references">References</a></li>
+	<li><a href="#contact">Contact</a></li>
+</ul>
+
+
+<h2>About <%= @tool['title'] %></h2> 
+
+<a name="whatfor"></a>
+<h3 class="<%= @section["name"] %>">What is HHrepID good for?</h3>
 <div class="row">
 HHrepID is a novel automated procedure for
   the de novo identification of repeats in protein sequences. It is able
@@ -15,5 +28,36 @@ HHrepID is a novel automated procedure for
   identify different repeats within complicated architectures or multiple
   domains through automatic domain boundary detection, (5) new statistical
   treatment yielding improved sensitivity.
-</div>
+  <br><br>
+</div><div class="spacer">&nbsp;</div>
 
+<a name="length"></a>
+<h3 class="<%= @section["name"] %>">Length of submitted sequences</h3>
+<div class="row">
+HHrepID works best on single-domain seuqences or sequences containing only one kind of tandem repeat. If you don't know where your domains are, 
+perform an <a target="_blank" href="http://<%= DOC_ROOTHOST %>/hhpred">HHpred search</a> through SCOP and PfamA.
+Also, you could perform a preliminary HHrepID analysis to home in on the repeat regions and then cut the sequence further down to include only 
+regions with one kind of repeat structure. Sequences should best have between 100 and 300 residues length. Sequences that are too short will 
+gather too few homologs in the PSI-BLAST searches, thus loosing sensitivity. Also, the more repeat units are contained in a sequence, the more 
+information from transitivity of pairwise alignmemnts (A-B, B-C => A-C) can be used by HHrepID through its "Merge alignments" functionality. 
+Sequences longer than <b>800 residues</b> are truncated by HHrepID for practical reasons.
+<br><br>
+</div><div class="spacer">&nbsp;</div>
+
+<a name="alignment"></a>
+<h3 class="<%= @section["name"] %>">Submitting an alignment</h3>
+<div class="row">
+If you already have a trustworthy mulitple sequence alignment of your query with some homologs it is recommended that you start with this instead of from a single sequence. This will help PSI-BLAST to avoid alignment errors. 
+<br><br>
+</div><div class="spacer">&nbsp;</div>
+
+<a name="sensitive"></a>
+<h3 class="<%= @section["name"] %>">Why is HHrepID so sensitive?</h3>
+<div class="row">
+The reason for HHrepID's sensitivity lies in the use of evolutionary information when comparing the query sequence with itself. This evolutionary information
+comes from the multiple sequence alignment of the sequence with homologous stretches of proteins. The information in the multiple sequence alignment is used in a condensed form, a profile HMM. A profile HMM is almost the same as a sequence profile. This in turn is just a table with 20 rows and L columns (where L is the length of the query protein). Each of the L columns contains the frequencies of the 20 amino acids in the corresponding column of the multiple sequence alignment. This table is then compared with itself in order to find stretches of columns with similar amino acid distributions. By looking at many related sequences with very similar structures that contribute to the sequence profile, profile-profile (or HMM-HMM) comparison effectively averages away those features of the sequence that are there just by chance and not by necessity and concentrates on those that determine the protein family's properties. 
+<br><br>
+A method that also employs HMM-HMM comparison for very sensitive protein-protein comparison is implemented in HHpred, our interactive function and structure prediction server. (For a short description of HHpred, please go to the <a href="/hhpred/help_ov">HHpred help</a>.)
+<br><br>
+</div>
+<%= render(:partial => "hhrepid/references_and_contact") %>

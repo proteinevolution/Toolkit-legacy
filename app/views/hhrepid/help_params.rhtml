@@ -6,6 +6,8 @@
   <li><a href="#ptot">Repeat familie P-value threshold</a></li>
   <li><a href="#pself">Self-Alignment P-value threshold</a></li>
   <li><a href="#mergerounds">Merge rounds</a></li>
+  <li><a href="#mact">MAC threshold</a></li>
+  <li><a href="#alistringency">Alignment stringency</a></li>
 </ul>
 
 <h2><%= @tool['title'] %> Parameters</h2>
@@ -322,7 +324,19 @@ Probability threshold for MAC alignment algorithm. The lower the threshold the
 longer the MAC alignments and vice versa.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float:
+		right;"></a></div>
+
+<a name="alistringency"></a>
+<h3 class="<%= @section["name"] %>">Alignment stringency</h3>
+<div class="row">
+  To avoid nonhomologous or wrongly aligned sequences in the multiple alignment from which the HMM for self-comparison is constructed,
+  all sequences with a BLOSUM62 similarity lower than 0.0 - 0.03 bits per column to the first sequence are filtered out. Reducing this 
+  number increases the sensitivity to detect diverged repeats but increases the risk of detecting spurious similarities.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float:
 									  right;"></a></div>
+
+
 <a name="domm"></a>
 <h3 class="<%= @section["name"] %>">Domain boundary detection</h3>
 <div class="row">
