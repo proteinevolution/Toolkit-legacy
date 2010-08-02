@@ -47,6 +47,10 @@ class ProtBlastController < ToolController
 		  tool_title('probcons'), tool_title('psi_blast'), tool_title('quick2_d'),
 		  tool_title('reformat'), tool_title('repper')]
 
+    @widescreen = true
+    @show_graphic_hitlist = true
+    @show_references = false
+
   end
 
   def results_alignment
@@ -97,5 +101,26 @@ class ProtBlastController < ToolController
   def help_results
     render(:layout => "help")
   end
+
+  def resubmit_domain
+    tmp_file = Tempfile.new(@job.id)
+    system(sprintf("%s/perl/alicutter.pl %s %s %d %d", BIOPROGS, File.join(@job.job_dir, 'sequence_file'), tmp_file.path, params[:domain_start].to_i, params[:domain_end].to_i));
+
+    job_params = @job.actions.first.params
+    job_params.each_key do |key|
+      if (key =~ /^(\S+)_file$/) 
+        if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
+          params[$1+'_input'] = tmp_file.readlines
+        end
+      else
+        params[key] = job_params[key]
+      end
+    end
+
+    params[:jobid] = ''
+    index
+    render(:action => 'index')
+  end
+
 
 end

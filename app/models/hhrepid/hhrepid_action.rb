@@ -63,12 +63,12 @@ class HhrepidAction < Action
 
     # save input params for later use in run_hhrepid
     @hash = {}
-    @hash['ss_scoring']  = @ss_scoring
-    @hash['ptot']        = @ptot
-    @hash['pself']       = @pself
-    @hash['mergerounds'] = @mergerounds
-    @hash['mact']        = @mact
-    @hash['domm']        = @domm
+    @hash['ss_scoring']  	= @ss_scoring
+    @hash['ptot']        	= @ptot
+    @hash['pself']       	= @pself
+    @hash['mergerounds'] 	= @mergerounds
+    @hash['mact']        	= @mact
+    @hash['domm']        	= @domm
 
     self.flash = @hash
     self.save!
@@ -82,13 +82,13 @@ class HhrepidAction < Action
   end
 
   def run_hhrepid
-    @basename    = File.join(job.job_dir, job.jobid)
-    @ss_scoring  = flash["ss_scoring"]
-    @ptot        = flash["ptot"]
-    @pself       = flash["pself"]
-    @mergerounds = flash["mergerounds"]
-    @mact        = flash["mact"]
-    @domm        = flash["domm"]
+    @basename    	= File.join(job.job_dir, job.jobid)
+    @ss_scoring  	= flash["ss_scoring"]
+    @ptot        	= flash["ptot"]
+    @pself       	= flash["pself"]
+    @mergerounds 	= flash["mergerounds"]
+    @mact        	= flash["mact"]
+    @domm        	= flash["domm"]
 
     # Run HHrepID with different qsc settings
     @commands = []

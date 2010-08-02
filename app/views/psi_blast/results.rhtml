@@ -27,9 +27,9 @@
 	<div class="row">
 		<div class="label">Select sequence length</div>
 		<div class="formw">
-			<input id="seqlen_hsp" name="seqlen" type="radio" value="hsp" checked="checked" disabled=true />&nbsp;Use HSPs<br/>
+			<input id="seqlen_slider" name="seqlen" type="radio" value="slider" checked="checked" disabled />&nbsp;Forward slider region<br/>
+			<input id="seqlen_complete" name="seqlen" type="radio" value="complete" disabled />&nbsp;Forward full length sequence&nbsp;
 			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
-			<input id="seqlen_complete" name="seqlen" type="radio" value="complete" disabled=true />&nbsp;Use full length sequences&nbsp;
 		</div>
 	</div>
 	
@@ -38,7 +38,14 @@
 
 <br/>
 
-<div style="width: 728px;">
+<div style="width: auto;">
+
+	<span id="show_graphic_hitlist" style="display: <%= @show_graphic_hitlist ? 'none' : 'true' %>"><a href="javascript:show_hide_field('graphic_hitlist');">Show graphical hitlist</a></span>
+	<span id="hide_graphic_hitlist" style="display: <%= @show_graphic_hitlist ? 'true' : 'none' %>"><a href="javascript:show_hide_field('graphic_hitlist');">Hide graphical hitlist</a></span>
+	<%= hidden_field_tag("graphic_hitlist_on", (@show_graphic_hitlist ? "true" : "false") ) %>
+	<div id="graphic_hitlist" class="row" style="display: <%= @show_graphic_hitlist ? 'true' : 'none' %>">
+		<%= @job.render_file(@job.jobid+".html") %>
+	</div>
 
 	<div id="jalview">
 	<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
@@ -50,7 +57,14 @@
 
 	<div id="help_jal"><a href="#" onclick="openHelpWindow('/psi_blast/help_results#jalview');">View alignment without inserts</a></div>
 
-	<pre><%= @job.header.join("\n") %></pre>
+	<br/>
+	<span id="show_references" style="display: <%= @show_references ? 'none' : 'true' %>"><a href="javascript:show_hide_field('references');">Show references</a></span>
+	<span id="hide_references" style="display: <%= @show_references ? 'true' : 'none' %>"><a href="javascript:show_hide_field('references');">Hide references</a></span>
+	<%= hidden_field_tag("references_on", (@show_references ? "true" : "false") ) %>
+	<div id="references" class="row" style="display: <%= @show_references ? 'true' : 'none' %>">
+		<pre><%= @job.header.join("\n") %></pre>
+	</div>
+	<br/>
 
 	<br/>
 	<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
