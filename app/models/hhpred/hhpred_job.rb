@@ -71,7 +71,7 @@ class HhpredJob  < Job
     space_for_checkbox="  "
     # Read hhr file
     resfile = File.join("#{jobDir}/" , "#{jobid}.hhr")
-    raise("ERROR file not readable!#{jobDir}#{jobid}") if !File.readable?(resfile)
+    raise("ERROR file not readable!#{jobDir}/#{jobid}.hhr") if !File.readable?(resfile)
     raise("ERROR file does not exist!#{jobDir}") if !File.exists?(resfile)
     raise("ERROR file is zero!#{jobDir}") if  File.zero?(resfile)
     results = File.open(resfile, "r")
@@ -833,11 +833,11 @@ class HhpredJob  < Job
           # SUPFAM identifier? (SUPFAM0022216)
         elsif  template =~ /^SUPFAM\d+$/
           # SUPFAM0022216 b.29.1 Concanavalin A-like lectins/glucanases (49899) SCOP seed sequence: d1m4wa_.
-          line[b] =~ /SUPFAM(\d+)\s+(\S+).*\((\d+)\) SCOP\s+seed\s+sequence:\s+(\w+)/
+          line[b] =~ /SUPFAM(\d+)\s+(\S+)(\n|.)*\((\d+)\) SCOP\s+seed\s+sequence:\s+(\w+)/
           template = $1
           family  = $2
-          supfam_famid=$3
-          scopid   = $4
+          supfam_famid=$4
+          scopid   = $5
           scopid=~/^[a-z](\d\S\S\S)/
           pdbcode   = $1
           ucpdbcode = $1.upcase
