@@ -26,7 +26,9 @@ class GcviewAction < Action
 
     @inputSequences = Array.new
 
-    @db_path = File.join(GCVIEW, 'tool.db')
+    #@db_path = File.join(GCVIEW, 'tool.db')
+
+    @db_path = File.join(DATABASES, 'gcview', 'tool.db')
     @show_number = params['show_number'] ? params['show_number'] : "10"
     @show_type = params['show_type'] ? params['show_type'] : "genes"
     @cut_off = params['evalue_cutoff'] ? params['evalue_cutoff'] : "1e-3"
