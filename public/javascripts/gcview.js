@@ -1,1 +1,1 @@
-/ebio/abt1/christina/iwantool/gcview.js
+../../bioprogs/gcview/gcview.js

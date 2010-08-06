@@ -257,7 +257,7 @@ class GcviewAction < Action
       end
     end
 
-    @commands << "python #{GCVIEW}/tool.py #{@configfile}"
+    @commands << "python #{GCVIEW}/tool.py #{@configfile} &> #{job.statuslog_path}"
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
