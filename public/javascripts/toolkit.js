@@ -12,6 +12,11 @@ function setFwAction(form, dest)
     $(form).action = $(dest).options[$(dest).selectedIndex].value;
 }
 
+function setFwActionDirect(form, dest) 
+{
+	$(form).action = dest
+}
+
 function setHook(id, list) 
 { 	
     $(id).value = $(list).options[$(list).selectedIndex].value;
@@ -168,7 +173,7 @@ function sleep(numberMillis)
     }
 }
 
-//Creates slider with to handles for selecting domains of a sequence (see hhpred or hhblast result page).
+// creates slider with two handles for selecting domains of a sequence
 function domain_slider_show(sequence_length, start, end) {
   var s = $('slider_bar');
   new Control.Slider(s.select(".handle"), s, {

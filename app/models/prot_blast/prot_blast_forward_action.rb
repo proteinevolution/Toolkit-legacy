@@ -20,6 +20,9 @@ class ProtBlastForwardAction < Action
 
     mode = params['fw_mode']
     @seqlen = params['seqlen']
+    @seqlen = "slider" if (@seqlen.nil?)
+    @seqlen_start = params['domain_start'].to_i
+    @seqlen_end = params['domain_end'].to_i
     includehits = params['includehits']
     hitsevalue = params['hitsevalue']
     alignment = params['alignment']
@@ -70,7 +73,7 @@ class ProtBlastForwardAction < Action
 
       if (!mode.nil? && mode == "alignment")
         FileUtils.mv(@outfile, @outfile + "_prepare")
-        @commands << "#{UTILS}/alignhits_html.pl #{@outfile}_prepare #{@outfile} -fas -no_link -e 100 -Q #{@basename}.fasta"
+        @commands << "#{UTILS}/alignhits_html.pl #{@outfile}_prepare #{@outfile} -fas -no_link -e 100 -Q #{@basename}.fasta" + (@seqlen == "slider" ? sprintf(" -qs %d -qe %d", @seqlen_start, @seqlen_end) : "")
       end
     end
 
@@ -155,20 +158,42 @@ class ProtBlastForwardAction < Action
             name.sub!(/<\/a>/, '')
 
             seq_data = ""
-				while (i < @res.size)
-				  if (@res[i] =~ /^<\/PRE>$/) then break end
-				  if (@res[i] =~ /^Sbjct:\s*\d+\s*(\S+)\s*\d+\s*$/)
-				    seq_data += $1
-				  end
-				  i += 1
-				end
-				File.open(@outfile, "a") do |file|
-              file.write(name + "\n" + seq_data + "\n")
-            end
+	    first_res = nil;
+	    last_res = nil;
+	    while (i < @res.size)
+	      if (@res[i] =~ /^<\/PRE>$/) then break end
+	      if (@res[i] =~ /^(\w+):\s*(\d+)\s+(\S+)\s+(\d+)\s*$/) 
+		if ($1 == "Query")
+	   	  if (first_res.nil?) then first_res = $2.to_i end
+		  last_res = $4.to_i
+	        elsif ($1 == "Sbjct")
+		  seq_data += $3
+	        end
+	      end
+	      i += 1
+	    end
+	    if (!first_res.nil? && (last_res - first_res + 1 <= seq_data.length))
+	      if (@seqlen == "slider")
+		if (first_res < @seqlen_start) 
+		  seq_data = seq_data[@seqlen_start - first_res, seq_data.length]
+		  first_res = @seqlen_start
+		end
+		if (!seq_data.nil? && last_res > @seqlen_end)
+		  seq_data = seq_data[0, @seqlen_end - first_res + 1]
+		  last_res = @seqlen_end
+		end
+	      end
+	      if (!seq_data.nil? && seq_data.length > 0) 
+		File.open(@outfile, "a") do |file|
+		  file.write(name + "\n" + seq_data + "\n")
+		end
+	      end
+	    end
           end
         end
       end
-      i += 1
+      File.open(@outfile, "a") do |file| file.write("") end
+      i = i + 1
     end
 
     if (!@seqlen.nil? && @seqlen == "complete")
