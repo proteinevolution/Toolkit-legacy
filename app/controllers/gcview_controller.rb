@@ -10,7 +10,7 @@ class GcviewController < ToolController
     @typevalues = ['genes', 'kb']
     @typelabels = ['genes', 'kilobase']
     @gi = params['gi'] ? params['gi'] : ""
-    @oldjob = params['oldjob'] ? params['oldjob'] : ""
+    @oldjob = params['parentjob'] ? params['parentjob'] : ""
     #@jobid = @oldjob+"_1"
   end
 
