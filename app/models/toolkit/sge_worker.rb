@@ -19,7 +19,7 @@
           command = "#{QUEUE_DIR}/qsub -l h_vmem=10G -p 10 #{self.wrapperfile}"
           logger.debug "qsub command: #{command}"
         else
-          command = "#{QUEUE_DIR}/qsub -l h_vmem=10G #{self.wrapperfile}"
+          command = "#{QUEUE_DIR}/qsub -l h_vmem=18G #{self.wrapperfile}" # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
           logger.debug "qsub command: #{command}"
         end
       else
