@@ -24,12 +24,6 @@ class ClubsubpAction < Action
   end
 
 
-  # Optional:
-  # Put action initialization code that should be executed on forward here
-  # def before_perform_on_forward
-  # end
-  
-  
   # Put action code in here
   def perform
 
@@ -38,11 +32,8 @@ class ClubsubpAction < Action
       @commands << "echo #{@basename} &> #{job.statuslog_path}"
       @commands << "/usr/bin/perl #{CLUB}/search_clubsub.pl #{@basename} #{@text_search} >> #{job.statuslog_path}" 
       @commands << "echo #{@text_search} >> #{job.statuslog_path}"
-#     ./qupdate.rb 2316 d      
-#     @temp_id   = QueueJob.find(:first, :conditions => ["action_id=?", @action_id])
-#     logger.debug @temp_id
-
-#      @commands << "echo #{@temp_id} >> #{job.statuslog_path}"
+#      @commands << "echo #{TOOLKIT_ROOT}  #{jobid} #{STATUS_DONE} >> #{job.statuslog_path}" 
+#      @commands << "echo #{id.to_i} >> #{job.statuslog_path}"
     end
 
     # Blast search if we have sequence input 
@@ -51,7 +42,6 @@ class ClubsubpAction < Action
       @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
       @commands << "/usr/bin/perl #{CLUB}/blast_parser.pl #{@outfile} #{@basename} >> #{job.statuslog_path}"
       @commands << "echo 'Blast output parsed !' >> #{job.statuslog_path}"
-
     end
    
     if(@infile.empty? && @text_search.empty?)

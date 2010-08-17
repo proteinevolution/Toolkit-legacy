@@ -74,6 +74,7 @@
               <TD><FONT COLOR='white'>General signal peptide</TD>
               <TD><FONT COLOR='white'>TypeIII signal peptide</TD>
               <TD><FONT COLOR='white'>Consensus prediction</TD>
+              <TD><FONT COLOR='white'>Consensus SP cleavage site</TD>
             </TR>
             <TR bgcolor='#E8E8E8'>
               <TD><%=spprediction.lipop%></TD>
@@ -81,6 +82,7 @@
               <TD><%=spprediction.generalsp%></TD>
               <TD><%=spprediction.type3%></TD>
               <TD><%=spprediction.sp%></TD>
+              <TD><%=spprediction.consensus_cs%></TD>
             </TR>
           </TABLE>
           <BR>      
@@ -201,6 +203,7 @@
     <BR>
 
      <%omp_display=Clubgioutextratmdisplay.find(:first, :conditions => ["gi=?", protein.gi])%>
+     <%gicomments_display=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
     <TABLE width='100%' style='text-align:center';>
       <TR bgcolor='#CCCCCC'>
         <TD rowspan='3' width='15%' style='text-align:left;'  bgcolor='#A68B94'>Outer membrane beta-barrel</TD>
@@ -234,6 +237,7 @@
         <TD colspan='2'>TMHMM 2.0</TD>
         <TD colspan='2'>Phobius</TD>
         <TD colspan='2'>HMMTOP 2.1</TD>
+        <TD colspan='2'>Consensus</TD>
       </TR>
       <TR bgcolor='#E8E8E8'>
         <TD>No. of TMHs <U>before</U> SP prediction</TD>
@@ -241,6 +245,8 @@
         <TD>No. of TMHs <U>after</U> SP prediction</TD>
         <TD>Topology</TD>
         <TD>No. of TMHs <U>before</U> SP prediction</TD>
+        <TD>Topology</TD>
+        <TD>No. of TMHs <U>after</U> Consensus SP prediction</TD>
         <TD>Topology</TD>
       </TR>
       <TR bgcolor='#F7ECD5'>
@@ -250,6 +256,8 @@
         <TD><%=omp_display.phobiustopology%></TD>
         <TD><%=omp_display.hmmtoptmhs%></TD>
         <TD><%=omp_display.hmmtoptopology%></TD>
+        <TD><%=gicomments_display.no_consensus_TMHs%></TD>
+        <TD><%=gicomments_display.consensus_TMHs%></TD>
       </TR>
     </TABLE>
     </BR>
