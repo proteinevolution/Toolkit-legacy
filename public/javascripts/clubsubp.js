@@ -9,7 +9,6 @@ function toggle_ali(){
         }
 }
 
-
 function toggle_sp_table(){
 
         if( $('sp_table').value=="Hide SP_table" ){

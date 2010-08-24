@@ -74,6 +74,7 @@
               <TD><FONT COLOR='white'>General signal peptide</TD>
               <TD><FONT COLOR='white'>TypeIII signal peptide</TD>
               <TD><FONT COLOR='white'>Consensus prediction</TD>
+              <TD><FONT COLOR='white'>Consensus SP cleavage site</TD>
             </TR>
             <TR bgcolor='#E8E8E8'>
               <TD><%=spprediction.lipop%></TD>
@@ -81,6 +82,7 @@
               <TD><%=spprediction.generalsp%></TD>
               <TD><%=spprediction.type3%></TD>
               <TD><%=spprediction.sp%></TD>
+              <TD><%=spprediction.consensus_cs%></TD>
             </TR>
           </TABLE>
           <BR>      
@@ -96,7 +98,7 @@
             <%metascl=Clubmetascl.find(:first, :conditions => ["gi=?", protein.gi])%>
             <TABLE style='text-align:center;' BORDER=1>
               <TR>
-                <TD bgcolor='#A68B94' rowspan='2'>Lipo-Peptide (LipoP 1.0)</TD>
+                <TD bgcolor='#A68B94' rowspan='2'><B>Lipo-Peptide (LipoP 1.0)</B></TD>
                 <TD colspan='3'>Best prediction</TD>
                 <TD colspan='3'>Margin</TD>
                 <TD colspan='3'>Signal peptide ends</TD>
@@ -110,9 +112,9 @@
               </TR>
            
               <TR>
-                <TD  bgcolor='#A68B94' rowspan='3'>Tat-Peptide</TD>
-                <TD colspan='7' style='text-align:center;'>TatP 1.0 Server</TD>
-                <TD style='text-align:center;' colspan='5'>TatFind 1.4</TD>
+                <TD  bgcolor='#A68B94' rowspan='3'><B>Tat-Peptide</B></TD>
+                <TD colspan='7' style='text-align:center;'><B>TatP 1.0 Server</B></TD>
+                <TD style='text-align:center;' colspan='5'><B>TatFind 1.4</B></TD>
               </TR>
               <TR>
                 <TD colspan='1'>Prediction</TD>
@@ -134,14 +136,14 @@
               </TR>
 
               <TR>
-                <TD rowspan='4'  bgcolor='#A68B94'>General signal peptide</TD>
-                <TD colspan='8'>SignalP 3.0</TD>
-                <TD colspan='2' rowspan='2'>PrediSi server</TD>
-                <TD colspan='2' rowspan='2'>Phobius</TD>
+                <TD rowspan='4'  bgcolor='#A68B94'><B>General signal peptide</B></TD>
+                <TD colspan='8'><B>SignalP 3.0</B></TD>
+                <TD colspan='2' rowspan='2'><B>PrediSi server</B></TD>
+                <TD colspan='2' rowspan='2'><B>Phobius</B></TD>
               </TR>
               <TR>
-                <TD colspan='4'>SignalP-NN</TD>
-                <TD colspan='4'>SignalP-HMM</TD>
+                <TD colspan='4'><B>SignalP-NN</B></TD>
+                <TD colspan='4'><B>SignalP-HMM</B></TD>
               </TR>
               <TR>
                 <TD>Prediction</TD>
@@ -172,10 +174,10 @@
                 <TD><%=metascl.phobiusspends%></TD>
               </TR>
 
-              <TR>
-                <TD rowspan='3' bgcolor='#A68B94'>T3SS</TD>
-                <TD colspan='6'>EffectiveT3</TD>
-                <TD colspan='6'>T3SS_Prediction</TD>
+              <TR >
+                <TD rowspan='3' bgcolor='#A68B94'><B>T3SS</B></TD>
+                <TD colspan='6'><B>EffectiveT3</B></TD>
+                <TD colspan='6'><B>T3SS_Prediction</B></TD>
               </TR>
               <TR>
                 <TD colspan='3'>Score</TD>
@@ -201,13 +203,14 @@
     <BR>
 
      <%omp_display=Clubgioutextratmdisplay.find(:first, :conditions => ["gi=?", protein.gi])%>
+     <%gicomments_display=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
     <TABLE width='100%' style='text-align:center';>
       <TR bgcolor='#CCCCCC'>
         <TD rowspan='3' width='15%' style='text-align:left;'  bgcolor='#A68B94'>Outer membrane beta-barrel</TD>
-        <TD colspan='2'>BOMP</TD>
-        <TD>PSORTb v.3.0</TD>
-	<TD>CELLO v2.5</TD>
-        <TD colspan='2'>HHomp</TD>
+        <TD colspan='2'><B>BOMP</B></TD>
+        <TD><B>PSORTb v.3.0</B></TD>
+	<TD><B>CELLO v2.5</B></TD>
+        <TD colspan='2'><B>HHomp</B></TD>
       </TR>
       <TR bgcolor='#E8E8E8'>
         <TD>Prediction</TD>
@@ -231,9 +234,10 @@
     <TABLE width='100%' style='text-align:center;'>
       <TR bgcolor='#CCCCCC'>
         <TD rowspan='3'  width='15%' style='text-align:left;'  bgcolor='#A68B94'>Transmembrane</TD>
-        <TD colspan='2'>TMHMM 2.0</TD>
-        <TD colspan='2'>Phobius</TD>
-        <TD colspan='2'>HMMTOP 2.1</TD>
+        <TD colspan='2'><B>TMHMM 2.0</B></TD>
+        <TD colspan='2'><B>Phobius</B></TD>
+        <TD colspan='2'><B>HMMTOP 2.1</B></TD>
+        <TD colspan='2'><B>Consensus</B></TD>
       </TR>
       <TR bgcolor='#E8E8E8'>
         <TD>No. of TMHs <U>before</U> SP prediction</TD>
@@ -242,6 +246,8 @@
         <TD>Topology</TD>
         <TD>No. of TMHs <U>before</U> SP prediction</TD>
         <TD>Topology</TD>
+        <TD>No. of TMHs <U>after</U> Consensus SP prediction</TD>
+        <TD>Consensus TMHs Topology</TD>
       </TR>
       <TR bgcolor='#F7ECD5'>
         <TD><%=omp_display.tmhmmtmhs%></TD>
@@ -250,6 +256,8 @@
         <TD><%=omp_display.phobiustopology%></TD>
         <TD><%=omp_display.hmmtoptmhs%></TD>
         <TD><%=omp_display.hmmtoptopology%></TD>
+        <TD><%=gicomments_display.no_consensus_TMHs%></TD>
+        <TD><%=gicomments_display.consensus_TMHs%></TD>
       </TR>
     </TABLE>
     </BR>
@@ -257,8 +265,8 @@
   <TABLE  width='100%' style='text-align:center;'>
       <TR bgcolor='#CCCCCC'>
         <TD rowspan='2'  width='15%' style='text-align:left;'  bgcolor='#A68B94'>Extracellular</TD>
-        <TD >PSORTb v.3.0. Extracellular Score</TD>
-        <TD >Type III signal peptide</TD>
+        <TD ><B>PSORTb v.3.0. Extracellular Score</B></TD>
+        <TD ><B>Type III signal peptide</B></TD>
       </TR>
       <TR bgcolor='#F7ECD5'>
         <TD><%=omp_display.psortbextracellular%></TD>

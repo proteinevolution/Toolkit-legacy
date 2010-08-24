@@ -1,113 +1,162 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
-  
+
 <%= render(:partial => "shared/resultsections") %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
 
-
 <%blast_parsed_outfile = File.join(@job.job_dir, @job.jobid+".temp")%>
 
 
+<script type="text/javascript">
+
+	function blast_query_toggle(id){
+	        var tab = document.getElementById(id);
+        	if (tab==null){ 
+			return; 
+		}
+	        var bExpand = tab.style.display == '';
+	        tab.style.display = (bExpand ? 'none' : '');
+	}
+</script>
 
 <div id="forward" style="display: none;">
-        <div class="row">
-                <div class="label">Forward results to</div>
-                <div class="formw">
-                        <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
-                </div>
-        </div>
+	<div class="row">
+		<div class="label">Forward results to</div>
+		<div class="formw">
+			<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+		</div>
+	</div>
 
-        <div class="row">
-                <div class="label"></div>
-                <div class="formw">
-                        <input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
-                </div>
-        </div>
-        <div class="hr">&nbsp;</div>
+	<div class="row">
+		<div class="label"></div>
+		<div class="formw">
+			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+		</div>
+	</div>
+	<div class="hr">&nbsp;</div>
 
 </div>
 
 
 
 <div class="row">
-  <a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-  <% lines = IO.readlines(blast_parsed_outfile)%>
-  <%if(lines.first =~/NOHITS/)%>
-	<B>No hits found.</B>
-  <%end%>
-  <%if(lines.first =~/KEYWORD/)%>
-      <TABLE border='0' cellpadding='2' cellspacing='3'>
-      <TR bgcolor='#85637F'>
-        <TH rowspan='2' >Cluster</TH>
-        <TH rowspan='2' >Blast Hit NCBI's GI</TH>
-        <TH rowspan='2' >Description</TH>
-        <TH rowspan='2' >Organism</TH>
-        <TH colspan='2' >Subcellular location</TH>
-      </TR>
-      <TR bgcolor='#85637F'>
-        <TH>Cluster's</TH>
-        <TH>Protein's</TH>
-      </TR>
-        <%File.open(blast_parsed_outfile, "r").each do |hit| %>
-          <%Clubgiprediction.find(:all, :conditions => ["gi=?", hit]).each do |gi|%>
-	    <TR bgcolor='#E8E8E8'>
-              <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=gi.cluster%>'>cluster <%=gi.cluster%></A></TD>
-              <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi.gi%>'><%=gi.gi%></A></TD>
-              <%header_org=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", gi.gi])%>
-              <TD><%=header_org.header%></TD>
-              <TD><%=header_org.organism%></TD>
-              <%cluster_subloc=Clubclstprediction.find(:first, :conditions => ["cluster=?", gi.cluster])%>
-              <TD><%=cluster_subloc.finalscl%></TD>
-              <TD><%=gi.subloc%></TD>
-            </TR>
-          <%end%>
-        <%end%>
-    </TABLE>
-  <%end%>
+	<% lines = IO.readlines(blast_parsed_outfile)%>
 
-  <%if(lines.first =~/BLAST SEARCH/)%>
+	<%if(lines.first =~/NOHITS/)%>
+		<B>No hits found.</B>
+	<%end%>
 
-    <TABLE border='0' cellpadding='2' cellspacing='3'>
-      <TR bgcolor='#97697C'>
-        <TH rowspan='2' >Cluster</TH>
-        <TH rowspan='2' >Blast Hit NCBI's GI</TH>
-        <TH rowspan='2' width='35%'>Description</TH>
-        <TH rowspan='2' >Organism</TH>
-        <TH colspan='2' >Subcellular location</TH>
-        <TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Number of Identical residues</FONT></TH>
-        <TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Number of conserved residues</FONT></TH>
-        <TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Evalue</FONT></TH>
-        <TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Percentage of query covered in the PW-alingment</FONT></TH>
-	<TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Percentage of hit covered in the PW-alingment</FONT></TH>
-      </TR>
-      <TR bgcolor='#97697C'>
-        <TH>Cluster's</TH>
-        <TH>Protein's</TH>
-      </TR> 
-      <%File.open(blast_parsed_outfile, "r").each do |hit| %>
-        <%cols=hit.split("\t")%>
+	<%if(lines.first =~/KEYWORD/)%>
+		<H5>Keyword search results</H5>
+		<TABLE border='0' cellpadding='2' cellspacing='3'>
+			<TR bgcolor='#85637F'>
+				<TH rowspan='2' >Cluster</TH>
+				<TH rowspan='2' >Blast Hit NCBI's GI</TH>
+				<TH rowspan='2' >Description</TH>
+				<TH rowspan='2' >Organism</TH>
+				<TH colspan='2' >Subcellular location</TH>
+			</TR>
+			<TR bgcolor='#85637F'>
+				<TH>Cluster's</TH>
+				<TH>Protein's</TH>
+			</TR>
+			<%File.open(blast_parsed_outfile, "r").each do |hit| %>
+				<%Clubgiprediction.find(:all, :conditions => ["gi=?", hit]).each do |gi|%>
+					<TR bgcolor='#E8E8E8'>
+						<TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=gi.cluster%>'>cluster <%=gi.cluster%></A></TD>
+						<TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi.gi%>'><%=gi.gi%></A></TD>
+						<%header_org=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", gi.gi])%>
+						<TD><%=header_org.header%></TD>
+						<TD><%=header_org.organism%></TD>
+						<%cluster_subloc=Clubclstprediction.find(:first, :conditions => ["cluster=?", gi.cluster])%>
+						<TD><%=cluster_subloc.finalscl%></TD>
+						<TD><%=gi.subloc%></TD>
+					</TR>
+				<%end%>
+			<%end%>
+		</TABLE>
+	<%end%>
 
-        <%Clubproteinheaderinfo.find(:all, :conditions => ["gi=?", cols[0]]).each do |gi|%>
-          <TR bgcolor='#E8E8E8'>
-            <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=gi.cluster%>'>Cluster <%=gi.cluster%></A></TD>
-            <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi.gi%>'><%=gi.gi%></A></TD>
-            <TD><%=gi.header%></TD>
-            <TD><%=gi.organism%></TD>
-            <%cluster_subloc=Clubclstprediction.find(:first, :conditions => ["cluster=?", gi.cluster])%>
-            <TD><%=cluster_subloc.finalscl%></TD>
-            <%gi_subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", gi.gi])%>
-            <TD><%=gi_subloc.subloc%></TD>
-            <TD><%=cols[1]%> (<%=cols[2]%>)</TD>
-            <TD><%=cols[3]%></TD>
-            <TD><%=cols[4]%></TD>
-            <TD><%=cols[5]%></TD>
-            <TD><%=cols[6]%></TD>
-          </TR>
-        <%end%>
-      <%end%>
-    </TABLE>
-  <%end%>
+	<%if(lines.first =~/BLAST SEARCH/)%>
+		<H5>Blast search results</H5>
+		<%File.open(blast_parsed_outfile, "r") do |hit| %>
+			<%@readFile=Array.new%>
+			<%while(line=hit.gets)%>
+				<%@readFile.push(line)%>
+			<%end%>
+		<%end%>
+
+		<%$size_of_array=@readFile.size%>
+		<%$i=0%>
+		<%$query_count=0%>
+		<%until $i >= $size_of_array do%>
+			<%cols=@readFile[$i].split("\t")%>
+			<%if(cols[0] =~/QUERY/)%>
+				<%$query_count +=1%>
+					<TABLE border='0' cellpadding='2' cellspacing='3' width='100%'>
+						<TR>
+							<TH bgcolor='#97697C'>Query Name</TH><TD bgcolor='#E8E8E8' width='30%'><%=cols[1]%></TD>
+							<TH bgcolor='#97697C'>Best hit</TH><TD bgcolor='#E8E8E8' width='20%'><%=cols[2]%></TD>
+							<%if(cols[2]!~/No Hit/)%>
+								<%cluster_info=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", cols[2]])%>
+								<%cluster_subloc=Clubclstprediction.find(:first, :conditions => ["cluster=?", cluster_info.cluster])%>
+								<TH bgcolor='#97697C'>Subloc</TH><TD bgcolor='#E8E8E8' width='30%'><%=cluster_subloc.finalscl%></TD>  
+								<TD><A href="javascript:blast_query_toggle('<%=$query_count%>');">Blast details</A></TD>
+							<%end%>
+							<%if(cols[2]=~/No Hit/)%>
+								<TD></TD><TD width='30%'></TD><TD></TD>
+							<%end%>
+						</TR>
+					</TABLE>
+				<%$i += 1%>
+				<%$count = 0%>
+				<TABLE border='0' cellpadding='2' cellspacing='3' width='100%'; id='<%=$query_count%>' style='display:none'>
+					<%until(@readFile[$i]=~/\/\//)%>
+						<%if($count == 0)%>
+							<TR bgcolor='#97697C'>
+								<TH rowspan='2' >Cluster</TH>
+								<TH rowspan='2' >Blast Hit - NCBI's GI</TH>
+								<TH rowspan='2' width='35%'>Description</TH>
+								<TH rowspan='2' >Organism</TH>
+								<TH colspan='2' >Subcellular location</TH>
+								<TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Number of Identical residues</FONT></TH>
+								<TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Number of conserved residues</FONT></TH>
+								<TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Evalue</FONT></TH>
+								<TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Percentage of query covered in the PW-alingment</FONT></TH>
+								<TH rowspan='2' bgcolor='#85637F'><FONT color='white'>Percentage of hit covered in the PW-alingment</FONT></TH>
+							</TR>
+							<TR bgcolor='#97697C'>
+								<TH>Cluster's</TH>
+								<TH>Protein's</TH> 
+							</TR>
+						<%end%>
+						<%if(@readFile[$i]!~/NOHITS/)%>  
+							<TR><TD><%cols=@readFile[$i].split("\t")%></TD></TR>
+							<%Clubproteinheaderinfo.find(:all, :conditions => ["gi=?", cols[0]]).each do |gi|%>
+								<TR bgcolor='#E8E8E8'>
+									<TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=gi.cluster%>'>Cluster <%=gi.cluster%></A></TD>
+									<TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi.gi%>'><%=gi.gi%></A></TD>
+									<TD ><%=gi.header%></TD>
+									<TD><%=gi.organism%></TD>  
+									<%cluster_subloc=Clubclstprediction.find(:first, :conditions => ["cluster=?", gi.cluster])%>
+									<TD><%=cluster_subloc.finalscl%></TD>
+									<%gi_subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", gi.gi])%>
+									<TD><%=gi_subloc.subloc%></TD>
+									<TD><%=cols[1]%> (<%=cols[2]%>)</TD>
+									<TD><%=cols[3]%></TD>
+									<TD><%=cols[4]%></TD>
+									<TD><%=cols[5]%></TD>
+									<TD><%=cols[6]%></TD>
+								</TR>
+							<%end%>
+						<%end%>
+						<%$i += 1%>
+						<%$count +=1%>
+					<%end%>
+				</TABLE>
+	          	<%end%>
+			<%$i +=1%>
+		<%end%>
+	<%end%> 
 </div>
-
