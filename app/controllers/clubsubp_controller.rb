@@ -36,8 +36,8 @@ class ClubsubpController < ToolController
   end
 
   def results
-    @fw_values = [fw_to_tool_url('clubsubp', 'gi2seq')]
-    @fw_labels = [tool_title('gi2seq')]
+    @fw_values = [fw_to_tool_url('clubsubp', 'seq2gi') ,fw_to_tool_url('clubsubp', 'gi2seq')]
+    @fw_labels = [tool_title('seq2gi'), tool_title('gi2seq')]
   end
 
 end

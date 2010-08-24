@@ -370,6 +370,4 @@
   title_long: Cluster-based Subcellular localisation prediction
   section: classification
   active: 
-  - member
   - internal
-  - external
