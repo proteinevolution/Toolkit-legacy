@@ -9,15 +9,14 @@
 
 <script type="text/javascript">
 
-function blast_query_toggle(id)
-{
-        var tab = document.getElementById(id);
-        if (tab==null) { return; }
-        var bExpand = tab.style.display == '';
-        tab.style.display = (bExpand ? 'none' : '');
-}
-
-
+	function blast_query_toggle(id){
+	        var tab = document.getElementById(id);
+        	if (tab==null){ 
+			return; 
+		}
+	        var bExpand = tab.style.display == '';
+	        tab.style.display = (bExpand ? 'none' : '');
+	}
 </script>
 
 <div id="forward" style="display: none;">
@@ -103,7 +102,7 @@ function blast_query_toggle(id)
 								<%cluster_info=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", cols[2]])%>
 								<%cluster_subloc=Clubclstprediction.find(:first, :conditions => ["cluster=?", cluster_info.cluster])%>
 								<TH bgcolor='#97697C'>Subloc</TH><TD bgcolor='#E8E8E8' width='30%'><%=cluster_subloc.finalscl%></TD>  
-								<TD><a href="javascript:blast_query_toggle('<%=$query_count%>');">Blast details</a></TD>
+								<TD><A href="javascript:blast_query_toggle('<%=$query_count%>');">Blast details</A></TD>
 							<%end%>
 							<%if(cols[2]=~/No Hit/)%>
 								<TD></TD><TD width='30%'></TD><TD></TD>
