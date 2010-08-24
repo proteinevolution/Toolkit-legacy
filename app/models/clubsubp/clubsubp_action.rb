@@ -5,7 +5,7 @@ class ClubsubpAction < Action
   CLUB   = File.join(BIOPROGS, 'clubsubp')
 
 
-  attr_accessor :mail, :jobid, :sequence_input, :sequence_file, :text_search, :qlvalue, :hlvalue,:pvalue
+  attr_accessor :mail, :jobid, :sequence_input, :sequence_file, :text_search, :qlvalue, :hlvalue, :pvalue
 
 #    validates_input(:sequence_input, :sequence_file, {:informat_field => :informat,
  #                                                   :informat => 'fas',

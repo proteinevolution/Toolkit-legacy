@@ -32,11 +32,11 @@
 
 <h3 class="<%= @section["name"] %>">Options for blast search</h3>
 	<div class="row">
-        	<%= form_label("Query sequence length to be covered", "quseqleng") %>
+        	<%= form_label("Min., query-sequence length to be covered", "quseqleng") %>
 	        <%= form_text_field("qlvalue", '75','%') %>
 	</div>
 	<div class="row">
-	        <%= form_label("Hit sequence length to be covered", "Hitseqleng") %>
+	        <%= form_label("Min., hit-sequence length to be covered", "Hitseqleng") %>
         	<%= form_text_field("hlvalue", '75', '%') %>
 	</div>
 	<div class="row">

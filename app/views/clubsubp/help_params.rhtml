@@ -5,7 +5,11 @@
 <h2><%= @tool['title'] %> Parameters</h2>
 
 <a name="input"></a>
-<h3>Input Format</h3> 
 <div class="row">
+	<H3 class="<%=@section["name"]%>">Input Parameters</H3>
+		<B> Text search</B><BR><BR> Input multiple keywords or GI for search. Program will search for keywords or GI in the annotated headers of the proteins in ClubSub-P database.<BR><BR><BR>
+		<B> Blast Search</B><BR><BR> Input upto 20 gram negative bacterial sequences in fasta format for subcellular localization annotation.<BR><BR><BR>
+		<B> Options for blast search</B><BR><BR> Query/Hit sequence length to be covered is calculated from HSP alignment. Sequence identity threshold is calculated from HSP to the full length of the query.
+		
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
