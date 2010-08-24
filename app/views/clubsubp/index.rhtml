@@ -8,22 +8,44 @@
 
 <h3 class="<%= @section["name"]%>">Keyword Search</h3>
 
-<div class="row">
-        <%= form_label("Enter string for text search", "input") %>
-        <%= form_text_field("text_search", "", "", 30) %>
-</div>
+	<div class="row">
+	        <%= form_label("Enter a keyword or GI number to search", "input") %>
+		<%= form_text_field("text_search", "", "", 30) %>
+	</div>
+
+<div class="spacer">&nbsp;</div>
+
 
 <h3 class="<%= @section["name"] %>">Blast Search</h3>
-<div class="row">
-	<%= form_label("Paste input sequence (one sequence)", "input") %>
-	<%= form_text_area("sequence_input") %>
-</div>
+	<div class="row">
+		<%= form_label("Paste input sequence <BR> (Max. 20 sequence)", "input") %>
+		<%= form_text_area("sequence_input") %>
+	</div>
+	<div class="spacer">&nbsp;</div>
+	<div class="row">
+        	<%= form_label("or upload a local file", "input") %>
+		<%= form_file("sequence_file")%>
+	</div>
 
 <div class="spacer">&nbsp;</div>
 
-<h3 class="<%= @section["name"] %>">Options</h3>
+
+<h3 class="<%= @section["name"] %>">Options for blast search</h3>
+	<div class="row">
+        	<%= form_label("Query sequence length to be covered", "quseqleng") %>
+	        <%= form_text_field("qlvalue", '75','%') %>
+	</div>
+	<div class="row">
+	        <%= form_label("Hit sequence length to be covered", "Hitseqleng") %>
+        	<%= form_text_field("hlvalue", '75', '%') %>
+	</div>
+	<div class="row">
+	   <%= form_label("Min., sequence identity threshold","pitsdt")%>
+	   <%= form_text_field("pvalue", '40', '%') %>
+	</div>
 
 <div class="spacer">&nbsp;</div>
+
 
 <%= render(:partial => "shared/joboptions") %>
 
