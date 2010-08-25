@@ -14,6 +14,9 @@ class NucBlastController < ToolController
 	def results
 		@fw_values = [fw_to_tool_url('nuc_blast', 'sixframe'), fw_to_tool_url('nuc_blast', 'gi2seq')]
 		@fw_labels = [tool_title('sixframe'), tool_title('gi2seq')]  
+		@widescreen = true
+		@show_graphic_hitlist = true
+		@show_references = false
 	end
   
 	def results_alignment
@@ -52,4 +55,25 @@ class NucBlastController < ToolController
 	end
   
   
+	def resubmit_domain
+	  tmp_file = Tempfile.new(@job.id)
+	  system(sprintf("%s/perl/alicutter.pl %s %s %d %d", BIOPROGS, File.join(@job.job_dir, 'sequence_file'), tmp_file.path, params[:domain_start].to_i, params[:domain_end].to_i));
+
+	  job_params = @job.actions.first.params
+	  job_params.each_key do |key|
+	    if (key =~ /^(\S+)_file$/) 
+	      if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
+		params[$1+'_input'] = tmp_file.readlines
+	      end
+	    else
+	      params[key] = job_params[key]
+	    end
+	  end
+
+	  params[:jobid] = ''
+	  index
+	  render(:action => 'index')
+	end
+
+
 end

@@ -21,7 +21,7 @@ class HhpredController < ToolController
     @dbvalues = Array.new
     
     # Sort list of directories according to order given in sortlist 
-    sortlist = Array["\/pdb70", "\/pdb_on_hold", "\/scop", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test", "\/Pfalciparum" ]
+    sortlist = Array["\/pdb70", "\/pdb_on_hold", "\/scop70", "\/scop25", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test", "\/Pfalciparum" ]
     # Allow non-standard libraries only on internal server:
     if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
     if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
@@ -149,6 +149,14 @@ class HhpredController < ToolController
   end
   
   def help_results
+    render(:layout => "help")
+  end
+
+  def help_faq
+    render(:layout => "help")
+  end
+
+  def help_params
     render(:layout => "help")
   end
 

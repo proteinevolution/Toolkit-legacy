@@ -1,0 +1,24 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+
+<div id="jobsection" class="<%= @section["name"] %>">
+    <ul>
+      <% sections = @job.config['resultsections'] %>
+                <% @cur_section = nil %>
+      <% sections.each do |section| %>
+      <% if (section['name'] == params[:action]) then @cur_section = section end %>
+      <li <%= section['name'] == params[:action] ? 'class="current"' : '' %>>
+                        <%= link_to(section['title'], {:action => section['name'], :jobid => @job.jobid}, {:onmouseover => "return overlib('#{section['title_long']}');", :onmouseout => "return nd();"}) %>
+      </li>
+      <% end %>
+    </ul>
+</div>
+
+<%= render(:partial => "coloredresults") %>
+
+<!--<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>-->
+
+<div class="alignres">
+<pre><%= @job.render_file(@job.jobid + ".results_color") %></pre>
+</div>
+
+</form>

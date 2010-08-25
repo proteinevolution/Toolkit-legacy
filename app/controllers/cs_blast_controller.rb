@@ -33,7 +33,7 @@ class CsBlastController < ToolController
 		  fw_to_tool_url('cs_blast', 'cs_blast') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'seq2gi') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'frpred') + "&fw_mode=alignment",                  
-                  fw_to_tool_url('cs_blast', 'hhblast') + "&fw_mode=alignment",
+                  fw_to_tool_url('cs_blast', 'hhblits') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'hhpred') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'hhsenser') + "&fw_mode=alignment", 
                   fw_to_tool_url('cs_blast', 'kalign') + "&fw_mode=seqs", 
@@ -41,6 +41,7 @@ class CsBlastController < ToolController
                   fw_to_tool_url('cs_blast', 'muscle') + "&fw_mode=seqs",
                   fw_to_tool_url('cs_blast', 'patsearch') + "&fw_mode=seqs",
                   fw_to_tool_url('cs_blast', 'probcons') + "&fw_mode=seqs",
+                  fw_to_tool_url('cs_blast', 'psi_blast') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'quick2_d') + "&fw_mode=alignment",                   
                   fw_to_tool_url('cs_blast', 'reformat') + "&fw_mode=alignment",                   
                   fw_to_tool_url('cs_blast', 'repper') + "&fw_mode=alignment"]
@@ -48,11 +49,15 @@ class CsBlastController < ToolController
     @fw_labels = [tool_title('blammer'), tool_title('blastclust'), tool_title('clans'), 
                   tool_title('clustalw'), tool_title('cs_blast'), 
 		  tool_title('seq2gi'), tool_title('frpred'),
-                  tool_title('hhblast'), tool_title('hhpred'),
+                  tool_title('hhblits'), tool_title('hhpred'),
                   tool_title('hhsenser'), tool_title('kalign'), tool_title('mafft'), 
-                  tool_title('muscle'), tool_title('patsearch'), tool_title('probcons'), 
-                  tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
+                  tool_title('muscle'), tool_title('patsearch'),
+		  tool_title('probcons'), tool_title('psi_blast'),
+		  tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
                       					
+    @widescreen = true
+    @show_graphic_hitlist = true
+    @show_references = false
   end
   
   def results_alignment
@@ -102,5 +107,25 @@ class CsBlastController < ToolController
     render(:layout => "help")
   end
   
+  def resubmit_domain
+    tmp_file = Tempfile.new(@job.id)
+    system(sprintf("%s/perl/alicutter.pl %s %s %d %d", BIOPROGS, File.join(@job.job_dir, 'sequence_file'), tmp_file.path, params[:domain_start].to_i, params[:domain_end].to_i));
+
+    job_params = @job.actions.first.params
+    job_params.each_key do |key|
+      if (key =~ /^(\S+)_file$/) 
+        if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
+          params[$1+'_input'] = tmp_file.readlines
+        end
+      else
+        params[key] = job_params[key]
+      end
+    end
+
+    params[:jobid] = ''
+    index
+    render(:action => 'index')
+  end
+
   
 end

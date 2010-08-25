@@ -53,6 +53,17 @@ class ProtBlastAction < Action
     logger.debug gdbs.join("\n")
     @db_path += ' ' + gdbs.join(' ')
     
+    # write db-list in pal file
+    if (!gdbs.empty?)
+      File.open(@basename + "_dblist.pal", "w") do |file|
+        file.write("#\nTITLE Genome databases\n#\nDBLIST ")
+        file.write(@db_path);
+        file.write("\n")
+      end
+      system("chmod 777 #{@basename}_dblist.pal")
+      @db_path = "#{@basename}_dblist"
+    end
+
     # set gapopen and gapextend costs depending on given matrix
     @gapopen = 11
     @gapext = 1

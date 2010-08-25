@@ -2,6 +2,7 @@
 	<li><a href="#homology">What is homology?</a></li>
 	<li><a href="#search nr">Can I search the nr?</a></li>
 	<li><a href="#correct match">Correct match?</a></li>
+	<li><a href="#duplicated domain">Duplicated domain?</a></li>
 
 	<li><a href="#misaligned">Results page misaligned</a></li>
 	<li><a href="#truncated page">Truncated results page</a></li>
@@ -138,6 +139,23 @@ when the putative functional residues are mutated.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
+
+<a name="duplicated domain"></a><br>
+<b>I have a protein with two domains. The C-terminal domain is known. HHpred detects a homology of the N-terminal region with that 
+same kind of domain present at the C-terminal part. Is there is a possibility that the presence of the C-terminal domain could 
+produce high-scoring false positive hits to the same kind of domain in the N-terminal part? I have seen similar "boundary effects" 
+with PSI-blast.</b><br>
+<div class="row">
+Yes, absolutely. This may be caused by PSI-BLAST, which is used by HHpred to build the alignments from which the query and database 
+HMMs are generated. PSI-BLAST may find sequences which contain the C-terminal query domain in two or more copies. In this case, PSI-BLAST 
+may extend the alignments too much into the N-terminal region of the query. (PSI-BLAST alignments are "greedy".) After each PSI-BLAST iteration,
+a larger part of the N-termional region can get corrupted by sequences related to the non-homologous C-terminal domain. In the final search through 
+the PDB or another database, the N-terminal region may then get predicted as homologous to the C-terminal kind of domain. Even though 
+HHpred contains some safeguards in its buildali.pl script, this effect can not be totally suppressed. You should check both query and database 
+alignments to make sure that the alignments are not corrupted. You can also cut out the sequence of only the N-terminal part and resubmit it to HHpred.
+In this way, the corruption of the alignment should be practically suppressed. See also previous FAQ. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 
 <a name="misaligned"></a><br>
@@ -319,9 +337,9 @@ for help on HHpred results.
 <a name="evalues"></a><br>
 <b>Why are the E-values not correctly ordered in my search results?</b>
 <div class="row">
-The results are not ordered by the E-value, but by the probability for the template to be 
-(at least locally) homologous to the query sequence. In contrast to the E-value, 
-this probability also takes account of the secondary structure similarity between 
+The results are not ordered by the E-value, but by the probability for the template to be
+(at least locally) homologous to the query sequence. In contrast to the E-value,
+this probability also takes account of the secondary structure similarity between
 query and template.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
@@ -330,12 +348,12 @@ query and template.
 <b>What do H, E, and C stand for in the alignments on the results page?</b>
 <div class="row">
 Sequences named >ss_pred contain the secondary structure predicted from the alignment
-of homologs by the program PSIPRED. H means helix, 
+of homologs by the program PSIPRED. H means helix,
 E stands for extended beta sheet, and C signifies a coil or loop residue. The numbers
 below these sequences contain the confidence values for the prediction. 9 means high confidence,
 something like >90%, and 0 means very low confidence.<br>
 Sequences named >ss_dssp contain the actual secondary structure determined from the 3D structure
-by the program DSSP. H, E, and C are the same as above. S is a bend, B a beta brigded residue, 
+by the program DSSP. H, E, and C are the same as above. S is a bend, B a beta brigded residue,
 T a turn, and G a 3_10 helix residue.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
@@ -345,11 +363,10 @@ T a turn, and G a 3_10 helix residue.
 <b>Shouldn't the scores and E-values be the same with and without secondary structure scoring?</b>
 <div class="row">
 
-Only approximately. It is true that the raw scores, the E-values and P-values do not explicitely 
+Only approximately. It is true that the raw scores, the E-values and P-values do not explicitly
 depend on the secondary structure score. But the secondary structure score influences the alignments.
-Since the calibration will therefore also be slightly different with and without secondary structure 
-scoring, the raw scores, E- and P-values differ with and without secondary structure even when the 
-alignment does not change.
+Since the calibration will therefore also be slightly different with and without secondary structure
+scoring, the raw scores, E- and P-values differ with and without secondary structure even when the alignment does not change.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 

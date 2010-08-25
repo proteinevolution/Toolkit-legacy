@@ -37,7 +37,7 @@ class PsiBlastAction < Action
     @outfile = @basename+".psiblast"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @informat = params['informat'] ? params['informat'] : 'fas'
-    #reformat(@informat, "fas", @infile)
+    reformat(@informat, "fas", @infile)
     @commands = []
     
     @inputmode = params['inputmode']
@@ -64,6 +64,17 @@ class PsiBlastAction < Action
     end
     system("chmod 777 #{@basename}.psiblast_conf")
     
+    # write db-list in pal file
+    if (!gdbs.empty?)
+      File.open(@basename + "_dblist.pal", "w") do |file|
+        file.write("#\nTITLE Genome databases\n#\nDBLIST ")
+        file.write(@db_path);
+        file.write("\n")
+      end
+      system("chmod 777 #{@basename}_dblist.pal")
+      @db_path = "#{@basename}_dblist"
+    end
+
     if (@inputmode == "alignment") then process_alignment end
     
     # set gapopen and gapextend costs depending on given matrix

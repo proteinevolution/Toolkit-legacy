@@ -1,0 +1,133 @@
+<html>
+<head>
+	<title>
+		<%= @layout_page_title || "Bioinformatics Toolkit" %>
+	</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta content="no-cache" http-equiv="no-cache" />
+	<meta http-equiv="Expires" content="-1" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta name="author" content="Christina Wassermann">
+	<%= @meta %>
+
+	 <% if LOCATION == "Munich" %>
+      <%= stylesheet_link_tag "styles_munich", "navisection_munich", "help_munich.css", :media => 'all' %>
+      <% if @widescreen %>
+        <%= stylesheet_link_tag "widescreen_munich", :media => 'all' %>
+      <% end %>
+      <% if @fullscreen %>
+        <%= stylesheet_link_tag "fullscreen_munich", :media => 'all' %>
+      <% end %>
+    <% else %>
+      <%= stylesheet_link_tag "styles_tuebingen", "navisection_tuebingen", "help_tuebingen.css", :media => 'all' %>
+      <% if @widescreen %>
+        <%= stylesheet_link_tag "widescreen_tuebingen", :media => 'all' %>
+      <% end %>
+      <% if @fullscreen %>
+        <%= stylesheet_link_tag "fullscreen_tuebingen", :media => 'all' %>
+      <% end %>
+    <% end %>
+    <%= stylesheet_link_tag "tabsection", "form", :media => 'all' %>
+
+	<%= javascript_include_tag "toolkit", "browser_sniffer", "overlib", "overlib_cssstyle" %>
+	<%= javascript_include_tag :defaults %>
+
+	<%= if @tool then javascript_include_tag(@tool['name']) end -%>
+	<% if @include_js && !@include_js.empty? -%>
+	<%= javascript_include_tag @include_js %>
+	<% end -%>
+
+</head>
+
+<% theme = (!@section.nil? && @section['theme']) ? @section['theme'] : "std" %>
+
+<body class="<%= theme -%>">
+  <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
+  <div id="container">
+    <div id="header">
+      <% if LOCATION == "Munich" %>
+	<a href="http://www.lmb.uni-muenchen.de/" id="lmulogo"><img src="/images/lmu_logo.gif" alt="Gene Center Munich"/></a>
+	<a href="<%= url_for(:controller => '/common', :action => 'helpindex') %>"><img id="genecenterlogo" src="/images/genecenter_logo.gif" alt="Toolkit" /></a>
+      <% else %>
+	<a href="http://www.mpg.de" id="minerva"><img src="/images/minerva_logo.gif" alt="Minerva"/></a>
+	<a href="<%= url_for(:controller => '/common', :action => 'helpindex') %>"><img id="mpilogo" src="/images/mpi_logo.gif" alt="Toolkit" /></a>
+      <% end %>
+
+      <% if LOCATION != "Munich" %>
+      <ul id="metanav">
+	<li id="home" <%if @meta_section == "index" -%> class="current"<% end -%> ><%= link_to "Home", :controller => "/common", :action => "index" -%></li>
+      </ul>
+      <% end %>
+    </div>
+
+    <div id="content">
+      <%= @content_for_layout %>
+    </div>
+
+
+                <script>
+
+
+var th3=0; // Height of the Table
+var th=0; // Height of the body
+var th2=0; // Height of the Window
+
+
+// The Routine for Firefox and Mozilla
+if (navigator.appCodeName == "Mozilla")
+{
+
+  th=document.all.content.offsetHeight;
+
+  th2=window.innerHeight;
+  th3= th2-th-150;
+
+}
+if (navigator.appName == "Opera") // If check has to be fixed
+{
+  //The Routine for Opera
+  th=document.all.content.offsetHeight;
+  th2=window.innerHeight;
+  th3= th2-th-160;
+} 
+if (navigator.appName == "Microsoft Internet Explorer") // If check has to be fixed
+{
+  //The Routine for The Internet Explorer
+  th=document.all.content.offsetHeight;
+  th2=document.body.clientHeight;
+ 
+  th3= th2-th-50;
+}
+
+
+// Writing of the table and Div of the Footer
+if(th < th2)
+{
+  document.write('<table width="750px"');
+  document.write('height="');
+  document.write(th3);
+  document.write('px">');
+
+  document.write('<tr valign="bottom"><td align="center" height="');
+  document.write(th3-30);
+  document.write('px"></td></tr>');
+}
+else
+{
+  document.write('<table width="730px">');
+}
+
+<% if LOCATION == "Munich" %>
+	       document.write('<tr top-border="1px" valign="bottom"><td valign="bottom"><div id="footer"><span style="float: right; margin-right: 3px;">Release-<%= TOOLKIT_RELEASE %></span>&#169; 2008, <a href="http://www.lmb.uni-muenchen.de/soeding/index.htm">Protein Bioinformatics & Computational Biology</a>, Gene Center, LMU Munich</div></td></tr>');
+	       <% else %>
+	       document.write('<tr top-border="1px" valign="bottom"><td valign="bottom"><div id="footer"><span style="float: right; margin-right: 3px;">Release-<%= TOOLKIT_RELEASE %></span>&#169; 2008, <a href="http://www.eb.tuebingen.mpg.de/departments/1-protein-evolution">Dep. of Protein Evolution at the Max-Planck Institute for Developmental Biology</a>, T&#252;bingen</div></td></tr>');
+	       <% end %>#
+document.write('</table>');
+
+
+		</script>
+	</div>
+</body>
+</html>

@@ -10,7 +10,10 @@ class Gi2seqController < ToolController
     @std_dbs_paths.uniq!
     @std_dbs_paths.sort!
     @std_dbs_labels = @std_dbs_paths.map() {|p| (File.basename(p))}
-    
+
+    @gi = params['gi'] ? params['gi'] : ""
+    @oldjob = params['parentjob'] ? params['parentjob'] : ""
+
   end
   
   def results

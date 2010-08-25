@@ -1,0 +1,10 @@
+<div id="jobsection">
+  <ul>
+    <% for i in 0...@shortlinks.length%>
+      <li <% if @shortlinks[i] == @color %> class="current" <% end %>>
+        <a href="/samcc/<%= @links[i]%>" onmouseover="return overlib('<%= @link_text[i]%>');" onmouseout="return nd();"><%= @link_names[i]%></a>
+      </li>
+    <%end%>
+  </ul>
+</div>
+

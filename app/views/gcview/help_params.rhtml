@@ -1,0 +1,65 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input format</a></li>
+        <li><a href="#format">FASTA Sequences</a></li>
+        <li><a href="#jobinput">GI Numbers / Job IDs</a></li>
+        <li><a href="#number">Number and type</a></li>
+        <li><a href="#evaluecutoff">E-value cutoff</a></li>
+        <li><a href="#one_line">One line</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3>Input format</h3>
+<div class="row">
+GCView accepts 3 types of input and handles them accordingly:
+
+Notice: FASTA Sequences and GI Numbers can not be combined in one query. The type of Input has to be set using the Input format selection box.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="format"></a>
+<h3>FASTA Sequences</h3>
+<div class="row">
+For each FASTA sequence provided a PSI-BLAST search against the nr database will be performed using standard parameters (1 iteration, E-Value threshold 0.001, 100 Alignments and descriptions). The results are then used for genomic context lookup.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="jobinput"></a>
+<h3>GI Numbers</h3>
+<div class="row">
+Sequences corresponding to the GI numbers are extracted using the GI2Seq tool. The sequences are then treated as described above. This is option provided for convenience.
+</div>
+
+<h3>Job IDs</h3>
+<div class="row">
+It is possible to run homology searches separately and use the Job IDs of these searches as input for GCView. This allows full control over the search parameters. Please note, that GCView requires GI Numbers for correct function. Using a Database which does not provide GI Numbers in the output (most prominently uniprot) will not give any results in GCView.
+It is possible to combine multiple searches in one GCView Job. This is useful to visualize conserved genomic neighborhood or operon structure of protein coding genes.
+Please put each Job ID in a new line
+GCView accepts the following tools as input source: ProtBLAST, PSI-BLAST, CS-BLAST and GCView itself.
+Hits in GCView Output are identified by the Job ID of the original job.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="number"></a>
+<h3>Number and type</h3>
+<div class="row">
+This option defines how much of the neighborhood is shown. The possible range is 5 - 50 genes or kilobases of genome on each side of every hit. Beware that setting large values greatly increases processing time.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<a name="evaluecutoff"></a>
+<h3>E-Value cutoff</h3>
+<div class="row">
+Hits with E-Values (from the preceding homology search) worse then this value will be discarded.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="one_line"></a>
+<h3>One line</h3>
+<div class="row">
+If this option is set, the output image will only have one line for each genome. The basepairs per line will be adjusted accordingly. Otherwise the output is displayed with a resolution of 10 kb per line.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+

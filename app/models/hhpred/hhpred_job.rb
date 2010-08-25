@@ -71,7 +71,7 @@ class HhpredJob  < Job
     space_for_checkbox="  "
     # Read hhr file
     resfile = File.join("#{jobDir}/" , "#{jobid}.hhr")
-    raise("ERROR file not readable!#{jobDir}#{jobid}") if !File.readable?(resfile)
+    raise("ERROR file not readable!#{jobDir}/#{jobid}.hhr") if !File.readable?(resfile)
     raise("ERROR file does not exist!#{jobDir}") if !File.exists?(resfile)
     raise("ERROR file is zero!#{jobDir}") if  File.zero?(resfile)
     results = File.open(resfile, "r")
@@ -245,7 +245,7 @@ class HhpredJob  < Job
         logger.debug("WARNING in #{$0}: Could not find pdb file for sequence #{query}. Interpreted as pdbcore=#{pdbid}, chain=#{chain}");
         querypdb=""
       else
-        system("cp"+dirs.first+"/"+pdbid+chain+".pdb"+" "+querypdb)
+        system("cp "+dirs.first+"/"+pdbid+chain+".pdb"+" "+querypdb)
       end
     end
 
@@ -833,11 +833,11 @@ class HhpredJob  < Job
           # SUPFAM identifier? (SUPFAM0022216)
         elsif  template =~ /^SUPFAM\d+$/
           # SUPFAM0022216 b.29.1 Concanavalin A-like lectins/glucanases (49899) SCOP seed sequence: d1m4wa_.
-          line[b] =~ /SUPFAM(\d+)\s+(\S+).*\((\d+)\) SCOP\s+seed\s+sequence:\s+(\w+)/
+          line[b] =~ /SUPFAM(\d+)\s+(\S+)(\n|.)*\((\d+)\) SCOP\s+seed\s+sequence:\s+(\w+)/
           template = $1
           family  = $2
-          supfam_famid=$3
-          scopid   = $4
+          supfam_famid=$4
+          scopid   = $5
           scopid=~/^[a-z](\d\S\S\S)/
           pdbcode   = $1
           ucpdbcode = $1.upcase
@@ -1164,6 +1164,10 @@ class HhpredJob  < Job
 
     end #end while
     #~ @results.push("<font size = 16><b> Hier!</b></font><br><br><br><br>")
+
+    @results.push("<input type=\"hidden\" id=\"checkboxes\" name=\"checkboxes\" value=\"#{m}\" \>\n")
+    @results.push("<input type=\"hidden\" id=\"createmodel_disabled_Checkboxes\" name=\"createmodel_disabled_Checkboxes\" value=\"#{createmodel_diabled_checkboxes}\" \>\n")
+
     b = ifirst
     while b< line.length
       @results.push(line[b])
@@ -1189,8 +1193,6 @@ class HhpredJob  < Job
     @results.push("<BR><BR><i>Superfamily</i>: Madera M, Vogel C, Kummerfeld SK, Chothia C and Gough J. (2004) The SUPERFAMILY database in 2004: additions and improvements. NAR 32: D235-D239.") if (@cite_supfam  >0)
     @results.push("<BR><BR><i>CATH/Gene3D</i>: Pearl F, Todd A, Sillitoe I, Dibley M, Redfern O, Lewis T, Bennett C, Marsden R, Grant A, Lee D, Akpor A, Maibaum M, Harrison A, Dallman T, Reeves G, Diboun I, Addou S, Lise S, Johnston C, Sillero A, Thornton J, Orengo C. (2005) The CATH Domain Structure Database and related resources Gene3D and DHS provide comprehensive domain family information for genome analysis. NAR 33: D247-D251") if (@cite_CATH  >0 )
     @results.push("<BR><BR><i>PRODOM</i>: Bru, C. <i>et al.</i> (2005) The ProDom database of protein domain families: more emphasis on 3D. NAR 33: D212-215.") if (@cite_prodom  >0)
-    @results.push("<input type=\"hidden\" id=\"checkboxes\" name=\"checkboxes\" value=\"#{m}\" \>\n")
-    @results.push("<input type=\"hidden\" id=\"createmodel_disabled_Checkboxes\" name=\"createmodel_disabled_Checkboxes\" value=\"#{createmodel_diabled_checkboxes}\" \>\n")
     #exit(0)
 
 end #end method

@@ -1,0 +1,118 @@
+<a href="#" onClick="openHelpWindow('/bfit/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 20px;"></a>
+
+<%= render(:partial => "bfitjobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+
+<!--<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>-->  
+<!--<%= render(:partial => "shared/resultsections") %>-->
+
+<div id="jobsection" class="<%= @section["name"] %>">
+    <ul>
+      <% sections = @job.config['resultsections'] %>
+                <% @cur_section = nil %>
+      <% sections.each do |section| %>
+      <% if (section['name'] == params[:action]) then @cur_section = section end %>
+      <li <%= section['name'] == params[:action] ? 'class="current"' : '' %>>
+                        <%= link_to(section['title'], {:action => section['name'], :jobid => @job.jobid}, {:onmouseover => "return overlib('#{section['title_long']}');", :onmouseout => "return nd();"}) %>
+      </li>
+      <% end %>
+    </ul>
+</div>
+
+
+<% if (File.exists?(File.join(@job.job_dir, @job.jobid + "_2_fit.pdb")))%>
+  <div id="resultactions" class="<%= @section["name"] %>">
+    <ul>
+      <li><a href="<%= url_for({:action => :export_pdb1_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Save first pdb file');" onmouseout="return nd();">Save PDB1</a></li>
+      <li><a href="<%= url_for({:action => :export_pdb2_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Save second pdb file');" onmouseout="return nd();">Save PDB2</a></li>
+    </ul>
+  </div>
+
+<%else%>
+  <div id="resultactions" class="<%= @section["name"] %>">
+    <ul>
+      <li><a href="<%= url_for({:action => :export_ensemble_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Save first pdb file');" onmouseout="return nd();">Save PDB</a></li>
+    </ul>
+  </div>
+
+
+<%end%>
+
+<h3 class="<%= @section["name"] %>">Superposition</h3>
+
+
+<div class="row">
+<!--	<script type="text/javascript">
+var script1 = "select all;color grey;wireframe off;cartoon;select ligand;color magenta;spacefill;select solvent;spacefill off;define cat9 ;define cat8 ;define cat7 ;define cat6 ;define cat5 ;define cat4 ;define cat3 ;define cat2 ;define cat1 ;define match cat9 or cat8 or cat7 or cat6 or cat5 or cat4 or cat3 or cat2 or cat1;select cat7, cat8, cat9;wireframe 250;select match;";
+var script2 = "select all;color grey;wireframe off;cartoon;select ligand;color magenta;spacefill;select solvent;spacefill off;define cat9 ;define cat8 ;define cat7 ;define cat6 ;define cat5 ;define cat4 ;define cat3 ;define cat2 ;define cat1 ;define match cat9 or cat8 or cat7 or cat6 or cat5 or cat4 or cat3 or cat2 or cat1;select cat7, cat8, cat9;wireframe 250;select match;";
+var script5 = "select all;color grey;wireframe off;cartoon;select ligand;color magenta;spacefill;select solvent;spacefill off;define cat9 ;define cat8 ;define cat7 ;define cat6 ;define cat5 ;define cat4 ;define cat3 ;define cat2 ;define cat1 ;define match cat9 or cat8 or cat7 or cat6 or cat5 or cat4 or cat3 or cat2 or cat1;select cat7, cat8, cat9;wireframe 250;select match;";
+var script6 = "select all;color grey;wireframe off;cartoon;select ligand;color magenta;spacefill;select solvent;spacefill off;define cat9 ;define cat8 ;define cat7 ;define cat6 ;define cat5 ;define cat4 ;define cat3 ;define cat2 ;define cat1 ;define match cat9 or cat8 or cat7 or cat6 or cat5 or cat4 or cat3 or cat2 or cat1;select cat7, cat8, cat9;wireframe 250;select match;";
+var script7 = "select all;color grey;wireframe off;cartoon;select ligand;color magenta;spacefill;select solvent;spacefill off;define cat9 ;define cat8 ;define cat7 ;define cat6 ;define cat5 ;define cat4 ;define cat3 ;define cat2 ;define cat1 ;define match cat9 or cat8 or cat7 or cat6 or cat5 or cat4 or cat3 or cat2 or cat1;select cat7, cat8, cat9;wireframe 250;select match;";
+ </script>
+
+ <script src="/javascripts/Jmol.js"></script><INPUT TYPE="button" VALUE="Reset" onClick="jmolScript('select all; color grey; spacefill off; cpk off; ribbons off; wireframe on; ')"> 
+<INPUT TYPE="button" VALUE="FRcons-lig" onClick="jmolScript(script1)"> 
+<INPUT TYPE="button" VALUE="FRcons-cat" onClick="jmolScript(script7)"> 
+<INPUT TYPE="button" VALUE="FRtrace" onClick="jmolScript(script2)"> 
+<INPUT TYPE="button" VALUE="FRsubtype" onClick="jmolScript(script5)"> -->
+ <applet name="jmolApplet0" code="JmolApplet" archive="JmolApplet.jar" codebase="/applets/jmol" width="100%" height="100%" mayscript="true"> 
+ <param name="progressbar"   value="true" /> 
+ <param name="load" value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_1_all.pdb">
+ <param name="bgcolor" value="#FFFFFF"> 
+ <param name="style" value="shaded"> 
+ <param name="perspectiveDepth" value="true"> 
+ <param name="script" value="select all;color darkorange; wireframe off; cartoon; spacefill off; model 0;">
+</applet>
+
+</div>
+
+<!--<P style="margin-top: 10px;" ALIGN="Center">
+<TABLE BORDER=0 ALIGN="center">
+<TR>
+        <TD>
+        <APPLET codebase="/applets/Chemis3D/" ARCHIVE="Chemis3D.jar" CODE="Chemis3D.class" NAME="C3D" WIDTH="550" HEIGHT="550" ALT='Problem! Check your Security Options. There is a Java applet here. To use it, you need a Java aware browser with Java enabled.'>
+                <PARAM NAME="model" VALUE="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_1_fit.pdb">
+                <PARAM NAME="model" VALUE="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_2_fit.pdb">
+		<PARAM NAME="format" VALUE="x-pdb">
+                <PARAM NAME="display" VALUE="backbone">
+                <PARAM NAME="color" VALUE="group">
+        </APPLET><BR>
+        </TD>
+</TR>
+<TR>
+<TD VALIGN="top"  ALIGN="center">
+        <FORM NAME="manipulateform">&nbsp; &nbsp;
+
+        <INPUT TYPE=radio NAME="manipulate" VALUE="Rotate" CHECKED Onclick="javascript:document.C3D.setMouse(this.value)"> <b>Rotate</b> &nbsp; &nbsp; &nbsp;
+                   &nbsp; &nbsp;
+        <INPUT TYPE=radio NAME="manipulate" VALUE="Zoom" Onclick="javascript:document.C3D.setMouse(this.value)"><b>Scale</b> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+        <INPUT TYPe=radio NAME="manipulate" VALUE="Translate" Onclick="javascript:document.C3D.setMouse(this.value)"><b>Translate</b> &nbsp; &nbsp; &nbsp;
+        </FORM>
+</TD>
+</TR>
+</TABLE>
+</P>
+
+<p><br><b>
+<ul>
+<li>Click the right mouse key to change the style (wireframe, stick, ball,...), coloring (CPK, group, temperature,...) and more.<br><br>
+<li>For documentation on the Chemis3D Java applet please go to <a target="_blank" href="http://www.mol3d.com">http://www.mol3d.com</a><br>
+</ul>
+</b>-->
+
+
+<br/>
+
+<h3 class="<%= @section["name"] %>">Local Scales</h3>
+
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<div class="row">
+	<%@pic = "scales.png"%>
+	<p><img src="<%= @job.url_for_job_dir %>/<%=@pic%>" width="650px"></img></p><br/>
+        <!--<%@pic = "scales.png"%>
+	 <%= image_tag (@pic) %>-->
+</div>
+
+</form>

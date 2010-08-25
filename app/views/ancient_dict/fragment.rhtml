@@ -29,7 +29,7 @@
   </colgroup>
 
   <tr>
-    <td align="right">
+    <td align="center">
       <%= image_tag fragment.f_figure %>
     </td>
     <td>
@@ -46,31 +46,65 @@
 <br/>
 <%end%>
 <br/>
-<p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Occurrence (SCOP accession)</p>
+<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Occurrence (SCOP accession)</p>
+
+<%testscop=Dapoccurrence.find(:all, :conditions => ["f_id=?", @page])%>
+
+<%-scop_table=Array.new%>
+
+<%-testscop.each do |tsc|%>
+
+  <%-scop_entry=Scoparray.new%>
+
+  <%-tsc_desc=Dapscop.find(:first, :conditions => ["scop_id=?", tsc.scop_id]).scop_desc%>
+
+  <%-tsc_array = tsc.scop_id.split('.')%>
+
+  <%-tsc_array[0]%>
+  <%-first_tab = 0%>
+  <%tsc_array[0].each_byte do |thebyte|%>
+    <%-first_tab = (thebyte-96) * 10000000%>
+  <%end%>
+  <%-tsc_array[1]%>
+  <%-second_tab = tsc_array[1].to_i * 10000%>
+  <%-tsc_array[2]%>
+  <%-third_tab = tsc_array[2].to_i * 10%>
+  <%-complete=0%>
+  <%if tsc_array[3]%>
+    <%-forth_tab= tsc_array[3].to_i * 1%>
+    <%-complete = first_tab + second_tab + third_tab + forth_tab %>
+  <%else%>
+    <%-tsc_array[3]= 'oh'%>
+    <%-complete = first_tab + second_tab + third_tab %>
+  <%end%>
+
+  <%-scop_entry.sc_num=complete%>
+  <%-scop_entry.sc_id=tsc.scop_id%>
+  <%-scop_entry.sc_desc=tsc_desc%>
+
+  <%-scop_table.push(scop_entry)%>
+
+<%end%>
+
+<%scop_table = scop_table.sort_by {|a| a.sc_num}%>
+
 <table border="0" style="width=100%">
-  <!--<colgroup>
-   <col width="25%">
-   <col width="75%">
-  </colgroup>-->
-  <%Dapoccurrence.find(:all, :conditions => ["f_id=?", @page], :order => "scop_id").each do |scop|%>
-    <%if Dapscop.find(:first, :conditions => ["scop_id=?", scop.scop_id])%>
-    <tr>
-      <td style="font-size:12px">
-        <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=scop.scop_id%>"><%=scop.scop_id%></a>
+ <%scop_table.each do |scp|%>
+  <tr>
+    <td style="font-size:12px">
+      <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=scp.sc_id%>"><%=scp.sc_id%></a>
       </td>
       <td>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td style="font-size:12px">
-        <%=Dapscop.find(:first, :conditions => ["scop_id=?", scop.scop_id]).scop_desc%>
+        <%=scp.sc_desc%>
       </td>
     </tr>
     <%end%>
-  <% end %>
 </table>
 <br/>
 <br/>
-
 
 <!--<div><p style="font-size:14px; font-weight:bold;"><font face="monospace"><%=@alignment%></font></p></div>-->
 <p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Sequence Alignment</p>
