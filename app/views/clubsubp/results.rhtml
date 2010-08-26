@@ -7,17 +7,6 @@
 <%blast_parsed_outfile = File.join(@job.job_dir, @job.jobid+".temp")%>
 
 
-<script type="text/javascript">
-
-	function blast_query_toggle(id){
-	        var tab = document.getElementById(id);
-        	if (tab==null){ 
-			return; 
-		}
-	        var bExpand = tab.style.display == '';
-	        tab.style.display = (bExpand ? 'none' : '');
-	}
-</script>
 
 <div id="forward" style="display: none;">
 	<div class="row">
@@ -102,7 +91,10 @@
 								<%cluster_info=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", cols[2]])%>
 								<%cluster_subloc=Clubclstprediction.find(:first, :conditions => ["cluster=?", cluster_info.cluster])%>
 								<TH bgcolor='#97697C'>Subloc</TH><TD bgcolor='#E8E8E8' width='30%'><%=cluster_subloc.finalscl%></TD>  
-								<TD><A href="javascript:blast_query_toggle('<%=$query_count%>');">Blast details</A></TD>
+								<TD>
+									<BUTTON TYPE='button' onclick="clubsub_toggle('table<%=$query_count%>');clubsub_toggle('hide<%=$query_count%>');clubsub_toggle_hide('show<%=$query_count%>');"; id='show<%=$query_count%>'; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF";>Show details</BUTTON>
+									<BUTTON TYPE='button' onclick="clubsub_toggle_hide('table<%=$query_count%>');clubsub_toggle_hide('hide<%=$query_count%>');clubsub_toggle('show<%=$query_count%>');"; id='hide<%=$query_count%>'; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF;display:none">Hide details</BUTTON>
+								</TD>
 							<%end%>
 							<%if(cols[2]=~/No Hit/)%>
 								<TD></TD><TD width='30%'></TD><TD></TD>
@@ -111,7 +103,7 @@
 					</TABLE>
 				<%$i += 1%>
 				<%$count = 0%>
-				<TABLE border='0' cellpadding='2' cellspacing='3' width='100%'; id='<%=$query_count%>' style='display:none'>
+				<TABLE border='0' cellpadding='2' cellspacing='3' width='100%'; id='table<%=$query_count%>' style='display:none'>
 					<%until(@readFile[$i]=~/\/\//)%>
 						<%if($count == 0)%>
 							<TR bgcolor='#97697C'>
