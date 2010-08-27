@@ -1,0 +1,49 @@
+<a href="#" onClick="openHelpWindow('/clubsubp/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+
+<h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
+
+  <TABLE align='center' border='0' align='center' cellpadding='2' cellspacing='3' style="font-family: arial, 'lucida console', sans-serif">
+    <TR bgcolor='#97697C'>
+      <TH rowspan='2' width='180'><FONT color='white'>Cluster</TH>
+      <TH rowspan='2' width='100'><FONT color='white'>NCBI's GI</TH>
+      <TH rowspan='2' width='500'><FONT color='white'>Description</TH>
+      <TH colspan='2' width='200'><FONT color='white'>Subcellular location</TH>
+      <TH rowspan='2' width='300'><FONT color='white'>Conserved Over</TH>
+    </TR>
+    <TR bgcolor='#97697C'>
+      <TH><FONT color='white'>Cluster's</TH>
+      <TH><FONT color='white'>GI's</TH>
+    </TR>
+    
+    <%@gis=Array.new%>
+
+    <%Clubproteinheaderinfo.find(:all, :conditions => ["accession=?", @accession]).each do |accession|%>
+      <%@gis.push(accession.gi)%>
+    <%end%>
+
+
+    <%@gis.each do |gi_subloc|%>
+      <%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", gi_subloc])%>
+      <%giinfo=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", gi_subloc])%>
+      <TR bgcolor='#E8E8E8'>
+        <%if subloc%>
+          <%clst=Clubclstprediction.find(:first, :conditions => ["cluster=?", subloc.cluster])%>
+          <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=clst.cluster%>'><%=clst.cluster%></A></TD>
+          <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi_subloc%>'><%=gi_subloc%></A></TD>
+          <TD><%=giinfo.header%> </TD>
+          <TD><%=clst.finalscl%></TD>
+          <TD><%=subloc.subloc%></TD>
+          <TD><%=clst.conservedover%></TD>
+        <%else%>
+          <TD>Singleton</TD>
+          <TD><A HREF='http://www.ncbi.nlm.nih.gov/protein/<%=gi_subloc%>?report=genpept&log$=seqview'><%=gi_subloc%></A></TD>
+          <TD><%=giinfo.header%></TD>
+          <TD></TD><TD></TD><TD></TD>
+        <%end%>
+      </TR>
+    <%end%>
+  </TABLE>

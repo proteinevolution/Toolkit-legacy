@@ -22,7 +22,7 @@
 <% else %>
   <p style="font-size:14px; font-weight:bold;">Update Scop Entry</p>
   <%@scopinfo=Dapscop.find(:first, :conditions => ["scop_id=?", @scoppage])%>
-  <h3 style="font-size:12px;"><%=@scoppage%></h3>
+  <h3 style="font-size:12px;" class="<%= @section["name"] %>"><%=@scoppage%></h3>
 
   <div class="row">
     <%= form_label("Mysql ID (Do not change!!!)") %>

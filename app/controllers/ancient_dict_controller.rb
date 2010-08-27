@@ -240,4 +240,8 @@ in at least two folds."
 	@alignment.gsub!(/(\q)/, '</span>')
   end
 
+  def help_results
+    render(:layout => "help")
+  end
+
 end

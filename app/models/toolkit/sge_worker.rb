@@ -135,6 +135,7 @@
           end
           if RAILS_ENV == "development"
             f.write "echo 'Job #{id.to_s} DONE!' >> #{queue_job.action.job.statuslog_path}\n"
+            f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n" # naga
           end
           f.write "else\n"
           if (LOCATION == "Munich")

@@ -12,6 +12,10 @@
   <table border="0" style="width:100%">
   <%is_item=0%>
   <%DapfragmentDapkey.find(:all, :conditions => ["k_id=?", kwdname.k_id]).each do |fragkey|%>
+    <%if (Dapfragment.find(:first, :conditions => ["f_category='frag_AA'"]))|| (Dapfragment.find(:first, :conditions => ["f_category='frag_AB'"])) || (Dapfragment.find(:first, :conditions => ["f_category='frag_M'"]))%>
+    Test
+    <%end%>
+
     <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='frag_AA'", fragkey.f_id ]).each do |fragAA|%>
       <tr>
         <td style="font-size:12px; font-weight:bold; width:40%" >
@@ -45,6 +49,10 @@
       </tr>
       <%is_item=1%>
     <%end%>
+    <%if (Dapfragment.find(:first, :conditions => ["f_category='rep_AA'"]))|| (Dapfragment.find(:first, :conditions => ["f_category='rep_AB'"])) || (Dapfragment.find(:first, :conditions => ["f_category='rep_M'"]))%>
+    Test 2
+    <%end%>
+
     <%Dapfragment.find(:all, :conditions => ["f_id=? and f_category='rep_AA'", fragkey.f_id ]).each do |repAA|%>
       <tr>
         <td style="font-size:12px; font-weight:bold; width:40%" >
