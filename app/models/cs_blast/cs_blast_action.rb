@@ -1,3 +1,5 @@
+require 'ftools'
+
 class CsBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
@@ -41,6 +43,8 @@ class CsBlastAction < Action
     @outfile = @basename+".csblast"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @informat = params['informat'] ? params['informat'] : 'fas'
+    reformat(@informat, "fas", @infile)
+	File.copy(@infile, @basename+".in")	# necessary for resubmitting domains via slider
     @commands = []
 
     @inputmode = params['inputmode']

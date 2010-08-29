@@ -108,20 +108,21 @@ class CsBlastController < ToolController
   end
   
   def resubmit_domain
-    tmp_file = Tempfile.new(@job.id)
-    system(sprintf("%s/perl/alicutter.pl %s %s %d %d", BIOPROGS, File.join(@job.job_dir, 'sequence_file'), tmp_file.path, params[:domain_start].to_i, params[:domain_end].to_i));
+    basename = File.join(@job.job_dir, @job.jobid)
+    system(sprintf('%s/perl/alicutter.pl %s.in %s.in.cut %d %d', BIOPROGS, basename, basename, params[:domain_start].to_i, params[:domain_end].to_i));
 
     job_params = @job.actions.first.params
     job_params.each_key do |key|
       if (key =~ /^(\S+)_file$/) 
         if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
-          params[$1+'_input'] = tmp_file.readlines
+          params[$1+'_input'] = File.readlines(basename+'.in.cut')
         end
       else
         params[key] = job_params[key]
       end
     end
 
+	File.delete(basename+'.in.cut')
     params[:jobid] = ''
     index
     render(:action => 'index')

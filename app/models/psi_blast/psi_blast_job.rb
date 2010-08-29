@@ -167,8 +167,8 @@ class PsiBlastJob < Job
         if( line=~/^><a name =\s*(\S+?)>/i )
           id = $1
           @alignments << section if !section.nil?
-          section = { :id => id, :check => true, :content => [line] }
-        elsif( line=~/Expect =\s+(\S+)/ )
+          section = { :id => id, :check => false, :content => [line] }
+        elsif( line=~/Expect\s*=\s*(\S+)/ )
           evalue = $1
           if( !@ids.has_key?(section[:id]) )
             section[:check] = false
