@@ -26,7 +26,9 @@ class GcviewAction < Action
 
     @inputSequences = Array.new
 
-    @db_path = File.join(GCVIEW, 'tool.db')
+    #@db_path = File.join(GCVIEW, 'tool.db')
+
+    @db_path = File.join(DATABASES, 'gcview', 'tool.db')
     @show_number = params['show_number'] ? params['show_number'] : "10"
     @show_type = params['show_type'] ? params['show_type'] : "genes"
     @cut_off = params['evalue_cutoff'] ? params['evalue_cutoff'] : "1e-3"
@@ -191,7 +193,7 @@ class GcviewAction < Action
           blast_file = File.join(@tmpdir, "#{@inputSequences[i]}.#{jobending}")
           output_file = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
           @commands << "cp #{old_tmp_file} #{@tmpdir}"
-          @commands << "python #{GCVIEW}/psiblast_parser.py #{blast_file} #{output_file}"
+          @commands << "python #{GCVIEW}/psiblast_parser.py #{blast_file} #{output_file}" 
         end
       end
     end
@@ -206,7 +208,7 @@ class GcviewAction < Action
         output_file = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
         @commands << "#{BLAST}/blastpgp -a 4 -i #{@basename}_#{i+1}.in -F F -h 0.001 -s F -e 10 -M BLOSUM62 -G 11 -E 1 -j 1 -m 0 -v 100 -b 100 -T T -o #{psiblast_file} -d \"#{@database}\" -I T &> #{job.statuslog_path}"
         @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
-        @commands << "python #{GCVIEW}/psiblast_parser.py #{psiblast_file} #{output_file}"
+        @commands << "python #{GCVIEW}/psiblast_parser.py #{psiblast_file} #{output_file} &> #{job.statuslog_path}"
       end
     end
 
@@ -257,7 +259,7 @@ class GcviewAction < Action
       end
     end
 
-    @commands << "python #{GCVIEW}/tool.py #{@configfile}"
+    @commands << "python #{GCVIEW}/tool.py #{@configfile} &> #{job.statuslog_path}"
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end

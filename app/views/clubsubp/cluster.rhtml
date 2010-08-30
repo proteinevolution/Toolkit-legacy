@@ -1,0 +1,90 @@
+<a href="#" onClick="openHelpWindow('/clubsubp/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+
+<h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
+
+<H5>Cluster <%=@name%></H5>
+
+
+<P><TABLE width='40%' style='float:left'><TR bgcolor='#97697C'><TH><font color='white'>Cluster's Subcellular Localization</TH><TH><font color='white'>Score</TH></font></TR>
+
+
+<%Clubclstprediction.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
+  <TR bgcolor='#D5C8D1'><TD>Extracellular</TD><TD><%=cluster_name.surfaceexposed%></TD></TR>
+  <TR bgcolor='#E2E0E1'><TD>Cytoplasmic transmembrane</TD><TD><%=cluster_name.cytomem%></TD></TR>
+  <TR bgcolor='#D5C8D1'><TD>Outer membrane beta-barrel</TD><TD><%=cluster_name.omp%></TD></TR>
+  <TR bgcolor='#E2E0E1'><TD>Cytoplasmic</TD><TD><%=cluster_name.cytoplasmic%></TD></TR>
+  <TR bgcolor='#D5C8D1'><TD>Periplasmic</TD><TD><%=cluster_name.periplasmic%></TD></TR>
+  <TR bgcolor='#E2E0E1'><TD>Lipoprotein</TD><TD><%=cluster_name.lipoprotein%></TD></TR>
+  <TR bgcolor='#D5C8D1'><TD>Unknown</TD><TD><%=cluster_name.unknown%></TD></TR>
+  <TR bgcolor='#B5A2AF'><TD>Cluster's subcellular localization</TD><TD><%=cluster_name.finalscl%></TD></TR>
+  </TABLE>
+
+<%= image_tag cluster_name.pnglink%>
+
+
+  <P><TABLE width='40%'><TR bgcolor='#97697C'><TH colspan='3'><FONT color='white'>About the Cluster</FONT></TH</TR>
+  <TR><TD>Cluster contains</TD><TD><%=cluster_name.clustersize%> sequences</TD></TR>
+  <TR><TD>SCL predicted for</TD><TD> <%=cluster_name.predicted%> sequences</TD></TR>
+  <TR><TD>Cluster sequences are conserved over</TD><TD><%=cluster_name.conservedover%></TD></TR>
+  </TABLE>
+
+
+<BR/><BR/>
+<P>
+<DIV id="aln_file">    
+  <button type="button" onClick="toggle_ali()"; value="Show alignment"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF">Cluster Alignment</button><BR><BR>
+</DIV>
+
+<DIV id="aln" style='display:none'; value="Hide alignment";>
+
+<%alignment_link=File.join(TOOLKIT_ROOT, 'public', cluster_name.alnlink)%>
+
+<%@aln_file=Array.new%>
+  <%File.open(alignment_link, "r").each do |line| %>
+    <%-@aln_file.push(line)-%>
+  <%end%>
+
+<PRE><%=@aln_file%></PRE>
+
+ </DIV></P>
+
+<%end%>
+
+<BR/><BR/>
+
+<P>
+  <TABLE  border='0', align='middle' >
+    
+    <TR bgcolor='#97697C'>
+      <FONT color='white'>
+      <TH rowspan='1'><FONT color='white'>Sequence</TH>
+      <TH rowspan='1'><FONT color='white'>RefSeq Header</TH>
+      <TH rowspan='1'><FONT color='white'>Organism</TH>
+      <TH rowspan='1'><FONT color='white'>Protein's Subcellular Prediction</TH>
+    </TR>
+    </FONT>
+    
+
+    <%@gis=Array.new%>
+
+    <%Clubproteinheaderinfo.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
+      <%@gis.push(cluster_name.gi)%>
+    <%end%>
+
+
+    <%@gis.each do |gi_pred|%>
+      <%protein=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", gi_pred])%>
+      <TR bgcolor='#E8E8E8'>
+        <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi_pred%>'><%=gi_pred%></A></TD>
+        <TD><%=protein.header%></TD>
+        <TD><%=protein.organism%></TD>
+        <%clst=Clubgiprediction.find(:first, :conditions => ["gi=?", gi_pred])%>
+        <TD><%=clst.subloc%></TD>
+      </TR>
+    <%end%>
+  </TABLE>
+</P>

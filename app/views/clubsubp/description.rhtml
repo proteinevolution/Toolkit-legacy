@@ -1,0 +1,14 @@
+<a href="#" onClick="openHelpWindow('/clubsubp/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+
+<h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
+
+<div>
+  <h5><br/>ClubSub-P is clustering based meta-prediction of subcellular localization (SCL) database for gram negative bacterial proteins<br/></h5>
+Gene prediction programs show severe start codon assignment problems. Secretory signals which are present at the N-terminal region will be missed or wrongly interpreted in cases where the start codon is assigned wrongly, leading to a wrong subcellular localization prediction. Integrating information from multiple proteomes will reduce the N-terminal misassignment problem and increase the reliability of signal peptide prediction, where quality of the prediction not only depends on the performance of the tool, but also on the quality of the input sequences. In addition to protein's SCL prediction, protein clustering was performed and SCL was assigned to each cluster by averaging its member's SCL.
+</div>
+
+</form>

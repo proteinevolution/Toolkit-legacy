@@ -1,0 +1,56 @@
+<a href="#" onClick="openHelpWindow('/clubsubp/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+
+<h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
+
+<h3 class="<%= @section["name"]%>">Keyword Search</h3>
+
+	<div class="row">
+	        <%= form_label("Enter a keyword or GI number to search", "input") %>
+		<%= form_text_field("text_search", "", "", 30) %>
+	</div>
+
+<div class="spacer">&nbsp;</div>
+
+
+<h3 class="<%= @section["name"] %>">Blast Search</h3>
+	<div class="row">
+		<%= form_label("Paste input sequence <BR> (Max. 20 sequence)", "input") %>
+		<%= form_text_area("sequence_input") %>
+	</div>
+	<div class="spacer">&nbsp;</div>
+	<div class="row">
+        	<%= form_label("or upload a local file", "input") %>
+		<%= form_file("sequence_file")%>
+	</div>
+
+<div class="spacer">&nbsp;</div>
+
+
+<h3 class="<%= @section["name"] %>">Options for blast search</h3>
+	<div class="row">
+        	<%= form_label("Min., query-sequence length to be covered", "quseqleng") %>
+	        <%= form_text_field("qlvalue", '75','%') %>
+	</div>
+	<div class="row">
+	        <%= form_label("Min., hit-sequence length to be covered", "Hitseqleng") %>
+        	<%= form_text_field("hlvalue", '75', '%') %>
+	</div>
+	<div class="row">
+	   <%= form_label("Min., sequence identity threshold","pitsdt")%>
+	   <%= form_text_field("pvalue", '40', '%') %>
+	</div>
+
+<div class="spacer">&nbsp;</div>
+
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

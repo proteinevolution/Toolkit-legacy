@@ -10,7 +10,10 @@ class Gi2seqController < ToolController
     @std_dbs_paths.uniq!
     @std_dbs_paths.sort!
     @std_dbs_labels = @std_dbs_paths.map() {|p| (File.basename(p))}
-    
+
+    @gi = params['gi'] ? params['gi'] : ""
+    @oldjob = params['parentjob'] ? params['parentjob'] : ""
+
   end
   
   def results
@@ -18,12 +21,12 @@ class Gi2seqController < ToolController
                   fw_to_tool_url('gi2seq', 'clustalw'), fw_to_tool_url('gi2seq', 'kalign'),
                   fw_to_tool_url('gi2seq', 'mafft'), fw_to_tool_url('gi2seq', 'muscle'),		              
                   fw_to_tool_url('gi2seq', 'patsearch'), fw_to_tool_url('gi2seq', 'probcons'),		              		              
-                  fw_to_tool_url('gi2seq', 'reformat')]
+                  fw_to_tool_url('gi2seq', 'reformat'), fw_to_tool_url('gi2seq', 'clubsubp')]
     @fw_labels = [tool_title('blastclust'), tool_title('clans'), 
                   tool_title('clustalw'), tool_title('kalign'),
                   tool_title('mafft'), tool_title('muscle'),
                   tool_title('patsearch'), tool_title('probcons'),		              		              
-                  tool_title('reformat')] 
+                  tool_title('reformat'), tool_title('clubsubp')] 
     @fullscreen = true
   end
   

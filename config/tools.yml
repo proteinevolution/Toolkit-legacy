@@ -362,6 +362,12 @@
   - member
   - internal
   - external
+- name: clubsubp
+  title: ClubSub-P
+  title_long: Cluster-based Subcellular localisation prediction
+  section: classification
+  active: 
+  - internal
 - name: gcview
   title: GCView
   title_long: Genomic Context Viewer
