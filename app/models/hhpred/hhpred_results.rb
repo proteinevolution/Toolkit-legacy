@@ -239,11 +239,11 @@ class HHpredJob  < Job
 		@resultsa.push("Repeat PSI-BLAST iterations until you have at least 10 sequences (if possible). ")
 		@resultsa.push("Use this seed alignment to jump-start HHpred.</font><br><br>")
 	elsif  prob>40 && prob < 90 && rand>0.8
-		@resultsa.push("<br><font color='blue'>\n<b>Need help to find out how to validate your hits? Click <a href=\"\#\" title=\"HHpred FAQs\" onclick=\"openHelpWindow('hhpred_help_faq','correct match');\">here.</a></b>\n</font>")
+		@resultsa.push("<br><font color='blue'>\n<b>Need help to find out how to validate your hits? Click <a href=\"\#\" title=\"HHpred FAQs\" onclick=\"openHelpWindow('help_faq','correct match');\">here.</a></b>\n</font>")
 	elsif rand > 0.8
 		@resultsa.push("<br><font color='darkgreen'> <b>Note: Corrupted alignments are the most common source of high-scoring false positives. Check the query alignment by clicking </font><font color='black'>Show Query Alignment</font><font color='darkgreen'> above. To check the template alignments use the <img src=\"$DOC_ROOTURL/images/hhpred/logo_template_ali.png\" height=\"15\" align=\"middle\" /> logos.</b></font>")
 	elsif  rand > 0.8
-		@resultsa.push("<br><font color='green'> <b>Need help on how to interpret your results? Click <a href=\"\#\" title=\"HHpred Results\" onclick=\"openHelpWindow('hhpred_help_results');\">here.</a></b></font>")
+		@resultsa.push("<br><font color='green'> <b>Need help on how to interpret your results? Click <a href=\"\#\" title=\"HHpred Results\" onclick=\"openHelpWindow('help_results');\">here.</a></b></font>")
 	end
 	
 	##############################################################################
@@ -401,12 +401,12 @@ class HHpredJob  < Job
 				a=$2  
 				t=$3	 
 				h=$4
-				line[b].sub(/#{family}/, "<a href=\"http:\/\/cathwww.biochem.ucl.ac.uk\/latest\/class#{c}\/#{a}\/#{t}\/#{h}\/index.html\" target=\"_blank\">#{family}<\/a>")
+				line[b].sub(/#{family}/, "<a href=\"http:\/\/www.cathdb.info\/cathnode\/#{c}.#{a}.#{t}.#{h}\" target=\"_blank\">#{family}<\/a>")
 		
 				# Link to CATH at protein level
 				template=~/^(\S\S)/ # first two letters, e.g. 1c
 				c=$1
-				line[b].sub(/#{template}/, "<a href=\"http:\/\/cathwww.biochem.ucl.ac.uk\/latest\/domains\/#{c}\/#{template}.html\" target=\"_blank\">#{template}<\/a>")
+				line[b].sub(/#{template}/, "<a href=\"http:\/\/www.cathdb.info\/\/domain\/#{template}\" target=\"_blank\">#{template}<\/a>")
 		
 			# SCOP identifier? (d3lkfa_,d3pmga1,d3pga1_,d3grs_3,g1m26.1,d1n7daa)
 			elsif template =~ /^[defgh](\d[a-z0-9]{3})([a-z0-9_\.])[a-z0-9_]$/ 
