@@ -36,10 +36,12 @@
 <BR/><BR/>
 <P>
 <DIV id="aln_file">    
-  <button type="button" onClick="toggle_ali()"; value="Show alignment"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF">Cluster Alignment</button><BR><BR>
+  <BUTTON type='button' onclick="clubsub_toggle('aln');clubsub_toggle('hide');clubsub_toggle_hide('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF"; id = 'show'>Show cluster Alignment</BUTTON>
+  <BUTTON type='button' onclick="clubsub_toggle_hide('aln');clubsub_toggle_hide('hide');clubsub_toggle('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none"; id='hide';>Hide cluster Alignment</BUTTON>
+  <BR><BR>
 </DIV>
 
-<DIV id="aln" style='display:none'; value="Hide alignment";>
+<DIV id="aln" style='display:none';>
 
 <%alignment_link=File.join(TOOLKIT_ROOT, 'public', cluster_name.alnlink)%>
 

@@ -88,10 +88,14 @@
           <BR>      
     
           <DIV id="sp_table">
-            <button type='button' onClick='toggle_sp_table()'; value='Show SP_table'; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF";>Prediction details</button>
-	 </DIV>
+  <BUTTON type='button' onclick="clubsub_toggle('sp');clubsub_toggle('hide');clubsub_toggle_hide('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF"; id = 'show'>Show cluster Alignment</BUTTON>
+  <BUTTON type='button' onclick="clubsub_toggle_hide('sp');clubsub_toggle_hide('hide');clubsub_toggle('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none"; id='hide';>Hide cluster Alignment</BUTTON>
 
-          <DIV id='sp' style='display:none';>
+	  </DIV>
+
+
+
+          <DIV id='sp'; style='display:none';>
 <!--
             <button type='button' onClick='toggle_sp_table()'; value='Hide SP_table'; style = "border: 1px solid #C9DBD8; background-color:#EBFAF8">Hide</button>
 -->

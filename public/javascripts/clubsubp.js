@@ -1,4 +1,4 @@
-function toggle_ali(){
+/**function toggle_ali(){
 
         if( $('aln_file').value=="Hide alignment" ){
                 Effect.Fade('aln');
@@ -32,6 +32,24 @@ function toggle_genome_tree(){
         }else{
                 Effect.Appear('tree');
                 $('genome_tree').value="Hide genome_tree";
+        }
+}
+**/
+
+
+function clubsub_toggle(id){
+	var tab = document.getElementById(id);
+        var bExpand = tab.style.display == 'none';
+        if(bExpand == true){
+        	tab.style.display = "";
+        }
+}
+
+function clubsub_toggle_hide(id){   
+	var tab = document.getElementById(id);
+        var bExpand = tab.style.display == '';
+        if(bExpand == true){
+        	tab.style.display = "none";
         }
 }
 
