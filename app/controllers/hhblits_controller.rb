@@ -5,18 +5,15 @@ class HhblitsController < ToolController
     @inputmode_labels = ["single FASTA sequence", "alignment"]
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
     @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
-    @maxit = ['1','2','3','4','5','6','8','10']
+    @maxit = ['1','2','3','4','5','6','7','8']
     @cov_minval = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90']
-    @epsiblastval = ['10', '100', '1000']
     @EvalHHblits  = ['1e-4', '1e-3', '1e-2', '0.1']
     @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
-    @ss_scoring_values = ['2', '0', '4']
-    @ss_scoring_labels = ['yes', 'no', 'predicted vs predicted only']
     @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
     
-    @dbvalues = [File.join(DATABASES, 'standard', 'nr20cons'),File.join(DATABASES, 'standard', 'nr30cons')]
-    @dbhhms = [File.join(DATABASES, 'nr20'),File.join(DATABASES, 'nr30')]
-    @dblabels = ['NR20','NR30']
+    @dbvalues = [File.join(DATABASES, 'nr20', 'nr20as219_x0.3_c4')]
+    @dbhhms = [File.join(DATABASES, 'nr20')]
+    @dblabels = ['NR20']
 
     @default_db = @dbvalues[0]
     @default_dbhhm = @dbhhms[0]
@@ -45,8 +42,8 @@ class HhblitsController < ToolController
                   fw_to_tool_url('hhblits', 'reformat') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'repper') + "&fw_mode=forward"]
 
-    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('cs_blast'), tool_title('seq2gi'), tool_title('hhblits'), tool_title('hhfilter'),
-                  tool_title('hhomp'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid'), tool_title('hhsenser'),
+    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('cs_blast'), tool_title('seq2gi'), tool_title('hhblits'), 
+                  tool_title('hhfilter'), tool_title('hhomp'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid'), tool_title('hhsenser'),
                   tool_title('psi_blast'), tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
   end
   
@@ -70,8 +67,8 @@ class HhblitsController < ToolController
                   fw_to_tool_url('hhblits', 'reformat') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'repper') + "&fw_mode=forward"]
 
-    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('cs_blast'), tool_title('seq2gi'), tool_title('hhblits'), tool_title('hhfilter'),
-                  tool_title('hhomp'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid'), tool_title('hhsenser'),
+    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('cs_blast'), tool_title('seq2gi'), tool_title('hhblits'), 
+                  tool_title('hhfilter'), tool_title('hhomp'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid'), tool_title('hhsenser'),
                   tool_title('psi_blast'), tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
   end
   
@@ -123,7 +120,7 @@ class HhblitsController < ToolController
     end_seq = params[:domain_end].to_i - start_seq
     start_ali = -1
     end_ali = 0
-    ali = FastaReader.new(File.join(@job.job_dir, @job.jobid + '.fasta'))
+    ali = FastaReader.new(File.join(@job.job_dir, @job.jobid + '.in'))
     ali.next do |h, s|
       while start_seq > 0
 	start_ali = start_ali + 1

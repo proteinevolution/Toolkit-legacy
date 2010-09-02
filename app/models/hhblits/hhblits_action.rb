@@ -2,14 +2,9 @@ class HhblitsAction < Action
   HHBLITS = File.join(BIOPROGS, 'hhblits')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   HH = File.join(BIOPROGS, 'hhpred')
-  BLAST = File.join(BIOPROGS, 'blast')
-  CSBLAST = File.join(BIOPROGS, 'hhblits')
-  CSBLASTDB = File.join(BIOPROGS, 'hhblits', 'K4000.lib')
   PSIPRED = File.join(BIOPROGS, 'psipred')
-
   
-  attr_accessor :jobid, :hhblits_dbs, :informat, :inputmode, :maxit, :ss_scoring,
-  					 :alignmode, :realign, :Epsiblastval, :mact, :maxseq, :width, :Pmin, :maxlines,
+  attr_accessor :jobid, :hhblits_dbs, :informat, :inputmode, :maxit, :alignmode, :realign, :mact, :maxseq, :width, :Pmin, :maxlines,
                 :sequence_input, :sequence_file, :mail, :otheradvanced
 
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
@@ -31,15 +26,16 @@ class HhblitsAction < Action
   
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)
-    @infile = @basename+".fasta"    
+    @infile = @basename+".in"    
     @outfile = @basename+".hhr"
+    @qhhmfile = @basename+".hhm"
     @a3m_outfile = @basename+"_out.a3m"
-    @hhm_outfile = @basename+"_out.hhm"
-    @a3mfile = @basename+".a3m"
-    @hhmfile = @basename+".hhm"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @informat = params['informat'] ? params['informat'] : 'fas'
-    reformat(@informat, "fas", @infile)
+    if (@informat != "a3m")
+      reformat(@informat, "fas", @infile)
+      @informat = "fas"
+    end
     @commands = []
 
     @dbs = params['hhblits_dbs']
@@ -47,12 +43,10 @@ class HhblitsAction < Action
         
     @maxit = params['maxit']
     @E_hhblits = params["EvalHHblits"]
-    @E_psiblast = params["Epsiblastval"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
     @ali_mode = params["alignmode"]
-    @ss_scoring = "-ssm #{params['ss_scoring']}"
     @realign = params["realign"] ? "-realign" : "-norealign"
-    @filter = params["nofilter"] ? "-nofilter" : ""
+    @filter = params["nofilter"] ? "-noaddfilter" : ""
     if @realign == '-norealign' 
       @mact = ''
     else
@@ -67,23 +61,9 @@ class HhblitsAction < Action
     @max_seqs = params["maxseq"]
     @aliwidth = params["width"]
     @v = 2
-    @diff = '-diff 100'
+    @diff = '-diff 1000'
     @local_dir = "/tmp"
 
-    # Input alignment?
-    @inputmode = "sequence"
-    seqs = 0
-    lines = IO.readlines(@infile)
-    lines.each do |line|
-      if line =~ /^>/
-        seqs += 1
-      end
-    end
-    if seqs > 1
-      @inputmode = "alignment"
-      @commands << "#{HH}/reformat.pl fas a3m #{@infile} #{@a3mfile} -M first -r"
-    end
-    
   end
 
   # Prepare FASTA files for 'Show Query Alignemt', HHviz bar graph, and HMM histograms 
@@ -91,7 +71,7 @@ class HhblitsAction < Action
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
     @commands << "#{HH}/hhfilter -i #{@a3m_outfile} -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 100"
     @commands << "#{HH}/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description 
-    
+7    
     # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
     @commands << "#{HH}/hhfilter -i #{@a3m_outfile} -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 50"
     @commands << "#{HH}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas"
@@ -107,17 +87,12 @@ class HhblitsAction < Action
   def perform
     params_dump
     
-    if (@inputmode == "alignment")
-      @commands << "#{HHBLITS}/hhblits -cpu 4 -v #{@v} -a3m #{@a3mfile} -hh #{HHBLITS} -db #{@dbs} -dbhhm #{@dbhhm} -blast #{BLAST}/bin -csblast #{CSBLAST} -csblast_db #{CSBLASTDB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -qhhm #{@hhmfile} -oa3m #{@a3m_outfile} -ohhm #{@hhm_outfile} -e_hh #{@E_hhblits} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
-    else
-      @commands << "#{HHBLITS}/hhblits -cpu 4 -v #{@v} -i #{@infile} -hh #{HHBLITS} -db #{@dbs} -dbhhm #{@dbhhm} -blast #{BLAST}/bin -csblast #{CSBLAST} -csblast_db #{CSBLASTDB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -qhhm #{@hhmfile} -oa3m #{@a3m_outfile} -ohhm #{@hhm_outfile} -e_hh #{@E_hhblits} -e_psi #{@E_psiblast} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
-    end
+    @commands << "#{HHBLITS}/hhblits -cpu 4 -v #{@v} -i #{@infile} -db #{@dbs} -dbhhm #{@dbhhm} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
 
     prepare_fasta_hhviz_histograms_etc    
     
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.reduced.fas #{@basename}.uc.fas -uc -r"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.uc.fas -o #{@basename}.j.fas"
-
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'cpus' => '4'})
