@@ -67,8 +67,8 @@
 <div style="display:<%= @show_more_options ? 'true' : 'none' %>;" id="more_options">    
 
   <div class="row">
-    <%= form_label("E-value threshold for PSI-BLAST prefiltering", "E_psiblast") %>
-    <%= form_select_single("Epsiblastval", @epsiblastval, @epsiblastval, '100') %>	
+    <%= form_label("Disable most filters (more sensitive, but slow!)", "no_filter") %>
+    <%= form_checkbox("nofilter", '1', false) %>
   </div>
 
   <div class="row">
@@ -79,16 +79,6 @@
   <div class="row">
     <%= form_label("Min. coverage of hits included in evolving profile", "cov_min") %>
     <%= form_select_single("cov_min", @cov_minval, @cov_minval, '0') %>
-  </div>
-  
-  <div class="row">
-    <%= form_label("Disable filters (more sensitive, but slow!)", "no_filter") %>
-    <%= form_checkbox("nofilter", '1', false) %>
-  </div>
-
-  <div class="row">
-    <%= form_label("Score secondary structure", "ss_scoring") %>
-    <%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, "2", "&nbsp;") %>	
   </div>
   
   <div class="hr">&nbsp;</div>
