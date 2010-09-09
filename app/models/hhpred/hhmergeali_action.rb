@@ -25,7 +25,38 @@ class HhmergealiAction < Action
     if @genomes_dbs.kind_of?(Array) then @genomes_dbs = @genomes_dbs.join(' ') end
 
     @dirs = @dbs + " " + @genomes_dbs
+
+    process_databases
+
     logger.debug "Dirs: #{@dirs}"
+
+  end
+
+  def process_databases
+
+    # Expand cdd and interpro as list of member databases
+    if (@dbs =~ /cdd_/)
+      ['pfam_*', 'smart_*', 'KOG_*', 'COG_*', 'cd_*'].each do |db|
+        db_path = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', db))[0]
+        if (!db_path.nil?)
+          @dbs += " " + db_path
+        end
+      end
+      @dbs.gsub!(/\s*\S+\/cdd_\S+\s+/, ' ')
+    end
+    if (@dbs =~ /interpro_/)
+      ['pfamA_*', 'smart_*', 'panther_*', 'tigrfam_*', 'pirsf_*', 'supfam_*', 'CATH_*'].each do |db|
+        db_path = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', db))[0]
+        if (!db_path.nil?)
+          @dbs += " " + db_path
+        end
+      end
+      @dbs.gsub!(/\s*\S+\/interpro_\S+\s+/, ' ')
+    end
+
+    # Replace pdb70_* with new version of pdb
+    newpdb = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pdb70_*'))[0]
+    @dbs.gsub!(/\S*pdb70_\S+/, newpdb)
 
   end
 
