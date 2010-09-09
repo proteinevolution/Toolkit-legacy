@@ -24,9 +24,9 @@ class HhmergealiAction < Action
     @genomes_dbs = pjob.params_main_action['genomes_hhpred_dbs'].nil? ? "" : pjob.params_main_action['genomes_hhpred_dbs']
     if @genomes_dbs.kind_of?(Array) then @genomes_dbs = @genomes_dbs.join(' ') end
 
-    @dirs = @dbs + " " + @genomes_dbs
-
     process_databases
+
+    @dirs = @dbs + " " + @genomes_dbs
 
     logger.debug "Dirs: #{@dirs}"
 
