@@ -42,7 +42,7 @@
 <br/>
 <%end%>
 <br/>
-<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Occurrence (SCOP accession)</p>
+<p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Occurrence (SCOP accession)</p>
 
 <%testscop=Dapoccurrence.find(:all, :conditions => ["f_id=?", @page])%>
 
@@ -102,7 +102,7 @@
 <br/>
 <br/>
 
-<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Sequence Alignment</p>
+<p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Sequence Alignment</p>
 <div style="width:700px; height:200px; overflow:auto;">
 <table border="0">
   <%Dapfragment.find(:all, :conditions => ["f_id=?", @page]).each do |itemalign|%>

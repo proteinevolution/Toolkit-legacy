@@ -177,7 +177,7 @@
 <br/>
 <%if Dapref.find(:first, :conditions => ["f_id=?", @page])%>
   <%if Dapref.find(:first, :conditions => ["f_id=?", @page]).r_reference != "NULL"%>
-    <p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">References</p>
+    <p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">References</p>
     <table border="0">
       <%Dapref.find(:all, :conditions => ["f_id=?", @page]).each do |ref|%>
       <tr>
