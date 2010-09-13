@@ -25,6 +25,10 @@
       <TD>Belongs to Cluster</TD>
       <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=protein.cluster%>'>Cluster <%=protein.cluster%></A></TD>
     </TR>
+    <TR>
+      <TD><B>Protein's Subcellular localization</B></TD>
+      <TD><B><%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", protein.gi])%><%=subloc.subloc%></B></TD>
+    </TR>
   </TABLE><BR>
 
   
@@ -32,7 +36,7 @@
     <P>
     <TABLE name='gi_details' width='100%' align='center'>
       <TR>
-        <TD width='15%' bgcolor='#A68B94'>Taxonomy</TD>
+        <TH width='15%' bgcolor='#A68B94'><B>Taxonomy</B></TH>
         <TD bgcolor='#E8E8E8'>
           <%=tax_tree.superkingdom %><BR/>
           <%=tax_tree.phylum %><BR/>
@@ -43,26 +47,19 @@
       </TR>
     
       <TR>
-        <TD bgcolor='#A68B94'>Organism</TD>
+        <TH bgcolor='#A68B94'><B>Organism</B></TH>
         <TD bgcolor='#E8E8E8'><A HREF='http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<%=tax_tree.taxon%>&lvl=3&lin=f&keep=1&srchmode=1&unlock'><%=protein.organism%></A></TD>
       </TR>
   
       <TR>
-        <TD bgcolor='#A68B94'>Subcellular localization</TD>
-        <TD bgcolor='#E8E8E8'>
-          <%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", protein.gi])%><%=subloc.subloc%>
-        </TD>
-      </TR>
-    
-      <TR>
-        <TD bgcolor='#A68B94'>Reason</TD>
+        <TH bgcolor='#A68B94'><B>Reason</B></TH>
         <TD bgcolor='#E8E8E8'>
           <%gi_comment=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%><%=gi_comment.reasons%>
         </TD>
       </TR>
 
       <TR>
-        <TD bgcolor='#A68B94'>Signal peptide (SP)</TD>
+        <TH bgcolor='#A68B94'><B>Signal peptide (SP)</B></TH>
         <TD bgcolor='#E8E8E8'>
           <%=gi_comment.spfound%><BR/><%=gi_comment.spcleaved%><BR><BR>
           
@@ -86,19 +83,19 @@
             </TR>
           </TABLE>
           <BR>      
-    
+   
           <DIV id="sp_table">
   <BUTTON type='button' onclick="clubsub_toggle('sp');clubsub_toggle('hide');clubsub_toggle_hide('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF"; id = 'show'>Show SP prediction details</BUTTON>
   <BUTTON type='button' onclick="clubsub_toggle_hide('sp');clubsub_toggle_hide('hide');clubsub_toggle('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none"; id='hide';>Hide SP prediction details</BUTTON>
 
 	  </DIV>
-
-
-
+         
           <DIV id='sp'; style='display:none';>
 <!--
             <button type='button' onClick='toggle_sp_table()'; value='Hide SP_table'; style = "border: 1px solid #C9DBD8; background-color:#EBFAF8">Hide</button>
 -->
+            <a href="#" onClick="openHelpWindow('/clubsubp/help_ov#sp');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><BR>
+
             <%metascl=Clubmetascl.find(:first, :conditions => ["gi=?", protein.gi])%>
             <TABLE style='text-align:center;' BORDER=1>
               <TR>
@@ -114,7 +111,6 @@
                 <TD colspan='3'><%=metascl.lipopspends%></TD>
                 <TD colspan='3'><%=metascl.lipopaftercleavage%></TD>
               </TR>
-           
               <TR>
                 <TD  bgcolor='#A68B94' rowspan='3'><B>Tat-Peptide</B></TD>
                 <TD colspan='7' style='text-align:center;'><B>TatP 1.0 Server</B></TD>
@@ -138,7 +134,6 @@
                 <TD colspan='2'><%=metascl.tatfindtwinrrpattern%></TD>
                 <TD colspan='2'><%=metascl.tatfindwhichrule%></TD>
               </TR>
-
               <TR>
                 <TD rowspan='4'  bgcolor='#A68B94'><B>General signal peptide</B></TD>
                 <TD colspan='8'><B>SignalP 3.0</B></TD>
@@ -199,7 +194,7 @@
           </DIV>
         </TD>
         <TR>
-          <TD bgcolor='#CC3300'>Comment</TD>
+          <TH bgcolor='#CC3300'><B>Comment</B></TH>
           <TD bgcolor='#E8E8E8'><%=gi_comment.comment%></TD>
         </TR>
       </TR>
@@ -210,7 +205,7 @@
      <%gicomments_display=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
     <TABLE width='100%' style='text-align:center';>
       <TR bgcolor='#CCCCCC'>
-        <TD rowspan='3' width='15%' style='text-align:left;'  bgcolor='#A68B94'>Outer membrane beta-barrel</TD>
+        <TH rowspan='3' width='15%' style='text-align:left;'  bgcolor='#A68B94'><B>Outer membrane beta-barrel</B></TH>
         <TD colspan='2'><B>BOMP</B></TD>
         <TD><B>PSORTb v.3.0</B></TD>
 	<TD><B>CELLO v2.5</B></TD>
@@ -237,7 +232,7 @@
 
     <TABLE width='100%' style='text-align:center;'>
       <TR bgcolor='#CCCCCC'>
-        <TD rowspan='3'  width='15%' style='text-align:left;'  bgcolor='#A68B94'>Transmembrane</TD>
+        <TH rowspan='3'  width='15%' style='text-align:left;'  bgcolor='#A68B94'><B>Transmembrane</B></TH>
         <TD colspan='2'><B>TMHMM 2.0</B></TD>
         <TD colspan='2'><B>Phobius</B></TD>
         <TD colspan='2'><B>HMMTOP 2.1</B></TD>
@@ -268,7 +263,7 @@
   
   <TABLE  width='100%' style='text-align:center;'>
       <TR bgcolor='#CCCCCC'>
-        <TD rowspan='2'  width='15%' style='text-align:left;'  bgcolor='#A68B94'>Extracellular</TD>
+        <TH rowspan='2'  width='15%' style='text-align:left;'  bgcolor='#A68B94'><B>Extracellular</B></TH>
         <TD ><B>PSORTb v.3.0. Extracellular Score</B></TD>
         <TD ><B>Type III signal peptide</B></TD>
       </TR>

@@ -6,24 +6,17 @@
 
 <h3 class="<%= @section["name"]%>">Browser the database</h3>
 
-<style type="text/css">
-	/*
-	Explorer Tree 1.4
-	*/
+<!-- 
+CALLING EXPLORER TREE JAVASCRIPT AND STYLE SHEET
+-->
 
-	/* Get the bullets inside their LI's, so they're clickable. */
-	ul.explorertree li { list-style-position: inside; }
-	ul.explorertree, ul.explorertree ul, ul.explorertree li { margin: 0; padding: 0; }
-	ul.explorertree ul { padding-left: 20px; } /* sublist indentation */
-	/* Set the bullet images */
-	ul.explorertree li { list-style-image: url(/images/explorertree-bullet.png); list-style-type: square; }
-	ul.explorertree li.explorertree-open { list-style-image: url(/images/minus.gif); list-style-type: circle; }
-	ul.explorertree li.explorertree-closed { list-style-image: url(/images/plus.gif); list-style-type: disc; }
-	/* Actually show and hide sublists */
-	ul.explorertree li.explorertree-open ul { display: block; }
-	ul.explorertree li.explorertree-closed ul { display: none; }
-</style>
+<script language='javascript' src="/javascripts/explorertree.js"></script>
+<link type='text/css' media='all' rel= 'stylesheet' href='/stylesheets/explorertree.css' />
 
+
+<!-- Taxonomy Tree starts here, Tree constructed using http://www.ncbi.nlm.nih.gov/Taxonomy/CommonTree/wwwcmt.cgi
+tool from NCBI
+-->
 
 <button type='button' onclick="explorerTreeCollapse('root')" style = "border: 1px solid #C2C2C2; background-color:#FFFFFF";>Collapse all</button>
 <button type='button' onclick="explorerTreeExpand('root')" style = "border: 1px solid #C2C2C2; background-color:#FFFFFF";>Expand all</button>
@@ -632,7 +625,7 @@
 </LI></UL>
 </LI></UL>
 </LI></UL>
-<UL><LI class='explorertree-open'>delta/epsilon subdivisions
+<UL><LI class='explorertree-open'>Delta/Epsilon subdivisions
 	<UL><LI >Epsilonproteobacteria
 	<UL><LI >Campylobacterales
 	<UL><LI >Campylobacteraceae

@@ -25,35 +25,40 @@
 
 <%= image_tag cluster_name.pnglink%>
 
-
-  <P><TABLE width='40%'><TR bgcolor='#97697C'><TH colspan='3'><FONT color='white'>About the Cluster</FONT></TH</TR>
-  <TR><TD>Cluster contains</TD><TD><%=cluster_name.clustersize%> sequences</TD></TR>
-  <TR><TD>SCL predicted for</TD><TD> <%=cluster_name.predicted%> sequences</TD></TR>
-  <TR><TD>Cluster sequences are conserved over</TD><TD><%=cluster_name.conservedover%></TD></TR>
+<!--<fieldset width='40%'>
+<legend><B>General Information</B></legend> -->
+  <P><TABLE width='40%'>
+    <TR bgcolor='#97697C'><TH colspan='3'><FONT color='white'>About the Cluster</FONT></TH</TR>
+    <TR><TD>Cluster contains</TD><TD><%=cluster_name.clustersize%> sequences</TD></TR>
+    <TR><TD>SCL predicted for</TD><TD> <%=cluster_name.predicted%> sequences</TD></TR>
+    <TR><TD>Cluster sequences are conserved over</TD><TD><%=cluster_name.conservedover%></TD></TR>
+    <TR><TD><B>Cluster's Subcellular Localization</B></TD><TD><B><%=cluster_name.finalscl%></B></TD></TR>
   </TABLE>
-
+<!--</fieldset> -->
 
 <BR/><BR/>
+
 <P>
-<DIV id="aln_file">    
-  <BUTTON type='button' onclick="clubsub_toggle('aln');clubsub_toggle('hide');clubsub_toggle_hide('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF"; id = 'show'>Show cluster Alignment</BUTTON>
-  <BUTTON type='button' onclick="clubsub_toggle_hide('aln');clubsub_toggle_hide('hide');clubsub_toggle('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none"; id='hide';>Hide cluster Alignment</BUTTON>
-  <BR><BR>
-</DIV>
+  <DIV id="aln_file">    
+    <legend>  <BUTTON type='button' onclick="clubsub_toggle('aln');clubsub_toggle('hide');clubsub_toggle_hide('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF"; id = 'show'>Show cluster Alignment</BUTTON>
+    <BUTTON type='button' onclick="clubsub_toggle_hide('aln');clubsub_toggle_hide('hide');clubsub_toggle('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none"; id='hide';>Hide cluster Alignment</BUTTON>
+    </legend>
+    <BR><BR>
+  </DIV>
 
-<DIV id="aln" style='display:none';>
+  <DIV id="aln" style='display:none';>
+  
+  <%alignment_link=File.join(TOOLKIT_ROOT, 'public', cluster_name.alnlink)%>
 
-<%alignment_link=File.join(TOOLKIT_ROOT, 'public', cluster_name.alnlink)%>
-
-<%@aln_file=Array.new%>
+  <%@aln_file=Array.new%>
   <%File.open(alignment_link, "r").each do |line| %>
-    <%-@aln_file.push(line)-%>
+      <%-@aln_file.push(line)-%>
   <%end%>
 
-<PRE><%=@aln_file%></PRE>
-
- </DIV></P>
-
+  <PRE><%=@aln_file%></PRE>
+   
+   </DIV>
+</P>
 <%end%>
 
 <BR/><BR/>
