@@ -46,7 +46,7 @@
 <br/>
 <%end%>
 <br/>
-<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Occurrence (SCOP accession)</p>
+<p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Occurrence (SCOP accession)</p>
 
 <%testscop=Dapoccurrence.find(:all, :conditions => ["f_id=?", @page])%>
 
