@@ -364,7 +364,7 @@
   - external
 - name: clubsubp
   title: ClubSub-P
-  title_long: Cluster-based Subcellular localisation prediction
+  title_long: Cluster-based Subcellular localization prediction
   section: classification
   active: 
   - internal
