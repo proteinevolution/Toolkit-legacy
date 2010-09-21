@@ -126,9 +126,10 @@ class CsBlastJob < Job
     	    #><a name = 4539527>
     	    when /><a name =\s*(\d+)>/
     	      @alignments << section if !section[:id].nil?
-    	      { :id => $1, :check => true, :content => [line] }
+    	      { :id => $1, :check => false, :content => [line] }
     	    # Score =  185 bits (470), Expect = 2e-46,   Method: Composition-based stats.
-    	    when /Expect = (\S+)/
+ 			# Score = 30.4 bits (68), Expect =   167,   Method: Composition-based stats.
+    	    when /Expect\s*=\s*(\S+)/
     	      evalue = $1
     	      if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f > E_THRESH
     	      	section[:check] = false

@@ -1,3 +1,5 @@
+require 'ftools'
+
 class NucBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
@@ -34,6 +36,7 @@ class NucBlastAction < Action
     @infile = @basename+".fasta"
     @outfile = @basename+".nucblast"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
+	File.copy(@infile, @basename+".in")	# necessary for resubmitting domains via slider
     @commands = []
 
     @program            = params['program']
