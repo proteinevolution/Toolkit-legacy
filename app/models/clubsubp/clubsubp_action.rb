@@ -51,7 +51,7 @@ class ClubsubpAction < Action
     if(!@infile.empty?)
       @commands << "#{BLAST}/blastall -p blastp -i #{@infile} -d #{DBPATH} -o #{@outfile} -I t &> #{job.statuslog_path}"
       @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
-      @commands << "/usr/bin/perl #{CLUB}/blast_parser.pl #{@outfile} #{@basename} #{@qlvalue} #{@hlvalue} #{@pvalue}>> #{job.statuslog_path}"
+      @commands << "/usr/bin/perl #{CLUB}/blast_parser.pl #{@outfile} #{@basename} #{@qlvalue} #{@hlvalue} #{@pvalue} >> #{job.statuslog_path}"
       @commands << "echo 'Blast output parsed !' >> #{job.statuslog_path}"
     end
    
