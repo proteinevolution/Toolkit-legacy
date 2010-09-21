@@ -1,20 +1,21 @@
 <h2><%= @tool['title'] %> Overview</h2> 
 <div>
    <br/><h5><br>ClubSub-P is clustering based meta-prediction of subcellular localization (SCL) database for gram negative bacterial proteins.<br/></h5>
-   <P>Newly synthesized proteins has to be translocated to its cellular compartments or secreted outside the cell for its normal function. This protein sorting across the cytoplsmic memebrane in gram negative bacteria usually requires a short stretch of secretory signals which are present at the N-terminal region of proteins. But there are few non-classical secretory pathways in gram negative bacteria which does  not require a secretory signal peptide for secretion across the inner membrane or both inner and outer membrane.</P><BR>
-   <P>Secretory signal peptide prediction is an important step in subcellular localization prediction. The quality of these prediction not only depends on the tool, but also depends on the quality of the input sequence. There are instance where the start codon is mis-predicted, a wrong N-terminal end. This leads to a false positive or false negative signal peptide prediction and which leads to a wrong subcellular localization annotation.</P><BR>
-   <P>The mis-prediction of signal peptide due to the start codon prediction errors can be reduced by integrating the signal peptide prediction from closely related sequences. To achieve this 157 gram negative bacterial proteomes were clustered and N-terminal signal peptide and  secondary structures were predicted for all the proteins and subcellular localization were assigned to proteins, which is later combined at cluster level to get cluster's subcellular localization.</P><BR>
+<P>Newly synthesized proteins have to be translocated to its cellular compartments or secreted outside the cell for its normal function. This protein sorting across the cytoplsmic memebrane in gram negative bacteria usually requires a short stretch of secretory signals which are present at the N-terminal region of proteins. But there are few non-classical secretory pathways in gram negative bacteria which does not require a secretory signal peptide for secretion across the membranes.</P></BR>
 
+<P>Secretory signal peptide prediction is an important step in determining subcellular localization. The quality of these prediction not only depends on the tools, but also depends on the quality of the input sequences. There are instance where the start codon is mis-predicted, a wrong N-terminal end which leads to a false positive or false negative signal peptide prediction and this further leads to a wrong subcellular localization annotation.</P></BR>
+
+<P>The mis-prediction of signal peptide due to the start codon prediction errors can be reduced by integrating the signal peptide prediction from closely related sequences. To achieve this 157 gram negative bacterial proteomes were clustered and N-terminal signal peptide and secondary structures were predicted and subcellular localization were assigned to proteins, which is later combined at cluster level to get cluster's subcellular localization.</P></BR>
 <H3 class="<%= @section["name"]%>">Clustering</H3>
-   <BR/><a href=http://www.bioinformatics.org/cd-hit/>CD-HIT</a> program was used for clustering the proteomes.<br/><br/>
+   <BR/><a href=http://www.bioinformatics.org/cd-hit/>CD-HIT</a> program was used for clustering the proteomes at 40% sequence identity and 80% coverage cutoffs to the longest representative sequence in the cluster.<br/><br/>
 
 <H3 class="<%= @section["name"]%>">Tools used in SCL prediction</H3>
-   <br/>ClubSub-P uses <a href=http://www.cbs.dtu.dk/services/SignalP/>SignalP 3.0</a>, <a href=http://www.cbs.dtu.dk/services/LipoP/>LipoP 1.0</a>, <a href=http://phobius.sbc.su.se/>Phobius</a>, <a href=http://www.predisi.de/>PrediSi</a>, <a href=http://www.cbs.dtu.dk/services/TMHMM/>TMHMM 2.0</a>, <a href=http://services.cbu.uib.no/tools/bomp>BOMP</a>, <a href=http://toolkit.tuebingen.mpg.de/hhomp>HHomp</a>, <a href=http://signalfind.org/tatfind.html>TaTFind 1.4</a>, <a href=http://www.cbs.dtu.dk/services/TatP/>TatP 1.0</a>, <a href=http://www.effectors.org/>Effective 1.0.1</a>, <a href=http://gecco.org.chemie.uni-frankfurt.de/T3SS_prediction/T3SS_prediction.html>T3SS_Prediction</a>, <a href="http://cello.life.nctu.edu.tw/">CELLO v.2.5</a> and <a href=http://www.psort.org/psortb/>PSORTbv.3.0.2</a> in the predicton pipline.<br/><br/>
+   <br/>ClubSub-P uses <a href=http://www.cbs.dtu.dk/services/SignalP/>SignalP 3.0</a>, <a href=http://www.cbs.dtu.dk/services/LipoP/>LipoP 1.0</a>, <a href=http://phobius.sbc.su.se/>Phobius</a>, <a href=http://www.predisi.de/>PrediSi</a>, <a href=http://www.cbs.dtu.dk/services/TMHMM/>TMHMM 2.0</a>, <a href="http://www.enzim.hu/hmmtop/">HMMTOP</a>, <a href=http://services.cbu.uib.no/tools/bomp>BOMP</a>, <a href=http://toolkit.tuebingen.mpg.de/hhomp>HHomp</a>, <a href=http://signalfind.org/tatfind.html>TaTFind 1.4</a>, <a href=http://www.cbs.dtu.dk/services/TatP/>TatP 1.0</a>, <a href=http://www.effectors.org/>Effective 1.0.1</a>, <a href=http://gecco.org.chemie.uni-frankfurt.de/T3SS_prediction/T3SS_prediction.html>T3SS_Prediction</a>, <a href="http://cello.life.nctu.edu.tw/">CELLO v.2.5</a> and <a href=http://www.psort.org/psortb/>PSORTbv.3.0.2</a> in the prediction pipeline.<br/><br/>
     
 <A name="sp"></a>
 <H3 class="<%= @section["name"]%>">Signal Peptide prediction</H3>
    <P><B>Lipoprotein signal peptide</B>
-      <BR>'Best prediction' in LipoP 1.0 was used to identify the <B>Lipoprotein signal peptides</B> in proteins. Since +2 retention signal is species specific and there is no better prediction for this, so the sequence after SPII cleavage site was provided in the results for user's interpretation to predict which membrane(inner/outer) the protein binds.
+      <BR>'Best prediction' in LipoP 1.0 was used to identify the <B>Lipoprotein signal peptides</B> in proteins. Since +2 retention signals are species specific and there is no enough experimental evidence to for a better classifier yet, so the sequence after SPII cleavage site was provided in the results for user's interpretation to predict which membrane(inner/outer) the protein binds.
       <BR><A href="http://www.cbs.dtu.dk/services/LipoP/LipoP1.0server.html#Output" target='_blank'>LipoP's Output format</A></P><BR>
    
    <P><B>TAT signal peptide</B>
@@ -26,7 +27,7 @@
       <BR><A HREF="http://www.cbs.dtu.dk/services/SignalP/output.php" target="_blank">SignalP's Output format</A>, <A HREF='http://phobius.sbc.su.se/instructions.html'>Phobius's Instruction page</A></P><BR>
    
    <P><B>T3SS signal peptide</B>
-      <BR>T3SS_prediction and Effective were used to identify <B>Type III secretion system peptides</B>. To reduce the false positive type III signal peptide prediction, T3SS was confirmed only when both Effective and T3SS_prediction were positive and their scores were also maximum.</P><BR> 
+      <BR>T3SS_prediction and Effective 1.0.1 were used to identify <B>Type III secretion system peptides</B>. To reduce the false positive T3SS signal peptide prediction, T3SS was confirmed only when both Effective 1.0.1 and T3SS_prediction were positive and their scores were also greater than 0.8.</P><BR> 
 
 <H3 class="<%= @section["name"]%>">Rules of subcellular localization annotation</H3>
    <h5>Periplasmic and Lipo proteins</h5>
@@ -36,8 +37,8 @@
      Proteins with a positive general secretory pathway signal peptide or TAT signal peptide, with a positive prediction from PSORTbv3.0's outer membrane or CELLOv2.5's outer membrane and a positive prediction from HHOmp or BOMP were necessary to confirm the annotation as outer membrane beta-barrel protein.<br/><br/>
 
    <H5>Transmembrane Proteins</H5>
-      Consenus TMHs prediction module needs at least 2 positive helix prediction for an amino acid position and this consensus TMH should  have a minimum length of 10aa to be assigned as consensus-TMH.<br/><br/>
+      Consensus TMHs prediction module needs at least 2 positive helix prediction for an amino acid position and this consensus prediction should have a minimum length of 10aa to be assigned as consensus TMH.<br/><br/>
 
    <H5>Extracellular Proteins</H5>
-      Protiens with a consensus T3SS signal peptide prediction or PSORTbv3.0's extracellular prediction were required to annotate proteins as extracellular.<br/><br/>
+      Consensus T3SS signal peptide prediction or PSORTbv3.0's extracellular prediction were required to annotate proteins as extracellular.<br/><br/>
 </div>

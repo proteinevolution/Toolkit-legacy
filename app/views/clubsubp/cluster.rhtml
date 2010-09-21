@@ -13,13 +13,13 @@
 
 
 <%Clubclstprediction.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
-  <TR bgcolor='#D5C8D1'><TD>Extracellular</TD><TD><%=cluster_name.surfaceexposed%></TD></TR>
-  <TR bgcolor='#E2E0E1'><TD>Cytoplasmic transmembrane</TD><TD><%=cluster_name.cytomem%></TD></TR>
-  <TR bgcolor='#D5C8D1'><TD>Outer membrane beta-barrel</TD><TD><%=cluster_name.omp%></TD></TR>
-  <TR bgcolor='#E2E0E1'><TD>Cytoplasmic</TD><TD><%=cluster_name.cytoplasmic%></TD></TR>
-  <TR bgcolor='#D5C8D1'><TD>Periplasmic</TD><TD><%=cluster_name.periplasmic%></TD></TR>
-  <TR bgcolor='#E2E0E1'><TD>Lipoprotein</TD><TD><%=cluster_name.lipoprotein%></TD></TR>
-  <TR bgcolor='#D5C8D1'><TD>Unknown</TD><TD><%=cluster_name.unknown%></TD></TR>
+  <TR bgcolor='#D5C8D1'><TD>Extracellular (E)</TD><TD><%=cluster_name.surfaceexposed%></TD></TR>
+  <TR bgcolor='#E2E0E1'><TD>Cytoplasmic transmembrane (TM)</TD><TD><%=cluster_name.cytomem%></TD></TR>
+  <TR bgcolor='#D5C8D1'><TD>Outer membrane beta-barrel (OMP)</TD><TD><%=cluster_name.omp%></TD></TR>
+  <TR bgcolor='#E2E0E1'><TD>Cytoplasm (C)</TD><TD><%=cluster_name.cytoplasmic%></TD></TR>
+  <TR bgcolor='#D5C8D1'><TD>Periplasm (P)</TD><TD><%=cluster_name.periplasmic%></TD></TR>
+  <TR bgcolor='#E2E0E1'><TD>Lipoprotein (L)</TD><TD><%=cluster_name.lipoprotein%></TD></TR>
+  <TR bgcolor='#D5C8D1'><TD>Unknown (U)</TD><TD><%=cluster_name.unknown%></TD></TR>
   <TR bgcolor='#B5A2AF'><TD>Cluster's subcellular localization</TD><TD><%=cluster_name.finalscl%></TD></TR>
   </TABLE>
 
@@ -39,29 +39,52 @@
 <BR/><BR/>
 
 <P>
-  <DIV id="aln_file">    
-    <legend>  <BUTTON type='button' onclick="clubsub_toggle('aln');clubsub_toggle('hide');clubsub_toggle_hide('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF"; id = 'show'>Show cluster Alignment</BUTTON>
-    <BUTTON type='button' onclick="clubsub_toggle_hide('aln');clubsub_toggle_hide('hide');clubsub_toggle('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none"; id='hide';>Hide cluster Alignment</BUTTON>
-    </legend>
-    <BR><BR>
+  <DIV id="aln_file">
+    <BUTTON type='button' onclick="clubsub_toggle_hide('seq');clubsub_toggle_hide('hideseq');clubsub_toggle('showseq');clubsub_toggle('aln');clubsub_toggle('hidealn');clubsub_toggle_hide('showaln');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; float:left"; id = 'showaln'>Show cluster alignment</BUTTON>
+    <BUTTON type='button' onclick="clubsub_toggle_hide('aln');clubsub_toggle_hide('hidealn');clubsub_toggle('showaln');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none; float:left"; id='hidealn';>Hide cluster alignment</BUTTON>
   </DIV>
 
-  <DIV id="aln" style='display:none';>
-  
-  <%alignment_link=File.join(TOOLKIT_ROOT, 'public', cluster_name.alnlink)%>
 
+  <DIV id="seq_file">
+    <BUTTON type='button' onclick="clubsub_toggle_hide('aln');clubsub_toggle_hide('hidealn');clubsub_toggle('showaln');clubsub_toggle('seq');clubsub_toggle('hideseq');clubsub_toggle_hide('showseq');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; float:right"; id = 'showseq'>Show cluster sequences</BUTTON>
+    <BUTTON type='button' onclick="clubsub_toggle_hide('seq');clubsub_toggle_hide('hideseq');clubsub_toggle('showseq');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none; float:right"; id='hideseq';>Hide cluster sequences</BUTTON>
+  </DIV>
+
+  <BR>
+  <DIV id="aln" style='display:none';>
+  <fieldset>
+  <BR>  
+  <%alignment_link=File.join(TOOLKIT_ROOT, 'public', cluster_name.alnlink)%>
+  
   <%@aln_file=Array.new%>
   <%File.open(alignment_link, "r").each do |line| %>
       <%-@aln_file.push(line)-%>
   <%end%>
 
   <PRE><%=@aln_file%></PRE>
-   
-   </DIV>
+  </BR>
+  </fieldset> 
+  </DIV>
+
+  <DIV id="seq" style="display:none;">
+  <BR><BR><BR>
+  <fieldset>
+  <BR>
+  <%seqfile_link=File.join(TOOLKIT_ROOT, 'public', cluster_name.seqlink)%>
+  <%@seq_file=Array.new%>
+  <%File.open(seqfile_link, "r").each do |line| %>
+      <%line.chomp!%>
+      <%-@seq_file.push(line)-%>
+      <pre><%=line%></br></pre>
+  <%end%>
+  </fieldset>
+  </DIV>
 </P>
+
 <%end%>
 
-<BR/><BR/>
+<BR><BR>
+
 
 <P>
   <TABLE  border='0', align='middle' >
@@ -72,16 +95,13 @@
       <TH rowspan='1'><FONT color='white'>RefSeq Header</TH>
       <TH rowspan='1'><FONT color='white'>Organism</TH>
       <TH rowspan='1'><FONT color='white'>Protein's Subcellular Prediction</TH>
+      </FONT>
     </TR>
-    </FONT>
     
-
     <%@gis=Array.new%>
-
-    <%Clubproteinheaderinfo.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
+      <%Clubproteinheaderinfo.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
       <%@gis.push(cluster_name.gi)%>
     <%end%>
-
 
     <%@gis.each do |gi_pred|%>
       <%protein=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", gi_pred])%>
