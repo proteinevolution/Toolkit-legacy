@@ -11,10 +11,10 @@
   <BR>
   <TABLE name='protein_datails' width='50%'>
     <TR>
-      <TD bgcolor='#736F6E' colspan='2' align='center'><FONT COLOR='white'>About the protein</TD>
+      <TD bgcolor='#736F6E' colspan='2' align='center'><FONT COLOR='white'><B>About the protein</B></TD>
     </TR>
     <TR>
-      <TD>Protein Name</TD>
+      <TD>Protein name</TD>
       <TD><%=protein.header%>&nbsp</TD>
     </TR>
     <TR>
@@ -22,11 +22,11 @@
       <TD><%=protein.gi%> <A HREF='http://www.ncbi.nlm.nih.gov/protein/<%=protein.gi%>?report=fasta&log$=seqview'>FASTA</A></TD>
     </TR> 
     <TR>
-      <TD>Belongs to Cluster</TD>
+      <TD>Belongs to cluster</TD>
       <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=protein.cluster%>'>Cluster <%=protein.cluster%></A></TD>
     </TR>
     <TR>
-      <TD><B>Protein's Subcellular localization</B></TD>
+      <TD><B>Protein's Subcellular localization (SCL)</B></TD>
       <TD><B><%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", protein.gi])%><%=subloc.subloc%></B></TD>
     </TR>
   </TABLE><BR>
@@ -34,10 +34,10 @@
   
   <%Clubtaxtree.find(:all, :conditions => ["accession=?", protein.accession]).each do |tax_tree|%>
     <P>
-    <TABLE name='gi_details' width='100%' align='center'>
+    <TABLE name='gi_details' align='center'>
       <TR>
-        <TH width='15%' bgcolor='#A68B94'><B>Taxonomy</B></TH>
-        <TD bgcolor='#E8E8E8'>
+        <TH width='80px' bgcolor='#A68B94'><B>Taxonomy</B></TH>
+        <TD bgcolor='#E8E8E8' width='700px'>
           <%=tax_tree.superkingdom %><BR/>
           <%=tax_tree.phylum %><BR/>
           <%=tax_tree.taxclass %><BR/>
@@ -47,21 +47,20 @@
       </TR>
     
       <TR>
-        <TH bgcolor='#A68B94'><B>Organism</B></TH>
-        <TD bgcolor='#E8E8E8'><A HREF='http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<%=tax_tree.taxon%>&lvl=3&lin=f&keep=1&srchmode=1&unlock'><%=protein.organism%></A></TD>
+        <TH bgcolor='#A68B94' width='80px'><B><BR>Organism</B></TH>
+        <TD bgcolor='#E8E8E8'><A HREF='http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<%=tax_tree.taxon%>&lvl=3&lin=f&keep=1&srchmode=1&unlock'><BR><%=protein.organism%></A></TD>
       </TR>
-  
       <TR>
-        <TH bgcolor='#A68B94'><B>Reason</B></TH>
+        <TH bgcolor='#A68B94' width='80px'><B><BR>Reason</B></TH>
         <TD bgcolor='#E8E8E8'>
-          <%gi_comment=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%><%=gi_comment.reasons%>
+          <BR><%gi_comment=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%><%=gi_comment.reasons%>
         </TD>
       </TR>
 
       <TR>
-        <TH bgcolor='#A68B94'><B>Signal peptide (SP)</B></TH>
+        <TH bgcolor='#A68B94' width='80px'><B>Signal peptide (SP)</B></TH>
         <TD bgcolor='#E8E8E8'>
-          <%=gi_comment.spfound%><BR/><%=gi_comment.spcleaved%><BR><BR>
+          <BR><%=gi_comment.spfound%><BR/><%=gi_comment.spcleaved%><BR><BR>
           
           <%spprediction=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
           <TABLE style='text-align:center;' BORDer=0 width='100%'>
@@ -97,7 +96,7 @@
             <a href="#" onClick="openHelpWindow('/clubsubp/help_ov#sp');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><BR>
 
             <%metascl=Clubmetascl.find(:first, :conditions => ["gi=?", protein.gi])%>
-            <TABLE style='text-align:center;' BORDER=1>
+            <TABLE style='text-align:center;' BORDER=1 width='80%'>
               <TR>
                 <TD bgcolor='#A68B94' rowspan='2'><B>Lipo-Peptide (LipoP 1.0)</B></TD>
                 <TD colspan='3'>Best prediction</TD>
@@ -118,7 +117,7 @@
               </TR>
               <TR>
                 <TD colspan='1'>Prediction</TD>
-                <TD colspan='2'>MaxDsore</TD>
+                <TD colspan='2'>MaxD score</TD>
                 <TD colspan='2'>Signal peptide ends</TD>
                 <TD colspan='2'>Comment</TD>
                 <TD colspan='1'>Prediction</TD>
@@ -147,7 +146,7 @@
               <TR>
                 <TD>Prediction</TD>
 <!--            <TD>MaxYscore</TD> -->
-                <TD>MaxDscore</TD>  
+                <TD>MaxD score</TD>  
                 <TD colspan='2'>Signal peptide ends</TD>
                 <TD>Prediction</TD>
                 <TD>Cleavage site probability</TD>
@@ -194,8 +193,8 @@
           </DIV>
         </TD>
         <TR>
-          <TH bgcolor='#CC3300'><B>Comment</B></TH>
-          <TD bgcolor='#E8E8E8'><%=gi_comment.comment%></TD>
+          <TH bgcolor='#CC3300' width='80px'><B><BR>Comment</B></TH>
+          <TD bgcolor='#E8E8E8'><BR><%=gi_comment.comment%></TD>
         </TR>
       </TR>
     </TABLE>
@@ -203,7 +202,7 @@
 
      <%omp_display=Clubgioutextratmdisplay.find(:first, :conditions => ["gi=?", protein.gi])%>
      <%gicomments_display=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
-    <TABLE width='100%' style='text-align:center';>
+    <TABLE width='100%' style='text-align:center;'>
       <TR bgcolor='#CCCCCC'>
         <TH rowspan='3' width='15%' style='text-align:left;'  bgcolor='#A68B94'><B>Outer membrane beta-barrel</B></TH>
         <TD colspan='2'><B>BOMP</B></TD>
