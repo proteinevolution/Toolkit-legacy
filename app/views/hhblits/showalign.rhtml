@@ -31,10 +31,16 @@
   <br/>
 </div>
 
+<div class="row">
+  <%= form_label("Alignment format", "") %>
+  <%= form_select_single("format", ["/hhblits/showalign/#{@job.jobid}?mode=fas", "/hhblits/showalign/#{@job.jobid}?mode=a3m"], ['FASTA', 'A3M'], "/hhblits/showalign/#{@job.jobid}?mode=#{@mode}", 1, "location.href=this.options[this.selectedIndex].value") %>
+  <%= form_hidden_field("hhblits_format", @mode) %>
+</div>
+
 <div class="spacer">&nbsp;</div>
 
 <div class="row">
-  <%= text_area_tag("result_textbox_to_file", @job.render_file(@job.jobid+".fas"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
+  <%= text_area_tag("result_textbox_to_file", @job.render_file(@resfile), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
 </div>
 
 </form>

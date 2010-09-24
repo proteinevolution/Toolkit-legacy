@@ -110,6 +110,9 @@ class PcoilsAction < Action
     
       # prepare for gnuplot
       @commands << "#{PCOILS}/prepare_for_gnuplot.pl #{@basename} #{@psipred} #{@inputmode} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28 #{@horizfile}"
+      
+      # generate numerical output
+      @commands << "#{PCOILS}/create_numerical.rb -i #{@basename}"
     end
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)

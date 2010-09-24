@@ -74,6 +74,11 @@ class HhblitsController < ToolController
   
   def showalign
     @widescreen = true
+    @resfile = @job.jobid+".fas"
+    @mode = params['mode'] ? params['mode'] : "a3m"
+    if (@mode == "a3m")
+      @resfile = @job.jobid+"_out.a3m"
+    end
   end
 
   def results_showtemplalign

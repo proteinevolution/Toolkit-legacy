@@ -15,7 +15,7 @@ class HhblitsForwardAction < Action
 
       @forwardfile = File.join(job.job_dir, job.jobid + ".forward")
       @hhrfile = File.join(job.job_dir, job.jobid + ".hhr")
-      @queryfile = File.join(job.job_dir, job.jobid + ".fasta")
+      @queryfile = File.join(job.job_dir, job.jobid + ".in")
 
       @command = "#{HH}/hhmakemodel.pl -i #{@hhrfile} -a3m #{@forwardfile} -q #{@queryfile}"
       if (params['includehits'] == "byevalue")
@@ -44,7 +44,11 @@ class HhblitsForwardAction < Action
       end
       res.gsub!(/>ss_pred.*?\n(.*\n)*?>/, '>')
       res.gsub!(/>ss_conf.*?\n(.*\n)*?>/, '>')
-      hash = { 'sequence_input' => res, 'maxpsiblastit' => '0' }
+      informat = "fas"
+      if (params['hhblits_format'] == "a3m")
+        informat = "a3m"
+      end
+      hash = { 'sequence_input' => res, 'maxpsiblastit' => '0', 'informat' => informat }
     else
       filename = File.join(job.job_dir, job.jobid + ".forward")
       res = ""
