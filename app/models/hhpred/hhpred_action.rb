@@ -29,8 +29,10 @@ class HhpredAction < Action
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
     @commands = []
     @informat = params['informat'] ? params['informat'] : 'fas'
-    reformat(@informat, "fas", @seqfile)
-    @informat = "fas"
+    if (@informat != "a3m")
+      reformat(@informat, "fas", @seqfile)
+      @informat = "fas"
+    end
 
     @dbs = params['hhpred_dbs'].nil? ? "" : params['hhpred_dbs']
     if @dbs.kind_of?(Array) then @dbs = @dbs.join(' ') end
