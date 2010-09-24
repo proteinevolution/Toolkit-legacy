@@ -9,8 +9,8 @@
 <h3 class="<%= @section["name"]%>">Keyword Search</h3>
 
 	<div class="row">
-	        <%= form_label("Enter a keyword or GI number to search", "input") %>
-		<%= form_text_field("text_search", "", "", 30) %>
+	        <%= form_label("Enter the Keywords", "input") %>
+		<%= form_text_field("text_search", "", "Protein name, GI numbers", 30) %>
 	</div>
 
 <div class="spacer">&nbsp;</div>
@@ -18,7 +18,7 @@
 
 <h3 class="<%= @section["name"] %>">Blast Search</h3>
 	<div class="row">
-		<%= form_label("Paste input sequence <BR> (Max. 20 sequence)", "input") %>
+		<%= form_label("Paste input sequence <BR> (Max. 100 sequences)", "input") %>
 		<%= form_text_area("sequence_input") %>
 	</div>
 	<div class="spacer">&nbsp;</div>
@@ -32,15 +32,15 @@
 
 <h3 class="<%= @section["name"] %>">Options for blast search</h3>
 	<div class="row">
-        	<%= form_label("Min., query-sequence length to be covered", "quseqleng") %>
+        	<%= form_label("Min. query-sequence length to be covered", "quseqleng") %>
 	        <%= form_text_field("qlvalue", '75','%') %>
 	</div>
 	<div class="row">
-	        <%= form_label("Min., hit-sequence length to be covered", "Hitseqleng") %>
+	        <%= form_label("Min. hit-sequence length to be covered", "Hitseqleng") %>
         	<%= form_text_field("hlvalue", '75', '%') %>
 	</div>
 	<div class="row">
-	   <%= form_label("Min., sequence identity threshold","pitsdt")%>
+	   <%= form_label("Min. sequence identity threshold","pitsdt")%>
 	   <%= form_text_field("pvalue", '40', '%') %>
 	</div>
 
