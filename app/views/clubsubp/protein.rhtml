@@ -58,7 +58,7 @@
       </TR>
 
       <TR>
-        <TH bgcolor='#A68B94' width='80px'><B>Signal peptide (SP)</B></TH>
+        <TH bgcolor='#A68B94' width='80px'><B>Signal peptides (SP)</B></TH>
         <TD bgcolor='#E8E8E8'>
           <BR><%=gi_comment.spfound%><BR/><%=gi_comment.spcleaved%><BR><BR>
           
@@ -84,8 +84,8 @@
           <BR>      
    
           <DIV id="sp_table">
-  <BUTTON type='button' onclick="clubsub_toggle('sp');clubsub_toggle('hide');clubsub_toggle_hide('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF"; id = 'show'>Show SP prediction details</BUTTON>
-  <BUTTON type='button' onclick="clubsub_toggle_hide('sp');clubsub_toggle_hide('hide');clubsub_toggle('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none"; id='hide';>Hide SP prediction details</BUTTON>
+  <BUTTON type='button' onclick="clubsub_toggle('sp');clubsub_toggle('hide');clubsub_toggle_hide('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; float:left;"; id = 'show'>Show SP prediction details</BUTTON>
+  <BUTTON type='button' onclick="clubsub_toggle_hide('sp');clubsub_toggle_hide('hide');clubsub_toggle('show');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none; float:left;"; id='hide';>Hide SP prediction details</BUTTON>
 
 	  </DIV>
          
@@ -96,9 +96,12 @@
             <a href="#" onClick="openHelpWindow('/clubsubp/help_ov#sp');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><BR>
 
             <%metascl=Clubmetascl.find(:first, :conditions => ["gi=?", protein.gi])%>
-            <TABLE style='text-align:center;' BORDER=1 width='80%'>
+            <TABLE style='text-align:center;' BORDER=0 width='100%' bgcolor='white'>
               <TR>
-                <TD bgcolor='#A68B94' rowspan='2'><B>Lipo-Peptide (LipoP 1.0)</B></TD>
+                <TD bgcolor='#A68B94' rowspan='3' width='60px'><B>Lipo SP</B></TD>
+                <TD colspan='12' bgcolor='#CCCCCC'><B>LipoP 1.0</B></TD>
+              </TR>
+              <TR bgcolor='#E8E8E8'>
                 <TD colspan='3'>Best prediction</TD>
                 <TD colspan='3'>Margin</TD>
                 <TD colspan='3'>Signal peptide ends</TD>
@@ -111,12 +114,12 @@
                 <TD colspan='3'><%=metascl.lipopaftercleavage%></TD>
               </TR>
               <TR bgcolor='white'><TD colspan='13'><BR></TD></TR>
-              <TR>
-                <TD  bgcolor='#A68B94' rowspan='3'><B>Tat-Peptide</B></TD>
+              <TR bgcolor='#CCCCCC'>
+                <TD  bgcolor='#A68B94' rowspan='3'><B>TAT SP</B></TD>
                 <TD colspan='7' style='text-align:center;'><B>TatP 1.0 Server</B></TD>
                 <TD style='text-align:center;' colspan='5'><B>TatFind 1.4</B></TD>
               </TR>
-              <TR>
+              <TR bgcolor='#E8E8E8'>
                 <TD colspan='1'>Prediction</TD>
                 <TD colspan='2'>MaxD score</TD>
                 <TD colspan='2'>Signal peptide ends</TD>
@@ -135,17 +138,17 @@
                 <TD colspan='2'><%=metascl.tatfindwhichrule%></TD>
               </TR>
               <TR bgcolor='white'><TD colspan='13'><BR></TD></TR>
-              <TR>
-                <TD rowspan='4'  bgcolor='#A68B94'><B>General signal peptide</B></TD>
+              <TR bgcolor='#CCCCCC'>
+                <TD rowspan='4'  bgcolor='#A68B94'><B>General SP</B></TD>
                 <TD colspan='8'><B>SignalP 3.0</B></TD>
                 <TD colspan='2' rowspan='2'><B>PrediSi server</B></TD>
                 <TD colspan='2' rowspan='2'><B>Phobius</B></TD>
               </TR>
-              <TR>
+              <TR bgcolor='#CCCCCC'>
                 <TD colspan='4'><B>SignalP-NN</B></TD>
                 <TD colspan='4'><B>SignalP-HMM</B></TD>
               </TR>
-              <TR>
+              <TR bgcolor='#E8E8E8'>
                 <TD>Prediction</TD>
 <!--            <TD>MaxYscore</TD> -->
                 <TD>MaxD score</TD>  
@@ -174,12 +177,12 @@
                 <TD><%=metascl.phobiusspends%></TD>
               </TR>
               <TR bgcolor='white'><TD colspan='13'><BR></TD></TR>
-              <TR >
-                <TD rowspan='3' bgcolor='#A68B94'><B>T3SS</B></TD>
+              <TR bgcolor='#CCCCCC'>
+                <TD rowspan='3' bgcolor='#A68B94'><B>T3SS SP</B></TD>
                 <TD colspan='6'><B>EffectiveT3</B></TD>
                 <TD colspan='6'><B>T3SS_Prediction</B></TD>
               </TR>
-              <TR>
+              <TR bgcolor='#E8E8E8'>
                 <TD colspan='3'>Score</TD>
                 <TD colspan='3'>Prediction</TD>
                 <TD colspan='3'>Score</TD>
