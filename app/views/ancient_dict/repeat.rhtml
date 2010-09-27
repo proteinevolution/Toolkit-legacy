@@ -26,21 +26,15 @@
     <col width="20%">
     <col width="5%">
     <col width="75%">
-    <!--<col width="5%">
-    <col width="20%">-->
   </colgroup>
   <tr>
-    <td align="right">
+    <td align="center">
       <%= image_tag repeat.f_figure%>
     </td>
     <td> </td>
     <td style="font-size:12px" align="justify" valign="top">
       <%=repeat.f_desc%>
     </td>
-<!--    <td> </td>
-    <td align="right">
-      <%= image_tag repeat.f_figure%>
-    </td>-->
   </tr>
 </table>
 <br/>
@@ -48,10 +42,6 @@
 <br/>
 <p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Occurrence (SCOP accession)</p>
 <table border="0" style="width=100%">
-  <!--<colgroup>
-   <col width="25%">
-   <col width="75%">
-  </colgroup>-->
   <%Dapoccurrence.find(:all, :conditions => ["f_id=?", @page]).each do |scop|%>
     <tr>
       <td style="font-size:12px">
@@ -68,39 +58,10 @@
 </table>
 <br/>
 <br/>
-<!--<p style="font-size:12px; font-weight:bold; background-color:#C9DBD8">Structure Superposition</p>
-<table border="0" style="width=100%">
-  <colgroup>
-    <col width="50%">
-    <col width="50%">
-  </colgroup>
-  <tr>
-    <td style="font-size:12px">
-      <a href="#" onclick="var win = window.open('<%= DOC_ROOTURL %>/ancient_dict/pdb_applet?file=<%= @page %>','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();"%style="margin: 5px 10px 10px 10px;"> Show PDB applet </a>
-    </td>
-    <td style="font-size:12px">
-      <a href="<%= @pdb_url %>">Download PDB-file</a>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-  </tr>
-</table>
-<br/>
-<br/>-->
 
 <p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">Sequence Alignment</p>
 <div style="width:700px; height:300px; overflow:auto;">
 <table border="0">
-  <!--<colgroup>
-   <col width="9%">
-   <col width="1%">
-   <col width="9%">
-   <col width="1%">
-   <col width="5%">
-   <col width="2%">
-   <col width="5%">
-   <col width="2%">
-   <col width="66%">
-  </colgroup>-->
   <%Dapfragment.find(:all, :conditions => ["f_id=?", @page]).each do |itemalign|%>
       <%align=itemalign.f_align.split('\n')-%>
       <%for i in 0...align.length-%>
@@ -214,15 +175,18 @@
 </table>-->
 <br/>
 <br/>
-<p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">References</p>
-<table border="0">
-  <%Dapref.find(:all, :conditions => ["f_id=?", @page]).each do |ref|%>
-    <tr>
-      <td style="font-size:12px">
-        <%=ref.r_reference%>
-      </td>
-    </tr>
-  <% end %>
-
-</table>
-
+<%if Dapref.find(:first, :conditions => ["f_id=?", @page])%>
+  <%if Dapref.find(:first, :conditions => ["f_id=?", @page]).r_reference != "NULL"%>
+    <p style="font-size:12px; font-weight:bold;" class="<%= @section["name"] %>">References</p>
+    <table border="0">
+      <%Dapref.find(:all, :conditions => ["f_id=?", @page]).each do |ref|%>
+      <tr>
+        <td style="font-size:12px">
+          <%=ref.r_reference%>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+    <%end%>
+<%else%>
+<%end%>
