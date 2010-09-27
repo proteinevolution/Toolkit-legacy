@@ -65,7 +65,8 @@ class PcoilsAction < Action
       end
       @commands << "#{PCOILS}/prepare_coils_gnuplot.pl #{@basename} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28"
 
-
+      # generate numerical output
+      @commands << "#{PCOILS}/create_numerical.rb -i #{@basename}"
 
     # case run PCOILS (Run PSI-Blast or Use input alignment)
     else
