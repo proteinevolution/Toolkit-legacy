@@ -6,3 +6,4 @@ config/database.yml
 config/local_environment.rb
 public/favicon.ico
 public/.htaccess
+public/robots.txt

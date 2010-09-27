@@ -6,13 +6,14 @@
 
 <%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
 
-<H5>Cluster <%=@name%></H5>
-
-
-<P><TABLE width='40%' style='float:left'><TR bgcolor='#97697C'><TH><font color='white'>Cluster's Subcellular Localization</TH><TH><font color='white'>Score</TH></font></TR>
-
-
 <%Clubclstprediction.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
+
+  <H5>Cluster <%=cluster_name.cluster%></H5>
+
+
+  <P><TABLE width='40%' style='float:left'><TR bgcolor='#97697C'><TH><font color='white'>Cluster's Subcellular Localization</TH><TH><font color='white'>Score</TH></font></TR>
+
+
   <TR bgcolor='#D5C8D1'><TD>Extracellular (E)</TD><TD><%=cluster_name.surfaceexposed%></TD></TR>
   <TR bgcolor='#E2E0E1'><TD>Cytoplasmic transmembrane (TM)</TD><TD><%=cluster_name.cytomem%></TD></TR>
   <TR bgcolor='#D5C8D1'><TD>Outer membrane beta-barrel (OMP)</TD><TD><%=cluster_name.omp%></TD></TR>
@@ -44,16 +45,14 @@
     <BUTTON type='button' onclick="clubsub_toggle_hide('aln');clubsub_toggle_hide('hidealn');clubsub_toggle('showaln');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none; float:left"; id='hidealn';>Hide cluster alignment</BUTTON>
   </DIV>
 
-
   <DIV id="seq_file">
     <BUTTON type='button' onclick="clubsub_toggle_hide('aln');clubsub_toggle_hide('hidealn');clubsub_toggle('showaln');clubsub_toggle('seq');clubsub_toggle('hideseq');clubsub_toggle_hide('showseq');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; float:right"; id = 'showseq'>Show cluster sequences</BUTTON>
     <BUTTON type='button' onclick="clubsub_toggle_hide('seq');clubsub_toggle_hide('hideseq');clubsub_toggle('showseq');"; style = "border: 1px solid #C2C2C2; background-color:#FFFFFF; display:none; float:right"; id='hideseq';>Hide cluster sequences</BUTTON>
   </DIV>
 
-  <BR>
+  <BR><BR><BR>
   <DIV id="aln" style='display:none';>
   <fieldset>
-  <BR>  
   <%alignment_link=File.join(TOOLKIT_ROOT, 'public', cluster_name.alnlink)%>
   
   <%@aln_file=Array.new%>
@@ -66,18 +65,14 @@
   </fieldset> 
   </DIV>
 
-  <DIV id="seq" style="display:none;">
-  <BR><BR><BR>
-  <fieldset>
-  <BR>
+  <DIV id="seq" style="display:none; height:200px; overflow-x: scroll; overflow-y: scroll">
   <%seqfile_link=File.join(TOOLKIT_ROOT, 'public', cluster_name.seqlink)%>
   <%@seq_file=Array.new%>
   <%File.open(seqfile_link, "r").each do |line| %>
       <%line.chomp!%>
       <%-@seq_file.push(line)-%>
-      <pre><%=line%></br></pre>
+      <PRE><%=line%></PRE>
   <%end%>
-  </fieldset>
   </DIV>
 </P>
 
@@ -85,9 +80,8 @@
 
 <BR><BR>
 
-
 <P>
-  <TABLE  border='0', align='middle' >
+  <TABLE  border='0', align='middle' width='100%'>
     
     <TR bgcolor='#97697C'>
       <FONT color='white'>

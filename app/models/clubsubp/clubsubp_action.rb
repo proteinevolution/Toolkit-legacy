@@ -43,7 +43,7 @@ class ClubsubpAction < Action
     # Text search starts here
     if(!@text_search.empty?)
       @commands << "echo #{@basename} &> #{job.statuslog_path}"
-      @commands << "/usr/bin/perl #{CLUB}/search_clubsub.pl #{TOOLKIT_ROOT} #{@basename} #{@text_search} >> #{job.statuslog_path}" 
+      @commands << "/usr/bin/perl #{CLUB}/search_clubsub.pl #{TOOLKIT_ROOT} #{@basename} #{@text_search} >> #{job.statuslog_path}"
       @commands << "echo #{@text_search} >> #{job.statuslog_path}"
     end
 
