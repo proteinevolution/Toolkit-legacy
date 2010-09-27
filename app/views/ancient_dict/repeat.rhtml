@@ -45,7 +45,7 @@
   <%Dapoccurrence.find(:all, :conditions => ["f_id=?", @page]).each do |scop|%>
     <tr>
       <td style="font-size:12px">
-         <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=scop.scop_id%>"><%=scop.scop_id%></a>
+         <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=scop.scop_id%>" target="_blank"><%=scop.scop_id%></a>
       </td>
       <td>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -125,9 +125,9 @@
         <%else%>
           <%if j !=eachline.length-1%>
             <%if j ==0 %>
-              <td><font face="Monospace"><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=<%=eachline[j]%>"><%=eachline[j]%></a></font></td><td>&nbsp;&nbsp;</td>
+              <td><font face="Monospace"><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=<%=eachline[j]%>" target="_blank"><%=eachline[j]%></a></font></td><td>&nbsp;&nbsp;</td>
             <%elsif j == 1 %>
-              <td><font face="Monospace"><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=eachline[j]%>"><%=eachline[j]%></a></font></td><td>&nbsp;&nbsp;</td>
+              <td><font face="Monospace"><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sccs=<%=eachline[j]%>" target="_blank"><%=eachline[j]%></a></font></td><td>&nbsp;&nbsp;</td>
             <%else%>
               <td><font face="Monospace"><%=eachline[j]%></font></td><td>&nbsp;&nbsp;</td>
             <%end%>
