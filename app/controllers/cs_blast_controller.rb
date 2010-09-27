@@ -109,7 +109,9 @@ class CsBlastController < ToolController
   
   def resubmit_domain
     basename = File.join(@job.job_dir, @job.jobid)
-    system(sprintf('%s/perl/alicutter.pl %s.in %s.in.cut %d %d', BIOPROGS, basename, basename, params[:domain_start].to_i, params[:domain_end].to_i));
+    `#{sprintf('perl %s/perl/alicutter.pl %s.in %s.in.cut %d %d', BIOPROGS, basename, basename, params[:domain_start].to_i, params[:domain_end].to_i)}`
+    # system(sprintf('perl %s/perl/alicutter.pl %s.in %s.in.cut %d %d', BIOPROGS, basename, basename, params[:domain_start].to_i, params[:domain_end].to_i))
+
 
     job_params = @job.actions.first.params
     job_params.each_key do |key|
@@ -122,7 +124,7 @@ class CsBlastController < ToolController
       end
     end
 
-	File.delete(basename+'.in.cut')
+    File.delete(basename+'.in.cut')
     params[:jobid] = ''
     index
     render(:action => 'index')
