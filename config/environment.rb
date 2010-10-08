@@ -20,7 +20,7 @@ memcache_options = {
 memcache_servers = [ '127.0.0.1:11211' ]
 
 #global settings
-TOOLKIT_RELEASE = '2.13.10'
+TOOLKIT_RELEASE = '2.13.11'
 DOC_ROOTURL     = 'http://' + DOC_ROOTHOST
 BIOPROGS        = TOOLKIT_ROOT+'/bioprogs'
 TMP             = TOOLKIT_ROOT+'/tmp/'+RAILS_ENV
