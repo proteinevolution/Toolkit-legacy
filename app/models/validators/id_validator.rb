@@ -26,7 +26,9 @@ module Toolkit
                 @tools = YAML.load_file(::CONFIG + "/tools.yml")
                 if (!@tools.nil?)
                   @tools.each do |tool|
-                    if (value.to_s =~ /^#{tool['name']}$/)
+                    name_short = tool['name']
+                    name_short.gsub!(/_/, '')
+                    if (value.to_s =~ /^#{tool['name']}$/i || value.to_s =~ /^#{name_short}$/i)
                       record.errors.add(attr, "Job-IDs must not match with a toolname!")
                       break
                     end
