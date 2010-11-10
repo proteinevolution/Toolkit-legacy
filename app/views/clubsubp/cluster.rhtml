@@ -65,7 +65,7 @@
   </fieldset> 
   </DIV>
 
-  <DIV id="seq" style="display:none; height:200px; overflow-x: scroll; overflow-y: scroll">
+  <DIV id="seq" style="display:none; height:200px; overflow-x: auto; overflow-y: auto">
   <%seqfile_link=File.join(TOOLKIT_ROOT, 'public', cluster_name.seqlink)%>
   <%@seq_file=Array.new%>
   <%File.open(seqfile_link, "r").each do |line| %>
