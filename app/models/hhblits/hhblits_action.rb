@@ -38,9 +38,11 @@ class HhblitsAction < Action
     end
     @commands = []
 
-    @dbs = params['hhblits_dbs']
+    @db = params['hhblits_dbs']
     @dbhhm = params['dbhhm']
-        
+    @dba3m = params['dba3m']
+    
+    @match_modus = params['match_modus']
     @maxit = params['maxit']
     @E_hhblits = params["EvalHHblits"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
@@ -87,7 +89,7 @@ class HhblitsAction < Action
   def perform
     params_dump
     
-    @commands << "#{HHBLITS}/hhblits -cpu 4 -v #{@v} -i #{@infile} -db #{@dbs} -dbhhm #{@dbhhm} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+    @commands << "#{HHBLITS}/hhblits -cpu 4 -v #{@v} -i #{@infile} -db #{@db} -dbhhm #{@dbhhm} -dba3m #{@dba3m} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile} -M #{@match_modus} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
 
     prepare_fasta_hhviz_histograms_etc    
     

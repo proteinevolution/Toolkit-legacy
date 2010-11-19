@@ -5,18 +5,38 @@ class HhblitsController < ToolController
     @inputmode_labels = ["single FASTA sequence", "alignment"]
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
     @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
+    @match_modus = ['first','0','10','20','30','40','50','60', '70', '80', '90']
     @maxit = ['1','2','3','4','5','6','7','8']
     @cov_minval = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90']
     @EvalHHblits  = ['1e-4', '1e-3', '1e-2', '0.1']
     @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
     @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
+
+    searchpat = File.join(DATABASES, @tool['name'], '*.as219')
+    dbvalues_pre = Dir.glob(searchpat)
     
-    @dbvalues = [File.join(DATABASES, 'nr20', 'nr20as219_x0.3_c4')]
-    @dbhhms = [File.join(DATABASES, 'nr20')]
-    @dblabels = ['NR20']
+    @dbvalues = Array.new
+    @dbhhms = Array.new
+    @dba3ms = Array.new
+    @dblabels = Array.new
+
+    sortlist = Array["uniprot", "nr"]
+    sortlist.each do |el|
+      dbvalues_pre.each do |val|
+        if (!val.index(/#{el}/).nil?)
+          @dbvalues.push(val)
+          dbvalues_pre.delete(val)
+          @dblabels.push(File.basename(val, ".as219"))
+          @dbhhms.push(File.join(DATABASES, @tool['name'], File.basename(val, ".as219") + "_hhm_db"))
+          @dba3ms.push(File.join(DATABASES, @tool['name'], File.basename(val, ".as219") + "_a3m_db"))
+          next;
+        end
+      end
+    end
 
     @default_db = @dbvalues[0]
     @default_dbhhm = @dbhhms[0]
+    @default_dba3m = @dba3ms[0]
     
     # do we need to show output options part of the form?
     @show_more_options = (@error_params['more_options_on'] == "true")
