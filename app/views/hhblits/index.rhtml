@@ -15,7 +15,15 @@
 </div>
 <div class="row">
 	<%= form_label("Select alignment format", "input_format") %>
-	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1) %>	
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "change_format();") %>	
+</div>
+<div class="row">
+  <%= form_label("Match state assignment", "match_modus") %>
+  <% disable = false %>
+  <% if ((params['informat'] && (params['informat'] == "a2m" || params['informat'] == "a3m")) || (@error_params['informat'] && (@error_params['informat'] == "a2m" || @error_params['informat'] == "a3m"))) then disable = true end %>
+  <div class="formw">
+    <%= form_select_single("match_modus", @match_modus, @match_modus, '50', 1, "", disable, false) %> (For A2M/A3M format the match assignment of the input is used.)     
+  </div>
 </div>
 
 <div class="spacer">&nbsp;</div>
@@ -31,10 +39,11 @@
     <table cellspacing="0">
     <tr align="center"><td><b>Standard</b></td></tr>
     <tr><td>
-    <%= form_select_single("hhblits_dbs", @dbvalues, @dblabels, @default_db, 5, "change_db('#{@dbhhms.join(';')}');", false, true) %>
+    <%= form_select_single("hhblits_dbs", @dbvalues, @dblabels, @default_db, 5, "change_db('#{@dbhhms.join(';')}','#{@dba3ms.join(';')}');", false, true) %>
     </td></tr>
     </table>
     <%= form_hidden_field("dbhhm", @default_dbhhm) %>
+    <%= form_hidden_field("dba3m", @default_dba3m) %>
   </div>	
 </div>
 
@@ -53,7 +62,7 @@
 
 <div class="row">
   <%= form_label("MAC realignment threshold (0.0:global, >=0.1:local)", "mact") %>
-  <%= form_select_single("mact", @mactval, @mactval, '0.3') %>	
+  <%= form_select_single("mact", @mactval, @mactval, '0.5') %>	
 </div>
 
 <div class="spacer">&nbsp;</div>
