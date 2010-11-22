@@ -1,10 +1,24 @@
-function change_db(dbhhm)
+function change_format()
+{
+    var informat = $("informat");
+    var disable = false;
+    for( i=0; i<informat.length; i++ ) {
+	if (informat.options[i].selected == true && (informat.options[i].value == "a2m" || informat.options[i].value == "a3m")) {
+	    disable = true;
+	}
+    }
+    $('match_modus').disabled = disable;
+}
+
+function change_db(dbhhm, dba3m)
 {
     var dbhhms = dbhhm.split(";");
+    var dba3ms = dba3m.split(";");
     var dblist = $("hhblits_dbs");
     for( i=0; i<dblist.length; i++ ) {
 	if (dblist.options[i].selected == true) {
 	    $('dbhhm').value = dbhhms[i];
+	    $('dba3m').value = dba3ms[i];
 	}
     }
     
