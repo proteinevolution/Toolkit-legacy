@@ -42,7 +42,7 @@ class HhblitsAction < Action
     @dbhhm = params['dbhhm']
     @dba3m = params['dba3m']
     
-    @match_modus = params['match_modus']
+    @match_modus = params['match_modus'].nil? ? 'a3m' : params['match_modus']
     @maxit = params['maxit']
     @E_hhblits = params["EvalHHblits"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
