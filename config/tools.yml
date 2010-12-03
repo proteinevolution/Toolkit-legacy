@@ -332,6 +332,7 @@
   active: 
   - hhgroup
   - internal
+  - external
 - name: cs_blast
   title: CS-BLAST
   title_long: CS-BLAST/ CSI-BLAST

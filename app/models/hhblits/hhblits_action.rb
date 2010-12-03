@@ -89,7 +89,7 @@ class HhblitsAction < Action
   def perform
     params_dump
     
-    @commands << "#{HHBLITS}/hhblits -cpu 4 -v #{@v} -i #{@infile} -db #{@db} -dbhhm #{@dbhhm} -dba3m #{@dba3m} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile} -M #{@match_modus} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+    @commands << "#{HHBLITS}/hhblits -cpu 8 -v #{@v} -i #{@infile} -db #{@db} -dbhhm #{@dbhhm} -dba3m #{@dba3m} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile} -M #{@match_modus} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
 
     prepare_fasta_hhviz_histograms_etc    
     
@@ -97,7 +97,7 @@ class HhblitsAction < Action
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.uc.fas -o #{@basename}.j.fas"
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'cpus' => '4'})
+    queue.submit(@commands, true, {'cpus' => '4', 'queue' => QUEUES[:hhblits]})
     
   end
   
