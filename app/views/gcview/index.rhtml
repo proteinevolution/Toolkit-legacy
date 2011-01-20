@@ -2,8 +2,6 @@
 
 <h2><%= @page_title %></h2>
 
-<!--<%= form_tag({:action => :run, :job => 'gcview'}, {:multipart => true})%>-->
-
 <% if @gi == "" %>
 
 <%= form_tag({:action => :run, :job => 'gcview'}, {:multipart => true})%>
@@ -34,20 +32,29 @@
   <h3 class="<%= @section["name"] %>">Options</h3>
 
   <div class="row">
-    <%= form_label("Select number", "number") %>
-    <%= form_select_single("show_number", @numvalues, @numlabels, @numvalues[0]) %>
-  </div>
-  <div class="row">
-    <%= form_label("Select type", "type") %>
-    <%= form_select_single("show_type", @typevalues, @typelabels, @typevalues[0]) %>
+    <%= form_label("Search range", "range") %>
+    <div class="formw">
+      <select size="1" onchange="" name="show_number" id="show_number">
+        <option selected="selected" value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+      </select>
+      <select size="1" onchange="" name="show_type" id="show_type">
+        <option selected="selected" value="genes">genes</option>
+        <option value="kb">kilobase</option>
+      </select>
+    </div>
   </div>
   <div class="row">
         <%= form_label("E-value cutoff", "evaluecutoff") %>
         <%= form_text_field("evalue_cutoff", '1e-3') %>
-  </div>
-  <div class="row">
-        <%= form_label("Use one line", "one_line") %>
-        <%= form_checkbox("one_line", '0', false) %>
   </div>
 
 
