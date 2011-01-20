@@ -98,3 +98,10 @@ if ((inx < 0 && position <=-140) || (inx >0 && position >= 20))
         window.clearInterval(scrolling);
         }
 }
+
+function gcv_demo_data()
+{
+  document.getElementById("sequence_input").value="16128329\n16128328\n49176012";
+  document.getElementById("informat").value="gi";
+}
+
