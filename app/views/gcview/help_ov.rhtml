@@ -1,7 +1,9 @@
-<h2><%= @tool['title'] %> Overview</h2> 
+<ul id="helpindex" class="<%= @section['theme'] %>">
+</ul>
+<h2 class="<%= @section['theme'] %>"><%= @tool['title'] %> Overview</h2> 
 <div class="row">
-GCView extracts and displays the genomic context of protein coding genes found in homology searches. It is possible to combine multiple queries to visualize conserved genomic neighborhood or operon structure of protein coding genes. This works only for Bacteria and only for completely sequenced genomes.
+GCView extracts and displays the genomic context of protein coding genes found in homology searches such as BLAST, PSI-BLAST or CS-BLAST. It is possible to combine multiple queries to visualize conserved genomic neighborhood or operon structure of protein coding genes. The database currently only contains Bacteria with completely sequenced genomes.
 
-Every Hit from a homology search is mapped to the corresponding genome. Then, proteins upstream and downstream of each hit are extracted from the genome and displayed. If multiple hits are found in one genome, the genomic context of each hit is extracted.
+Every hit from a homology search is mapped to the corresponding genome. Then, proteins upstream and downstream of each hit are extracted from the genome and displayed. If multiple hits are found in one genome, the genomic context of each hit is extracted.
 </div>
 

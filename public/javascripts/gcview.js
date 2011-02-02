@@ -12,7 +12,7 @@ function gcv_highlight(id)
 {
     document.getElementById("l"+id).style.backgroundColor="#aaffaa";
     document.getElementById("s"+id).style.display="inline";
-    setTimeout("gcv_fade("+id+")",2000)
+    setTimeout("gcv_fade('"+id+"')",2000)
 }
 function gcv_fade(id)
 {
