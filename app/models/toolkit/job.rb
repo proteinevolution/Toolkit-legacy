@@ -341,7 +341,7 @@
       directory_content.each  do |file|
         logger.debug "File: #{file}"
         if (File.exists? file)
-          if (file != ".." || file != ".")
+          if (file != ".." && file != ".")
             system ("rm -r #{file}")
           end
         end
