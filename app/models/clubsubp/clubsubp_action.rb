@@ -43,7 +43,7 @@ class ClubsubpAction < Action
     # Text search starts here
     if(!@text_search.empty?)
       @commands << "echo #{@basename} &> #{job.statuslog_path}"
-      @commands << "/usr/bin/perl #{CLUB}/search_clubsub.pl #{TOOLKIT_ROOT} #{@basename} #{@text_search} >> #{job.statuslog_path}"
+      @commands << "/usr/bin/perl #{CLUB}/search_clubsub-v2.pl #{TOOLKIT_ROOT} #{@basename} #{@text_search} >> #{job.statuslog_path}" 
       @commands << "echo #{@text_search} >> #{job.statuslog_path}"
     end
 
@@ -51,7 +51,7 @@ class ClubsubpAction < Action
     if(!@infile.empty?)
       @commands << "#{BLAST}/blastall -p blastp -i #{@infile} -d #{DBPATH}/#{@database} -o #{@outfile} -I t &> #{job.statuslog_path}"
       @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
-      @commands << "/usr/bin/perl #{CLUB}/blast_parser.pl #{@outfile} #{@basename} #{@qlvalue} #{@hlvalue} #{@pvalue} #{@database} >> #{job.statuslog_path}"
+      @commands << "/usr/bin/perl #{CLUB}/blast_parser-v2.pl #{@outfile} #{@basename} #{@qlvalue} #{@hlvalue} #{@pvalue} #{@database} >> #{job.statuslog_path}"
       @commands << "echo 'Blast output parsed !' >> #{job.statuslog_path}"
     end
    
