@@ -6,19 +6,17 @@
 
 <%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
 
-<%Clubclstprediction.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
+<%Clubarchclstprediction.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
 
-  <H5>Cluster <%=cluster_name.cluster%></H5>
-
+  <H5>Archaeal Cluster <%=cluster_name.cluster%></H5>
 
   <P><TABLE width='40%' style='float:left'><TR bgcolor='#97697C'><TH><font color='white'>Cluster's Subcellular Localization</TH><TH><font color='white'>Score</TH></font></TR>
 
 
-  <TR bgcolor='#D5C8D1'><TD>Extracellular (E)</TD><TD><%=cluster_name.surfaceexposed%></TD></TR>
+  <TR bgcolor='#D5C8D1'><TD>Secreted/Extracellular (S)</TD><TD><%=cluster_name.secreted%></TD></TR>
   <TR bgcolor='#E2E0E1'><TD>Cytoplasmic transmembrane (TM)</TD><TD><%=cluster_name.cytomem%></TD></TR>
-  <TR bgcolor='#D5C8D1'><TD>Outer membrane beta-barrel (OMP)</TD><TD><%=cluster_name.omp%></TD></TR>
   <TR bgcolor='#E2E0E1'><TD>Cytoplasm (C)</TD><TD><%=cluster_name.cytoplasmic%></TD></TR>
-  <TR bgcolor='#D5C8D1'><TD>Periplasm (P)</TD><TD><%=cluster_name.periplasmic%></TD></TR>
+  <TR bgcolor='#D5C8D1'><TD>CellWall (CW)</TD><TD><%=cluster_name.cellwall%></TD></TR>
   <TR bgcolor='#E2E0E1'><TD>Lipoprotein (L)</TD><TD><%=cluster_name.lipoprotein%></TD></TR>
   <TR bgcolor='#D5C8D1'><TD>Unknown (U)</TD><TD><%=cluster_name.unknown%></TD></TR>
   <TR bgcolor='#B5A2AF'><TD>Cluster's subcellular localization</TD><TD><%=cluster_name.finalscl%></TD></TR>
@@ -28,7 +26,7 @@
 
 <!--<fieldset width='40%'>
 <legend><B>General Information</B></legend> -->
-  <P><TABLE width='40%'>
+  <P><TABLE width='60%'>
     <TR bgcolor='#97697C'><TH colspan='3'><FONT color='white'>About the Cluster</FONT></TH</TR>
     <TR><TD>Cluster contains</TD><TD><%=cluster_name.clustersize%> sequences</TD></TR>
     <TR><TD>SCL predicted for</TD><TD> <%=cluster_name.predicted%> sequences</TD></TR>
@@ -91,8 +89,7 @@
       <TH rowspan='1'><FONT color='white'>Protein's Subcellular Prediction</TH>
       </FONT>
     </TR>
-   
-    <%$tag='Gram-negative'%>
+    <%$tag='Archaea'%> 
     <%@gis=Array.new%>
       <%Clubproteinheaderinfo.find(:all, :conditions => ["cluster=? AND tag=?", @name, $tag]).each do |cluster_name|%>
       <%@gis.push(cluster_name.gi)%>
@@ -101,11 +98,11 @@
     <%@gis.each do |gi_pred|%>
       <%protein=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", gi_pred])%>
       <TR bgcolor='#E8E8E8'>
-        <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi_pred%>'><%=gi_pred%></A></TD>
+        <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein_arch?gi=<%=gi_pred%>'><%=gi_pred%></A></TD>
         <TD><%=protein.header%></TD>
         <TD><%=protein.organism%></TD>
-	<%clst=Clubgiprediction.find(:first, :conditions => ["gi=?", gi_pred])%>
-	<TD><%=clst.subloc%></TD>
+        <%clst=Clubarchgiprediction.find(:first, :conditions => ["gi=?", gi_pred])%>
+        <TD><%=clst.subloc%></TD>
       </TR>
     <%end%>
   </TABLE>
