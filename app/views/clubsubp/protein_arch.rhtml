@@ -266,10 +266,10 @@
 	  <%@topo_split=@all_topology[tool_num].split(/\//)%>
           <DIV vertical-align=middle; style="width:650px;height:20px;background-image:url('/images/bg_black_line.gif');position:absolute;">
 	  <%for segment in @topo_split%>
-            <%bgcolor='maroon'%>
+            <%bgcolor='orange'%>
             <%tmhelix_nameit='TMHelix'%>
             <%if(@all_names[tool_num]=~/Consensus/)%>
-              <%bgcolor='orange'%>
+              <%bgcolor='maroon'%>
             <%end%>
 	    <%if(segment=~/TMhelix|TMHelix|H-REGION/)%>
               <%if(segment=~/H-REGION/)%>
