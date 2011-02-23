@@ -36,7 +36,7 @@
     <P>
     <TABLE name='gi_details' align='center'>
       <TR>
-        <TH width='80px' bgcolor='#A68B94'><B>Taxonomy</B></TH>
+        <TH width='10%' bgcolor='#A68B94'><B>Taxonomy</B></TH>
         <TD bgcolor='#E8E8E8' width='700px'>
           <%=tax_tree.superkingdom %><BR/>
           <%=tax_tree.phylum %><BR/>
@@ -47,18 +47,18 @@
       </TR>
     
       <TR>
-        <TH bgcolor='#A68B94' width='80px'><B><BR>Organism</B></TH>
+        <TH bgcolor='#A68B94' width='10%'><B><BR>Organism</B></TH>
         <TD bgcolor='#E8E8E8'><A HREF='http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<%=tax_tree.taxon%>&lvl=3&lin=f&keep=1&srchmode=1&unlock'><BR><%=protein.organism%></A></TD>
       </TR>
       <TR>
-        <TH bgcolor='#A68B94' width='80px'><B><BR>Reason</B></TH>
+        <TH bgcolor='#A68B94' width='10%'><B><BR>Reason</B></TH>
         <TD bgcolor='#E8E8E8'>
           <BR><%gi_comment=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%><%=gi_comment.reasons%>
         </TD>
       </TR>
 
       <TR>
-        <TH bgcolor='#A68B94' width='80px'><B>Signal peptides (SP)</B></TH>
+        <TH bgcolor='#A68B94' width='10%'><B>Signal peptides (SP)</B></TH>
         <TD bgcolor='#E8E8E8'>
           <BR><%=gi_comment.spfound%><BR/><%=gi_comment.spcleaved%><BR><BR>
           
@@ -209,7 +209,7 @@
      <%gicomments_display=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
     <TABLE width='100%' style='text-align:center;'>
       <TR bgcolor='#CCCCCC'>
-        <TH rowspan='3' width='15%' style='text-align:left;'  bgcolor='#A68B94'><B>Outer membrane beta-barrel</B></TH>
+        <TH rowspan='3' width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Outer membrane beta-barrel</B></TH>
         <TD colspan='2'><B>BOMP</B></TD>
         <TD><B>PSORTb v.3.0</B></TD>
 	<TD><B>CELLO v2.5</B></TD>
@@ -234,9 +234,26 @@
     </TABLE>
     <BR/>
 
+  <TABLE  width='100%' style='text-align:center;'>
+      <TR bgcolor='#CCCCCC'>
+        <TH rowspan='2'  width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Extracellular</B></TH>
+        <TD ><B>PSORTb v.3.0. Extracellular Score</B></TD>
+        <TD ><B>Type III signal peptide</B></TD>
+      </TR>
+      <TR bgcolor='#F7ECD5'>
+        <TD><%=omp_display.psortbextracellular%></TD>
+        <%if(gi_comment.sp=~/Type3/)%>
+          <TD>Yes</TD>
+        <%else%>
+          <TD>No</TD>
+        <%end%>
+      </TR>
+    </TABLE>
+    </BR>
+
     <TABLE width='100%' style='text-align:center;'>
       <TR bgcolor='#CCCCCC'>
-        <TH rowspan='3'  width='15%' style='text-align:left;'  bgcolor='#A68B94'><B>Transmembrane</B></TH>
+        <TH rowspan='3'  width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Transmembrane</B></TH>
         <TD colspan='2'><B>TMHMM 2.0</B></TD>
         <TD colspan='2'><B>Phobius</B></TD>
         <TD colspan='2'><B>HMMTOP 2.1</B></TD>
