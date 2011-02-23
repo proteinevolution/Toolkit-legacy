@@ -264,21 +264,55 @@
       </TR>
     </TABLE>
     </BR>
-  
-  <TABLE  width='100%' style='text-align:center;'>
-      <TR bgcolor='#CCCCCC'>
-        <TH rowspan='2'  width='15%' style='text-align:left;'  bgcolor='#A68B94'><B>Extracellular</B></TH>
-        <TD ><B>PSORTb v.3.0. Extracellular Score</B></TD>
-        <TD ><B>Type III signal peptide</B></TD>
-      </TR>
-      <TR bgcolor='#F7ECD5'>
-        <TD><%=omp_display.psortbextracellular%></TD>
-        <%if(gi_comment.sp=~/Type3/)%>
-          <TD>Yes</TD>
-        <%else%>
-          <TD>No</TD>
+ 
+    <TABLE>
+      <%@all_tmhs=Array.new%>
+      <%@all_tmhs= [omp_display.tmhmmtmhs, omp_display.phobiustmhs, omp_display.hmmtoptmhs, gicomments_display.no_consensus_TMHs]%>
+      <%@all_topology=Array.new%>
+      <%@all_topology=[omp_display.tmhmmtopology, omp_display.phobiustopology, omp_display.hmmtoptopology, gicomments_display.consensus_TMHs]%>
+      <%@all_names=Array.new%>
+      <%@all_names=['TMHMM 2.0', 'Phobius', 'HMMTOP 2.1', 'Consensus']%>
+
+      <%display='No'%>
+      <%for no_of_tmhs in @all_tmhs%>
+        <%if (no_of_tmhs >= 1)%>
+          <%display='Yes'%>
         <%end%>
-      </TR>
+      <%end%>
+
+      <%if (display=~/Yes/)%>
+        <%for tool_num in 0..3 do%>
+          <TR height='20px'><TD bgcolor='#CCCCCC'><B><%=@all_names[tool_num]%></B></TD><TD style="padding-bottom:12px">
+          <%omp_display.tmhmmtopology=~/.*-(\d+)$/%>
+          <%$pd=$1%>
+          <%@topo_split=Array.new%>
+          <%@topo_split=@all_topology[tool_num].split(/\//)%>
+          <DIV vertical-align=middle; style="width:650px;height:20px;background-image:url('/images/bg_black_line.gif');position:absolute;">
+          <%for segment in @topo_split%>
+            <%bgcolor='maroon'%>
+            <%tmhelix_nameit='TMHelix'%>
+            <%if(@all_names[tool_num]=~/Consensus/)%>
+              <%bgcolor='orange'%>
+            <%end%>
+
+            <%if(segment=~/TMhelix|TMHelix|H-REGION/)%>
+              <%if(segment=~/H-REGION/)%>
+                <%bgcolor='green'%>
+                <%tmhelix_nameit='Signal peptide - TMHelix region'%>
+              <%end%>
+              <%segment=~/.*-(\d+)-(\d+)/%>
+              <%$start_1=$1%>
+              <%$end_1=$2%>
+              <%$left_start=($start_1.to_i / $pd.to_i.to_f)*100%>
+              <%$tm_length= $end_1.to_i - $start_1.to_i%>
+              <%$tm_width=($tm_length.to_i / $pd.to_i.to_f)*100%>
+              <DIV style="position:absolute;top:-2px;left:<%=$left_start%>%;background-color:<%=bgcolor%>;height:18px;width:<%=$tm_width%>%;" onmouseover="return overlib('<%=tmhelix_nameit%>: <%=$start_1%> to <%=$end_1%>')" onmouseout="return nd();">&nbsp</DIV>
+            <%end%>
+          <%end%>
+          </DIV>
+          </TD></TR>
+        <%end%>
+      <%end%>
     </TABLE>
   <%end%>
 <%end%>
