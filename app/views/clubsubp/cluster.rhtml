@@ -8,7 +8,7 @@
 
 <%Clubclstprediction.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
 
-  <H5>Cluster <%=cluster_name.cluster%></H5>
+  <H5>Gram Negative cluster <%=cluster_name.cluster%></H5>
 
 
   <P><TABLE width='40%' style='float:left'><TR bgcolor='#97697C'><TH><font color='white'>Cluster's Subcellular Localization</TH><TH><font color='white'>Score</TH></font></TR>
@@ -28,7 +28,7 @@
 
 <!--<fieldset width='40%'>
 <legend><B>General Information</B></legend> -->
-  <P><TABLE width='40%'>
+  <P><TABLE width='60%'>
     <TR bgcolor='#97697C'><TH colspan='3'><FONT color='white'>About the Cluster</FONT></TH</TR>
     <TR><TD>Cluster contains</TD><TD><%=cluster_name.clustersize%> sequences</TD></TR>
     <TR><TD>SCL predicted for</TD><TD> <%=cluster_name.predicted%> sequences</TD></TR>
