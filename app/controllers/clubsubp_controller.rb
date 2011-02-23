@@ -18,7 +18,17 @@ class ClubsubpController < ToolController
     @name=params['name']
   end
 
+  def cluster_arch
+    getlinks
+    @name=params['name']
+  end
+
   def protein
+    getlinks
+    @gi=params['gi']
+  end
+
+  def protein_arch
     getlinks
     @gi=params['gi']
   end
@@ -31,8 +41,8 @@ class ClubsubpController < ToolController
   def getlinks
     @shortlinks = ["br", "in"]
     @links = ["browse", "index"]
-    @link_names = ["Browse Genomes", "Search Genomes"]
-    @link_text = ["Browse the genomes", "Search the genomes"]
+    @link_names = ["Browse Proteomes", "Search Proteomes"]
+    @link_text = ["Browse the proteomes", "Search the proteomes"]
   end
 
   def results
