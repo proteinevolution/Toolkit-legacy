@@ -65,8 +65,8 @@
           <%spprediction=Clubarchresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
           <TABLE style='text-align:center;' BORDer=0 width='100%'>
             <TR bgcolor='#736F6E'>
-              <TD><FONT COLOR='white'>Lipo signal peptide</TD>
-              <TD><FONT COLOR='white'>TaT signal peptide</TD>
+              <TD><FONT COLOR='white'>Lipoprotein signal peptide</TD>
+              <TD><FONT COLOR='white'>TAT signal peptide</TD>
               <TD><FONT COLOR='white'>General signal peptide</TD>
               <TD><FONT COLOR='white'>Prepilin signal peptide</TD>
               <TD><FONT COLOR='white'>Consensus prediction</TD>
@@ -98,47 +98,45 @@
             <%metascl=Clubarchmetascl.find(:first, :conditions => ["gi=?", protein.gi])%>
             <TABLE style='text-align:center;' BORDER=0 bgcolor='white'>
               <TR>
-                <TD bgcolor='#A68B94' rowspan='3' width='60px'><B>Lipo SP</B></TD>
-                <TD colspan='15' bgcolor='#CCCCCC'><B>LipoP 1.0</B></TD>
+                <TD bgcolor='#A68B94' rowspan='3' width='60px'><B>Lipoprotein SP</B></TD>
+                <TD colspan='12' bgcolor='#CCCCCC'><B>LipoP 1.0</B></TD>
               </TR>
               <TR bgcolor='#E8E8E8'>
-                <TD colspan='5'>Best prediction</TD>
-                <TD colspan='5'>Margin</TD>
-                <TD colspan='5'>Signal peptide ends</TD>
+                <TD colspan='4'>Best prediction</TD>
+                <TD colspan='4'>Margin</TD>
+                <TD colspan='4'>Signal peptide ends</TD>
               </TR>
               <TR bgcolor='#F7ECD5'>
-                <TD colspan='5'><%=metascl.lipop_spType%></TD>
-                <TD colspan='5'><%=metascl.lipop_margin%></TD>
-                <TD colspan='5'><%=metascl.lipop_sp_end%></TD>
+                <TD colspan='4'><%=metascl.lipop_spType%></TD>
+                <TD colspan='4'><%=metascl.lipop_margin%></TD>
+                <TD colspan='4'><%=metascl.lipop_sp_end%></TD>
               </TR>
-              <TR bgcolor='white'><TD colspan='13'><BR></TD></TR>
+              <TR bgcolor='white'><TD colspan='12'><BR></TD></TR>
               <TR bgcolor='#CCCCCC'>
                 <TD  bgcolor='#A68B94' rowspan='3'><B>TAT SP</B></TD>
-                <TD colspan='9' style='text-align:center;'><B>TatP 1.0 Server</B></TD>
-                <TD style='text-align:center;' colspan='6'><B>TatFind 1.4</B></TD>
+                <TD colspan='8' style='text-align:center;'><B>TatP 1.0 Server</B></TD>
+                <TD style='text-align:center;' colspan='4'><B>TatFind 1.4</B></TD>
               </TR>
               <TR bgcolor='#E8E8E8'>
-                <TD colspan='3'>MaxD score</TD>
+                <TD colspan='2'>MaxD score</TD>
                 <TD colspan='3'>Signal peptide ends</TD>
                 <TD colspan='3'>Comment</TD>
-                <TD colspan='3'>Twin arginine pattern</TD>
-                <TD colspan='3'>Rule</TD>
+                <TD colspan='2'>Twin arginine pattern</TD>
+                <TD colspan='2'>Rule</TD>
               </TR>
               <TR bgcolor='#F7ECD5'>
-                <TD colspan='3'><%=metascl.tatp_maxDscore%></TD>
+                <TD colspan='2'><%=metascl.tatp_maxDscore%></TD>
                 <TD colspan='3'><%=metascl.tatp_sp_ends%></TD>
                 <TD colspan='3'><%=metascl.tatp_comment%></TD>
-                <TD colspan='3'><%=metascl.tatfind_pattern%></TD>
-                <TD colspan='3'><%=metascl.tatfind_which_rule%></TD>
+                <TD colspan='2'><%=metascl.tatfind_pattern%></TD>
+                <TD colspan='2'><%=metascl.tatfind_which_rule%></TD>
               </TR>
-              <TR bgcolor='white'><TD colspan='15'><BR></TD></TR>
+              <TR bgcolor='white'><TD colspan='12'><BR></TD></TR>
               <TR bgcolor='#CCCCCC'>
                 <TD rowspan='4'  bgcolor='#A68B94'><B>General SP</B></TD>
                 <TD colspan='8'><B>SignalP 3.0</B></TD>
-                <TD colspan='2' rowspan='2'><B>PrediSi server</B></TD>
                 <TD colspan='2' rowspan='2'><B>Phobius</B></TD>
                 <TD colspan='2' rowspan='2'><B>Pred_signal</B></TD>
-                <TD rowspan='2'><B>RPSP</B></TD>
               </TR>
               <TR bgcolor='#CCCCCC'>
                 <TD colspan='4'><B>SignalP-NN</B></TD>
@@ -157,9 +155,6 @@
                 <TD>Cleavage site</TD>
                 <TD>Signal peptide</TD>
                 <TD>Signal peptide ends</TD>
-                <TD>Signal peptide</TD>
-                <TD>Signal peptide ends</TD>
-                <TD>Cleavage site</TD>
               </TR>
               <TR bgcolor='#F7ECD5'>
                 <TD><%=metascl.signalpnn_maxdprediction%></TD>
@@ -169,13 +164,10 @@
                 <TD><%=metascl.signalpHMM_cs_prob%></TD>
                 <TD><%=metascl.signalphmm_sp_prob%></TD>
                 <TD><%=metascl.signalpHMM_sp_ends%></TD>
-                <TD><%=metascl.predisi_prediction%></TD>
-                <TD><%=metascl.predisi_cs%></TD>
                 <TD><%=metascl.phobius_sp_prediction%></TD>
                 <TD><%=metascl.phobius_sp_end%></TD>
                 <TD><%=metascl.predsignal_prediction%></TD>
                 <TD><%=metascl.predsignal_sp_ends%></TD>
-                <TD><%=metascl.rpsp_cs%></TD>
               </TR>
               <TR bgcolor='white'><TD colspan='15'><BR></TD></TR>
               <TR bgcolor='#CCCCCC'>
@@ -200,7 +192,7 @@
     <BR>
 
     <TABLE  width='100%' style='text-align:center;'>
-      <TR bgcolor='#CCCCCC'>
+      <TR bgcolor='#CCCCCC' height='20px'>
         <TH rowspan='2'  width='12%' style='text-align:center;'  bgcolor='#A68B94'><B>SCL prediction</B></TH>
         <TD ><B>PSORTb's (mode of prediction: Archaeal)</B></TD>
         <TD ><B>CELLO's (mode of prediction: Gram-positive)</B></TD>
@@ -213,8 +205,8 @@
     <BR>
 
     <TABLE width='100%' style='text-align:center;'>
-      <TR bgcolor='#CCCCCC'>
-        <TH rowspan='3'  width='12%' style='text-align:center;'  bgcolor='#A68B94'><B>Transmembrane</B></TH>
+      <TR bgcolor='#CCCCCC' height='20px'>
+        <TH rowspan='3'  width='12%' style='text-align:center;'  bgcolor='#A68B94'><B>Cytoplasmic membrane</B></TH>
         <TD colspan='2'><B>TMHMM 2.0</B></TD>
         <TD colspan='2'><B>Phobius</B></TD>
         <TD colspan='2'><B>HMMTOP 2.1</B></TD>
@@ -242,53 +234,54 @@
       </TR>
     </TABLE>
   <BR>
-    <TABLE>
-      <%@all_tmhs=Array.new%>
-      <%@all_tmhs= [metascl.tmhmm_tmhs, metascl.phobius_tmhs, metascl.hmmtop_tmhs, spprediction.no_consensus_TMHs]%>
-      <%@all_topology=Array.new%>
-      <%@all_topology=[metascl.tmhmm_topology, metascl.phobius_topology, metascl.hmmtop_topology, spprediction.consensus_TMHs]%>
-      <%@all_names=Array.new%>
-      <%@all_names=['TMHMM 2.0', 'Phobius', 'HMMTOP 2.1', 'Consensus']%>
+  <%@all_tmhs=Array.new%>
+  <%@all_tmhs= [metascl.tmhmm_tmhs, metascl.phobius_tmhs, metascl.hmmtop_tmhs, spprediction.no_consensus_TMHs]%>
+  <%@all_topology=Array.new%>
+  <%@all_topology=[metascl.tmhmm_topology, metascl.phobius_topology, metascl.hmmtop_topology, spprediction.consensus_TMHs]%>
+  <%@all_names=Array.new%>
+  <%@all_names=['TMHMM 2.0', 'Phobius', 'HMMTOP 2.1', 'Consensus']%>
 
-      <%display='No'%>
-      <%for no_of_tmhs in @all_tmhs%>
-      	<%if (no_of_tmhs >= 1)%>
-          <%display='Yes'%>
+  <%display='No'%>
+  <%for no_of_tmhs in @all_tmhs%>
+    <%if (no_of_tmhs >= 1)%>
+      <%display='Yes'%>
+    <%end%>
+  <%end%>
+
+  <%if (display=~/Yes/)%>
+  <TABLE><TR height='20px'><TD bgcolor='#CCCCCC' width='750px'><B><center>Transmembrane helix topology</center></B></TD></TR></TABLE>
+  <TABLE>
+      <%for tool_num in 0..3 do%>
+        <TR height='20px'><TD bgcolor='#CCCCCC'><B><%=@all_names[tool_num]%></B></TD><TD style="padding-bottom:12px" colspan='2'>
+        <%metascl.tmhmm_topology=~/.*-(\d+)$/%>
+        <%$pd=$1%>
+        <%@topo_split=Array.new%>
+        <%@topo_split=@all_topology[tool_num].split(/\//)%>
+        <DIV vertical-align=middle; style="width:650px;height:20px;background-image:url('/images/bg_black_line.gif');position:absolute;">
+        <%for segment in @topo_split%>
+        <%bgcolor='orange'%>
+        <%tmhelix_nameit='TMHelix'%>
+        <%if(@all_names[tool_num]=~/Consensus/)%>
+          <%bgcolor='maroon'%>
         <%end%>
-      <%end%>
-
-      <%if (display=~/Yes/)%>
-        <%for tool_num in 0..3 do%>
-          <TR height='20px'><TD bgcolor='#CCCCCC'><B><%=@all_names[tool_num]%></B></TD><TD style="padding-bottom:12px">
-          <%metascl.tmhmm_topology=~/.*-(\d+)$/%>
-          <%$pd=$1%>
-  	  <%@topo_split=Array.new%>
-	  <%@topo_split=@all_topology[tool_num].split(/\//)%>
-          <DIV vertical-align=middle; style="width:650px;height:20px;background-image:url('/images/bg_black_line.gif');position:absolute;">
-	  <%for segment in @topo_split%>
-            <%bgcolor='orange'%>
-            <%tmhelix_nameit='TMHelix'%>
-            <%if(@all_names[tool_num]=~/Consensus/)%>
-              <%bgcolor='maroon'%>
-            <%end%>
-	    <%if(segment=~/TMhelix|TMHelix|H-REGION/)%>
-              <%if(segment=~/H-REGION/)%>
-                <%bgcolor='green'%>
-                <%tmhelix_nameit='Signal peptide - TMHelix region'%>
-              <%end%>
-	      <%segment=~/.*-(\d+)-(\d+)/%>
-              <%$start_1=$1%>
-              <%$end_1=$2%>
-	      <%$left_start=($start_1.to_i / $pd.to_i.to_f)*100%>
-	      <%$tm_length= $end_1.to_i - $start_1.to_i%>
-	      <%$tm_width=($tm_length.to_i / $pd.to_i.to_f)*100%>
-	      <DIV style="position:absolute;top:-2px;left:<%=$left_start%>%;background-color:<%=bgcolor%>;height:18px;width:<%=$tm_width%>%;" onmouseover="return overlib('<%=tmhelix_nameit%>: <%=$start_1%> to <%=$end_1%>')" onmouseout="return nd();">&nbsp</DIV>	
-	    <%end%>
+	<%if(segment=~/TMhelix|TMHelix|H-REGION/)%>
+          <%if(segment=~/H-REGION/)%>
+            <%bgcolor='green'%>
+            <%tmhelix_nameit='Signal peptide - TMHelix region'%>
+          <%end%>
+	  <%segment=~/.*-(\d+)-(\d+)/%>
+          <%$start_1=$1%>
+          <%$end_1=$2%>
+	  <%$left_start=($start_1.to_i / $pd.to_i.to_f)*100%>
+	  <%$tm_length= $end_1.to_i - $start_1.to_i%>
+	  <%$tm_width=($tm_length.to_i / $pd.to_i.to_f)*100%>
+	  <DIV style="position:absolute;top:-2px;left:<%=$left_start%>%;background-color:<%=bgcolor%>;height:18px;width:<%=$tm_width%>%;" onmouseover="return overlib('<%=tmhelix_nameit%>: <%=$start_1%> to <%=$end_1%>')" onmouseout="return nd();">&nbsp</DIV>	
 	  <%end%>
-          </DIV>
-          </TD></TR>
-        <%end%>
+	<%end%>
+        </DIV>
+        </TD></TR>
       <%end%>
-    </TABLE>
+    <%end%>
+  </TABLE>
   <%end%>
 <%end%>
