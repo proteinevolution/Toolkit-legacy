@@ -1,5 +1,242 @@
-<h2><%= @tool['title'] %> Overview</h2> 
-<div class="row">
-ToDo
+<link href="/stylesheets/gcview.css" type="text/css" rel="stylesheet">
+<ul id="helpindex" class="<%= @section['theme'] %>">
+    <li><a href="#group">Group View</a></li>
+    <li><a href="#taxonomy">Taxonomy View</a></li>
+    <li><a href="#detail">Detail View</a></li>
+</ul>
+
+
+  <h2 class="classification"><%= @tool['title'] %> Results</h2> 
+
+
+<!-- This is for the Demo -->
+<div id="gcv_infobox" style="display:none;">
+  <table border=0 cellpadding=0 cellspacing=2 style=width:400px><tr><td><b>Gene:</td><td id="gcv_infobox_gene"></td></tr>
+    <tr><td><b>Description:</td><td id="gcv_infobox_descr"></td></tr>
+    <tr><td><b>Location:</td><td id="gcv_infobox_location"></td></tr>
+    <tr><td><b>Intergenic distances (bp):</td><td id="gcv_infobox_inter"></td></tr>
+  </table>
 </div>
+
+
+<a name="group"></a>
+<h3 class="classification">Group View</h3>
+
+<div class="row" style="margin-bottom:10px">
+  <table id="gcview_legend"><tr><td colspan="2"><h3 class="classification">Legend</h3></td></tr>
+  <tr><td style="width: 35px;"><div style="background-color: rgb(204, 0, 0); width: 30px;">&nbsp;</div></td><td>acsA</td></tr>
+  <tr><td style="width: 35px;"><div style="background-color: rgb(0, 0, 204); width: 30px;">&nbsp;</div></td><td>acsB</td></tr>
+  <tr><td style="width: 35px;"><div style="background-color: rgb(255, 187, 0); width: 30px;">&nbsp;</div></td><td>acsC</td></tr>
+  </table>
+  <div id="gview_content" style="display:block">
+    <h3 class="classification">Example Group (1 organism) <span style="color:red">please click "show list" to expand</span></h3><img style="border: 0px none;" src="/images/gcview/help_results_group.png"><br>
+    <a onclick="document.getElementById('g_list28').style.display='block';document.getElementById('g_list_link28').style.display='none';cb(event);" id="g_list_link28" href="javascript:;" style="display: block;"><small>show list</small></a>
+    <div id="g_list28" style="margin-bottom: 0px; padding-bottom: 16px; padding-left: 30px; display: none;"><a onclick="document.getElementById('g_list28').style.display='none';document.getElementById('g_list_link28').style.display='block';cb(event);" href="javascript:;"><small>hide list</small></a><br>
+      <div>
+      <h3 class="classification">Gluconacetobacter xylinus (GI 4827163)</h3>
+      <map name="map35">
+        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827168,'4827168','bcsX',0,8333,9122,8301,9206)" onclick="document.getElementById('list35').style.display='block';gcv_highlight(4827168);cb(event);" coords="352,5,386,25" shape="rect">
+        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827169,'4827169','bcsY',0,9206,10367,9122,10374)" onclick="document.getElementById('list35').style.display='block';gcv_highlight(4827169);cb(event);" coords="389,30,439,50" shape="rect">
+        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827170,'4827170','bcsCII',0,10374,14298,10367,14331)" onclick="document.getElementById('list35').style.display='block';gcv_highlight(4827170);cb(event);" coords="438,5,605,25" shape="rect">
+        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827171,'4827171','ORF569',0,14331,16041,14298,-1)" onclick="document.getElementById('list35').style.display='block';gcv_highlight(4827171);cb(event);" coords="606,30,679,50" shape="rect">
+        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827164,'4827164','unnamed protein product',1,0,1273,-1,1507)" onclick="document.getElementById('list35').style.display='block';gcv_highlight(4827164);cb(event);" coords="0,30,54,50" shape="rect">
+        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827165,'4827165','ORF200',1,1507,2053,1273,2409)" onclick="document.getElementById('list35').style.display='block';gcv_highlight(4827165);cb(event);" coords="63,30,87,50" shape="rect">
+        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827166,'4827166','ORF265',1,2409,3207,2053,3744)" onclick="document.getElementById('list35').style.display='block';gcv_highlight(4827166);cb(event);" coords="101,30,136,50" shape="rect">
+        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827167,'4827167','bcsABII-A',0,3744,8301,3207,8333)" onclick="document.getElementById('list35').style.display='block';gcv_highlight(4827167);cb(event);" coords="158,30,352,50" shape="rect">
+      </map>
+      <p>Nucleotide ID: <a href="http://www.ncbi.nlm.nih.gov/sites/entrez?cmd=Retrieve&amp;db=nucleotide&amp;dopt=GenBank&amp;list_uids=4827163" target="_blank">4827163</a>
+      <img src="/images/gcview/help_results_group_detail.png" usemap="#map35" style="border: 0px none;width:720px"></p>
+      <p style="margin-bottom: 0px; padding-bottom: 16px; display: none;" id="list35">
+      <a href="javascript:;" onclick="document.getElementById('list35').style.display='none';cb(event);"><small>hide list</small></a><br>
+      <a name="4827164"></a>
+      <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827164" id="l4827164" target="_blank">gi|4827164|</a> 4827164 - unnamed protein product (1273 bp / 424 aa) <a href="javascript:;" id="s4827164" style="display: none;">select</a> <br>
+      <a name="4827165"></a>
+      <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827165" id="l4827165" target="_blank">gi|4827165|</a> 4827165 - ORF200 (546 bp / 182 aa) <a href="javascript:;" id="s4827165" style="display: none;">select</a> <br>
+      <a name="4827166"></a>
+      <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827166" id="l4827166" target="_blank">gi|4827166|</a> 4827166 - ORF265 (798 bp / 266 aa) <a href="javascript:;" id="s4827166" style="display: none;">select</a> <br>
+      <a name="4827167"></a>
+      <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827167" id="l4827167" target="_blank" style="background-color: transparent;">gi|4827167|</a> 4827167 - bcsABII-A (4557 bp / 1519 aa) <a href="javascript:;" id="s4827167" style="display: none;">select</a> <br>
+      <table>
+        <tr><td style="background-color: rgb(163, 67, 67);">&nbsp;</td><td style="margin-left: 5px;">61-693 </td><td>47% identity to Job acsA, e-value=1e-160</td></tr>
+        <tr><td style="background-color: rgb(88, 88, 151);">&nbsp;</td><td style="margin-left: 5px;">758-1513 </td><td>31% identity to Job acsB, e-value=7e-80</td></tr>
+      </table>
+      <a name="4827168"></a>
+      <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827168" id="l4827168" target="_blank">gi|4827168|</a> 4827168 - bcsX (789 bp / 263 aa) <a href="javascript:;" id="s4827168" style="display: none;">select</a> <br>
+      <a name="4827169"></a>
+      <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827169" id="l4827169" target="_blank">gi|4827169|</a> 4827169 - bcsY (1161 bp / 387 aa) <a href="javascript:;" id="s4827169" style="display: none;">select</a> <br>
+      <a name="4827170"></a>
+      <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827170" id="l4827170" target="_blank">gi|4827170|</a> 4827170 - bcsCII (3924 bp / 1308 aa) <a href="javascript:;" id="s4827170" style="display: none;">select</a> <br>
+      <table>
+        <tr><td style="background-color: rgb(157, 141, 98);">&nbsp;</td><td style="margin-left: 5px;">657-963 </td><td> 23% identity to Job acsC, e-value=3e-12</td></tr>
+      </table>
+      <a name="4827171"></a>
+      <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827171" id="l4827171" target="_blank">gi|4827171|</a> 4827171 - ORF569 (1710 bp / 570 aa) <a href="javascript:;" id="s4827171" style="display: none;">select</a> <br>
+      </p>
+      </div>
+    </div>
+  </div>
+</div>
+<hr style="width:90%">
+<div class="row">
+This view presents an overview over the results. Each group contains all organisms which contain a certain sequence of the genes of interest in a specific order. <br>
+A <b>schematic image</b> of each group summarizes which of the genes of interest can be found in the group, and in which order they appear in the genome. 
+Each query gene is represented by a <b>colored arrow</b>. The colors are indicated in the legend. 
+Additionally, the <b>identifier</b> of the input query is indicated on each arrow.  
+The arrows are not to scale and the colors do not indicate the degree of identity between query and hit sequences. 
+<b>Fused arrows</b> indicate that multiple query sequences were mapped on one gene. <br>
+<b>Gray boxes</b> represent one or multiple genes between genes of interest in a region which were not  hit by any of the query sequences. 
+A number indicates how many genes are represented by the corresponding box. <br>
+A group can be expanded by clicking <b>"show list"</b> to view the <a href="#detail">Detail View</a> for each organism.
+</div>
+
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+<a name="taxonomy"></a>
+<h3 class="classification">Taxonomy View - <span style="color:red">please click <img src="/images/gcview/plusmid.gif">/ <img src="/images/gcview/minusmid.gif"> to expand/collapse</span></h3>
+
+<div class="row" style="margin-bottom:10px">
+  <ul class="explorertree folderandfiletree"><ul>
+    <li class="explorertree-open" id="node1"><a onclick="document.getElementById('node1').className=(document.getElementById('node1').className=='explorertree-open')?'explorertree-closed':'explorertree-open';cb(event);" style="padding-left:20px;margin-left:-25px">root</a> <b>(1)</b>
+      <ul>
+      <li class="explorertree-open" id="node131567"><a onclick="document.getElementById('node131567').className=(document.getElementById('node131567').className=='explorertree-open')?'explorertree-closed':'explorertree-open';cb(event);" style="padding-left:20px;margin-left:-25px">cellular organisms</a> <b>(1)</b>
+        <ul>
+        <li class="explorertree-open" id="node2"><a onclick="document.getElementById('node2').className=(document.getElementById('node2').className=='explorertree-open')?'explorertree-closed':'explorertree-open';cb(event);" style="padding-left:20px;margin-left:-25px">Bacteria</a> <b>(1)</b>
+          <ul>
+          <li class="explorertree-open" id="node3"><a onclick="document.getElementById('node3').className=(document.getElementById('node3').className=='explorertree-open')?'explorertree-closed':'explorertree-open';cb(event);" style="padding-left:20px;margin-left:-25px">Proteobacteria</a> <b>(1)</b>
+            <ul>
+            <li class="explorertree-open" id="node4"><a onclick="document.getElementById('node4').className=(document.getElementById('node4').className=='explorertree-open')?'explorertree-closed':'explorertree-open';cb(event);" style="padding-left:20px;margin-left:-25px">Alphaproteobacteria</a> <b>(1)</b>
+              <ul>
+              <li class="explorertree-open" id="node5"><a onclick="document.getElementById('node5').className=(document.getElementById('node5').className=='explorertree-open')?'explorertree-closed':'explorertree-open';cb(event);" style="padding-left:20px;margin-left:-25px">Rhodospirillales</a> <b>(1)</b>
+                <ul>
+                <li class="explorertree-open" id="node6"><a onclick="document.getElementById('node6').className=(document.getElementById('node6').className=='explorertree-open')?'explorertree-closed':'explorertree-open';cb(event);" style="padding-left:20px;margin-left:-25px">Acetobacteraceae</a> <b>(1)</b>
+                  <ul>
+                  <li class="explorertree-open" id="node7"><a onclick="document.getElementById('node7').className=(document.getElementById('node7').className=='explorertree-open')?'explorertree-closed':'explorertree-open';cb(event);" style="padding-left:20px;margin-left:-25px">Gluconacetobacter</a> <b>(1)</b>
+                    <ul>
+                    <li class="explorertree-closed" id="node8"><a onclick="document.getElementById('node8').className=(document.getElementById('node8').className=='explorertree-open')?'explorertree-closed':'explorertree-open';cb(event);" style="padding-left:20px;margin-left:-25px">Gluconacetobacter xylinus</a> <b>(1)</b>
+                    <div>
+                      <h3 class="classification">Gluconacetobacter xylinus (GI 4827163)</h3>
+                      <map name="map35t">
+                        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827168,'4827168','bcsX',0,8333,9122,8301,9206)" onclick="document.getElementById('list35t').style.display='block';gcv_highlight('4827168t');cb(event);" coords="352,5,386,25" shape="rect">
+                        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827169,'4827169','bcsY',0,9206,10367,9122,10374)" onclick="document.getElementById('list35t').style.display='block';gcv_highlight('4827169t');cb(event);" coords="389,30,439,50" shape="rect">
+                        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827170,'4827170','bcsCII',0,10374,14298,10367,14331)" onclick="document.getElementById('list35t').style.display='block';gcv_highlight('4827170t');cb(event);" coords="438,5,605,25" shape="rect">
+                        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827171,'4827171','ORF569',0,14331,16041,14298,-1)" onclick="document.getElementById('list35t').style.display='block';gcv_highlight('4827171t');cb(event);" coords="606,30,679,50" shape="rect">
+                        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827164,'4827164','unnamed protein product',1,0,1273,-1,1507)" onclick="document.getElementById('list35t').style.display='block';gcv_highlight('4827164t');cb(event);" coords="0,30,54,50" shape="rect">
+                        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827165,'4827165','ORF200',1,1507,2053,1273,2409)" onclick="document.getElementById('list35t').style.display='block';gcv_highlight('4827165t');cb(event);" coords="63,30,87,50" shape="rect">
+                        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827166,'4827166','ORF265',1,2409,3207,2053,3744)" onclick="document.getElementById('list35t').style.display='block';gcv_highlight('4827166t');cb(event);" coords="101,30,136,50" shape="rect">
+                        <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827167,'4827167','bcsABII-A',0,3744,8301,3207,8333)" onclick="document.getElementById('list35t').style.display='block';gcv_highlight('4827167t');cb(event);" coords="158,30,352,50" shape="rect">
+                      </map>
+                      <p>Nucleotide ID: <a href="http://www.ncbi.nlm.nih.gov/sites/entrez?cmd=Retrieve&amp;db=nucleotide&amp;dopt=GenBank&amp;list_uids=4827163" target="_blank">4827163</a>
+                      <img src="/images/gcview/help_results_group_detail.png" usemap="#map35t" style="border: 0px none;width:720px"></p>
+                      <p style="margin-bottom: 0px; padding-bottom: 16px; display: none;" id="list35t">
+                        <a href="javascript:;" onclick="document.getElementById('list35').style.display='none';cb(event);"><small>hide list</small></a><br>
+                        <a name="4827164"></a>
+                        <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827164" id="l4827164t" target="_blank">gi|4827164|</a> 4827164 - unnamed protein product (1273 bp / 424 aa) <a href="javascript:;" id="s4827164t" style="display: none;">select</a> <br>
+                        <a name="4827165"></a>
+                        <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827165" id="l4827165t" target="_blank">gi|4827165|</a> 4827165 - ORF200 (546 bp / 182 aa) <a href="javascript:;" id="s4827165t" style="display: none;">select</a> <br>
+                        <a name="4827166"></a>
+                        <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827166" id="l4827166t" target="_blank">gi|4827166|</a> 4827166 - ORF265 (798 bp / 266 aa) <a href="javascript:;" id="s4827166t" style="display: none;">select</a> <br>
+                        <a name="4827167"></a>
+                        <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827167" id="l4827167t" target="_blank" style="background-color: transparent;">gi|4827167|</a> 4827167 - bcsABII-A (4557 bp / 1519 aa) <a href="javascript:;" id="s4827167t" style="display: none;">select</a> <br>
+                        <table>
+                          <tr><td style="background-color: rgb(163, 67, 67);">&nbsp;</td><td style="margin-left: 5px;">61-693 </td><td>47% identity to Job acsA, e-value=1e-160</td></tr>
+                          <tr><td style="background-color: rgb(88, 88, 151);">&nbsp;</td><td style="margin-left: 5px;">758-1513 </td><td>31% identity to Job acsB, e-value=7e-80</td></tr>
+                        </table>
+                        <a name="4827168"></a>
+                        <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827168" id="l4827168t" target="_blank">gi|4827168|</a> 4827168 - bcsX (789 bp / 263 aa) <a href="javascript:;" id="s4827168t" style="display: none;">select</a> <br>
+                        <a name="4827169"></a>
+                        <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827169" id="l4827169t" target="_blank">gi|4827169|</a> 4827169 - bcsY (1161 bp / 387 aa) <a href="javascript:;" id="s4827169t" style="display: none;">select</a> <br>
+                        <a name="4827170"></a>
+                        <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827170" id="l4827170t" target="_blank">gi|4827170|</a> 4827170 - bcsCII (3924 bp / 1308 aa) <a href="javascript:;" id="s4827170t" style="display: none;">select</a> <br>
+                          <table>
+                            <tr><td style="background-color: rgb(157, 141, 98);">&nbsp;</td><td style="margin-left: 5px;">657-963 </td><td> 23% identity to Job acsC, e-value=3e-12</td></tr>
+                          </table>
+                        <a name="4827171"></a>
+                        <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827171" id="l4827171t" target="_blank">gi|4827171|</a> 4827171 - ORF569 (1710 bp / 570 aa) <a href="javascript:;" id="s4827171t" style="display: none;">select</a> <br>
+                      </p>
+                      </div>
+                    </li>
+                    </ul>
+                  </li>
+                  </ul>
+                </li>
+                </ul>
+              </li>
+              </ul>
+            </li>
+            </ul>
+          </li>
+          </ul>
+        </li>
+        </ul>
+      </li>
+      </ul>
+    </li>
+    </ul>
+  </div>
+
+<hr style="width:90%">
+<div class="row">
+This view maps all results onto a <b>taxonomy tree</b>. The numbers next to the organism names represent the number of hits in this taxon and its sub-groups. 
+Branches of the tree can be collapsed or expanded as required. For each hit a <a href="#detail">Detail View</a> is included in the tree.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+<a name="detail"></a>
+<h3 class="classification">Detail View</h3>
+<div class="row">
+  <h3 class="classification">Gluconacetobacter xylinus (GI 4827163)</h3>
+  <map name="map35d">
+    <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827168,'4827168','bcsX',0,8333,9122,8301,9206)" onclick="document.getElementById('list35d').style.display='block';gcv_highlight('4827168d');cb(event);" coords="352,5,386,25" shape="rect">
+    <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827169,'4827169','bcsY',0,9206,10367,9122,10374)" onclick="document.getElementById('list35d').style.display='block';gcv_highlight('4827169d');cb(event);" coords="389,30,439,50" shape="rect">
+    <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827170,'4827170','bcsCII',0,10374,14298,10367,14331)" onclick="document.getElementById('list35d').style.display='block';gcv_highlight('4827170d');cb(event);" coords="438,5,605,25" shape="rect">
+    <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827171,'4827171','ORF569',0,14331,16041,14298,-1)" onclick="document.getElementById('list35d').style.display='block';gcv_highlight('4827171d');cb(event);" coords="606,30,679,50" shape="rect">
+    <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827164,'4827164','unnamed protein product',1,0,1273,-1,1507)" onclick="document.getElementById('list35d').style.display='block';gcv_highlight('4827164d');cb(event);" coords="0,30,54,50" shape="rect">
+    <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827165,'4827165','ORF200',1,1507,2053,1273,2409)" onclick="document.getElementById('list35d').style.display='block';gcv_highlight('4827165d');cb(event);" coords="63,30,87,50" shape="rect">
+    <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827166,'4827166','ORF265',1,2409,3207,2053,3744)" onclick="document.getElementById('list35d').style.display='block';gcv_highlight('4827166d');cb(event);" coords="101,30,136,50" shape="rect">
+    <area onmouseout="gcv_legend_off()" onmouseover="gcv_legend_on(4827167,'4827167','bcsABII-A',0,3744,8301,3207,8333)" onclick="document.getElementById('list35d').style.display='block';gcv_highlight('4827167d');cb(event);" coords="158,30,352,50" shape="rect">
+  </map>
+  <p>Nucleotide ID: <a href="http://www.ncbi.nlm.nih.gov/sites/entrez?cmd=Retrieve&amp;db=nucleotide&amp;dopt=GenBank&amp;list_uids=4827163" target="_blank">4827163</a>
+  <img src="/images/gcview/help_results_group_detail.png" usemap="#map35d" style="border: 0px none;width:720px"></p>
+  <p style="margin-bottom: 0px; padding-bottom: 16px; display: none;" id="list35d">
+  <a href="javascript:;" onclick="document.getElementById('list35').style.display='none';cb(event);"><small>hide list</small></a><br>
+  <a name="4827164"></a>
+  <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827164" id="l4827164d" target="_blank">gi|4827164|</a> 4827164 - unnamed protein product (1273 bp / 424 aa) <a href="javascript:;" id="s4827164d" style="display: none;">select</a> <br>
+  <a name="4827165"></a>
+  <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827165" id="l4827165d" target="_blank">gi|4827165|</a> 4827165 - ORF200 (546 bp / 182 aa) <a href="javascript:;" id="s4827165d" style="display: none;">select</a> <br>
+  <a name="4827166"></a>
+  <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827166" id="l4827166d" target="_blank">gi|4827166|</a> 4827166 - ORF265 (798 bp / 266 aa) <a href="javascript:;" id="s4827166d" style="display: none;">select</a> <br>
+  <a name="4827167"></a>
+  <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827167" id="l4827167d" target="_blank" style="background-color: transparent;">gi|4827167|</a> 4827167 - bcsABII-A (4557 bp / 1519 aa) <a href="javascript:;" id="s4827167d" style="display: none;">select</a> <br>
+  <table>
+  <tr><td style="background-color: rgb(163, 67, 67);">&nbsp;</td><td style="margin-left: 5px;">61-693 </td><td>47% identity to Job acsA, e-value=1e-160</td></tr>
+  <tr><td style="background-color: rgb(88, 88, 151);">&nbsp;</td><td style="margin-left: 5px;">758-1513 </td><td>31% identity to Job acsB, e-value=7e-80</td></tr>
+  </table>
+  <a name="4827168"></a>
+  <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827168" id="l4827168d" target="_blank">gi|4827168|</a> 4827168 - bcsX (789 bp / 263 aa) <a href="javascript:;" id="s4827168d" style="display: none;">select</a> <br>
+  <a name="4827169"></a>
+  <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827169" id="l4827169d" target="_blank">gi|4827169|</a> 4827169 - bcsY (1161 bp / 387 aa) <a href="javascript:;" id="s4827169d" style="display: none;">select</a> <br>
+  <a name="4827170"></a>
+  <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827170" id="l4827170d" target="_blank">gi|4827170|</a> 4827170 - bcsCII (3924 bp / 1308 aa) <a href="javascript:;" id="s4827170d" style="display: none;">select</a> <br>
+  <table>
+  <tr><td style="background-color: rgb(157, 141, 98);">&nbsp;</td><td style="margin-left: 5px;">657-963 </td><td> 23% identity to Job acsC, e-value=3e-12</td></tr>
+  </table>
+  <a name="4827171"></a>
+  <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=Protein&amp;dopt=GenPept&amp;list_uids=4827171" id="l4827171d" target="_blank">gi|4827171|</a> 4827171 - ORF569 (1710 bp / 570 aa) <a href="javascript:;" id="s4827171d" style="display: none;">select</a> <br>
+  </p>
+  </div>
+
+<hr style="width:90%">
+<div class="row">
+Each piece of a genome which contains one or several genes of interest is represented by one detail view. 
+A <b>genome ID</b> is shown for each region, indicating the nucleotide GI number from which the corresponding region was extracted. 
+If genes of interest show up in several regions of the same genome, multiple views having the same nucleotide ID are shown – one for each region.<br>
+A schematic image of the region shows the genetic neighborhood of the genes of interest. 
+<b>Protein coding genes</b> are shown as arrows. 
+Regions of homology to the genes of interest are highlighted in the corresponding colors which are indicated in the legend. 
+The intensity of the color corresponds to the identity score of the hit. The length of the arrow shows the length of the gene. 
+Please note that the scale may differ between different images.<br>
+ The ruler at the bottom of each image gives the position in the genome. Each section of the ruler corresponds to <b>1000 bp</b>.<br>
+If you <b>hover the mouse cursor</b> over the arrow, an information box containing various details for the gene is shown.<br> <b>Clicking on an arrow</b> expands a detailed list of the genes in the image. The selected gene is highlighted in the list by a green background. 
+Each gene containing hits to genes of interest has a list with details for each hit.<br>
+By <b>clicking “select”</b>, the GI Identifier of the gene is added to the clipboard in the bottom right corner of the screen (not shown here). The genes on the clipboard can be forwarded to sequence retrieval tools for further analysis or added to GCView for an iterative expansion of the set of analyzed genes.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
