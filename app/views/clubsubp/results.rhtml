@@ -1,6 +1,6 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
 
-<%= render(:partial => "shared/resultsections") %>
+<%= render(:partial => "resultsections") %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
 
@@ -78,7 +78,6 @@
                                                 <TD><%=gi.subloc%></TD>
                                         </TR>
                                 <%end%>
-
 			<%end%>
 		</TABLE>
 	<%end%>
@@ -126,8 +125,8 @@
 								<TH rowspan='2' width='50px'><FONT color='white'>Cluster</FONT></TH>
 								<TH rowspan='2' width='50px'><FONT color='white'>Blast Hit - NCBI's GI</FONT></TH>
 								<TH rowspan='2' width='250px'><FONT color='white'>Description</FONT></TH>
-								<TH rowspan='2' width='100px'><FONT color='white'>Organism</FONT></TH>
-								<TH colspan='2' width='100px'><FONT color='white'>Subcellular location</FONT></TH>
+								<TH rowspan='2' width='250px'><FONT color='white'>Organism</FONT></TH>
+								<TH colspan='2' width='200px'height='30px'><FONT color='white'>Subcellular location</FONT></TH>
 								<TH rowspan='2' width='50px' bgcolor='#85637F'><FONT color='white'>Number of Identical residues</FONT></TH>
 								<TH rowspan='2' width='50px' bgcolor='#85637F'><FONT color='white'>Number of conserved residues</FONT></TH>
 								<TH rowspan='2' width='50px' bgcolor='#85637F'><FONT color='white'>Evalue</FONT></TH>
@@ -135,8 +134,8 @@
 								<TH rowspan='2' width='50px' bgcolor='#85637F'><FONT color='white'>Percentage of hit covered in the PW-alignment</FONT></TH>
 							</TR>
 							<TR bgcolor='#97697C'>
-								<TH><FONT color='white'>Cluster's</FONT></TH>
-								<TH><FONT color='white'>Protein's</FONT></TH> 
+								<TH><FONT color='white' width='100px'>Cluster's</FONT></TH>
+								<TH><FONT color='white' width='100px'>Protein's</FONT></TH> 
 							</TR>
 						<%end%>
 						<%if(@readFile[$i]!~/NOHITS/)%>  

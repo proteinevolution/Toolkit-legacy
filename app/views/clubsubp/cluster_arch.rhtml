@@ -10,19 +10,19 @@
 
   <H5>Archaeal Cluster <%=cluster_name.cluster%></H5>
 
-  <P><TABLE width='40%' style='float:left'><TR bgcolor='#97697C'><TH><font color='white'>Cluster's Subcellular Localization</TH><TH><font color='white'>Score</TH></font></TR>
-
-
-  <TR bgcolor='#D5C8D1'><TD>Secreted/Extracellular (S)</TD><TD><%=cluster_name.secreted%></TD></TR>
-  <TR bgcolor='#E2E0E1'><TD>Cytoplasmic transmembrane (TM)</TD><TD><%=cluster_name.cytomem%></TD></TR>
-  <TR bgcolor='#E2E0E1'><TD>Cytoplasm (C)</TD><TD><%=cluster_name.cytoplasmic%></TD></TR>
-  <TR bgcolor='#D5C8D1'><TD>CellWall (CW)</TD><TD><%=cluster_name.cellwall%></TD></TR>
-  <TR bgcolor='#E2E0E1'><TD>Lipoprotein (L)</TD><TD><%=cluster_name.lipoprotein%></TD></TR>
-  <TR bgcolor='#D5C8D1'><TD>Unknown (U)</TD><TD><%=cluster_name.unknown%></TD></TR>
-  <TR bgcolor='#B5A2AF'><TD>Cluster's subcellular localization</TD><TD><%=cluster_name.finalscl%></TD></TR>
+  <P><TABLE width='50%' style='float:left'><TR bgcolor='#97697C' height='20px'><TH><font color='white'>Cluster's Subcellular Localization</TH><TH><font color='white'>Score</TH></font></TR>
+  <TR bgcolor='#D5C8D1' height='15px'><TD>Secreted/Extracellular (S)</TD><TD><%=cluster_name.secreted%></TD></TR>
+  <TR bgcolor='#E2E0E1' height='15px'><TD>Cytoplasmic membrane (TM)</TD><TD><%=cluster_name.cytomem%></TD></TR>
+  <TR bgcolor='#D5C8D1' height='15px'><TD>Cytoplasm (C)</TD><TD><%=cluster_name.cytoplasmic%></TD></TR>
+  <TR bgcolor='#E2E0E1' height='15px'><TD>Cell wall (CW)</TD><TD><%=cluster_name.cellwall%></TD></TR>
+  <TR bgcolor='#D5C8D1' height='15px'><TD>Lipoprotein (L)</TD><TD><%=cluster_name.lipoprotein%></TD></TR>
+  <TR bgcolor='#E2E0E1' height='15px'><TD>Unknown (U)</TD><TD><%=cluster_name.unknown%></TD></TR>
+  <TR bgcolor='#D5C8D1' height='15px'><TD>Cluster's subcellular localization</TD><TD><%=cluster_name.finalscl%></TD></TR>
   </TABLE>
 
+<DIV style='float:right'>
 <%= image_tag cluster_name.pnglink%>
+</DIV>
 
 <!--<fieldset width='40%'>
 <legend><B>General Information</B></legend> -->

@@ -65,8 +65,8 @@
           <%spprediction=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
           <TABLE style='text-align:center;' BORDer=0 width='100%'>
             <TR bgcolor='#736F6E'>
-              <TD><FONT COLOR='white'>Lipo signal peptide</TD>
-              <TD><FONT COLOR='white'>TaT signal peptide</TD>
+              <TD><FONT COLOR='white'>Lipoprotein signal peptide</TD>
+              <TD><FONT COLOR='white'>TAT signal peptide</TD>
               <TD><FONT COLOR='white'>General signal peptide</TD>
               <TD><FONT COLOR='white'>TypeIII signal peptide</TD>
               <TD><FONT COLOR='white'>Consensus prediction</TD>
@@ -98,7 +98,7 @@
             <%metascl=Clubmetascl.find(:first, :conditions => ["gi=?", protein.gi])%>
             <TABLE style='text-align:center;' BORDER=0 width='100%' bgcolor='white'>
               <TR>
-                <TD bgcolor='#A68B94' rowspan='3' width='60px'><B>Lipo SP</B></TD>
+                <TD bgcolor='#A68B94' rowspan='3' width='60px'><B>Lipoprotein SP</B></TD>
                 <TD colspan='12' bgcolor='#CCCCCC'><B>LipoP 1.0</B></TD>
               </TR>
               <TR bgcolor='#E8E8E8'>
@@ -208,7 +208,7 @@
      <%omp_display=Clubgioutextratmdisplay.find(:first, :conditions => ["gi=?", protein.gi])%>
      <%gicomments_display=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
     <TABLE width='100%' style='text-align:center;'>
-      <TR bgcolor='#CCCCCC'>
+      <TR bgcolor='#CCCCCC' height='20px'>
         <TH rowspan='3' width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Outer membrane beta-barrel</B></TH>
         <TD colspan='2'><B>BOMP</B></TD>
         <TD><B>PSORTb v.3.0</B></TD>
@@ -235,7 +235,7 @@
     <BR/>
 
   <TABLE  width='100%' style='text-align:center;'>
-      <TR bgcolor='#CCCCCC'>
+      <TR bgcolor='#CCCCCC' height='20px'>
         <TH rowspan='2'  width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Extracellular</B></TH>
         <TD ><B>PSORTb v.3.0. Extracellular Score</B></TD>
         <TD ><B>Type III signal peptide</B></TD>
@@ -252,8 +252,8 @@
     </BR>
 
     <TABLE width='100%' style='text-align:center;'>
-      <TR bgcolor='#CCCCCC'>
-        <TH rowspan='3'  width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Transmembrane</B></TH>
+      <TR bgcolor='#CCCCCC' height='20px'>
+        <TH rowspan='3'  width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Cytoplasmic membrane</B></TH>
         <TD colspan='2'><B>TMHMM 2.0</B></TD>
         <TD colspan='2'><B>Phobius</B></TD>
         <TD colspan='2'><B>HMMTOP 2.1</B></TD>
@@ -281,24 +281,25 @@
       </TR>
     </TABLE>
     </BR>
- 
-    <TABLE>
-      <%@all_tmhs=Array.new%>
-      <%@all_tmhs= [omp_display.tmhmmtmhs, omp_display.phobiustmhs, omp_display.hmmtoptmhs, gicomments_display.no_consensus_TMHs]%>
-      <%@all_topology=Array.new%>
-      <%@all_topology=[omp_display.tmhmmtopology, omp_display.phobiustopology, omp_display.hmmtoptopology, gicomments_display.consensus_TMHs]%>
-      <%@all_names=Array.new%>
-      <%@all_names=['TMHMM 2.0', 'Phobius', 'HMMTOP 2.1', 'Consensus']%>
 
-      <%display='No'%>
-      <%for no_of_tmhs in @all_tmhs%>
-        <%if (no_of_tmhs >= 1)%>
-          <%display='Yes'%>
-        <%end%>
+    <%@all_tmhs=Array.new%>
+    <%@all_tmhs= [omp_display.tmhmmtmhs, omp_display.phobiustmhs, omp_display.hmmtoptmhs, gicomments_display.no_consensus_TMHs]%>
+    <%@all_topology=Array.new%>
+    <%@all_topology=[omp_display.tmhmmtopology, omp_display.phobiustopology, omp_display.hmmtoptopology, gicomments_display.consensus_TMHs]%>
+    <%@all_names=Array.new%>
+    <%@all_names=['TMHMM 2.0', 'Phobius', 'HMMTOP 2.1', 'Consensus']%>
+
+    <%display='No'%>
+    <%for no_of_tmhs in @all_tmhs%>
+      <%if (no_of_tmhs >= 1)%>
+        <%display='Yes'%>
       <%end%>
+    <%end%>
 
-      <%if (display=~/Yes/)%>
-        <%for tool_num in 0..3 do%>
+    <%if (display=~/Yes/)%>
+      <TABLE><TR height='20px'><TD bgcolor='#CCCCCC' width='750px'><B><center>Transmembrane helix topology</center></B></TD></TR></TABLE>
+      <TABLE>
+      <%for tool_num in 0..3 do%>
           <TR height='20px'><TD bgcolor='#CCCCCC'><B><%=@all_names[tool_num]%></B></TD><TD style="padding-bottom:12px">
           <%omp_display.tmhmmtopology=~/.*-(\d+)$/%>
           <%$pd=$1%>
