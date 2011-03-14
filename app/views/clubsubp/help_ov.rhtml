@@ -1,13 +1,26 @@
 <h2><%= @tool['title'] %> Overview</h2> 
 <div>
    <BR/><h5><br>ClubSub-P is clustering based meta-prediction of subcellular localization (SCL) database for Gram-negative bacterial and Archaeal proteins.<BR/></h5>
-<P>Newly synthesized proteins have to be translocated to its native subcellular compartments for performin its native function. This protein sorting across the cytoplsmic memebrane usually requires a short stretch of secretory signals which are present at the N-terminal region of proteins. But there are few secretory pathways in Gram-negative bacteria which does not require a secretory signal for secretion.</P></BR>
+<P>Newly synthesized proteins have to be translocated to its native subcellular compartments for performing its native function. 
+This protein sorting across the cytoplasmic membrane usually requires a short stretch of secretory signals which are present at 
+the N-terminal region of proteins. But there are few secretory pathways in Gram-negative bacteria which do not require a secretory signal for secretion.</P></BR>
 
-<P>In the post genomic era, SCL prediction is an impotant step in the functional annotation of proteins. The quality of secretory signal peptide predictions not only depends on the tools, but also depends on the quality of the input sequences. There are instance where the start codon is mis-predicted, a wrong N-terminal end which leads to a false positive or false negative signal peptide prediction. This further leads to a wrong SCL annotation.</P></BR>
+<P>In the post genomic era, SCL prediction is an important step in the functional annotation of proteins. The quality of secretory 
+signal peptide predictions not only depends on the tools, but also depends on the quality of the input sequences. There are instances 
+where the start codon is mis-predicted, a wrong N-terminal end which leads to a false positive or false negative signal peptide prediction. 
+This further leads to a wrong SCL annotation.</P></BR>
 
-<P>The mis-prediction of signal peptide due to the start codon prediction errors can be reduced by integrating the signal peptide prediction from closely related sequences. To achieve this 157 Gram-negative bacterial proteomes and 67 Archaeal proteomes were clustered separately and N-terminal signal peptide and secondary structural features were predicted. Then SCL were assigned to proteins, which is later combined at cluster level to get SCL of the cluster.</P></BR>
+<P>The mis-prediction of signal peptide due to the start codon prediction errors can be reduced by integrating the signal peptide prediction 
+from closely related sequences. To achieve this 157 Gram-negative bacterial proteomes and 67 Archaeal proteomes were clustered separately and 
+N-terminal signal peptide and secondary structural features were predicted. Then SCL were assigned to proteins, which is later combined at cluster 
+level to get SCL of the cluster.</P></BR>
+
 <H3 class="<%= @section["name"]%>">Clustering</H3>
-   <BR/><A href="http://www.bioinformatics.org/cd-hit/" target="_blank">CD-HIT</A> program was used for clustering the proteomes at 40% local sequence identity and 80% coverage cutoffs to the longest representative sequence in the cluster. CD-HIT user's guide can be found <A href="http://weizhong-lab.ucsd.edu/cd-hit/wiki/doku.php?id=cd-hit_user_guide" target="_blank">here</A> and following was the command used to cluster the proteomes,<BR/><BR/>
+   <BR/><A href="http://www.bioinformatics.org/cd-hit/" target="_blank">CD-HIT</A> program was used for clustering the proteomes at 40% local sequence 
+identity and 80% coverage cutoffs to the longest representative sequence in the cluster. 
+CD-HIT user's guide can be found <A href="http://weizhong-lab.ucsd.edu/cd-hit/wiki/doku.php?id=cd-hit_user_guide" target="_blank">here</A> and 
+following was the command used to cluster the proteomes,<BR/><BR/>
+
 	<CENTER><FONT FACE="monospace">cdhit -i  157_proteomes -o clustered_157_proteomes -c 0.4 -n 2 -G 0 -s 0.8 -aL 0.8 -B 1 -g 1</FONT></CENTER>
 	In parallel mode,<BR/><BR/>
 	<CENTER><FONT FACE="monospace">cd-hit-para.pl -i  157_proteomes -o clustered_157_proteomes -c 0.4 -n 2 -G 0 -s 0.8 -aL 0.8 -B 1 -g 1 --Q 200 --T SGE --S 100</FONT></CENTER>
@@ -15,26 +28,40 @@
 Same parameters were used to cluster the Archaeal proteomes.
 
 <H3 class="<%= @section["name"]%>">Tools used in SCL prediction</H3>
-   <BR/>ClubSub-P uses <A href="http://www.cbs.dtu.dk/services/SignalP/" target="_blank">SignalP 3.0</A>, <A href="http://www.cbs.dtu.dk/services/LipoP/" target="_blank">LipoP 1.0</A>, <A href="http://phobius.sbc.su.se/" target="_blank">Phobius</A>, <A href="http://www.predisi.de/" target="_blank">PrediSi</A>, <A href="http://www.cbs.dtu.dk/services/TMHMM/" target="_blank">TMHMM 2.0</A>, <A href="http://www.enzim.hu/hmmtop/" target="_blank">HMMTOP</A>, <A href="http://services.cbu.uib.no/tools/bomp" target="_blank">BOMP</A>, <A href="http://toolkit.tuebingen.mpg.de/hhomp" target="_blank">HHomp</A>, <A href="http://signalfind.org/tatfind.html" target="_blank">TaTFind 1.4</A>, <A href="http://www.cbs.dtu.dk/services/TatP/" target="_blank">TatP 1.0</A>, <A href="http://www.effectors.org/" target="_blank">Effective 1.0.1</A>, <A href="http://gecco.org.chemie.uni-frankfurt.de/T3SS_prediction/T3SS_prediction.html" target="_blank">T3SS_Prediction</A>, <A href="http://cello.life.nctu.edu.tw/" target="_blank">CELLO v.2.5</A>, <A href="http://www.psort.org/psortb/" target="_blank">PSORTbv.3.0.2</A>, <A href="http://signalfind.org/flafind.html" target="_blank">FlaFind</A> and <A href="http://biophysics.biol.uoa.gr/PRED-SIGNAL/" target="_blank">PRED-SIGNAL</A> in the prediction pipeline.<BR/><BR/>
+   <BR/>ClubSub-P uses <A href="http://www.cbs.dtu.dk/services/SignalP/" target="_blank">SignalP 3.0</A>, <A href="http://www.cbs.dtu.dk/services/LipoP/" target="_blank">LipoP 1.0</A>, 
+<A href="http://phobius.sbc.su.se/" target="_blank">Phobius</A>, <A href="http://www.predisi.de/" target="_blank">PrediSi</A>, 
+<A href="http://www.cbs.dtu.dk/services/TMHMM/" target="_blank">TMHMM 2.0</A>, <A href="http://www.enzim.hu/hmmtop/" target="_blank">HMMTOP</A>, 
+<A href="http://services.cbu.uib.no/tools/bomp" target="_blank">BOMP</A>, <A href="http://toolkit.tuebingen.mpg.de/hhomp" target="_blank">HHomp</A>, 
+<A href="http://signalfind.org/tatfind.html" target="_blank">TaTFind 1.4</A>, <A href="http://www.cbs.dtu.dk/services/TatP/" target="_blank">TatP 1.0</A>, 
+<A href="http://www.effectors.org/" target="_blank">Effective 1.0.1</A>, <A href="http://gecco.org.chemie.uni-frankfurt.de/T3SS_prediction/T3SS_prediction.html" target="_blank">T3SS_Prediction</A>, 
+<A href="http://cello.life.nctu.edu.tw/" target="_blank">CELLO v.2.5</A>, <A href="http://www.psort.org/psortb/" target="_blank">PSORTbv.3.0.2</A>, 
+<A href="http://signalfind.org/flafind.html" target="_blank">FlaFind</A> and <A href="http://biophysics.biol.uoa.gr/PRED-SIGNAL/" target="_blank">PRED-SIGNAL</A> in the prediction pipeline.<BR/><BR/>
     
 <A name="sp"></A>
 <H3 class="<%= @section["name"]%>">Consensus signal Peptide prediction</H3>
 
    <P><B>Lipoprotein signal peptide</B>
-      <BR>'Best prediction' in LipoP 1.0 was used to identify the <B>Lipoprotein signal peptides</B> in proteins. Since +2 retention signals are species specific and there is no enough experimental evidence to for a better classifier yet, so the sequence after SPII cleavage site was provided in the results for user's interpretation to predict which membrane(inner/outer) the protein binds.
+      <BR>'Best prediction' in LipoP 1.0 was used to identify the <B>Lipoprotein signal peptides</B> in proteins. Since +2 retention signals are species specific 
+and there is no enough experimental evidence to for a better classifier yet, so the sequence after SPII cleavage site was provided in the results for user's 
+interpretation to predict which membranei (inner/outer) the protein binds.
       <BR><A href="http://www.cbs.dtu.dk/services/LipoP/LipoP1.0server.html#Output" target='_blank'>LipoP's Output format</A></P><BR>
    
-   <P><B>TAT signal peptide</B>
-      <BR>Both Tatp 1.0 and TatFind 1.4 should give a positive prediction to identify <B>twin argining translocation (TAT) signal peptides</B>. TatP's MaxD score was used to confirm the Tat peptide's cleavage.
+   <P><B>Twin-arginine translocation (TAT) signal peptide</B>
+      <BR>Both TatP 1.0 and TatFind 1.4 should give a positive prediction to identify <B>TAT signal peptides</B>. 
+TatP's MaxD score was used to confirm the TAT signal peptide's cleavage.
       <BR><A HREF="http://www.cbs.dtu.dk/services/TatP/output.php" target="_blank">TatP's Output format</A></P><BR>
    
    <P><B>General signal peptide</B>
-      <BR><B>General secretory pathway signal peptides</B> were identified using consensus prediction of SignalP3.0-NN, SignalP3.0-HMM, Phobius and PrediSi. At least 3 of the above tools should have a positive prediction to confirm the consensus prediction. SignalP-NN's MaxD score and SignalP-HMM's cleavage probability were used to confirm the cleavage of general signal peptides.
+      <BR><B>General secretory pathway signal peptides</B> were identified using consensus prediction of SignalP3.0-NN, SignalP3.0-HMM, Phobius and PrediSi. 
+At least 3 of the above tools should have a positive prediction to confirm the consensus prediction. SignalP-NN's MaxD score and SignalP-HMM's 
+cleavage probability were used to confirm the cleavage of general signal peptides.
       <BR><A HREF="http://www.cbs.dtu.dk/services/SignalP/output.php" target="_blank">SignalP's Output format</A>, <A HREF='http://phobius.sbc.su.se/instructions.html' target="_blank">Phobius's Instruction page</A>
-      <BR>For Archaeal proteins, we have replaced the tool PrediSi with PRED-SIGNAL tool and used the other tools in Gram-positive mode to predict the general secertory pathway signal peptides in Archaea.</BR></P></BR>
+      <BR>For Archaeal proteins, we have replaced the tool PrediSi with PRED-SIGNAL tool and used the other tools in Gram-positive mode to 
+predict the general secretory pathway signal peptides in Archaea.</BR></P></BR>
    
    <P><B>Type III secretion system signal peptide in Gram-negative bacteria</B>
-      <BR>T3SS_prediction and Effective 1.0.1 were used to identify <B>T3SS signal peptides</B>. To reduce the false positive T3SS signal peptide prediction, both Effective 1.0.1 and T3SS_prediction should be positive with their scores greater than 0.8.</P><BR> 
+      <BR>T3SS_prediction and Effective 1.0.1 were used to identify <B>T3SS signal peptides</B>. To reduce the false positive T3SS signal peptide prediction, 
+both Effective 1.0.1 and T3SS_prediction should be positive with their scores greater than 0.8.</P><BR> 
 
     <P><B>Prepilin/Flagellin signal peptide in Archaea</B>
        <BR>FlaFind tool was used to predict the class III (type IV pilin-like) flagellin signal peptide in Archaea proteins.</BR>
@@ -46,29 +73,33 @@ Same parameters were used to cluster the Archaeal proteomes.
    <DIV STYLE ="padding:20px">
 
    <H5>Periplasmic and Lipoproteins</H5>
-      Proteins with general secretory pathway signal peptide or TAT signal peptides without TM domains were annotated periplasmic proteins. Proteins with lipoprotein signal peptide without TM domains were annotated outer/inner membrane lipoproteins.<BR/><BR/>
+      Proteins with general secretory pathway signal peptide or TAT signal peptides without TM domains were annotated periplasmic proteins. 
+Proteins with lipoprotein signal peptide without TM domains were annotated outer/inner membrane lipoproteins.<BR/><BR/>
 
    <h5>Outer membrane &#946-barrel proteins</h5>
-     Proteins with a positive general secretory pathway signal peptide or TAT signal peptide, with a positive prediction from PSORTbv3.0's outer membrane or CELLOv2.5's outer membrane and a positive prediction from HHOmp or BOMP were necessary to confirm the annotation as outer membrane &#946-barrel protein.<BR/><BR/>
+     Proteins with a positive general secretory pathway signal peptide or TAT signal peptide, with a positive prediction from PSORTbv3.0's 
+outer membrane or CELLOv2.5's outer membrane and a positive prediction from HHomp or BOMP were necessary to confirm the annotation as outer membrane &#946-barrel protein.<BR/><BR/>
 
    <H5>Extracellular proteins</H5>
-     Consensus T3SS signal peptide prediction or PSORTbv3.0's extracellular prediction were required to annotate extracellular proteins.<BR/><BR/>
+     Consensus T3SS signal peptide prediction or PSORTbv3.0's extracellular prediction was required to annotate extracellular proteins.<BR/><BR/>
    </DIV>
 
    <B>For Archaeal proteins</B>
 
    <DIV STYLE ="padding:20px">
    <H5>Lipoproteins</H5>
-     Proteins with a Lipoprotein signal peptide without any TMH were annotated as Lipoprpotein.<BR/> <BR/>
+     Proteins with a Lipoprotein signal peptide without any TMH were annotated as Lipoprotein.<BR/> <BR/>
    <H5>Secreted/extracellular proteins</H5>
-     Proteins with TAT or general signal peptide or PSORTb's Archaeal extracellular predictions were annotated as secreted/extracellular proteins, inspite of their TM domains.</BR></BR>
+     Proteins with TAT or general signal peptide or PSORTb's Archaeal extracellular predictions were annotated as secreted/extracellular proteins, in spite of their TM domains.</BR></BR>
    <H5>Cell wall proteins</H5>
      PSORTb's Archaeal cell wall predictions was used to annotate the cell wall binding proteins in ClubSub-P.</BR></BR> 
    </DIV>
    
-   <H5>Cytoplamic membrane proteins</H5>
-     Consensus TMHs prediction module looks for a helix predicted by at least two TMH prediction tools (TMHMM, Phobius, HMMTOP), for a length of 10 amino acids. Proteins with one or more consensus TMH even after signal peptide cleavage were anotated cytoplasmic membrane proteins<BR/><BR/>
+   <H5>Cytoplasmic membrane proteins</H5>
+     Consensus TMHs prediction module looks for a helix predicted by at least two TMH prediction tools (TMHMM, Phobius, HMMTOP), for a length of 10 amino acids. 
+Proteins with one or more consensus TMH even after signal peptide cleavage were annotated cytoplasmic membrane proteins<BR/><BR/>
    <H5>Cytoplasmic proteins</H5>
-     Proteins without any TM domain predictions or signal peptide or extracellular or cellwall binding were annotated as cytoplasmic proteins in both Gram-negative and Archaeal predictions.</BR></BR>
+     Proteins without any TM domain predictions or signal peptide or extracellular or cell wall binding were annotated as cytoplasmic proteins 
+in both Gram-negative and Archaeal predictions.</BR></BR>
 
 </DIV>
