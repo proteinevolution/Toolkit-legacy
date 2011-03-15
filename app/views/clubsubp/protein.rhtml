@@ -26,7 +26,7 @@
       <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=protein.cluster%>'>Cluster <%=protein.cluster%></A></TD>
     </TR>
     <TR>
-      <TD><B>Protein's Subcellular localization (SCL)</B></TD>
+      <TD><B>Protein subcellular localization (SCL)</B></TD>
       <TD><B><%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", protein.gi])%><%=subloc.subloc%></B></TD>
     </TR>
   </TABLE><BR>
@@ -211,8 +211,8 @@
       <TR bgcolor='#CCCCCC' height='20px'>
         <TH rowspan='3' width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Outer membrane beta-barrel</B></TH>
         <TD colspan='2'><B>BOMP</B></TD>
-        <TD><B>PSORTb v.3.0</B></TD>
-	<TD><B>CELLO v2.5</B></TD>
+        <TD><B>PSORTb v.3.0.2</B></TD>
+	<TD><B>CELLO v.2.5</B></TD>
         <TD colspan='2'><B>HHomp</B></TD>
       </TR>
       <TR bgcolor='#E8E8E8'>
@@ -237,7 +237,7 @@
   <TABLE  width='100%' style='text-align:center;'>
       <TR bgcolor='#CCCCCC' height='20px'>
         <TH rowspan='2'  width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Extracellular</B></TH>
-        <TD ><B>PSORTb v.3.0. Extracellular Score</B></TD>
+        <TD ><B>PSORTb v.3.0.2 Extracellular Score</B></TD>
         <TD ><B>Type III signal peptide</B></TD>
       </TR>
       <TR bgcolor='#F7ECD5'>
@@ -266,8 +266,8 @@
         <TD>Topology</TD>
         <TD>No. of TMHs <U>before</U> SP prediction</TD>
         <TD>Topology</TD>
-        <TD>No. of TMHs <U>after</U> Consensus SP prediction</TD>
-        <TD>Consensus TMHs Topology</TD>
+        <TD>No. of TMHs <U>after</U> consensus SP prediction</TD>
+        <TD>Topology</TD>
       </TR>
       <TR bgcolor='#F7ECD5'>
         <TD><%=omp_display.tmhmmtmhs%></TD>
