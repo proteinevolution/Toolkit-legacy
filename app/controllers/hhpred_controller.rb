@@ -25,6 +25,7 @@ class HhpredController < ToolController
     # Allow non-standard libraries only on internal server:
     if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
     if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
+    if (LOCATION == "Munich" && !@user.nil? && (@user.id == 119 || @user.groups.include?('admin'))) then sortlist.push("\/Proteasome") end
     sortlist.each do |el|
       dbvalues_pre.each do |val|
         if (!val.index(/#{el}/).nil?)
