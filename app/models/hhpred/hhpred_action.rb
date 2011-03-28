@@ -53,12 +53,12 @@ class HhpredAction < Action
     @ss_scoring = "-ssm #{params['ss_scoring']}"
     @realign = params["realign"] ? "-realign" : "-norealign"
     if @realign == '-norealign'
-      @mapt = ''
+      @mact = ''
     else
       if @ali_mode == 'global'
-        @mapt = '-mapt 0.0'
+        @mact = '-mact 0.0'
       else
-        @mapt = params["mapt"].nil? ? '' : '-mapt '+params["mapt"]
+        @mact = params["mact"].nil? ? '' : '-mact '+params["mact"]
       end
     end
     @compbiascorr = params["compbiascorr"].nil? ? '' : (params["compbiascorr"]=='1'? '-sc 1' : '-sc 0 -shift -0.1')
@@ -225,24 +225,16 @@ class HhpredAction < Action
 
     if @mode == 'realign'
 
-      if @realign == '-realign'
-        @realign = '-map'
-      else
-        @realign = '-vit'
-      end
-
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
       @commands << "#{HH}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
-
-      @commands << "#{HH}/hhsearch -cal -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{CAL_HHM}' -o #{@basename}.hhr -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} -norealign #{@compbiascorr} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
 
       # If cov_min is 20 and qid_min is 0, we can realign with hhm files instead of a3m files ($hhrealign_options="-hhm").
       # This speeds up realignment a lot because we don't have to filter all template alignments.
       realign_options = "-hhm"
       if @cov_min != 20 || @qid_min != 0 then realign_options="#{@cov_min} #{@qid_min} #{@diff}" end
 
-      @commands << "#{HH}/hhrealign.pl -v 2 -resort -i #{@basename}_parent.hhr -o #{@basename}.hhr -q #{@basename}.hhm -d #{@dbs_realign} #{realign_options} #{@ss_scoring} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mapt} #{@compbiascorr} 1>> #{job.statuslog_path} 2>&1";
+      @commands << "#{HH}/hhrealign.pl -v 2 -resort -i #{@basename}_parent.hhr -o #{@basename}.hhr -q #{@basename}.hhm -d #{@dbs_realign} #{realign_options} #{@ss_scoring} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@compbiascorr} 1>> #{job.statuslog_path} 2>&1";
     else
 
       ####################################################
@@ -258,13 +250,13 @@ class HhpredAction < Action
       #
       #   # HHsearch with query HMM against HMM database
       #   @commands << "echo 'Searching #{@dbnames} ...' >> #{job.statuslog_path}"
-      #   @commands << "#{HH}/hhsearch #{cal} -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mapt} #{@compbiascorr} -dbstrlen 10000 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      #   @commands << "#{HH}/hhsearch #{cal} -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
       #
       ####################################################
 
       # HHsearch with query HMM against HMM database
       @commands << "echo 'Searching #{@dbnames} ...' >> #{job.statuslog_path}"
-      @commands << "#{HH}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mapt} #{@compbiascorr} -dbstrlen 10000 -cs #{CSBLAST}/data/clusters.prf 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HH}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs #{CSBLAST}/data/clusters.prf 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     end
 
     prepare_fasta_hhviz_histograms_etc

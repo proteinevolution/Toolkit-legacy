@@ -9,7 +9,7 @@ class HhpredController < ToolController
     @ehhblitsval = ['1E-3', '1E-4', '1E-6', '1E-8', '1E-10', '1E-15', '1E-20', '1E-30', '1E-40', '1E-50']
     @cov_minval = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90']
     @qid_minval = ['0', '20', '25', '30', '35', '40', '45', '50']
-    @maptval = ['0.0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
+    @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
     @ss_scoring_values = ['2', '0', '4']
     @ss_scoring_labels = ['yes', 'no', 'predicted vs predicted only']
     @compbiascorr_values = ['1', '0']
