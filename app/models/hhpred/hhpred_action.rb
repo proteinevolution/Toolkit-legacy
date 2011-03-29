@@ -199,7 +199,11 @@ class HhpredAction < Action
     if job.parent.nil? || @mode.nil?
       # Create alignment
       # @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxpsiblastit} -diff 1000 #{@E_psiblast} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
-      @commands << "#{HHBLITS}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -db #{HHBLITS_DB} -dbhhm #{HHBLITS_DBHHM} -dba3m #{HHBLITS_DBA3M} -o /dev/null -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.5 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      if #{@maxhhblitsit} == 0
+          @commands << "#{HH}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+      else
+          @commands << "#{HHBLITS}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -db #{HHBLITS_DB} -dbhhm #{HHBLITS_DBHHM} -dba3m #{HHBLITS_DBA3M} -o /dev/null -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.5 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      end
 
       @commands << "#{HHBLITS}/addss.pl #{@basename}.a3m"
 

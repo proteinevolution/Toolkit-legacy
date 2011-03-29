@@ -46,6 +46,22 @@ class HhpredJob  < Job
     first_hash = Hash.new
     last_hash = Hash.new
 
+    # get databases of HHpred job
+    @pdb_ids = Hash.new
+    @dbs = actions.first.params['hhpred_dbs'].nil? ? "" : actions.first.params['hhpred_dbs']
+    @dbs.each do |db|
+      if db.gsub!(/(cdd|COG|KOG|\/pfam|smart|cd|pfamA|pfamB)(_\S*)/, '\1\2/db/\1.PDBlist')
+      elsif db.gsub!(/(scop|pdb)(\S*)/, '\1\2/db/\1.PDBlist')
+      elsif db.gsub!(/(panther|tigrfam|pirsf|supfam|CATH)(_\S*)/, '\1\2/db/\1.PDBlist')
+      elsif db.gsub!(/([^\/]+)$/, '\1/db/\1.PDBlist' )
+      end
+      if File.exists?(db)
+        File.open(db, "r").each do |line|
+#          logger.debug("DB-PDB: #{line}!")
+          @pdb_ids[line] = 1
+        end
+      end
+    end
 
     coloring = controller_params[:mode] ? controller_params[:mode] : 'letters'
     program = controller_params[:action]
@@ -543,7 +559,7 @@ class HhpredJob  < Job
           line[b].sub!(/#{template}/, "<a href=\"http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
         end
 
-        if template !~ /^(\d[a-z0-9]{3})_?([A-Za-z0-9]?)$/ &&  template !~ /^[defgh](\d[a-z0-9]{3})[a-z0-9_\.][a-z0-9_]$/
+        if template !~ /^(\d[a-z0-9]{3})_?([A-Za-z0-9]?)$/ &&  template !~ /^[defgh](\d[a-z0-9]{3})[a-z0-9_\.][a-z0-9_]$/ && !@pdb_ids.include?(template)
           createmodel_diabled_checkboxes =createmodel_diabled_checkboxes+"#{checkbox_counter},"
         end
 
