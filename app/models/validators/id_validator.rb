@@ -38,9 +38,9 @@ module Toolkit
                   record.errors.add(attr, "Job-IDs may only contain alphanumeric characters and '_'!")
                 elsif (value.to_s =~ /^HH_/)
                   record.errors.add(attr, "Job-IDs must not start with HH_!")
-                elsif (value.to_s.length < 6 || value.to_s.length > 10)
-                  if (!(value.to_s =~ /^(.*)_\d+$/ && $1.length <= 10))
-                    record.errors.add(attr, "Job-IDs must have between 6 and 10 characters!")
+                elsif (value.to_s.length < 6 || value.to_s.length > 25)
+                  if (!(value.to_s =~ /^(.*)_\d+$/ && $1.length <= 25))
+                    record.errors.add(attr, "Job-IDs must have between 6 and 25 characters!")
                   end
                 else
                   jobs = Job.find(:all, :conditions => [ "jobid = ?", value])
