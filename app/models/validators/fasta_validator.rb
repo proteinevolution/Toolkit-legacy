@@ -20,6 +20,7 @@ module Toolkit
             :informat => nil,
             :inputmode => "sequence",
             :on => :create,
+            :header_length => 2000,
             :message => "Infile is not correct FASTA format!" }
 
           if attr_names.last.is_a?(Hash)
@@ -115,6 +116,10 @@ module Toolkit
                 if( header =~ /^\s*$/ ) then 
                   lc = lc + 1
                   header = Time.now.to_s.gsub!(/ /, '_') + " #" + lc.to_s + "\n" 
+                end
+                
+                if(header.length >configuration[:header_length])
+                  error = "Header exceeds the maximum number of #{configuration[:header_length]} Characters"
                 end
                 # check for numbers at begin and/or end of line (GenBank)
                 seq = ""								

@@ -22,6 +22,7 @@ module Toolkit
             :max_length => 20000,
             :allow_nil => false,
             :on => :create,
+            :header_length => 2000,
             :message => "Input ERROR!" }
           configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
           # check input fields
@@ -39,7 +40,7 @@ module Toolkit
 
           if (!configuration[:informat_field].nil?)
             if configuration[:max_seqs].nil?
-              validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})
+              validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length],:header_length => configuration[:header_length]})
               validates_clustal(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})
               validates_stockholm(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})
               validates_embl(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})														
@@ -50,7 +51,7 @@ module Toolkit
               validates_pir(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})														
               validates_tre(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})														
             else
-              validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
+              validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length],:header_length => configuration[:header_length]})						
               validates_clustal(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
               validates_stockholm(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
               validates_embl(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
@@ -66,16 +67,16 @@ module Toolkit
             when "fas"
               logger.debug "##### FASTA!"
               if configuration[:max_seqs].nil?
-                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})
+                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_length => configuration[:max_length],:header_length => configuration[:header_length]})
               else
-                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :max_length => configuration[:max_length]})						
+                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :max_length => configuration[:max_length],:header_length => configuration[:header_length]})						
               end
             when "nucfas"
               logger.debug "##### Nucleotide FASTA!"
               if configuration[:max_seqs].nil?
-                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :white_list => "ATGCIUXRYWNatgciurnyw-", :message => "Infile is not correct Nucleotide-FASTA format!", :max_length => configuration[:max_length]})
+                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :white_list => "ATGCIUXRYWNatgciurnyw-", :message => "Infile is not correct Nucleotide-FASTA format!", :max_length => configuration[:max_length], :header_length => configuration[:header_length]})
               else
-                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :white_list => "ATGCIUXRYWNatgciurnyw-", :message => "Infile is not correct Nucleotide-FASTA format!", :max_length => configuration[:max_length]})						
+                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :white_list => "ATGCIUXRYWNatgciurnyw-", :message => "Infile is not correct Nucleotide-FASTA format!", :max_length => configuration[:max_length] ,:header_length => configuration[:header_length]})						
               end
             when "clu"
               logger.debug "##### CLUSTAL!"
