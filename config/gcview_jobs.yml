@@ -4,15 +4,15 @@ gcview_job:
   code: GCVI
   resultsections:  
     - name: results
-      title: Results
-      title_long: Show result
+      title: Group View
+      title_long: Show results in Group View
       forwardsections:
       - name: forward
         title: Forward
         title_long: Forward results
     - name: results_taxonomy
-      title: Result Taxonomy
-      title_long: Show taxonomy result
+      title: Taxonomy View
+      title_long: Show results in Taxonomy View
       forwardsections:
       - name: forward
         title: Forward
