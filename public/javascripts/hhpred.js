@@ -171,6 +171,7 @@ function show_hide_more_options() {
 
 function select_genomes() {
 
+    $('genomes_first').value = 'false';
     if ($('genomes_first').value == 'true') {
 
 	$('genomes_first').value = 'false';
