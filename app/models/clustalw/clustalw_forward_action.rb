@@ -41,7 +41,7 @@ class ClustalwForwardAction < Action
 
   def forward_params
     res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
-    {'sequence_input' => res.join, 'informat' => 'clu', 'inputmode' => 'alignment'}
+    {'sequence_input' => res.join, 'informat' => 'clu', 'inputmode' => 'alignment','inputmode'=>'1'}
   end
 
 end
