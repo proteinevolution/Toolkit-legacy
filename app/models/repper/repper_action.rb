@@ -38,7 +38,7 @@ class RepperAction < Action
     @commands = []
     
     @flag = params['psipred'] ? 1 : 0
-    @use_input = params['inputmode']
+    @use_input = params['inputmode'] ? params['inputmode'] : "1"
     @window_size = params['windowsize'] ? params['windowsize'] : "100"
     @perio_rg_low = params['minper'] ? params['minper'] : "2"
     @perio_rg_high = params['maxper'] ? params['maxper'] : "100"
