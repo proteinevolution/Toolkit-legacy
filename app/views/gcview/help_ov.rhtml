@@ -2,8 +2,43 @@
 </ul>
 <h2 class="<%= @section['theme'] %>"><%= @tool['title'] %> Overview</h2> 
 <div class="row">
-GCView extracts and displays the genomic context of protein coding genes found in homology searches such as BLAST, PSI-BLAST or CS-BLAST. It is possible to combine multiple queries to visualize conserved genomic neighborhood or operon structure of protein coding genes. The database currently only contains Bacteria with completely sequenced genomes.
+<div> GCView is a combination of a Genome Browser with well-established homology
+search tools like BLAST, PSI-BLAST or CS-BLAST. Based on the results of one or
+multiple homology searches GCView extracts the neighboring genes for each search
+result from fully sequenced Procaryote genomes and displays the genomic regions
+in a clear graphical output. This allows to visualize conserved genomic
+neighborhood, operon structure or domain composition for proteins of
+interest.</div>
 
-Every hit from a homology search is mapped to the corresponding genome. Then, proteins upstream and downstream of each hit are extracted from the genome and displayed. If multiple hits are found in one genome, the genomic context of each hit is extracted.
+<!-- <div>GCView extracts and displays the genomic context of protein coding
+genes found in homology searches such as BLAST, PSI-BLAST or CS-BLAST. It is
+possible to combine multiple queries to visualize conserved genomic neighborhood
+or operon structure of protein coding genes. The database contains procaryotic
+organisms with completely sequenced genomes.<br> -->
+<img src="/images/gcview/Figure1.png" style="height:350px;margin:10px"> </div>
+<div>Homology searches can be run internally in GCView by providing Protein
+Identifiers or Sequences as Input. If more control over the search parameters is
+desired, search jobs from appropriate tools can be forwarded to GCView for
+visualization. For additional details on input parameters please refer to the <a
+href=/gcview/help_params>Help page on Input Parameters</a></div>
+
+<div>Results can be displayed in <b>Group View</b> or <b>Taxonomy View</b>.
+Group View presents the results grouped by the composition and order of proteins
+of interest in each genome. This allows for a quick overview over the different
+combinations of genes of interest present in sequenced genomes. Taxonomy View
+maps the results on the tree of life. This provides insight into the organisms
+and clades which have certain genes or combinations of genes. For more
+information please see the <a href=/gcview/help_results>Help page on results</a></div>
+
+<!--<div>Every hit from a homology search is mapped to the corresponding genome.
+Then, proteins upstream and downstream of each hit are extracted from the genome
+and displayed. If multiple hits are found in one genome, the genomic context of
+each hit is extracted.</div>
+<div>Further information is available on <a href=/gcview/help_params>Input
+Parameters</a> and <a href=/gcview/help_results>Results format and
+interpretation</a></div>-->
+
+
+
 </div>
 
