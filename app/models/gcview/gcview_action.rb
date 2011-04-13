@@ -59,7 +59,7 @@ class GcviewAction < Action
 
     @configfile = @basename+".conf"
 
-    @mainlog = @basename+".mainlog"
+    @mainlog = job.statuslog_path
 
     @tmparray = Array.new
     @jobtype = Array.new
