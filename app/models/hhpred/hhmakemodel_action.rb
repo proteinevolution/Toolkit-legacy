@@ -18,6 +18,9 @@ class HhmakemodelAction < Action
     @hits = @hits.uniq
     @hits = @hits.join(" ")
     
+    @dbs = job.parent.actions.first.params['hhpred_dbs'].nil? ? "" : job.parent.actions.first.params['hhpred_dbs']
+    if @dbs.kind_of?(Array) then @dbs = @dbs.join(' ') end
+
     @commands = []
   end
   
@@ -41,7 +44,7 @@ class HhmakemodelAction < Action
     else
       #hhmakemodel aufrufen
       #old: @commands << "#{HH}/hhmakemodel.pl -v 2 -m #{@hits} -i #{@parent_basename}.hhr -pir #{@basename}.out"
-      @commands << "#{HH}/checkTemplates.pl -i #{@parent_basename}.hhr -q #{@parent_basename}.a3m -pir #{@basename}.out -m #{@hits} &> #{job.statuslog_path}" 
+      @commands << "#{HH}/checkTemplates.pl -i #{@parent_basename}.hhr -q #{@parent_basename}.a3m -pir #{@basename}.out -m #{@hits} -hhdbs #{@dbs} &> #{job.statuslog_path}" 
     end    
     
     logger.debug "Commands:\n"+@commands.join("\n")

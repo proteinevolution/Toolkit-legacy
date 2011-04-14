@@ -9,6 +9,7 @@ class ClustalwAction < Action
   																	 :on => :create, 
   																	 :min_seqs => 2,
   																	 :max_seqs => 5000,
+                                     :header_length => 500,
   																	 :inputmode => 'sequences'})
   																	 
   validates_shell_params(:jobid, :mail, :otheradvanced, {:on => :create})

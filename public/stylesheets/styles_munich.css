@@ -364,13 +364,14 @@ span.small {
 	border-bottom: 1px solid #666666;
 }
 
-/* table definitins*/
+/* table definitions*/
 #jobtable{
   border: 1px solid #666666;
   border-right-width: 0px;
   border-left-width: 0px;	
   border-spacing: 0px;
-  width: 100%;
+  table-layout: fixed;
+  width: 139px;
   border-collapse: collapse;
 }
 
@@ -448,7 +449,8 @@ span.small {
   margin: 0px;
   border-width: 1px;
   border-spacing: 0px;
-  width: auto;
+  width: 75px;
+  overflow: hidden;
   vertical-align: middle;
 }
 

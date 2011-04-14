@@ -1,3 +1,4 @@
+
 class NucBlastController < ToolController
 
 	def index
@@ -12,8 +13,9 @@ class NucBlastController < ToolController
 	end
 	
 	def results
-		@fw_values = [fw_to_tool_url('nuc_blast', 'sixframe'), fw_to_tool_url('nuc_blast', 'gi2seq')]
-		@fw_labels = [tool_title('sixframe'), tool_title('gi2seq')]  
+		@fw_values = [fw_to_tool_url('nuc_blast', 'sixframe'), fw_to_tool_url('nuc_blast', 'gi2seq'),
+			      fw_to_tool_url('nuc_blast', 'blammer') + "&fw_mode=alignment" ]
+		@fw_labels = [tool_title('sixframe'), tool_title('gi2seq'), tool_title('blammer')]  
 		@widescreen = true
 		@show_graphic_hitlist = true
 		@show_references = false

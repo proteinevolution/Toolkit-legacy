@@ -16,15 +16,14 @@ class HhpredShowtemplalignAction < Action
     
     @commands = []
     @local_dir="/tmp"
-
     lines = IO.readlines(@basename + ".hhr")
     
     lines.each do |line|
       line.scan(/^\s*(\d+)\s+(\S+)\s+/) do |a,b|
-	if (a && b && a == @hit)
-	  @seq_name = b.gsub(/(\|)|(\.)/, '_')
-	  break
-	end
+  if (a && b && a == @hit)
+    @seq_name = b.gsub(/(\|)|(\.)/, '_')
+    break
+  end
       end
     end
    
@@ -34,13 +33,48 @@ class HhpredShowtemplalignAction < Action
     dbs_dir = []
     dbs_dir.concat(action_params['hhpred_dbs']) if !action_params['hhpred_dbs'].nil?
     dbs_dir.concat(action_params['genomes_hhpred_dbs']) if !action_params['genomes_hhpred_dbs'].nil?
+    
+    
     dbs_dir.each do |db_dir|
-      if File.exist?(File.join(db_dir, @seq_name + ".a3m"))
-	logger.debug "File #{@seq_name}.a3m found in #{db_dir}"
-	@dir = db_dir
-	break
-      end
-    end 
+      #logger.debug "Current Directory for  #{db_dir}"
+      # Block for CDD DB List
+      if (db_dir =~ /cdd_/) 
+        
+        #Init Vars
+        db_dir =~ /(.*)cdd_/
+        db_path = $1
+        db_names = ['pfam_*', 'smart_*', 'KOG_*', 'COG_*', 'cd_*']
+        installed_db_list = Array.new
+        
+        
+        # get all Files in the specified parent directory
+        d = Dir.new(db_path)
+        d.each  {|x|installed_db_list<< x }
+        
+        installed_db_list.each do |localdir|
+          #now check if db is in cdd list
+          db_names.each do |db|
+            if (/#{db}/.match(localdir))
+              complete_path = db_path+""+localdir
+              # Names of the cdd Databases are hard coded...
+              if File.exist?(File.join(complete_path+"/", @seq_name + ".a3m"))
+                db_dir = complete_path
+                logger.debug "CDD Block File #{@seq_name}.a3m found in #{db_dir}"
+                @dir = db_dir
+                break
+              end
+            end
+          end
+        end
+      # END installed_db_list Block
+    end
+    # END dbs_dir Block
+        if File.exist?(File.join(db_dir, @seq_name + ".a3m"))
+           logger.debug "DB Dir Block File #{@seq_name}.a3m found in #{db_dir}"
+           @dir = db_dir
+        break
+        end
+    end
 
 
     if !File.exist?(File.join(@dir, @seq_name + ".a3m"))
@@ -53,8 +87,10 @@ class HhpredShowtemplalignAction < Action
     if last_action && last_action.params['hits'] == @hit then @oldhit = true end
     
     logger.debug "Old hit: #{@oldhit}!"
-    
+
+
   end
+  
   
   def perform
     params_dump
