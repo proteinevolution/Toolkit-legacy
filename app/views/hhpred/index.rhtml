@@ -80,11 +80,11 @@
 <% if @parent_job.nil? || @parent_job.params['mode'].nil? -%>
 
 <div class="row">
-  <%= form_label("Max. HHblits iterations", "maxhhblitsit") %>
-  <%= form_select_single("maxhhblitsit", @maxhhblitsit, @maxhhblitsit, '3') %>	
+  <%= form_label("Max. PSI-BLAST iterations", "maxpsiblastit") %>
+  <%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, '8') %>	
 </div>
 <% else %>
-<%= form_hidden_field("maxhhblitsit", @parent_job.params_main_action['maxhhblitsit']) %>
+<%= form_hidden_field("maxpsiblastit", @parent_job.params_main_action['maxpsiblastit']) %>
 <% end %>
 
 <div class="row">
@@ -118,20 +118,21 @@
   <!--  WORKAROUND -->
   <% if @parent_job.nil? || @parent_job.params['mode'].nil? -%>
   <div class="row">
-    <%= form_label("E-value threshold for HHblits", "E_hhblits") %>
-    <%= form_select_single("Ehhblitsval", @ehhblitsval, @ehhblitsval, '1E-3') %>	
+    <%= form_label("E-value threshold for PSI-BLAST", "E_psiblast") %>
+    <%= form_select_single("Epsiblastval", @epsiblastval, @epsiblastval, '1E-3') %>	
   </div>
   <% else %>
-  <%= form_hidden_field("Ehhblitsval", @parent_job.params_main_action['Ehhblitsval']) %>
+  <%= form_hidden_field("Epsiblastval", @parent_job.params_main_action['Epsiblastval']) %>
   <% end -%>
 
+  <!--  WORKAROUND -->
   <% if @parent_job.nil? || @parent_job.params['mode'].nil? || @parent_job.params['mode'] == 'realign' || @parent_job.params['mode'] == 'hhsenser'-%>
   <div class="row">
-    <%= form_label("Min. coverage of HHblits hits", "cov_min") %>
+    <%= form_label("Min. coverage of PSI-BLAST hits", "cov_min") %>
     <%= form_select_single("cov_min", @cov_minval, @cov_minval, '20') %>	
   </div>
   <div class="row">
-    <%= form_label("Min. sequence identity of HHblits hits with query", "qid_min") %>
+    <%= form_label("Min. sequence identity of PSI-BLAST hits with query", "qid_min") %>
     <%= form_select_single("qid_min", @cov_minval, @cov_minval, '0') %>	
   </div>
   <% else %>

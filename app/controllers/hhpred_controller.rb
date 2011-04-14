@@ -5,8 +5,8 @@ class HhpredController < ToolController
   def index
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
     @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
-    @maxhhblitsit = ['0','1','2','3','4','5']
-    @ehhblitsval = ['1E-3', '1E-4', '1E-6', '1E-8', '1E-10', '1E-15', '1E-20', '1E-30', '1E-40', '1E-50']
+    @maxpsiblastit = ['0','1','2','3','4','5','6','8','10']
+    @epsiblastval = ['1E-3', '1E-4', '1E-6', '1E-8', '1E-10', '1E-15', '1E-20', '1E-30', '1E-40', '1E-50']
     @cov_minval = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90']
     @qid_minval = ['0', '20', '25', '30', '35', '40', '45', '50']
     @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
