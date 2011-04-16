@@ -1,4 +1,3 @@
-
 /*
 
 Explorer Tree 1.4
@@ -70,6 +69,7 @@ ul.folderandfiletree a[href$=".zip"]::before {
 a{text-decoration:none}
 area{cursor:pointer}
 
+
 #gcview_legend{border:1px black solid;width:300px;margin:5px 10% 5px 0%;border-spacing:0px;border-collapse:collapse}
 #gcview_legend td{border:0px black solid;padding:2px}
 #gcview_legend td h3{margin:0px 0px}
@@ -90,6 +90,7 @@ area{cursor:pointer}
   position:absolute;
   left:0px;
   top:95px;
+  text-align:center;
 }
 
 #gi_list{
@@ -98,3 +99,34 @@ area{cursor:pointer}
   left:15px;
   width:130px;
 }
+
+.gcv_highlight_box
+{
+  background: url(/images/gcview/arrow_up.png) center top no-repeat;
+  height:16px;
+  width:16px;
+  border-top:6px #08c solid;
+  position:absolute;
+  bottom:-2px;
+  z-index:10001;
+}
+
+.gcv_button
+{
+	padding:1px 3px;
+	background-color: #F7F7F7;
+    border-color: #C4CCCC #ACB5B5 #6F7777;
+    border-style: double;
+    border-width: 3px;
+}
+
+.gcv_groupdiv
+{
+   margin-bottom:30px;
+   border-left:5px #F1EBEB solid
+}
+.gcv_groupdiv_sub
+{
+  margin-left:10px;
+}
+

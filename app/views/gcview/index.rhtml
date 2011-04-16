@@ -9,7 +9,7 @@
   <h3 class="<%= @section["name"] %>">Input</h3>
 
   <div class="row">
-	<%= form_label("Paste input sequence", "input") %>
+	<%= form_label("Paste input sequences or identifiers", "input") %>
 	<%= form_text_area("sequence_input") %>
     <div class="formw">Demo Data: <a href=javascript:; onClick=javascript:gcv_demo_data()> Lac Operon</a></div>
   </div>
@@ -19,7 +19,7 @@
   </div>
 
   <div class="row">
-    <%= form_label("Select input format", "format") %>
+    <%= form_label("Select input type", "format") %>
     <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>
   </div>
   <div class="spacer">&nbsp;</div>
