@@ -19,6 +19,8 @@ class GcviewController < ToolController
 
   def results_taxonomy
    @fullscreen = true
+    @fw_values = [fw_to_tool_url('gcview', 'gcview'), fw_to_tool_url('gcview', 'seq2gi')]
+    @fw_labels = [tool_title('gcview'), tool_title('seq2gi')]
   end
 
 # this is needed to output the third page
