@@ -95,7 +95,7 @@ function gcv_write_array()
   {
     temp += "<tr><td>"+gi_array[i]+"</td><td><a onClick=\"gcv_delete("+i+")\">X</a></td></tr>";
   }
-  document.getElementById("gi_list").innerHTML = temp + "</table><p align=\"center\" class=\"gcv_button\"><a href=\"/gcview/?gi="+gi_array.join('x')+"&parentjob="+window.location.href.split("/").reverse()[0]+"\">Search again</a></p> <p align=\"center\" class=\"gcv_button\"><a href=\"/gi2seq/?gi="+gi_array.join('x')+"&parentjob="+window.location.href.split("/").reverse()[0]+"\">Retrieve Sequence</a></p>";
+  document.getElementById("gi_list").innerHTML = temp + "</table><a class=\"gcv_button\" style=\"display:block;text-align:center\" href=\"/gcview/?gi="+gi_array.join('x')+"&parentjob="+window.location.href.split("/").reverse()[0]+"\">Search again</a><a class=\"gcv_button\" style=\"display:block;text-align:center\" href=\"/gi2seq/?gi="+gi_array.join('x')+"&parentjob="+window.location.href.split("/").reverse()[0]+"\">Retrieve Sequence</a>";
 }
 
 

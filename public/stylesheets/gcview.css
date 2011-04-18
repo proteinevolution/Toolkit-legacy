@@ -84,6 +84,7 @@ area{cursor:pointer}
   bottom:20px;
   padding:15px;
   z-index:10000;
+  overflow:auto;
 }
 
 #gi_list_switch {
