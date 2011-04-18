@@ -66,7 +66,7 @@ class PcoilsAction < Action
       @commands << "#{PCOILS}/prepare_coils_gnuplot.pl #{@basename} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28"
 
       # generate numerical output
-      @commands << "#{PCOILS}/create_numerical.rb -i #{@basename}"
+      @commands << "#{PCOILS}/create_numerical.rb -i #{@basename} -m #{@matrix.to_s} -s #{@infile.to_s} -w #{@weighting.to_i} "
 
     # case run PCOILS (Run PSI-Blast or Use input alignment)
     else
@@ -112,8 +112,8 @@ class PcoilsAction < Action
       # prepare for gnuplot
       @commands << "#{PCOILS}/prepare_for_gnuplot.pl #{@basename} #{@psipred} #{@inputmode} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28 #{@horizfile}"
       
-      # generate numerical output
-      @commands << "#{PCOILS}/create_numerical.rb -i #{@basename}"
+      #generate numerical output substitue parameter -a with -s and the complete sequences are parsed
+      @commands << "#{PCOILS}/create_numerical.rb -i #{@basename} -w #{@weighting} -m #{@matrix} -a #{@infile}  "
     end
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
