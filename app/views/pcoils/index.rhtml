@@ -1,4 +1,4 @@
-<a href="#" onClick="openHelpWindow('/pcoils/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+
 <h2><%= @page_title %></h2>
 
 <div class="spacer">&nbsp;</div>
@@ -33,7 +33,7 @@ conformation. The older COILS version can be found
 
 <div class="row">
 	<%= form_label("Input mode", "inputmode") %>
-	<%= form_radio_buttons("inputmode", @inputmode_values, @inputmode_labels, @inputmode_values[0], "&nbsp;&nbsp;") %>	
+	<%= form_radio_buttons("inputmode", @inputmode_values, @inputmode_labels, @inputmode_values[0], "&nbsp;&nbsp;","toogleSelectiveDisabled('psipred','inputmode_0')") %>	
 </div>
 <div class="row">
 	<%= form_label("Weighting", "weighting") %>
@@ -44,8 +44,8 @@ conformation. The older COILS version can be found
 	<%= form_radio_buttons("matrix", @matrix_values, @matrix_labels, @matrix_values[0], "&nbsp;&nbsp;") %>	
 </div>
 <div class="row">
-	<%= form_label("Run PSIPRED") %>
-	<%= form_checkbox("psipred", 1, false) %>	
+	<%= form_label("Run PSIPRED","run_psipred") %>
+	<%= form_checkbox("psipred", 1, false, false,"") %>	
 </div>
 
 

@@ -105,7 +105,7 @@ class PcoilsAction < Action
       end
 
       #calling psipred
-      if (@psipred == "T" && @inputmode == "2")
+      if (@psipred == "T" && @inputmode != "0")
         @commands << "#{PCOILS}/runpsipred.pl #{@buffer}"
       end
     

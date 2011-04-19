@@ -52,6 +52,21 @@ function toggleDisabled(id)
     $(id).disabled = !$(id).disabled;
 }
 
+// Anchor a single checkbox element and disable other
+// element according to Checkbox state (used for multi
+// checkboxes
+function toogleSelectiveDisabled(id, checkbox)
+{ 
+ if($(checkbox).checked){
+    $(id).disabled = true; 
+    $(id).checked = false;  
+ }
+ else
+ {
+    $(id).disabled = false;
+ } 
+}
+
 function toggleTarget(id)
 {	
     if ($(id).target == '_self') {		
