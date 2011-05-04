@@ -1,5 +1,7 @@
 class ClustalwAction < Action
   CLUSTALW = File.join(BIOPROGS, 'clustal', 'clustalw')
+  CLUSTALO = File.join(BIOPROGS, 'clustal-omega')
+
 
   attr_accessor :sequence_input, :sequence_file, :otheradvanced
  
@@ -22,7 +24,8 @@ class ClustalwAction < Action
     @basename = File.join(job.job_dir, job.jobid)
     @infile = @basename+".in"
     @outfile = @basename+".aln"
-   
+    @version = params['version']   
+
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @commands = []
 
@@ -33,9 +36,11 @@ class ClustalwAction < Action
   def perform
     params_dump
 
-   
-    @commands << "#{CLUSTALW}/clustalw -infile=#{@infile} -align #{@otheradvanced} &> #{job.statuslog_path}"
- 
+    if (@version == '-o')
+	@commands << "#{CLUSTALO}/clustalo -infile=#{@infile} -o #{@outfile} -align #{@otheradvanced}  &> #{job.statuslog_path}"	
+    else
+    	@commands << "#{CLUSTALW}/clustalw -infile=#{@infile} -align #{@otheradvanced} &> #{job.statuslog_path}"
+    end
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)

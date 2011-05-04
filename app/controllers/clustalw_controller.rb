@@ -1,6 +1,8 @@
 class ClustalwController < ToolController
 
 	def index
+		@clustal_version_labels = ['ClustalW','Clustal-Omega']
+		@clustal_version_values = ['-w', '-o']
 	end
 
 	def results
