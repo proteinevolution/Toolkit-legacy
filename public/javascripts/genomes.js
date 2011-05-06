@@ -148,13 +148,14 @@ function taxids2tree(ids){
 function deselect(){	
 //	dblist = $("std_dbs");
 //	for( i=0; i<dblist.length; i++ ) dblist.options[i].selected = false;
-	
 	deselectrec(tree[0]);
 	c=0;	
 	$('count_label').innerHTML=c+" Genomes selected.";
+
+	document.getElementById('taxids').value ="";
 }
 
-
+//recursive unchecking of tree not working.....
 function deselectrec(TREE){
 	if(TREE.length>2){
 		for(var i=2; i<TREE.length; i++)	
