@@ -9,7 +9,7 @@ class HhblitsAction < Action
 
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
                                                     :informat => 'fas', 
-                                                    :inputmode => :inputmode,
+                                                    :inputmode => 'alignment',
                                                     :max_seqs => 9999,
                                                     :on => :create })
 
