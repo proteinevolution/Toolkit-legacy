@@ -6,7 +6,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION);
 use Exporter;
 our $VERSION=1.00;
 our @ISA          = qw(Exporter);
-our @EXPORT       = qw($nr $nre $nrf $nr90 $nr70 $nr90f $nr70f $dummydb $perl $hh $dsspdir $dssp $pdbdir $ncbidir $execdir $datadir $blastpgp $calhhm $hmmerdir $newdbs $olddbs $ftp_server $ftp_user $ftp_pass $ftp_protevo $PBS $database_dir $bioprogs_dir $pdb_dir $tmp_dir);
+our @EXPORT       = qw($nr $nre $nrf $nr90 $nr70 $nr90f $nr70f $dummydb $perl $hh $dsspdir $dssp $pdbdir $ncbidir $execdir $datadir $blastpgp $calhhm $hmmerdir $newdbs $olddbs $PBS $database_dir $bioprogs_dir $pdb_dir $tmp_dir);
 
 # Set directory paths and file locations
 our $nr;                           # nr database from NCBI
@@ -30,10 +30,6 @@ our $blastpgp;                     # blastpgp executable
 our $hmmerdir;                     # hmmer executables (hmmbuild, hmmsearch etc.)
 our $newdbs;                       # directory containing new HHpred databases
 our $olddbs;                       # directory containing old HHpred databases
-our $ftp_server="ftp.tuebingen.mpg.de"; # our ftp server
-our $ftp_user="protevo";           # our userid 
-our $ftp_pass="fzeS8Y";            # our psswd
-our $ftp_protevo;                  # our home directory at our ftp server: ftp.tuebingen.mpg.de/pub/protevo 
 our $PBS="/usr/local/PBS/bin";     # location of PBS/torque binaries qstat, qsub, qdel, etc
 our $database_dir = "/cluster/databases";
 our $bioprogs_dir = "/cluster/www/toolkit/bioprogs";
@@ -145,11 +141,5 @@ $execdir = "$bioprogs_dir/psipred/bin";       # Where the PSIPRED V2 programs ha
 $datadir = "$bioprogs_dir/psipred/data";      # Where the PSIPRED V2 data files have been installed    
 $blastpgp= "$ncbidir/blastpgp";
 $hmmerdir= "$bioprogs_dir/hmmer/binaries";
-
-
-$ftp_server="ftp.tuebingen.mpg.de";
-$ftp_user="protevo"; 
-$ftp_pass="fzeS8Y";
-$ftp_protevo ="ftp.tuebingen.mpg.de/pub/protevo";
 
 return 1;

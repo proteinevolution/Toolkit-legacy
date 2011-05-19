@@ -15,7 +15,7 @@ USA.
 /* Get the bullets inside their LI's, so they're clickable. */
 ul.explorertree li { list-style-position: inside; }
 ul.explorertree, ul.explorertree ul, ul.explorertree li { margin: 0; padding: 0; }
-ul.explorertree ul { padding-left: 12px; } /* sublist indentation */
+ul.explorertree ul { padding-left: 10px; } /* sublist indentation */
 /* Set the bullet images */
 ul.explorertree li { list-style-type: square; }
 ul.explorertree li.explorertree-open {  list-style-type: circle; }

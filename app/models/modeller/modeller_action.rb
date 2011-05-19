@@ -105,8 +105,8 @@ class ModellerAction < Action
       input.gsub!(/\13/, '')
       
       # remove chain identifiers
-      input.gsub!(/>P1;(\S\S\S\S)_\S/, '>P1;\1')
-      input.gsub!(/structureX:\s*(\S\S\S\S)_\S:/, 'structureX:\1:')
+      input.gsub!(/>P1;(\S+)_\S\s*$/, '>P1;\1')
+      input.gsub!(/structureX:\s*(\S+)_\S:/, 'structureX:\1:')
       # change sequence name
       input.sub!(/^[^\n]*/, ">P1;#{@seq_name}")
       
@@ -144,6 +144,12 @@ class ModellerAction < Action
         end
       end
     end
+
+    @hhpred_dbs = ""
+    if job.parent && job.parent.parent && job.parent.parent.class.to_s == 'HhpredJob'
+      @hhpred_dbs = job.parent.parent.actions.first.params['hhpred_dbs'].nil? ? "" : job.parent.parent.actions.first.params['hhpred_dbs']
+      if @hhpred_dbs.kind_of?(Array) then @hhpred_dbs = @hhpred_dbs.join(':') end
+    end
     
     # write the py-file		
     modeller_script = @basename + ".py"
@@ -154,12 +160,12 @@ class ModellerAction < Action
       file.write("log.verbose()\n")
       file.write("env = environ()                      # create a new MODELLER environment to build this model\n")
       file.write("# directories for input atom files\n")
-      #file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{job.job_dir}:#{job.parent.job_dir}'\n")
+      #file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{@hhpred_dbs}:#{job.job_dir}:#{job.parent.job_dir}'\n")
       parent_dir = ""
       if !job.parent.nil?
          parent_dir = ":#{job.parent.job_dir}"
       end
-      file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{job.job_dir}#{parent_dir}'\n")
+      file.write("env.io.atom_files_directory = '#{DATABASES}/pdb/all:#{DATABASES}/hhomp/pdb:#{@hhpred_dbs}:#{job.job_dir}#{parent_dir}'\n")
 
       file.write("a = automodel(env,\n")
       file.write("              alnfile  = '#{@infile}',    # alignment filename\n")
