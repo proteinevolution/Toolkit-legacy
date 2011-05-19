@@ -4,6 +4,6 @@
 User-agent: *
 Disallow: /hhcluster/makeHhpred
 Disallow: /hhcluster
-Disallow: /hhomp/browse
+Disallow: /hhomp
 Disallow: /hhrep
 Disallow: /hhrepid
