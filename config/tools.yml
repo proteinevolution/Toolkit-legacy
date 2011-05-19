@@ -231,6 +231,14 @@
   - member
   - internal
   - external
+- name: marcoil
+  title: MARCOIL
+  title_long: MARCOIL
+  section: seqanal
+  active:
+  - member
+  - internal
+  - external
 - name: repper
   title: REPPER
   title_long: REPPER - Detecting regions with short gapless REPeats in protein sequences
