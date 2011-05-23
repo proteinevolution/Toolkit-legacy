@@ -1,6 +1,6 @@
 class MarcoilAction < Action
   PCOILS = File.join(BIOPROGS, 'pcoils')
-  MARCOIL = File.join(BIOPROGS, 'marcoil')
+  MARCOIL = File.join(BIOPROGS, 'marcoil_mod')
   UTILS = File.join(BIOPROGS, 'perl')
   HH = File.join(BIOPROGS, 'hhpred')
   COILSDIR = "COILSDIR=#{PCOILS}"
@@ -27,6 +27,12 @@ class MarcoilAction < Action
     reformat(@informat, "fas", @infile)
     @commands = []
     
+    #Additional scoring Values
+    @is_userdefined = params['is_userdefined']
+    @param_i = params['param_i']
+    @param_t = params['param_t']
+    @param_r = params['param_r']
+
     @transprob = params['transprob']
     @algorithm = params['algo']
     @inputmode = params['inputmode']
@@ -56,29 +62,30 @@ class MarcoilAction < Action
 
   def perform
     params_dump
+     if((@matrix =="-C"|| @matrix =="-C -i"))
+         @commands << "#{MARCOIL}/matrix_copy.sh #{MARCOIL}/R5.MTK #{@outdir}/R5.MTK"
+         @commands << "#{MARCOIL}/matrix_copy.sh #{MARCOIL}/R5.MTIDK #{@outdir}/R5.MTIDK"
+     end
+     # case run COILS (no Alignment)
+     transprob_file = "#{MARCOIL}/Inputs/R3.transProbHigh"
+     if(@transprob =="-L")
+         transprob_file ="#{MARCOIL}/Inputs/R3.transProbLow"
+     end
+     user_values =""  
+     if(@is_userdefined)
+     user_values = "+r #{@param_r} +t #{@param_t} +i #{@param_i}"
+     end
 
-    # case run COILS (no Alignment)
-  
-      @program_for_matrix = ['run_Coils_iterated', 'run_Coils_pdb', 'run_Coils', 'run_Coils_old']
-
-      #@commands << "#{HH}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
-      #@commands << "#{PCOILS}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
-
-      #@commands << "export #{COILSDIR}"
-
-      #['14', '21', '28'].each do |size|
-       # @commands << "#{PCOILS}/#{@program_for_matrix[@matrix.to_i]} -win #{size} < #{@buffer} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
-
-       @commands << "#{MARCOIL}/marcoil #{@algorithm}  #{@matrix} #{@transprob}  +dssSl -I #{MARCOIL}/Inputs/ -O #{@outdir}/ #{@infile} "
-   
-      # @commands << "#{MARCOIL}/marcoil #{@algorithm}  #{@matrix} +dssSl -I #{MARCOIL}/Inputs/ -O #{@outdir}/ #{@infile} "
+       @commands << "#{MARCOIL}/marcoil #{@algorithm}  #{@matrix}  +dssSl #{user_values}  -T #{transprob_file} -E #{MARCOIL}/Inputs/R2.emissProb  -P #{@basename}    #{@infile} "
  
-      if(@algorithm =="-P" )
-      	@commands << "#{MARCOIL}/prepare_marcoil_gnuplot.pl #{@basename} #{@outdir}/ProbListPSSM #{@algorithm} "
+      if(@matrix =="-C"|| @matrix =="-C -i")
+      	@commands << "#{MARCOIL}/prepare_marcoil_gnuplot.pl #{@basename} #{@basename}.ProbListPSSM  "
       else
-	@commands << "#{MARCOIL}/prepare_marcoil_gnuplot.pl #{@basename} #{@outdir}/ProbList "
+	@commands << "#{MARCOIL}/prepare_marcoil_gnuplot.pl #{@basename} #{@basename}.ProbList "
       end
-      
+	
+	
+
       @commands << "#{MARCOIL}/create_numerical_marcoil.rb #{@outdir}/ "
       # generate numerical output
       #@commands << "#{PCOILS}/create_numerical.rb -i #{@basename} -m #{@matrix.to_s} -s #{@infile.to_s} -w #{@weighting.to_i} "

@@ -1,0 +1,76 @@
+
+<h2><%= @page_title %></h2>
+
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+MARCOIL is a hidden MARkov model-based program that predicts existence and location of potential coiled-coil domains in protein sequences. The external MARCOIL Homepage can be found
+<a target="_blank" href="http://bioinf.wehi.edu.au/folders/mauro/Marcoil/index.html"> here</a>.
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= form_tag({:action => :run, :job => 'marcoil'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter sequence","input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+	<%= form_label("Matrix", "matrix") %>
+	<%= form_select_single("matrix", @matrix_values, @matrix_labels, @matrix_values[0]) %>	
+</div>
+<div class="row">
+       <%= form_label("TransProb", "transprob") %>
+       <%= form_radio_buttons("transprob", @transprob_values, @transprob_labels, @transprob_values[0], "&nbsp;&nbsp;") %>
+</div>
+<div class="row"> 
+    <%= form_label("User-defined TransProb", "user_defined") %>
+    <%= form_checkbox("is_userdefined",1,false,false,"") %>
+</div>
+<div class="row">
+        <%= form_label("Parameter i", "numberiterations") %>
+        <%= form_text_field("param_i", '0.0001') %>
+</div>
+<div class="row">
+        <%= form_label("Parameter t", "numberiterations") %>
+        <%= form_text_field("param_t", '0.01') %>
+</div>
+<div class="row">
+        <%= form_label("Parameter r", "numberiterations") %>
+        <%= form_text_field("param_r", '0.00001') %>
+</div>
+
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+	<ul class="arrow-marker">
+		<li><a target="_blank" href="http://toolkit.tuebingen.mpg.de/common/contact">Send feedback</a></li>
+	</ul>
+</div>
+	
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+</div>
