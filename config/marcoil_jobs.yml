@@ -1,0 +1,21 @@
+marcoil_job:
+  title: MARCOIL
+  hidden: false
+  code: MAR
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+    - name: results_problist
+      title: Prob List
+      title_long: Show ProbList results
+      forwardsections:
+    - name: results_probresidue
+      title: Probability per Residue
+      title_long: Show ProbPerState results
+      forwardsections:
+    - name: results_domains
+      title: Predicted Domains
+      title_long: Show predicted Domains
+      forwardsections:
