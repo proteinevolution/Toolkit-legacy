@@ -1,0 +1,39 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => false})%>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+<% if @job.psipred %>
+
+	<h3 class="<%= @section["name"] %>">PSIPRED and PCOILS</h3>
+	<div class="row">
+		<img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_psipred.png" name="psipred" style="background-color: #FFF;">
+		<img src="/images/pcoils/legend_psipred.gif" border="0" name="psipred">
+	</div>
+
+<% else %>
+
+	<h3 class="<%= @section["name"] %>">MARCOIL/PSSM output</h3>
+
+<% end %>
+
+
+<%# if @job.coils %>
+
+	<div class="row">
+		<img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>_ncoils.png" name="coils" style="background-color: #FFF;">
+	</div>
+ <% if false %>
+	<% if @job.alignment %>
+
+		<h3 class="<%= @section["name"] %>">Corresponding alignment</h3>
+		<div class="alignres"><%= @job.alignment %></div>
+
+	<% end %>
+
+<% else %>
+
+<% end %>
+
+</form>

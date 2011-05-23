@@ -1,0 +1,21 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+
+<!--<%= render(:partial => "shared/resultsections")%>-->
+<%= render(:partial => "shared/resultsections", :locals => {:export => true}) %>
+
+<h3 class="<%= @section["name"] %>">MARCOIL numerical output (Probability List)</h3>
+
+<div class="row">
+<pre>
+<% if @job.pssm %>
+   <%= @job.render_file("ProbListPSSM") %>
+<% else %> 
+   <%=  
+	@job.render_file(@job.jobid+".ProbList") 
+   %>
+<% end %>
+</pre>
+</div>
+
+</form>
+
