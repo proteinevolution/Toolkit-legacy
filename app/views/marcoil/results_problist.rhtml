@@ -8,7 +8,7 @@
 <div class="row">
 <pre>
 <% if @job.pssm %>
-   <%= @job.render_file("ProbListPSSM") %>
+   <%= @job.render_file(@job.jobid+".ProbListPSSM") %>
 <% else %> 
    <%=  
 	@job.render_file(@job.jobid+".ProbList") 

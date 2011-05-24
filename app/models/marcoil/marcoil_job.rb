@@ -23,7 +23,7 @@ class MarcoilJob < Job
 
   def before_results(controller_params)
 
-    @problistname = File.join(job_dir,"ProbList")
+    @problistname = File.join(job_dir,jobid+".ProbList")
     @basename = File.join(job_dir, jobid)
     @psipred = nil
     @coils = nil
