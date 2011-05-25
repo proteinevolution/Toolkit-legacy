@@ -1,0 +1,24 @@
+  <div id="jobsection" class="<%= @section["name"] %>">
+    <ul>
+      <% sections = @job.config['resultsections'] %>
+		<% @cur_section = nil %>
+      <% sections.each do |section| %>
+      <% if (section['name'] == params[:action]) then @cur_section = section end %>
+      <li <%= section['name'] == params[:action] ? 'class="current"' : '' %>>
+			<%= link_to(section['title'], {:action => section['name'], :jobid => @job.jobid}, {:onmouseover => "return overlib('#{section['title_long']}');", :onmouseout => "return nd();"}) %>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+  
+  <div id="resultactions" class="<%= @section["name"] %>">
+    <ul>
+      <% sections = nil %>
+      <% if !@cur_section.nil? then sections = @cur_section['forwardsections'] end %>
+      <% if !sections.nil? %> 
+      	<% sections.each do |section| %>
+      		<li><a href="javascript:appearForward('<%= section['name'] %>');" onmouseover="return overlib('<%= section['title_long'] %>');" onmouseout="return nd();"><%= section['title'] %></a></li>
+ 	   	<% end %>
+      <% end %>
+    </ul>
+  </div>

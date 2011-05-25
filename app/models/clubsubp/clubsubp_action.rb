@@ -1,11 +1,11 @@
 class ClubsubpAction < Action
 
   BLAST  = File.join(BIOPROGS, 'blast')
-  DBPATH = File.join(DATABASES, 'clubsubp', 'clst_m_scl')
+  DBPATH = File.join(DATABASES, 'clubsubp')
   CLUB   = File.join(BIOPROGS, 'clubsubp')
 
 
-  attr_accessor :mail, :jobid, :sequence_input, :sequence_file, :text_search, :qlvalue, :hlvalue, :pvalue
+  attr_accessor :mail, :jobid, :sequence_input, :sequence_file, :text_search, :qlvalue, :hlvalue, :pvalue, :database, :tag
 
 #    validates_input(:sequence_input, :sequence_file, {:informat_field => :informat,
  #                                                   :informat => 'fas',
@@ -43,15 +43,15 @@ class ClubsubpAction < Action
     # Text search starts here
     if(!@text_search.empty?)
       @commands << "echo #{@basename} &> #{job.statuslog_path}"
-      @commands << "/usr/bin/perl #{CLUB}/search_clubsub.pl #{TOOLKIT_ROOT} #{@basename} #{@text_search} >> #{job.statuslog_path}"
+      @commands << "/usr/bin/perl #{CLUB}/search_clubsub-v2.pl #{TOOLKIT_ROOT} #{@basename} #{@text_search} >> #{job.statuslog_path}" 
       @commands << "echo #{@text_search} >> #{job.statuslog_path}"
     end
 
     # Blast search if we have sequence input 
     if(!@infile.empty?)
-      @commands << "#{BLAST}/blastall -p blastp -i #{@infile} -d #{DBPATH} -o #{@outfile} -I t &> #{job.statuslog_path}"
+      @commands << "#{BLAST}/blastall -p blastp -i #{@infile} -d #{DBPATH}/#{@database} -o #{@outfile} -I t &> #{job.statuslog_path}"
       @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
-      @commands << "/usr/bin/perl #{CLUB}/blast_parser.pl #{@outfile} #{@basename} #{@qlvalue} #{@hlvalue} #{@pvalue} >> #{job.statuslog_path}"
+      @commands << "/usr/bin/perl #{CLUB}/blast_parser-v2.pl #{@outfile} #{@basename} #{@qlvalue} #{@hlvalue} #{@pvalue} #{@database} >> #{job.statuslog_path}"
       @commands << "echo 'Blast output parsed !' >> #{job.statuslog_path}"
     end
    

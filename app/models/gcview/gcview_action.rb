@@ -5,15 +5,28 @@ class GcviewAction < Action
   UTILS = File.join(BIOPROGS, 'perl')
 
   attr_accessor :mail, :jobid, :sequence_input, :sequence_file, :informat
-
-  #validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, :on => :create})
-
-  #validates_input(:jobid_input, {:informat => 'fas', :on => :create})
-
+  
+  validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
+                                                    :inputmode => 'sequences',
+                                                    :max_seqs => 100,
+                                                    :min_seqs => 0,
+                                                    :allow_nil => true,
+                                                    :on => :create })
   validates_jobid(:jobid)
 
   validates_email(:mail)
 
+  
+  def init
+    @basename = File.join(job.job_dir, job.jobid)
+    @tmpdir = job.job_dir
+    @outurl = job.url_for_job_dir_abs
+    @database_nr = File.join(DATABASES, "standard/nr")
+    @database_uniprot_sprot = File.join(DATABASES, "standard/uniprot_sprot.fasta")
+    @database_uniprot_trembl = File.join(DATABASES, "standard/uniprot_trembl.fasta")
+    @commands = []
+  end
+  
 
   # Put action initialisation code in here
   def before_perform
@@ -25,76 +38,34 @@ class GcviewAction < Action
     #@colors = ['red', 'blue', 'yellow', 'darkgreen', 'pink', 'lightblue', 'orange', 'green', 'pink']
 
     @inputSequences = Array.new
-
+    @inputTags = Array.new
     #@db_path = File.join(GCVIEW, 'tool.db')
 
     @db_path = File.join(DATABASES, 'gcview', 'tool.db')
-    @show_number = params['show_number'] ? params['show_number'] : "10"
+    @show_number = params['show_number'] ? params['show_number'] : "5"
     @show_type = params['show_type'] ? params['show_type'] : "genes"
     @cut_off = params['evalue_cutoff'] ? params['evalue_cutoff'] : "1e-3"
 
     @input = @basename+".in"
-    params_to_file(@input, 'sequence_input', 'sequence_file', 'jobid_input')
-
+    params_to_file(@input, 'sequence_input', 'sequence_file')
+    @input_job = @basename+".jin"
+    params_to_file(@input_job, 'jobid_input')
     #logger.debug "Params seq inp: #{params.inspect}"
 
-    @input_sequence = false
-    if (params['sequence_input']!=nil || params['sequence_file']!=nil)
-      @input_sequence = true
-    end
-
     @input_jobid = false
-    if (params['jobid_input']!=nil)
-      @input_jobid = true
-    end
-
-    if (@cut_off =~ /^e.*$/)
-      @cut_off = "1" + @cut_off
-    end
-
-
+    @input_sequence = false
+    
     @outfile = @basename
 
     @configfile = @basename+".conf"
 
-    @mainlog = @basename+".mainlog"
+    @mainlog = job.statuslog_path
 
     @tmparray = Array.new
     @jobtype = Array.new
     @formerjob = ''
-
-    #if (@inputformat=='jid')
-    if (@input_sequence == false && @input_jobid == true)
-      logger.debug "Einmal Input JobID"
-      parse_sequencefile(@input)
-
-      for i in 0..@inputSequences.length-1
-        @inputSequences[i]=@inputSequences[i].gsub(/\s+$/, '')
-      end
-    end
-
-    if (@input_sequence && !@input_jobid)
-      logger.debug "Einmal Input Sequence oder GI"
-      if (@inputformat=='fas')
-	check_fasta
-      end
-
-      if (@inputformat=='gi')
-        check_GI
-      end
-    end
-
-    if (@input_sequence == true && @input_jobid == true)
-      logger.debug "Einmal Input gemischt!"
-      @input_ID = @basename + ".in2"
-      params_to_file(@input_ID, 'jobid_input')
-
-      parse_sequencefile(@input_ID)
-
-      for i in 0..@inputSequences.length-1
-        @inputSequences[i]=@inputSequences[i].gsub(/\s+$/, '')
-      end
-
+    
+    if (params['sequence_input']!=nil || params['sequence_file']!=nil)
       if (@inputformat=='fas')
         check_fasta
       end
@@ -102,9 +73,23 @@ class GcviewAction < Action
       if (@inputformat=='gi')
         check_GI
       end
+      @input_sequence=true
     end
 
-    
+    if (params['jobid_input']!=nil)
+      parse_sequencefile(@input_job)
+
+      for i in 0..@inputSequences.length-1
+        @inputSequences[i]=@inputSequences[i].gsub(/\s+$/, '')
+      end
+      @input_jobid=true
+    end
+
+    if (@cut_off =~ /^e.*$/)
+      @cut_off = "1" + @cut_off
+    end
+
+
 
     # Angabe, wie viele Inputsequences bzw. JobIDs gegeben sind
     @inputSequences_length = @inputSequences.length
@@ -114,7 +99,17 @@ class GcviewAction < Action
     logger.debug "tmparray (before_perform): #{@tmparray.length}"
     logger.debug "jobtype (before_perform): #{@jobtype.length}"
 
-    write_configfile
+    if (@inputSequences_length == 0)
+      logfile = File.open(job.statuslog_path, "w")
+      logfile.write("No valid input found -- Exiting...")
+      logfile.close      
+      self.status = STATUS_ERROR
+      self.save!
+      job.update_status
+      raise "No valid input found" # just to be sure
+    else
+      write_configfile
+    end
 
     #Check input format
 
@@ -155,12 +150,29 @@ class GcviewAction < Action
   end
 
   def perform
-    if (@input_jobid && !@input_sequence)
-    #if (@inputformat=='jid')
-      for i in 0..@inputSequences_length-1
 
-        #tmp_id=Job.find(:first, :conditions => [ "jobid = ?", @inputSequences[i]]).id
-        jobending = ''
+    for i in 0..@inputSequences_length-1
+
+      #tmp_id=Job.find(:first, :conditions => [ "jobid = ?", @inputSequences[i]]).id
+      logger.debug "Current jobtype[#{i}]: #{@jobtype[i]} "
+      @commands << "echo 'Preparing Input #{(i+1)}/#{@inputSequences_length}...' >> #{job.statuslog_path}"
+      if (@jobtype[i] == 'gcview')
+        tmp_id = @inputSequences[i].split('/')
+        for f in 0..tmp_id.length-1
+          logger.debug "tmp_id: #{tmp_id[f]}"
+        end
+        old_tmp_dir = File.join(job.job_dir, "../#{tmp_id[0]}")
+        old_tmp_file = File.join(old_tmp_dir, "#{tmp_id[1]}")
+        #blast_file = File.join(@tmpdir, "#{tmp_id[1]}")
+        out_id = tmp_id[1].split('.')
+        for f in 0..out_id.length-1
+          logger.debug "out_id: #{out_id[f]}"
+        end
+        output_file = File.join(job.job_dir, "#{out_id[0]}.txt")
+        @commands << "cp #{old_tmp_file} #{@tmpdir}"
+        #@commands << "python #{GCVIEW}/psiblast_parser.py #{blast_file} #{output_file}"
+      elsif (@jobtype[i] == 'psi_blast' || @jobtype[i] == 'cs_blast' || @jobtype[i] == 'prot_blast')
+        
         if (@jobtype[i] == 'psi_blast')
           jobending = 'psiblast'
         end
@@ -169,107 +181,30 @@ class GcviewAction < Action
         end
         if (@jobtype[i] == 'prot_blast')
           jobending = 'protblast'
-	end
-        if (@jobtype[i] == 'gcview')
-	  tmp_id = @inputSequences[i].split('/')
-	  for f in 0..tmp_id.length-1
-            logger.debug "tmp_id: #{tmp_id[f]}"
-	  end
-          old_tmp_dir = File.join(job.job_dir, "../#{tmp_id[0]}")
-	  old_tmp_file = File.join(old_tmp_dir, "#{tmp_id[1]}")
-          #blast_file = File.join(@tmpdir, "#{tmp_id[1]}")
-	  out_id = tmp_id[1].split('.')
-          for f in 0..out_id.length-1
-            logger.debug "out_id: #{out_id[f]}"
-          end
-	  output_file = File.join(job.job_dir, "#{out_id[0]}.txt")
-	  @commands << "cp #{old_tmp_file} #{@tmpdir}"
-          #@commands << "python #{GCVIEW}/psiblast_parser.py #{blast_file} #{output_file}"
-        elsif (@jobtype[i] == 'psi_blast' || @jobtype[i] == 'cs_blast' || @jobtype[i] == 'prot_blast')
-          tmp_id=Job.find(:first, :conditions => [ "jobid = ?", @inputSequences[i]]).id
-          old_tmp_dir=File.join(job.job_dir, "../#{tmp_id}")
-          old_tmp_file = File.join(old_tmp_dir, "#{@inputSequences[i]}.#{jobending}")
-          blast_file = File.join(@tmpdir, "#{@inputSequences[i]}.#{jobending}")
-          output_file = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
-          @commands << "cp #{old_tmp_file} #{@tmpdir}"
-          @commands << "python #{GCVIEW}/psiblast_parser.py #{blast_file} #{output_file}" 
         end
-      end
-    end
-
-    if (!@input_jobid && @input_sequence)
-      #if (@inputformat=='gi')
-      #  @input = @infile
-      #end
-
-      for i in 0..@inputSequences_length-1
+        
+        tmp_id=Job.find(:first, :conditions => [ "jobid = ?", @inputSequences[i]]).id
+        old_tmp_dir=File.join(job.job_dir, "../#{tmp_id}")
+        old_tmp_file = File.join(old_tmp_dir, "#{@inputSequences[i]}.#{jobending}")
+        blast_file = File.join(@tmpdir, "#{@inputSequences[i]}.#{jobending}")
+        output_file = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
+        @commands << "cp #{old_tmp_file} #{@tmpdir}"
+        @commands << "python #{GCVIEW}/psiblast_parser.py #{blast_file} #{output_file} \"#{jobending}|#{@inputTags[i]}\"" 
+      elsif (@jobtype[i] == 'sequence')
         psiblast_file = File.join(@tmpdir, job.jobid+"_#{i+1}.psiblast")
         output_file = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
-        @commands << "#{BLAST}/blastpgp -a 4 -i #{@basename}_#{i+1}.in -F F -h 0.001 -s F -e 10 -M BLOSUM62 -G 11 -E 1 -j 1 -m 0 -v 100 -b 100 -T T -o #{psiblast_file} -d \"#{@database}\" -I T &> #{job.statuslog_path}"
-        @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
-        @commands << "python #{GCVIEW}/psiblast_parser.py #{psiblast_file} #{output_file} &> #{job.statuslog_path}"
+        @commands << "#{BLAST}/blastpgp -a 4 -i #{@basename}_#{i+1}.in -F F -h 0.001 -s F -e 10 -M BLOSUM62 -G 11 -E 1 -j 1 -m 0 -v 100 -b 100 -T T -o #{psiblast_file} -d \"#{@database_nr}\" -I T &>> #{job.statuslog_path}"
+        @commands << "echo 'Finished BLAST search...' >> #{job.statuslog_path}"
+        @commands << "python #{GCVIEW}/psiblast_parser.py #{psiblast_file} #{output_file} \"#{@inputTags[i]}\" &>> #{job.statuslog_path}"
       end
     end
 
-    if (@input_jobid && @input_sequence)
-      j=1
-      for i in 0..@inputSequences_length-1
-        if (@jobtype[i] == 'gcview')
-          logger.debug @inputSequences[i]
-          tmp_id = @inputSequences[i].split('/')
-          for f in 0..tmp_id.length-1
-            logger.debug "tmp_id: #{tmp_id[f]}"
-          end
-          old_tmp_dir = File.join(job.job_dir, "../#{tmp_id[0]}")
-          old_tmp_file = File.join(old_tmp_dir, "#{tmp_id[1]}")
-          out_id = tmp_id[1].split('.')
-          for f in 0..out_id.length-1
-            logger.debug "out_id: #{out_id[f]}"
-          end
-          output_file = File.join(job.job_dir, "#{out_id[0]}.txt")
-          @commands << "cp #{old_tmp_file} #{@tmpdir}"
-        elsif (@jobtype[i] == 'psi_blast' || @jobtype[i] == 'cs_blast' || @jobtype[i] == 'prot_blast')
-          jobending = ''
-          if (@jobtype[i] == 'psi_blast')
-            jobending = 'psiblast'
-          end
-          if (@jobtype[i] == 'cs_blast')
-            jobending = 'csblast'
-          end
-          if (@jobtype[i] == 'prot_blast')
-            jobending = 'protblast'
-            logger.debug "Jobending: #{jobending}"
-          end
-          tmp_id=Job.find(:first, :conditions => [ "jobid = ?", @inputSequences[i]]).id
-          old_tmp_dir=File.join(job.job_dir, "../#{tmp_id}")
-          old_tmp_file = File.join(old_tmp_dir, "#{@inputSequences[i]}.#{jobending}")
-          blast_file = File.join(@tmpdir, "#{@inputSequences[i]}.#{jobending}")
-          output_file = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
-          @commands << "cp #{old_tmp_file} #{@tmpdir}"
-          @commands << "python #{GCVIEW}/psiblast_parser.py #{blast_file} #{output_file}"
-        else
-          psiblast_file = File.join(@tmpdir, job.jobid+"_#{j}.psiblast")
-          output_file = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
-          @commands << "#{BLAST}/blastpgp -a 4 -i #{@basename}_#{j}.in -F F -h 0.001 -s F -e 10 -M BLOSUM62 -G 11 -E 1 -j 1 -m 0 -v 100 -b 100 -T T -o #{psiblast_file} -d \"#{@database}\" -I T &> #{job.statuslog_path}"
-          @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
-          @commands << "python #{GCVIEW}/psiblast_parser.py #{psiblast_file} #{output_file}"
-          j+=1
-        end
-      end
-    end
-
-    @commands << "python #{GCVIEW}/tool.py #{@configfile} &> #{job.statuslog_path}"
+    @commands << "echo 'Running GCView...' >> #{job.statuslog_path}"
+    @commands << "python #{GCVIEW}/tool.py #{@configfile} &>> #{job.statuslog_path}"
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
 
-  def init
-    @basename = File.join(job.job_dir, job.jobid)
-    @tmpdir = job.job_dir
-    @outurl = job.url_for_job_dir_abs
-    @database = File.join(DATABASES, "standard/nr")
-    @commands = []
-  end
 
   def parse_sequencefile(inputfile)
     #@tmparray = Array.new
@@ -286,21 +221,22 @@ class GcviewAction < Action
         @formerjob = Job.find(:first, :conditions => [ "jobid = ?", @tmparray[i]]).tool
         if (@formerjob=="psi_blast" || @formerjob=="cs_blast" || @formerjob=="prot_blast")
           @inputSequences.push(@tmparray[i])
-	  @jobtype.push(@formerjob)
+          @jobtype.push(@formerjob)
+          @inputTags.push(@tmparray[i])
         elsif (@formerjob=="gcview")
-          tmp_gcviewjob=Job.find(:first, :conditions => [ "jobid = ?", @tmparray[i]]).id
           tmp_id=Job.find(:first, :conditions => [ "jobid = ?", @tmparray[i]]).id
           old_tmp_dir=File.join(job.job_dir, "../#{tmp_id}")
           file = File.join(old_tmp_dir, "*.txt")
           files = Dir.glob(file)
           for j in 0..files.length-1
             files[j].gsub!(old_tmp_dir, '')
-	    files[j].gsub!('/', '')
+            files[j].gsub!('/', '')
             #files[j].gsub!(".csblast", '')
-	    #logger.debug "~~~ #{files[j]} ~~~"
+            #logger.debug "~~~ #{files[j]} ~~~"
             testfile = File.join(tmp_id.to_s, files[j])
-	    @inputSequences.push(testfile)
-	    @jobtype.push(@formerjob)
+            @inputSequences.push(testfile)
+            @inputTags.push("")
+            @jobtype.push(@formerjob)
           end
         end
       end
@@ -324,10 +260,7 @@ class GcviewAction < Action
     res << "outfile=#{job.jobid}\n"
     for i in 0..@inputSequences_length-1
       if (@jobtype[i]=="gcview")
-	filename = @inputSequences[i].split('/')
-        for k in 0..filename.length-1
-#	  logger.debug "Filename: #{filename[k]}"
-	end
+        filename = @inputSequences[i].split('/')
         jobname = filename[1].split('.')
         #infile = File.join(job.job_dir, "#{jobname[0]}.txt")
         #colornum = i % 9
@@ -348,6 +281,7 @@ class GcviewAction < Action
 
   def check_fasta
     @sequence_array = Array.new
+
     descriptions = 0
     res = IO.readlines(@input)
     res.each do |line|
@@ -355,8 +289,10 @@ class GcviewAction < Action
         if (descriptions != 0)
           parameter = job.jobid.to_s+"_"+descriptions.to_s
           @inputSequences.push(parameter)
+          @jobtype.push('sequence')
           @sequence_array.push(@seq)
         end
+        @inputTags.push(line[1..20])
         descriptions += 1
         @seq = ''
       else
@@ -386,11 +322,17 @@ class GcviewAction < Action
       writefile = File.open(inputfile, "w")
       writefile.write(line)
       writefile.close
+      if line.strip =~ /^[gi\|]?[0-9]+\|?$/
+        @database=@database_nr
+      else
+        @database="#{@database_uniprot_sprot} #{@database_uniprot_trembl}"
+      end
       gi2seq_out = File.join(@basename+"_#{descriptions}.in")
-      @commands << "#{UTILS}/seq_retrieve.pl -i #{inputfile} -o #{gi2seq_out} -d \"#{@database}\" -unique> #{@mainlog} 2> #{@mainlog}"
+      @commands << "#{UTILS}/seq_retrieve.pl -i #{inputfile} -o #{gi2seq_out} -b #{BLAST} -d \"#{@database}\" -unique >> #{@mainlog} 2>> #{@mainlog}"
       parameter = job.jobid.to_s+"_"+descriptions.to_s
       @inputSequences.push(parameter)
-      @jobtype.push('GInumber')
+      @inputTags.push(line)
+      @jobtype.push('sequence')
       descriptions += 1
     end
   end

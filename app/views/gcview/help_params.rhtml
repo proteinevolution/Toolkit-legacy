@@ -7,7 +7,6 @@
 </ul>
         <li><a href="#number">Number and type</a></li>
         <li><a href="#evaluecutoff">E-value cutoff</a></li>
-        <li><a href="#one_line">One line</a></li>
 </ul>
 
 <h2 class="classification"><%= @tool['title'] %> Parameters</h2>
@@ -15,30 +14,32 @@
 <a name="input"></a>
 <h3 class="classification">Input format</h3>
 <div class="row">
-GCView accepts 3 types of input: FASTA Protein Sequences, GI Protein Identifiers or Job IDs for Protein Sequence Search Tools. Please note that Nucleotide sequences cannot be used with GCView.<br>
+GCView accepts 3 types of input: FASTA Protein Sequences, Protein Identifiers (GI or Uniprot) or Job IDs for Protein Sequence Search Tools. Please note that Nucleotide sequences cannot be used with GCView.<br>
 
 <b>Notice:</b > FASTA Sequences and GI Numbers can not be combined in one query. The type of Input has to be set using the Input format selection box.
 
 <a name="format"></a>
 <h3 class="classification">FASTA Sequences</h3>
 <div class="row">
-For each FASTA sequence provided a PSI-BLAST search against the nr database will be performed using standard parameters (1 iteration, E-Value threshold 0.001, 100 Alignments and descriptions). The results are then used for genomic context lookup.
+For each FASTA sequence provided a PSI-BLAST search against the <b>nr database</b> will be performed using standard parameters (1 iteration, E-Value threshold 0.001, 100 Alignments and descriptions). The results are then used for genomic context lookup.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 <a name="formatgi"></a>
-<h3 class="classification">GI Numbers</h3>
+<h3 class="classification">GI/Uniprot Identifiers</h3>
 <div class="row">
-Sequences corresponding to the GI numbers are extracted using the GI2Seq tool. The sequences are then treated as described above.
+Sequences corresponding to the identifiers are extracted using the RetrieveSeq tool. The sequences are then treated as described above. Please note that all searches are run against the <b>nr database</b>.<br>
+Examples of GI identifiers are <b>gi|555|</b> or <b>gi|16128329|</b>.<br>
+Examples of Uniprot Identifiers are <b>P12345</b>, <b>Q1AAA9</b>, <b>O456A1</b> and <b>P4A123</b>.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 <a name="jobinput"></a>
 <h3 class="classification">Job IDs</h3>
 <div class="row">
-It is possible to run homology searches separately and use the Job IDs of these searches as input for GCView. This allows full control over the search parameters. Please note, that GCView internally uses GI Numbers as Database Identifiers. Using a Database which does not provide GI Numbers in the output (most prominently uniprot) will not give any results in GCView.<br>
+It is possible to run homology searches separately and use the Job IDs of these searches as input for GCView. This allows full control over the search parameters, as well as the use of databases other then <b>nr</b>. Please note, that GCView internally uses GI Numbers as Database Identifiers. Using a Database which does not provide appropriate identifiers in the output will not give any results in GCView.<br>
 It is possible to combine multiple searches in one GCView Job. This is useful to visualize conserved genomic neighborhood or operon structure of protein coding genes.<br>
-Please put each Job ID in a new line
+<b>Please put each Job ID in a new line</b><br>
 GCView accepts the following tools as input source: ProtBLAST, PSI-BLAST, CS-BLAST and GCView itself.
 Hits in GCView Output are identified by the Job ID of the original job.
 </div>
@@ -49,7 +50,7 @@ Hits in GCView Output are identified by the Job ID of the original job.
 <h3 class="classification">Search Range</h3>
 <div class="row">
 This option defines how much of the neighborhood is shown. The possible range is 5 - 50 genes or kilobases of genome on each side of every hit. Beware that setting large values greatly increases processing time.<br>
-Recommended Setting: 5-10 genes
+<b>Recommended Setting: 5-10 genes</b>
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 

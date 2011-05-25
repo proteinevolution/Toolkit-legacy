@@ -26,7 +26,7 @@
       <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=protein.cluster%>'>Cluster <%=protein.cluster%></A></TD>
     </TR>
     <TR>
-      <TD><B>Protein's Subcellular localization (SCL)</B></TD>
+      <TD><B>Protein subcellular localization (SCL)</B></TD>
       <TD><B><%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", protein.gi])%><%=subloc.subloc%></B></TD>
     </TR>
   </TABLE><BR>
@@ -36,7 +36,7 @@
     <P>
     <TABLE name='gi_details' align='center'>
       <TR>
-        <TH width='80px' bgcolor='#A68B94'><B>Taxonomy</B></TH>
+        <TH width='10%' bgcolor='#A68B94'><B>Taxonomy</B></TH>
         <TD bgcolor='#E8E8E8' width='700px'>
           <%=tax_tree.superkingdom %><BR/>
           <%=tax_tree.phylum %><BR/>
@@ -47,26 +47,26 @@
       </TR>
     
       <TR>
-        <TH bgcolor='#A68B94' width='80px'><B><BR>Organism</B></TH>
+        <TH bgcolor='#A68B94' width='10%'><B><BR>Organism</B></TH>
         <TD bgcolor='#E8E8E8'><A HREF='http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<%=tax_tree.taxon%>&lvl=3&lin=f&keep=1&srchmode=1&unlock'><BR><%=protein.organism%></A></TD>
       </TR>
       <TR>
-        <TH bgcolor='#A68B94' width='80px'><B><BR>Reason</B></TH>
+        <TH bgcolor='#A68B94' width='10%'><B><BR>Reason</B></TH>
         <TD bgcolor='#E8E8E8'>
           <BR><%gi_comment=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%><%=gi_comment.reasons%>
         </TD>
       </TR>
 
       <TR>
-        <TH bgcolor='#A68B94' width='80px'><B>Signal peptides (SP)</B></TH>
+        <TH bgcolor='#A68B94' width='10%'><B>Signal peptides (SP)</B></TH>
         <TD bgcolor='#E8E8E8'>
           <BR><%=gi_comment.spfound%><BR/><%=gi_comment.spcleaved%><BR><BR>
           
           <%spprediction=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
           <TABLE style='text-align:center;' BORDer=0 width='100%'>
             <TR bgcolor='#736F6E'>
-              <TD><FONT COLOR='white'>Lipo signal peptide</TD>
-              <TD><FONT COLOR='white'>TaT signal peptide</TD>
+              <TD><FONT COLOR='white'>Lipoprotein signal peptide</TD>
+              <TD><FONT COLOR='white'>TAT signal peptide</TD>
               <TD><FONT COLOR='white'>General signal peptide</TD>
               <TD><FONT COLOR='white'>TypeIII signal peptide</TD>
               <TD><FONT COLOR='white'>Consensus prediction</TD>
@@ -98,7 +98,7 @@
             <%metascl=Clubmetascl.find(:first, :conditions => ["gi=?", protein.gi])%>
             <TABLE style='text-align:center;' BORDER=0 width='100%' bgcolor='white'>
               <TR>
-                <TD bgcolor='#A68B94' rowspan='3' width='60px'><B>Lipo SP</B></TD>
+                <TD bgcolor='#A68B94' rowspan='3' width='60px'><B>Lipoprotein SP</B></TD>
                 <TD colspan='12' bgcolor='#CCCCCC'><B>LipoP 1.0</B></TD>
               </TR>
               <TR bgcolor='#E8E8E8'>
@@ -208,11 +208,11 @@
      <%omp_display=Clubgioutextratmdisplay.find(:first, :conditions => ["gi=?", protein.gi])%>
      <%gicomments_display=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
     <TABLE width='100%' style='text-align:center;'>
-      <TR bgcolor='#CCCCCC'>
-        <TH rowspan='3' width='15%' style='text-align:left;'  bgcolor='#A68B94'><B>Outer membrane beta-barrel</B></TH>
+      <TR bgcolor='#CCCCCC' height='20px'>
+        <TH rowspan='3' width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Outer membrane beta-barrel</B></TH>
         <TD colspan='2'><B>BOMP</B></TD>
-        <TD><B>PSORTb v.3.0</B></TD>
-	<TD><B>CELLO v2.5</B></TD>
+        <TD><B>PSORTb v.3.0.2</B></TD>
+	<TD><B>CELLO v.2.5</B></TD>
         <TD colspan='2'><B>HHomp</B></TD>
       </TR>
       <TR bgcolor='#E8E8E8'>
@@ -234,9 +234,26 @@
     </TABLE>
     <BR/>
 
+  <TABLE  width='100%' style='text-align:center;'>
+      <TR bgcolor='#CCCCCC' height='20px'>
+        <TH rowspan='2'  width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Extracellular</B></TH>
+        <TD ><B>PSORTb v.3.0.2 Extracellular Score</B></TD>
+        <TD ><B>Type III signal peptide</B></TD>
+      </TR>
+      <TR bgcolor='#F7ECD5'>
+        <TD><%=omp_display.psortbextracellular%></TD>
+        <%if(gi_comment.sp=~/Type3/)%>
+          <TD>Yes</TD>
+        <%else%>
+          <TD>No</TD>
+        <%end%>
+      </TR>
+    </TABLE>
+    </BR>
+
     <TABLE width='100%' style='text-align:center;'>
-      <TR bgcolor='#CCCCCC'>
-        <TH rowspan='3'  width='15%' style='text-align:left;'  bgcolor='#A68B94'><B>Transmembrane</B></TH>
+      <TR bgcolor='#CCCCCC' height='20px'>
+        <TH rowspan='3'  width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Cytoplasmic membrane</B></TH>
         <TD colspan='2'><B>TMHMM 2.0</B></TD>
         <TD colspan='2'><B>Phobius</B></TD>
         <TD colspan='2'><B>HMMTOP 2.1</B></TD>
@@ -249,8 +266,8 @@
         <TD>Topology</TD>
         <TD>No. of TMHs <U>before</U> SP prediction</TD>
         <TD>Topology</TD>
-        <TD>No. of TMHs <U>after</U> Consensus SP prediction</TD>
-        <TD>Consensus TMHs Topology</TD>
+        <TD>No. of TMHs <U>after</U> consensus SP prediction</TD>
+        <TD>Topology</TD>
       </TR>
       <TR bgcolor='#F7ECD5'>
         <TD><%=omp_display.tmhmmtmhs%></TD>
@@ -264,21 +281,56 @@
       </TR>
     </TABLE>
     </BR>
-  
-  <TABLE  width='100%' style='text-align:center;'>
-      <TR bgcolor='#CCCCCC'>
-        <TH rowspan='2'  width='15%' style='text-align:left;'  bgcolor='#A68B94'><B>Extracellular</B></TH>
-        <TD ><B>PSORTb v.3.0. Extracellular Score</B></TD>
-        <TD ><B>Type III signal peptide</B></TD>
-      </TR>
-      <TR bgcolor='#F7ECD5'>
-        <TD><%=omp_display.psortbextracellular%></TD>
-        <%if(gi_comment.sp=~/Type3/)%>
-          <TD>Yes</TD>
-        <%else%>
-          <TD>No</TD>
+
+    <%@all_tmhs=Array.new%>
+    <%@all_tmhs= [omp_display.tmhmmtmhs, omp_display.phobiustmhs, omp_display.hmmtoptmhs, gicomments_display.no_consensus_TMHs]%>
+    <%@all_topology=Array.new%>
+    <%@all_topology=[omp_display.tmhmmtopology, omp_display.phobiustopology, omp_display.hmmtoptopology, gicomments_display.consensus_TMHs]%>
+    <%@all_names=Array.new%>
+    <%@all_names=['TMHMM 2.0', 'Phobius', 'HMMTOP 2.1', 'Consensus']%>
+
+    <%display='No'%>
+    <%for no_of_tmhs in @all_tmhs%>
+      <%if (no_of_tmhs >= 1)%>
+        <%display='Yes'%>
+      <%end%>
+    <%end%>
+
+    <%if (display=~/Yes/)%>
+      <TABLE><TR height='20px'><TD bgcolor='#CCCCCC' width='750px'><B><center>Transmembrane helix topology</center></B></TD></TR></TABLE>
+      <TABLE>
+      <%for tool_num in 0..3 do%>
+          <TR height='20px'><TD bgcolor='#CCCCCC'><B><%=@all_names[tool_num]%></B></TD><TD style="padding-bottom:12px">
+          <%omp_display.tmhmmtopology=~/.*-(\d+)$/%>
+          <%$pd=$1%>
+          <%@topo_split=Array.new%>
+          <%@topo_split=@all_topology[tool_num].split(/\//)%>
+          <DIV vertical-align=middle; style="width:650px;height:20px;background-image:url('/images/bg_black_line.gif');position:absolute;">
+          <%for segment in @topo_split%>
+            <%bgcolor='orange'%>
+            <%tmhelix_nameit='TMHelix'%>
+            <%if(@all_names[tool_num]=~/Consensus/)%>
+              <%bgcolor='maroon'%>
+            <%end%>
+
+            <%if(segment=~/TMhelix|TMHelix|H-REGION/)%>
+              <%if(segment=~/H-REGION/)%>
+                <%bgcolor='green'%>
+                <%tmhelix_nameit='Signal peptide - TMHelix region'%>
+              <%end%>
+              <%segment=~/.*-(\d+)-(\d+)/%>
+              <%$start_1=$1%>
+              <%$end_1=$2%>
+              <%$left_start=($start_1.to_i / $pd.to_i.to_f)*100%>
+              <%$tm_length= $end_1.to_i - $start_1.to_i%>
+              <%$tm_width=($tm_length.to_i / $pd.to_i.to_f)*100%>
+              <DIV style="position:absolute;top:-2px;left:<%=$left_start%>%;background-color:<%=bgcolor%>;height:18px;width:<%=$tm_width%>%;" onmouseover="return overlib('<%=tmhelix_nameit%>: <%=$start_1%> to <%=$end_1%>')" onmouseout="return nd();">&nbsp</DIV>
+            <%end%>
+          <%end%>
+          </DIV>
+          </TD></TR>
         <%end%>
-      </TR>
+      <%end%>
     </TABLE>
   <%end%>
 <%end%>

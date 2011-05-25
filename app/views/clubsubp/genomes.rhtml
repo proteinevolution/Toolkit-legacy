@@ -9,14 +9,14 @@
   <TABLE align='center' border='0' align='center' cellpadding='2' cellspacing='3' style="font-family: arial, 'lucida console', sans-serif">
     <TR bgcolor='#97697C'>
       <TH rowspan='2' width='180'><FONT color='white'>Cluster</TH>
-      <TH rowspan='2' width='100'><FONT color='white'>NCBI's GI</TH>
+      <TH rowspan='2' width='100'><FONT color='white'>NCBI GI</TH>
       <TH rowspan='2' width='500'><FONT color='white'>Description</TH>
       <TH colspan='2' width='200'><FONT color='white'>Subcellular localization</TH>
       <TH rowspan='2' width='300'><FONT color='white'>Conserved Over</TH>
     </TR>
     <TR bgcolor='#97697C'>
-      <TH><FONT color='white'>Cluster's</TH>
-      <TH><FONT color='white'>GI's</TH>
+      <TH><FONT color='white'>Cluster</TH>
+      <TH><FONT color='white'>GI</TH>
     </TR>
     
     <%@gis=Array.new%>
@@ -27,22 +27,43 @@
 
 
     <%@gis.each do |gi_subloc|%>
-      <%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", gi_subloc])%>
+     
       <%giinfo=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", gi_subloc])%>
       <TR bgcolor='#E8E8E8'>
-        <%if subloc%>
-          <%clst=Clubclstprediction.find(:first, :conditions => ["cluster=?", subloc.cluster])%>
-          <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=clst.cluster%>'><%=clst.cluster%></A></TD>
-          <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi_subloc%>'><%=gi_subloc%></A></TD>
-          <TD><%=giinfo.header%> </TD>
-          <TD><%=clst.finalscl%></TD>
-          <TD><%=subloc.subloc%></TD>
-          <TD><%=clst.conservedover%></TD>
-        <%else%>
-          <TD>Singleton</TD>
-          <TD><A HREF='http://www.ncbi.nlm.nih.gov/protein/<%=gi_subloc%>?report=genpept&log$=seqview'><%=gi_subloc%></A></TD>
-          <TD><%=giinfo.header%></TD>
-          <TD></TD><TD></TD><TD></TD>
+        <%if (giinfo.tag =~/Archaea/)%>
+          <%subloc_arch=Clubarchgiprediction.find(:first, :conditions => ["gi=?", gi_subloc])%>    
+          <%if subloc_arch%>
+            <%clst=Clubarchclstprediction.find(:first, :conditions => ["cluster=?", subloc_arch.cluster])%>
+            <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster_arch?name=<%=clst.cluster%>'><%=clst.cluster%></A></TD>
+            <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein_arch?gi=<%=gi_subloc%>'><%=gi_subloc%></A></TD>
+            <TD><%=giinfo.header%> </TD>
+            <TD><%=clst.finalscl%></TD>
+            <TD><%=subloc_arch.subloc%></TD>
+            <TD><%=clst.conservedover%></TD>
+          <%else%>
+            <TD>Singleton</TD>
+            <TD><A HREF='http://www.ncbi.nlm.nih.gov/protein/<%=gi_subloc%>?report=genpept&log$=seqview'><%=gi_subloc%></A></TD>
+            <TD><%=giinfo.header%></TD>
+            <TD></TD><TD></TD><TD></TD>
+          <%end%>
+        <%end%>
+        
+        <%if (giinfo.tag =~/Gram-negative/)%>
+          <%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", gi_subloc])%>
+          <%if subloc%>
+            <%clst=Clubclstprediction.find(:first, :conditions => ["cluster=?", subloc.cluster])%>
+            <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=clst.cluster%>'><%=clst.cluster%></A></TD>
+            <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi_subloc%>'><%=gi_subloc%></A></TD>
+            <TD><%=giinfo.header%> </TD>
+            <TD><%=clst.finalscl%></TD>
+            <TD><%=subloc.subloc%></TD>
+            <TD><%=clst.conservedover%></TD>
+          <%else%>
+            <TD>Singleton</TD>
+            <TD><A HREF='http://www.ncbi.nlm.nih.gov/protein/<%=gi_subloc%>?report=genpept&log$=seqview'><%=gi_subloc%></A></TD>
+            <TD><%=giinfo.header%></TD>
+            <TD></TD><TD></TD><TD></TD>
+          <%end%>
         <%end%>
       </TR>
     <%end%>

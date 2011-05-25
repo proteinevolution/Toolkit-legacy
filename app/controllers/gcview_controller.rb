@@ -2,7 +2,7 @@ class GcviewController < ToolController
 
   def index
     @informat_values = ['fas', 'gi']
-    @informat_labels = ['FASTA', 'GIs']
+    @informat_labels = ['FASTA Sequences', 'GI/Uniprot Identifiers']
     @numvalues = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
     @numlabels = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
     @typevalues = ['genes', 'kb']
@@ -19,6 +19,8 @@ class GcviewController < ToolController
 
   def results_taxonomy
    @fullscreen = true
+    @fw_values = [fw_to_tool_url('gcview', 'gcview'), fw_to_tool_url('gcview', 'seq2gi')]
+    @fw_labels = [tool_title('gcview'), tool_title('seq2gi')]
   end
 
 # this is needed to output the third page
