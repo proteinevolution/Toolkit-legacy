@@ -1,8 +1,12 @@
 class HhpredAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
+  HHBLITS = File.join(BIOPROGS, 'hhblits')
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   CSBLAST = File.join(BIOPROGS, 'csblast')
+  HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20.cs219')
+  HHBLITS_DBHHM = File.join(DATABASES, 'hhblits','uniprot20_hhm_db')
+  HHBLITS_DBA3M = File.join(DATABASES, 'hhblits','uniprot20_a3m_db')
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
                 :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs
@@ -41,8 +45,8 @@ class HhpredAction < Action
 
     @dbs = @dbs + " " + @genomes_dbs
 
-    @maxpsiblastit = params['maxpsiblastit']
-    @E_psiblast = params["Epsiblastval"].nil? ? '' : "-e "+params["Epsiblastval"]
+    @maxhhblitsit = params['maxhhblitsit']
+    @E_hhblits = params["Ehhblitsval"].nil? ? '' : "-e "+params["Ehhblitsval"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
     @qid_min = params["qid_min"].nil? ? '' : '-qid '+params["qid_min"]
     @ali_mode = params["alignmode"]
@@ -194,7 +198,15 @@ class HhpredAction < Action
 
     if job.parent.nil? || @mode.nil?
       # Create alignment
-      @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxpsiblastit} -diff 1000 #{@E_psiblast} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
+      # @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxpsiblastit} -diff 1000 #{@E_psiblast} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
+      if @maxhhblitsit == '0'
+          @commands << "#{HH}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+      else
+          @commands << "#{HHBLITS}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -db #{HHBLITS_DB} -dbhhm #{HHBLITS_DBHHM} -dba3m #{HHBLITS_DBA3M} -o /dev/null -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.5 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      end
+
+      @commands << "#{HHBLITS}/addss.pl #{@basename}.a3m"
+
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
       @commands << "#{HH}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
