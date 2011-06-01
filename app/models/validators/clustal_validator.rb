@@ -115,7 +115,7 @@ module Toolkit
                   end
                 elsif (line =~ /^[:\.\*\s]*$/)
                   next
-                elsif (line =~ /\s*(\S+?)\s+(\S*)\s*$/)
+                elsif (line =~ /\s*(\S+?)\s+(\S*)\s*\d*$/) 
                   n += 1
                   name = $1
                   seq = $2
