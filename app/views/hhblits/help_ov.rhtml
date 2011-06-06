@@ -1,6 +1,6 @@
 <h2><%= @tool['title'] %> Overview</h2>
 <div class="row">
-Remote homology detection method based on iterative HMM-HMM comparison.
+HHblits is the first iterative method based on the pairwise comparison of profile Hidden Markov Models. In benchmarks it achieves better runtimes than other iterative sequence search methods such as PSI-BLAST or HMMER3 by using a fast prefilter based on profile-profile comparison. Furthermore, HHblits greatly improves upon PSI-BLAST and HMMER3 in terms of sensitivity/selectivity and alignment quality.
 </div>
 
 <%= render(:partial => "hhblits/references_and_contact") %>

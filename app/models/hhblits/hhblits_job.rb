@@ -88,17 +88,6 @@ class HhblitsJob < Job
 	 
     # Format parameter line
     paramline = "<b>Parameters </b> "
-    command =~ /\s-ssm\s(\d+)\s/
-	
-    if $1 == '0'
-      paramline+="score SS:no "
-    elsif $1 == '2'
-      paramline+="score SS:yes "
-    elsif $1 == '4' 
-      paramline +="score SS:pred-pred "
-    else
-      paramline += "score SS:? "
-    end  # end  if
 	
     if command =~ /\s-local/
       paramline+="search:local "
@@ -109,9 +98,9 @@ class HhblitsJob < Job
     end
 	
     if command =~ /\s-realign/ || command=~/\s-mact/
-      paramline+="realign with MAP:yes "
+      paramline+="realign with MAC:yes "
       if command =~/\s-mact (\S+)/
-        paramline+= "MAP threshold=#{$1} "
+        paramline+= "MAC threshold=#{$1} "
       end
     elsif  command =~ /(-norealign)/
       paramline +="realign with MAP:no "

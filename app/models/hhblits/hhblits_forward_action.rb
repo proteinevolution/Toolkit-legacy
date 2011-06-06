@@ -42,8 +42,11 @@ class HhblitsForwardAction < Action
       if (File.exists?(filename))
     	  res = IO.readlines(filename).join
       end
+      
       res.gsub!(/>ss_pred.*?\n(.*\n)*?>/, '>')
       res.gsub!(/>ss_conf.*?\n(.*\n)*?>/, '>')
+      res.gsub!(/>ss_dssp.*?\n(.*\n)*?>/, '>')
+
       informat = "fas"
       if (params['hhblits_format'] == "a3m")
         informat = "a3m"

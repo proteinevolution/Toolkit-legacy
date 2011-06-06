@@ -39,8 +39,6 @@ class HhblitsAction < Action
     @commands = []
 
     @db = params['hhblits_dbs']
-    @dbhhm = params['dbhhm']
-    @dba3m = params['dba3m']
     
     @match_modus = params['match_modus'].nil? ? 'a3m' : params['match_modus']
     @maxit = params['maxit']
@@ -83,13 +81,15 @@ class HhblitsAction < Action
     @commands << "#{HH}/hhviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
     
     # Generate profile histograms
-    @commands << "#{HH}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@dbhhm} > /dev/null"
+    @commands << "#{HH}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db}_hhm_db > /dev/null"
   end  
   
   def perform
     params_dump
     
-    @commands << "#{HHBLITS}/hhblits -cpu 8 -v #{@v} -i #{@infile} -db #{@db} -dbhhm #{@dbhhm} -dba3m #{@dba3m} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile} -M #{@match_modus} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+    @commands << "#{HHBLITS}/hhblits -cpu 8 -v #{@v} -i #{@infile} -d #{@db} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile} -M #{@match_modus} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
+
+    @commands << "#{HHBLITS}/addss.pl #{@a3m_outfile}"
 
     prepare_fasta_hhviz_histograms_etc    
     

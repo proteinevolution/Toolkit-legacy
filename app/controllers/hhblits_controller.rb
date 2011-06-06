@@ -12,31 +12,29 @@ class HhblitsController < ToolController
     @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
     @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
 
-    searchpat = File.join(DATABASES, @tool['name'], '*.as219')
+    searchpat = File.join(DATABASES, @tool['name'], '*.cs219')
     dbvalues_pre = Dir.glob(searchpat)
     
     @dbvalues = Array.new
-    @dbhhms = Array.new
-    @dba3ms = Array.new
     @dblabels = Array.new
 
-    sortlist = Array["uniprot", "nr"]
+    sortlist = Array["uniprot", "nr", "pdb", "scop"]
+    # Allow non-standard libraries only on internal server:
+    if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
     sortlist.each do |el|
       dbvalues_pre.each do |val|
         if (!val.index(/#{el}/).nil?)
-          @dbvalues.push(val)
           dbvalues_pre.delete(val)
-          @dblabels.push(File.basename(val, ".as219"))
-          @dbhhms.push(File.join(DATABASES, @tool['name'], File.basename(val, ".as219") + "_hhm_db"))
-          @dba3ms.push(File.join(DATABASES, @tool['name'], File.basename(val, ".as219") + "_a3m_db"))
+          base = File.basename(val, ".cs219")
+          dir = File.dirname(val)
+          @dbvalues.push(File.join(dir, base))
+          @dblabels.push(base)
           next;
         end
       end
     end
 
     @default_db = @dbvalues[0]
-    @default_dbhhm = @dbhhms[0]
-    @default_dba3m = @dba3ms[0]
     
     # do we need to show output options part of the form?
     @show_more_options = (@error_params['more_options_on'] == "true")

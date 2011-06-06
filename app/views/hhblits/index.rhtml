@@ -14,7 +14,7 @@
   <%= form_file("sequence_file") %>
 </div>
 <div class="row">
-	<%= form_label("Select alignment format", "input_format") %>
+	<%= form_label("Select alignment format", "format") %>
 	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "change_format();") %>	
 </div>
 <div class="row">
@@ -39,11 +39,9 @@
     <table cellspacing="0">
     <tr align="center"><td><b>Standard</b></td></tr>
     <tr><td>
-    <%= form_select_single("hhblits_dbs", @dbvalues, @dblabels, @default_db, 5, "change_db('#{@dbhhms.join(';')}','#{@dba3ms.join(';')}');", false, true) %>
+    <%= form_select_single("hhblits_dbs", @dbvalues, @dblabels, @default_db, 5, "", false, true) %>
     </td></tr>
     </table>
-    <%= form_hidden_field("dbhhm", @default_dbhhm) %>
-    <%= form_hidden_field("dba3m", @default_dba3m) %>
   </div>	
 </div>
 

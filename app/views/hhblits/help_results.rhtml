@@ -17,87 +17,106 @@
 <a name="example"></a>
 <h3 class="<%= @section["name"] %>">Example results for Retroactive protein</h3>
 <br>
-Look at the following results from an HHblits search of the Retroactive protein from the fruit fly against the SCOP database.
-The output is organized into three sections: 1. A <i>bar graph</i> summarizing the positions and color-coded significances of the
-database matches with more than 40% probability.  2. A tabular <i>hit list</i> with probabilities, E-values, scores, and match 
-regions in query and templates.  3. The pairwise <i>query-templates alignments</i> with annotation for secondary structure, 
-consensus sequence and column-column match quality. 
+Look at the following results from an HHblits search of the Apolipophorin-IIIe protein (PDB-ID: 1AEP) against 
+the UniProt20 database. The output is organized into three sections: 1. A <i>bar graph</i> summarizing the 
+positions and color-coded significances of the database matches with more than 40% probability.  2. A tabular 
+<i>hit list</i> with probabilities, E-values, scores, and match regions in query and templates.  
+3. The pairwise <i>query-templates alignments</i> with annotation for secondary structure, consensus sequence 
+and column-column match quality. 
 <br>
-Note also the top line starting with 'Query': it contains the query description, the number of query residues, the number of sequences 
-in the query alignment (after filtering) and the alignment mode (local/global) of the present search.  
+Note also the top line starting with 'Query': it contains the query description, the number of query residues, 
+the number of sequences in the query alignment (after filtering) and the alignment mode (local/global) of 
+the present search.  
 </p>
 
 <div class="row">
+  <div id="hitlist_img">
+
+<style type="text/css">
+div.slider {position: absolute; height:40px;}
+div.slider div.label {position:absolute; top: 0px; height:12px; width:30px; cursor:default;}
+div.slider div.bar {position:absolute; top:14px; height:16px;}
+div.slider div.bar div.handle {position:absolute; width:16px; height:16px; cursor:move;}
+div.slider div.bar div.span {position:absolute; top:6px; height:6px; background-color:#000000;}
+</style>
+<div class="row" style="position:relative; height:10px">
+<div id="slider" class="slider" style="top:5px; left: -2px; width: 807px;">
+<div id="slider_label_left" class="label" style="text-align:right;"></div>
+<div id="slider_label_right" class="label" style="text-align:left;"></div>
+<div id="slider_bar" class="bar" style="width: 807px;">
+<div id="slider_bar_handle_left" class="handle"><img src="/images/arrow_right.png" alt=""/></div>
+<div id="slider_bar_handle_right" class="handle"><img src="/images/arrow_left.png" alt=""/></div>
+<div id="slider_bar_span" class="span"</div>
+</div>
+
+</div>
+</div>
+<div class="row" style="position:absolute; top:50px; width:785px;">
+</form>
+</div>
+</div>
+<script type="text/javascript">domain_slider_show(153,1,153);</script>
 <map name="hhpredmap">
-<area shape="rect" coords="154,40,376,50" href="#1" title="Prob=69.0% E=0.023  d1rmka_ g.3.6.1 (A:) Conotoxin {Marble cone (Conus marmoreus), mrVIb}" />
-<area shape="rect" coords="133,58,671,68" href="#2" title="Prob=56.5% E=0.066  d1cdq__ g.7.1.3 (-) CD59 {Human (Homo sapiens)}" />
-<area shape="rect" coords="211,76,671,86" href="" title="Prob=54.0% E=0.063  d1s4ya_ g.7.1.3 (A:) Type II activin receptor {Mouse (Mus musculus), isoform  II" />
-<area shape="rect" coords="211,94,681,104" href="" title="Prob=51.1% E=0.082  d1rewc_ g.7.1.3 (C:) BMP receptor Ia ectodomain {Human (Homo sapiens)}" />
-<area shape="rect" coords="201,112,686,122" href="" title="Prob=49.3% E=0.026  d1btea_ g.7.1.3 (A:) Type II activin receptor {Mouse (Mus musculus)}" />
-<area shape="rect" coords="154,130,402,140" href="" title="Prob=49.1% E=0.35  d1autl1 g.3.11.1 (L:49-96) Activated protein c (autoprothrombin IIa) {Human (Hom" />
+<area shape="rect" coords="15,63,790,73" href="#1" title="Prob=100.0% E=0  cl|YABVUFIBA|1|179 Apolipophorin-3b. [Locusta migratoria]|sp:P10762." />
+<area shape="rect" coords="25,81,147,91" href="#2" title="Prob=95.4% E=0.0019  cl|ZUHFUFOBA|1|32 Apolipophorin III (Fragment). [Barytettix psolus]|Q7M483." />
+<area shape="rect" coords="25,99,142,109" href="#3" title="Prob=92.0% E=0.075  cl|LUHLUFOBA|1|31 Apolipophorin III (Fragment). [Melanoplus differentialis]|Q7M4" />
+<area shape="rect" coords="351,81,570,91" href="#4" title="Prob=90.9% E=0.092  cl|WEZVEXIBA|9|90 Putative; Putative uncharacterized protein. [Chthoniobacter fl" />
+
+<area shape="rect" coords="86,117,188,127" href="#5" title="Prob=83.2% E=0.97  cl|FUPDUDEBA|1|337 GD21143. [Drosophila simulans]|B4QTV2." />
+<area shape="rect" coords="66,135,244,145" href="#6" title="Prob=82.0% E=1.1  cl|KAGLUCIBA|2|193 Apolipophorin-III-like protein. [Apis mellifera]|B0LUE8 [Sole" />
+<area shape="rect" coords="346,99,657,109" href="#7" title="Prob=80.0% E=1.6  cl|QAYKICIBA|1|196 Cyanide hydratase (Fragment). [Ophiocordyceps unilateralis]|D" />
+<area shape="rect" coords="331,117,744,127" href="#8" title="Prob=79.8% E=1.4  cl|WIBNIDIBA|13|188 Apolipophorin-3. [Manduca sexta]|sp:P13276 [Spodoptera litur" />
+<area shape="rect" coords="96,153,188,163" href="#9" title="Prob=73.7% E=3.2  cl|SOKFOPIBA|1|134 Putative uncharacterized protein. [Streptomyces clavuligerus " />
+<area shape="rect" coords="96,171,239,181" href="#10" title="Prob=59.2% E=10  cl|KEHFAKIBA|2|163 Biotin synthesis protein (BioC). [Helicobacter pylori (strain" />
 </map>
-<br><img src="/images/hhpred/example_rtv.png" border="0" alt="hhpredhits" usemap="#hhpredmap"></p>
+<p><img src="/images/hhblits//5203432.png" border="0" alt="hhpredhits" usemap="#hhpredmap"></p></div>
+<pre><b>Query </b>d1aepa_ (seq=NIAEAVQQLN...QNSIQSAVQK Len=153 Neff=1.0 Nseqs=1) 
+<b>Parameters </b> search:local realign with MAC:yes MAC threshold=0.5  
 
-<pre>
-Query:  Rtv(CG1397) (Length=151, Nseqs=3)   Alignment: global
+   No Hit                             Prob E-value P-value  Score    SS Cols Query HMM  Template HMM
+<input style="margin: 0px; padding: 0px;" type="checkbox" name="hit_checkbox0" id="hit_checkbox0" value="1" onclick="javascript:change(1, 0)"/>  <a href =#1>1</a> cl|YABVUFIBA|1|179 Apolipophor 100.0       0       0  487.8   0.0  152    1-153    25-176 (179)
+<input style="margin: 0px; padding: 0px;" type="checkbox" name="hit_checkbox1" id="hit_checkbox1" value="2" onclick="javascript:change(2, 0)"/>  <a href =#2>2</a> cl|ZUHFUFOBA|1|32 Apolipophori  95.4  0.0019 1.7E-08   42.3   0.0   24    3-27      9-32  (32)
+<input style="margin: 0px; padding: 0px;" type="checkbox" name="hit_checkbox2" id="hit_checkbox2" value="3" onclick="javascript:change(3, 0)"/>  <a href =#3>3</a> cl|LUHLUFOBA|1|31 Apolipophori  92.0   0.075 6.7E-07   35.0   0.0   23    3-26      9-31  (31)
+<input style="margin: 0px; padding: 0px;" type="checkbox" name="hit_checkbox3" id="hit_checkbox3" value="4" onclick="javascript:change(4, 0)"/>  <a href =#4>4</a> cl|WEZVEXIBA|9|90 Putative; Pu  90.9   0.092 1.2E-06   40.0   0.0   38   67-110     9-46  (90)
+<input style="margin: 0px; padding: 0px;" type="checkbox" name="hit_checkbox4" id="hit_checkbox4" value="5" onclick="javascript:change(5, 0)"/>  <a href =#5>5</a> cl|FUPDUDEBA|1|337 GD21143. [D  83.2    0.97 8.7E-06   41.5   0.0   21   15-35    285-305 (337)
+<input style="margin: 0px; padding: 0px;" type="checkbox" name="hit_checkbox5" id="hit_checkbox5" value="6" onclick="javascript:change(6, 0)"/>  <a href =#6>6</a> cl|KAGLUCIBA|2|193 Apolipophor  82.0     1.1 1.1E-05   38.8   0.0   36   11-46     44-79  (193)
+<input style="margin: 0px; padding: 0px;" type="checkbox" name="hit_checkbox6" id="hit_checkbox6" value="7" onclick="javascript:change(7, 0)"/>  <a href =#7>7</a> cl|QAYKICIBA|1|196 Cyanide hyd  80.0     1.6 1.4E-05   38.0   0.0   62   66-127    67-134 (196)
+<input style="margin: 0px; padding: 0px;" type="checkbox" name="hit_checkbox7" id="hit_checkbox7" value="8" onclick="javascript:change(8, 0)"/>  <a href =#8>8</a> cl|WIBNIDIBA|13|188 Apolipopho  79.8     1.4 1.4E-05   38.1   0.0   75   63-144    69-152 (188)
+<input style="margin: 0px; padding: 0px;" type="checkbox" name="hit_checkbox8" id="hit_checkbox8" value="9" onclick="javascript:change(9, 0)"/>  <a href =#9>9</a> cl|SOKFOPIBA|1|134 Putative un  73.7     3.2 2.9E-05   34.5   0.0   19   17-35     90-108 (134)
+<input style="margin: 0px; padding: 0px;" type="checkbox" name="hit_checkbox9" id="hit_checkbox9" value="10" onclick="javascript:change(10, 0)"/> <a href =#10>10</a> cl|KEHFAKIBA|2|163 Biotin synt  59.2      10 9.1E-05   32.6   0.0   29   17-45     69-98  (163)
 
- No Hit                             Prob E-value P-value  Score    SS Cols Query HMM  Template HMM
-  <a href=#1>1</a> <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1RMK" target="_blank" title="g.3.6.1 (A:) Conotoxin {Marble cone (Conus marmoreus), mrVIb}">d1rmka_</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1rmka_&lev=fa" target="_blank">g.3.6.1</a> (A:) Conotoxin  69.0   0.023 2.4E-06   23.5   0.2   30   28-71      1-31  (31)
-  <a href=#2>2</a> <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1CDQ" target="_blank" title="g.7.1.3 (-) CD59 {Human (Homo sapiens)}">d1cdq__</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1cdq__&lev=fa" target="_blank">g.7.1.3</a> (-) CD59 {Huma  56.5   0.066 6.8E-06   21.7  -0.7   75   24-128     1-77  (77)
-  <a href="">3</a> <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1S4Y" target="_blank" title="g.7.1.3 (A:) Type II activin receptor {Mouse (Mus musculus), isoform  IIB}">d1s4ya_</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1s4ya_&lev=fa" target="_blank">g.7.1.3</a> (A:) Type II a  54.0   0.063 6.5E-06   21.8  -1.3   76   39-128     1-91  (91)
-  <a href="">4</a> <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1REW" target="_blank" title="g.7.1.3 (C:) BMP receptor Ia ectodomain {Human (Homo sapiens)}">d1rewc_</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1rewc_&lev=fa" target="_blank">g.7.1.3</a> (C:) BMP recep  51.1   0.082 8.5E-06   21.3  -1.4   85   39-130     1-86  (86)
-  <a href="">5</a> <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1BTE" target="_blank" title="g.7.1.3 (A:) Type II activin receptor {Mouse (Mus musculus)}">d1btea_</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1btea_&lev=fa" target="_blank">g.7.1.3</a> (A:) Type II a  49.3   0.026 2.7E-06   23.3  -4.3   89   37-131     1-96  (96)
-  <a href="">6</a> <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1AUT" target="_blank" title="g.3.11.1 (L:49-96) Activated protein c (autoprothrombin IIa) {Human (Homo sapiens)}">d1autl1</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1autl1&lev=fa" target="_blank">g.3.11.1</a> (L:49-96) Act  49.1    0.35 3.6E-05   18.8   1.4   48   28-76      1-48  (48)
-  <a href="">7</a> <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1KBA" target="_blank" title="g.7.1.1 (A:) Bungarotoxin {Many-banded krait (Bungarus multicinctus), kappa-bungarotoxin}">d1kbaa_</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1kbaa_&lev=fa" target="_blank">g.7.1.1</a> (A:) Bungaroto  32.7    0.21 2.1E-05   19.7  -3.2   61   24-122     1-66  (66)
-  <a href="">8</a> <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1O9A" target="_blank" title="g.27.1.1 (A:61-109) Fibronectin {Human (Homo sapiens)}">d1o9aa2</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1o9aa2&lev=fa" target="_blank">g.27.1.1</a> (A:61-109) Fi  29.2    0.87   9E-05   17.2  -0.7   36   95-133     1-49  (49)
-  <a href="">9</a> <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1M9Z" target="_blank" title="g.7.1.3 (A:) TGF-beta type II receptor extracellular domain {Human (Homo sapiens)}">d1m9za_</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1m9za_&lev=fa" target="_blank">g.7.1.3</a> (A:) TGF-beta   22.0    0.65 6.7E-05   17.7  -3.1   79   24-130     1-105 (105)
- <a href="">10</a> <a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1UHA" target="_blank" title="g.3.1.1 (A:1-42) Lectin-D {American pokeweed (Phytolacca americana)}">d1uhaa1</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1uhaa1&lev=fa" target="_blank">g.3.1.1</a> (A:1-42) Lecti  20.5     4.7 0.00049   14.2   0.9   35   46-80      1-42  (42)
+  <a name = 1>No 1</a>  <a href="" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_histogram_single.png" alt="Histograms" title="Show histograms" border="0" align="middle" height="30"></a><a href="" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_template_ali.png" title="Show template alignment" border="0" align="middle" /></a>
 
+<input style="margin: 0px 5px; padding: 0px;" type="checkbox" name="hit_checkbox10" id="hit_checkbox10" value="1" onclick="javascript:change(1, 1)"/>>cl|YABVUFIBA|1|179 Apolipophorin-3b. [Locusta migratoria]|sp:P10762.
+    Probab=100.00  E-value=0  Score=487.76  Aligned_cols=152  Identities=91%  Similarity=1.106  Sum_probs=146.5
 
-<a name = 1>No 1</a>  <a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_histogram_single.png" alt="Histograms" title="Show histograms" border="0" align="middle" height="30"></a><a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_template_ali.png" title="Show template alignment" border="0" align="middle" /></a><a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_T_struct.png" title="Show template 3D structure" border="0" align="middle" /></a><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1rmka_" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_SCOP.jpg" alt="SCOP" title="SCOP" border="0" align="middle" height="25"></a><a href="http://pdbbeta.rcsb.org/pdb/explore.do?structureId=1RMK" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_PDB.jpg" alt="PDB" title="PDB" border="0" align="middle" height="20"></a><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1RMK" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_MMDB.jpg" alt="MMDB" title="MMDB/NCBI" border="0" align="middle" height="20"></a><a href="http://www.ebi.ac.uk/msd-srv/atlas?id=1rmk" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_MSD.jpg" alt="MSD" title="MSD/EBI" border="0" align="middle" height="25"></a></a><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?CMD=search&db=pubmed&term=1RMK" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_pubmed.jpg" alt="PubMed" title="PubMed" border="0" align="middle" height="20"></a>
-<a href="http://pdbbeta.rcsb.org/pdb/explore.do?structureId=1RMK" target="_blank">d1rmka_</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1rmka_" target="_blank">g.3.6.1</a> (A:) Conotoxin {Marble cone (Conus marmoreus), mrVIb}
-Probab=69.02   E-value=0.023  Score=23.55  Aligned_columns=30  Identities=27%
-
-Q ss_pred             <span style="color: #D00000;">HH</span>CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC-C<span style="color: #D00000;">HHHHHH</span>C
-Q ss_conf             520444455656763115311102578410366664-03566524
-Q Rtv(CG1397)      28 QCRSRGELGSCKDPFTFNATDVEQEPGVAAIPCASG-WCGKVIEG   71 (151)
-Q Consensus        28 qcrsr~elgsckdpf~fnat~~e~e~gvaaipcasg-wcgkvieg   71 (151)
-                      +||.++|.  |--||            +..+-|.+| |||-++--
-T Consensus         1 ~Cr~~wey--C~~p~------------~g~~~CC~gL~C~~f~Cv   31 (31)
-T d1rmka_           1 ACSKKWEY--CIVPI------------LGFVYCCPGLICGPFVCV   31 (31)
-T ss_dssp             C<span style="color: #0000D0;">EE</span>CTTSC--CCCCT------------TCCC<span style="color: #0000D0;">EE</span>STTCCBCSSSBC
-T ss_pred             CCCCCCCC--CCCC<span style="color: #0000D0;">E</span>------------<span style="color: #0000D0;">EEEEEE</span>CCC<span style="color: #0000D0;">EEEEEEEE</span>C
-T ss_conf             97345414--36221------------221111484034217738
+  Q d1aepa_           1 <span style="color: #d000a0;">N</span><span style="color: #00ff00;">I</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">QQ</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #E06000;">H</span><span style="color: #404040;">T</span><span style="color: #00ff00;">IV</span><span style="color: #d000a0;">N</span><span style="color: #404040;">AA</span><span style="color: #E06000;">H</span><span style="color: blue;">E</span><span style="color: #00ff00;">L</span><span style="color: #E06000;">H</span><span style="color: blue;">E</span><span style="color: #404040;">T</span><span style="color: #00ff00;">L</span><span style="color: #404040;">G</span><span style="color: #00ff00;">L</span><span style="color: #000000;">P</span><span style="color: #404040;">T</span><span style="color: #000000;">P</span><span style="color: blue;">DE</span><span style="color: #404040;">A</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">LL</span><span style="color: #404040;">T</span><span style="color: blue;">E</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">A</span><span style="color: #d000a0;">N</span><span style="color: #404040;">A</span><span style="color: #00a000;">F</span><span style="color: red;">K</span><span style="color: #404040;">T</span><span style="color: red;">K</span><span style="color: #00ff00;">I</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #00ff00;">V</span><span style="color: #404040;">TTS</span><span style="color: #00ff00;">L</span><span style="color: red;">K</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: red;">K</span><span style="color: #E06000;">H</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">G</span><span style="color: #404040;">S</span><span style="color: #00ff00;">V</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #d000a0;">Q</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #404040;">A</span><span style="color: #00a000;">F</span><span style="color: #404040;">A</span><span style="color: red;">R</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">NN</span><span style="color: #404040;">S</span><span style="color: #00ff00;">I</span>   80 (153)
+  Q Consensus         1 niaeavqqlnhtivnaahelhetlglptpdealnllteqanafktkiaevttslkqeaekhqgsvaeqlnafarnlnnsi   80 (153)
+                        ||+|+||||||||||++||||||||||||||||||||||+|+|||||+|||||||||+|||||||+||||.|+|||||||
+  T Consensus        25 niaeavqqlnhtivnaahelhetlglptpdealnllteqanafktkiaevttslkqeaekhqgsvaeqlnrfarnlnnsi  104 (179)
+  T cl|YABVUFIBA|1   25 <span style="color: #d000a0;">N</span><span style="color: #00ff00;">I</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">QQ</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #E06000;">H</span><span style="color: #404040;">T</span><span style="color: #00ff00;">IV</span><span style="color: #d000a0;">N</span><span style="color: #404040;">AA</span><span style="color: #E06000;">H</span><span style="color: blue;">E</span><span style="color: #00ff00;">L</span><span style="color: #E06000;">H</span><span style="color: blue;">E</span><span style="color: #404040;">T</span><span style="color: #00ff00;">L</span><span style="color: #404040;">G</span><span style="color: #00ff00;">L</span><span style="color: #000000;">P</span><span style="color: #404040;">T</span><span style="color: #000000;">P</span><span style="color: blue;">DE</span><span style="color: #404040;">A</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">LL</span><span style="color: #404040;">T</span><span style="color: blue;">E</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">A</span><span style="color: #d000a0;">N</span><span style="color: #404040;">A</span><span style="color: #00a000;">F</span><span style="color: red;">K</span><span style="color: #404040;">T</span><span style="color: red;">K</span><span style="color: #00ff00;">I</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #00ff00;">V</span><span style="color: #404040;">TTS</span><span style="color: #00ff00;">L</span><span style="color: red;">K</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: red;">K</span><span style="color: #E06000;">H</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">G</span><span style="color: #404040;">S</span><span style="color: #00ff00;">V</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #d000a0;">Q</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: red;">R</span><span style="color: #00a000;">F</span><span style="color: #404040;">A</span><span style="color: red;">R</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">NN</span><span style="color: #404040;">S</span><span style="color: #00ff00;">I</span>  104 (179)
+  Confidence            79999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 
-
-<a name = 2>No 2</a>  <a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_histogram_single.png" alt="Histograms" title="Show histograms" border="0" align="middle" height="30"></a><a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_template_ali.png" title="Show template alignment" border="0" align="middle" /></a><a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_T_struct.png" title="Show template 3D structure" border="0" align="middle" /></a><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1cdq__" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_SCOP.jpg" alt="SCOP" title="SCOP" border="0" align="middle" height="25"></a><a href="http://pdbbeta.rcsb.org/pdb/explore.do?structureId=1CDQ" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_PDB.jpg" alt="PDB" title="PDB" border="0" align="middle" height="20"></a><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1CDQ" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_MMDB.jpg" alt="MMDB" title="MMDB/NCBI" border="0" align="middle" height="20"></a><a href="http://www.ebi.ac.uk/msd-srv/atlas?id=1cdq" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_MSD.jpg" alt="MSD" title="MSD/EBI" border="0" align="middle" height="25"></a></a><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?CMD=search&db=pubmed&term=1CDQ" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_pubmed.jpg" alt="PubMed" title="PubMed" border="0" align="middle" height="20"></a>
-<a href="http://pdbbeta.rcsb.org/pdb/explore.do?structureId=1CDQ" target="_blank">d1cdq__</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1cdq__" target="_blank">g.7.1.3</a> (-) CD59 {Human (Homo sapiens)}
-Probab=56.54   E-value=0.066  Score=21.70  Aligned_columns=75  Identities=23%
-
-Q ss_pred             <span style="color: #D00000;">HHHHHH</span>CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC--C<span style="color: #D00000;">HHHHHH</span>CCCCCCC<span style="color: #D00000;">HHHHHHHHHHHHH</span>CCCCCC<span style="color: #D00000;">HHHHH</span>
-Q ss_conf             9888520444455656763115311102578410366664--03566524554120025678888875248896345667
-Q Rtv(CG1397)      24 RRCYQCRSRGELGSCKDPFTFNATDVEQEPGVAAIPCASG--WCGKVIEGGGTYAIDDYDLAIQRMCVQRGPDDNMDRCA  101 (151)
-Q Consensus        24 rrcyqcrsr~elgsckdpf~fnat~~e~e~gvaaipcasg--wcgkvieg~gt~~~ddydla~qrmcvqrgp~d~~drca  101 (151)
-                      -+||.|....  +||+                ....|.+.  -|-....|+.+|.-           .-|-.|-|..+-.
-T Consensus         1 LqCY~C~~~~--~~C~----------------~~~~Cs~n~DsCL~~~aG~~~y~q-----------Cwk~~dCn~~~I~   51 (77)
-T d1cdq__           1 LQCYNCPNPT--ADCK----------------TAVNCSSDFDACLITKAGLQVYNK-----------CWKFEHCNFNDVT   51 (77)
-T ss_dssp             C<span style="color: #0000D0;">EE</span>CCCSSCC--SSCC----------------CC<span style="color: #0000D0;">EE</span>CCSSCC<span style="color: #0000D0;">EEEEEE</span>CSSC<span style="color: #0000D0;">EEEE</span>-----------<span style="color: #0000D0;">EE</span>CSTTCSTTT<span style="color: #D00000;">HH</span>
-T ss_pred             C<span style="color: #0000D0;">EEE</span>CCCCCC--CCCC----------------C<span style="color: #0000D0;">EEE</span>CCCCCC<span style="color: #0000D0;">EEEEEEE</span>CCC<span style="color: #0000D0;">EEEE</span>-----------<span style="color: #0000D0;">EEEEE</span>CCCC<span style="color: #D00000;">HHHH</span>
-T ss_conf             9223269797--7764----------------024236787637898609924556-----------6653057811111
+  Q d1aepa_          81 <span style="color: #E06000;">H</span><span style="color: blue;">D</span><span style="color: #404040;">AATS</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">Q</span><span style="color: blue;">D</span><span style="color: #d000a0;">Q</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #404040;">S</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">L</span><span style="color: #404040;">T</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">V</span><span style="color: #404040;">G</span><span style="color: #E06000;">H</span><span style="color: #d000a0;">Q</span><span style="color: #00a000;">W</span><span style="color: #d000a0;">Q</span><span style="color: blue;">D</span><span style="color: #00ff00;">I</span><span style="color: #404040;">AT</span><span style="color: red;">K</span><span style="color: #404040;">T</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">ASA</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: #00a000;">W</span><span style="color: #404040;">A</span><span style="color: #000000;">P</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">AA</span><span style="color: blue;">E</span><span style="color: red;">K</span><span style="color: #404040;">T</span><span style="color: red;">K</span><span style="color: blue;">E</span><span style="color: #404040;">AAA</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">QN</span><span style="color: #404040;">S</span><span style="color: #00ff00;">I</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">Q</span><span style="color: red;">K</span>  153 (153)
+  Q Consensus        81 hdaatslnlqdqlnslqsaltnvghqwqdiatktqasaqeawapvqsalqeaaektkeaaanlqnsiqsavqk  153 (153)
+                        |||+||-.--||||||||+|||||||||.--.+ -.-+||+|+||||+|||++|||||+++||||||||+|||
+  T Consensus       105 hdaatsaqpadqlnslqsaltnvghqwqtsqpr<span style="color: #808080;">-</span>psvaqeawapvqsalqeaaektkeaaanlqnsiqsavqk  176 (179)
+  T cl|YABVUFIBA|1  105 <span style="color: #E06000;">H</span><span style="color: blue;">D</span><span style="color: #404040;">AATSA</span><span style="color: #d000a0;">Q</span><span style="color: #000000;">P</span><span style="color: #404040;">A</span><span style="color: blue;">D</span><span style="color: #d000a0;">Q</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #404040;">S</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">L</span><span style="color: #404040;">T</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">V</span><span style="color: #404040;">G</span><span style="color: #E06000;">H</span><span style="color: #d000a0;">Q</span><span style="color: #00a000;">W</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">TS</span><span style="color: #d000a0;">Q</span><span style="color: #000000;">P</span><span style="color: red;">R</span><span style="color: #808080;">-</span><span style="color: #000000;">P</span><span style="color: #404040;">S</span><span style="color: #00ff00;">V</span><span style="color: #404040;">A</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: #00a000;">W</span><span style="color: #404040;">A</span><span style="color: #000000;">P</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">AA</span><span style="color: blue;">E</span><span style="color: red;">K</span><span style="color: #404040;">T</span><span style="color: red;">K</span><span style="color: blue;">E</span><span style="color: #404040;">AAA</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">QN</span><span style="color: #404040;">S</span><span style="color: #00ff00;">I</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">Q</span><span style="color: red;">K</span>  176 (179)
+  Confidence            999999999999999999999999999964433 345899999999999999999999999999999999997
 
 
-Q ss_pred             <span style="color: #D00000;">HHHHHHHH</span><span style="color: #0000D0;">EEEEEE</span>CCC<span style="color: #D00000;">HHHHH</span>CCCCC
-Q ss_conf             766210001223303301000000001
-Q Rtv(CG1397)     102 DTIYNYKKVYMCFCQGDLCNGARSWSS  128 (151)
-Q Consensus       102 ~tiynykkvymcfcqgdlcn~~~~w~s  128 (151)
-                      .+. .-++.-+--||.+|||....-..
-T Consensus        52 ~~~-~~~~~ty~CCqs~LCN~n~~~~~   77 (77)
-T d1cdq__          52 TRL-RENELTYYCCKKDLCNFNEQLEN   77 (77)
-T ss_dssp             <span style="color: #D00000;">HH</span>T-TCCSSCC<span style="color: #0000D0;">EEE</span>CSTTCCSTTSSCC
-T ss_pred             <span style="color: #D00000;">H</span><span style="color: #0000D0;">EE</span>-CCCC<span style="color: #0000D0;">EEEE</span>CCCCCCCCCCCCCCC
-T ss_conf             011-23760686016767456511169
+  <a name = 2>No 2</a>  <a href="" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_histogram_single.png" alt="Histograms" title="Show histograms" border="0" align="middle" height="30"></a><a href="" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_template_ali.png" title="Show template alignment" border="0" align="middle" /></a>
 
+<input style="margin: 0px 5px; padding: 0px;" type="checkbox" name="hit_checkbox11" id="hit_checkbox11" value="2" onclick="javascript:change(2, 1)"/>>cl|ZUHFUFOBA|1|32 Apolipophorin III (Fragment). [Barytettix psolus]|Q7M483.
+    Probab=95.43  E-value=0.0019  Score=42.32  Aligned_cols=24  Identities=63%  Similarity=0.945  Sum_probs=22.2
+
+  Q d1aepa_           3 <span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">QQ</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #E06000;">H</span><span style="color: #404040;">T</span><span style="color: #00ff00;">IV</span><span style="color: #d000a0;">N</span><span style="color: #404040;">AA</span><span style="color: #E06000;">H</span><span style="color: blue;">E</span><span style="color: #00ff00;">L</span><span style="color: #E06000;">H</span><span style="color: blue;">E</span><span style="color: #404040;">T</span><span style="color: #00ff00;">L</span><span style="color: #404040;">G</span><span style="color: #00ff00;">L</span><span style="color: #000000;">P</span>   27 (153)
+  Q Consensus         3 aeavqqlnhtivnaahelhetlglp   27 (153)
+                        ..|||||| |+|||+..+..|||||
+  T Consensus         9 vqavqqln<span style="color: #808080;">-</span>tlvnageqirqtlglp   32 (32)
+  T cl|ZUHFUFOBA|1    9 <span style="color: #00ff00;">V</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">A</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">QQ</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #808080;">-</span><span style="color: #404040;">T</span><span style="color: #00ff00;">LV</span><span style="color: #d000a0;">N</span><span style="color: #404040;">A</span><span style="color: #404040;">G</span><span style="color: blue;">E</span><span style="color: #d000a0;">Q</span><span style="color: #00ff00;">I</span><span style="color: red;">R</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">T</span><span style="color: #00ff00;">L</span><span style="color: #404040;">G</span><span style="color: #00ff00;">L</span><span style="color: #000000;">P</span>   32 (32)
+  Confidence            57899998 7899999999999998
 
 ...
 
@@ -107,16 +126,13 @@ T ss_conf             011-23760686016767456511169
 The summary hit list shows the best matches (hits) from the database, ordered by the 
 probability of being a true positive (column 'Prob'). By clicking on an index number in the 
 leftmost column we jump to the corresponding HMM-HMM-based query-template alignment.
-Clicking on the SCOP id in the second column (e.g. d1igra3) links us to the primary database, 
-in this case the PDB. 
-By clicking on the family code (e.g. g.3.6.1) we get linked to the SCOP database entry
-for this domain. We learn that g.3 refers to the Knottin fold and the next four
-hits belong to the superfamily g.7.1 of Snake toxin-like domains.
+By databases such as the SCOP or PDB, the ID in the second column (e.g. d1igra3) links us to the 
+primary database. 
 
 <br>
-The probability of 69% for the best hit indicates that a homologous relationship is more probable
-than not, but it is in no way certain. The marginally significant E-value of 0.023 reflects this
-level of uncertainty, even though it is calculated whithout scoring the secondary structure.
+The probability of 83.2% for the fifth hit indicates that a homologous relationship is more probable
+than not, but it is in no way certain. The marginally significant E-value of 0.97 reflects this
+level of uncertainty.
 
 <br>
 In the case of cystein-rich proteins like toxins or small metal-binding domains one has to 
@@ -127,15 +143,6 @@ long matches (e.g. > 150 residues) that can produce high scores just because of 
 amino acid composition in query and template. Alpha-helical repeat proteins are particularly
 prone to this kind of effect.
 
-<br>
-Indeed, closer analysis of the results would reveal that the first hit is a false positive. 
-The fact that the four next best hits are all from the same the snake-toxin-like superfamily
-lends more weight to them, since chance doesn't like to occur bunched. 
-In this case, it would be necessary to look for confirming evidence for either the first hit or
-the next four. A detailed list with useful 'tips and tricks' is compiled in the FAQ section:
-<a href="#" title="How to verify database match" onclick="openHelpWindow('/hhpred/help_faq#correct match');">
-"How can I verify if a database match is really homologous?"</a>. I would strongly recommed
-reading through this list.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
@@ -201,6 +208,8 @@ This score tells how well the PSIPRED-predicted (3-state) or actual DSSP-determi
 (8-state) secondary structure sequence for query and template agree with each other. 
 PSIPRED confidence values are taken into account for scoring secondary structure, such
 that positions with low confidence values get less statistical weight.
+In this example the secondary structure score is 0, because the profile HMMs in the UniProt20
+database have no predicted secondary structure.
 </td></tr>
 
 <tr Valign="top"><td width="90"> <strong>Cols</strong>:</td> 
@@ -228,20 +237,26 @@ Let us look at the first query-template alignment below the hit list:
 <br>
 <pre>
 
-<a name = 1>No 1</a>  <a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_histogram_single.png" alt="Histograms" title="Show histograms" border="0" align="middle" height="30"></a><a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_template_ali.png" title="Show template alignment" border="0" align="middle" /></a><a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_T_struct.png" title="Show template 3D structure" border="0" align="middle" /></a><a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1rmka_" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_SCOP.jpg" alt="SCOP" title="SCOP" border="0" align="middle" height="25"></a><a href="http://pdbbeta.rcsb.org/pdb/explore.do?structureId=1RMK" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_PDB.jpg" alt="PDB" title="PDB" border="0" align="middle" height="20"></a><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1RMK" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_MMDB.jpg" alt="MMDB" title="MMDB/NCBI" border="0" align="middle" height="20"></a><a href="http://www.ebi.ac.uk/msd-srv/atlas?id=1rmk" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_MSD.jpg" alt="MSD" title="MSD/EBI" border="0" align="middle" height="25"></a></a><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?CMD=search&db=pubmed&term=1RMK" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_pubmed.jpg" alt="PubMed" title="PubMed" border="0" align="middle" height="20"></a>
-<a href="http://pdbbeta.rcsb.org/pdb/explore.do?structureId=1RMK" target="_blank">d1rmka_</a> <a href="http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=d1rmka_" target="_blank">g.3.6.1</a> (A:) Conotoxin {Marble cone (Conus marmoreus), mrVIb}
-Probab=69.02   E-value=0.023  Score=23.55  Aligned_columns=30  Identities=27%
 
-Q ss_pred             <span style="color: #D00000;">HH</span>CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC-C<span style="color: #D00000;">HHHHHH</span>C
-Q ss_conf             520444455656763115311102578410366664-03566524
-Q Rtv(CG1397)      28 QCRSRGELGSCKDPFTFNATDVEQEPGVAAIPCASG-WCGKVIEG   71 (151)
-Q Consensus        28 qcrsr~elgsckdpf~fnat~~e~e~gvaaipcasg-wcgkvieg   71 (151)
-                      +||.++|.  |--||            +..+-|.+| |||-++--
-T Consensus         1 ~Cr~~wey--C~~p~------------~g~~~CC~gL~C~~f~Cv   31 (31)
-T d1rmka_           1 ACSKKWEY--CIVPI------------LGFVYCCPGLICGPFVCV   31 (31)
-T ss_dssp             C<span style="color: #0000D0;">EE</span>CTTSC--CCCCT------------TCCC<span style="color: #0000D0;">EE</span>STTCCBCSSSBC
-T ss_pred             CCCCCCCC--CCCC<span style="color: #0000D0;">E</span>------------<span style="color: #0000D0;">EEEEEE</span>CCC<span style="color: #0000D0;">EEEEEEEE</span>C
-T ss_conf             97345414--36221------------221111484034217738
+  No 1  <a href="" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_histogram_single.png" alt="Histograms" title="Show histograms" border="0" align="middle" height="30"></a><a href="" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_template_ali.png" title="Show template alignment" border="0" align="middle" /></a>
+
+<input style="margin: 0px 5px; padding: 0px;" type="checkbox" name="hit_checkbox10" id="hit_checkbox10" value="1" onclick="javascript:change(1, 1)"/>>cl|YABVUFIBA|1|179 Apolipophorin-3b. [Locusta migratoria]|sp:P10762.
+    Probab=100.00  E-value=0  Score=487.76  Aligned_cols=152  Identities=91%  Similarity=1.106  Sum_probs=146.5
+
+  Q d1aepa_           1 <span style="color: #d000a0;">N</span><span style="color: #00ff00;">I</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">QQ</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #E06000;">H</span><span style="color: #404040;">T</span><span style="color: #00ff00;">IV</span><span style="color: #d000a0;">N</span><span style="color: #404040;">AA</span><span style="color: #E06000;">H</span><span style="color: blue;">E</span><span style="color: #00ff00;">L</span><span style="color: #E06000;">H</span><span style="color: blue;">E</span><span style="color: #404040;">T</span><span style="color: #00ff00;">L</span><span style="color: #404040;">G</span><span style="color: #00ff00;">L</span><span style="color: #000000;">P</span><span style="color: #404040;">T</span><span style="color: #000000;">P</span><span style="color: blue;">DE</span><span style="color: #404040;">A</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">LL</span><span style="color: #404040;">T</span><span style="color: blue;">E</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">A</span><span style="color: #d000a0;">N</span><span style="color: #404040;">A</span><span style="color: #00a000;">F</span><span style="color: red;">K</span><span style="color: #404040;">T</span><span style="color: red;">K</span><span style="color: #00ff00;">I</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #00ff00;">V</span><span style="color: #404040;">TTS</span><span style="color: #00ff00;">L</span><span style="color: red;">K</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: red;">K</span><span style="color: #E06000;">H</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">G</span><span style="color: #404040;">S</span><span style="color: #00ff00;">V</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #d000a0;">Q</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #404040;">A</span><span style="color: #00a000;">F</span><span style="color: #404040;">A</span><span style="color: red;">R</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">NN</span><span style="color: #404040;">S</span><span style="color: #00ff00;">I</span>   80 (153)
+  Q Consensus         1 niaeavqqlnhtivnaahelhetlglptpdealnllteqanafktkiaevttslkqeaekhqgsvaeqlnafarnlnnsi   80 (153)
+                        ||+|+||||||||||++||||||||||||||||||||||+|+|||||+|||||||||+|||||||+||||.|+|||||||
+  T Consensus        25 niaeavqqlnhtivnaahelhetlglptpdealnllteqanafktkiaevttslkqeaekhqgsvaeqlnrfarnlnnsi  104 (179)
+  T cl|YABVUFIBA|1   25 <span style="color: #d000a0;">N</span><span style="color: #00ff00;">I</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">QQ</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #E06000;">H</span><span style="color: #404040;">T</span><span style="color: #00ff00;">IV</span><span style="color: #d000a0;">N</span><span style="color: #404040;">AA</span><span style="color: #E06000;">H</span><span style="color: blue;">E</span><span style="color: #00ff00;">L</span><span style="color: #E06000;">H</span><span style="color: blue;">E</span><span style="color: #404040;">T</span><span style="color: #00ff00;">L</span><span style="color: #404040;">G</span><span style="color: #00ff00;">L</span><span style="color: #000000;">P</span><span style="color: #404040;">T</span><span style="color: #000000;">P</span><span style="color: blue;">DE</span><span style="color: #404040;">A</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">LL</span><span style="color: #404040;">T</span><span style="color: blue;">E</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">A</span><span style="color: #d000a0;">N</span><span style="color: #404040;">A</span><span style="color: #00a000;">F</span><span style="color: red;">K</span><span style="color: #404040;">T</span><span style="color: red;">K</span><span style="color: #00ff00;">I</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #00ff00;">V</span><span style="color: #404040;">TTS</span><span style="color: #00ff00;">L</span><span style="color: red;">K</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: red;">K</span><span style="color: #E06000;">H</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">G</span><span style="color: #404040;">S</span><span style="color: #00ff00;">V</span><span style="color: #404040;">A</span><span style="color: blue;">E</span><span style="color: #d000a0;">Q</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: red;">R</span><span style="color: #00a000;">F</span><span style="color: #404040;">A</span><span style="color: red;">R</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">NN</span><span style="color: #404040;">S</span><span style="color: #00ff00;">I</span>  104 (179)
+  Confidence            79999999999999999999999999999999999999999999999999999999999999999999999999999999
+
+
+  Q d1aepa_          81 <span style="color: #E06000;">H</span><span style="color: blue;">D</span><span style="color: #404040;">AATS</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">Q</span><span style="color: blue;">D</span><span style="color: #d000a0;">Q</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #404040;">S</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">L</span><span style="color: #404040;">T</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">V</span><span style="color: #404040;">G</span><span style="color: #E06000;">H</span><span style="color: #d000a0;">Q</span><span style="color: #00a000;">W</span><span style="color: #d000a0;">Q</span><span style="color: blue;">D</span><span style="color: #00ff00;">I</span><span style="color: #404040;">AT</span><span style="color: red;">K</span><span style="color: #404040;">T</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">ASA</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: #00a000;">W</span><span style="color: #404040;">A</span><span style="color: #000000;">P</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">AA</span><span style="color: blue;">E</span><span style="color: red;">K</span><span style="color: #404040;">T</span><span style="color: red;">K</span><span style="color: blue;">E</span><span style="color: #404040;">AAA</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">QN</span><span style="color: #404040;">S</span><span style="color: #00ff00;">I</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">Q</span><span style="color: red;">K</span>  153 (153)
+  Q Consensus        81 hdaatslnlqdqlnslqsaltnvghqwqdiatktqasaqeawapvqsalqeaaektkeaaanlqnsiqsavqk  153 (153)
+                        |||+||-.--||||||||+|||||||||.--.+ -.-+||+|+||||+|||++|||||+++||||||||+|||
+  T Consensus       105 hdaatsaqpadqlnslqsaltnvghqwqtsqpr<span style="color: #808080;">-</span>psvaqeawapvqsalqeaaektkeaaanlqnsiqsavqk  176 (179)
+  T cl|YABVUFIBA|1  105 <span style="color: #E06000;">H</span><span style="color: blue;">D</span><span style="color: #404040;">AATSA</span><span style="color: #d000a0;">Q</span><span style="color: #000000;">P</span><span style="color: #404040;">A</span><span style="color: blue;">D</span><span style="color: #d000a0;">Q</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">N</span><span style="color: #404040;">S</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">L</span><span style="color: #404040;">T</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">V</span><span style="color: #404040;">G</span><span style="color: #E06000;">H</span><span style="color: #d000a0;">Q</span><span style="color: #00a000;">W</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">TS</span><span style="color: #d000a0;">Q</span><span style="color: #000000;">P</span><span style="color: red;">R</span><span style="color: #808080;">-</span><span style="color: #000000;">P</span><span style="color: #404040;">S</span><span style="color: #00ff00;">V</span><span style="color: #404040;">A</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">A</span><span style="color: #00a000;">W</span><span style="color: #404040;">A</span><span style="color: #000000;">P</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">Q</span><span style="color: blue;">E</span><span style="color: #404040;">AA</span><span style="color: blue;">E</span><span style="color: red;">K</span><span style="color: #404040;">T</span><span style="color: red;">K</span><span style="color: blue;">E</span><span style="color: #404040;">AAA</span><span style="color: #d000a0;">N</span><span style="color: #00ff00;">L</span><span style="color: #d000a0;">QN</span><span style="color: #404040;">S</span><span style="color: #00ff00;">I</span><span style="color: #d000a0;">Q</span><span style="color: #404040;">SA</span><span style="color: #00ff00;">V</span><span style="color: #d000a0;">Q</span><span style="color: red;">K</span>  176 (179)
+  Confidence            999999999999999999999999999964433 345899999999999999999999999999999999997
 </pre>
 </p>
 <br>
@@ -249,9 +264,7 @@ T ss_conf             97345414--36221------------221111484034217738
 <br> 
 In the top row, you find many useful links to access more information in HHblits or to link to external resources.
 The first logo will bring you to the histogram view of the query-template alignments. 
-The second logo lets you view and check the template alignment, to modify and submit it to HHpred 
-(for manual 'intermediate HMM searching'). The third button allows you to view the structure of the template
-with a simple 3D viewer (Java applet). Further logos link to databases and Pubmed.
+The second logo lets you view and check the template alignment. Further logos link to databases and Pubmed.
 
 <br><br>
 The alignments consist of one or more blocks with the following lines:
@@ -259,10 +272,7 @@ The alignments consist of one or more blocks with the following lines:
 <table cellspacing ="1" cellpadding="1">
 <tr>
 <td><strong>Q ss_pred:</strong></td>
-<td> query secondary structure as predicted by PSIPRED (when available)</td>
-</tr><tr>
-<td><strong>Q ss_conf:</strong></td>
-<td> PSIPRED confidence values (0-9) (when available)</td>
+<td> query secondary structure as predicted by PSIPRED Upper case letters: High probability, lower case letters: Low probabilty (when available) </td>
 </tr><tr>
 <td><strong>Q <i>query_name</i>:</strong></td>
 <td> query sequence</td>
@@ -279,14 +289,11 @@ The alignments consist of one or more blocks with the following lines:
 <td><strong>T <i>templ_name</i>:</strong></td>
 <td> template sequence</td>
 </tr><tr>
-<td><strong>T ss_dssp:</strong></td>
-<td> template secondary structure as determined by DSSP (when available)</td>
-</tr><tr>
 <td><strong>T ss_pred:</strong></td>
-<td> template secondary structure as predicted by PSIPRED (when available)</td>
+<td> tempplate secondary structure as predicted by PSIPRED Upper case letters: High probability, lower case letters: Low probabilty (when available) </td>
 </tr><tr>
-<td><strong>T ss_conf:</strong></td>
-<td> PSIPRED confidence values (0-9) (when available)</td>
+<td><strong>Confidence:</strong></td>
+<td> reliability of the pairwise query-template alignment (obtained from the posterior probabilities calculated in the Forward-Backward algorithm).</td>
 </tr>
 <table>
 </p>
