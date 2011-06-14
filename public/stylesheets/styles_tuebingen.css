@@ -406,37 +406,37 @@ span.small {
 /* cell types for job types */
 #sidebar table#jobtable td.search {
   border-right-width: 0px;
-  width: 25px;
+  width: 30px;
   background-color: #E8DCC2;
 }
 #sidebar table#jobtable td.alignment {
   border-right-width: 0px;
-  width: 25px;
+  width: 30px;
   background-color: #FFE09F;	
 }
 #sidebar table#jobtable td.seqanal {
   border-right-width: 0px;
-  width: 25px;
+  width: 30px;
   background-color: #99CC66;
 }
 #sidebar table#jobtable td.secstruct {
   border-right-width: 0px;
-  width: 25px;
+  width: 30px;
   background-color: #C8DCEC;
 }
 #sidebar table#jobtable td.tertstruct {
   border-right-width: 0px;
-  width: 25px;
+  width: 30px;
   background-color: #BEBED3;
 }
 #sidebar table#jobtable td.classification {
   border-right-width: 0px;
-  width: 25px;
+  width: 30px;
   background-color: #E9D5D5;
 }
 #sidebar table#jobtable td.utils {
   border-right-width: 0px;
-  width: 25px;
+  width: 30px;
   background-color: #E89F9F;	
 }
 
@@ -467,7 +467,7 @@ span.small {
   margin: 0px;
   border-width: 1px;
   border-spacing: 0px;
-  width: 75px;
+  width: 72px;
   overflow: hidden;
   vertical-align: middle;
 }
@@ -493,6 +493,7 @@ span.small {
 }
 #jobtable td {
   font-size: 9px;
+  width: 15px;
 }
 #sidebar a {
   font-size: 9px;
