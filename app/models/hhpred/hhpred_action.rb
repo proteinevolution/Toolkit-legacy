@@ -4,9 +4,7 @@ class HhpredAction < Action
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   CSBLAST = File.join(BIOPROGS, 'csblast')
-  HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20.cs219')
-  HHBLITS_DBHHM = File.join(DATABASES, 'hhblits','uniprot20_hhm_db')
-  HHBLITS_DBA3M = File.join(DATABASES, 'hhblits','uniprot20_a3m_db')
+  HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
                 :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs
@@ -202,7 +200,7 @@ class HhpredAction < Action
       if @maxhhblitsit == '0'
           @commands << "#{HH}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
       else
-          @commands << "#{HHBLITS}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -db #{HHBLITS_DB} -dbhhm #{HHBLITS_DBHHM} -dba3m #{HHBLITS_DBA3M} -o /dev/null -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.5 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+          @commands << "#{HHBLITS}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -o /dev/null -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.5 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
       end
 
       @commands << "#{HHBLITS}/addss.pl #{@basename}.a3m"
