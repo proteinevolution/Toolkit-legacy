@@ -11,7 +11,8 @@ class HhblitsAction < Action
                                                     :informat => 'fas', 
                                                     :inputmode => 'alignment',
                                                     :max_seqs => 9999,
-                                                    :on => :create })
+                                                    :on => :create,
+                                                    :ss_allow => true})
 
   validates_jobid(:jobid)
   

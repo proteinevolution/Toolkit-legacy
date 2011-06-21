@@ -19,7 +19,8 @@ module Toolkit
             :informat => nil,
             :inputmode => "sequence",
             :on => :create,
-            :message => "Infile is not correct A3M format!" }
+            :message => "Infile is not correct A222M format!",
+            :ss_allow => false}
 
           configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
 
@@ -97,7 +98,12 @@ module Toolkit
                 end
                 seq = lines.join()
                 seq.gsub!(/ /, '')
-                changes = seq.tr!("^#{configuration[:white_list]}", "+")
+                if(configuration[:ss_allow] && header =~ /ss_con*/  )
+                  local_whitelist = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/,+&\\-1234567890"
+                  changes = seq.tr!("^#{local_whitelist}", "+")
+                else
+                  changes = seq.tr!("^#{configuration[:white_list]}", "+")
+                end
                 if (!changes.nil?)
                   if (error.nil?)
                     error = "Infile is not correct A3M format! Invalid character found in sequence(s) '#{header}'"
