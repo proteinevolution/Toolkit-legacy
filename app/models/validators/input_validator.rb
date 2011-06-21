@@ -40,23 +40,23 @@ module Toolkit
 
           if (!configuration[:informat_field].nil?)
             if configuration[:max_seqs].nil?
-              validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length],:header_length => configuration[:header_length]})
+              validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length],:header_length => configuration[:header_length], :ss_allow => configuration[:ss_allow] })
               validates_clustal(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})
               validates_stockholm(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})
               validates_embl(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})														
               validates_a2m(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})
-              validates_a3m(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})														
+              validates_a3m(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length], :ss_allow => configuration[:ss_allow]})														
               validates_mega(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})														
               validates_msf(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})														
               validates_pir(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})														
               validates_tre(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})														
             else
-              validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length],:header_length => configuration[:header_length]})						
+              validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length],:header_length => configuration[:header_length], :ss_allow => configuration[:ss_allow]})						
               validates_clustal(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
               validates_stockholm(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
               validates_embl(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
               validates_a2m(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
-              validates_a3m(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
+              validates_a3m(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length], :ss_allow => configuration[:ss_allow]})						
               validates_mega(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
               validates_msf(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
               validates_pir(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :max_seqs => configuration[:max_seqs], :informat => configuration[:informat], :informat_field => configuration[:informat_field], :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})						
@@ -67,16 +67,16 @@ module Toolkit
             when "fas"
               logger.debug "##### FASTA!"
               if configuration[:max_seqs].nil?
-                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_length => configuration[:max_length],:header_length => configuration[:header_length]})
+                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_length => configuration[:max_length],:header_length => configuration[:header_length], :ss_allow => configuration[:ss_allow]})
               else
-                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :max_length => configuration[:max_length],:header_length => configuration[:header_length]})						
+                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :max_length => configuration[:max_length],:header_length => configuration[:header_length], :ss_allow => configuration[:ss_allow]})						
               end
             when "nucfas"
               logger.debug "##### Nucleotide FASTA!"
               if configuration[:max_seqs].nil?
-                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :white_list => "ATGCIUXRYWNatgciurnyw-", :message => "Infile is not correct Nucleotide-FASTA format!", :max_length => configuration[:max_length], :header_length => configuration[:header_length]})
+                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :white_list => "ATGCIUXRYWNatgciurnyw-", :message => "Infile is not correct Nucleotide-FASTA format!", :max_length => configuration[:max_length], :header_length => configuration[:header_length], :ss_allow => configuration[:ss_allow]})
               else
-                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :white_list => "ATGCIUXRYWNatgciurnyw-", :message => "Infile is not correct Nucleotide-FASTA format!", :max_length => configuration[:max_length] ,:header_length => configuration[:header_length]})						
+                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :white_list => "ATGCIUXRYWNatgciurnyw-", :message => "Infile is not correct Nucleotide-FASTA format!", :max_length => configuration[:max_length] ,:header_length => configuration[:header_length], :ss_allow => configuration[:ss_allow]})						
               end
             when "clu"
               logger.debug "##### CLUSTAL!"
@@ -109,9 +109,9 @@ module Toolkit
             when "a3m"
               logger.debug "##### A3M!"
               if configuration[:max_seqs].nil?
-                validates_a3m(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_length => configuration[:max_length]})
+                validates_a3m(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_length => configuration[:max_length] , :ss_allow => configuration[:ss_allow]})
               else
-                validates_a3m(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :max_length => configuration[:max_length]})						
+                validates_a3m(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :max_length => configuration[:max_length] , :ss_allow => configuration[:ss_allow]})						
               end
             when "meg"
               logger.debug "##### MEGA!"

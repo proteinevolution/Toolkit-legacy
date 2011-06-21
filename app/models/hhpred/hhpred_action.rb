@@ -15,7 +15,8 @@ class HhpredAction < Action
                                                     :informat => 'fas',
                                                     :inputmode => 'alignment',
                                                     :max_seqs => 10000,
-                                                    :on => :create })
+                                                    :on => :create,
+						    :ss_allow => true })
 
   validates_jobid(:jobid)
 

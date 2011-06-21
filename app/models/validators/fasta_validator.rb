@@ -21,8 +21,12 @@ module Toolkit
             :inputmode => "sequence",
             :on => :create,
             :header_length => 2000,
-            :message => "Infile is not correct FASTA format!" }
+            :message => "Infile is not correct FASTA format!",
+            :ss_allow => false}
+            
+           
 
+            
           if attr_names.last.is_a?(Hash)
             configuration.update(attr_names.pop) 
           end
@@ -112,7 +116,7 @@ module Toolkit
               lc = 0
               val_array.each do |val|
                 lines = val.split(/\n/)
-                header = lines.shift # header
+                header = lines.shift # header is returned and removed from lines array
                 if( header =~ /^\s*$/ ) then 
                   lc = lc + 1
                   header = Time.now.to_s.gsub!(/ /, '_') + " #" + lc.to_s + "\n" 
@@ -122,7 +126,19 @@ module Toolkit
                   error = "Header exceeds the maximum number of #{configuration[:header_length]} Characters"
                 end
                 # check for numbers at begin and/or end of line (GenBank)
-                seq = ""								
+                seq = ""
+                # Fix for Ticket #99 
+                # Return Error Message when ss structure element is discovered and not allowed
+                if(!configuration[:ss_allow] && header =~ /^ss_con.*/)
+                  error = "Secondary structure confidence values not allowed for this tool"
+                  break
+                end
+                 if(configuration[:ss_allow] && header =~ /^ss_con.*/)
+                    lines.each do |line|
+                      seq += line
+                    end
+                
+                else 
                 lines.each do |line|
                   if (line =~ /^\s*\d*(.*?)\d*\s*$/)
                     seq += $1
@@ -130,21 +146,21 @@ module Toolkit
                     seq += line
                   end
                 end
-                # seq = lines.join()
-                
+                end
+                # End Fix for Ticket #99
                 grouped_check = false								
                 seq.gsub!(/ /, '')
                 seq.tr!('_~.*', '-')
                 
 		logger.debug "Vor allen Aenderungen: #{seq}"
- 
+              
                 seq.gsub!(/[JOUZjouz]/, 'X')
                 logger.debug "Nach Buchstaben: #{seq}"
 
-                seq.gsub!(/[\/,+&\\]/, '')
-                logger.debug "Nach Sonderzeichen: #{seq}"
+                  seq.gsub!(/[\/,+&\\]/, '')
+                  logger.debug "Nach Sonderzeichen: #{seq}"
 
-					 # for singe sequence
+					 # for single sequence
 					 if (configuration[:max_seqs] == 1)
 					 	seq.gsub!(/-/, '')
 					 end          
@@ -157,10 +173,24 @@ module Toolkit
                     grouped_check = true
                   end
                 end
-                
+                # end grouped Fasta
+                # change Sequence inplace from lower Case to upper case
                 seq.tr!("a-z","A-Z")								
                 
-                changes = seq.tr!("^#{configuration[:white_list]}", "+")
+                # this white list'prohibits to accept ss_prob to be accepted Check if we have that line and change our whitelist
+                # Fix for Ticket #99
+                if(configuration[:ss_allow] && header =~ /^ss_con.*/)
+                  #error = "Running into ss Structure confidence"
+                  #error += " #{header}"
+                  local_whitelist = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/,+&\\-1234567890"
+                  changes = seq.tr!("^#{local_whitelist}", "+")
+                   #error += "\n SEQ #{seq}"
+                   changes = seq.tr!("^#{local_whitelist}", "+")
+                   #error += "\n SEQ #{seq}"
+                   #break
+                else
+                  changes = seq.tr!("^#{configuration[:white_list]}", "+")
+                end
                 if (!changes.nil?)
                   if (error.nil?)
                     error = "#{configuration[:message]} Invalid character found in sequence(s) '#{header}'"
