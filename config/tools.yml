@@ -339,6 +339,7 @@
   section: search
   active: 
   - hhgroup
+  - member
   - internal
   - external
 - name: cs_blast
