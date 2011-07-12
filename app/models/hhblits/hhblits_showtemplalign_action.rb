@@ -8,7 +8,7 @@ class HhblitsShowtemplalignAction < Action
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)
     
-    @dba3m = job.params_main_action["dba3m"]
+    @dba3m = job.params_main_action['hhblits_dbs'] + "_a3m_db"
 
     @mode = params["alformat"]
     @hit = params["hits"]
