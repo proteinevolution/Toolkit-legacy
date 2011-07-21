@@ -135,10 +135,10 @@ module ApplicationHelper
     end
     wrap_form_widget(content)
   end
-  
+ 
   def form_submit_buttons
-    ret = "<input name=\"submitform\" type=\"submit\" class=\"toolbutton\" value=\"Submit job\" />"
-    ret = ret << "<input name=\"resetform\" type=\"reset\" class=\"toolbutton\" value=\"Reset form\" /><br/>"
+    ret = "<input name=\"submitform\" id=\"submitform\"  type=\"submit\" class=\"toolbutton\" value=\"Submit job\" />"
+    ret = ret << "<input name=\"resetform\" id=\"resetform\" type=\"reset\" class=\"toolbutton\" value=\"Reset form\" /><br/>"
   end
   
   def form_submit_snail_buttons(message)
