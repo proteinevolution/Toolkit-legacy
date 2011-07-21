@@ -205,13 +205,26 @@ function changeStatus(TREE, b){
 }
 
 function control(obj){
+	var button = $('submitform');
 	controller(obj[0]);
         var c = count();
-        if(c==1)
+        if(c==1){
 		$('count_label').innerHTML=c+" Genome selected";
-	else
-		$('count_label').innerHTML=c+" Genomes selected";
-}
+	}
+        else{	
+		$('count_label').innerHTML=c+" Genomes selected.";
+	// If the user has selected more than 900 genomes remind him that system may crash
+	}
+	if(c>900){
+		$('count_label').innerHTML=c+" Genomes selected.<br><font color=red><b>You have exceeded the Genome Limit ! 900 Genomes.</b></font>";
+		button.disabled = true;
+	        $('gtree').setStyle({background:'#FFF8C6'});
+		}
+	if(c<900){
+	button.disabled =false;
+	$('gtree').setStyle({background:'white'});
+	}
+	}
 
 function controller(TREE){
 	if(TREE.length>2){
