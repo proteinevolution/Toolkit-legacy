@@ -74,9 +74,11 @@
 				<a href="javascript: deselect();">Deselect all</a>&nbsp;&nbsp;	
 	</div></div></div></div>
 	<%# this is updated when the user clicks on 'Search'%>
-	<div class="row"><div class="formw"><span id="count_label"></span></div></div>
+	<div class="row">
+	<div class="formw"><span id="count_label"></span></div></div>
 	<div id="genomes_ids_target" style="height:0px;"><%= form_hidden_field("taxids") %></div>	
-	<div class="row"><div class="formw"><div id="gtree_target">
+	<div class="row"> 
+        <div class="formw"><div id="gtree_target">
 			 <% if @error_params['taxids'] || params['taxids'] %>
 			 <%= render(:partial => "genomes/proteintree",
 				    :locals => { :hidetree => true } ) %>
