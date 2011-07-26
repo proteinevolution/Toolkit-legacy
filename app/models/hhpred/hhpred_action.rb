@@ -195,6 +195,9 @@ class HhpredAction < Action
   def perform
     params_dump
 
+     # Create a fasta File later on used for the domain resubmission of the results
+     @commands << "#{HH}/reformat.pl #{@informat} a2m #{@seqfile} #{@basename}.resub_domain.a2m"
+
     if job.parent.nil? || @mode.nil?
       # Create alignment
       # @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxpsiblastit} -diff 1000 #{@E_psiblast} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
