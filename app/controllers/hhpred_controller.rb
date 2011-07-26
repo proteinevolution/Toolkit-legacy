@@ -1,6 +1,7 @@
 require 'fasta_reader.rb'
 
 class HhpredController < ToolController
+REFORMAT = File.join(BIOPROGS, 'reformat')
 
   def index
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
@@ -162,9 +163,10 @@ class HhpredController < ToolController
   end
 
   def resubmit_domain
-    basename = File.join(@job.job_dir, @job.jobid)
-    system(sprintf('%s/perl/alicutter.pl %s.in %s.in.cut %d %d', BIOPROGS, basename, basename, params[:domain_start].to_i, params[:domain_end].to_i));
 
+    basename = File.join(@job.job_dir, @job.jobid)
+    @my_command = "#{BIOPROGS}/perl/alicutter.pl #{basename}.resub_domain.a2m #{basename}.in.cut #{params[:domain_start]} #{params[:domain_end]} "
+    system(@my_command);    
     job_params = @job.actions.first.params
     job_params.each_key do |key|
       if (key =~ /^(\S+)_file$/) 
