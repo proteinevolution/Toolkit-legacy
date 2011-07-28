@@ -156,23 +156,23 @@ module Toolkit
 						
 						end
 
-						if (!error.nil?)
-							if (attr.to_s.include?('_file'))
-	            			attr = attr.to_s.sub!('_file', '_input').to_sym
-	            			record.params[attr.to_s] = value
-	            		end 
-							record.errors.add(attr, error)
-						else
-							if (attr.to_s.include?('_file'))
-	            			filename = File.join(record.job.job_dir, attr)
-	            			File.open(filename, "w") do |f|
-            					f.write(value)
-          					end
-          					record.params[attr.to_s] = filename
-	            		else
-								record.params[attr.to_s] = value
-							end
-						end
+            if (!error.nil?)
+              if (attr.to_s.include?('_file'))
+                attr = attr.to_s.sub!('_file', '_input').to_sym
+                record.params[attr.to_s] = value
+              end 
+              record.errors.add(attr, error)
+            else
+              if (attr.to_s.include?('_file'))
+                filename = File.join(record.job.job_dir, attr.to_s)
+                File.open(filename, "w") do |f|
+                  f.write(value)
+                end
+                record.params[attr.to_s] = filename
+              else
+                record.params[attr.to_s] = value
+              end
+            end
 					end
 				end
 			end
