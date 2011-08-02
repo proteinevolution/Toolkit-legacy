@@ -28,8 +28,14 @@ class HhblitsController < ToolController
           base = File.basename(val, ".cs219")
           dir = File.dirname(val)
           @dbvalues.push(File.join(dir, base))
-          @dblabels.push(base)
-          next;
+          name = Dir.glob(File.join(dir, base + ".name*"))
+          if (name.empty?)
+            @dblabels.push(base)
+          else
+            name[0].gsub!(/^\S+\.name\.(\S+)$/, '\1')
+            @dblabels.push(base + "_" + name[0])
+          end
+          next
         end
       end
     end
