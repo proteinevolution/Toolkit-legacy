@@ -7,14 +7,14 @@ class HhpredAction < Action
   HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
-                :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs
+                :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs,:prefilter
 
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat,
                                                     :informat => 'fas',
                                                     :inputmode => 'alignment',
                                                     :max_seqs => 10000,
                                                     :on => :create,
-						    :ss_allow => true })
+						                                        :ss_allow => true })
 
   validates_jobid(:jobid)
 
@@ -37,13 +37,14 @@ class HhpredAction < Action
       @informat = "fas"
     end
 
+    @prefilter = params['prefilter'] ? params['prefilter'] : 'hhblits'
+    
     @dbs = params['hhpred_dbs'].nil? ? "" : params['hhpred_dbs']
     if @dbs.kind_of?(Array) then @dbs = @dbs.join(' ') end
     @genomes_dbs = params['genomes_hhpred_dbs'].nil? ? "" : params['genomes_hhpred_dbs']
     if @genomes_dbs.kind_of?(Array) then @genomes_dbs = @genomes_dbs.join(' ') end
-
+    
     @dbs = @dbs + " " + @genomes_dbs
-
     @maxhhblitsit = params['maxhhblitsit']
     @E_hhblits = params["Ehhblitsval"].nil? ? '' : "-e "+params["Ehhblitsval"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
@@ -200,13 +201,19 @@ class HhpredAction < Action
 
     if job.parent.nil? || @mode.nil?
       # Create alignment
-      # @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxpsiblastit} -diff 1000 #{@E_psiblast} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
-      if @maxhhblitsit == '0'
-          @commands << "#{HH}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
-      else
-          @commands << "#{HHBLITS}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -o /dev/null -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.5 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
-      end
 
+      if(@prefilter=='psiblast')
+         @commands << "echo 'Running Psiblast as Prefilter... ...' >> #{job.statuslog_path}"
+         @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
+      else
+          if @maxhhblitsit == '0'
+              @commands << "echo 'No Prefilter Set... ...' >> #{job.statuslog_path}"
+              @commands << "#{HH}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+          else
+              @commands << "echo 'Running HHblits as Prefilter... ...' >> #{job.statuslog_path}"
+              @commands << "#{HHBLITS}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -o /dev/null -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.5 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+          end
+      end
       @commands << "#{HHBLITS}/addss.pl #{@basename}.a3m"
 
       # Make HMM file
