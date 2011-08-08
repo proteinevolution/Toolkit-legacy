@@ -203,14 +203,14 @@ class HhpredAction < Action
       # Create alignment
 
       if(@prefilter=='psiblast')
-         @commands << "echo 'Running Psiblast as Prefilter... ...' >> #{job.statuslog_path}"
+         @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
          @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
       else
           if @maxhhblitsit == '0'
-              @commands << "echo 'No Prefilter Set... ...' >> #{job.statuslog_path}"
+              @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
               @commands << "#{HH}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
           else
-              @commands << "echo 'Running HHblits as Prefilter... ...' >> #{job.statuslog_path}"
+              @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
               @commands << "#{HHBLITS}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -o /dev/null -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.5 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
           end
       end
