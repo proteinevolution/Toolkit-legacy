@@ -26,6 +26,25 @@ module ApplicationHelper
     end
   end
   
+  def form_label_id(labeltext, labelid=nil ,anchor=nil, controller=nil)
+    
+    if labelid.nil?  
+         "<div class=\"label\">#{labeltext}</div>"
+    elsif anchor.nil?  
+      "<div class=\"label\" id=\"#{labelid}\">#{labeltext}</div>"
+    elsif controller.nil?
+      url = url_for(:action => "help_params") + "#" + anchor
+      "<a href=\"#\" onClick=\"openHelpWindow('#{url}');\"><div class=\"label\"   id=\"#{labelid}\"    >#{labeltext}</div></a>"
+    else
+      url = url_for(:controller => controller, :action => "help_params") + "#" + anchor
+      "<a href=\"#\" onClick=\"openHelpWindow('#{url}');\" ><div class=\"label\"  id=\"#{labelid}\"    >#{labeltext}</div></a>" 
+    end
+  
+  
+  
+  
+  end
+  
   def form_checkbox(name, value=1, default=true, noformw=false, onchange="", disable=false)
     checked = (params['reviewing']||params.has_key?(name)) ? (params[name] ? params[name] : false) : default
     checked = @error_params.empty? ? checked : (@error_params[name] ? @error_params[name] : false)

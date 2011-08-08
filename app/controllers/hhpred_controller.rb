@@ -6,7 +6,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
   def index
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
     @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
-    @maxhhblitsit = ['0','1','2','3','4','5']
+    @maxhhblitsit = ['0','1','2','3','4','5','8']
     @ehhblitsval = ['0.1','0.05','0.02','0.01' ,'1E-3', '1E-4', '1E-6', '1E-8', '1E-10', '1E-15', '1E-20', '1E-30', '1E-40', '1E-50']
     @cov_minval = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90']
     @qid_minval = ['0', '20', '25', '30', '35', '40', '45', '50']
@@ -16,6 +16,8 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @compbiascorr_values = ['1', '0']
     @compbiascorr_labels = ['yes', 'no']
     @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
+    @prefilter_values = ['hhblits','psiblast']
+    @prefilter_labels = ['HHblits', 'Psiblast']
     searchpat = File.join(DATABASES, @tool['name'], 'new_dbs', '*')
     dbvalues_pre = Dir.glob(searchpat)
     
@@ -166,7 +168,8 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
 
     basename = File.join(@job.job_dir, @job.jobid)
     @my_command = "#{BIOPROGS}/perl/alicutter.pl #{basename}.resub_domain.a2m #{basename}.in.cut #{params[:domain_start]} #{params[:domain_end]} "
-    system(@my_command);    
+    logger.debug("Running Alicutter -hhpred- #{@my_command}")
+    system(@my_command)   
     job_params = @job.actions.first.params
     job_params.each_key do |key|
       if (key =~ /^(\S+)_file$/) 
@@ -178,7 +181,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
       end
     end
 
-	File.delete(basename+'.in.cut')
+	#File.delete(basename+'.in.cut')
     params[:jobid] = ''
     index
     render(:action => 'index')

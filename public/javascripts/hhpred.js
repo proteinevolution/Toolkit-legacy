@@ -123,6 +123,16 @@ function select_first(first)
     }
 }
 
+
+function change_label(id, labelA, labelB){
+	if($(id).innerHTML == labelA){
+		   $(id).innerHTML = labelB;  
+	}else{
+		  $(id).innerHTML = labelA;
+	}
+}
+
+
 function change(num, block)
 { 
     var number = parseInt($('checkboxes').value, 10);
