@@ -7,17 +7,27 @@
 	<div class="row">
 
  		<div id="applet">
-   		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+   	<!--	<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
 			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.fas">
 			<PARAM NAME="type"   value="URL">
 			<PARAM NAME="format" value="FASTA">
-			</APPLET> 
+		</APPLET> -->
+                <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
+                        <PARAM NAME="label"  value="JalView">
+                        <PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.fas">
+                        <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
+                </APPLET> 
 			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhomp/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+		<!--	<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
 			<PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.reduced.fas">
 			<PARAM NAME="type"   value="URL">
 			<PARAM NAME="format" value="FASTA">
+			</APPLET> -->
+                        <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
+                        	<PARAM NAME="label"  value="JalView">
+                        	<PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.reduced.fas">
+                        	<PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
 			</APPLET>
 			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhomp/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></span></strong>
 			

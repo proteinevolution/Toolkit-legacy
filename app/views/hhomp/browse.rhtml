@@ -224,18 +224,30 @@
 <h3 class="<%= @section["name"] %>">Alignment</h3>
 <div class="row">
 	<div id="applet">
-  		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+  	<!--	<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
 		<PARAM NAME="input"  value="<%= DOC_ROOTURL %>/hhomp_ali/<%= @page %>.fas">
 		<PARAM NAME="type"   value="URL">
 		<PARAM NAME="format" value="FASTA">
-		</APPLET> 
+		</APPLET> -->
+                <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
+                        <PARAM NAME="label"  value="JalView">
+                        <PARAM NAME="file"  value="<%= DOC_ROOTURL %>/hhomp_ali/<%= @page %>.fas">
+                        <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
+                </APPLET>
 		<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+		<!-- <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
 		<PARAM NAME="input"  value="<%= DOC_ROOTURL %>/hhomp_ali/<%= @page %>.reduced.fas">
 		<PARAM NAME="type"   value="URL">
 		<PARAM NAME="format" value="FASTA">
-		</APPLET>
+		</APPLET> -->
+                <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
+                        <PARAM NAME="label"  value="JalView">
+                        <PARAM NAME="file"  value="<%= DOC_ROOTURL %>/hhomp_ali/<%= @page %>.reduced.fas">
+                        <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
+                </APPLET>
+               
+
 		<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
 			
 	</div>	
