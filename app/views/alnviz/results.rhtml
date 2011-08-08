@@ -11,19 +11,32 @@
       <tr>
 	<td>
 
-	  <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+	 <!-- <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
 	    <PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.align">
 	    <PARAM NAME="type"   value="URL">
 	    <PARAM NAME="format" value="FASTA">
-	  </APPLET>
+	  </APPLET> -->
+         <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
+         	<PARAM NAME="label"  value="JalView">
+                <PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.align">
+                <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
+         </APPLET>
 	</td><td>
 	  <strong>complete alignment</strong>
 	</td><td>
-	  <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
+	<!--  <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
 	    <PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.ralign">
 	    <PARAM NAME="type"   value="URL">
 	    <PARAM NAME="format" value="FASTA">
-	  </APPLET>
+	  </APPLET> -->
+         <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
+                <PARAM NAME="label"  value="JalView">
+                <PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.ralign">
+                <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
+         </APPLET>
+
+
+
 	</td><td>
 	  <strong>reduced alignment: 50 most distinct sequences with inserted residues deleted</strong>
 	</td>
