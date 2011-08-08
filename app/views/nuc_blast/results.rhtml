@@ -38,13 +38,21 @@
 	</div>
 
 	<div id="jalview">
-	<APPLET codebase="/applets/jalview_new/" ARCHIVE="jalviewApplet_new.jar" CODE="jalview.bin.JalviewLite" width=70 height=35>
+	<!-- <APPLET codebase="/applets/jalview_new/" ARCHIVE="jalviewApplet_new.jar" CODE="jalview.bin.JalviewLite" width=70 height=35>
 		<PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.j.align">
 		<PARAM NAME="type"   value="URL">
 		<PARAM NAME="format" value="FASTA">
 		<PARAM NAME="label" value="JalView">
 		<PARAM NAME="defaultColour" value="Taylor">
-	</APPLET></div>
+	</APPLET>  --> 
+        <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
+                        <PARAM NAME="label"  value="JalView">
+                        <PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.j.align">
+                        <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
+        </APPLET>
+
+ 	
+	</div>
 
 	<div id="help_jal"><a href="#" onclick="openHelpWindow('/nuc_blast/help_results#jalview');">View alignment without inserts</a></div>
 	<br/>
