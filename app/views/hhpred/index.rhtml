@@ -75,12 +75,18 @@
 <% else %>
 <%= form_hidden_field("hhpred_dbs", @parent_job.params_main_action['hhpred_dbs'].join(' ')) %>
 <% end -%>
+<div class="row">
+  <%= form_label("MSA Generation Method", "prefilter") %>
+  <%= form_radio_buttons("prefilter", @prefilter_values, @prefilter_labels, "hhblits", "&nbsp;","change_label('maxhhblitsit_label','Max. HHblits iterations','Max. PsiBlast iterations');
+                                                                                                 change_label('E_hhblits_label','E-value threshold for HHblits','E-value threshold for PsiBlast');
+ ") %>  
+</div>
 
 <!--  WORKAROUND -->
 <% if @parent_job.nil? || @parent_job.params['mode'].nil? -%>
 
 <div class="row">
-  <%= form_label("Max. HHblits iterations", "maxhhblitsit") %>
+  <%= form_label_id("Max. HHblits iterations", "maxhhblitsit_label", "maxhhblitsit") %>
   <%= form_select_single("maxhhblitsit", @maxhhblitsit, @maxhhblitsit, '3') %>	
 </div>
 <% else %>
@@ -118,7 +124,7 @@
   <!--  WORKAROUND -->
   <% if @parent_job.nil? || @parent_job.params['mode'].nil? -%>
   <div class="row">
-    <%= form_label("E-value threshold for HHblits", "E_hhblits") %>
+    <%= form_label_id("E-value threshold for HHblits", "E_hhblits_label", "E_hhblits") %>
     <%= form_select_single("Ehhblitsval", @ehhblitsval, @ehhblitsval, '1E-3') %>	
   </div>
   <% else %>
