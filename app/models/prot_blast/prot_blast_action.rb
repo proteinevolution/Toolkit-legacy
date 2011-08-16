@@ -10,13 +10,19 @@ class ProtBlastAction < Action
   include GenomesModule
    
   # top down: protblast/index.rhtml
-  attr_accessor :sequence_input, :sequence_file, :std_dbs, :user_dbs, :taxids, :evalue, :descr, :alignments, :otheradvanced
+  attr_accessor :sequence_input, :sequence_file, :std_dbs, :user_dbs, :taxids, :evalue, :descr, :alignments, :otheradvanced, :informat
   # shared/joboptions.rhtml
   attr_accessor :jobid, :mail 
 
-  validates_input(:sequence_input, :sequence_file, {:informat => 'fas', 
-                                                    :inputmode => 'sequence',
+#  validates_input(:sequence_input, :sequence_file, {:informat => 'fas', 
+#                                                    :inputmode => 'sequence',
+#                                                    :min_seqs =>0,
+#                                                    :max_seqs => 1,
+#                                                    :on => :create })
+  validates_input(:sequence_input, :sequence_file, {:informat=> :informat, 
+                                                    :inputmode => 'sequences',
                                                     :max_seqs => 1,
+                                                    :min_seqs => 0,
                                                     :on => :create })
 
   validates_jobid(:jobid)
@@ -37,7 +43,7 @@ class ProtBlastAction < Action
     @infile = @basename+".fasta"
     @outfile = @basename+".protblast"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
-	File.copy(@infile, @basename+".in")	# necessary for resubmitting domains via slider
+	  File.copy(@infile, @basename+".in")	# necessary for resubmitting domains via slider
     @commands = []
     
     @program            = params['program'] == 'blastpgp' ? 'blastpgp' : "blastall -p #{params['program']}"
@@ -79,20 +85,67 @@ class ProtBlastAction < Action
     
   end
 
+def check_GI
+  
+    #  Try to bundle all needed Parameters for GI Check 
+    #  Dbs needed for GI extraction
+    @mainlog = job.statuslog_path+"_gi2seq"
+    @database_nr = File.join(DATABASES, "standard/nr")
+    @database_uniprot_sprot = File.join(DATABASES, "standard/uniprot_sprot.fasta")
+    @database_uniprot_trembl = File.join(DATABASES, "standard/uniprot_trembl.fasta")
+    @commands << "echo 'We find that it is a  GI search!' >> #{job.statuslog_path}"
+    @inputSequences = Array.new
+    @inputTags = Array.new
+    @tmparray = Array.new
+    @jobtype = Array.new
+    @formerjob = ''
+  
+    descriptions = 1
+    ## Open Filereader on 
+    res = IO.readlines(@infile)
+    res.each do |line|
+      logger.debug(line)
+      inputfile = File.join(@basename+"_GI_#{descriptions}.in")
+      writefile = File.open(inputfile, "w")
+      writefile.write(line)
+      writefile.close
+      if line.strip =~ /^[gi\|]?[0-9]+\|?$/
+        @database=@database_nr
+      else
+        @database="#{@database_uniprot_sprot} #{@database_uniprot_trembl}"
+      end
+      gi2seq_out = File.join(@basename+"_#{descriptions}.in")
+      logger.debug("#{UTILS}/seq_retrieve.pl -i #{inputfile} -o #{@infile} -b #{BLAST} -d \"#{@database}\" -unique >> #{@mainlog} 2>> #{@mainlog}")
+      @commands << "#{UTILS}/seq_retrieve.pl -i #{inputfile} -o #{@infile} -b #{BLAST} -d \"#{@database}\" -unique >> #{@mainlog} 2>> #{@mainlog}"
+      parameter = job.jobid.to_s+"_"+descriptions.to_s
+      @inputSequences.push(parameter)
+      @inputTags.push(line)
+      @jobtype.push('sequence')
+      descriptions += 1
+    end
+  end
+
   def perform
     params_dump
-    
-    @commands << "#{BLAST}/#{@program} -i #{@infile} -e #{@expect} -F #{@filter} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} #{@ungapped_alignment} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} &>#{job.statuslog_path}"
+     #if (params['informat'] == 'gi')
+        #check_GI
+    #end
+    @commands << "echo 'Starting BLAST search!' &> #{job.statuslog_path}"
+    @commands << "#{BLAST}/#{@program} -i #{@infile} -e #{@expect} -F #{@filter} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} #{@ungapped_alignment} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} >>#{job.statuslog_path}"
     @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/fix_blast_errors.pl -i #{@outfile} &>#{@basename}.log_fix_errors"
+    @commands << "echo 'Visualizing Blast Output... ' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/blastviz.pl #{@outfile} #{job.jobid} #{job.job_dir} #{job.url_for_job_dir_abs} &> #{@basename}.blastvizlog";
+    @commands << "echo 'Generating Blast Histograms... ' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/blasthisto.pl  #{@outfile} #{job.jobid} #{job.job_dir} &> #{@basename}.blasthistolog";
     
     #create alignment
+    @commands << "echo 'Processing Alignments... ' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -fas -no_link -e #{@expect}"
     
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
 
