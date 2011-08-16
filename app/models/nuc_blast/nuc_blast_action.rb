@@ -59,19 +59,22 @@ class NucBlastAction < Action
 
   def perform
     params_dump
-    
-    @commands << "#{BLAST}/blastall -p #{@program} -i #{@infile} -e #{@expect} -F #{@filter} -M #{@mat_param} -g #{@ungapped_alignment} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} &>#{job.statuslog_path}"
-    @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
+    @commands << "echo 'Starting BLAST search' &> #{job.statuslog_path}"
+    @commands << "#{BLAST}/blastall -p #{@program} -i #{@infile} -e #{@expect} -F #{@filter} -M #{@mat_param} -g #{@ungapped_alignment} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} >>#{job.statuslog_path}"
+    @commands << "echo 'Finished BLAST search.' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/fix_blast_errors.pl -i #{@outfile} &>#{@basename}.log_fix_errors"
+    @commands << "echo 'Visualize BLAST Output' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/blastviz.pl #{@outfile} #{job.jobid} #{job.job_dir} #{job.url_for_job_dir_abs} &> #{@basename}.blastvizlog";
+    @commands << "echo 'Generating Blast Histograms... ' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/blasthisto.pl  #{@outfile} #{job.jobid} #{job.job_dir} &> #{@basename}.blasthistolog";
     
     #create alignment
+    @commands << "echo 'Creating Alignments... ' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -fas -no_link -e #{@expect}"
     
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"    
-
+    @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
 
