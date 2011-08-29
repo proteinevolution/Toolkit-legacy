@@ -4,12 +4,12 @@
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
   
-	<% resfile = File.join(@job.job_dir, @job.jobid + ".sto") %>
+	<% resfile = File.join(@job.job_dir, @job.jobid + ".mal.sto") %>
 	<% if !File.readable?(resfile) || File.zero?(resfile) %>
 		<div class="row">
 		<strong> ***** No hits found ***** </strong>
 	<% else %>
-		<div class="alignres"><pre><%= @job.render_file(@job.jobid + ".sto") %></pre>
+		<div class="alignres"><pre><%= @job.render_file(@job.jobid + ".mal.sto") %></pre>
 	<% end %>
 </div>
 
