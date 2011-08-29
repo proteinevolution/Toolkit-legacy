@@ -1,0 +1,175 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input</a></li>
+	<li><a href="#format">Input format</a></li>
+	<li><a href="#database">Database</a></li>
+	<li><a href="#convertinput">Convert input to uppercase</a></li>
+	<li><a href="#computeconsensus">Compute consensus sequence</a></li>
+	<li><a href="#extractsequences">Extract sequences up to evalue</a></li>
+	<li><a href="#hmmbuild">HMM Build Options</a></li>
+	<li><a href="#hmmcalibrate">HMM Calibrate Options</a></li>
+	<li><a href="#hmmsearch">HMM Search Options</a></li>
+	<li><a href="#hmmalign">HMM Align Options</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+Enter protein sequence alignment and choose its format from the dropdown menu.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="format"></a>
+<h3 class="<%= @section["name"] %>">Input format</h3>
+<div class="row">
+	<p>
+	Accepted formats are listed in the dropdown menu. 
+	Format descriptions can be found <a href="/reformat/help_params#format">here</a>.	
+	</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="database"></a>
+<h3 class="<%= @section["name"] %>">Database</h3>
+<div class="row">
+The selected databases are used by HMMAccel to perform the search. You may press CTRL to select multiple databases.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="convertinput"></a>
+<h3 class="<%= @section["name"] %>">Convert input to uppercase</h3>
+<div class="row">
+Convert all residues in the input alignment to upper case.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="computeconsensus"></a>
+<h3 class="<%= @section["name"] %>">Compute consensus sequence</h3>
+<div class="row">
+Create a consensus sequence of the alignment and use that as seed for psi-blast (alternative: use the first sequence in the alignment).
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="extractsequences"></a>
+<h3 class="<%= @section["name"] %>">Extract sequences up to evalue</h3>
+<div class="row">
+Up to which E-value will you want sequences to be extracted for? (your filtered database will consist of these sequences).
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="hmmbuild"></a>
+<h3 class="<%= @section["name"] %>">HMM Build Options</h3>
+<div class="row">
+hmmbuild options: 
+<pre>
+   -h     : help; print brief help on version and usage
+   -n &lt;s&gt; : name; name this (first) HMM &lt;s&gt;
+   -o &lt;f&gt; : re-save annotated alignment to &lt;f&gt;
+   -A     : append; append this HMM to <hmmfile>
+   -F     : force; allow overwriting of <hmmfile>
+
+  Alternative search algorithm styles: (default: hmmls domain alignment)
+   -f     : multi-hit local (hmmfs style)
+   -g     : global alignment (hmms style, Needleman/Wunsch)
+   -s     : local alignment (hmmsw style, Smith/Waterman)
+
+  Alternative model construction strategies: (default: MAP)
+   --fast        : Krogh/Haussler fast heuristic construction (see --gapmax)
+   --hand        : manual construction (requires annotated alignment)
+
+  Expert customization of parameters and priors:
+   --null  &lt;f&gt;   : read null (random sequence) model from &lt;f&gt;
+   --pam   &lt;f&gt;   : heuristic PAM-based prior, using BLAST PAM matrix in &lt;f&gt;
+   --prior &lt;f&gt;   : read Dirichlet prior parameters from &lt;f&gt;
+
+  Alternative sequence weighting strategies: (default: GSC weights)
+   --wblosum     : Henikoff simple filter weights (see --idlevel)
+   --wgsc        : Gerstein/Sonnhammer/Chothia tree weights (default)
+   --wme         : maximum entropy (ME)
+   --wpb         : Henikoff position-based weights
+   --wvoronoi    : Sibbald/Argos Voronoi weights
+   --wnone       : don't do any weighting
+   --noeff       : don't use effective sequence number; just use nseq
+   --pbswitch &lt;n&gt;: set switch from GSC to position-based wgts at > n seqs
+
+  Forcing an alphabet: (normally autodetected)
+   --amino   : override autodetection, assert that seqs are protein
+   --nucleic : override autodetection, assert that seqs are DNA/RNA
+
+  Other expert options:
+   --archpri &lt;x&gt; : set architecture size prior to &lt;x&gt; {0.85} [0..1]
+   --binary      : save the model in binary format, not ASCII text
+   --cfile &lt;f&gt;   : save count vectors to &lt;f&gt;
+   --gapmax &lt;x&gt;  : max fraction of gaps in mat column {0.50} [0..1]
+   --idlevel &lt;x&gt; : set frac. id level used by eff. nseq and --wblosum {0.62}
+   --informat &lt;s&gt;: input alignment is in format &lt;s&gt;, not Stockholm
+   --pamwgt &lt;x&gt;  : set weight on PAM-based prior to &lt;x&gt; {20.}[>=0]
+   --swentry &lt;x&gt; : set S/W aggregate entry prob. to &lt;x&gt; {0.5}
+   --swexit &lt;x&gt;  : set S/W aggregate exit prob. to &lt;x&gt;  {0.5}
+   --verbose     : print boring information
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="hmmcalibrate"></a>
+<h3 class="<%= @section["name"] %>">HMM Calibrate Options</h3>
+<div class="row">
+hmmcalibrate options:
+<pre>
+  -h             : print short usage and version info, then exit
+  --cpu &lt;n&gt;      : run &lt;n&gt; threads in parallel (if threaded)
+  --fixed &lt;n&gt;    : fix random sequence length at &lt;n&gt;
+  --histfile &lt;f&gt; : save histogram(s) to file &lt;f&gt;
+  --mean &lt;x&gt;     : set random seq length mean at &lt;x&gt; [350]
+  --num &lt;n&gt;      : set number of sampled seqs to &lt;n&gt; [5000]
+  --pvm          : run on a Parallel Virtual Machine (PVM)
+  --sd &lt;x&gt;       : set random seq length std. dev to &lt;x&gt; [350]
+  --seed &lt;n&gt;     : set random seed to &lt;n&gt; [time()]
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="hmmsearch"></a>
+<h3 class="<%= @section["name"] %>">HMM Search Options</h3>
+<div class="row">
+hmmsearch options:
+<pre>
+   -h        : help; print brief help on version and usage
+   -A &lt;n&gt;    : sets alignment output limit to &lt;n&gt; best domain alignments
+   -E &lt;x&gt;    : sets E value cutoff (globE) to <= x
+   -T &lt;x&gt;    : sets T bit threshold (globT) to >= x
+   -Z &lt;n&gt;    : sets Z (# seqs) for E-value calculation
+
+   --compat  : make best effort to use last version's output style
+   --cpu &lt;n&gt; : run &lt;n&gt; threads in parallel (if threaded)
+   --cut_ga  : use Pfam GA gathering threshold cutoffs
+   --cut_nc  : use Pfam NC noise threshold cutoffs
+   --cut_tc  : use Pfam TC trusted threshold cutoffs
+   --domE &lt;x&gt;: sets domain Eval cutoff (2nd threshold) to <= x
+   --domT &lt;x&gt;: sets domain T bit thresh (2nd threshold) to >= x
+   --forward : use the full Forward() algorithm instead of Viterbi
+   --informat &lt;s&gt;: sequence file is in format &lt;s&gt;, not FASTA
+   --null2   : turn OFF the post hoc second null model
+   --pvm     : run on a Parallel Virtual Machine (PVM)
+   --xnu     : turn ON XNU filtering of target protein sequences
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="hmmalign"></a>
+<h3 class="<%= @section["name"] %>">HMM Align Options</h3>
+<div class="row">
+hmmalign options:
+<pre>
+   -h     : help; print brief help on version and usage
+   -m     : only print symbols aligned to match states
+   -o &lt;f&gt; : save alignment in file &lt;f&gt; in SELEX format
+   -q     : quiet - suppress verbose banner
+
+   --informat &lt;s&gt;: sequence file is in format &lt;s&gt;, not FASTA
+   --mapali &lt;f&gt;  : include alignment in file &lt;f&gt; using map in HMM
+   --withali &lt;f&gt; : include alignment to (fixed) alignment in file &lt;f&gt;
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

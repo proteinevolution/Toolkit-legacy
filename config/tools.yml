@@ -151,6 +151,14 @@
   - member
   - internal
   - external
+- name: hmmer3
+  title: HMMER3
+  title_long: HMMER3
+  section: search
+  active:
+  - member
+  - internal
+  - external
 - name: ancescon
   title: ANCESCON
   title_long: ANCESCON

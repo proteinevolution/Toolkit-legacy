@@ -1,0 +1,11 @@
+<h2><%= @tool['title'] %> Overview</h2> 
+<div class="row">
+<%= @tool['title'] %> is a utility that accelerates searches with HMMER (a HMM software package [1]) by 
+filtering the database with PsiBlast. Input is a multiple alignment in aligned FASTA format which is 
+used to build a profile HMM and to kickstart a PsiBlast-search. All PsiBlast results up to a given E-value 
+are extracted and form the filtered database used for the HMM search. <%= @tool['title'] %> will return 
+results approx. 30 times faster than a standard HMMER search against "nr" would. 
+<BR> 
+[1] Sean Eddy: HMMER 2.3.2; <a href="http://hmmer.janelia.org/" target="blank">http://hmmer.janelia.org/</a>
+</div>
+
