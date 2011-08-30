@@ -2,7 +2,7 @@ require 'digest/sha1'
 
 # this model expects a certain database layout and its based on the name/login pattern. 
 class User < ActiveRecord::Base
-  has_many :jobs, :dependent => :destroy
+  has_many :jobs, :dependent => :destroy, :order =>"created_on "
   has_many :userdbs, :dependent => :destroy
 
   attr_accessor :new_password
