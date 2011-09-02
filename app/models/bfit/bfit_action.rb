@@ -57,8 +57,10 @@ class BfitAction < Action
   def perform
     @commands << "export PYTHONPATH=#{SAMCC}"
     if @ensemble == 'T'
+      #@commands << "#{PYTHON}/python #{BFIT}/bFit.py -e #{@pdb_file1} -l #{@model} -g #{@optimization} -w -p -o #{@outpath}"
       @commands << "#{PYTHON}/python #{BFIT}/bFit.py -e #{@pdb_file1} -l #{@model} -g #{@optimization} -w -p -o #{@outpath}"
     else
+      #@commands << "#{PYTHON}/python #{BFIT}/bFit.py -s #{@pdb_file1} #{@pdb_file2} -l #{@model} -g #{@optimization} -w -p -o #{@outpath}"
       @commands << "#{PYTHON}/python #{BFIT}/bFit.py -s #{@pdb_file1} #{@pdb_file2} -l #{@model} -g #{@optimization} -w -p -o #{@outpath}"
     end
     logger.debug "Commands:\n"+@commands.join("\n")
