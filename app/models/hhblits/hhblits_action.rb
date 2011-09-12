@@ -2,6 +2,7 @@ class HhblitsAction < Action
   HHBLITS = File.join(BIOPROGS, 'hhblits')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   HH = File.join(BIOPROGS, 'hhpred')
+  PERL = File.join(BIOPROGS, 'perl');
   PSIPRED = File.join(BIOPROGS, 'psipred')
   
   attr_accessor :jobid, :hhblits_dbs, :informat, :inputmode, :maxit, :alignmode, :realign, :mact, :maxseq, :width, :Pmin, :maxlines,
@@ -76,6 +77,10 @@ class HhblitsAction < Action
     # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
     @commands << "#{HH}/hhfilter -i #{@a3m_outfile} -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 50"
     @commands << "#{HH}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas"
+    
+    # Reformat query into the consensus Alignemnt in Fasta Format Parameter -r 
+    #@commands << "#{HH}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.ms.fas  -r"
+    
     @commands << "rm #{@local_dir}/#{job.jobid}.reduced.a3m"
     
     # Generate graphical display of hits
@@ -83,6 +88,14 @@ class HhblitsAction < Action
     
     # Generate profile histograms
     @commands << "#{HH}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db}_hhm_db > /dev/null"
+    
+    # Reformat the query Data (needed for Multiple Alignemnts)
+    @commands << "#{HH}/reformat.pl -r a3m fas #{@basename}.in #{@basename}.ms.fas"
+    
+    # Generate jalview MS Alignment
+      @commands << "#{PERL}/masterslave_alignment.pl -q #{@basename}.ms.fas  -hhr #{@basename}.hhr -o #{@basename}.ms.out  &> /dev/null"
+   
+    
   end  
   
   def perform
@@ -96,6 +109,8 @@ class HhblitsAction < Action
     
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.reduced.fas #{@basename}.uc.fas -uc -r"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.uc.fas -o #{@basename}.j.fas"
+    
+    
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'cpus' => '4', 'queue' => QUEUES[:hhblits]})
