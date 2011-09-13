@@ -90,7 +90,7 @@ class HhblitsAction < Action
     @commands << "#{HH}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db}_hhm_db > /dev/null"
     
     # Reformat the query Data (needed for Multiple Alignemnts)
-    @commands << "#{HH}/reformat.pl -r a3m fas #{@basename}.in #{@basename}.ms.fas"
+    @commands << "#{HH}/reformat.pl -r a3m fas #{@basename}.in #{@basename}.ms.fas "
     
     # Generate jalview MS Alignment
       @commands << "#{PERL}/masterslave_alignment.pl -q #{@basename}.ms.fas  -hhr #{@basename}.hhr -o #{@basename}.ms.out  &> /dev/null"
