@@ -7,9 +7,18 @@
 <div class="row">
 
 <pre>
-<%= @job.render_file(@job.jobid + ".names") %>
+	  
+		<applet codebase="/applets/ATV/" archive="archaeopteryx_applets.jar"
+		            code="org.forester.archaeopteryx.ArchaeopteryxE.class"
+		            width="800"
+		            height="600"
+		            alt="ArchaeopteryxE is not working on your system (requires at least Sun Java 1.5)!">
+		            <param name="url_of_tree_to_load" value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre">
+		            
+		 </applet>
 
-<%= @job.render_file(@job.jobid + ".out") %>
+Archaeopteryx TreeViewer: Han M.V. and Zmasek C.M. (2009). phyloXML: XML for evolutionary biology and comparative genomics. BMC Bioinformatics, 10:356.
+
 </pre>
 
 

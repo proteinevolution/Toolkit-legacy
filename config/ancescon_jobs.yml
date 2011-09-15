@@ -7,6 +7,10 @@ ancescon_job:
       title: Results
       title_long: Show result
       forwardsections:
+    - name: results_data
+      title: Data
+      title_long: Show data
+      forwardsections:
     - name: results_tree
       title: Tree
       title_long: Show tree
