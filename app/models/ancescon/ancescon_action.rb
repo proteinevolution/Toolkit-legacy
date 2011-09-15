@@ -1,5 +1,7 @@
 class AncesconAction < Action
   ANCESCON = File.join(BIOPROGS, 'ancescon')
+  PERL = File.join(BIOPROGS, 'perl')
+  
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :otheradvanced
 
@@ -77,7 +79,7 @@ class AncesconAction < Action
     
     #here you run the ancescon program
     @commands << "#{ANCESCON}/ancestral -i #{@alnfile} -o #{@outfile} #{@options} &> #{job.statuslog_path}"
-
+    @commands << "#{PERL}/ancescontreemerger.pl -n #{@namesfile} -t #{@alnfile}.tre &> #{job.statuslog_path}"
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
