@@ -404,3 +404,9 @@
   - member
   - internal
   - external
+- name: hhfrag
+  title: HHfrag
+  title_long: HHfrag
+  section: seqanal
+  active:
+  - member
