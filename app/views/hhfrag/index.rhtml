@@ -1,0 +1,49 @@
+<a href="#" onClick="openHelpWindow('/hhfrag/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>  <h2><%= @page_title %></h2>
+
+
+
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+HHfrag Description needed
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= form_tag({:action => :run, :job => 'hhfrag'}, {:multipart => true})%> 
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter sequence","input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>
+
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+	<ul class="arrow-marker">
+		<li><a target="_blank" href="http://toolkit.tuebingen.mpg.de/common/contact">Send feedback</a></li>
+	</ul>
+</div>
+	
+<div class="hr">&nbsp;</div>
+
+<div class="row">
+</div>
