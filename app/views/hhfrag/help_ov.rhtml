@@ -1,22 +1,24 @@
 <ul id="helpindex" class="<%= @section['theme'] %>">
-	<li><a href="#hhfrag">Algorithm</a></li>
 </ul>
 
 <h2><%= @tool['title'] %> Overview</h2>
 
 <div class="row">
-HHfrag Description needed here 
-</div>
-
-<a name="hhfrag"></a>
-<h3 class="<%= @section["name"] %>">Algorithm</h3>
-<div class="row">
-Describe additional things ....
+"HHfrag builds a dynamic fragment library for a protein sequence of unknown structure. HHfrag
+improves on alternative fragment detection methods by either increasing the amount of query
+residues covered by fragments (compared to I-Sites), or by reducing the relative amount of
+structurally incorrect fragments (compared to NNmake/Robetta).
+<br>
+The program uses HMM-HMM comparison to decompose the query amino-acid sequence into a sequence of
+recurring motifs, often shared among evolutionary and structurally unrelated proteins. Such
+sequence patterns usually correlate with well-preserved local structure and therefore are
+suitable for local and ab-initio tertiary structure prediction."
 </div>
 
 <a name="contact"></a>
 <h3 class="<%= @section["name"] %>">Contact</h3>
 <div class="row">
+For more Information on HHfrag please contact <a href="mailto:michael.habeck@tuebingen.mpg.de">Michael Habeck</a><br>
 We are committed to improve this service for you. Please inform us of problems, or send comments or
 feedback to <a target="_blank" href="/common/contact">us</a>.
 </div>
