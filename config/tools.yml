@@ -410,3 +410,5 @@
   section: tertstruct
   active:
   - member
+  - internal
+  - external
