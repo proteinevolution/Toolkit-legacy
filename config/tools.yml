@@ -143,14 +143,6 @@
   - member
   - internal
   - external
-- name: fast_hmmer
-  title: FHMMER
-  title_long: FastHMMER
-  section: search
-  active: 
-  - member
-  - internal
-  - external
 - name: hmmer3
   title: HMMER3
   title_long: HMMER3
