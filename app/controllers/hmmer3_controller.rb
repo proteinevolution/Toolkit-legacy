@@ -29,7 +29,7 @@ class Hmmer3Controller < ToolController
 		@widescreen = true
                 @fw_values = [fw_to_tool_url('hmmer3', 'alnviz'), fw_to_tool_url('hmmer3', 'blastclust'),
                               fw_to_tool_url('hmmer3', 'clans'), fw_to_tool_url('hmmer3', 'seq2gi'),
-                              fw_to_tool_url('hmmer3', 'fast_hmmer'), fw_to_tool_url('hmmer3', 'frpred'),
+                              fw_to_tool_url('hmmer3', 'frpred'),
                               fw_to_tool_url('hmmer3', 'hhpred'),
                               fw_to_tool_url('hmmer3', 'hhsenser'), fw_to_tool_url('hmmer3', 'quick2_d'),
                               fw_to_tool_url('hmmer3', 'reformat'), fw_to_tool_url('hmmer3', 'repper')]

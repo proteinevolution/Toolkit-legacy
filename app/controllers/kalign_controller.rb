@@ -9,14 +9,14 @@ class KalignController < ToolController
     @fullscreen = true
     @fw_values = [fw_to_tool_url('kalign', 'ali2d'), fw_to_tool_url('kalign', 'alnviz'), fw_to_tool_url('kalign', 'ancescon'), fw_to_tool_url('kalign', 'blastclust'),
                   fw_to_tool_url('kalign', 'clans'), fw_to_tool_url('kalign', 'cs_blast'), fw_to_tool_url('kalign', 'seq2gi'),
-                  fw_to_tool_url('kalign', 'fast_hmmer'), fw_to_tool_url('kalign', 'frpred'),
+                  fw_to_tool_url('kalign', 'frpred'),
                   fw_to_tool_url('kalign', 'hhpred'),
                   fw_to_tool_url('kalign', 'hhsenser'), fw_to_tool_url('kalign', 'phylip'), fw_to_tool_url('kalign', 'psi_blast'),
                   fw_to_tool_url('kalign', 'quick2_d'), fw_to_tool_url('kalign', 'reformat'),
                   fw_to_tool_url('kalign', 'repper')]
     @fw_labels = [tool_title('ali2d'), tool_title('alnviz'), tool_title('ancescon'), tool_title('blastclust'),
                   tool_title('clans'), tool_title('cs_blast'), tool_title('seq2gi'),
-                  tool_title('fast_hmmer'), tool_title('frpred'),
+                  tool_title('frpred'),
                   tool_title('hhpred'),
                   tool_title('hhsenser'), tool_title('phylip'), tool_title('psi_blast'),
                   tool_title('quick2_d'), tool_title('reformat'),
