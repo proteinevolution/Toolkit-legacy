@@ -127,14 +127,6 @@
   - member
   - internal
   - external
-- name: nuc_blast
-  title: NucBLAST
-  title_long: Nucleotide BLAST
-  section: search
-  active: 
-  - member
-  - internal
-  - external
 - name: patsearch
   title: PatternSearch
   title_long: Pattern Search
