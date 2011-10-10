@@ -106,7 +106,8 @@ class ProtBlastJob < Job
     	hits = res[hits_start..hits_end]
     	
     	hits.each do |hit|
-    	  hit =~ /#(\d+)>\s*\S+<\/a>\s+(\S+)\s*$/
+    	  #hit =~ /#(\d+)>\s*\S+<\/a>\s+(\S+)\s*$/
+        hit =~ /#(\w[\w|\d]+)>\s*\S+<\/a>\s+(\S+)\s*$/
     	  id = $1
     	  evalue = $2
     	  if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= E_THRESH
@@ -124,7 +125,8 @@ class ProtBlastJob < Job
     	last_section = res[aln_start..aln_end].inject({ :id => nil, :check => true, :content => [] }) do |section, line|
     	  case line
     	    #><a name = 4539527>
-    	    when /><a name =\s*(\d+)>/
+    	  #  when /><a name =\s*(\d+)>/
+        when /><a name =\s*(\w[\w|\d]+)>/
     	      @alignments << section if !section[:id].nil?
     	      { :id => $1, :check => false, :content => [line] }
     	    # Score =  185 bits (470), Expect = 2e-46,   Method: Composition-based stats.

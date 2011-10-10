@@ -143,10 +143,13 @@ class PsiBlastForwardAction < Action
     while (i < @res.size)
       if (@res[i] =~ /^\s*Database:/) then break end
       #><a name = 82736116><
-      if (@res[i] =~ /^\s*><a name = (\S+?)>/)
+      #if (@res[i] =~ /^\s*><a name = (\S+?)>/)
+      if (@res[i] =~ /^\s*><a name =\s*(\w[\w|\d]+)>/)
         if @hits.include?($1)
           if (!@seqlen.nil? && @seqlen == "complete")
-            if (@res[i] =~ /(gi\|\d+\|)/ || @res[i] =~ /^>(.*)<\/a>.*?$/)
+            logger.debug "LINE 150 "+$1
+           if (@res[i] =~ /(\w\w\|\w[\w|\d]+\|)/)
+              logger.debug "LINE 152 "+$1
               ret = $1
               ret.gsub!(/<.*?>/, '')
               File.open(@basename + ".fw_gis", "a") do |file|
@@ -155,8 +158,15 @@ class PsiBlastForwardAction < Action
             end
           else
             name = @res[i]
-            name.sub!(/<a name = \d+><\/a>/, '')
-            name.sub!(/<a href=\S+ >/, '')
+           #name.sub!(/<a name = \d+><\/a>/, '')
+            name.sub!(/<a name = \w[\w|\d]+><\/a>/, '')
+            if name=~ /<a href="http:\/\/www.uniprot.org\/uniprot\/(.*)"/
+              name.sub!(/<a href=.*>/, "#{$1}")
+            else
+              name.sub!(/<a href=\S+" >/, '')
+            end
+             # this removes the complete HREF Tag from the ProtBlast run
+            name.sub!(/<a href=.*>/, '')
             name.sub!(/<\/a>/, '')
 
             seq_data = ""
