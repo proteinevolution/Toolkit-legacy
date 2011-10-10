@@ -108,7 +108,7 @@ class ProtBlastForwardAction < Action
     while (i < @res.size)
       if (@res[i] =~ /^\s*Database:/) then break end
       #><a name = 82736116><
-      if (@res[i] =~ /^\s*><a name = (\d+)>/)
+     if (@res[i] =~ /^\s*><a name =\s*(\w[\w|\d]+)>/)
         if @hits.include?($1)
           check = true
           i += 1
@@ -135,13 +135,21 @@ class ProtBlastForwardAction < Action
     while (i < @res.size)
       if (@res[i] =~ /^\s*Database:/) then break end
       #><a name = 82736116><
-      if (@res[i] =~ /^\s*><a name = (\d+)>/)
+      #if (@res[i] =~ /^\s*><a name = (\d+)>/)
+      if (@res[i] =~ /^\s*><a name =\s*(\w[\w|\d]+)>/)
         if @hits.include?($1)
           if (!@seqlen.nil? && @seqlen == "complete")
-            if (@res[i] =~ /(gi\|\d+\|)/)
+             if (@res[i] =~ /(\w\w\|\w[\w|\d]+\|)/)
+              #if (@res[i] =~ /([gi\|\d+\||tr\|\w[\w|\d]+\|])/)
+              logger.debug "Trembl Hit !"
+              #if (@res[i] =~ /(gi\|\d+\|)/)
               File.open(@basename + ".fw_gis", "a") do |file|
                 file.write($1 + "\n")
               end
+#            if (@res[i] =~ /(gi\|\d+\|)/)
+#              File.open(@basename + ".fw_gis", "a") do |file|
+#                file.write($1 + "\n")
+#              end
             else
               if (@res[i] =~ /<\/a>(\S+)\s/)
                 File.open(@basename + ".fw_gis", "a") do |file|
@@ -153,9 +161,17 @@ class ProtBlastForwardAction < Action
             end
           else
             name = @res[i]
-            name.sub!(/<a name = \d+><\/a>/, '')
-            name.sub!(/<a href=\S+ >/, '')
+            #name.sub!(/<a name = \d+><\/a>/, '')
+            name.sub!(/<a name = \w[\w|\d]+><\/a>/, '')
+            if name=~ /<a href="http:\/\/www.uniprot.org\/uniprot\/(.*)"/
+              name.sub!(/<a href=.*>/, "#{$1}")
+            else
+              name.sub!(/<a href=\S+" >/, '')
+            end
+             # this removes the complete HREF Tag from the ProtBlast run
+            name.sub!(/<a href=.*>/, '')
             name.sub!(/<\/a>/, '')
+
 
             seq_data = ""
 	    first_res = nil;
