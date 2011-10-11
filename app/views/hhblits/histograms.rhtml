@@ -27,10 +27,13 @@
       <input name="hitsevalue" type="text" value="0.001" />
     </div>
   </div>
-
   <div class="hr">&nbsp;</div>
+      <a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="javascript:select_first(10)">Select the best ten</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="javascript:select_first(20)">Select the best twenty</a>
+    <br/><br/>
 </div>
-
 <div class="row">
   <%=  @job.results.join  %>
 </div>

@@ -77,12 +77,13 @@ function select()
 }
 
 function select_first(first)
-{ 
+{
+	
     var number = parseInt($('checkboxes').value, 10);
     if (first > number) {
 	first = number;
     }  
-    for(i = 0; (i < first && i < number); i++) {
+    for(i = 0; (i < first && i < number); i++){
   	if ($('hit_checkbox'+i).disabled == true) {
   	    first++;
   	} else {
