@@ -196,18 +196,18 @@ class HhpredJob  < Job
     descr    = []
     pdb_searched = false
     line.each_index do  |a|
-      if line.fetch(a) =~/^No(\d+)/
-        m = $1
-        if line.fetch(a+1) =~ /^>\S+\s+(.*)/
-          descr[m] = $1
-          descr[m].gsub!(/\"\"\\<>/, '')
+      if line.fetch(a) =~/^No (\d+)/
+        m = $1.to_i
+       #if line.fetch(a+1) =~ /^>\S+\s+(.*)/
+       if line.fetch(a+1) =~ />(.*)/
+          descr[m] = $1 
+          #descr[m].gsub!(/\"\"\\<>/, '')
         end
       end
       if line.fetch(a) =~ /^Command.*pdb\.hhm/
         pdb_searched = true;
       end
     end  #end each
-
     #Go to first empty line
     while  line[i]!~/^\s*$/
       i = i+1
@@ -445,6 +445,7 @@ class HhpredJob  < Job
         template = $2
         family = $3
         line[b].sub!(/#{m}/,"<a href =\##{m}>#{m}<\/a>")
+    
 
         # Pfam-A identifier? (PF01234)
         if template =~/^PF\d{5}/ || template =~/^pfam\d{5}/
