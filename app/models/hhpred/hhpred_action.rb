@@ -175,7 +175,7 @@ class HhpredAction < Action
     @mode = pjob.params['mode']
     case @mode
     when 'queryhmm'
-      @informat = 'fas'
+      @informat = 'a3m'
       FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
       FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.hhm", "#{@basename}.hhm")
     when 'hhsenser'
