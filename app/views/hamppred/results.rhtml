@@ -1,0 +1,121 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => 'Results'}) %>
+  
+<%= render(:partial => "shared/resultsections") %>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+
+<% if @errors['hits'] %>
+<div class="row">
+	<p class="formerror"><%= @errors['hits'] %></p>
+</div><div class="hr">&nbsp;</div>
+<% end %>
+
+<% if @hhcluster %>
+	<a href="/hhcluster">Back to Galaxy of folds</a>
+	<div class="spacer">&nbsp;</div>	
+<% end %>
+
+<div id="noPdb" style="display: none;">
+	<div class="row">
+		<p class="formerror">Only hits found in PDB or SCOP can be used to create a model.</p>
+	</div>
+	<div class="hr">&nbsp;</div>
+</div>
+
+<div id="createmodel" style="display: none;"> 
+	<input name="hits" id="hits" type="hidden" value=""/>
+	
+	<div class="row">
+		<input name="submitform" type="submit" class="toolbutton" style="width:28%" value="Create model from&#x0A;manually selected template(s)" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'modeller', :forward_action => 'forward',  :increment_id => 'create', :mode => 'create') %>');" >
+		<strong>
+		<ol>
+		<li><p  align="justify">
+		Manual template selection: Generate a PIR-alignment of your sequence with the selected template or templates in order to build a 3D model with MODELLER.</p></li>
+		</ol>
+		</strong>
+	</div>
+
+	<div class="row">
+		<input name="submitform" type="submit" class="toolbutton" style="width:28%" value="&nbsp Automatically select best templates &nbsp" onClick="select_first(20); extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_makemodel', :mode => 'filter', :increment_id => 'true') %>');" />
+		<strong>
+		<ol start = 2>
+		<li>
+		  <p  align="justify">
+		  Automatic template selection: Optimize diversities of query and template HMMs, rerank templates and automatically select best set. In further steps a multiple alignment is created from this set, and a 3D model is build with MODELLER using this alignment.
+		  </p>
+		</li>
+		</ol>
+		</strong>
+	</div>
+
+	<div class="row">
+        <!--
+		<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:select_first(10)">Select the best ten</a>
+        -->
+	</div>
+	<div class="row">		
+		<p class="formerror">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Only hits found in PDB or SCOP can be used to create a model (other hits are disabled).</p>	
+	</div>
+	<div class="hr">&nbsp;</div>
+</div>
+
+
+<div id="mergeali" style="display: none;">
+	<div class="row">
+		<div class="formw">		
+			<input name="submitform" type="submit" class="feedbutton" value="Merge alignments" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmergeali', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_hhmergeali', :increment_id => 'true') %>');" />		
+		</div>
+	</div>
+	<div class="row">
+		<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:select_first(10)">Select the best ten</a>
+	</div>
+	<div class="hr">&nbsp;</div>
+</div>
+
+<div id="color_button" class="row">
+
+  <div id="jalview">
+	<!--<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>-->
+        <applet codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
+        <!--<param name="file" value="test.tenrep_file">
+        <applet codebase="/applets/jalview/"     archive="jalviewApplet.jar" code="jalview.bin.JalviewLite" -->
+	<PARAM NAME="label"  value="JalView">
+	<PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.tenrep_file">
+	<param name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
+	<!--<PARAM NAME="type"   value="URL">
+	<PARAM NAME="format" value="FASTA"> -->
+	</APPLET> 
+  </div>
+  
+  <div id="help_jal"><a href="#" onclick="openHelpWindow('/hhpred/help_results#jalview');">View alignment</a></div>
+
+
+  <div class="labelj">
+    <a href="#" onclick="openHelpWindow('/hhpred/help_params#coloring');">Color alignments</a>
+  </div>
+  <div class="formwa">
+    <strong>
+      <%= radio_button_tag('coloring', 'onlySS', @mode == 'onlySS', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'onlySS')+"';"}) -%>&nbsp;color only SS &nbsp;&nbsp;&nbsp;&nbsp;
+      <%= radio_button_tag('coloring', 'letters', @mode == 'letters', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'letters')+"';"}) -%>&nbsp;	
+      <span style="color: orange;">c</span><span style="color: black;">o</span><span style="color: green;">l</span><span style="color: black;">o</span><span style="color: red;">r&nbsp;</span>
+      <span style="color: grey;">a</span><span style="color: green;">li</span><span style="color: maroon;">g</span><span style="color: purple;">n</span><span style="color: green;">m</span><span style="color: blue;">e</span><span style="color: purple;">n</span><span style="color: grey;">t</span><span style="color: grey;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
+      <%= radio_button_tag('coloring', 'background', @mode == 'background', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'background')+"';"}) -%>&nbsp;
+      <span style="background-color: #ffff00;">c</span><span style="background-color: white;">o</span><span style="background-color: #00ff00;">l</span><span style="background-color: white;">o</span><span style="background-color: #ff0000;">r&nbsp;</span>
+      <span style="background-color: white;">a</span><span style="background-color: #00ff00;">li</span><span style="background-color: #ffd070;">g</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: #00ff00;">m</span><span style="background-color: #c080ff;">e</span><span style="background-color: #ffc0ff;">n</span><span style="background-color: white;">t</span><span style="background-color: white;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </strong>
+  </div>  
+</div>
+<form></form>
+<div class="spacer">&nbsp;</div>	
+
+<div class="row">
+	<!-- All the histograms and Data comes from job.results -->
+	<%=  @job.results.join  %>	
+</div>
+
+
+</form>

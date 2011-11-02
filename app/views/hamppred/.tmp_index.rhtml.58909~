@@ -1,0 +1,207 @@
+<a href="#" onClick="openHelpWindow('/hhpred/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>  
+<h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'hhpred', :parent => @parent_job}, {:multipart => true})%> 
+<center>
+  <a target="_blank" href="http://predictioncenter.org/casp9/groups_analysis.cgi?type=server&tbm=on&submit=Filter"><font color="red">NEW: Official server results for CASP9 structure prediction benchmark</font></a>
+</center>
+
+<h3 class="<%= @section["name"] %>">Input</h3>
+<% if @parent_job.nil? || @parent_job.params['mode'].nil?  -%>
+
+<div class="row">
+  <%= form_label("Paste protein sequence or multiple alignment", "input") %>
+  <%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+  <%= form_label("or upload a local file") %>
+  <%= form_file("sequence_file") %>
+</div>
+<div class="row">
+  <%= form_label("Select input format", "format") %>
+  <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+</div><div class="spacer">&nbsp;</div>
+
+<% else -%>
+
+<%= form_hidden_field("sequence_input") %>
+<%= form_hidden_field("sequence_file", "") %>
+<%= form_hidden_field("informat") %>
+
+<div class="row">
+  <% if @parent_job.params['mode'] == 'queryhmm' %>
+  <strong>Using query HHM from job <%= @parent_job.jobid %> as input!</strong>
+  <% elsif @parent_job.params['mode'] == 'realign' -%>
+  <strong>Realign hits from job <%= @parent_job.jobid %>!</strong>
+  <% elsif @parent_job.params['mode'] == 'hhsenser' -%>
+  <strong>Submit query to HHsenser / HHpred</strong>
+  <p>The query alignment from <b>job <%= @parent_job.jobid %></b> will be used to jumpstart HHsenser,
+    our program for <i>intermediate HMM search</i> based on HMM-HMM comparison. HHsenser will 
+    attempt to boost the query alignment using an iterative search technique, employing PSI-BLAST
+    for detection of candidate sequences and HMM-HMM comparison for validation of homology.
+    From the resulting alignment, an HMM is built as before to search the selected database.
+    Please note: (1) HHsenser is set to launch up to ten iterative PSI-BLAST searches. 
+    Run-time can therefore be much longer than for a normal HHpred search.
+    (2) Sequences longer than <b>300 residues</b> will be trimmed down. If your sequence is 
+    longer than that, divide it at the putative domain boundaries (or cut into segments of 300 
+    residues). 
+    (3) Alignments generated with HHsenser are more prone to corruption by non-homologous 
+    sequences due to the aggressive search strategy. Therefore, we strongly recommend to <b>check 
+      the query alignment</b> for non-homologous sequences. This is very convenient to do 
+    by choosing "Show Query Alignment" on the results page and starting JalView (right button).
+    <% end -%>
+</div>
+<% end -%>
+<div class="row">
+  <%= form_submit_buttons %>
+</div>
+<h3 class="<%= @section["name"] %>">Search Options</h3>
+<% if @parent_job.nil? || @parent_job.params['mode'] != 'realign'  -%>
+<div class="row">
+  <%= form_label("Select HMM databases<br><small>(hold Ctr to select several)</small>", "databases") %>
+  <div class="formw">
+    <table cellspacing="0">
+    <tr align="center"><td><b>Standard</b></td><td width="30px;"></td><td><b>Genomes</b></td></tr>
+    <tr><td>
+    <%= form_select_multiple("hhpred_dbs", @dbvalues, @dblabels, @default_db, 5, false) %>	
+    </td><td></td><td>
+    <%= form_select_multiple("genomes_hhpred_dbs", @genome_dbvalues, @genome_dblabels, "", 5, false, "javascript:select_genomes();") %>	
+    </td></tr>
+    </table>
+    <%= form_hidden_field("genomes_first", "true") %>
+  </div>	
+</div>
+<% else %>
+<%= form_hidden_field("hhpred_dbs", @parent_job.params_main_action['hhpred_dbs'].join(' ')) %>
+<% end -%>
+<div class="row">
+  <%= form_label("MSA Generation Method", "prefilter") %>
+  <%= form_radio_buttons("prefilter", @prefilter_values, @prefilter_labels, "hhblits", "&nbsp;","change_label('maxhhblitsit_label','Max. HHblits iterations','Max. PsiBlast iterations');
+                                                                                               change_label('E_hhblits_label','E-value threshold for HHblits','E-value threshold for PsiBlast');") %>  
+</div>
+
+<!--  WORKAROUND -->
+<% if @parent_job.nil? || @parent_job.params['mode'].nil? -%>
+
+<div class="row">
+  <%= form_label_id("Max. HHblits iterations", "maxhhblitsit_label", "maxhhblitsit") %>
+  <%= form_select_single("maxhhblitsit", @maxhhblitsit, @maxhhblitsit, '3') %>	
+</div>
+<% else %>
+<%= form_hidden_field("maxhhblitsit", @parent_job.params_main_action['maxhhblitsit']) %>
+<% end %>
+
+<div class="row">
+  <%= form_label("Score secondary structure", "ss_scoring") %>
+  <%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, "2", "&nbsp;") %>	
+</div>
+<div class="row">
+  <%= form_label("Alignment mode", "alignmode") %>
+  <%= form_radio_buttons("alignmode", ['local', 'global'], ['local', 'global'], "local", "&nbsp;") %>	
+</div>
+<div class="row">
+  <%= form_label("Realign with MAC", "realign") %>
+  <%= form_checkbox("realign", '1', false) %>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+<h3 class="<%= @section["name"] %>">
+  <!--
+      <span id="show_more_options" style="font-size: 10px; display: <%= @show_more_options ? 'none' : 'true' %>"><a style="margin-right: 10px; font-weight: normal; float: right;" on_click="show_hide_more_options();" href="javascript:show_hide_more_options();">Show</a></span>
+      <span id="hide_more_options" style="font-size: 10px; display: <%= @show_more_options ? 'true' : 'none' %>"><a style="margin-right: 10px; font-weight: normal; float: right;" on_click="show_hide_more_options();" href="javascript:show_hide_more_options();">Hide</a></span>
+      More options
+      --> 
+  More options
+  <span id="show_more_options" style="font-size: 10px; display: <%= @show_more_options ? 'none' : 'true' %>"><a style="margin-left: 10px; font-weight: normal;" on_click="show_hide_more_options();" href="javascript:show_hide_more_options();">Show</a></span>
+  <span id="hide_more_options" style="font-size: 10px; display: <%= @show_more_options ? 'true' : 'none' %>"><a style="margin-left: 10px; font-weight: normal;" on_click="show_hide_more_options();" href="javascript:show_hide_more_options();">Hide</a></span>
+</h3>
+
+<%= hidden_field_tag("more_options_on", (@show_more_options ? "true" : "false") ) %>
+<div style="display:<%= @show_more_options ? 'true' : 'none' %>;" id="more_options">    
+
+  <!--  WORKAROUND -->
+  <% if @parent_job.nil? || @parent_job.params['mode'].nil? -%>
+  <div class="row">
+    <%= form_label_id("E-value threshold for HHblits", "E_hhblits_label", "E_hhblits") %>
+    <%= form_select_single("Ehhblitsval", @ehhblitsval, @ehhblitsval, '1E-3') %>	
+  </div>
+  
+  <% else %>
+  <%= form_hidden_field("Ehhblitsval", @parent_job.params_main_action['Ehhblitsval']) %>
+  <% end -%>
+  <% if @parent_job.nil? || @parent_job.params['mode'].nil? || @parent_job.params['mode'] == 'realign' || @parent_job.params['mode'] == 'hhsenser'-%>
+  <div class="row">
+    <%= form_label("Min. coverage of HHblits hits", "cov_min") %>
+    <%= form_select_single("cov_min", @cov_minval, @cov_minval, '20') %>	
+  </div>
+  <div class="row">
+    <%= form_label("Min. sequence identity of HHblits hits with query", "qid_min") %>
+    <%= form_select_single("qid_min", @cov_minval, @cov_minval, '0') %>	
+  </div>
+  <% else %>
+  <%= form_hidden_field("cov_min", @parent_job.params_main_action['cov_min']) %>
+  <%= form_hidden_field("qid_min", @parent_job.params_main_action['qid_min']) %>
+  <% end -%>
+
+  <div class="hr">&nbsp;</div>
+
+  <div class="row">
+    <%= form_label("MAC realignment threshold (0.0:global, >=0.1:local)", "mact") %>
+    <%= form_select_single("mact", @mactval, @mactval, '0.3') %>	
+  </div>
+  <div class="row">
+    <%= form_label("Compositional bias correction", "compbiascorr") %>
+    <%= form_radio_buttons("compbiascorr", @compbiascorr_values, @compbiascorr_labels, "1", "&nbsp;") %>	
+  </div>
+
+  <div class="hr">&nbsp;</div>
+
+  <div class="row">
+    <%= form_label("Show sequences per HMM", "maxseq") %>
+    <%= form_select_single("maxseq", @maxseqval, @maxseqval, '1') %>	
+  </div>
+  <div class="row">
+    <%= form_label("Width of alignments", "width") %>
+    <%= form_text_field("width", '80', 'columns') %>	
+  </div>
+
+  <!--  WORKAROUND -->
+  <% if @parent_job.nil? || @parent_job.params['mode'].nil? || @parent_job.params['mode'] == 'queryhmm' || @parent_job.params['mode'] == 'hhsenser' -%>
+  <div class="row">
+    <%= form_label("Min. probability in hitlist", "minprobab") %>
+    <%= form_text_field("Pmin", '20', '%') %>	
+  </div>
+  <div class="row">
+    <%= form_label("Max. number of hits in hitlist", "maxlines") %>
+    <%= form_text_field("maxlines", '100') %>	
+  </div>
+  <% else %>
+  <%= form_hidden_field("Pmin", @parent_job.params_main_action['Pmin']) %>
+  <%= form_hidden_field("maxlines", @parent_job.params_main_action['maxlines']) %>
+  <% end -%>
+
+  <div class="spacer">&nbsp;</div>
+  
+</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+</form>
+
+
+<div class="hr">&nbsp;</div>
+<ul class="arrow-marker">
+  <li><a href="#" title="About HHpred" onclick="openHelpWindow('/hhpred/help_ov');">About HHpred</a></li>
+  <li><a target="_blank" href="http://predictioncenter.org/casp9/groups_analysis.cgi?type=server&tbm=on&submit=Filter"><font color="red">Official server results for CASP9 structure prediction benchmark</font></a></li> 
+  <li><a target="_blank" href="http://www.genzentrum.lmu.de/soeding/pdf/Proteins-2009-Soeding-R1b.pdf">HHpred results in CASP8 (Proteins 2009)</a></li>
+  <li><a target="_blank" href="ftp://toolkit.lmb.uni-muenchen.de/HHsearch/" title="Download HHsearch 1.5.0"><B>Download HHsearch 1.5.0</B></a>
+  <li><a target="_self" href="pdbalert">PDBalert automatic remote homology tracking and structure prediction</a></li>
+  <li><a target="_blank" href="http://www.lmb.uni-muenchen.de/soeding/index.htm">S&ouml;ding group at Gene Center in Munich</a></li>
+</ul>
+<div class="hr">&nbsp;</div>
+<div class="row">
+  Please send feedback to: soeding AT lmb.uni-muenchen.de
+</div>
+
+
+

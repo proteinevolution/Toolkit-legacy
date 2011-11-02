@@ -1,0 +1,62 @@
+hamppred_job: 
+  title: HAMPpred
+  hidden: false
+  code: HAMPR
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show results in alignment view
+      forwardsections:
+      - name: createmodel
+        title: Create model
+        title_long: Select templates to create 3D model of query
+      - name: mergeali
+        title: Merge Q/T alignments
+        title_long: Merge Query/Template Multiple Alignments
+    - name: histograms
+      title: Histogram
+      title_long: Show results in profile histogram view
+      forwardsections:
+      - name: createmodel
+        title: Create model
+        title_long: Select templates to create 3D model of query
+      - name: mergeali
+        title: Merge Q/T alignments
+        title_long: Merge Query/Template Multiple Alignments
+    - name: showalign
+      title: Show query alignment
+      title_long: Show or edit the query alignment constructed by HHpred
+      forwardsections:
+  
+hhmakemodel_job:
+  title: HHpred makemodel
+  hidden: false
+  code: HHMM
+  resultsections:  
+    - name: results_makemodel
+      title: Results
+      title_long: Show results in alignment view
+      forwardsections:
+    - name: histograms_makemodel
+      title: Histogram
+      title_long: Show results in profile histogram view
+      forwardsections:
+    - name: showalign_makemodel
+      title: Show query alignment
+      title_long: Show or edit the query alignment constructed by HHpred
+      forwardsections:
+  
+hhmergeali_job:
+  title: HHpred mergeali
+  hidden: false
+  code: HHMA
+  
+hh3d_templ_job:
+  title: HHpred 3d template
+  hidden: true
+  code: HHPR
+  
+hh3d_querytempl_job:
+  title: HHpred 3d query-template
+  hidden: true
+  code: HHPR

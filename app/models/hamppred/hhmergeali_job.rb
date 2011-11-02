@@ -1,0 +1,3 @@
+class HhmergealiJob < PerlJob
+  
+end
