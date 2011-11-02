@@ -1,0 +1,634 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Paste sequence or multiple alignment</a></li>
+	<li><a href="#format">Select input format</a></li>
+	<li><a href="#databases">Select HMM databases</a></li>
+	<li><a href="#maxpsiblastit">Max. number of PSI-BLAST iterations</a></li>
+	<li><a href="#E_psiblast">E-value threshold for PSI-BLAST</a></li>
+	<li><a href="#cov_min">Min. coverage of PSI-BLAST hits</a></li>
+	<li><a href="#qid_min">Min. sequence identity of PSI-BLAST hits with query</a></li>
+	<li><a href="#ss_scoring">Score secondary structure</a></li>
+	<li><a href="#alignmode">Alignment mode</a></li>
+	<li><a href="#maxseq">Show representative sequences per HMM</a></li>
+	<li><a href="#width">Width of alignments</a></li>
+	<li><a href="#minprobab">Minimum probability in hit list</a></li>
+	<li><a href="#maxlines">Maximum number of hits in hit list</a></li>
+	<li><a href="#graph">Show bar graph for hits</a></li>
+	<li><a href="#coloring">Coloring query-template multiple alignments in results</a></li>
+</ul>
+
+<h2><%= @tool['title'] %>  Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Paste single sequence or multiple alignment</h3>
+<div class="row">
+Paste the query <i>sequence</i> with which you want to do the search either as raw sequence 
+(e.g. 'ELRLRYCAPAGFALLKCN...') or as FASTA sequence (i.e. with a single line '>sequence_name optional description' 
+preceding the raw sequence, see next subsection). HHpred will use PSI-BLAST searches
+against the non-redundant sequence database from NCBI to build a multiple alignment from it. This 
+alignment will then be used to construct a concise statistical representation (a hidden Markov 
+model or HMM) and to search the selected HMM databases for homologs. <br>
+You may also paste a query <i>multiple alignment</i> (for allowed formats see below). 
+The alignment will be used to jumpstart PSI-BLAST. An expert-built or expert-edited alignment or one 
+that contains homologs not yet contained in the non-redundant sequence database may significantly increase 
+the sensitivity and reliability of the HHpred search. I recommend NOT to use automatic multiple alignment
+programs such as CLUSTAL, as PSI-BLAST tends to give clearly better alignments for the purpose of
+detecting homologs.
+Note: if you paste a multiple alignment please don't forget to select the appropriate input format below. 
+<br/><br/>
+</div><div class="spacer">&nbsp;</div>
+
+<a name="format"></a>
+<h3 class="<%= @section["name"] %>">Select input format</h3>
+<div class="row">
+<h5>Entering a single query sequence</h5>
+<br>
+You can enter a single query sequence in FASTA format (with or withour name line). HHsearch/HHpred will build a multiple alignment of homologs from it with PsiBlast. The query sequence in FASTA can look like this:
+<br><br>
+<PRE>
+>gi|532319|pir|TVFV2E|TVFV2E envelope protein
+ELRLRYCAPAGFALLKCNDADYDGFKTNCSNVSVVHCTNLMNTTVTTGLLLNGSYSENRT
+QIWQKHRTSNDSALILLNKHYNLTVTCKRPGNKTVLPVTIMAGLVFHSQKYNLRLRQAWC
+HFPSNWKGAWKEVKEEIVNLPKERYRGTNDPKRIFFQRQWGDPETANLWFNCHGEFFYCK
+MDWFLNYLNNLTVDADHNECKNTSGTKSGNKRAPGPCVQR
+</PRE><br>
+or this
+<br><br>
+<PRE>
+>gi|532319|pir|TVFV2E|TVFV2E envelope protein
+ELRLRYCAPA GFALLKCNDA DYDGFKTNCS NVSVVHCTNL MNTTVTTGLL LNGSYSENRT QIWQKHRTSN 
+DSALILLNKH YNLTVTCKRP GNKTVLPVTI MAGLVFHSQK YNLRLRQAWC HFPSNWKGAW KEVKEEIVNL 
+PKERYRGTND PKRIFFQRQW GDPETANLWF NCHGEFFYCK MDWFLNYLNN LTVDADHNEC KNTSGTKSGN 
+KRAPGPCVQR
+</PRE><br>
+or simply this<br>
+<br>
+<PRE>
+ELRLRYCAPAGFALLKCNDADYDGFKTNCSNVSVVHCTNLMNTTVTTGLLLNGSYSENRTQIWQKHRTSNDSALILLNKHYNLTVTCKRPGNK
+TVLPVTIMAGLVFHSQKYNLRLRQAWCHFPSNWKGAWKEVKEEIVNLPKERYRGTNDPKRIFFQRQWGDPETANLWFNCHGEFFYCKMDWFLNYLNNLTVDADHNE
+CKNTSGTKSGNKRAPGPCVQR
+</PRE>
+<br>
+The sequence may contain a nameline that must start with a &gt symbol, followed directly by the sequence name
+and an optional description. The residue data is contained in one or more lines of arbitrary length following 
+the name line. No empty lines should be used. Upper and lower case letters are allowed. 
+Spaces and gaps (-.) will be removed.
+
+</div><div class="hr">&nbsp;</div>
+<div class="row">
+<h5>Entering a multiple alignment</h5>
+<br>
+If you already have a query alignment (you may insert the manually edited query alignment built by 
+HHsearch/HHpred for example) then you can enter it here. The PsiBlast search will then be kickstarted 
+with this alignment. (If you choose the maximum number of PsiBlast iterations to be 0 then only the 
+predicted secondary structured will be added to your alignment.) The query sequence is the first sequence. 
+It is not marked explicitly.
+</p>
+
+<br>
+You can enter alignments in different formats, which are listed in the dropdown menu. 
+Format descriptions can be found <a href="/reformat/help_params#formats">here</a>.
+</p>
+
+<br><br><b>
+Example for aligned FASTA format:
+</b></p>
+<br><br>
+<PRE>
+>d1a1x__ b.63.1.1 (-) p13-MTCP1 {Human (Homo sapiens)}
+PPDHLWVHQEGIYRDEYQRTWVAVVEE--E--T--SF---------LR----------ARVQQIQVPLG-------DAARPSHLLTS-----QLPLMWQLYP
+>gi|6678257|ref|NP_033363.1|:(7-103) T-cell lymphoma breakpoint 1 [Mus musculus]
+HPNRLWIWEKHVYLDEFRRSWLPVVIK--S--N--EK---------FQ----------VILRQEDVTLG-------EAMSPSQLVPY-----ELPLMWQLYP
+>gi|7305557|ref|NP_038800.1|:(8-103) T-cell leukemia/lymphoma 1B, 3 [Mus musculus]
+PPRFLVCTRDDIYEDENGRQWVVAKVE--T--S--RSpygsrietcIT----------VHLQHMTTIPQ-------EPTPQQPINNN-----SLPTMWRLES
+>gi|11415028|ref|NP_068801.1|:(2-106) T-cell lymphoma-1; T-cell lymphoma-1A [Homo sapiens]
+HPDRLWAWEKFVYLDEKQHAWLPLTIEikD--R--LQ---------LR----------VLLRREDVVLG-------RPMTPTQIGPS-----LLPIMWQLYP
+>gi|7305561|ref|NP_038804.1|:(7-103) T-cell leukemia/lymphoma 1B, 5 [Mus musculus]
+----------GIYEDEHHRVWIAVNVE--T--S--HS---------SHgnrietcvt-VHLQHMTTLPQ-------EPTPQQPINNN-----SLPTMWRLES
+>gi|7305553|ref|NP_038801.1|:(5-103) T-cell leukemia/lymphoma 1B, 1 [Mus musculus]
+LPVYLVSVRLGIYEDEHHRVWIVANVE--TshS--SH---------GN----------RRRTHVTVHLW-------KLIPQQVIPFNplnydFLPTTWKLES
+>gi|27668591|ref|XP_234504.1|:(7-103) similar to Chain A, Crystal Structure Of Murine Tcl1
+-PDRLWLWEKHVYLDEFRRSWLPIVIK--S--N--GK---------FQ----------VIMRQKDVILG-------DSMTPSQLVPY-----ELPLMWQLYP
+>gi|27668589|ref|XP_234503.1|:(9-91) similar to T-cell leukemia/lymphoma 1B, 5;
+-PHILTLRTHGIYEDEHHRLWVVLDLQ--A--ShlSF---------SN----------RLLIYLTVYLQqgvafplESTPPSPMNLN-----GLPRRWTLRT
+>gi|7305559|ref|NP_038802.1|:(8-102) T-cell leukemia/lymphoma 1B, 4 [Mus musculus] 
+PPCFLVCTRDDIYEDEHGRQWVAAKVE--T--S--SH---------SPycskietcvtVHLWQMTTLFQ-------EPSPDSLKTFN-----FLPRTWRLES
+>gi|7305555|ref|NP_038803.1|:(9-102) T-cell leukemia/lymphoma 1B, 2 [Mus musculus]
+---------PGFYEDEHHRLWMVAKLE--T--C--SH---------SPycnkietcvtVHLWQMTRYPQ-------EPAPYNPMNYN-----FLPMTWRLAS
+</PRE>
+
+<br> 
+In aligned FASTA the gaps are written with '-' and the n'th letter of each sequence (except newlines) is 
+understood to build the n'th column of the multiple alignment. The sequence residues may be broken up 
+into several lines containing arbitrary numbers of residues. 
+
+<br><br><b> The same alignment in CLUSTAL format looks like this:</b></p>
+<br><br>
+<PRE>
+CLUSTAL X (1.83) multiple sequence alignment
+
+
+d1a1x__                             PPDHLWVHQEGIYRDEYQRTWVAVVEE--E--T--SF---------LR----------AR
+gi|6678257|ref|NP_033363.1|__7      HPNRLWIWEKHVYLDEFRRSWLPVVIK--S--N--EK---------FQ----------VI
+gi|7305557|ref|NP_038800.1|__8      PPRFLVCTRDDIYEDENGRQWVVAKVE--T--S--RSPYGSRIETCIT----------VH
+gi|11415028|ref|NP_068801.1|__      HPDRLWAWEKFVYLDEKQHAWLPLTIEIKD--R--LQ---------LR----------VL
+gi|7305561|ref|NP_038804.1|__7      ----------GIYEDEHHRVWIAVNVE--T--S--HS---------SHGNRIETCVT-VH
+gi|7305553|ref|NP_038801.1|__5      LPVYLVSVRLGIYEDEHHRVWIVANVE--TSHS--SH---------GN----------RR
+gi|27668591|ref|XP_234504.1|__      -PDRLWLWEKHVYLDEFRRSWLPIVIK--S--N--GK---------FQ----------VI
+gi|27668589|ref|XP_234503.1|__      -PHILTLRTHGIYEDEHHRLWVVLDLQ--A--SHLSF---------SN----------RL
+gi|7305559|ref|NP_038802.1|__8      PPCFLVCTRDDIYEDEHGRQWVAAKVE--T--S--SH---------SPYCSKIETCVTVH
+gi|7305555|ref|NP_038803.1|__9      ---------PGFYEDEHHRLWMVAKLE--T--C--SH---------SPYCNKIETCVTVH
+                                               .* **  : *:    :                       
+
+d1a1x__                             VQQIQVPLG-------DAARPSHLLTS-----QLPLMWQLYP
+gi|6678257|ref|NP_033363.1|__7      LRQEDVTLG-------EAMSPSQLVPY-----ELPLMWQLYP
+gi|7305557|ref|NP_038800.1|__8      LQHMTTIPQ-------EPTPQQPINNN-----SLPTMWRLES
+gi|11415028|ref|NP_068801.1|__      LRREDVVLG-------RPMTPTQIGPS-----LLPIMWQLYP
+gi|7305561|ref|NP_038804.1|__7      LQHMTTLPQ-------EPTPQQPINNN-----SLPTMWRLES
+gi|7305553|ref|NP_038801.1|__5      RTHVTVHLW-------KLIPQQVIPFNPLNYDFLPTTWKLES
+gi|27668591|ref|XP_234504.1|__      MRQKDVILG-------DSMTPSQLVPY-----ELPLMWQLYP
+gi|27668589|ref|XP_234503.1|__      LIYLTVYLQQGVAFPLESTPPSPMNLN-----GLPRRWTLRT
+gi|7305559|ref|NP_038802.1|__8      LWQMTTLFQ-------EPSPDSLKTFN-----FLPRTWRLES
+gi|7305555|ref|NP_038803.1|__9      LWQMTRYPQ-------EPAPYNPMNYN-----FLPMTWRLAS
+                                                                     **  * * .
+</PRE>
+
+<br>
+The first line must begin with CLUSTAL, the rest of the line is ignored. The sequences come in blocks with
+the sequence name, cut to a constant number of characters, followed by some whitespace and the sequence 
+residues and gaps (-).
+The number of alignment columns per sequence line is arbitrary but constant within a block.
+Thus the whole alignment may be written in one long block. At the end of each block is an optional
+line indicating the conservation of each alignment column, followed by an obligatory empty line
+that separates the block from the next. Capital and lower case characters may be used for the amino acids.
+</p>
+<br><br>
+<br><b> The same alignment in Stockholm format is here:</b></p>
+<br><br>
+<PRE>
+# STOCKHOLM 1.0
+
+#=GC RF                          XXXXXXXXXXXXXXXXXXXXXXXXXXX--X--X--XX---------XX----------XXXXXXXXXXX
+d1a1x__                          PPDHLWVHQEGIYRDEYQRTWVAVVEE--E--T--SF---------LR----------ARVQQIQVPLG
+gi|6678257|ref|NP_033363.1|:(7-1 HPNRLWIWEKHVYLDEFRRSWLPVVIK--S--N--EK---------FQ----------VILRQEDVTLG
+gi|7305557|ref|NP_038800.1|:(8-1 PPRFLVCTRDDIYEDENGRQWVVAKVE--T--S--RSpygsrietcIT----------VHLQHMTTIPQ
+gi|11415028|ref|NP_068801.1|:(2- HPDRLWAWEKFVYLDEKQHAWLPLTIEikD--R--LQ---------LR----------VLLRREDVVLG
+gi|7305561|ref|NP_038804.1|:(7-1 ----------GIYEDEHHRVWIAVNVE--T--S--HS---------SHgnrietcvt-VHLQHMTTLPQ
+gi|7305553|ref|NP_038801.1|:(5-1 LPVYLVSVRLGIYEDEHHRVWIVANVE--TshS--SH---------GN----------RRRTHVTVHLW
+gi|27668591|ref|XP_234504.1|:(7- -PDRLWLWEKHVYLDEFRRSWLPIVIK--S--N--GK---------FQ----------VIMRQKDVILG
+gi|27668589|ref|XP_234503.1|:(9- -PHILTLRTHGIYEDEHHRLWVVLDLQ--A--ShlSF---------SN----------RLLIYLTVYLQ
+gi|7305559|ref|NP_038802.1|:(8-1 PPCFLVCTRDDIYEDEHGRQWVAAKVE--T--S--SH---------SPycskietcvtVHLWQMTTLFQ
+gi|7305555|ref|NP_038803.1|:(9-1 ---------PGFYEDEHHRLWMVAKLE--T--C--SH---------SPycnkietcvtVHLWQMTRYPQ
+
+#=GC RF                          -------XXXXXXXXXXX-----XXXXXXXXXX
+d1a1x__                          -------DAARPSHLLTS-----QLPLMWQLYP
+gi|6678257|ref|NP_033363.1|:(7-1 -------EAMSPSQLVPY-----ELPLMWQLYP
+gi|7305557|ref|NP_038800.1|:(8-1 -------EPTPQQPINNN-----SLPTMWRLES
+gi|11415028|ref|NP_068801.1|:(2- -------RPMTPTQIGPS-----LLPIMWQLYP
+gi|7305561|ref|NP_038804.1|:(7-1 -------EPTPQQPINNN-----SLPTMWRLES
+gi|7305553|ref|NP_038801.1|:(5-1 -------KLIPQQVIPFNplnydFLPTTWKLES
+gi|27668591|ref|XP_234504.1|:(7- -------DSMTPSQLVPY-----ELPLMWQLYP
+gi|27668589|ref|XP_234503.1|:(9- qgvafplESTPPSPMNLN-----GLPRRWTLRT
+gi|7305559|ref|NP_038802.1|:(8-1 -------EPSPDSLKTFN-----FLPRTWRLES
+gi|7305555|ref|NP_038803.1|:(9-1 -------EPAPYNPMNYN-----FLPMTWRLAS
+//
+</PRE>
+
+<br>
+Stockholm format is similar to Clustal format, but offers a number of markups to include 
+annotation and additional information referring to the alignment, its columns, or sequences. 
+It was developed by Sean Eddy for Pfam and the HMMer software package. Each alignment may 
+be separated into an arbitrary number of blocks with an arbitrary number of alignment columns 
+contained per line. Gaps may be written '-" or '.'. The line starting with #=GC RF is 
+an example of an optional markup line that contains one character per alignment columns. 
+In this case it indicates which are the match/delete columns (as opposed to insert columns).
+</p>
+
+<br><br>
+<br><b> The same alignment in A2M format looks like this:</b></p>
+<br><br>
+<PRE>
+>d1a1x__ b.63.1.1 (-) p13-MTCP1 {Human (Homo sapiens)}
+PPDHLWVHQEGIYRDEYQRTWVAVVEE..E..T..SF.........LR..........ARVQQIQVPLG.......DAARPSHLLTS.....QLPLMWQLYP
+>gi|6678257|ref|NP_033363.1|:(7-103) T-cell lymphoma breakpoint 1 [Mus musculus]
+HPNRLWIWEKHVYLDEFRRSWLPVVIK..S..N..EK.........FQ..........VILRQEDVTLG.......EAMSPSQLVPY.....ELPLMWQLYP
+>gi|7305557|ref|NP_038800.1|:(8-103) T-cell leukemia/lymphoma 1B, 3 [Mus musculus]
+PPRFLVCTRDDIYEDENGRQWVVAKVE..T..S..RSpygsrietcIT..........VHLQHMTTIPQ.......EPTPQQPINNN.....SLPTMWRLES
+>gi|11415028|ref|NP_068801.1|:(2-106) T-cell lymphoma-1; T-cell lymphoma-1A [Homo sapiens]
+HPDRLWAWEKFVYLDEKQHAWLPLTIEikD..R..LQ.........LR..........VLLRREDVVLG.......RPMTPTQIGPS.....LLPIMWQLYP
+>gi|7305561|ref|NP_038804.1|:(7-103) T-cell leukemia/lymphoma 1B, 5 [Mus musculus]
+----------GIYEDEHHRVWIAVNVE..T..S..HS.........SHgnrietcvt.VHLQHMTTLPQ.......EPTPQQPINNN.....SLPTMWRLES
+>gi|7305553|ref|NP_038801.1|:(5-103) T-cell leukemia/lymphoma 1B, 1 [Mus musculus]
+LPVYLVSVRLGIYEDEHHRVWIVANVE..TshS..SH.........GN..........RRRTHVTVHLW.......KLIPQQVIPFNplnydFLPTTWKLES
+>gi|27668591|ref|XP_234504.1|:(7-103) similar to Chain A, Crystal Structure Of Murine Tcl1
+-PDRLWLWEKHVYLDEFRRSWLPIVIK..S..N..GK.........FQ..........VIMRQKDVILG.......DSMTPSQLVPY.....ELPLMWQLYP
+>gi|27668589|ref|XP_234503.1|:(9-91) similar to T-cell leukemia/lymphoma 1B, 5;
+-PHILTLRTHGIYEDEHHRLWVVLDLQ..A..ShlSF.........SN..........RLLIYLTVYLQqgvafplESTPPSPMNLN.....GLPRRWTLRT
+>gi|7305559|ref|NP_038802.1|:(8-102) T-cell leukemia/lymphoma 1B, 4 [Mus musculus] 
+PPCFLVCTRDDIYEDEHGRQWVAAKVE..T..S..SH.........SPycskietcvtVHLWQMTTLFQ.......EPSPDSLKTFN.....FLPRTWRLES
+>gi|7305555|ref|NP_038803.1|:(9-102) T-cell leukemia/lymphoma 1B, 2 [Mus musculus]
+---------PGFYEDEHHRLWMVAKLE..T..C..SH.........SPycnkietcvtVHLWQMTRYPQ.......EPAPYNPMNYN.....FLPMTWRLAS
+</PRE>
+
+<br><br> A2M format is derived from aligned FASTA format. It looks very similar, but it 
+distinguishes between match/delete columns and insert columns. This information is 
+used to specify how an alignment is transformed into an HMM. The 
+match/delete columns use upper case letters for residues and the '-' symbol for 
+deletions (gaps). The insert columns use lower case letters for the inserted residues. 
+Gaps aligned to inserted residues are written as '.'
+<br><br>
+
+
+<br> <b>The same alignment in A3M is here:</b></p>
+<br><br>
+<PRE>
+>d1a1x__ b.63.1.1 (-) p13-MTCP1 {Human (Homo sapiens)}
+PPDHLWVHQEGIYRDEYQRTWVAVVEEETSFLRARVQQIQVPLGDAARPSHLLTSQLPLMWQLYP
+>gi|6678257|ref|NP_033363.1|:(7-103) T-cell lymphoma breakpoint 1 [Mus musculus]
+HPNRLWIWEKHVYLDEFRRSWLPVVIKSNEKFQVILRQEDVTLGEAMSPSQLVPYELPLMWQLYP
+>gi|7305557|ref|NP_038800.1|:(8-103) T-cell leukemia/lymphoma 1B, 3 [Mus musculus]
+PPRFLVCTRDDIYEDENGRQWVVAKVETSRSpygsrietcITVHLQHMTTIPQEPTPQQPINNNSLPTMWRLES
+>gi|11415028|ref|NP_068801.1|:(2-106) T-cell lymphoma-1; T-cell lymphoma-1A [Homo sapiens]
+HPDRLWAWEKFVYLDEKQHAWLPLTIEikDRLQLRVLLRREDVVLGRPMTPTQIGPSLLPIMWQLYP
+>gi|7305561|ref|NP_038804.1|:(7-103) T-cell leukemia/lymphoma 1B, 5 [Mus musculus]
+----------GIYEDEHHRVWIAVNVETSHSSHgnrietcvtVHLQHMTTLPQEPTPQQPINNNSLPTMWRLES
+>gi|7305553|ref|NP_038801.1|:(5-103) T-cell leukemia/lymphoma 1B, 1 [Mus musculus]
+LPVYLVSVRLGIYEDEHHRVWIVANVETshSSHGNRRRTHVTVHLWKLIPQQVIPFNplnydFLPTTWKLES
+>gi|27668591|ref|XP_234504.1|:(7-103) similar to Chain A, Crystal Structure Of Murine Tcl1
+-PDRLWLWEKHVYLDEFRRSWLPIVIKSNGKFQVIMRQKDVILGDSMTPSQLVPYELPLMWQLYP
+>gi|27668589|ref|XP_234503.1|:(9-91) similar to T-cell leukemia/lymphoma 1B, 5;
+-PHILTLRTHGIYEDEHHRLWVVLDLQAShlSFSNRLLIYLTVYLQqgvafplESTPPSPMNLNGLPRRWTLRT
+>gi|7305559|ref|NP_038802.1|:(8-102) T-cell leukemia/lymphoma 1B, 4 [Mus musculus] 
+PPCFLVCTRDDIYEDEHGRQWVAAKVETSSHSPycskietcvtVHLWQMTTLFQEPSPDSLKTFNFLPRTWRLES
+>gi|7305555|ref|NP_038803.1|:(9-102) T-cell leukemia/lymphoma 1B, 2 [Mus musculus]
+---------PGFYEDEHHRLWMVAKLETCSHSPycnkietcvtVHLWQMTRYPQEPAPYNPMNYNFLPMTWRLAS
+</PRE>
+
+<br><br> The A3M format is a condensed version of A2M format. It is obtained by omitting all '.' 
+symbols from A2M format. Hence residues emitted by Match states of the HMM are in upper 
+case, residues emitted by Insert states are in lower case and deletions are written '-'.
+A3M-formatted alignments are not really human readable but they can be reformatted to other more readable
+formats like FASTA, A2M CLUSTAL and many others with the reformating utility in our toolbox: 
+<a target="_blank" href="http://<%= DOC_ROOTHOST %>/reformat">http://<%= DOC_ROOTHOST %>/reformat</a>.
+<BR/>
+A3M is not an official format. Likewise, the name A3M is our personal invention for this 
+very practical and space-efficient format which we use to store the HHsearch alignments internally.
+</div><div class="spacer">&nbsp;</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="databases"></a>
+<h3 class="<%= @section["name"] %>">Select HMM databases</h3>
+<div class="row">
+Select the database(s) of template HMMs against which you want to compare the query HMM.
+Hold down the Control key to select more than one database.
+<br><br>
+
+<h5><a target="_blank" href="http://www.rcsb.org/pdb/">pdb70</a></h5>
+A search against the our pdb70 database is the first step when trying to predict a structure with HHpred. 
+It is based on the protein data bank (PDB) which contains all publicly available 3D structures of proteins.
+For each protein chain in the PDB we build a multiple alignment with iterated PSI-BLAST searches 
+and transform these alignments into HMMs. HHpred can compare the query HMM to the database of HMMs
+based on PDB chains and generate query-template alignments or it can build structural models for the 
+query sequence. We use a filtered version with a maximum sequence identity of 70% [J. S&ouml;ding, unpublished]. 
+We check the PDB for new structures every night and update our database whenever new files are found.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=14681399"><small>Bourne PE, Addess KJ, Bluhm WF, Chen L, Deshpande N, Feng Z, Fleri W, Green R, Merino-Ott JC, Townsend-Merino W, Weissig H, Westbrook J, Berman HM. The distribution and query systems of the RCSB Protein Data Bank. NAR 2004, 32:D223.</small></a>
+<br><br>
+
+
+<h5><a target="_blank" href="http://scop.mrc-lmb.cam.ac.uk/scop/data/scop.b.html">scop70</a></h5>
+The scop70 alignment database is built from sequences in SCOP in a similar way as pdb70. 
+SCOP is a hand-curated database with protein domains of known structure. It is hierarchically organized 
+into families, superfamilies, folds, and classes to reflect evolutionary relationships. Only members 
+of the same superfamily can be savely assumed to be homologous. Members of the same fold but different 
+superfamily are assumed not to be homologous, although many exceptions to this rule are now known. 
+HHpred reports the SCOP code of the family the domain belongs to.
+For example, a.118.8.1 stands for domain class a (all alpha helical), fold 118 (alpha-alpha superhelices), 
+superfamily 8 (TPR-like), family 1 (Tetratricopeptide repeats (TPR)). 
+We use a filtered version of the SCOP sequence set from the 
+<a target="_blank" href="http://astral.berkeley.edu/">ASTRAL server</a>, 
+e.g. scop70_1.69 is version 1.69 of SCOP filtered to 70% maximum sequence identity. Our scop70 alignment database
+is similar to the <a target="_blank" href="http://supfam.mrc-lmb.cam.ac.uk/SUPERFAMILY/">SUPERFAMILY</a> database.
+SCOP is updated irregularly, approximately every twelve months.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=10592240"><small>Lo Conte L, Ailey B, Hubbard TJ, Brenner SE, Murzin AG, Chothia C. SCOP: a structural classification of proteins database. NAR 2000, 28:257</small></a>
+<br><br>
+
+<h5><a target="_blank" href="http://www.ncbi.nlm.nih.gov/Structure/cdd/cdd.shtml">CDD</a></h5>
+The Conserved Domain Database (CDD) at the <a target="_blank" href="http://www.ncbi.nlm.nih.gov/">NCBI</a>
+is a composite database combining the alignments from Pfam, SMART, and COG/KOG, as well as containing
+alignments of conserved domains curated at the NCBI. The source of the alignments as shown in the 
+HHpred results is part of the identifiers. Identifiers beginning with cd or LOAD indicate
+that an alignment was curated at the NCBI. The CDD database contained 18640 alignments 
+on November 17, 2004. It is updated irregularly every 6 to 12 months. HHpred checks once a week for updates.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=11752315"><small>Marchler-Bauer A, Panchenko AR, Shoemaker BA, Thiessen PA, Geer LY, Bryant SH. CDD: a database of conserved domain alignments with links to domain three-dimensional structure. NAR 2002, 30:281.</small></a>
+<br><br>
+
+<h5><a target="_blank" href="http://www.ebi.ac.uk/interpro/">InterPro</a></h5>
+Our version of InterPro contains HMMs from Pfam, SMART, PANTHER, TIGRFAMs, PIRSF, 
+SUPERFAMILY, and Gene3D/CATH (see below). It encodes full-length protein families, domain families, 
+and motifs in which identifiable features from known proteins can be applied to unknown protein sequences. 
+In the version offered through HHpred, the PRINTS and PROSITE sequene motif databases are excluded,
+as are <i>explicit</i> transmembrane helix prediction by TMHMM and signal peptide prediction by SignalP.
+InterPro_12.0 contains already more than 31000 HMMs, therefore a search will take a few minutes.
+(InterPro offers only HMMs and not the underlying alignments. Therefore, HHpred does not have access to
+alignments for PANTHER, TIGRFAMs, PIRSF, SUPERFAMILY, and CATH/Gene3D. Hence, when using the option 
+"Merge query and template alignments", only the single consensus sequences instead of full template 
+alignments can be merged with your query alignment.)
+<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=15608177"><small>Mulder NJ, Apweiler R, Attwood TK, Bairoch A, Bateman A, Binns D, Bradley P, Bork P, Bucher P, Cerutti L, Copley R, Courcelle E, Das U, Durbin R, Fleischmann W, Gough J, Haft D, Harte N, Hulo N, Kahn D, Kanapin A, Krestyaninova M, Lonsdale D, Lopez R, Letunic I, Madera M, Maslen J, McDowall J, Mitchell A, Nikolskaya AN, Orchard S, Pagni M, Ponting CP, Quevillon E, Selengut J, Sigrist CJ, Silventoinen V, Studholme DJ, Vaughan R, Wu CH. InterPro, progress and status in 2005.
+Nucleic Acids Res. 2005 Jan 1;33(Database issue):D201-5.</small></a>
+<br><br>
+
+<h5><a target="_blank" href="http://www.sanger.ac.uk/Software/Pfam/">PfamA</a></h5>
+PfamA is a large collection of curated multiple sequence alignments covering many common 
+protein domains and families. Many PfamA families are well documented with links to literature, and 
+about a third of them have at least one member with known structure.
+74% of protein sequences have at least one match to PfamA_16.0 with its 7503 alignments (August 2004).
+PfamA gets updated approximately every two to six months.
+We automatically download two versions of the PfamA database: one directly from 
+<a target="_blank" href="ftp://ftp.sanger.ac.uk/pub/databases/Pfam/">ftp://ftp.sanger.ac.uk/pub/databases/Pfam/</a> 
+and one as a part of the CDD database from NCBI. The version directly from Pfam has a version number in its name
+whereas the version from NCBI carries the date when it was downloaded. The original Pfam is generally more up to date 
+and contains more sequences in each alignment than the version from NCBI (for some unkown reason).<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=9399864"><small>Sonnhammer EL, Eddy SR, Birney E, Bateman A, Durbin R. Pfam: multiple sequence alignments and HMM-profiles of protein domains. NAR 1998 26:320.</small></a>
+<br><br>
+
+<h5><a target="_blank" href="http://smart.embl-heidelberg.de/">SMART</a></h5>
+SMART is a database of curated alignments of genetically mobile domains found in signalling, extracellular 
+and chromatin-associated proteins, predominantly in metazoans. These domains 
+are extensively annotated with respect to phyletic distributions, functional class, tertiary structures and 
+functionally important residues. In January 2004 SMART contained 685 alignments.
+We download the SMART database as a part of the CDD database from NCBI and check for updates every week.
+Note that the version at NCBI may get updated only be a few weeks after a new SMART version has been released.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=9847187"><small>Ponting CP, Schultz J, Milpetz F, Bork P. SMART: identification and annotation of domains from signalling and extracellular protein sequences. NAR 1999, 27:229.</small></a>
+<br><br>
+
+<h5><a target="_blank" href="http://www.pantherdb.org/about.jsp">PANTHER</a></h5>
+PANTHER is a large collection of protein families that have been subdivided into functionally 
+related subfamilies, using human expertise. These subfamilies model the divergence of specific 
+functions within protein families, allowing more accurate association with function (human-curated 
+molecular function and biological process classifications and pathway diagrams), as well as inference 
+of amino acids important for functional specificity. Hidden Markov models (HMMs) are built for each 
+family and subfamily for classifying additional protein sequences. Only family alignments are included
+in HHpred.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=15608197"><small>Mi H, Lazareva-Ulitsky B, Loo R, Kejariwal A, Vandergriff J, Rabkin S, Guo N, Muruganujan A, Doremieux O, Campbell MJ, Kitano H, Thomas PD. (2005) The PANTHER database of protein families, subfamilies, functions and pathways. NAR 33:D284-288.</small></a>
+<br><br>
+
+<h5><a target="_blank" href="http://www.tigr.org/TIGRFAMs/index.shtml">TIGRFAMs</a></h5>
+TIGRFAMs is a collection of protein families, featuring curated multiple sequence alignments, 
+hidden Markov models (HMMs) and annotation, which provides a tool for identifying functionally related 
+proteins based on sequence homology. Those entries which are "equivalogs" group homologous proteins which are 
+conserved with respect to function.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=12520025"><small>Haft DH, Selengut JD, White O. (2003) The TIGRFAMs database of protein families. NAR 31:371-373.</small></a>
+<br><br>
+
+<h5><a target="_blank" href="http://pir.georgetown.edu/iproclass/">PIRSF</a></h5>
+The PIRSF protein classification system is a network with multiple levels of sequence diversity from 
+superfamilies to subfamilies that reflects the evolutionary relationship of full-length proteins and domains. 
+The primary PIRSF classification unit is the homeomorphic family, whose members are both homologous (evolved 
+from a common ancestor) and homeomorphic (sharing full-length sequence similarity and a common domain 
+architecture).<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=14681371"><small>Wu CH, Nikolskaya A, Huang H, Yeh LS, Natale DA, Vinayaka CR, Hu ZZ, Mazumder R, Kumar S, Kourtesis P, Ledley RS, Suzek BE, Arminski L, Chen Y, Zhang J, Cardenas JL, Chung S, Castro-Alvear J, Dinkov G, Barker WC. (2004) PIRSF: family classification system at the Protein Information Resource. NAR 32:D112-114.</small></a>
+<br><br>
+
+<h5><a target="_blank" href="http://supfam.mrc-lmb.cam.ac.uk/SUPERFAMILY/">SUPERFAMILY</a></h5>
+SUPERFAMILY is a library of profile hidden Markov models that represent all proteins of known structure. 
+The library is based on the SCOP classification of proteins: each model corresponds to a SCOP domain and aims 
+to represent the entire SCOP superfamily that the domain belongs to. SUPERFAMILY has been used to carry out 
+structural assignments to all completely sequenced genomes.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=11697912"><small>Gough J, Karplus K, Hughey R, Chothia C. (2001) Assignment of Homology to Genome Sequences using a Library of Hidden Markov Models that Represent all Proteins of Known Structure. JMB 313:903-919.</small></a>
+<br><br>
+
+
+<h5><a target="_blank" href="http://www.biochem.ucl.ac.uk/bsm/cath/Gene3D/">CATH/Gene3D</a></h5>
+Gene3D is an alignment database built from sequences of the CATH database. CATH is a database for
+structural classification of protein domains, similar to SCOP. Gene3D describes protein families 
+and domain architectures in complete genomes. Protein families are formed using a Markov clustering 
+algorithm, followed by multi-linkage clustering according to sequence identity. Mapping of predicted 
+structure and sequence domains is undertaken using hidden Markov models libraries representing CATH 
+and Pfam domains. Functional annotation is provided to proteins from multiple resources. Functional 
+prediction and analysis of domain architectures is available from the Gene3D website.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=15608188"><small>Pearl F, Todd A, Sillitoe I, Dibley M, Redfern O, Lewis T, Bennett C, Marsden R, Grant A, Lee D, Akpor A, Maibaum M, Harrison A, Dallman T, Reeves G, Diboun I, Addou S, Lise S, Johnston C, Sillero A, Thornton J, Orengo C. (2005) The CATH Domain Structure Database and related resources Gene3D and DHS provide comprehensive domain family information for genome analysis. NAR 33:D247-D251</small></a>
+<br><br>
+
+
+<h5><a target="_blank" href="http://www.ncbi.nlm.nih.gov/COG/">COG/KOG</a></h5>
+COG/KOG (Clusters of Orthologous Groups of proteins) is a database of alignments of homologous, conserved 
+domains. For the 2003 update, sequences from over 60 completeley sequences prokaryotes (COGs) and 7 completely 
+sequenced euKaryotes (KOGs) were automatically divided into domains. The domain sequences are clustered in such 
+a way that the alignments consist mainly of orthologous proteins from different lineages and paralogous 
+proteins from the same lineage. The COG database is therefore particularly useful for functional annotation.
+But beware: HHpred is very sensitive in detecting distant homologous relationships. Therefore, a significant 
+match with a COG only implies homology, but not necessarily a similar function.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=12969510&dopt=Abstract"><small>Tatusov RL, Fedorova ND, Jackson JD, Jacobs AR, Kiryutin B, Koonin EV, Krylov DM, Mazumder R, Mekhedov SL, Nikolskaya AN, Rao BS, Smirnov S, Sverdlov AV, Vasudevan S, Wolf YI, Yin JJ, Natale DA.
+The COG database: an updated version includes eukaryotes. BMC Bioinformatics. 2003, 4:41.</small></a> 
+<br><br>
+
+<h5><a target="_blank" href="http://www.sanger.ac.uk/Software/Pfam/">PfamB</a></h5>
+<b>Please note: PfamB contains over 14000 unannotated, mainly small and insignificant alignments. To avoid wasting
+time, we recommend to search PfamB only for doing intermediate HMM searching, when you can't find any significant 
+match to an alignment from the other databases.</b>
+PfamB is derived from the <a target="_blank" href="http://prodom.prabi.fr/prodom/current/html/home.php">
+ProDom</a> database by leaving out all parts of alignments which are already covered by PfamA. ProDom in turn 
+is built by clustering homologous sequence segments into alignments through an iterative scheme employing PSI-BLAST.
+PfamB alignments are not annotated, many contain only a few sequences or are quite short, and most represent 
+only parts of domains. To keep the number of HMMs in PfamB reasonable, we include only alignments with at least 
+three sequences of a certain minimum diversity. 
+<br><br>
+
+<!--
+<h5><a target="_blank" href="http://www.bioinfo.biocenter.helsinki.fi:8080/dali/index.html">DALI</a></h5>
+DALI updates are suspended until the beginning of 2005 because the DALI server is being relocated to Helsinki.
+<br><font color=grey>
+The DALI database is similar to SCOP, but is completely automatically generated 
+and therefore has the great advantage over 
+SCOP that it is more up to date, containing all but the newest pdb structures.  
+As SCOP, it is organized hierarchically, but instead of trying to mirror evolutionary history by its 
+hierarchical organization, DALI is based strictly on structural similarity. Each domain is assigned a fold 
+index consisting of six numbers, e.g. 15.1.1.3.1.1. A tree is constructed by average linkage clustering of the 
+structural similarity score. The tree is cut at the six Dali Z-score levels 2, 4, 8, 16, 32 and 64. The first 
+level (Z>2) can be used as an operational definition for protein folds.<br>
+<a target="_blank" href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=9016542"><small>Holm L, Sander C. Dali/FSSP classification of three-dimensional protein folds. NAR 1997, 25:231.</small></a> 
+<br><br></font>
+-->
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="maxpsiblastit"></a>
+<h3 class="<%= @section["name"] %>">Max. number of PSI-BLAST iterations</h3>
+<div class="row">
+This specifies the number of PSI-BLAST iterations that are performed to build up an alignment from the input sequence 
+or input alignment. The iterations stop in any case when no further sequences are found. If you want to use exactly 
+your input alignment choose 0 here. This will ensure that only predicted secondary structure is added to your input 
+alignment. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<div class="row">
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<a name="ss_scoring"></a>
+<h3 class="<%= @section["name"] %>">Score secondary structure</h3>
+<div class="row">
+If you chose "yes", the secondary structure of the query will be predicted with <a target="_blank" 
+href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=pubmed&dopt=Abstract&list_uids=10493868">PSIPRED</a>
+and compared to the actual secondary structure of the database sequences. If the actual structure of the database 
+sequence is unknown, the PSIPRED-predicted secondary structure will be used. To force HHpred to use predicted instead of 
+actual secondary structure, choose "predicted vs predicted only". Scoring the secondary structure similarity
+improves sensitivity and also alignment quality significantly 
+(See figure at <a href="http://<%= DOC_ROOTHOST %>/hhpred/help_ov">"About HHpred"</a>). 
+Since the weight of the secondary structure score is small (15% of the amino acid similarity score), the risk for 
+high-scoring non-homologous matches is still small.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float:
+									  right;"></a></div>
+
+<a name="alignmode"></a>
+<h3 class="<%= @section["name"] %>">Alignment mode</h3>
+<div class="row">
+In local mode, HHpred will use <u>local</u> alignments to score your query sequence with the 
+database sequences. In global mode it uses global alignments with no end gap penalties (sometimes called 
+'global-local' alignments), i.e. the query-template alignments extend up to the beginning and end of the query 
+or template sequence. The use of local mode is strongly recommended if you want to know which are your most likely 
+remote homologs. If you have already identified your template with a previous run in local mode, you can use the global mode 
+to get global alignments with an already identified template. <BR><BR>
+
+HHpred was shown to be significantly more sensitive 
+to detect remote homologs in local than in global mode. The reason is that most remote homologs are really only 
+homologous in a common core that define their superfamily. This core has been adorned by other secondary 
+structure elements in different ways in different families. Also, the statistical evaluation is more error-prone 
+for the global alignment mode, since the negatives score distribution for global alignments does not follow 
+an extreme-value distribution.<BR><BR>
+
+You may generate global alignments and at the same time score alignments with the more sensitive local Viterbi
+alignment by selecting the 'local' option in combination with the option 'Realign with MAC algorithm' and
+setting the 'MAC realignment threshold' to 0.0 (hidden under 'More options').
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="realign"></a>
+<h3 class="<%= @section["name"] %>">Realign with MAC algorithm</h3>
+<div class="row">
+After the search with the standard Viterbi algorithm, this option will cause HHpred to realign all 
+query-template alignments with the more accurate Maximum ACcuracy alignment algorithm. <br><br>
+
+Since for technical reasons the scores, E-values, and probabilities from the Viterbi alignment 
+and NOT the MAC alignment are displayed and used for ranking, the MAC realignment option may lead 
+to high-scoring alignments of length 1. This happens when the MAC algorithm cannot find any 
+acceptable alignment path, which is an indication for a non-homologous relationship.<br><br>
+
+When the MAC realignment option is activated, the 'global' and 'local' 
+options now refer to both the Viterbi search stage as well as the MAC realignment stage. 
+With -global (-local), the posterior probability matrix will be calculated for global (local) 
+alignment. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="E_psiblast"></a>
+<h3 class="<%= @section["name"] %>">E-value threshold for PSI-BLAST</h3>
+<div class="row">
+All PSI-BLAST sequence matches ("hits") with an E-value better than this threshold are included 
+in the alignment for the next PSI-BLAST iteration or, in the last iteration, for building the HMM for HHsearch.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="cov_min"></a>
+<h3 class="<%= @section["name"] %>">Minimum coverage of PSI-BLAST hits</h3>
+<div class="row">
+This parameter controls what percentage of the query residues needs to be covered by the PSI-BLAST hits 
+in order for the hit to be included into the alignment for the next iteration. More precisely, the coverage 
+of a sequence found by PSI-BLAST is defined as the number of residues aligned with the query divided by the 
+length of the query.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="qid_min"></a>
+<h3 class="<%= @section["name"] %>">Minimum sequence identity of PSI-BLAST hits with query</h3>
+<div class="row">
+This parameter controls what percentage of residues from a PSI-BLAST hit needs to be identical
+to their aligned query residues in order for the hit to be included in the PSI-BLAST alignment.
+More precisely, the sequence identity of a PSI-BLAST hit is defined as the number of residues 
+identical with aligned query residues divided by the length of the PSI-BLAST hit.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="mact"></a>
+<h3 class="<%= @section["name"] %>">MAC realignment threshold</h3>
+<div class="row">
+Only active when the 'Realign with MAC algorithm' and the 'local' option is active.
+This parameter controls the MAC alignment algorithm's greediness. More 
+precisely, the MAC algorithm finds the alignment that maximizes the sum of 
+posterior probabilites minus this threshold for each aligned pair. Global alignments 
+are generated with 0, whereas 0.5 will produce quite conservative
+local alignments with average probabilities for each aligned pair of residues above 50%. 
+Default value is 0.3, which produces alignments of roughly the same length as the 
+Viterbi algorithm. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="compbiascorr"></a>
+<h3 class="<%= @section["name"] %>">Compositional bias correction</h3>
+<div class="row">
+When two proteins have a similar, biased amino acid distribution, such as alpha-helical membrane
+proteins, they may look similar because the average score between any random pair of columns may be slighty
+positive. Activating this option will prevent protein pairs from looking similar just because their
+average amino acid distributions are similarly biased. 
+<!-- Technically speaking, activating this option will 
+switch from a neutral sequence Null model to a Null model whose amino acid frequency distribution is 
+the average of query and database proteins.-->
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="maxseq"></a>
+<h3 class="<%= @section["name"] %>">Show representative sequences per HMM</h3>
+<div class="row">
+Setting this to 10, for instance, will generate alignments containing 10 representative sequences
+from both query and template alignments. This can help to get a better feeling for the conservation
+along the alignment. The representative sequences shown are selected for maximum pairwise dissimilarity.
+The maximum value for this parameter is 10.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="width"></a>
+<h3 class="<%= @section["name"] %>">Width of alignments (in columns)</h3>
+<div class="row">
+Number of alignment columns per line in the HMM-HMM alignments. Leave at default value except if your browser
+cuts off parts of the alignment.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="minprobab"></a>
+<h3 class="<%= @section["name"] %>">Minimum probability in hit list</h3>
+<div class="row">
+Only hits above this cut-off probability will be displayed.</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="maxlines"></a>
+<h3 class="<%= @section["name"] %>">Max. number of hits in hit list</h3>
+<div class="row">
+This parameter controls how many matches will be displayed in the results.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="graph"></a>
+<h3 class="<%= @section["name"] %>">Show hits as bar graph</h3>
+<div class="row">
+With this option you can display a bar graph indicating the region in your query protein that is
+covered by the matches. The significance of the hits is color-coded, with most significant hits
+in red (>95% probability) and orange (>85%), then yellow and green (>70%),
+ and finally cyan (>50%) and blue (>40%) for potential true positives hits.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="coloring"></a>
+<h3 class="<%= @section["name"] %>">Coloring query-template multiple alignments in results</h3>
+<div class="row">
+You can choose to color the sequences in the query-template alignments on the results page
+by physico-chemical properties of the amino acids, either by using colored fonts or by background coloring.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+<BR>
+
+<%= render(:partial => "hhpred/references_and_contact") %>

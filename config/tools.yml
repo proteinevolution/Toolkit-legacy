@@ -396,3 +396,18 @@
   - member
   - internal
   - external
+- name: nuc_blast
+  title: NucBlast
+  title_long: test
+  section: search
+  active:
+  - external
+  - internal
+  - member
+- name: hamppred
+  title: HAMPpred
+  title_long: Hamppred - Description needed
+  section: search
+  active: 
+  - developer
+

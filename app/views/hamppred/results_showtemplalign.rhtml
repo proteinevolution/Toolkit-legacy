@@ -1,0 +1,43 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => 'hhshowtemplalign', :title_extra => 'Template Alignment', :resubmit => false}) %>
+
+<%= render(:partial => "shared/resultsections", :locals => {:export_to => 'templalign'}) %>
+
+<%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}) %>
+
+	<div class="row">
+
+ 		<div id="applet">
+                        <applet codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35">
+				<PARAM NAME="label"  value="JalView">
+				<PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.template.fas">
+                        	<param name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
+			</applet> 
+			<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <applet codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35">
+				<PARAM NAME="label"  value="JalView">
+				<PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.template.reduced.fas">
+                        	<param name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
+			</applet>
+			<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
+			
+		</div>
+		<div class="hr">&nbsp;</div>
+
+	  	<input name="submitform" type="submit" class="feedbutton" value="Restart HHpred with this alignment" /> 
+   	<input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
+   	<strong>You may edit the template alignment below and submit it to HHpred&nbsp;&nbsp;</strong>
+   	<br/>
+	</div>
+
+	<div class="spacer">&nbsp;</div>	
+
+
+
+
+	<div class="row">
+		<%= text_area_tag("result_textbox_to_file", @job.render_file(@job.jobid+".alnout"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
+	</div>	
+	
+
+</form>
