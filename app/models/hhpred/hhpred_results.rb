@@ -143,7 +143,7 @@ class HHpredJob  < Job
 	
 	
 	###############################################################
-	# Reformat HHpred output
+	# Reformat HHpred output 
 	
 	# Make array with description of matches, to be used as  html mouse-over titles
 	
