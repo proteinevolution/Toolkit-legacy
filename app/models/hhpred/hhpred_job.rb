@@ -366,7 +366,7 @@ class HhpredJob  < Job
       ###################################################################################################
       # Display links for prediction of coiled coils, TM alpha-helical domains, or TM beta barrels?
       coiled_coil = 0 # coiled coil found?
-      tmbb = 0 #transmembrane beta barrel daomain found?
+      tmbb = 0  # transmembrane beta barrel domain found?
       tma=0     # transmembrane alpha-helical domain found?
       line.each do |a|
         if a =~ /^>/
@@ -392,12 +392,15 @@ class HhpredJob  < Job
           seq = a.chomp!
           break
         end
+        ## Comment this so no automatic coiled Coils Prediction Button fires up
         if coiled_coil != 0
-          @results.push("<div clas=\"row\">\n")
-          url ="#{DOC_ROOTURL}/hhpred/run/#{jobid}?jobaction=hhpred_coils&forward_controller=pcoils&forward_action=forward"
-          @results.push("<input type=\"button\" title=\"Run coiled-coil prediction\" value=\"Run PCOILS\" onclick=\"location.href='#{url}'\">\n")
-          @results.push("<font color=\"purple\">&nbsp;&nbsp;&nbsp;HHpred has detected hits to coiled coil-containing proteins. Press button to run PCOILS prediction on your query</font>\n")
-          @results.push("</div>\n")
+          #@results.push("<div class=\"row\">\n")
+          #@results.push("</div>\n")
+          #@results.push("<br>HHpred has detected coiled coil containing regions, you may consider running PCoils\n ")
+          #url ="#{DOC_ROOTURL}/hhpred/run/#{jobid}?jobaction=hhpred_coils&forward_controller=pcoils&forward_action=forward"
+          #@results.push("<input type=\"button\" title=\"Run coiled-coil prediction\" value=\"Run PCOILS\" onclick=\"location.href='#{url}'\">\n")
+          @results.push("<pre><font color=\"purple\">HHpred has detected hits to coiled coil-containing proteins.<br>You may consider running a PCOILS prediction on your query.<br></font>\n")
+          #@results.push("</div>\n")
 
         end
       end
@@ -406,7 +409,7 @@ class HhpredJob  < Job
 
     end
 
-    @results.push("<pre>#{queryline} \n#{paramline} \n\n")
+    @results.push("<pre>#{queryline} \n#{paramline} \n")
 
 
     ########################################################################################################

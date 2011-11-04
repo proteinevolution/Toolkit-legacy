@@ -61,6 +61,32 @@
 	<div class="hr">&nbsp;</div>
 </div>
 
+
+<!-- PCoils Forwarding is controlled by this snipplet -->
+<div id="pcoils" style="display: none;"> 
+    <input name="hits" id="hits" type="hidden" value=""/>
+    
+    <div class="row">
+        <input name="submitform" type="submit" class="toolbutton" style="width:35%"  align="left" value="Run PCoils with manually selected template(s)" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'pcoils', :forward_action => 'forward',  :increment_id => 'create', :mode => 'create') %>');" >
+
+    </div>
+  <div class="row">
+    
+    
+  </div>
+
+    <div class="row">
+
+        <a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:select_first(10)">Select the best ten</a>
+
+    </div>
+
+</div>
+
+
+
 <div id="mergeali" style="display: none;">
 	<div class="row">
 		<div class="formw">		

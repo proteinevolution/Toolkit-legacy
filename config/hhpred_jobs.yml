@@ -13,6 +13,9 @@ hhpred_job:
       - name: mergeali
         title: Merge Q/T alignments
         title_long: Merge Query/Template Multiple Alignments
+      - name: pcoils
+        title: Forward to PCoils
+        title_long: Forward results to PCoils
     - name: histograms
       title: Histogram
       title_long: Show results in profile histogram view
@@ -23,6 +26,9 @@ hhpred_job:
       - name: mergeali
         title: Merge Q/T alignments
         title_long: Merge Query/Template Multiple Alignments
+      - name: pcoils
+        title: Forward to PCoils
+        title_long: Forward results to PCoils
     - name: showalign
       title: Show query alignment
       title_long: Show or edit the query alignment constructed by HHpred
