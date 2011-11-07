@@ -151,6 +151,19 @@ class ProtBlastJob < Job
     return true
   end
   
+     # Check if one of the selected databases is a Uniprot database
+  def is_uniprot
+      uniprot = 0;
+      if (@header.to_s =~ /SwissProt/)
+        uniprot = 1   
+      end
+      if (@header.to_s =~ /TREMBL/)
+        uniprot = 1   
+      end
+      return uniprot
+  end
+  
+  
   def strip_dbentry(entry)
     if (entry =~ /^(.*)\/(.*)$/)
       name = $2

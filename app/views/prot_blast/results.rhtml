@@ -10,10 +10,26 @@
 <% end %>
 
 <div id="forward" style="display: none;">
-	<div class="row">
-		<%= form_label("Forward results to") %>
-		<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0], 1, "toggle_seqlen('destination');") %>
-	</div>
+
+	   <% if(@job.is_uniprot == 1)%>
+        <div class="row">
+        <%= form_label("Forward results to *") %>
+        <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0], 1, "toggle_seqlen('destination');") %>
+        </div>
+        <div class="row">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  
+                         &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+        <font color="purple">* Forwarding to Blammer is not available for Uniprot databases</font>
+        </div>
+    <% else%>
+        <div class="row">
+        <%= form_label("Forward results to") %>
+        <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0], 1, "toggle_seqlen('destination');") %>
+        </div>
+    <% end%>
+    
+	
+	
+	
     
 	<div class="row">
 		<%= form_label("Select hits to forward") %>

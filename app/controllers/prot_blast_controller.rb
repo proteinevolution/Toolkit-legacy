@@ -11,7 +11,7 @@ class ProtBlastController < ToolController
    		p.gsub!(/\.pal/ ,'') 
    		@std_dbs_paths << p
    end
-	 @std_dbs_paths.uniq!
+    @std_dbs_paths.uniq!
     @std_dbs_paths.sort!
     @std_dbs_labels = @std_dbs_paths.map() {|p| File.basename(p)}
     @matrices = Dir.glob(File.join(BIOPROGS, 'blast', 'data', 'BLOSUM*')).map() {|m| File.basename(m)}
@@ -46,6 +46,13 @@ class ProtBlastController < ToolController
 		  tool_title('mafft'), tool_title('muscle'), tool_title('patsearch'),
 		  tool_title('probcons'), tool_title('psi_blast'), tool_title('quick2_d'),
 		  tool_title('reformat'), tool_title('repper')]
+
+# Test if current Protblast Job is a uniprot Job and remove Blammer tool from @fw_values and @fw_label
+   if(@job.is_uniprot == 1)
+     @fw_values.delete(fw_to_tool_url('prot_blast', 'blammer'))
+     @fw_labels.delete(tool_title('blammer'))
+   end                 
+
 
     @widescreen = true
     @show_graphic_hitlist = true
