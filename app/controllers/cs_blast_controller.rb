@@ -68,7 +68,7 @@ class CsBlastController < ToolController
                  
 # Test if current CSblast Job is a uniprot Job and remove Blammer tool from @fw_values and @fw_label
    if(@job.is_uniprot == 1)
-     @fw_values.delete(fw_to_tool_url('cs_blast', 'blammer')")
+     @fw_values.delete(fw_to_tool_url('cs_blast', 'blammer'))
      @fw_labels.delete(tool_title('blammer'))
    end                 
                       					
