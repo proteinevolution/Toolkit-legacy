@@ -165,6 +165,19 @@ class CsBlastJob < Job
     return entry  
   end
   
+   # Check if one of the selected databases is a Uniprot database
+  def is_uniprot
+      uniprot = 0;
+      if (@header.to_s =~ /SwissProt/)
+        uniprot = 1   
+      end
+      if (@header.to_s =~ /TREMBL/)
+        uniprot = 1   
+      end
+      return uniprot
+  end
+  
+  
   def export
     ret = IO.readlines(File.join(job_dir, jobid + @@export_ext)).join
   end
