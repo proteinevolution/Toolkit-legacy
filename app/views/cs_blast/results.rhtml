@@ -21,7 +21,7 @@
         </div>
     <% else%>
         <div class="row">
-            <<%= form_label("Forward results to") %>
+            <%= form_label("Forward results to") %>
         <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[4], 1, "toggle_seqlen('destination');") %>
         </div>
     <% end%>
