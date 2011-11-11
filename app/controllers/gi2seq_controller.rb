@@ -9,6 +9,8 @@ class Gi2seqController < ToolController
     end
     @std_dbs_paths.uniq!
     @std_dbs_paths.sort!
+    ## Order up Standard databases that shall be displayed on top
+    @std_dbs_paths = order_std_dbs(@std_dbs_paths)
     @std_dbs_labels = @std_dbs_paths.map() {|p| (File.basename(p))}
 
     @gi = params['gi'] ? params['gi'] : ""

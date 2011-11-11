@@ -43,12 +43,15 @@ class ToolController < ApplicationController
   def run
     # Allgemeines param-Feld setzen (für resubmit, usw...)
     params['reviewing'] = true
-
+    logger.debug  " -> Running current Application"
     job = Job.find(:first, :conditions => [ "jobid = ?", params[:job]])
     if (job.nil?)
+      logger.debug "Job has not yet been initialized, creating new id"
       job = Object.const_get(params[:job].to_cc+"Job").create(params, @user)
+      logger.debug "Created new Job .... "
       if (job.config['hidden'] == false && @jobs_cart.index(job.jobid).nil?)
       	@jobs_cart.push(job.jobid) 
+        logger.debug "Pushing Job into Job Cart : "+job.jobid.to_s
       end
       
       # write statistics
@@ -165,6 +168,7 @@ class ToolController < ApplicationController
     render(:action => 'index')
   end
   
+  
   def resubmit
     logger.debug "Resubmit!"
     job_params = @job.actions.first.params
@@ -236,6 +240,32 @@ class ToolController < ApplicationController
   
   def tool_title(tool)
       @tools_hash[tool]['title']
+  end
+  
+  ######
+  # Workaround to modify our std dbs 
+  # Add the databases to rank up on list 
+  # dbs : the dbs found by searching the Standard db directory
+  #
+  # order_up_dbs : Array of DBs (only names) that shall be ordered up 
+  # default : Uniprot, nr70, nr90, nr  
+  ######
+  def order_std_dbs(dbs, order_up_dbs = nil)
+    if order_up_dbs == nil
+      order_up_dbs =["uniprot", "nr70","nr90", "nr"]
+    end
+    order_up_dbs.each do |dbshort|
+      dbs.each do |value|
+         if File.basename(value) == dbshort
+          dbs = dbs -[value]
+          dbs = [value] + dbs
+        end
+      end
+    end
+   
+    
+    return dbs
+    
   end
   
   def fw_to_tool_url(from, to)

@@ -6,6 +6,8 @@ class ClansController < ToolController
     @std_dbs_paths = Dir.glob(File.join(DATABASES, 'standard', '*.pal')).map() {|p| p.gsub(/\.pal/ ,'')}
     @std_dbs_paths.uniq!
     @std_dbs_paths.sort!
+     ## Order up Standard databases that shall be displayed on top
+    @std_dbs_paths = order_std_dbs(@std_dbs_paths)
     @std_dbs_labels = @std_dbs_paths.map() {|p| File.basename(p)}
     @matrices = Dir.glob(File.join(BIOPROGS, 'blast', 'data', 'BLOSUM*')).map() {|m| File.basename(m)}
     @matrices.concat Dir.glob(File.join(BIOPROGS, 'blast', 'data', 'PAM*')).map() {|m| File.basename(m)}
