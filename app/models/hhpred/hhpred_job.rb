@@ -455,8 +455,8 @@ class HhpredJob  < Job
           pfamid = template
           pfamid.sub!(/^pfam/, "PF")
           #link to PFAM domain family?acc=
+          descr[m] = descr[m].gsub(/[><=;]/," - ")
           line[b].sub!(/#{template}/, "<a href=\"http:\/\/pfam.sanger.ac.uk\/family?acc=#{pfamid}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
-
           # PRODOM identifier? (PD012345)
         elsif  template =~ /^PD\d{6}/
           # link to PRODOM domain
