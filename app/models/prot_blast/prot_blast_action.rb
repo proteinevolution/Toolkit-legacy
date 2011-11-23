@@ -132,7 +132,7 @@ def check_GI
         #check_GI
     #end
     # TEST if this reformats our wrecked input 
-    @commands << "#{UTILS}/reformat.pl -f=#{@infile} -a=#{@infile} -i=fas -o=fas &> #{@infile}.reform_log " 
+    @commands << "#{UTILS}/reformat_protblast.pl -f=#{@infile} -a=#{@infile} -i=fas -o=fas &> #{@infile}.reform_log " 
     @commands << "echo 'Starting BLAST search!' &> #{job.statuslog_path}"
     @commands << "#{BLAST}/#{@program} -i #{@infile} -e #{@expect} -F #{@filter} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} #{@ungapped_alignment} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} >>#{job.statuslog_path}"
     @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
