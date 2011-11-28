@@ -24,7 +24,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @dbvalues = Array.new
     
     # Sort list of directories according to order given in sortlist 
-    sortlist = Array["\/pdb70"]
+    sortlist = Array["\/hamppred"]
     # Allow non-standard libraries only on internal server:
     if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
     if (LOCATION == "Munich" && !@user.nil? && (@user.id == 119 || @user.groups.include?('admin'))) then sortlist.push("\/Proteasome") end
