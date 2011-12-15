@@ -2,10 +2,11 @@
 	<li><a href="#input">Paste sequence or multiple alignment</a></li>
 	<li><a href="#format">Select input format</a></li>
 	<li><a href="#databases">Select HMM databases</a></li>
-	<li><a href="#maxpsiblastit">Max. number of PSI-BLAST iterations</a></li>
-	<li><a href="#E_psiblast">E-value threshold for PSI-BLAST</a></li>
-	<li><a href="#cov_min">Min. coverage of PSI-BLAST hits</a></li>
-	<li><a href="#qid_min">Min. sequence identity of PSI-BLAST hits with query</a></li>
+	<li><a href="#prefilter">MSA Generation Method</a></li>
+	<li><a href="#maxhhblitsit">Max. MSA Generation iterations</a></li>
+	<li><a href="#Ehhblitsval">E-value threshold for MSA Generation</a></li>
+	<li><a href="#cov_min">Min. coverage of MSA hits</a></li>
+	<li><a href="#qid_min">Min. sequence identity of MSA hits with query</a></li>
 	<li><a href="#ss_scoring">Score secondary structure</a></li>
 	<li><a href="#alignmode">Alignment mode</a></li>
 	<li><a href="#maxseq">Show representative sequences per HMM</a></li>
@@ -451,18 +452,29 @@ level (Z>2) can be used as an operational definition for protein folds.<br>
 -->
 
 </div>
+
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
-<a name="maxpsiblastit"></a>
-<h3 class="<%= @section["name"] %>">Max. number of PSI-BLAST iterations</h3>
+<a name="prefilter"></a>
+<h3 class="<%= @section["name"] %>">MSA Generation Method</h3>
 <div class="row">
-This specifies the number of PSI-BLAST iterations that are performed to build up an alignment from the input sequence 
+This option sets the Multiple Sequence Alignment Generation method used by HHpred. Detailed information on the methods can be 
+found here: <br>
+HHBlits   :  <a target="_blank" href="http://www.soeding.genzentrum.lmu.de/assets/Uploads/Preprint-2011-HHblits-inkl-Suppl2.pdf ">Download pdf file</a><br> 
+PSI-Blast :  <a target="_blank" href="http://www.ncbi.nlm.nih.gov/pubmed/9254694">View Article</a><br> 
+
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+
+<a name="maxhhblitsit"></a>
+<h3 class="<%= @section["name"] %>">Max. MSA Generation iterations</h3>
+<div class="row">
+This specifies the number of iterations performed by the MSA generation algorithm, to build up an alignment from the input sequence 
 or input alignment. The iterations stop in any case when no further sequences are found. If you want to use exactly 
 your input alignment choose 0 here. This will ensure that only predicted secondary structure is added to your input 
 alignment. 
 </div>
-<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
-
 <div class="row">
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
@@ -526,7 +538,7 @@ alignment.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
-<a name="E_psiblast"></a>
+<a name="Ehhblitsval"></a>
 <h3 class="<%= @section["name"] %>">E-value threshold for PSI-BLAST</h3>
 <div class="row">
 All PSI-BLAST sequence matches ("hits") with an E-value better than this threshold are included 
@@ -535,21 +547,21 @@ in the alignment for the next PSI-BLAST iteration or, in the last iteration, for
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 <a name="cov_min"></a>
-<h3 class="<%= @section["name"] %>">Minimum coverage of PSI-BLAST hits</h3>
+<h3 class="<%= @section["name"] %>">Minimum coverage of MSA hits</h3>
 <div class="row">
-This parameter controls what percentage of the query residues needs to be covered by the PSI-BLAST hits 
+This parameter controls what percentage of the query residues needs to be covered by the hits of the MSA algorithm 
 in order for the hit to be included into the alignment for the next iteration. More precisely, the coverage 
-of a sequence found by PSI-BLAST is defined as the number of residues aligned with the query divided by the 
+of a sequence found by the MSA algorithm is defined as the number of residues aligned with the query divided by the 
 length of the query.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 <a name="qid_min"></a>
-<h3 class="<%= @section["name"] %>">Minimum sequence identity of PSI-BLAST hits with query</h3>
+<h3 class="<%= @section["name"] %>">Minimum sequence identity of MSA hits with query</h3>
 <div class="row">
-This parameter controls what percentage of residues from a PSI-BLAST hit needs to be identical
+This parameter controls what percentage of residues from a hit of the MSA algorithm needs to be identical
 to their aligned query residues in order for the hit to be included in the PSI-BLAST alignment.
-More precisely, the sequence identity of a PSI-BLAST hit is defined as the number of residues 
+More precisely, the sequence identity of a hit by the MSA algorithm is defined as the number of residues 
 identical with aligned query residues divided by the length of the PSI-BLAST hit.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
