@@ -1,6 +1,13 @@
 <div title="<%= title_helper %>" class="form">
   <%= head_helper %>
 
+<script type="text/javascript">
+<!--
+onload = function () {
+	$('user_login').focus();
+	}
+// -->
+</script>
   <div class="form-padding">
     <% form_tag_helper do %>
 
@@ -11,7 +18,7 @@
         <%= form_input :text_field, "login", :size => 30 %><br/>
         <%= form_input :password_field, "password", :size => 30 %><br/>
       </table>
-      
+	  
       	<br/>
 
       <div class="button-bar">
