@@ -105,6 +105,25 @@ class HhblitsController < ToolController
     end
   end
 
+  def fullalign
+    @widescreen = true
+    @resfile = @job.jobid+".full.fas"
+    @mode = params['mode'] ? params['mode'] : "a3m"
+    if (@mode == "a3m")
+      @resfile = @job.jobid+"_out.a3m"
+    end
+  end
+
+  def reducedalign
+    @widescreen = true
+    @resfile = @job.jobid+".reduced.fas"
+  end
+
+  def representativealign
+    @widescreen = true
+    @resfile = @job.jobid+".fas"
+  end
+
   def results_showtemplalign
     @job.actions.last.active = false
     @job.actions.last.save!
