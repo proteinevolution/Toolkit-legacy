@@ -25,7 +25,8 @@ class HhblitsAction < Action
   
   validates_format_of(:width, :Pmin, :maxlines, {:with => /^\d+$/, :on => :create, :message => 'Invalid value! Only integer values are allowed!'}) 
 
-  
+ 
+ 
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)
     @infile = @basename+".in"    
@@ -109,6 +110,7 @@ class HhblitsAction < Action
     
     # Generate a full blown Fasta File for complete Jalview !
     @commands << "#{HH}/reformat.pl a3m fas #{@basename}_out.a3m #{@basename}.full.fas "
+    
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.reduced.fas #{@basename}.uc.fas -uc -r"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.uc.fas -o #{@basename}.j.fas"
     
