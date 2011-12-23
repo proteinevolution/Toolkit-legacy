@@ -74,7 +74,7 @@ class HhblitsAction < Action
     @commands << "#{HH}/hhfilter -i #{@a3m_outfile} -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 100"
     @commands << "#{HH}/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description 
     
-    # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
+    # Reformat query into fasta format (reduced alignment)  
     @commands << "#{HH}/hhfilter -i #{@a3m_outfile} -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 50"
     @commands << "#{HH}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas"
     
@@ -107,6 +107,8 @@ class HhblitsAction < Action
 
     prepare_fasta_hhviz_histograms_etc    
     
+    # Generate a full blown Fasta File for complete Jalview !
+    @commands << "#{HH}/reformat.pl a3m fas #{@basename}_out.a3m #{@basename}.full.fas "
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.reduced.fas #{@basename}.uc.fas -uc -r"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.uc.fas -o #{@basename}.j.fas"
     
