@@ -17,8 +17,12 @@ hhblits_job:
       - name: forward
         title: Forward
         title_long: Forward results
-    - name: showalign
-      title: Show alignment
-      title_long: Show alignment constructed by HHblast
-      forwardsections:
-      
+    - name: reducedalign
+      title: Reduced alignment
+      title_long: Show reduced alignment
+    - name: representativealign
+      title: Representative alignment
+      title_long: Show representative alignment
+    - name: fullalign
+      title: Full alignment
+      title_long: Show full alignment

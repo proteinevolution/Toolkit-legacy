@@ -1,0 +1,32 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => 'Show/Edit Alignment'}) %>
+
+<%= render(:partial => "shared/resultsections", :locals => {:export_to => 'align'}) %>
+
+<%= form_tag({:action => :run, :jobaction => 'hhblits_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}) %>
+
+<div class="row">
+
+  <div id="applet">
+    <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
+        <PARAM NAME="label"  value="JalView">
+        <PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.reduced.fas">
+        <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
+    </APPLET>
+    <br>
+    <strong><span style="position: relative;"><a href="#" onclick="openHelpWindow('/hhblits/help_results#alignment');" style="font-weight:normal;">Reduced alignment: 50 most distinct sequences without inserts in Fasta format</a></span></strong>
+
+  </div>
+  
+  <div class="hr">&nbsp;</div>
+
+</div>
+
+
+
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+  <%= text_area_tag("result_textbox_to_file", @job.render_file(@resfile), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
+</div>
+
+</form>

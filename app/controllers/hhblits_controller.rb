@@ -18,7 +18,7 @@ class HhblitsController < ToolController
     @dbvalues = Array.new
     @dblabels = Array.new
 
-    sortlist = Array["uniprot", "nr", "pdb", "scop"]
+    sortlist = Array["uniprot", "nr", "pdb", "scop", "pfam"]
     # Allow non-standard libraries only on internal server:
     if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
     sortlist.each do |el|
@@ -97,6 +97,25 @@ class HhblitsController < ToolController
     if (@mode == "a3m")
       @resfile = @job.jobid+"_out.a3m"
     end
+  end
+
+  def fullalign
+    @widescreen = true
+    @resfile = @job.jobid+".full.fas"
+    @mode = params['mode'] ? params['mode'] : "a3m"
+    if (@mode == "a3m")
+      @resfile = @job.jobid+"_out.a3m"
+    end
+  end
+
+  def reducedalign
+    @widescreen = true
+    @resfile = @job.jobid+".reduced.fas"
+  end
+
+  def representativealign
+    @widescreen = true
+    @resfile = @job.jobid+".fas"
   end
 
   def results_showtemplalign
