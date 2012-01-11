@@ -20,7 +20,7 @@ memcache_options = {
 memcache_servers = [ '127.0.0.1:11211' ]
 
 #global settings
-TOOLKIT_RELEASE = '2.14.1'
+TOOLKIT_RELEASE = '2.17.0'
 DOC_ROOTURL     = 'http://' + DOC_ROOTHOST
 BIOPROGS        = TOOLKIT_ROOT+'/bioprogs'
 TMP             = TOOLKIT_ROOT+'/tmp/'+RAILS_ENV
@@ -29,6 +29,7 @@ DATABASES       = TOOLKIT_ROOT+'/databases'
 CONFIG          = TOOLKIT_ROOT+'/config'
 LIB             = TOOLKIT_ROOT+'/lib'
 IMAGES          = TOOLKIT_ROOT+'/public/images'
+HHLIB           = TOOLKIT_ROOT+'/bioprogs/hhsuite'
 
 #queue status identifiers
 STATUS_INIT    = 'i'
@@ -58,9 +59,10 @@ Rails::Initializer.run do |config|
     end
   end
 
-  config.load_paths += %W( #{RAILS_ROOT}/lib/modules )
+  config.load_paths += %W( #{RAILS_ROOT}/app/modules )
 
   ENV['TK_ROOT'] = (Pathname.new(RAILS_ROOT)).realpath
+
 
   #config.load_paths += %W( #{RAILS_ROOT}/app/models/prot_blast )
 
@@ -137,3 +139,9 @@ ActionMailer::Base.smtp_settings = {
   :port    => MAIL_PORT,
   :domain  => MAIL_DOMAIN
 }
+
+class Logger
+  def format_message(severity, timestamp, progname, msg)
+    "#{timestamp} (#{$$}) #{msg}\n"
+  end
+end
