@@ -59,7 +59,7 @@ Rails::Initializer.run do |config|
     end
   end
 
-  config.load_paths += %W( #{RAILS_ROOT}/app/modules )
+  config.load_paths += %W( #{RAILS_ROOT}/lib/modules )
 
   ENV['TK_ROOT'] = (Pathname.new(RAILS_ROOT)).realpath
 
