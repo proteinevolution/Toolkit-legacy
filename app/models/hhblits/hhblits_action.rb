@@ -1,5 +1,6 @@
 class HhblitsAction < Action
   HHBLITS = File.join(BIOPROGS, 'hhblits')
+  HHSUITE = File.join(BIOPROGS, 'hhsuite')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   HH = File.join(BIOPROGS, 'hhpred')
   PERL = File.join(BIOPROGS, 'perl');
@@ -94,15 +95,16 @@ class HhblitsAction < Action
     @commands << "#{HH}/reformat.pl -r a3m fas #{@basename}.in #{@basename}.ms.fas "
     
     # Generate jalview MS Alignment
-      @commands << "#{PERL}/masterslave_alignment.pl -q #{@basename}.ms.fas  -hhr #{@basename}.hhr -o #{@basename}.ms.out  &> /dev/null"
+    @commands << "#{PERL}/masterslave_alignment.pl -q #{@basename}.ms.fas  -hhr #{@basename}.hhr -o #{@basename}.ms.out  &> /dev/null"
    
     
   end  
   
   def perform
     params_dump
+    @commands << "export  HHLIB=#{HHLIB} "
     
-    @commands << "#{HHBLITS}/hhblits -cpu 8 -v #{@v} -i #{@infile} -d #{@db} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile} -M #{@match_modus} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
+    @commands << "#{HHSUITE}/hhblits -cpu 8 -v #{@v} -i #{@infile} -d #{@db} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile} -M #{@match_modus} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
 
     @commands << "#{HHBLITS}/addss.pl #{@a3m_outfile}"
 
