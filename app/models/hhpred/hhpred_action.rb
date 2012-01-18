@@ -2,7 +2,7 @@ class HhpredAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
   HHBLITS = File.join(BIOPROGS, 'hhblits')
   HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
-  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/scripts')
+  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   CSBLAST = File.join(BIOPROGS, 'csblast')
