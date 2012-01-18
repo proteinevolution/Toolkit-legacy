@@ -29,7 +29,7 @@ DATABASES       = TOOLKIT_ROOT+'/databases'
 CONFIG          = TOOLKIT_ROOT+'/config'
 LIB             = TOOLKIT_ROOT+'/lib'
 IMAGES          = TOOLKIT_ROOT+'/public/images'
-HHLIB           = TOOLKIT_ROOT+'/bioprogs/hhsuite'
+HHLIB           = TOOLKIT_ROOT+'/bioprogs/hhsuite/lib/hh'
 
 #queue status identifiers
 STATUS_INIT    = 'i'
