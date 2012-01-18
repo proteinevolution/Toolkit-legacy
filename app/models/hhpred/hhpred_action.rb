@@ -218,7 +218,7 @@ class HhpredAction < Action
               @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -o /dev/null -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.5 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
           end
       end
-      @commands << "#{HHSUITE}/addss.pl #{@basename}.a3m"
+      @commands << "#{HHSUITELIB}/addss.pl #{@basename}.a3m"
 
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
