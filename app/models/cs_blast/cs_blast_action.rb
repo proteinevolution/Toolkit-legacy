@@ -15,6 +15,8 @@ class CsBlastAction < Action
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   CSBLAST = File.join(BIOPROGS, 'csblast')
   CSDB = File.join(DATABASES, 'csblast')
+  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
+  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
 
   include GenomesModule
     
@@ -233,6 +235,9 @@ class CsBlastAction < Action
     
     ### KEEPING FORMER ROUNDS
     #@commands << "cp #{@outfile} #{@outfile}.former"  
+    # Export variable needed for HHSuite
+    @commands << "export  HHLIB=#{HHLIB} "
+    @commands << "export  PATH=$PATH:#{HHSUITE}" 
     
     # cmd for blast run 
     @commands << "echo 'Starting BLAST search' &> #{job.statuslog_path}"
