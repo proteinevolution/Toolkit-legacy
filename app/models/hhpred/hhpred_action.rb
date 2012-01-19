@@ -199,7 +199,7 @@ class HhpredAction < Action
     params_dump
     # Export variable needed for HHSuite
     @commands << "export  HHLIB=#{HHLIB} "
-
+    @commands << "export  PATH=$PATH:#{HHSUITE} "
      # Create a fasta File later on used for the domain resubmission of the results
      @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a2m #{@seqfile} #{@basename}.resub_domain.a2m"
 
