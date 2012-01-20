@@ -49,9 +49,10 @@
         <%end%>
         
         <%if (giinfo.tag =~/Gram-negative/)%>
-          <%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", gi_subloc])%>
+          <%subloc=Clubresultsgicomment.find(:first, :conditions => ["gi=?", gi_subloc])%>
           <%if subloc%>
-            <%clst=Clubclstprediction.find(:first, :conditions => ["cluster=?", subloc.cluster])%>
+            <%cluster_name=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", subloc.gi])%>
+            <%clst=Clubclstprediction.find(:first, :conditions => ["cluster=?", cluster_name.cluster])%>
             <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=clst.cluster%>'><%=clst.cluster%></A></TD>
             <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi_subloc%>'><%=gi_subloc%></A></TD>
             <TD><%=giinfo.header%> </TD>

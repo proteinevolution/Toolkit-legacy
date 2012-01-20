@@ -19,10 +19,10 @@
 <h3 class="<%= @section["name"] %>">BLAST search</h3>
         <div>
  	        <%= form_label("Select database", "database") %>
-        	<%= form_select_single("database", %w(Archaea Gram-negative), %w(Archaea Gram-negative), 'Gram-negative') %>
+        	<%= form_select_single("database", %w(Archaea Gram-negative-607), %w(Archaea Gram-negative-607), 'Gram-negative-607') %>
         </div>
 	<div class="row">
-		<%= form_label("Input protein sequence(s) <BR> (max. 100 sequences)", "input") %>
+		<%= form_label("Input protein sequence(s) <BR> (max. 200 sequences)", "input") %>
 		<%= form_text_area("sequence_input") %>
 	</div>
 	<div class="spacer">&nbsp;</div>

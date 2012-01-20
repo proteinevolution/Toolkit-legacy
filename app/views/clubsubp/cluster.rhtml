@@ -93,7 +93,7 @@
    
     <%$tag='Gram-negative'%>
     <%@gis=Array.new%>
-    <%Clubgiprediction.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
+    <%Clubproteinheaderinfo.find(:all, :conditions => ["cluster=? AND tag=?", @name, $tag]).each do |cluster_name|%>
     <%@gis.push(cluster_name.gi)%>
     <%end%>
 
@@ -103,7 +103,7 @@
         <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi_pred%>'><%=gi_pred%></A></TD>
         <TD><%=protein.header%></TD>
         <TD><%=protein.organism%></TD>
-	<%clst=Clubgiprediction.find(:first, :conditions => ["gi=?", gi_pred])%>
+	<%clst=Clubresultsgicomment.find(:first, :conditions => ["gi=?", gi_pred])%>
 	<TD><%=clst.subloc%></TD>
       </TR>
     <%end%>

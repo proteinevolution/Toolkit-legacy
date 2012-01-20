@@ -27,7 +27,7 @@
     </TR>
     <TR>
       <TD><B>Protein subcellular localization (SCL)</B></TD>
-      <TD><B><%subloc=Clubgiprediction.find(:first, :conditions => ["gi=?", protein.gi])%><%=subloc.subloc%></B></TD>
+      <TD><B><%subloc=Clubresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%><%=subloc.subloc%></B></TD>
     </TR>
   </TABLE><BR>
 
@@ -41,7 +41,7 @@
           <%=tax_tree.superkingdom %><BR/>
           <%=tax_tree.phylum %><BR/>
           <%=tax_tree.taxclass %><BR/>
-          <%=tax_tree.order %><BR/>
+          <%=tax_tree.taxorder %><BR/>
           <%=tax_tree.family %><BR/>
         </TD>  
       </TR>
@@ -69,6 +69,7 @@
               <TD><FONT COLOR='white'>TAT signal peptide</TD>
               <TD><FONT COLOR='white'>General signal peptide</TD>
               <TD><FONT COLOR='white'>TypeIII signal peptide</TD>
+              <TD><FONT COLOR='white'>TypeIV signal peptide</TD>
               <TD><FONT COLOR='white'>Consensus prediction</TD>
               <TD><FONT COLOR='white'>Consensus SP cleavage site</TD>
             </TR>
@@ -77,6 +78,7 @@
               <TD><%=spprediction.tatsp%></TD>
               <TD><%=spprediction.generalsp%></TD>
               <TD><%=spprediction.type3%></TD>
+              <TD><%=spprediction.type4%></TD>
               <TD><%=spprediction.sp%></TD>
               <TD><%=spprediction.consensus_cs%></TD>
             </TR>
@@ -140,59 +142,75 @@
               <TR bgcolor='white'><TD colspan='13'><BR></TD></TR>
               <TR bgcolor='#CCCCCC'>
                 <TD rowspan='4'  bgcolor='#A68B94'><B>General SP</B></TD>
-                <TD colspan='8'><B>SignalP 3.0</B></TD>
-                <TD colspan='2' rowspan='2'><B>PrediSi server</B></TD>
-                <TD colspan='2' rowspan='2'><B>Phobius</B></TD>
+                <TD colspan='12'><B>SignalP 3.0</B></TD>
               </TR>
               <TR bgcolor='#CCCCCC'>
-                <TD colspan='4'><B>SignalP-NN</B></TD>
-                <TD colspan='4'><B>SignalP-HMM</B></TD>
+                <TD colspan='6'><B>SignalP-NN</B></TD>
+                <TD colspan='6'><B>SignalP-HMM</B></TD>
               </TR>
               <TR bgcolor='#E8E8E8'>
                 <TD>Prediction</TD>
 <!--            <TD>MaxYscore</TD> -->
-                <TD>MaxD score</TD>  
+                <TD colspan='2'>MaxD score</TD>
                 <TD colspan='2'>Signal peptide ends</TD>
-                <TD>Prediction</TD>
-                <TD>Cleavage site probability</TD>
-                <TD>Signal peptide probability</TD>
-                <TD>Signal peptide ends</TD>
-                <TD>Signal peptide</TD>
-                <TD>Cleavage site</TD>
-                <TD>Signal peptide</TD>
-                <TD>Signal peptide ends</TD>
+                <TD colspan='2'>Prediction</TD>
+                <TD colspan='2'>Cleavage site probability</TD>
+                <TD colspan='2'>Signal peptide probability</TD>
+                <TD colspan='2'>Signal peptide ends</TD>
               </TR>
               <TR bgcolor='#F7ECD5'>
                 <TD><%=metascl.signalpnnprediction%></TD>
 <!--            <TD><%=metascl.signalpnnmaxyvalue%></TD> -->
-                <TD><%=metascl.signalpnn_maxdvalue%></TD>
+                <TD colspan='2'><%=metascl.signalpnn_maxdvalue%></TD>
                 <TD colspan='2'><%=metascl.signalpnnspends%></TD>
-                <TD><%=metascl.signalphmm_prediction%></TD>
-                <TD><%=metascl.signalphmmcsprob%></TD>
-                <TD><%=metascl.signalphmmprob%></TD>
-                <TD><%=metascl.signalphmm_spends%></TD>
-                <TD><%=metascl.predisi_signalpeptide%></TD>
-                <TD><%=metascl.prediscleavagesite%></TD>
-                <TD><%=metascl.phobiussp%></TD>
-                <TD><%=metascl.phobiusspends%></TD>
+                <TD colspan='2'><%=metascl.signalphmm_prediction%></TD>
+                <TD colspan='2'><%=metascl.signalphmmcsprob%></TD>
+                <TD colspan='2'><%=metascl.signalphmmprob%></TD>
+                <TD colspan='2'><%=metascl.signalphmm_spends%></TD>
               </TR>
               <TR bgcolor='white'><TD colspan='13'><BR></TD></TR>
               <TR bgcolor='#CCCCCC'>
-                <TD rowspan='3' bgcolor='#A68B94'><B>T3SS SP</B></TD>
-                <TD colspan='6'><B>EffectiveT3</B></TD>
-                <TD colspan='6'><B>T3SS_Prediction</B></TD>
+                <TD rowspan='3'  bgcolor='#A68B94'><B>General SP</B></TD>
+                <TD colspan='4'><B>PrediSi server</B></TD>
+                <TD colspan='4'><B>Phobius</B></TD>
+                <TD colspan='4'><B>RPSP</B></TD>
               </TR>
               <TR bgcolor='#E8E8E8'>
-                <TD colspan='3'>Score</TD>
-                <TD colspan='3'>Prediction</TD>
-                <TD colspan='3'>Score</TD>
-                <TD colspan='3'>Prediction</TD>
+                <TD colspan='2'>Signal peptide</TD>
+                <TD colspan='2'>Cleavage site</TD>
+                <TD colspan='2'>Signal peptide</TD>
+                <TD colspan='2'>Signal peptide ends</TD>
+                <TD colspan='2'>Signal peptide</TD>
+                <TD colspan='2'>Signal peptide ends</TD>
               </TR>
               <TR bgcolor='#F7ECD5'>
-                <TD colspan='3'><%=metascl.effectivet3_score%></TD>
-                <TD colspan='3'><%=metascl.effectivet3_prediction%></TD>
-                <TD colspan='3'><%=metascl.t3sspredictions_output%></TD>
-                <TD colspan='3'><%=metascl.t3ssprediction%></TD>
+                <TD colspan='2'><%=metascl.predisi_signalpeptide%></TD>
+                <TD colspan='2'><%=metascl.prediscleavagesite%></TD>
+                <TD colspan='2'><%=metascl.phobiussp%></TD>
+                <TD colspan='2'><%=metascl.phobiusspends%></TD>
+                <TD colspan='2'><%=metascl.rpsp_pred%></TD>
+                <TD colspan='2'><%=metascl.rpsp_cs_site%></TD>
+              </TR>
+              <TR bgcolor='white'><TD colspan='13'><BR></TD></TR>
+              <TR bgcolor='#CCCCCC'>
+                <TD rowspan='3' bgcolor='#A68B94'><B>T3SS & T4SS SP</B></TD>
+                <TD colspan='4'><B>EffectiveT3</B></TD>
+                <TD colspan='4'><B>T3SS_Prediction</B></TD>
+                <TD colspan='4'><B>PilFind - T4SS SP</B></TD>
+              </TR>
+              <TR bgcolor='#E8E8E8'>
+                <TD colspan='2'>Score</TD>
+                <TD colspan='2'>Prediction</TD>
+                <TD colspan='2'>Score</TD>
+                <TD colspan='2'>Prediction</TD>
+                <TD colspan='4'>Prediction</TD>
+              </TR>
+              <TR bgcolor='#F7ECD5'>
+                <TD colspan='2'><%=metascl.effectivet3_score%></TD>
+                <TD colspan='2'><%=metascl.effectivet3_prediction%></TD>
+                <TD colspan='2'><%=metascl.t3sspredictions_output%></TD>
+                <TD colspan='2'><%=metascl.t3ssprediction%></TD>
+                <TD colspan='4'><%=metascl.pilfind_pred%></TD>
               </TR>
             </TABLE>
           </DIV>
@@ -237,16 +255,30 @@
   <TABLE  width='100%' style='text-align:center;'>
       <TR bgcolor='#CCCCCC' height='20px'>
         <TH rowspan='2'  width='15%' style='text-align:center;'  bgcolor='#A68B94'><B>Extracellular</B></TH>
-        <TD ><B>PSORTb v.3.0.2 Extracellular Score</B></TD>
+        <TD ><B>PSORTb Extracellular prediction</B></TD>
         <TD ><B>Type III signal peptide</B></TD>
+        <TD ><B>Type IV signal peptide</B></TD>
       </TR>
       <TR bgcolor='#F7ECD5'>
-        <TD><%=omp_display.psortbextracellular%></TD>
+
+        <%if(omp_display.psortbfinalscl=~/Extracellular/)%>
+	  <TD>Yes</TD>
+	<%else%>
+          <TD>No</TD>
+        <%end%>
+
         <%if(gi_comment.sp=~/Type3/)%>
           <TD>Yes</TD>
         <%else%>
           <TD>No</TD>
         <%end%>
+
+        <%if(gi_comment.sp=~/Type4/)%>
+          <TD>Yes</TD>
+        <%else%>
+          <TD>No</TD>
+        <%end%>
+
       </TR>
     </TABLE>
     </BR>

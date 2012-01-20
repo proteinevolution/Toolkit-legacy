@@ -11,7 +11,7 @@ ClubSub-P combines the most powerful SCL prediction tools available today into a
 Proteins are then clustered according to their sequence identity and sequenc overage. 
 From the SCLs of all proteins in a cluster, a consensus SCL is computed and assigned to previously un-annotated proteins. 
 In addition, false positive and false negative results from the single predictions can be identified using the consensus prediction. 
-To achieve this 157 Gram-negative bacterial proteomes and 67 Archaeal proteomes were clustered separately and N-terminal signal peptide and secondary structural features were predicted<P></BR>
+To achieve this 607 Gram-negative bacterial proteomes and 65 Archaeal proteomes were clustered separately and N-terminal signal peptide and secondary structural features were predicted<P></BR>
 
 <P>The quality of secretory signal peptide predictions not only depends on the tools, but also on the quality of the input sequences. There are instances 
 where the start codon is mis-predicted, which can lead to a false positive or false negative signal peptide prediction, thus to a wrong SCL annotation.</P></BR>
@@ -25,9 +25,9 @@ identity and 80% coverage cutoffs to the longest representative sequence in the 
 The CD-HIT user guide can be found <A href="http://weizhong-lab.ucsd.edu/cd-hit/wiki/doku.php?id=cd-hit_user_guide" target="_blank">here</A>
 The clustering parameters used in the command line were<BR/><BR/>
 
-	<CENTER><FONT FACE="monospace">cdhit -i  157_proteomes -o clustered_157_proteomes -c 0.4 -n 2 -G 0 -s 0.8 -aL 0.8 -B 1 -g 1</FONT></CENTER>
+	<CENTER><FONT FACE="monospace">cdhit -i  proteomes.faa -o clustered_proteomes -c 0.4 -n 2 -G 0 -s 0.8 -aL 0.8 -B 1 -g 1</FONT></CENTER>
 	or in parallel mode,<BR/><BR/>
-	<CENTER><FONT FACE="monospace">cd-hit-para.pl -i  157_proteomes -o clustered_157_proteomes -c 0.4 -n 2 -G 0 -s 0.8 -aL 0.8 -B 1 -g 1 --Q 200 --T SGE --S 100</FONT></CENTER>
+	<CENTER><FONT FACE="monospace">cd-hit-para.pl -i  proteomes.faa -o clustered_proteomes -c 0.4 -n 2 -G 0 -s 0.8 -aL 0.8 -B 1 -g 1 --Q 200 --T SGE --S 100</FONT></CENTER>
 	<BR/>
 
 <H3 class="<%= @section["name"]%>">Tools used for SCL prediction</H3>
@@ -37,8 +37,8 @@ The clustering parameters used in the command line were<BR/><BR/>
 <A href="http://services.cbu.uib.no/tools/bomp" target="_blank">BOMP</A>, <A href="http://toolkit.tuebingen.mpg.de/hhomp" target="_blank">HHomp</A>, 
 <A href="http://signalfind.org/tatfind.html" target="_blank">TaTFind 1.4</A>, <A href="http://www.cbs.dtu.dk/services/TatP/" target="_blank">TatP 1.0</A>, 
 <A href="http://www.effectors.org/" target="_blank">EffectiveT3</A>, <A href="http://gecco.org.chemie.uni-frankfurt.de/T3SS_prediction/T3SS_prediction.html" target="_blank">T3SS_Prediction</A>, 
-<A href="http://cello.life.nctu.edu.tw/" target="_blank">CELLO v.2.5</A>, <A href="http://www.psort.org/psortb/" target="_blank">PSORTbv.3.0.2</A>, 
-<A href="http://signalfind.org/flafind.html" target="_blank">FlaFind</A> and <A href="http://biophysics.biol.uoa.gr/PRED-SIGNAL/" target="_blank">PRED-SIGNAL</A> in the prediction pipeline.<BR/><BR/>
+<A href="http://cello.life.nctu.edu.tw/" target="_blank">CELLO v.2.5</A>, <A href="http://www.psort.org/psortb/" target="_blank">PSORTbv.3.0.2</A>, <A href="http://rpsp.bioinfo.pl/">RPSP</A>, 
+<A href="http://signalfind.org/flafind.html" target="_blank">FlaFind</A>, <A href="http://biophysics.biol.uoa.gr/PRED-SIGNAL/" target="_blank">PRED-SIGNAL</A> and PilFind in the prediction pipeline.<BR/><BR/>
     
 <A name="sp"></A>
 <H3 class="<%= @section["name"]%>">Consensus signal Peptide prediction</H3>
@@ -64,8 +64,11 @@ predict general secretory pathway signal peptides</BR></P></BR>
    
    <P><B>Type III secretion system signal peptides in Gram-negative bacteria</B>
       <BR>T3SS_prediction and EffectiveT3 were used to identify <B>T3SS signal peptides</B>. To reduce the number of false positive T3SS signal peptide prediction, 
-both EffectiveT3 and T3SS_prediction were required to be positive with their scores greater than 0.8.</P><BR> 
-
+both EffectiveT3 and T3SS_prediction were required to be positive with their scores greater than 0.8.</P><BR>
+ 
+    <P><B>Type IV pilin signal peptide in Gram-negative bacteria</B> 
+       <BR>PilFind was used to predict type IV pilin signal peptide.</BR>
+    </P>
     <P><B>Prepilin/Flagellin signal peptide in Archaea</B>
        <BR>FlaFind was used to predict class III (type IV pilin-like) flagellin signal peptides in archaeal proteins.</BR>
     </P> 
@@ -84,7 +87,7 @@ Proteins with lipoprotein signal peptides and without transmembrane domains were
 A positive prediction from PSORTbv3.0 outer membrane or CELLOv2.5 outer membrane and a positive prediction from HHomp or BOMP were necessary to confirm the annotation as an outer membrane &#946-barrel protein.<BR/><BR/>
 
    <H5>Extracellular proteins</H5>
-     Consensus T3SS signal peptide prediction or PSORTbv3.0 extracellular prediction were required for the annotation of extracellular proteins.<BR/><BR/>
+     Consensus T3SS signal peptide prediction or T4SS pilin signal peptide prediction or PSORTbv3.0 extracellular prediction were required for the annotation of extracellular proteins.<BR/><BR/>
 
    <H5>Cytoplasmic membrane proteins</H5>
      The consensus transmembrane helix (TMH) prediction module of ClubSub-P looks for helices predicted by at least two TMH prediction tools (TMHMM, Phobius, HMMTOP), with a length of at least 10 amino acids. 

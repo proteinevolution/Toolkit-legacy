@@ -7,12 +7,15 @@ class ClubsubpAction < Action
 
   attr_accessor :mail, :jobid, :sequence_input, :sequence_file, :text_search, :qlvalue, :hlvalue, :pvalue, :database, :tag
 
-#    validates_input(:sequence_input, :sequence_file, {:informat_field => :informat,
- #                                                   :informat => 'fas',
- #                                                   :inputmode => 'sequences',
- #                                                   :max_seqs => 10000,
- #                                                   :on => :create })
+  validates_input(:sequence_input, :sequence_file, {:informat => 'fas', 
+                                                    :max_seqs => 200, 
+                                                    :min_seqs => 0, 
+                                                    :on => :create,
+                                                    :allow_nil=> true,
+                                                    :inputmode => 'sequences'})
+  validates_jobid(:jobid)
 
+  validates_email(:mail)
 
   validates_int_into_list(:qlvalue, {:in => 1..100, :on => :create,:allow_nil => false})
   validates_int_into_list(:hlvalue, {:in => 1..100, :on => :create,:allow_nil => false})
@@ -49,7 +52,7 @@ class ClubsubpAction < Action
 
     # Blast search if we have sequence input 
     if(!@infile.empty?)
-      @commands << "#{BLAST}/blastall -p blastp -i #{@infile} -d #{DBPATH}/#{@database} -o #{@outfile} -I t &> #{job.statuslog_path}"
+      @commands << "#{BLAST}/blastall -p blastp -i #{@infile} -d #{DBPATH}/#{@database} -o #{@outfile} -I t -e 0.01 &> #{job.statuslog_path}"
       @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
       @commands << "/usr/bin/perl #{CLUB}/blast_parser-v2.pl #{@outfile} #{@basename} #{@qlvalue} #{@hlvalue} #{@pvalue} #{@database} >> #{job.statuslog_path}"
       @commands << "echo 'Blast output parsed !' >> #{job.statuslog_path}"
