@@ -6,6 +6,7 @@ class HhblitsAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
   PERL = File.join(BIOPROGS, 'perl')
   PSIPRED = File.join(BIOPROGS, 'psipred')  
+
   
   attr_accessor :jobid, :hhblits_dbs, :informat, :inputmode, :maxit, :alignmode, :realign, :mact, :maxseq, :width, :Pmin, :maxlines,
                 :sequence_input, :sequence_file, :mail, :otheradvanced
