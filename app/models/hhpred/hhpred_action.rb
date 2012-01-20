@@ -6,7 +6,7 @@ class HhpredAction < Action
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   CSBLAST = File.join(BIOPROGS, 'csblast')
-  HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20') 
+  HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')  
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
                 :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs,:prefilter
