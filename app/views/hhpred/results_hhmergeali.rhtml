@@ -2,8 +2,11 @@
 
 <div class="hr">&nbsp;</div>
 
+<% if  @job.render_file(@job.jobid+".qt.fas").size < 25000000  %>
 <%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}) %>
 
+    <!-- Merging Query Template Alignments may lead to .qt Files that are to large for the average browser to proces, we cutoff at ~25 MB  -->
+   
 	<div class="row">
 
  		<div id="applet">
@@ -44,10 +47,24 @@
 
 
 
+ 
+    <div class="row">
 
-	<div class="row">
-		<%= text_area_tag("result_textbox_to_file", @job.render_file(@job.jobid+".qt.fas"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
-	</div>	
-	
-
+        <%=text_area_tag("result_textbox_to_file", @job.render_file(@job.jobid+".qt.fas"), {:style => "height: 450px; width: 100%;", :wrap => "off"})  %> 
+        
+    </div>	
 </form>
+	<% else %>
+	    <h3>The Bioinformatics Toolkit is not able to display your Q/T Merge Alignment</h3>
+		<p>
+			We are very sorry, but the generated Q/T File is too large to be displayed : 
+            <%= @job.render_file(@job.jobid+".qt.fas").size/1048576 %> Mb.
+			<br>
+		    However, you can download the merged Q/T File, as well as the reduced Q/T File :</p><br><p>
+			<%= link_to "Download Complete Alignment (.gz) ", @job.url_for_job_dir_abs+"/"+@job.jobid+".qt.fas.gz" %> 
+			<br>
+			<%= link_to "Download Reduced Alignment (.gz) ", @job.url_for_job_dir_abs+"/"+@job.jobid+".qt.reduced.fas.gz" %> 
+		</p>	
+        <% end %> 
+
+
