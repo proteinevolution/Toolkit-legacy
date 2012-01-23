@@ -148,6 +148,11 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     export_to_file
   end
   
+   def download_qt
+    data = params[:path]
+    send_file data, :type=>"application/zip" 
+  end
+
   def help_histograms
     render(:layout => "help")
   end
