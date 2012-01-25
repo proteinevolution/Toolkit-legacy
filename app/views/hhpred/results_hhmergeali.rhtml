@@ -61,11 +61,11 @@
             <%= @job.render_file(@job.jobid+".qt.fas").size/1048576 %> Mb.
 			<br>
 		    However, you can download the merged Q/T File, as well as the reduced Q/T File :</p><br><p>
-			<% data =  File.join(@job.job_dir, @job.jobid)+".qt.fas.gz" %>
-			<%= button_to "Download Complete Alignment (.gz)" , :action => "download_qt" ,:path => data %>
+			<% data =  File.join(@job.job_dir, @job.jobid)+".qt.fas" %>
+			<%= button_to "Download Complete Alignment " , :action => "download_qt" ,:path => data %>
 			<br>
-			<% data =  File.join(@job.job_dir, @job.jobid)+".qt.reduced.fas.gz" %>
-            <%= button_to "Download Reduced Alignment (.gz)" , :action => "download_qt" ,:path => data %>
+			<% data =  File.join(@job.job_dir, @job.jobid)+".qt.reduced.fas" %>
+            <%= button_to "Download Reduced Alignment " , :action => "download_qt" ,:path => data %>
 		</p>	
         <% end %> 
 
