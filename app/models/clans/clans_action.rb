@@ -42,7 +42,7 @@ class ClansAction < Action
     @numiterations      = params['numiterations']
     @matrix             = params['matrix']
     @ungappedalignment  = params['ungappedalign'] ? 'F' : 'T'
-    @filter             = params['filter'] ? 'F' : 'T'
+    @filter             = params['filter'] ? 'T' : 'F'
 
     @db_path            = params['std_dbs'].nil? ? "" : params['std_dbs'].join(' ')
     @db_path = params['user_dbs'].nil? ? @db_path : @db_path + ' ' + params['user_dbs'].join(' ')
