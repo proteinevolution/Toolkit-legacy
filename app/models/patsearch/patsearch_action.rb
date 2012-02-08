@@ -1,11 +1,16 @@
 class PatsearchAction < Action
 
-  PATSEARCH = File.join(BIOPROGS, 'pattern_search')
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    PATSEARCH = "perl "+ File.join(BIOPROGS, 'pattern_search')
+  else
+     PATSEARCH = File.join(BIOPROGS, 'pattern_search')
+  end
+
 
   include GenomesModule
    
   # top down: protblast/index.rhtml
-  attr_accessor :sequence_input, :sequence_file, :std_dbs, :user_dbs, :taxids, :db_input, :db_file
+  attr_accessor :sequence_input, :sequence_file, :std_dbs, :user_dbs, :taxids,:sc ,:db_input, :db_file
   # shared/joboptions.rhtml
   attr_accessor :jobid, :mail 
 
@@ -25,6 +30,7 @@ class PatsearchAction < Action
   validates_email(:mail)
   
   validates_shell_params(:jobid, :mail, {:on=>:create})
+  validates_format_of(:sc, {:with => /^\d+$/, :on => :create, :message => 'Invalid value! Only integer values are allowed!'}) 
 
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)
@@ -40,6 +46,7 @@ class PatsearchAction < Action
 
     @grammar = params['grammar'] == "reg" ? "-reg" : ""
     @db_type = params['db_type']
+    @sc = params["sc"]
     
     @db_path = params['std_dbs'].nil? ? "" : params['std_dbs'].join(' ')
     @db_path = params['user_dbs'].nil? ? @db_path : @db_path + ' ' + params['user_dbs'].join(' ')
@@ -59,7 +66,7 @@ class PatsearchAction < Action
   def perform
     params_dump
     
-    @commands << "#{PATSEARCH}/search.pl -i \"#{@pattern}\" -d \"#{@db_path}\" -o #{@outfile} #{@grammar} &> #{job.statuslog_path}"
+    @commands << " #{PATSEARCH}/search.pl -i \"#{@pattern}\" -d \"#{@db_path}\" -o #{@outfile} -sc #{@sc} #{@grammar} &> #{job.statuslog_path}"
     
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
