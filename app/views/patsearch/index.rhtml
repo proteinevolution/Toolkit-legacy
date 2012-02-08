@@ -35,6 +35,11 @@
 	<%= form_file("db_file") %>
 </div>
 
+  <div class="row">
+    <%= form_label("Sequence count cutoff", "sc") %>
+    <%= form_text_field("sc", '1000', ' sequences') %>    
+  </div>
+  
 <div class="spacer">&nbsp;</div>
 
 <%= render(:partial => "shared/joboptions") %>
