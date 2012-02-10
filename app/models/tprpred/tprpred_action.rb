@@ -1,11 +1,18 @@
 class TprpredAction < Action
   TPRPRED = File.join(BIOPROGS, 'tprpred')
   
+   if LOCATION == "Munich" && LINUX == 'SL6'
+    TPRPREDPERL = "perl "+File.join(BIOPROGS, 'tprpred')
+  else
+    TPRPREDPERL = File.join(BIOPROGS, 'tprpred')
+  end
+
   attr_accessor :sequence_input, :sequence_file, :mail, :jobid
   attr_accessor :evalue, :minhits, :maxrows
 
   validates_input(:sequence_input, :sequence_file, {:informat => 'fas', 
                                                     :inputmode => 'sequence',
+                                                    :max_seqs => '1',
                                                     :on => :create })
 
   validates_jobid(:jobid)
@@ -26,6 +33,7 @@ class TprpredAction < Action
     @outfile = @basename+".results"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
 
+    pad_infile_min_length(@infile, 36, 'X')
     @commands = []
 
     @evalue = params['evalue'] ? params['evalue'] : '10000'
@@ -48,6 +56,31 @@ class TprpredAction < Action
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
+
+# Pad the Input File to contain at least the minimal count of chars
+# infile = @infile
+# min_length = minimum length of String
+# padding = 'X' The Padding Char
+def pad_infile_min_length(infile, min_length, padding)
+  file = File.open(infile)
+  contents = ""
+  counter = 0
+  file.each {|line|
+        counter = counter + 1
+        if counter == 2
+                line.chomp!
+                line = line.ljust(min_length, padding)
+        end
+        contents = contents + line
+  }
+  file.close
+  puts contents
+  file = File.new(infile,"w+")
+        file.puts(contents)
+
+  file.close
+end
+
 
 end
 
