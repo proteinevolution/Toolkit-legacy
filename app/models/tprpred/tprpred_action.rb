@@ -74,7 +74,6 @@ def pad_infile_min_length(infile, min_length, padding)
         contents = contents + line
   }
   file.close
-  puts contents
   file = File.new(infile,"w+")
         file.puts(contents)
 
