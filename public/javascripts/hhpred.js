@@ -12,11 +12,12 @@ function appearForward(val)
 		    new Effect.Fade(coloring);
 		}
 		// Remove all Elements that may be currently shown
+		new Effect.Fade(pcoils);
 		new Effect.Fade(create);
 		new Effect.Fade(merge);
 		new Effect.Fade(image);
 		new Effect.Fade('noPdb');
-		new Effect.Fade('pcoils');
+		//new Effect.Fade('pcoils');
 		sleep(1000);
 		
 		// Special Case Createmodel, active checkbox 
@@ -145,11 +146,11 @@ function select_first(first)
 
 function change_label(id, labelA, labelB){
 	if($(id).innerHTML == labelA){
-		   $(id).innerHTML = labelB;  
+		   $(id).innerHTML = labelA;  
 	}else{
-		  $(id).innerHTML = labelA;
+		  $(id).innerHTML = labelB;
 	}
-
+   
 }
 function init_label(id, radioChecked, labelChecked, labelUnchecked){
 		alert($(id).innerHTML+"\n"+$(radioChecked).checked);
