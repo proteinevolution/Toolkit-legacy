@@ -145,11 +145,11 @@ function select_first(first)
 
 function change_label(id, labelA, labelB){
 	if($(id).innerHTML == labelA){
-		   $(id).innerHTML = labelB;  
+		   $(id).innerHTML = labelA;  
 	}else{
-		  $(id).innerHTML = labelA;
+		  $(id).innerHTML = labelB;
 	}
-
+   
 }
 function init_label(id, radioChecked, labelChecked, labelUnchecked){
 		alert($(id).innerHTML+"\n"+$(radioChecked).checked);
