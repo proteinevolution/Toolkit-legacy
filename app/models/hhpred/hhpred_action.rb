@@ -7,6 +7,15 @@ class HhpredAction < Action
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   CSBLAST = File.join(BIOPROGS, 'csblast')
   HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')  
+  PSIPRED = File.join(BIOPROGS, 'psipred')  
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
+  else
+     HHPERL = File.join(BIOPROGS, 'hhpred')
+  end
+  
+  
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
                 :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs,:prefilter
@@ -161,10 +170,10 @@ class HhpredAction < Action
     @commands << "rm #{@local_dir}/#{job.jobid}.reduced.a3m"
 
     # Generate graphical display of hits
-    @commands << "#{HH}/hhviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
+    @commands << "#{HHPERL}/hhviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
 
     # Generate profile histograms
-    @commands << "#{HH}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
+    @commands << "#{HHPERL}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
   end
 
   # Tool can forward to HHpred in different modes, the following modes are possible:
@@ -208,14 +217,14 @@ class HhpredAction < Action
 
       if(@prefilter=='psiblast')
          @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
-         @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
+         @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
       else
           if @maxhhblitsit == '0'
               @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
               @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
           else
               @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
-              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -o /dev/null -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.5 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
           end
       end
       @commands << "#{HHSUITELIB}/addss.pl #{@basename}.a3m"
@@ -227,9 +236,9 @@ class HhpredAction < Action
 
     if @mode == 'hhsenser'
       # Trim alignment
-      @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n 0 -maxres 300 -diff 1000 -#{@informat} #{@basename}.a3m &> #{job.statuslog_path}"
+      @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n 0 -maxres 300 -diff 1000 -#{@informat} #{@basename}.a3m &> #{job.statuslog_path}"
       # Start HHsenser
-      @commands << "#{HH}/buildinter.pl -v #{@v} -cpu 4 -Emax 0.1 -e 0.001 -Ey 0.01 -E 0.001 -Ymax 100 -accmax 10 -rejmax 10 -idmax 0 -extnd 20  #{@basename}.a3m &> #{job.statuslog_path}"
+      @commands << "#{HHPERL}/buildinter.pl -v #{@v} -cpu 4 -Emax 0.1 -e 0.001 -Ey 0.01 -E 0.001 -Ymax 100 -accmax 10 -rejmax 10 -idmax 0 -extnd 20  #{@basename}.a3m &> #{job.statuslog_path}"
       # new command?
       # $command = "$hh/buildinter.pl -v $v -cpu 2 -quick -Emax 0.1 -e 0.001 -Ey 0.01 -E 0.001 -Ymax 100 -idmax 0 -extnd 20  $seqfile &> $basename.log";
 
@@ -251,7 +260,7 @@ class HhpredAction < Action
       realign_options = "-hhm"
       if @cov_min != 20 || @qid_min != 0 then realign_options="#{@cov_min} #{@qid_min} #{@diff}" end
 
-      @commands << "#{HH}/hhrealign.pl -v 2 -resort -i #{@basename}_parent.hhr -o #{@basename}.hhr -q #{@basename}.hhm -d #{@dbs_realign} #{realign_options} #{@ss_scoring} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@compbiascorr} 1>> #{job.statuslog_path} 2>&1";
+      @commands << "#{HHPERL}/hhrealign.pl -v 2 -resort -i #{@basename}_parent.hhr -o #{@basename}.hhr -q #{@basename}.hhm -d #{@dbs_realign} #{realign_options} #{@ss_scoring} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@compbiascorr} 1>> #{job.statuslog_path} 2>&1";
     else
 
       ####################################################
