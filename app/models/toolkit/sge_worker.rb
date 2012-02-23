@@ -14,25 +14,46 @@
       
       tries = 0
 
+      # Location Tuebingen 
       if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
-        if RAILS_ENV == "development"
-          command = "#{QUEUE_DIR}/qsub -l h_vmem=10G -p 10 #{self.wrapperfile}"
-          logger.debug "qsub command: #{command}"
-        else
-          command = "#{QUEUE_DIR}/qsub -l h_vmem=18G #{self.wrapperfile}" # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
-          logger.debug "qsub command: #{command}"
-        end
+                  if RAILS_ENV == "development"
+                    command = "#{QUEUE_DIR}/qsub -l h_vmem=10G -p 10 #{self.wrapperfile}"
+                    logger.debug "qsub command: #{command}"
+                  else
+                    command = "#{QUEUE_DIR}/qsub -l h_vmem=18G #{self.wrapperfile}" # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
+                    logger.debug "qsub command: #{command}"
+                  end
       else
-        command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
-      end
+      # LOCATION = Munich !!  
+            if LINUX == "SL6"
+            #command = "#{QUEUE_DIR}/qsub -pe threadssl6.pe 1 #{self.wrapperfile}" 
+            command = "#{QUEUE_DIR}/qsub  #{self.wrapperfile}"
+             logger.debug "L28 qsub command: #{command}"
+            else
+              command = "#{QUEUE_DIR}/qsub  #{self.wrapperfile}"
+          end
+     end
+     
+      logger.debug "L36 ID"+`id`
+      logger.debug
+      # Remove all Line Carriage characters from returned result command
       res = `#{command}`.chomp
+       logger.debug "L38 Original  QID : #{res} "
       self.qid = res.gsub(/Your job (\d+) .*$/, '\1')
-      while (!$?.success? && tries < 3)
+      logger.debug "L40 Substituded QID : #{qid} "
+      
+      while (!$?.success? && tries < 5)
+        logger.debug "L43 #{$?.success?} in  PE Queue"
       	res = `#{command}`.chomp
+      
+        #res = `#{command}`.chomp
         self.qid = res.gsub(/Your job (\d+) .*$/, '\1')
+        logger.debug "L48 Your job has quid #{self.qid}"
       	tries += 1
-      end
-      if (!$?.success? && tries == 3)
+     end
+     
+     save!
+      if (!$?.success? && tries == 5)
       	raise "Unable to submit job!"
       end
 
@@ -60,14 +81,19 @@
 
       begin
         f = File.open(self.wrapperfile, 'w')
-        f.write "#!/bin/sh\n"
-
+        f.write "#!/bin/bash\n"
+        #f.write "#!/bin/sh\n"
         # SGE options
         f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
 
         if LOCATION == "Tuebingen" && RAILS_ENV == "development"
         else
-          f.write '#$' + " -q #{queue}\n"
+          if LINUX == 'SL6'
+            f.write '#$' + " -pe #{queue}\n"
+            #f.write '#$' + " -q #{queue}\n"
+          else
+            f.write '#$' + " -q #{queue}\n"
+          end
           if RAILS_ENV == "development"
             if queue == "express.q"
 	      f.write '#$' + " -l express=TRUE\n"
@@ -80,14 +106,20 @@
         f.write '#$' + " -w n\n"
 
 	if (queue == QUEUES[:long] && LOCATION == "Tuebingen")
-	  f.write '#$' + " -l long\n"
+	       f.write '#$' + " -l long\n"
         end
 
-        if (queue == QUEUES[:immediate])
-	  f.write '#$' + " -l immediate\n"
+        if (queue == QUEUES[:immediate] && LOCATION == "Tuebingen")
+	         f.write '#$' + " -l immediate\n"
         end
 
-
+        # Source all modules on SL6
+        if LINUX == 'SL6'
+            f.write "source /etc/profile\n"
+            f.write "export RUBYLIB=#{RUBY_LIB}  \n"
+            f.write "export GEM_HOME=#{GEM_HOME} \n"
+            f.write "env \n"
+        end
         f.write "hostname > #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
         if RAILS_ENV == "development"
           f.write "echo 'Starting job #{id.to_s}...' >> #{queue_job.action.job.statuslog_path}\n"
@@ -109,18 +141,24 @@
         f.write "exitstatus=$?\n"
         # were there any errors?
         if (additional == true)
-          if (LOCATION == "Munich")
-            if RAILS_ENV == "development"
-              f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
-            else
-              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
-              #f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
+              if (LOCATION == "Munich")
+                      if RAILS_ENV == "development"
+                        f.write "echo 'Running Additional Script '\n"
+                        f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
+                        #f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+                        logger.debug "L138 Updateing :ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'"
+                        #f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
+                      else
+                        f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+                        #f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
+                      end
+              else
+                f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
             end
-          else
-            f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
-          end
+            
           if RAILS_ENV == "development"
-            f.write "echo 'Scheint prima zu funktionieren ... .' >> #{queue_job.action.job.statuslog_path}\n"
+            f.write "echo 'Running under developement environment ' >> #{queue_job.action.job.statuslog_path}\n"
+            
           end
 
         else
@@ -136,7 +174,7 @@
             f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
           end
           if RAILS_ENV == "development"
-            f.write "echo 'Job #{id.to_s} DONE!' >> #{queue_job.action.job.statuslog_path}\n"
+            f.write "echo 'Job orig #{id.to_s} DONE!' >> #{queue_job.action.job.statuslog_path}\n"
             f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n" # naga
           end
           f.write "else\n"
@@ -174,6 +212,13 @@
         f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"
         if (LOCATION == "Tuebingen" && RAILS_ENV == "development")
           f.write "export PATH=/usr/local/bin:/usr/bin:/bin:\n"
+        end
+        # Have to decide where the module load shall be put ....
+        if (LOCATION == 'Munich' && LINUX == 'SL6')
+            logger.debug "L183 Location Munich Source etc/profiles "
+          f.write "source /etc/profile\n"
+          f.write "module load perl\n"
+          f.write "module load python2.6\n"
         end
         # print the process id of this shell execution
         f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 
