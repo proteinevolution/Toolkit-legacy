@@ -11,10 +11,10 @@ class SimshiftController < ToolController
     
     # Sort list of directories according to order given in sortlist                   
     
-    sortlist = Array["\/pdb", "\/scop", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test56", "\/test18", "\/Pfalciparum" ]
+    sortlist = Array["\/scop"]
     sortlist.each do |el|
       dbvalues_pre.each do |val|
-        if (!val.index(/#{el}/).nil?)
+        if (!val.index(/#{el}/).nil?  && !(val=~/\.fas/))
           @dbvalues.push(val)
           dbvalues_pre.delete(val)
           next;
