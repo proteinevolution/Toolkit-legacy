@@ -126,7 +126,16 @@
         end
 
         # SET STATUS OF THIS JOB TO RUNNING
-        f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_RUNNING}\n"
+        if LINUX == 'UBUNTU' || LOCATION == "Tuebingen"
+          f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_RUNNING}\n"
+        end
+        if LINUX == 'SL6' && RAILS_ENV =="development"
+          f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_RUNNING}'\n"
+        end
+        if LINUX == 'SL6' && RAILS_ENV =="production"
+         f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_RUNNING}'\n"
+        end              
+        
         if RAILS_ENV == "development"
           f.write "echo 'Status set to running...' >> #{queue_job.action.job.statuslog_path}\n"
         end
