@@ -14,6 +14,8 @@ class Quick2DAction < Action
   NCOILSDIR   = File.join(BIOPROGS, 'coils')
   NCOILS      = File.join(NCOILSDIR, 'ncoils-linux')
   PROFROST    = File.join(BIOPROGS, 'ruby', 'profRost.rb')
+  DIFFSEQS    = File.join(BIOPROGS, 'ruby', 'getDiffSequences.rb')
+  PSIPRED     = File.join(BIOPROGS, 'ruby', 'psipred.rb')
   
   #VSL2        = JAVA_1_5_EXEC+" -jar "+File.join(BIOPROGS, 'VSL2', 'VSL2.jar')
 
@@ -22,15 +24,11 @@ class Quick2DAction < Action
 if LOCATION == "Munich" && LINUX == 'SL6'
     REFORMAT    = "perl "+File.join(BIOPROGS, 'perl', 'reformat.pl')
     BUILDALI    = "perl "+File.join(BIOPROGS, 'hhpred', 'buildali.pl')
-    DIFFSEQS    = "perl "+File.join(BIOPROGS, 'ruby', 'getDiffSequences.rb')
-    PSIPRED     = "perl "+File.join(BIOPROGS, 'ruby', 'psipred.rb')
     PHOBIUS     = "perl "+File.join(BIOPROGS,'phobius','phobius.pl')
     MEMSATSVM   = "perl "+File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
 else
     REFORMAT    = File.join(BIOPROGS, 'perl', 'reformat.pl')
     BUILDALI    = File.join(BIOPROGS, 'hhpred', 'buildali.pl')
-    DIFFSEQS    = File.join(BIOPROGS, 'ruby', 'getDiffSequences.rb')
-    PSIPRED     = File.join(BIOPROGS, 'ruby', 'psipred.rb')
     PHOBIUS     = File.join(BIOPROGS,'phobius','phobius.pl')
     MEMSATSVM = File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
 end
