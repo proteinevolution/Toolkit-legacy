@@ -1,36 +1,39 @@
 class Quick2DAction < Action
   #constants
-  REFORMAT    = File.join(BIOPROGS, 'perl', 'reformat.pl')
-  BUILDALI    = File.join(BIOPROGS, 'hhpred', 'buildali.pl')
   BLASTPGP    = File.join(BIOPROGS, 'blast', 'blastpgp')
-  DIFFSEQS    = File.join(BIOPROGS, 'ruby', 'getDiffSequences.rb')
-
-  PSIPRED     = File.join(BIOPROGS, 'ruby', 'psipred.rb')
   JNET        = File.join(BIOPROGS, 'ruby', 'jnet.rb')
- # MEMSAT      = File.join(BIOPROGS, 'ruby', 'memsat.rb')
+  MEMSAT      = File.join(BIOPROGS, 'ruby', 'memsat.rb')
   DISOPRED    = File.join(BIOPROGS, 'ruby', 'disopred.rb')
   IUPRED = File.join(BIOPROGS, 'iupred', 'iupred')
   IUPREDDIR = File.join(BIOPROGS, 'iupred')
-
   HMMTOP      = File.join(BIOPROGS, 'hmmtop2.1', 'hmmtop')
   HMMTOPARCH  = File.join(BIOPROGS, 'hmmtop2.1', 'hmmtop.arch')
   HMMTOPPSV   = File.join(BIOPROGS, 'hmmtop2.1', 'hmmtop.psv')
-
   PROFOUALIDIR = File.join(BIOPROGS, 'ProfOuali', 'src')
   PROFOUALI    = File.join(PROFOUALIDIR, 'Prof')
-
   NCOILSDIR   = File.join(BIOPROGS, 'coils')
   NCOILS      = File.join(NCOILSDIR, 'ncoils-linux')
-
   PROFROST    = File.join(BIOPROGS, 'ruby', 'profRost.rb')
-  PHOBIUS = File.join(BIOPROGS,'phobius','phobius.pl')
+  DIFFSEQS    = File.join(BIOPROGS, 'ruby', 'getDiffSequences.rb')
+  PSIPRED     = File.join(BIOPROGS, 'ruby', 'psipred.rb')
   
-  MEMSATSVM = File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
-
   #VSL2        = JAVA_1_5_EXEC+" -jar "+File.join(BIOPROGS, 'VSL2', 'VSL2.jar')
 
   DUMMYDB     = File.join(DATABASES, 'do_not_delete', 'do_not_delete')
   
+if LOCATION == "Munich" && LINUX == 'SL6'
+    REFORMAT    = "perl "+File.join(BIOPROGS, 'perl', 'reformat.pl')
+    BUILDALI    = "perl "+File.join(BIOPROGS, 'hhpred', 'buildali.pl')
+    PHOBIUS     = "perl "+File.join(BIOPROGS,'phobius','phobius.pl')
+    MEMSATSVM   = "perl "+File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
+else
+    REFORMAT    = File.join(BIOPROGS, 'perl', 'reformat.pl')
+    BUILDALI    = File.join(BIOPROGS, 'hhpred', 'buildali.pl')
+    PHOBIUS     = File.join(BIOPROGS,'phobius','phobius.pl')
+    MEMSATSVM = File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
+end
+
+
 
   #Validation
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail

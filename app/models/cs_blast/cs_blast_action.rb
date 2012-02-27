@@ -10,14 +10,20 @@ require 'ftools'
 class CsBlastAction < Action
   # Generate application paths
   BLAST = File.join(BIOPROGS, 'blast')
-  HH = File.join(BIOPROGS, 'hhpred')
-  UTILS = File.join(BIOPROGS, 'perl')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   CSBLAST = File.join(BIOPROGS, 'csblast')
   CSDB = File.join(DATABASES, 'csblast')
   HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
   HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
-
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    UTILS = "perl " +File.join(BIOPROGS, 'perl')
+    HH = "perl " +File.join(BIOPROGS, 'hhpred')
+  else
+     UTILS = File.join(BIOPROGS, 'perl')
+     HH = File.join(BIOPROGS, 'hhpred')
+  end
+  
   include GenomesModule
     
   # set in: csblast/index.rhtml 
@@ -260,7 +266,7 @@ class CsBlastAction < Action
     # run perl script to reformat alignment TODO: Find out what script does
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     # TODO: Find out what script does
-    @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "if [ -s #{@basename}.ralign ]; then #{HHSUITE}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
     # TODO: Find out what script does
     @commands << "#{RUBY_UTILS}/parse_csiblast.rb -i #{@basename}.csblast -o #{@basename}.csblast"
     # Generate Jalview Output from alignment data

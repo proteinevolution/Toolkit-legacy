@@ -5,6 +5,14 @@ class HhrepidAction < Action
   TP_DATA = File.join(HHREPID,'tp.dat')
   FP_DATA = File.join(HHREPID,'fp.dat')
   QSCS    = [0.0, 0.2, 0.3, 0.4, 0.5]
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+      HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
+  else
+      HHPERL = File.join(BIOPROGS, 'hhpred')
+  end
+  
+  
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail
   
@@ -47,18 +55,17 @@ class HhrepidAction < Action
 
   # Put action code in here
   def perform
-
     # Build query alignment and prepare FASTA files for 'Show Query Alignemt'    
-    @commands << "#{HH}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
+    @commands << "#{HHPERL}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
     if @maxpsiblastit.to_i > 0
-      @commands << "#{HH}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 2000 -n #{@maxpsiblastit} #{@basename}.a3m  1>>#{job.statuslog_path} 2>&1"
+      @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 2000 -n #{@maxpsiblastit} #{@basename}.a3m  1>>#{job.statuslog_path} 2>&1"
     end
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
     @commands << "#{HH}/hhfilter -i #{@basename}.a3m -o #{job.job_dir}/#{id}.reduced.a3m -diff 100"
-    @commands << "#{HH}/reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description     
+    @commands << "#{HHPERL}/reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description     
     # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
     @commands << "#{HH}/hhfilter -i #{@basename}.a3m -o #{job.job_dir}/#{id}.reduced.a3m -diff 50"
-    @commands << "#{HH}/reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.reduced.fas -r"
+    @commands << "#{HHPERL}/reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.reduced.fas -r"
     @commands << "rm #{job.job_dir}/#{id}.reduced.a3m"
 
     # save input params for later use in run_hhrepid
@@ -73,7 +80,6 @@ class HhrepidAction < Action
     self.flash = @hash
     self.save!
     
-    logger.debug "Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'run_hhrepid'
     q.save!
@@ -82,6 +88,7 @@ class HhrepidAction < Action
   end
 
   def run_hhrepid
+    
     @basename    	= File.join(job.job_dir, job.jobid)
     @ss_scoring  	= flash["ss_scoring"]
     @ptot        	= flash["ptot"]
@@ -93,7 +100,7 @@ class HhrepidAction < Action
     # Run HHrepID with different qsc settings
     @commands = []
     QSCS.each do |qsc|
-      cmd = "ln -s #{@basename}.a3m #{@basename}.#{qsc}.a3m\n "
+      cmd = "ln -f -s #{@basename}.a3m #{@basename}.#{qsc}.a3m\n "
 
       args = "-qsc #{qsc.to_s} -i #{@basename}.#{qsc}.a3m -o #{@basename}.#{qsc}.hhrepid -d #{CAL_HHM} -pdir #{job.job_dir} -tp #{TP_DATA} -fp #{FP_DATA} #{@pself} #{@ptot} #{@mergerounds} #{@ss_scoring} #{@domm} #{@mact}"
       if qsc==0.3

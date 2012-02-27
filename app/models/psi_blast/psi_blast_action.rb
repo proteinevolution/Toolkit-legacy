@@ -3,9 +3,14 @@ require 'ftools'
 class PsiBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
-  UTILS = File.join(BIOPROGS, 'perl')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   REFORMAT = File.join(BIOPROGS,'reformat')
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    UTILS = "perl "+File.join(BIOPROGS, 'perl')
+  else
+     UTILS = File.join(BIOPROGS, 'perl')
+  end
 
   include GenomesModule
 
@@ -177,7 +182,6 @@ class PsiBlastAction < Action
 
   def perform
     params_dump
-    
     # use nr70f for all but last round?
     if (@rounds.to_i > 1 && @fastmode == 'T')
       # first run with nr70f

@@ -2,7 +2,15 @@ class HhompAction < Action
   HHOMP = File.join(BIOPROGS, 'hhomp')
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
   BLAST = File.join(BIOPROGS, 'blast')
-  UTILS = File.join(BIOPROGS, 'perl')
+
+   if LOCATION == "Munich" && LINUX == 'SL6'
+    HHOMPPERL = "perl "+File.join(BIOPROGS, 'hhomp')
+    UTILS    = "perl "+File.join(BIOPROGS, 'perl')
+  else
+    HHOMPPERL = File.join(BIOPROGS, 'hhomp')
+    UTILS  = File.join(BIOPROGS, 'perl')
+      
+  end
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
                 :width, :Pmin, :maxlines, :hhomp_dbs
@@ -57,18 +65,18 @@ class HhompAction < Action
   def prepare_fasta_hhviz_histograms_etc
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
     @commands << "#{HHOMP}/hhfilter -i #{@basename}.a3m -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 100"
-    @commands << "#{HHOMP}/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description 
+    @commands << "#{HHOMPPERL}/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description 
     
     # Reformat query into fasta format (reduced alignment)
     @commands << "#{HHOMP}/hhfilter -i #{@basename}.a3m -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 50"
-    @commands << "#{HHOMP}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas"
+    @commands << "#{HHOMPPERL}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas"
     @commands << "rm #{@local_dir}/#{job.jobid}.reduced.a3m"
     
     # Generate graphical display of hits
-    @commands << "#{HHOMP}/hhviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
+    @commands << "#{HHOMPPERL}/hhviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
     
     # Generate profile histograms
-    @commands << "#{HHOMP}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
+    @commands << "#{HHOMPPERL}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
   end
 
   def before_perform_on_forward
@@ -79,7 +87,7 @@ class HhompAction < Action
     params_dump
     
     # Create alignment
-    @commands << "#{HHOMP}/buildali.pl -nodssp -bb -cpu 2 -v #{@v} -n #{@maxpsiblastit} #{@E_psiblast} #{@cov_min} -diff 100 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
+    @commands << "#{HHOMPPERL}/buildali.pl -nodssp -bb -cpu 2 -v #{@v} -n #{@maxpsiblastit} #{@E_psiblast} #{@cov_min} -diff 100 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
     # Make HMM file
     @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
     @commands << "#{HHOMP}/hhmake -v #{@v} #{@cov_min} #{@qid_min} -diff 100 -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
@@ -97,7 +105,7 @@ class HhompAction < Action
 
     prepare_fasta_hhviz_histograms_etc    
 
-    logger.debug "Commands:\n"+@commands.join("\n")
+    logger.debug "Commands:\n"+@commands.join("\n") 
     queue.submit(@commands)
   end
 

@@ -13,8 +13,12 @@ end
 if File.directory?("#{RAILS_ROOT}/vendor/rails")
   require "#{RAILS_ROOT}/vendor/rails/railties/lib/initializer"
 else
-  require 'rubygems'
-  require 'initializer'
+  begin
+	  require 'initializer'
+  rescue LoadError
+	  require 'rubygems'
+	  require 'initializer'
+end
 end
 
 Rails::Initializer.run(:set_load_path)

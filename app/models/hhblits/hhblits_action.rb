@@ -3,8 +3,14 @@ class HhblitsAction < Action
   HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
   HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
-  HH = File.join(BIOPROGS, 'hhpred')
-  PERL = File.join(BIOPROGS, 'perl')
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    PERL = "perl "+File.join(BIOPROGS, 'perl')
+    HH   = "perl "+File.join(BIOPROGS, 'hhpred')
+  else
+     PERL = File.join(BIOPROGS, 'perl')
+     HH = File.join(BIOPROGS, 'hhpred')
+  end
   PSIPRED = File.join(BIOPROGS, 'psipred')  
 
   

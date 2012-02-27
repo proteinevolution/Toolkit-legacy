@@ -1,7 +1,14 @@
 class ModellerAction < Action
-  MODELLER = File.join(BIOPROGS, 'modeller_scripts')
+ 
   MODEL_QUALITY = File.join(BIOPROGS, 'model-quality')
   MOD_BIN = File.join(BIOPROGS, 'modeller', 'bin', 'modeller')
+
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    MODELLER = "perl "+ File.join(BIOPROGS, 'modeller_scripts')
+  else
+     MODELLER = File.join(BIOPROGS, 'modeller_scripts')
+  end
+
 
   attr_accessor :informat, :sequence_input, :sequence_file, :modeller_key, :jobid, :mail , :own_pdb_name , :own_pdb_file
 
@@ -188,9 +195,17 @@ class ModellerAction < Action
     logger.debug "Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'quality_check'
+    #q.on_done = 'set_done'
     q.save!
     q.submit(@commands, false)
+    #q.submit(@commands, true)
     
+  end
+
+  def set_done
+  @commands = []
+  
+  queue.submit(@commands, true, {'additional' => 'true'})
   end
   
   def quality_check
@@ -200,22 +215,23 @@ class ModellerAction < Action
     
     # model quality
     @commands << "cd #{job.job_dir}; #{MODEL_QUALITY}/verify3d/environments > #{job.jobid}.log_verify3d << EOIN \n#{job.jobid}.pdb\n \n#{job.jobid}.env \nA \nEOIN\n"
-    @commands << "ln -s #{MODEL_QUALITY}/verify3d/3d_1d.tab #{job.job_dir}/verify3d_1d.tab"
+    @commands << "ln -sf #{MODEL_QUALITY}/verify3d/3d_1d.tab #{job.job_dir}/verify3d_1d.tab"
     @commands << "cd #{job.job_dir}; #{MODEL_QUALITY}/verify3d/verify_3d >> #{job.jobid}.log_verify3d << EOIN \n#{job.jobid}.env\nverify3d_1d.tab\n#{job.jobid}.plotdat\n21\n0\nEOIN\n"
-    @commands << "#{MODEL_QUALITY}/verify3d/verify3d_graphics.pl #{job.jobid} #{job.job_dir} > #{@basename}.log_verify3d_graphic"
+    @commands << "perl #{MODEL_QUALITY}/verify3d/verify3d_graphics.pl #{job.jobid} #{job.job_dir} > #{@basename}.log_verify3d_graphic"
     
     @commands << "cd #{job.job_dir}; #{MODEL_QUALITY}/anolea_bin/anolea #{MODEL_QUALITY}/anolea_bin/surf.de #{MODEL_QUALITY}/anolea_bin/pair.de #{@basename}.pdb"
-    @commands << "#{MODEL_QUALITY}/anolea_bin/anolea_graphics.pl #{job.jobid} #{job.job_dir} > #{@basename}.log_anolea"
+    @commands << "perl #{MODEL_QUALITY}/anolea_bin/anolea_graphics.pl #{job.jobid} #{job.job_dir} > #{@basename}.log_anolea"
     
-    @commands << "ln -s #{MODEL_QUALITY}/Solvx/solvx #{job.job_dir}/solvx"
-    @commands << "ln -s #{MODEL_QUALITY}/Solvx/torso.reslib #{job.job_dir}/torso.reslib"
+    @commands << "ln -sf #{MODEL_QUALITY}/Solvx/solvx #{job.job_dir}/solvx"
+    @commands << "ln -sf #{MODEL_QUALITY}/Solvx/torso.reslib #{job.job_dir}/torso.reslib"
     @commands << "echo #{@basename}.pdb | ./solvx"
     @commands << "mv #{job.job_dir}/fort.29 #{@basename}.solvx"
-    @commands << "#{MODEL_QUALITY}/Solvx/solvx_graphics.pl #{job.jobid} #{job.job_dir} > #{@basename}.log_solvx"
-    
+    @commands << "perl #{MODEL_QUALITY}/Solvx/solvx_graphics.pl #{job.jobid} #{job.job_dir} > #{@basename}.log_solvx"
     # work-around (TODO: Run commands without setting job status to error, if a command fails)
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'additional' => 'true'})
+    #queue.submit(@commands, true)
+  
 
   end
 
