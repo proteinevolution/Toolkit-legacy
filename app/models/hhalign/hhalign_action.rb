@@ -1,5 +1,10 @@
 class HhalignAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
+   if LOCATION == "Munich" && LINUX == 'SL6'
+    HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
+  else
+     HHPERL = File.join(BIOPROGS, 'hhpred')
+  end
   
   attr_accessor :sequence_input, :sequence_file, :informat, :seqid, :qid, :dwin, :dthr
   attr_accessor :target_input, :target_file, :target_informat
@@ -57,12 +62,12 @@ class HhalignAction < Action
     params_dump
     
     # Add secondary structure prediction
-    @commands << "#{HH}/buildali.pl -v #{@v} -fas -n 0 #{@infile} &> #{job.statuslog_path}"
+    @commands << "#{HHPERL}/buildali.pl -v #{@v} -fas -n 0 #{@infile} &> #{job.statuslog_path}"
     
     if (@target)
       @target = "-t #{@targetbasename}.hhm"
       # Add secondary structure prediction
-      @commands << "#{HH}/buildali.pl -v #{@v} -fas -n 0 #{@targetfile} 2>&1 1>> #{job.statuslog_path}"
+      @commands << "#{HHPERL}/buildali.pl -v #{@v} -fas -n 0 #{@targetfile} 2>&1 1>> #{job.statuslog_path}"
     else
       @target = ""
     end
