@@ -15,19 +15,16 @@ class HhblitsShowtemplalignAction < Action
     
     @oldhit = nil             
     @seq_name
-   
+    
     @commands = []
     @local_dir="/tmp"
 
     lines = IO.readlines(@basename + ".hhr")
 
     lines.each do |line|
-      line.scan(/^\s*(\d+)\s+(\S+?) /) do |a,b|
+      line.scan(/^\s*(\d+)\s+\S+?\|(\S+?)\|/) do |a,b|
         if (a && b && a == @hit)
           @seq_name = b
-          if (b =~ /\S+?\|(\S+?)\|/) 
-            @seq_name = $1
-          end
           break
         end
       end
