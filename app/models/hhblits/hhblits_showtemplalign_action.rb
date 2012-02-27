@@ -22,7 +22,7 @@ class HhblitsShowtemplalignAction < Action
     lines = IO.readlines(@basename + ".hhr")
 
     lines.each do |line|
-      line.scan(/^\s*(\d+)\s+cl\|(\S+?)\|/) do |a,b|
+      line.scan(/^\s*(\d+)\s+\S+?\|(\S+?)\|/) do |a,b|
         if (a && b && a == @hit)
           @seq_name = b
           break
