@@ -153,8 +153,8 @@
               if (LOCATION == "Munich")
                       if RAILS_ENV == "development"
                         f.write "echo 'Running Additional Script '\n"
-                        f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
-                        #f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+                        #f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
+                        f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
                         logger.debug "L138 Updateing :ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'"
                         #f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
                       else
