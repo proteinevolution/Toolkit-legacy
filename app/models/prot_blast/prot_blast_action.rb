@@ -4,8 +4,16 @@ class ProtBlastAction < Action
 
   BLAST = File.join(BIOPROGS, 'blast')
   HH = File.join(BIOPROGS, 'hhpred')
-  UTILS = File.join(BIOPROGS, 'perl')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    UTILS = "perl " +File.join(BIOPROGS, 'perl')
+    HHPERL = "perl " +File.join(BIOPROGS, 'hhpred')
+  else
+     UTILS = File.join(BIOPROGS, 'perl')
+     HHPERL = File.join(BIOPROGS, 'hhpred')
+  end
+
 
   include GenomesModule
    
@@ -146,11 +154,11 @@ def check_GI
     @commands << "echo 'Processing Alignments... ' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -fas -no_link -e #{@expect}"
     
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
+    @commands << "#{HHPERL}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
+    @commands << "#{HHPERL}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
 
 
     logger.debug "Commands:\n"+@commands.join("\n")

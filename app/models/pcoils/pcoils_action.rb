@@ -1,8 +1,21 @@
 class PcoilsAction < Action
   PCOILS = File.join(BIOPROGS, 'pcoils')
-  UTILS = File.join(BIOPROGS, 'perl')
   HH = File.join(BIOPROGS, 'hhpred')
   COILSDIR = "COILSDIR=#{PCOILS}"
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+      HHPERL     = "perl "+File.join(BIOPROGS, 'hhpred')
+      PCOILSPERL = "perl "+File.join(BIOPROGS, 'pcoils')
+      UTILS      = "perl "+File.join(BIOPROGS, 'perl')
+  else
+      UTILS = File.join(BIOPROGS, 'perl')
+      PCOILSPERL = File.join(BIOPROGS, 'pcoils')
+      HHPERL = File.join(BIOPROGS, 'hhpred')
+  end
+  
+  
+  
+  
   attr_accessor :sequence_input, :sequence_file, :informat, :mail, :jobid
 
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
@@ -55,15 +68,15 @@ class PcoilsAction < Action
     if (@inputmode == "0")
       @program_for_matrix = ['run_Coils_iterated', 'run_Coils_pdb', 'run_Coils', 'run_Coils_old']
 
-      @commands << "#{HH}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
-      @commands << "#{PCOILS}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
+      @commands << "#{HHPERL}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
+      @commands << "#{PCOILSPERL}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
 
       @commands << "export #{COILSDIR}"
 
       ['14', '21', '28'].each do |size|
         @commands << "#{PCOILS}/#{@program_for_matrix[@matrix.to_i]} -win #{size} < #{@buffer} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
       end
-      @commands << "#{PCOILS}/prepare_coils_gnuplot.pl #{@basename} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28"
+      @commands << "#{PCOILSPERL}/prepare_coils_gnuplot.pl #{@basename} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28"
 
       # generate numerical output
       @commands << "#{PCOILS}/create_numerical.rb -i #{@basename} -m #{@matrix.to_s} -s #{@infile.to_s} -w #{@weighting.to_i} "
@@ -73,25 +86,25 @@ class PcoilsAction < Action
       @program_for_matrix = ['run_PCoils_iterated', 'run_PCoils_pdb', 'run_PCoils', 'run_PCoils_old']
 
 
-      @commands << "#{HH}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
-      @commands << "#{PCOILS}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
+      @commands << "#{HHPERL}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
+      @commands << "#{PCOILSPERL}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
 
       # case run PSI-BLAST
       if (@inputmode == "1")
 
-        @commands << "#{PCOILS}/runpsipred_coils.pl #{@buffer}"
+        @commands << "#{PCOILSPERL}/runpsipred_coils.pl #{@buffer}"
         @commands << "#{UTILS}/alignhits.pl -psi -b 1.0 -e 1E-4 -q #{@infile} #{@psitmplog} #{@psi}"
-        @commands << "#{HH}/reformat.pl -uc -num #{@psi} #{@a3m_unfiltered}"
+        @commands << "#{HHPERL}/reformat.pl -uc -num #{@psi} #{@a3m_unfiltered}"
         @commands << "#{HH}/hhfilter -i #{@a3m_unfiltered} -qid 40 -cov 20 -o #{@a3m}"
-        @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m fas #{@a3m} #{@infile}"
-        @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m psi #{@a3m} #{@psi}"
+        @commands << "#{HHPERL}/reformat.pl -M first -r -uc -num a3m fas #{@a3m} #{@infile}"
+        @commands << "#{HHPERL}/reformat.pl -M first -r -uc -num a3m psi #{@a3m} #{@psi}"
 
       end
 
       # calling psipred and ncoils
-      @commands << "#{HH}/reformat.pl fas a3m #{@infile} #{@a3m} -uc -num -r -M first"
+      @commands << "#{HHPERL}/reformat.pl fas a3m #{@infile} #{@a3m} -uc -num -r -M first"
       @commands << "#{HH}/hhmake -i #{@a3m} -o #{@hhmake_output} -pcm 2 -pca 0.5 -pcb 2.5 -cov 20" 
-      @commands << "#{PCOILS}/deal_with_profile.pl #{@hhmake_output} #{@myhmmmake_output}"
+      @commands << "#{PCOILSPERL}/deal_with_profile.pl #{@hhmake_output} #{@myhmmmake_output}"
 
       #@matrix=0: iterated
       #@matrix=1: PDB
@@ -106,11 +119,11 @@ class PcoilsAction < Action
 
       #calling psipred
       if (@psipred == "T" && @inputmode != "0")
-        @commands << "#{PCOILS}/runpsipred.pl #{@buffer}"
+        @commands << "#{PCOILSPERL}/runpsipred.pl #{@buffer}"
       end
     
       # prepare for gnuplot
-      @commands << "#{PCOILS}/prepare_for_gnuplot.pl #{@basename} #{@psipred} #{@inputmode} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28 #{@horizfile}"
+      @commands << "#{PCOILSPERL}/prepare_for_gnuplot.pl #{@basename} #{@psipred} #{@inputmode} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28 #{@horizfile}"
       
       #generate numerical output substitue parameter -a with -s and the complete sequences are parsed
       @commands << "#{PCOILS}/create_numerical.rb -i #{@basename} -w #{@weighting} -m #{@matrix} -a #{@infile}  "
