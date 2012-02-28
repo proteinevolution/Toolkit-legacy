@@ -1,6 +1,10 @@
 class DataaAction < Action
 
-	BAD = File.join(BIOPROGS, 'dataa')
+ if LOCATION == "Munich" && LINUX == 'SL6'
+    BAD = "perl "+File.join(BIOPROGS, 'dataa')
+ else
+    BAD = File.join(BIOPROGS, 'dataa')
+ end
 
 	attr_accessor :jobid, :sequence_input, :sequence_file, :mail
 	
