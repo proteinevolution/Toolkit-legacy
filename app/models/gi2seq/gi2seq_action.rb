@@ -1,5 +1,11 @@
 class Gi2seqAction < Action
-  UTILS = File.join(BIOPROGS, 'perl')
+  
+
+  if LOCATION == "Munich" && LINUX == 'SL6'
+      UTILS   = "perl "+File.join(BIOPROGS, 'perl')
+  else
+      UTILS = File.join(BIOPROGS, 'perl')
+  end
 
   include GenomesModule
 

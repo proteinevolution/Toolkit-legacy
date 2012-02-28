@@ -2,6 +2,14 @@ class HhrepAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
   
+  if LOCATION == "Munich" && LINUX == 'SL6'
+      HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
+  else
+      HHPERL = File.join(BIOPROGS, 'hhpred')
+  end
+  
+  
+  
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :width
   
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
@@ -147,18 +155,18 @@ class HhrepAction < Action
     
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
     @commands << "#{HH}/hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 100"
-    @commands << "#{HH}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.fas -d 160"  # max. 160 chars in description 
+    @commands << "#{HHPERL}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.fas -d 160"  # max. 160 chars in description 
     
     # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
     @commands << "#{HH}/hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 50"
-    @commands << "#{HH}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.reduced.fas -r"
+    @commands << "#{HHPERL}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.reduced.fas -r"
     @commands << "rm #{@local_dir}/#{id}.reduced.a3m"
     
     # Generate graphical display of hits
-    @commands << "#{HH}/hhviz.pl #{id} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
+    @commands << "#{HHPERL}/hhviz.pl #{id} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
     
     # Generate profile histograms
-    @commands << "#{HH}/profile_logos.pl #{id} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
+    @commands << "#{HHPERL}/profile_logos.pl #{id} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
   end
 
 end
