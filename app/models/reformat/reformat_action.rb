@@ -1,5 +1,10 @@
 class ReformatAction < Action
-  REFORMAT = File.join(BIOPROGS, 'reformat')
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    REFORMAT = "perl "+File.join(BIOPROGS, 'reformat')
+  else
+    REFORMAT = File.join(BIOPROGS, 'reformat')
+  end
 
   attr_accessor :sequence_input, :sequence_file, :informat
  

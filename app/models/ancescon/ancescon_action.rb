@@ -1,7 +1,10 @@
 class AncesconAction < Action
   ANCESCON = File.join(BIOPROGS, 'ancescon')
-  PERL = File.join(BIOPROGS, 'perl')
-  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    PERL   = "perl "+File.join(BIOPROGS, 'perl')
+  else
+    PERL   = File.join(BIOPROGS, 'perl')
+  end
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :otheradvanced
 
@@ -78,8 +81,11 @@ class AncesconAction < Action
     out.close
     
     #here you run the ancescon program
+    @commands << "echo 'Starting Tree Generation... ' >> #{job.statuslog_path}"
     @commands << "#{ANCESCON}/ancestral -i #{@alnfile} -o #{@outfile} #{@options} &> #{job.statuslog_path}"
+    @commands << "echo 'Finished Tree Generation... ' >> #{job.statuslog_path}"
     @commands << "#{PERL}/ancescontreemerger.pl -n #{@namesfile} -t #{@alnfile}.tre &> #{job.statuslog_path}"
+    @commands << "echo 'Finished Tree Labeling... ' >> #{job.statuslog_path}"
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
