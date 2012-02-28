@@ -2,7 +2,13 @@ class GcviewAction < Action
 
   GCVIEW = File.join(BIOPROGS, 'gcview')
   BLAST = File.join(BIOPROGS, 'blast')
-  UTILS = File.join(BIOPROGS, 'perl')
+ 
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    UTILS   = "perl "+File.join(BIOPROGS, 'perl')
+  else
+    UTILS = File.join(BIOPROGS, 'perl')
+  end
 
   attr_accessor :mail, :jobid, :sequence_input, :sequence_file, :informat
   
@@ -315,9 +321,11 @@ class GcviewAction < Action
   end
 
   def check_GI
+    logger.debug("Checking GIs")
     descriptions = 1
     res = IO.readlines(@input)
     res.each do |line|
+      logger.debug(line)
       inputfile = File.join(@basename+"_GI_#{descriptions}.in")
       writefile = File.open(inputfile, "w")
       writefile.write(line)

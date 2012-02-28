@@ -1,5 +1,10 @@
 class CreatemapAction < Action
-  REPPER = File.join(BIOPROGS, 'repper')
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+     REPPER = File.join(BIOPROGS, 'repper')
+  else
+     REPPER = File.join(BIOPROGS, 'repper')
+  end
   
   attr_accessor :leftend, :rightend
 
@@ -182,6 +187,9 @@ class CreatemapAction < Action
     out.close
     
     command = "#{REPPER}/third_profile #{@infile2} #{@parfile} #{@perfile} #{@hydro_data}"
+    ## Test if Repper works
+    #@commands <<   "#{REPPER}/third_profile #{@infile2} #{@parfile} #{@perfile} #{@hydro_data}"    
+
     logger.debug "Command: #{command}"
     system(command)
     
