@@ -1,6 +1,12 @@
 class PhylipAction < Action
   PHYLIP = File.join(BIOPROGS, 'phylip')
 
+  if LOCATION == "Munich" && LINUX == 'SL6'
+      PHYLIP   = "perl "+File.join(BIOPROGS, 'phylip')
+  else
+     PHYLIP = File.join(BIOPROGS, 'phylip')
+  end
+
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail
   attr_accessor :replicates, :gammavalue
 
