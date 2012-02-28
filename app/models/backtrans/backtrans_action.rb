@@ -1,5 +1,10 @@
 class BacktransAction < Action
-  BACKTRANS = File.join(BIOPROGS, 'backtranslate')
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    BACKTRANS = "perl "+File.join(BIOPROGS, 'backtranslate')
+  else
+    BACKTRANS = File.join(BIOPROGS, 'backtranslate')
+  end
+  
   
   attr_accessor :sequence_input, :sequence_file, :mail, :jobid
 

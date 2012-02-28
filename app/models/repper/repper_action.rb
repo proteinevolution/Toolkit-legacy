@@ -1,8 +1,20 @@
 class RepperAction < Action
   REPPER = File.join(BIOPROGS, 'repper')
-  PCOILS = File.join(BIOPROGS, 'pcoils')
-  UTILS = File.join(BIOPROGS, 'perl')
   HH = File.join(BIOPROGS, 'hhpred')
+  
+ if LOCATION == "Munich" && LINUX == 'SL6'
+    UTILS  = "perl "+File.join(BIOPROGS, 'perl')
+    HHPERL = "perl "+File.join(BIOPROGS, 'hhpred')
+    REPPERPERL = "perl "+File.join(BIOPROGS, 'repper')
+    PCOILS = "perl "+File.join(BIOPROGS, 'pcoils')
+ else
+    UTILS = File.join(BIOPROGS, 'perl')
+    HHPERL = File.join(BIOPROGS, 'hhpred')
+    REPPERPERL = File.join(BIOPROGS, 'repper')
+    PCOILS = File.join(BIOPROGS, 'pcoils')
+ end
+  
+  
   
   attr_accessor :sequence_input, :sequence_file, :informat, :mail, :jobid
   attr_accessor :windowsize, :minper, :maxper, :intthresh, :repperthresh
@@ -130,18 +142,18 @@ class RepperAction < Action
   def perform
     params_dump
     
-    @commands << "#{HH}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
-    @commands << "#{REPPER}/deal_with_sequence.pl #{@basename} #{@window_size} #{@perio_rg_low} #{@perio_rg_high} #{@value} #{@cutoff} #{@parfile} #{@infile} #{@buffer}"
+    @commands << "#{HHPERL}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
+    @commands << "#{REPPERPERL}/deal_with_sequence.pl #{@basename} #{@window_size} #{@perio_rg_low} #{@perio_rg_high} #{@value} #{@cutoff} #{@parfile} #{@infile} #{@buffer}"
 
     # case run PSI-BLAST
     if (@use_input == "0")
       
       @commands << "#{PCOILS}/runpsipred_coils.pl #{@buffer}"
       @commands << "#{UTILS}/alignhits.pl -psi -b 1.0 -e 1E-4 -q #{@infile} #{@psitmplog} #{@psi}"
-      @commands << "#{HH}/reformat.pl -uc -num #{@psi} #{@a3m_unfiltered}"
+      @commands << "#{HHPERL}/reformat.pl -uc -num #{@psi} #{@a3m_unfiltered}"
       @commands << "#{HH}/hhfilter -i #{@a3m_unfiltered} -qid 40 -cov 20 -o #{@a3m}"
-      @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m fas #{@a3m} #{@infile}"      
-      @commands << "#{HH}/reformat.pl -M first -r -uc -num a3m psi #{@a3m} #{@psi}"
+      @commands << "#{HHPERL}/reformat.pl -M first -r -uc -num a3m fas #{@a3m} #{@infile}"      
+      @commands << "#{HHPERL}/reformat.pl -M first -r -uc -num a3m psi #{@a3m} #{@psi}"
       
     end
     
@@ -149,12 +161,12 @@ class RepperAction < Action
     @commands << "#{REPPER}/complete_profile #{@infile} #{@parfile} #{@plotfile} #{@hydro_data}"
     
     # fragment for overview
-    @commands << "#{REPPER}/sort_by_intensity.pl #{@window_size} #{@basename}"
+    @commands << "#{REPPERPERL}/sort_by_intensity.pl #{@window_size} #{@basename}"
     
     # calling psipred and ncoils
-    @commands << "#{HH}/reformat.pl fas a3m #{@infile} #{@a3m} -uc -num -r -M first"
+    @commands << "#{HHPERL}/reformat.pl fas a3m #{@infile} #{@a3m} -uc -num -r -M first"
     @commands << "#{HH}/hhmake -i #{@a3m} -o #{@hhmake_output} -pcm 2 -pca 0.5 -pcb 2.5 -cov 20" 
-    @commands << "#{REPPER}/deal_with_profile.pl #{@hhmake_output} #{@myhmmmake_output}"
+    @commands << "#{REPPERPERL}/deal_with_profile.pl #{@hhmake_output} #{@myhmmmake_output}"
       
     #non-intuitive definitions!!!
     #$coilsmatrix=0: MTIDK
@@ -175,7 +187,7 @@ class RepperAction < Action
     end
     
     # prepare for gnuplot
-    @commands << "#{REPPER}/prepare_for_gnuplot.pl #{@basename} #{@overview} #{@repper} #{@flag} #{@use_input} #{@perio_rg_low} #{@perio_rg_high} #{@ftwin}_n14 #{@ftwin}_n21 #{@ftwin}_n28 #{@horizfile}"
+    @commands << "#{REPPERPERL}/prepare_for_gnuplot.pl #{@basename} #{@overview} #{@repper} #{@flag} #{@use_input} #{@perio_rg_low} #{@perio_rg_high} #{@ftwin}_n14 #{@ftwin}_n21 #{@ftwin}_n28 #{@horizfile}"
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
