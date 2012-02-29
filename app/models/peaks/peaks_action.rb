@@ -42,8 +42,7 @@ class PeaksAction < Action
   # Put action code in here
   def perform
      params_dump
-     @commands << "echo 'helloworld'; sleep 5;"
-     #@commands << "#{PEAKS} -f #{@infile} -s #{@size} -a #{@string} -o #{@outfile} &> #{job.statuslog_path}"
+     @commands << "#{PEAKS} -f #{@infile} -s #{@size} -a #{@string} -o #{@outfile} &> #{job.statuslog_path}"
      logger.debug "Commands:\n"+@commands.join("\n")
      queue.submit(@commands)
   end
