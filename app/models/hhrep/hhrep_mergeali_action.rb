@@ -1,5 +1,10 @@
 class HhrepMergealiAction < Action
 	HH = File.join(BIOPROGS, 'hhpred')
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
+  else
+     HHPERL = File.join(BIOPROGS, 'hhpred')
+  end
 	CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
 	
 	attr_accessor :hits
@@ -58,15 +63,15 @@ class HhrepMergealiAction < Action
 
 		# Make FASTA alignment from query and selected templates (from hhr file).
 		@commands << "echo 'Extracting alignment of repeats from previous HMM-HMM comparison' >> #{job.statuslog_path}"
-		@commands << "#{HH}/hhmakemodel.pl -v #{@v} -N -m #{@hits} -i #{@parent_basename}.hhr -fas #{@basename}.qt.fas -q #{@parent_basename}.a3m -conj"
+		@commands << "#{HHPERL}/hhmakemodel.pl -v #{@v} -N -m #{@hits} -i #{@parent_basename}.hhr -fas #{@basename}.qt.fas -q #{@parent_basename}.a3m -conj"
 
 		# Merge all alignments whose sequences are given in $basename.qt.fas
 		@commands << "echo 'Merging sequence alignments of repeats into super-alignment' 1>>#{job.statuslog_path} 2>&1"
-		@commands << "#{HH}/mergeali.pl #{@basename}.qt.fas #{@basename}.a3m -d #{@parent_job_dir} -diff 100 -mark -first -v #{@v}"
+		@commands << "#{HHPERL}/mergeali.pl #{@basename}.qt.fas #{@basename}.a3m -d #{@parent_job_dir} -diff 100 -mark -first -v #{@v}"
 		
 		# Do PSIPRED prediction?
 		if (@ss_scoring != "-ssm 0")
-			@commands << "#{HH}/buildali.pl -v 0 -b 0 -maxres 800 -n 0 #{@basename}.a3m 1>>#{job.statuslog_path} 2>&1"
+			@commands << "#{HHPERL}/buildali.pl -v 0 -b 0 -maxres 800 -n 0 #{@basename}.a3m 1>>#{job.statuslog_path} 2>&1"
 		end
 		
 		@hash = {}
@@ -149,18 +154,18 @@ class HhrepMergealiAction < Action
   
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
     @commands << "#{HH}/hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 100"
-    @commands << "#{HH}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.fas -d 160"  # max. 160 chars in description 
+    @commands << "#{HHPERL}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.fas -d 160"  # max. 160 chars in description 
     
     # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
     @commands << "#{HH}/hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 50"
-    @commands << "#{HH}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.reduced.fas -r"
+    @commands << "#{HHPERL}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.reduced.fas -r"
     @commands << "rm #{@local_dir}/#{id}.reduced.a3m"
     
     # Generate graphical display of hits
-    @commands << "#{HH}/hhviz.pl #{id} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
+    @commands << "#{HHPERL}/hhviz.pl #{id} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
     
     # Generate profile histograms
-    @commands << "#{HH}/profile_logos.pl #{id} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
+    @commands << "#{HHPERL}/profile_logos.pl #{id} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
   end
 
 end

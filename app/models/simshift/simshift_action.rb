@@ -1,5 +1,12 @@
 class SimshiftAction < Action
+  
   SIMSHIFT = File.join(BIOPROGS,'simshift')
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    SIMSHIFTPERL ="perl "+ File.join(BIOPROGS,'simshift')
+  else
+    SIMSHIFTPERL = File.join(BIOPROGS,'simshift')
+  end
+
 
   attr_accessor  :jobid , :mail ,  :sequence_file,:sequence_input , :minblocklen, :localevaluecut, :evaluecut, :database , :fullA
 
@@ -47,14 +54,14 @@ class SimshiftAction < Action
     if @fullA == 'T' 
       @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/load_remove_matrix_shm -load"
       @commands << "cd #{SIMSHIFT};  #{SIMSHIFT}/SimShiftDB_Server -M #{@blocklen} -e #{@localecut} -E #{@ecut} -O #{@outfileA} #{@infile} #{@db_path}"
-      @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/simviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db_path}.fas &> /dev/null"
+      @commands << "cd #{SIMSHIFT}; #{SIMSHIFTPERL}/simviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db_path}.fas &> /dev/null"
       @commands << "cd #{SIMSHIFT};  #{SIMSHIFT}/SimShiftDB_Server -M #{@blocklen} -e #{@localecut} -E #{@ecut} -F  -O #{@outfileB}  #{@infile} #{@db_path}"
       @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/load_remove_matrix_shm"
 
     else
       @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/load_remove_matrix_shm -load"
       @commands << "cd #{SIMSHIFT};  #{SIMSHIFT}/SimShiftDB_Server -M #{@blocklen} -e #{@localecut} -E #{@ecut} -O #{@outfileA} #{@infile} #{@db_path}"
-      @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/simviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db_path}.fas &> /dev/null"
+      @commands << "cd #{SIMSHIFT}; #{SIMSHIFTPERL}/simviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db_path}.fas &> /dev/null"
       @commands << "cd #{SIMSHIFT}; #{SIMSHIFT}/load_remove_matrix_shm -remove"
 
     end

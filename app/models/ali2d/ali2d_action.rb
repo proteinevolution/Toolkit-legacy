@@ -1,7 +1,16 @@
 class Ali2dAction < Action
   ALI2D = File.join(BIOPROGS, 'ali2d')
-  MEMSAT2 = File.join(BIOPROGS, 'memsat2')
-  PERL = File.join(BIOPROGS, 'perl')
+  
+
+  if LOCATION == "Munich" && LINUX == 'SL6'
+      PERL    =  "perl "+File.join(BIOPROGS, 'perl')
+      MEMSAT2 =  "perl "+File.join(BIOPROGS, 'memsat2')
+  else
+      PERL    = File.join(BIOPROGS, 'perl')
+      MEMSAT2 = File.join(BIOPROGS, 'memsat2')
+  end
+  
+  
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :seqident
 
@@ -34,7 +43,7 @@ class Ali2dAction < Action
     @seqident = params["seqident"]
 
   end
-
+  
   def init
     @basename = File.join(job.job_dir, job.jobid)
     @infile = @basename+".aln"
@@ -49,11 +58,15 @@ class Ali2dAction < Action
 
     @commands << "#{JAVA_1_5_EXEC} -Xmx500m -jar #{ALI2D}/prepareAli2d.jar #{@infile} #{@basename} #{@seqident} #{@mainlog} &> #{job.statuslog_path}"
 
-    logger.debug "Commands:\n"+@commands.join("\n")
+    #logger.debug "Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'memsat_runs'
     q.save!
+    
+    logger.debug "L67 Submission Perform : #{@commnands.to_s}"
     q.submit(@commands, false)
+    
+
 
   end
 
@@ -83,11 +96,14 @@ class Ali2dAction < Action
       end
     end
 
-    logger.debug "Commands:\n"+@commands.join("\n")
+    #logger.debug "Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'build_params'
     q.save!
+    
+    logger.debug "L105 Submission Memsut_runs : #{@commnands.to_s}"
     q.submit_parallel(@commands, false)
+    
 
   end
 
@@ -97,11 +113,13 @@ class Ali2dAction < Action
 
     @commands << "#{JAVA_1_5_EXEC} -Xmx2000m -jar #{ALI2D}/buildParams.jar #{@infile} #{@mainlog} &> #{@outfile} "
 
-    logger.debug "Commands:\n"+@commands.join("\n")
+    #logger.debug "Commands:\n"+@commands.join("\n")
     #queue.submit(@commands)
     q = queue
     q.on_done = 'run_viewer'
     q.save!
+    
+    logger.debug "L105 Submission Build_params : #{@commnands.to_s}"
     q.submit(@commands, false)
   end
 
@@ -114,7 +132,7 @@ class Ali2dAction < Action
     #viewer not colored without confidence
     @commands << "python #{ALI2D}/viewer.py #{@outfile} #{@outfile}_bw bw false"
     #
-    logger.debug "Commands:\n"+@commands.join("\n")
+    #logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
 

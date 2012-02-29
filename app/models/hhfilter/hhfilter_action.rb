@@ -1,6 +1,13 @@
 class HhfilterAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
   
+  if LOCATION == "Munich" && LINUX == 'SL6'
+    HHPERL = "perl "+File.join(BIOPROGS, 'hhpred')
+  else
+    HHPERL = File.join(BIOPROGS, 'hhpred')
+  end
+  
+  
   attr_accessor :sequence_input, :sequence_file, :informat, :mail, :jobid
   attr_accessor :maxident, :minident, :mincov, :extract
 
@@ -42,7 +49,7 @@ class HhfilterAction < Action
     params_dump
     
     @commands << "#{HH}/hhfilter -i #{@infile} -o #{@a3mfile} -id #{@maxident} -qid #{@minident} -cov #{@mincov} -diff #{@extract} -M 30 &> #{job.statuslog_path}"
-    @commands << "#{HH}/reformat.pl a3m fas #{@a3mfile} #{@outfile} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "#{HHPERL}/reformat.pl a3m fas #{@a3mfile} #{@outfile} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
