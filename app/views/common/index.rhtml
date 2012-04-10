@@ -1,42 +1,56 @@
-
 <h2>Welcome to the  Bioinformatics Toolkit</h2>
-
-<!--
-<p class="message" align="justify" style="border: 2px solid red; background-color: #FFEE00; font-weight: bold; padding: 7px;">
-  On January 31, 2007 we incorporated extensive changes in our webserver
-  setup and the Toolkit framework. The overall stability of the Toolkit should now
-  be much improved. We apologize for the frequent downtimes and error messages in
-  the last few weeks. 
-</p>
--->
 
 <!--<p class="message" align="justify">
   <b><font color="red"><u>Announcement:</u></br>There will be a downtime of the Bioinformatics Toolkit on
   February 1st, 2010 starting at 1pm (local time in Germany).</br>The downtime will take approximately 4 hours.</br>
   Sorry for the inconvenience.</br></font></b>
 </p>-->
-
 <p class="message" align="justify">
   The  Bioinformatics Toolkit is a platform that integrates a great variety of 
   tools for protein sequence analysis. Many tools are developed in-house, and serveral
   public tools are offered with extended functionality. 
 
 </p>
+<br>
 <p class="message" align="justify">
-  The toolkit includes, among others: NucleotideBLAST, ProteinBLAST, PSI-BLAST, fastHMMER, HHsenser;
-  ClustalW, MUSCLE, Mafft, ProbCons; HHrep, PCOILS, REPPER; Quick2D; HHpred, Modeller;
-  CLANS, ANCESCON, PHYLIP; Reformat, RetrieveSeq, gi2promoter. For a short descrition of the tools, click the section tabs.  
+	<h2>Most frequently used tools</h2>
+</p>
+<p class="message" align="justify">
+<b><a href=hhpred>HHpred</a></b> Sensitive protein homology detection and structure prediction by HMM-HMM-comparison. HHpred builds a 
+profile HMM from a query sequence and compares it with a database of HMMs representing annotated protein 
+families (e.g. PFAM, SMART, CDD, COGs, KOGs) or domains with known structure (PDB, SCOP). The output is a 
+list of closest homologs with alignments.<br>
+<br>
+<b><a href=hhblits>HHblits</a></b> Remote homology detection method based on iterative HMM-HMM comparison.<br>
+<br>
+<b><a href=quick2_d>Quick2d</a></b> Quick2D gives you an overview of secondary structure features like alpha-helices, extended beta-sheets, 
+coiled coils, transmembrane helices and disorder regions.
+ Predictions by PSIPRED, JNET, Prof(Rost), Prof(Ouali), Coils, MEMSAT2, HMMTOP, DISOPRED2 and VSL2.<br>
+<br>
+
+<b><a href=modeller>Modeller</a></b> A Program for Comparative Protein Structure Modelling by Satisfaction of Spatial Restraints.<br>
+<br>
+
+<b><a href=pcoils>Coils/PCoils</a></b> This server compares a single sequence (COILS) or a sequence alignment (PCOILS) to a database of known coiled-coils 
+and derives a similarity score. The program then calculates the probability that the sequence will adopt a coiled-coil conformation.<br>
+<br>
+<b><a href=psi_blast>PSI-Blast</a></b> Search with an amino acid sequence against protein databases for locally similar sequences. Similar to ProteinBLAST but more sensitive. 
+PSI-BLAST first performs a BLAST search and builds an alignment from the best local hits. This alignment is then used as a query for the next round of search. 
+After each successive round the search alignment is updated.<br>
+<br>
+
+To find a tool not listed here, choose the appropriate section tab above, or look for the tool in the <b>Quickfinder</b> on the top right corner.
+
 </p>
 
 <div id="sitereqfull">This website is optimized for <a target="_blank" href="http://www.mozilla.org">Mozilla</a>, <a target="_blank" href="http://channels.netscape.com/ns/browsers/default.jsp">Netscape 7</a> and <a target="_blank" href="http://www.opera.com">Opera 7</a>.</div>
 
 <div class="hr" style="margin-bottom: 20px;">&nbsp;</div>
 
-<div class="sub">     
-  <h1>Job submission</h1>
-</div>
-<div class="main">
-  <p align="justify">
+<p class="message" align="justify">
+    <h2>Job submission</h2>
+</p>
+<p class="message" align="justify">
     Each tool has a
     separate input page with a web form in which the user can input sequence data,
     upload sequence files, and specify options. All tools that take alignments
@@ -45,52 +59,43 @@
     Snail symbols inside the submit buttons inform you about tools that
     typically run for more than 10 minutes. 
   </p>
-</div>
 
 <div class="clearall">&nbsp;</div>
 
-<div class="sub">     
-  <h1>Job management</h1>
-</div>
-<div class="main">
-  <p align="justify">
+<p class="message" align="justify">
+    <h2>Job management</h2>
+</p>
+<p class="message" align="justify">
     Located on the left of the screen is a sidebar pane that holds a status
     and section-coded list of all recent jobs in the current session. You can click
-    on previously submitted jobs to check their status and view their results.
-  </p>
-  <p style="margin-top: 10px;" align="justify">
-    In general a session will last until the web browser is closed. However,
+    on previously submitted jobs to check their status and view their results.<br>
+  In general a session will last until the web browser is closed. However,
     because of different session implementations by the various browser types, jobs
     may occasionally disappear from the joblist. Therefore, noting down the job ids is
     recommended. Anonymous job results are stored <strong>two 
       weeks</strong>, whereas jobs of logged-in users are stored at least <strong>two months</strong>. 
   </p>
-</div>
-
 <div class="clearall">&nbsp;</div>
 
-<div class="sub">     
-  <h1>Interconnectivity</h1>
-</div>
-<div class="main">
-  <p align="justify">
+<p class="message" align="justify">
+    <h2>Interconnectivity</h2>
+</p>
+<p class="message" align="justify">
     Most of the tools in the Toolkit are
     interconnected, allowing job results of one tool to be forwarded as input to
     others. For example, you could run PSI-BLAST, parse out a multiple alignment of selected
     hits and send the results to a cluster analysis tool. 
   </p>
-</div>
-
+  
 <div class="clearall">&nbsp;</div>
 
-<div class="sub">     
-  <h1>User databases</h1>
-</div>
-<div class="main">
-  <p align="justify">
+<p class="message" align="justify">
+    <h2>User databases</h2>
+</p>
+  <p class="message" align="justify">
     You may upload customized databases which are then accessible throughout the whole toolkit (upload once, use many times).
   </p>
-</div>
+
 
 <div class="hr" style="margin-bottom: 20px;">&nbsp;</div>
 <div class="row">
