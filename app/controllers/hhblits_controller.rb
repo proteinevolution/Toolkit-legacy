@@ -18,7 +18,7 @@ class HhblitsController < ToolController
     @dbvalues = Array.new
     @dblabels = Array.new
 
-    sortlist = Array["uniprot", "nr", "pdb", "scop", "pfam"]
+    sortlist = Array["uniprot", "nr"]
     # Allow non-standard libraries only on internal server:
     if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
     sortlist.each do |el|
