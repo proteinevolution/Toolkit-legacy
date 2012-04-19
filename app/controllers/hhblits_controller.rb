@@ -18,7 +18,7 @@ class HhblitsController < ToolController
     @dbvalues = Array.new
     @dblabels = Array.new
 
-    sortlist = Array["uniprot", "nr", "pdb", "scop", "pfam"]
+    sortlist = Array["uniprot", "nr"]
     # Allow non-standard libraries only on internal server:
     if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
     sortlist.each do |el|
@@ -28,8 +28,14 @@ class HhblitsController < ToolController
           base = File.basename(val, ".cs219")
           dir = File.dirname(val)
           @dbvalues.push(File.join(dir, base))
-          @dblabels.push(base)
-          next;
+          name = Dir.glob(File.join(dir, base + ".name*"))
+          if (name.empty?)
+            @dblabels.push(base)
+          else
+            name[0].gsub!(/^\S+\.name\.(\S+)$/, '\1')
+            @dblabels.push(base + "_" + name[0])
+          end
+          next
         end
       end
     end
