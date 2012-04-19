@@ -127,13 +127,13 @@
 
         # SET STATUS OF THIS JOB TO RUNNING
         if LINUX == 'UBUNTU' || LOCATION == "Tuebingen"
-          f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_RUNNING}\n"
+          f.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_RUNNING}\n"
         end
         if LINUX == 'SL6' && RAILS_ENV =="development"
-          f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_RUNNING}'\n"
+          f.write "ssh ws04 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_RUNNING}'\n"
         end
         if LINUX == 'SL6' && RAILS_ENV =="production"
-         f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_RUNNING}'\n"
+         f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_RUNNING}'\n"
         end              
         
         if RAILS_ENV == "development"
@@ -153,16 +153,16 @@
               if (LOCATION == "Munich")
                       if RAILS_ENV == "development"
                         f.write "echo 'Running Additional Script '\n"
-                        #f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
-                        f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
-                        logger.debug "L138 Updateing :ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'"
-                        #f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
+                        #f.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}\n"
+                        f.write "ssh ws04 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}'\n"
+                        logger.debug "L138 Updateing :ssh ws04 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}'"
+                        #f.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}\n"
                       else
-                        f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
-                        #f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
+                        f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}'\n"
+                        #f.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}\n"
                       end
               else
-                f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
+                f.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}\n"
             end
             
           if RAILS_ENV == "development"
@@ -174,28 +174,28 @@
           f.write "if [ ${exitstatus} -eq 0 ] ; then\n"
           if (LOCATION == "Munich")
             if RAILS_ENV == "development"
-              f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
+              f.write "ssh ws04 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}'\n"
             else
-              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n"
-              #f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
+              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}'\n"
+              #f.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}\n"
             end
           else
-            f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}\n"
+            f.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}\n"
           end
           if RAILS_ENV == "development"
             f.write "echo 'Job orig #{id.to_s} DONE!' >> #{queue_job.action.job.statuslog_path}\n"
-            f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_DONE}'\n" # naga
+            f.write "ssh ws04 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}'\n" # naga
           end
           f.write "else\n"
           if (LOCATION == "Munich")
             if RAILS_ENV == "development"
-              f.write "ssh ws02 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}'\n"
+              f.write "ssh ws04 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_ERROR}'\n"
             else
-              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}'\n"
-              #f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}\n"
+              f.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_ERROR}'\n"
+              #f.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_ERROR}\n"
             end
           else
-            f.write File.join(TOOLKIT_ROOT,"script","qupdate.rb")+" #{id} #{STATUS_ERROR}\n"
+            f.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_ERROR}\n"
           end
           f.write "echo 'Error while executing Job!' >> #{queue_job.action.job.statuslog_path}\n"
           if RAILS_ENV == "development"

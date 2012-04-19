@@ -1,6 +1,10 @@
 <h2><%= @tool['title'] %> Overview</h2>
 <div class="row">
-HHblits is the first iterative method based on the pairwise comparison of profile Hidden Markov Models. In benchmarks it achieves better runtimes than other iterative sequence search methods such as PSI-BLAST or HMMER3 by using a fast prefilter based on profile-profile comparison. Furthermore, HHblits greatly improves upon PSI-BLAST and HMMER3 in terms of sensitivity/selectivity and alignment quality.
-</div>
+Sequence-based protein function and structure prediction depends crucially on sequence-search sensitivity and accuracy 
+of the resulting sequence alignments. We present an open-source, general-purpose tool that represents both query and database 
+sequences by profile hidden Markov models (HMMs): 'HMM-HMM-based lightning-fast iterative sequence search' 
+(HHblits; http://toolkit.genzentrum.lmu.de/hhblits/). 
+Compared to the sequence-search tool PSI-BLAST, HHblits is faster owing to its discretized-profile prefilter, 
+has 50-100% higher sensitivity and generates more accurate alignments</div>
 
 <%= render(:partial => "hhblits/references_and_contact") %>
