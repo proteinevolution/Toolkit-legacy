@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     require 'yaml'
     @sections = YAML.load_file(::CONFIG + "/sections.yml")
     @sections_hash = array_to_hash(@sections, 'name')
-    @tools = YAML.load_file(::CONFIG + "/tools.yml").sort {|a,b| a['title'] <=> b['title']}
+    @tools = YAML.load_file(::CONFIG + "/tools.yml").sort {|a,b| a['title'].downcase <=> b['title'].downcase}
     @tools_hash = array_to_hash(@tools, 'name')
     @jobs_cart = find_cart()
     @tool = nil
