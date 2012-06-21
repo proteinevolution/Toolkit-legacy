@@ -21,6 +21,7 @@ class HhblitsAction < Action
                                                     :informat => 'fas', 
                                                     :inputmode => 'alignment',
                                                     :max_seqs => 9999,
+                                                    :max_length => 6000,
                                                     :on => :create,
                                                     :ss_allow => true})
 
