@@ -1,5 +1,6 @@
 class HhalignAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
+  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
    if LOCATION == "Munich" && LINUX == 'SL6'
     HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
   else
@@ -61,6 +62,8 @@ class HhalignAction < Action
   def perform
     params_dump
     
+    @commands << "export  HHLIB=#{HHLIB} "
+    @commands << "export  PATH=$PATH:#{HHSUITE} "
     # Add secondary structure prediction
     @commands << "#{HHPERL}/buildali.pl -v #{@v} -fas -n 0 #{@infile} &> #{job.statuslog_path}"
     
@@ -73,16 +76,16 @@ class HhalignAction < Action
     end
     
     # build hmm for the query sequence
-    @commands << "#{HH}/hhmake -i #{@inbasename}.a3m -qid #{@qid} -id #{@seqid} -o #{@inbasename}.hhm 2>&1 1>> #{job.statuslog_path}"
+    @commands << "#{HHSUITE}/hhmake -i #{@inbasename}.a3m -qid #{@qid} -id #{@seqid} -o #{@inbasename}.hhm 2>&1 1>> #{job.statuslog_path}"
     
     # if target-sequence exist, build hmm for the target sequence
     if (!@target.empty?)
-      @commands << "#{HH}/hhmake -i #{@targetbasename}.a3m -qid #{@qid} -id #{@seqid} -o #{@targetbasename}.hhm 2>&1 1>> #{job.statuslog_path}"
+      @commands << "#{HHSUITE}/hhmake -i #{@targetbasename}.a3m -qid #{@qid} -id #{@seqid} -o #{@targetbasename}.hhm 2>&1 1>> #{job.statuslog_path}"
     end
     
-    @commands << "#{HH}/hhsearch -i #{@inbasename}.hhm -d #{DATABASES}/hhpred/cal.hhm -cal"
+    @commands << "#{HHSUITE}/hhsearch -i #{@inbasename}.hhm -d #{DATABASES}/hhpred/cal.hhm -cal"
     
-    @commands << "#{HH}/hhalign -v #{@v} -i #{@inbasename}.hhm #{@target} -o #{@outfile} -png #{@basename}.png -qid #{@qid} -id #{@seqid} -dwin #{@dwin} -dthr #{@dthr} #{@score2struct} #{@otheradvanced} 2>&1 1>> #{job.statuslog_path}"		
+    @commands << "#{HHSUITE}/hhalign -v #{@v} -i #{@inbasename}.hhm #{@target} -o #{@outfile} -png #{@basename}.png -qid #{@qid} -id #{@seqid} -dwin #{@dwin} -dthr #{@dthr} #{@score2struct} #{@otheradvanced} 2>&1 1>> #{job.statuslog_path}"		
     
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
