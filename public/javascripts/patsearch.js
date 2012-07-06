@@ -1,3 +1,8 @@
+// Put your javascript code here!
+function pasteExample() {
+    $('sequence_input').value = "[LIVMF](2)-D-E-A-D-[RKEN]-x-[LIVMFYGSTN]";
+}
+
 function deselect()
 {
   var number = parseInt($('CHECKBOXES').value, 10);
