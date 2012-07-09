@@ -135,7 +135,7 @@ class ToolController < ApplicationController
       @jobs_cart.delete(@job.id)
       
       logger.debug "Destroy job #{@job.id} in database"
-      Job.delete(@job.id)
+      Job.remove(@job.id)
       
     end
     redirect_to(:host => DOC_ROOTHOST, :controller => tool)
@@ -170,20 +170,31 @@ class ToolController < ApplicationController
   
   
   def resubmit
-    logger.debug "Resubmit!"
-    job_params = @job.actions.first.params
-    job_params.each_key do |key|
-      if (key =~ /^(\S+)_file$/) 
-        if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
-          params[$1+'_input'] = IO.readlines(job_params[key]).join
+      @tmp_sequence ='XX'
+      logger.debug "L 173 Rendering Resubmit!"
+      job_params = @job.actions.first.params
+      tmp_params = job_params.keys
+      tmp_params.sort!
+      tmp_params.each do |key|
+      #job_params.each_key do |key|
+        if (key =~ /^(\S+)_file$/) 
+              if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
+                @tmp_sequence = IO.readlines(job_params[key]).join
+                @tmp_sequence.chomp!
+                params['sequence_input'] = @tmp_sequence
+              end         
+        else
+          params[key] = job_params[key]
+          if (key=~ /sequence_input/)
+                logger.debug "L 202 Processing Param sequence_input "
+                params['sequence_input'] = @tmp_sequence
+          end
         end
-      else
-        params[key] = job_params[key]
-      end
     end
-    params[:jobid] = ''
-    index
-    render(:action => 'index')
+      #params['input_sequence']= @tmp_sequence
+      params[:jobid] = ''
+      index
+      render(:action => 'index')
   end
   
   def log
