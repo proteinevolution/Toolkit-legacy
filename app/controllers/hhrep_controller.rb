@@ -4,9 +4,12 @@ class HhrepController < ToolController
 		@informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
 		@informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
 		@maxpsiblastit = ['0','1','2','4','6','8','10']
+    @maxhhblitsit = ['0','1','2','3','4','5','8']
 		@ss_scoring_values = ['4', '0']
 		@ss_scoring_labels = ['yes', 'no']
 		@maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']   
+    @prefilter_values = ['hhblits','psiblast']
+    @prefilter_labels = ['HHblits', 'Psiblast']
 	end
   
 	def results

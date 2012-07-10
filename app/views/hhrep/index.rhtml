@@ -31,9 +31,14 @@
 <h3 class="<%= @section["name"] %>">Options</h3>
 
 <div class="row">
-	<%= form_label("Max. PSI-BLAST iterations", "maxpsiblastit") %>
-	<%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, '8') %>
+  <%= form_label("MSA Generation Method", "prefilter") %>
+  <%= form_radio_buttons("prefilter", @prefilter_values, @prefilter_labels, "hhblits", "&nbsp;","change_label('maxhhblitsit_label','Max. MSA Generation iterations','Max. MSA Generation iterations');                                                                                           change_label('E_hhblits_label','E-value threshold for MSA Generation','E-value threshold for MSA ');") %>  
 </div>
+<div class="row">
+  <%= form_label_id("Max. MSA Generation iterations", "maxhhblitsit_label", "maxhhblitsit") %>
+  <%= form_select_single("maxhhblitsit", @maxhhblitsit, @maxhhblitsit, '3') %>  
+</div>
+
 <div class="row">
 	<%= form_label("Score secondary structure", "ss_scoring") %>
 	<%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, "4", "&nbsp;") %>
