@@ -1,6 +1,11 @@
 class HhrepAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
+  HHBLITS = File.join(BIOPROGS, 'hhblits')
+  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
+  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
+  HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')  
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
+  PSIPRED = File.join(BIOPROGS, 'psipred')  
   
   if LOCATION == "Munich" && LINUX == 'SL6'
       HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
@@ -10,7 +15,7 @@ class HhrepAction < Action
   
   
   
-  attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :width
+  attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :width, :prefilter
   
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
                     :informat => 'fas', 
@@ -36,7 +41,7 @@ class HhrepAction < Action
     @informat = params['informat'] ? params['informat'] : 'fas'
     reformat(@informat, "fas", @seqfile)
     @informat = "fas"
-    
+    @maxhhblitsit = params['maxhhblitsit']
     @maxpsiblastit = params['maxpsiblastit']
     @ss_scoring = "-ssm " + params["ss_scoring"]
     @max_seqs = params["maxseq"]
@@ -72,8 +77,24 @@ class HhrepAction < Action
       @commands << "#{HH}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
     end
     if @maxpsiblastit.to_i > 0 || @mode != 'queryhmm'
-      @commands << "#{HH}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n #{@maxpsiblastit} #{@basename}.a3m  1>>#{job.statuslog_path} 2>&1"
+             #@commands << "#{HH}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n #{@maxpsiblastit} #{@basename}.a3m  1>>#{job.statuslog_path} 2>&1"
     end
+    # Setting new Prefilter 
+    if(@prefilter=='psiblast')
+         @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
+         @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &> #{job.statuslog_path}"
+      else
+          if @maxhhblitsit == '0'
+              @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
+              @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+          else
+              @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
+              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+          end
+      end
+    
+    
+    
     
     @hash = {}
     @hash['maxlines'] = @maxlines
