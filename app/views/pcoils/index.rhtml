@@ -25,6 +25,14 @@ This server compares a single sequence (COILS) or a sequence alignment (PCOILS) 
 	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
 </div>
 
+<div class="row">
+  <div class="formw">
+    <span style="color: green;">
+      Search for Hordeum vulgare HSP70. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
+    </span>
+  </div>
+</div>
+
 <div class="spacer">&nbsp;</div>
 
 <h3 class="<%= @section["name"] %>">Options</h3>
