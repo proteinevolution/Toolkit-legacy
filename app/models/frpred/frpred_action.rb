@@ -171,11 +171,11 @@ class FrpredAction < Action
     # method 1 (lig = 1 / cat = 7)
 
      if (!@pdb)
-       @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} score=1#{@sab} catRes=#{@catRes} toolkit=y win=y seqCentered=0 cons=new scoreOutFile=#{@jobID}.1_scores fastaOutFile=#{@jobID}.fastaOut1 bench=lig 1>> #{job.statuslog_path} 2>&1"
-       @commands << "#{JAVA_1_5_EXEC} -Xms256M -XX:-UseGCOverheadLimit -Xmx2048M -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} score=1#{@sab} catRes=#{@catRes} toolkit=y win=y seqCentered=0 cons=new scoreOutFile=#{@jobID}.7_scores fastaOutFile=#{@jobID}.fastaOut7 bench=cat 1>> #{job.statuslog_path} 2>&1"
+       @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} score=1#{@sab} catRes=#{@catRes} toolkit=y win=y seqCentered=0 cons=new scoreOutFile=#{@jobID}.1_scores fastaOutFile=#{@jobID}.fastaOut1 bench=lig 1>> #{job.statuslog_path} 2>&1"
+       @commands << "#{JAVA_1_5_EXEC} -Xms256M -XX:-UseGCOverheadLimit -Xmx4096M -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} score=1#{@sab} catRes=#{@catRes} toolkit=y win=y seqCentered=0 cons=new scoreOutFile=#{@jobID}.7_scores fastaOutFile=#{@jobID}.fastaOut7 bench=cat 1>> #{job.statuslog_path} 2>&1"
      else
-       @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain} score=1#{@sab}  win=y catRes=#{@catRes} toolkit=y seqCentered=0 cons=new pdbScriptFile=#{@jobID}.1_rasmol scoreOutFile=#{@jobID}.1_scores fastaOutFile=#{@jobID}.fastaOut1 bench=lig 2>> #{job.statuslog_path}"
-       @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain} score=1#{@sab}  win=y catRes=#{@catRes} toolkit=y seqCentered=0 cons=new pdbScriptFile=#{@jobID}.7_rasmol scoreOutFile=#{@jobID}.7_scores fastaOutFile=#{@jobID}.fastaOut7 bench=cat 2>> #{job.statuslog_path}"
+       @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain} score=1#{@sab}  win=y catRes=#{@catRes} toolkit=y seqCentered=0 cons=new pdbScriptFile=#{@jobID}.1_rasmol scoreOutFile=#{@jobID}.1_scores fastaOutFile=#{@jobID}.fastaOut1 bench=lig 2>> #{job.statuslog_path}"
+       @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain} score=1#{@sab}  win=y catRes=#{@catRes} toolkit=y seqCentered=0 cons=new pdbScriptFile=#{@jobID}.7_rasmol scoreOutFile=#{@jobID}.7_scores fastaOutFile=#{@jobID}.fastaOut7 bench=cat 2>> #{job.statuslog_path}"
 
      end
     
@@ -183,9 +183,9 @@ class FrpredAction < Action
     #method 2
     
     if (!@pdb)
-      @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} score=2#{@sab} catRes=#{@catRes} toolkit=y win=y seqCentered=0 cons=new scoreOutFile=#{@jobID}.2_scores fastaOutFile=#{@jobID}.fastaOut2 1>> #{job.statuslog_path} 2>&1"
+      @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} score=2#{@sab} catRes=#{@catRes} toolkit=y win=y seqCentered=0 cons=new scoreOutFile=#{@jobID}.2_scores fastaOutFile=#{@jobID}.fastaOut2 1>> #{job.statuslog_path} 2>&1"
      else
-      @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain} score=2#{@sab}  win=y catRes=#{@catRes} toolkit=y seqCentered=0 cons=new pdbScriptFile=#{@jobID}.2_rasmol scoreOutFile=#{@jobID}.2_scores fastaOutFile=#{@jobID}.fastaOut2 2>> #{job.statuslog_path}"
+      @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain} score=2#{@sab}  win=y catRes=#{@catRes} toolkit=y seqCentered=0 cons=new pdbScriptFile=#{@jobID}.2_rasmol scoreOutFile=#{@jobID}.2_scores fastaOutFile=#{@jobID}.fastaOut2 2>> #{job.statuslog_path}"
      end
 
 
@@ -194,29 +194,29 @@ class FrpredAction < Action
     if @manual_subgroups
       
       if(!@pdb)
-        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f}  score=5#{@sab} catRes=#{@catRes} toolkit=y seqCentered=#{@seqcentered} cons=new scoreOutFile=#{@jobID}.5_scores fastaOutFile=#{@jobID}.fastaOut5 1>> #{job.statuslog_path} 2>&1"
+        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f}  score=5#{@sab} catRes=#{@catRes} toolkit=y seqCentered=#{@seqcentered} cons=new scoreOutFile=#{@jobID}.5_scores fastaOutFile=#{@jobID}.fastaOut5 1>> #{job.statuslog_path} 2>&1"
       else
-        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain}  score=5#{@sab} catRes=#{@catRes} toolkit=y seqCentered=#{@seqcentered} cons=new pdbScriptFile=#{@jobID}.5_rasmol scoreOutFile=#{@jobID}.5_scores fastaOutFile=#{@jobID}.fastaOut5 1>> #{job.statuslog_path} 2>&1"
+        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain}  score=5#{@sab} catRes=#{@catRes} toolkit=y seqCentered=#{@seqcentered} cons=new pdbScriptFile=#{@jobID}.5_rasmol scoreOutFile=#{@jobID}.5_scores fastaOutFile=#{@jobID}.fastaOut5 1>> #{job.statuslog_path} 2>&1"
       end
       
       if(!@pdb)
-        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f}  score=7#{@sab} catRes=n toolkit=y seqCentered=0 cons=new scoreOutFile=#{@jobID}.6_scores fastaOutFile=#{@jobID}.fastaOut6 1>> #{job.statuslog_path} 2>&1"
+        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f}  score=7#{@sab} catRes=n toolkit=y seqCentered=0 cons=new scoreOutFile=#{@jobID}.6_scores fastaOutFile=#{@jobID}.fastaOut6 1>> #{job.statuslog_path} 2>&1"
       else
-        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit  -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain}  score=7#{@sab} catRes=n toolkit=y seqCentered=0 cons=new pdbScriptFile=#{@jobID}.6_rasmol scoreOutFile=#{@jobID}.6_scores fastaOutFile=#{@jobID}.fastaOut6 1>> #{job.statuslog_path} 2>&1"
+        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit  -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain}  score=7#{@sab} catRes=n toolkit=y seqCentered=0 cons=new pdbScriptFile=#{@jobID}.6_rasmol scoreOutFile=#{@jobID}.6_scores fastaOutFile=#{@jobID}.fastaOut6 1>> #{job.statuslog_path} 2>&1"
       end
       
     else
     
       if(!@pdb)
-        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f}  score=6#{@sab} catRes=#{@catRes} toolkit=y seqCentered=#{@seqcentered} cons=new scoreOutFile=#{@jobID}.5_scores fastaOutFile=#{@jobID}.fastaOut5 1>> #{job.statuslog_path} 2>&1"
+        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f}  score=6#{@sab} catRes=#{@catRes} toolkit=y seqCentered=#{@seqcentered} cons=new scoreOutFile=#{@jobID}.5_scores fastaOutFile=#{@jobID}.fastaOut5 1>> #{job.statuslog_path} 2>&1"
       else
-        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain} score=6#{@sab} catRes=#{@catRes} toolkit=y seqCentered=#{@seqcentered} cons=new pdbScriptFile=#{@jobID}.5_rasmol scoreOutFile=#{@jobID}.5_scores fastaOutFile=#{@jobID}.fastaOut5 1>> #{job.statuslog_path} 2>&1"
+        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain} score=6#{@sab} catRes=#{@catRes} toolkit=y seqCentered=#{@seqcentered} cons=new pdbScriptFile=#{@jobID}.5_rasmol scoreOutFile=#{@jobID}.5_scores fastaOutFile=#{@jobID}.fastaOut5 1>> #{job.statuslog_path} 2>&1"
       end
       
       if(!@pdb)
-        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} score=8#{@sab} catRes=n toolkit=y seqCentered=0 cons=new scoreOutFile=#{@jobID}.6_scores fastaOutFile=#{@jobID}.fastaOut6 1>> #{job.statuslog_path} 2>&1"
+        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} score=8#{@sab} catRes=n toolkit=y seqCentered=0 cons=new scoreOutFile=#{@jobID}.6_scores fastaOutFile=#{@jobID}.fastaOut6 1>> #{job.statuslog_path} 2>&1"
       else
-        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx2048M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain} score=8#{@sab} catRes=n toolkit=y seqCentered=0 cons=new pdbScriptFile=#{@jobID}.6_rasmol scoreOutFile=#{@jobID}.6_scores fastaOutFile=#{@jobID}.fastaOut6 1>> #{job.statuslog_path} 2>&1"
+        @commands << "#{JAVA_1_5_EXEC} -Xms256M -Xmx4096M -XX:-UseGCOverheadLimit -server -cp #{FRPRED} formatIO.Main workDir=#{@workdir} fastaFile=#{@in_f} pdbFile=#{@pdb_f} #{@pdb_chain} score=8#{@sab} catRes=n toolkit=y seqCentered=0 cons=new pdbScriptFile=#{@jobID}.6_rasmol scoreOutFile=#{@jobID}.6_scores fastaOutFile=#{@jobID}.fastaOut6 1>> #{job.statuslog_path} 2>&1"
       end
       
     end    
