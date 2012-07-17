@@ -9,7 +9,17 @@
 	<p class="formerror"><%= @errors['hits'] %></p>
 </div><div class="hr">&nbsp;</div>
 <% end %>
-
+<div id="forward" style="display: none;">
+        <div class="row">
+            <%= form_label("Forward HHM to") %>
+            <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[1], 1) %>
+        </div>
+		<div class="row">
+			<%  %>
+	    <input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward Query HMM" />
+		</div>
+    <div class="hr">&nbsp;</div>
+</div>
 
 <% if @hhcluster %>
 	<a href="/hhcluster">Back to Galaxy of folds</a>
@@ -137,7 +147,7 @@
 
 <div class="row">
 	<!-- All the histograms and Data comes from job.results -->
-	<%=  @job.results.join  %>	
+       <%=  @job.results.join  %>
 </div>
 
 
