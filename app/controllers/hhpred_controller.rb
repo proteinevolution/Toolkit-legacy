@@ -21,6 +21,8 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     searchpat = File.join(DATABASES, @tool['name'], 'new_dbs', '*')
     dbvalues_pre = Dir.glob(searchpat)
     
+    logger.debug "L 24 HHpredController #{params['sequence_input']}"
+    
     @dbvalues = Array.new
     
     # Sort list of directories according to order given in sortlist 
@@ -63,6 +65,16 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     if (!@job.actions.first.flash.nil? && !@job.actions.first.flash['hhcluster'].nil?)
       @hhcluster = true
     end
+    
+    # Forwarding Values for other HH Tools
+    @fw_values = [fw_to_tool_url('hhpred', 'hhpred')+ "&mode=queryhmm", 
+                  fw_to_tool_url('hhpred', 'hhrep')+ "&mode=queryhmm",  
+                  fw_to_tool_url('hhpred', 'hhrepid')+ "&mode=queryhmm"] 
+    @fw_labels = [tool_title('hhpred'),
+                  tool_title('hhrep'),
+                  tool_title('hhrepid')]
+    
+ 
   end
   
   def histograms

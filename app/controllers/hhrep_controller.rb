@@ -1,6 +1,7 @@
 class HhrepController < ToolController
 
 	def index
+    @mode = params["mode"] 
 		@informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
 		@informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
 		@maxpsiblastit = ['0','1','2','4','6','8','10']

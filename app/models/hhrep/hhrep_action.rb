@@ -14,8 +14,7 @@ class HhrepAction < Action
   end
   
   
-  
-  attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :width, :prefilter
+  attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :width, :prefilter, :mode
   
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
                     :informat => 'fas', 
@@ -33,7 +32,7 @@ class HhrepAction < Action
   
   # Put action initialisation code in here
   def before_perform
-    
+   
     @basename = File.join(job.job_dir, job.jobid)
     @seqfile = @basename+".in"
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
@@ -48,7 +47,7 @@ class HhrepAction < Action
     @aliwidth = params["width"].to_i < 20 ? "20" : params['width']
     @inputmode = params["inputmode"]
     
-    @mode = nil
+   
     @maxlines = "20"
     @v = 1
     
@@ -58,13 +57,16 @@ class HhrepAction < Action
   # Optional:
   # Put action initialization code that should be executed on forward here
   def before_perform_on_forward
-    
-    pjob = job.parent
-    @mode = pjob.params['mode']
+    logger.debug "L 64 Running before_on_perform "
     case @mode
     when 'queryhmm'
+      logger.debug "L66 Running in Mode Queryhmm"
+      pjob = job.parent
       @informat = 'a3m'
       FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
+      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.hhm", "#{@basename}.hhm")
+      
+      logger.debug "L70 Copy  #{pjob.job_dir}/#{pjob.jobid}.hhm/a3m  to #{@basename}.hhm/a3m "
     end
     
   end
@@ -73,28 +75,33 @@ class HhrepAction < Action
   # Put action code in here
   def perform
     
+    logger.debug "L79 Mode set to #{@mode} !"
+    
     if @mode != 'queryhmm'
       @commands << "#{HH}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
     end
     if @maxpsiblastit.to_i > 0 || @mode != 'queryhmm'
              #@commands << "#{HH}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n #{@maxpsiblastit} #{@basename}.a3m  1>>#{job.statuslog_path} 2>&1"
     end
-    # Setting new Prefilter 
-    if(@prefilter=='psiblast')
-         @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
-         @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &> #{job.statuslog_path}"
-      else
-          if @maxhhblitsit == '0'
-              @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
-              @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
-          else
-              @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
-              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
-          end
-      end
     
     
-    
+    # Settin new Prefilter 
+    if @mode != 'queryhmm'
+              if(@prefilter=='psiblast')
+                   @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
+                   @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &> #{job.statuslog_path}"
+                else
+                    if @maxhhblitsit == '0'
+                        @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
+                        @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+                    else
+                        @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
+                        @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+                    end
+                end
+    else
+        @commands <<"echo 'Using previously generated HMMs as Input Model' >> #{job.statuslog_path}  "
+    end
     
     @hash = {}
     @hash['maxlines'] = @maxlines

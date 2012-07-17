@@ -6,6 +6,8 @@ class HhrepForwardAction < Action
   end
   
   def forward_params
+    logger.debug "In forward params"
+    logger.debug "#{job.job_dir}"
     filename = File.join(job.job_dir, 'result_textbox_to_file')
     res = ""    
     if (File.exists?(filename))     

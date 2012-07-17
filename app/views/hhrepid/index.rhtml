@@ -2,8 +2,9 @@
 
 <h2><%= @page_title %></h2>
 
-<%= form_tag({:action => :run, :job => 'hhrepid'}, {:multipart => true})%> 
+<%= form_tag({:action => :run, :job => 'hhrepid', :parent => @parent_job}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
+<% if @parent_job.nil? || @parent_job.params['mode'].nil?  -%>
 <div class="row">
   <%= form_label("Paste protein sequence or multiple alignment", "input") %>
   <%= form_text_area("sequence_input") %>
@@ -23,16 +24,33 @@
 		<strong>TPR    </strong> <a href="#" onClick="javascript:pasteTPR();">paste</a>&nbsp;&nbsp;
 		<strong>OMPW</strong> <a href="#" onClick="javascript:pasteOMPW();">paste</a>
 	</div>
+	
+	<%else%>
+<%= form_hidden_field("sequence_input") %>
+<%= form_hidden_field("sequence_file", "") %>
+<%= form_hidden_field("informat") %>
+
+<div class="row">
+    <strong>Using query HHM from job <%= @parent_job.jobid %> as input!</strong>
+    <%= form_hidden_field("mode", "queryhmm") %>
+    <%= form_submit_buttons %>
+
+
+<%end%>
+	
+	
 </div>
 
 <div class="spacer">&nbsp;</div>
 
 <h3 class="<%= @section["name"] %>">Options</h3>
+<% if @parent_job.nil? || @parent_job.params['mode'].nil? -%>
+	<div class="row">
+	  <%= form_label("Max. PSI-BLAST iterations", "maxpsiblastit") %>
+	  <%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, '8') %>	
+    </div>
+<%end %>
 
-<div class="row">
-  <%= form_label("Max. PSI-BLAST iterations", "maxpsiblastit") %>
-  <%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, '8') %>	
-</div>
 <div class="row">
   <%= form_label("Score secondary structure", "ss_scoring") %>
   <%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, "4", "&nbsp;") %>	

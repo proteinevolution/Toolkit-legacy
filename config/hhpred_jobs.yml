@@ -16,6 +16,9 @@ hhpred_job:
       - name: pcoils
         title: Forward to PCoils
         title_long: Forward results to PCoils
+      - name: forward
+        title: Forward HMM
+        title_long: Forward Query HMM
     - name: histograms
       title: Histogram
       title_long: Show results in profile histogram view
