@@ -14,7 +14,7 @@ class HhrepidAction < Action
   
   
 
-  attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail
+  attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :mode
   
   validates_input(:sequence_input, :sequence_file, {
                     :informat_field => :informat, 
@@ -47,19 +47,43 @@ class HhrepidAction < Action
     @mact          = "-mapt1 " + params["mact"] + " -mapt2 " + params["mact"] + " -mapt3 " + params["mact"]
     @domm          = params["domm"].nil? ? "-domm 0" : "" 
     
-    @mode = nil
     @maxlines = "20"
     @v = 1
     
   end
+  
+   # Optional:
+  # Put action initialization code that should be executed on forward here
+  def before_perform_on_forward
+    logger.debug "L 59 Running before_on_perform "
+    case @mode
+    when 'queryhmm'
+      logger.debug "L62 Running in Mode Queryhmm"
+      pjob = job.parent
+      @informat = 'a3m'
+      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
+      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.hhm", "#{@basename}.hhm")
+      
+      logger.debug "L70 Copy  #{pjob.job_dir}/#{pjob.jobid}.hhm/a3m  to #{@basename}.hhm/a3m "
+    end
+    
+  end
+  
+  
+  
 
   # Put action code in here
   def perform
-    # Build query alignment and prepare FASTA files for 'Show Query Alignemt'    
-    @commands << "#{HHPERL}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
-    if @maxpsiblastit.to_i > 0
-      @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 2000 -n #{@maxpsiblastit} #{@basename}.a3m  1>>#{job.statuslog_path} 2>&1"
-    end
+    
+    if @mode != 'queryhmm'
+        # Build query alignment and prepare FASTA files for 'Show Query Alignemt'    
+        @commands << "#{HHPERL}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
+        if @maxpsiblastit.to_i > 0
+          @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 2000 -n #{@maxpsiblastit} #{@basename}.a3m  1>>#{job.statuslog_path} 2>&1"
+      end
+    else  
+       @commands <<"echo 'Using previously generated HMM as Input Query' >> #{job.statuslog_path} "
+    end  
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
     @commands << "#{HH}/hhfilter -i #{@basename}.a3m -o #{job.job_dir}/#{id}.reduced.a3m -diff 100"
     @commands << "#{HHPERL}/reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description     
@@ -67,6 +91,7 @@ class HhrepidAction < Action
     @commands << "#{HH}/hhfilter -i #{@basename}.a3m -o #{job.job_dir}/#{id}.reduced.a3m -diff 50"
     @commands << "#{HHPERL}/reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.reduced.fas -r"
     @commands << "rm #{job.job_dir}/#{id}.reduced.a3m"
+
 
     # save input params for later use in run_hhrepid
     @hash = {}
