@@ -33,12 +33,15 @@
 <div class="row">
     <strong>Using query HHM from job <%= @parent_job.jobid %> as input!</strong>
     <%= form_hidden_field("mode", "queryhmm") %>
-    <%= form_submit_buttons %>
+
 
 
 <%end%>
+
 	
-	
+</div>
+<div class="row">
+  <%= form_submit_buttons %>
 </div>
 
 <div class="spacer">&nbsp;</div>
@@ -80,9 +83,7 @@
 
 <%= render(:partial => "shared/joboptions") %>
 
-<div class="row">
-  <%= form_submit_buttons %>
-</div>
+
 
 </form>
 
