@@ -74,7 +74,7 @@ module ApplicationHelper
     value = params[name] ? params[name] : default
     value = @error_params[name] ? @error_params[name] : value
     style = @errors[name] ? "formerror" : ""
-    wrap_form_widget(text_area_tag(name, value, :wrap => "off", :rows => 5, :maxlength => 500000, :id => name, :class => style), @errors[name])
+    wrap_form_widget(text_area_tag(name, value, :wrap => "off", :rows => 5, :id => name, :class => style), @errors[name])
   end
 
   def form_hidden_field(name, value=nil, options={})
@@ -159,7 +159,7 @@ module ApplicationHelper
     ret = "<input name=\"submitform\" id=\"submitform\"  type=\"submit\" class=\"toolbutton\" value=\"Submit job\" />"
     ret = ret << "<input name=\"resetform\" id=\"resetform\" type=\"reset\" class=\"toolbutton\" value=\"Reset form\" /><br/>"
   end
-  
+    
   def form_submit_snail_buttons(message)
     ret = "<input name=\"submitform\" type=\"submit\" class=\"snailbutton\" value=\"Submit job\" onmouseover=\"return overlib('#{message}');\" onmouseout=\"return nd();\" />"
     ret = ret << "<input name=\"resetform\" type=\"reset\" class=\"toolbutton\" value=\"Reset form\" /><br/>"
