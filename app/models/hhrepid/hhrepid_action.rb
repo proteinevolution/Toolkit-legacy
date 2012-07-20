@@ -1,10 +1,16 @@
 class HhrepidAction < Action
   HH      = File.join(BIOPROGS, 'hhpred')
+  HHBLITS = File.join(BIOPROGS, 'hhblits')
+  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
+  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
+  HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')  
   HHREPID = File.join(BIOPROGS, 'hhrepid')
+  PSIPRED = File.join(BIOPROGS, 'psipred')  
   CAL_HHM = File.join(HHREPID,'cal_small.hhm')
   TP_DATA = File.join(HHREPID,'tp.dat')
   FP_DATA = File.join(HHREPID,'fp.dat')
   QSCS    = [0.0, 0.2, 0.3, 0.4, 0.5]
+ 
   
   if LOCATION == "Munich" && LINUX == 'SL6'
       HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
@@ -14,7 +20,7 @@ class HhrepidAction < Action
   
   
 
-  attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :mode
+  attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :mode,:prefilter
   
   validates_input(:sequence_input, :sequence_file, {
                     :informat_field => :informat, 
@@ -40,6 +46,7 @@ class HhrepidAction < Action
     @informat = "fas"
 
     @maxpsiblastit = params['maxpsiblastit']
+    @maxhhblitsit = params['maxhhblitsit']
     @ss_scoring    = "-ssm " + params["ss_scoring"]
     @ptot          = "-T " + params["ptot"]
     @pself         = "-P " + params["pself"]
@@ -75,15 +82,25 @@ class HhrepidAction < Action
   # Put action code in here
   def perform
     
+    # Setting new Prefilter 
     if @mode != 'queryhmm'
-        # Build query alignment and prepare FASTA files for 'Show Query Alignemt'    
-        @commands << "#{HHPERL}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
-        if @maxpsiblastit.to_i > 0
-          @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 2000 -n #{@maxpsiblastit} #{@basename}.a3m  1>>#{job.statuslog_path} 2>&1"
-      end
-    else  
-       @commands <<"echo 'Using previously generated HMM as Input Query' >> #{job.statuslog_path} "
-    end  
+              @commands << "#{HH}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
+                if(@prefilter=='psiblast')
+                   @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
+                   @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &> #{job.statuslog_path}"
+                else
+                    if @maxhhblitsit == '0'
+                        @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
+                        @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+                    else
+                        @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
+                        @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+                    end
+                end
+    else
+        @commands <<"echo 'Using previously generated HMMs as Input Model' >> #{job.statuslog_path}  "
+    end
+    
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
     @commands << "#{HH}/hhfilter -i #{@basename}.a3m -o #{job.job_dir}/#{id}.reduced.a3m -diff 100"
     @commands << "#{HHPERL}/reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description     
