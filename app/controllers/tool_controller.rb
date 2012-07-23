@@ -128,15 +128,16 @@ class ToolController < ApplicationController
     tool = @job.tool
     
     if ((@job.jobid !~ /^tu_/ && @job.jobid !~ /^HH_/) || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin')) ) 
-      
-      @job.remove
-      
       logger.debug "Delete job in jobs_cart"
-      @jobs_cart.delete(@job.id)
-      
-      logger.debug "Destroy job #{@job.id} in database"
-      Job.remove(@job.id)
-      
+     if @jobs_cart.delete(@job.jobid).nil?
+        logger.debug "L 139 Could not delete #{@job.jobid} from Cart"
+     end  
+      @job.remove
+      if Job.exists?(@job.id)
+        logger.debug "L145 Destroy job #{@job.id} in database"
+        #Job.remove(@job.id)
+      end
+
     end
     redirect_to(:host => DOC_ROOTHOST, :controller => tool)
   end
