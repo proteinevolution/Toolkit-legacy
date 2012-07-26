@@ -142,13 +142,17 @@ class CsBlastController < ToolController
 
     job_params = @job.actions.first.params
     job_params.each_key do |key|
-      if (key =~ /^(\S+)_file$/) 
-        if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
-          params[$1+'_input'] = File.readlines(basename+'.in.cut')
+      # If we stumble over sequence_input, after input has already been set from the in.cut file, it is overwritten by an empty job_params[sequence_input]
+      if(key=~ /^(\S+)_input$/)
+      else  
+          if (key =~ /^(\S+)_file$/) 
+            if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
+              params[$1+'_input'] = File.readlines(basename+'.in.cut')
+            end
+          else
+            params[key] = job_params[key]
         end
-      else
-        params[key] = job_params[key]
-      end
+     end   
     end
     File.delete(basename+'.in.cut')
     params[:jobid] = ''
