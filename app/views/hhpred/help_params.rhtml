@@ -24,15 +24,15 @@
 <div class="row">
 Paste the query <i>sequence</i> with which you want to do the search either as raw sequence 
 (e.g. 'ELRLRYCAPAGFALLKCN...') or as FASTA sequence (i.e. with a single line '>sequence_name optional description' 
-preceding the raw sequence, see next subsection). HHpred will use PSI-BLAST searches
-against the non-redundant sequence database from NCBI to build a multiple alignment from it. This 
+preceding the raw sequence, see next subsection). HHpred will either use HHBlits (Uniprot database filtered to 20% ) or PSI-BLAST 
+(non-redundant sequence database from NCBI) to build a multiple alignment (MSA) from the respective databases. This 
 alignment will then be used to construct a concise statistical representation (a hidden Markov 
 model or HMM) and to search the selected HMM databases for homologs. <br>
 You may also paste a query <i>multiple alignment</i> (for allowed formats see below). 
-The alignment will be used to jumpstart PSI-BLAST. An expert-built or expert-edited alignment or one 
+The alignment will be used to jumpstart the MSA (multiple sequence alignment) generation method. An expert-built or expert-edited alignment or one 
 that contains homologs not yet contained in the non-redundant sequence database may significantly increase 
 the sensitivity and reliability of the HHpred search. I recommend NOT to use automatic multiple alignment
-programs such as CLUSTAL, as PSI-BLAST tends to give clearly better alignments for the purpose of
+programs such as CLUSTAL, as the MSA generation tools  tend to give clearly better alignments for the purpose of
 detecting homologs.
 Note: if you paste a multiple alignment please don't forget to select the appropriate input format below. 
 <br/><br/>
@@ -539,10 +539,10 @@ alignment.
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 <a name="Ehhblitsval"></a>
-<h3 class="<%= @section["name"] %>">E-value threshold for PSI-BLAST</h3>
+<h3 class="<%= @section["name"] %>">E-value threshold for MSA Generation</h3>
 <div class="row">
-All PSI-BLAST sequence matches ("hits") with an E-value better than this threshold are included 
-in the alignment for the next PSI-BLAST iteration or, in the last iteration, for building the HMM for HHsearch.
+All sequence matches ("hits") with an E-value better than this threshold are included 
+in the alignment for the next MSA Generation iteration or, in the last iteration, for building the HMM for HHsearch.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
@@ -560,9 +560,9 @@ length of the query.
 <h3 class="<%= @section["name"] %>">Minimum sequence identity of MSA hits with query</h3>
 <div class="row">
 This parameter controls what percentage of residues from a hit of the MSA algorithm needs to be identical
-to their aligned query residues in order for the hit to be included in the PSI-BLAST alignment.
+to their aligned query residues in order for the hit to be included in the MSA alignment.
 More precisely, the sequence identity of a hit by the MSA algorithm is defined as the number of residues 
-identical with aligned query residues divided by the length of the PSI-BLAST hit.
+identical with aligned query residues divided by the length of the MSA hit.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
