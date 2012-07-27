@@ -3,6 +3,8 @@
   title: HHpred
   title_long: HHpred - Homology detection & structure prediction by HMM-HMM comparison
   section: search
+  updated: July, 2012
+  version: HHsuite-2.0.15 
   active: 
   - member
   - internal
@@ -11,6 +13,8 @@
   title: ProtBLAST
   title_long: Protein BLAST
   section: search
+  updated: December, 2010
+  version: Blast 2.2.23
   active: 
   - member
   - internal
@@ -19,6 +23,8 @@
   title: Modeller
   title_long: Modeller
   section: tertstruct
+  updated: September, 2011
+  version: 9.10
   active: 
   - member
   - internal
@@ -27,6 +33,8 @@
   title: HHrep
   title_long: HHrep - de novo protein repeat detection by HMM-HMM comparison
   section: seqanal
+  updated: May, 2012
+  version: HHsuite-2.0.15
   active: 
   - member
   - internal
@@ -35,6 +43,8 @@
   title: HHsenser
   title_long: HHsenser - exhaustive intermediate profile search using HMM-HMM comparison
   section: search
+  updated: November, 2011
+  version: Not HHsuite
   active: 
   - member
   - internal
@@ -43,6 +53,8 @@
   title: PSI-BLAST
   title_long: PSI-BLAST
   section: search
+  updated: December, 2010
+  version: Blast 2.2.23
   active: 
   - member
   - internal
@@ -51,6 +63,8 @@
   title: Reformat
   title_long: Reformat
   section: utils
+  updated: January, 2012
+  version: 1.3
   active: 
   - member
   - internal
@@ -59,6 +73,8 @@
   title: 6FrameTranslation
   title_long: 6 Frame Translation
   section: utils
+  updated: December, 2010
+  version: 1.0
   active: 
   - member
   - internal
@@ -67,6 +83,8 @@
   title: Extract GIs
   title_long: Extract GIs
   section: utils
+  updated: December, 2010
+  version: 1.0
   active: 
   - member
   - internal
@@ -75,6 +93,8 @@
   title: Quick2D
   title_long: Quick2D
   section: secstruct
+  updated: March, 2012
+  version: n.a.
   active: 
   - member
   - internal
@@ -83,6 +103,8 @@
   title: ClustalW
   title_long: ClustalW
   section: alignment
+  updated: May, 2011
+  version: 1.82, Omega 0.2.0
   active: 
   - member
   - internal
@@ -91,6 +113,8 @@
   title: MUSCLE
   title_long: MUSCLE
   section: alignment
+  updated: December,2010
+  version: 3.51
   active: 
   - member
   - internal
@@ -99,6 +123,8 @@
   title: ProbCons
   title_long: ProbCons
   section: alignment
+  updated: Feburary, 2011
+  version: 1.12
   active: 
   - member
   - internal
@@ -107,6 +133,8 @@
   title: MAFFT
   title_long: MAFFT
   section: alignment
+  updated: December, 2010
+  version: 5.732
   active: 
   - member
   - internal
@@ -115,6 +143,8 @@
   title: Blammer
   title_long: Blammer
   section: alignment
+  updated: December, 2010
+  version: n.A.
   active: 
   - member
   - internal
@@ -123,6 +153,8 @@
   title: HHalign
   title_long: HHalign
   section: alignment
+  updated: May, 2012
+  version: HHsuite-2.0.15
   active: 
   - member
   - internal
@@ -131,6 +163,8 @@
   title: PatternSearch
   title_long: Pattern Search
   section: search
+  updated: February, 2012
+  version: 1.1
   active: 
   - member
   - internal
@@ -139,6 +173,8 @@
   title: HMMER3
   title_long: HMMER3
   section: search
+  updated: August, 2011
+  version: 3.0
   active:
   - member
   - internal
@@ -147,6 +183,8 @@
   title: ANCESCON
   title_long: ANCESCON
   section: classification
+  updated: August, 2011
+  version: n.A.
   active: 
   - member
   - internal
@@ -155,6 +193,8 @@
   title: CLANS
   title_long: CLANS
   section: classification
+  updated: December, 2010
+  version: n.a.
   active: 
   - member
   - internal
@@ -163,6 +203,8 @@
   title: HHcluster
   title_long: HHcluster - Galaxy of Folds
   section: classification
+  updated: May, 2012
+  version: HHsuite-2.0.15
   active: 
   - mpi
   - internal
@@ -171,6 +213,8 @@
   title: Kalign
   title_long: Kalign
   section: alignment
+  updated: December, 2010
+  version: 2.04
   active: 
   - member
   - internal
@@ -179,6 +223,8 @@
   title: PHYLIP-NEIGHBOR
   title_long: PHYLIP-NEIGHBOR
   section: classification
+  updated: December, 2012
+  version: 3.64
   active: 
   - member
   - internal
@@ -187,6 +233,8 @@
   title: AlignmentViewer
   title_long: Alignment Viewer
   section: alignment
+  updated: August, 2011
+  version: Jalview 3.7
   active: 
   - member
   - internal
@@ -195,6 +243,8 @@
   title: Aln2Plot
   title_long: Aln2Plot
   section: seqanal
+  updated: December, 2010
+  version: n.a.
   active: 
   - member
   - internal
@@ -203,6 +253,8 @@
   title: FRpred
   title_long: FRpred
   section: seqanal
+  updated: December, 2010
+  version: n.a.
   active: 
   - member
   - internal
@@ -211,6 +263,8 @@
   title: TPRpred
   title_long: TPRpred
   section: seqanal
+  updated: February, 2011 
+  version: n.a.
   active: 
   - member
   - internal
@@ -219,6 +273,8 @@
   title: COILS/PCOILS
   title_long: COILS/PCOILS
   section: seqanal
+  updated: December, 2010 
+  version: n.a.
   active: 
   - member
   - internal
@@ -227,6 +283,8 @@
   title: MARCOIL
   title_long: MARCOIL
   section: seqanal
+  updated: May, 2011
+  version: n.a.
   active:
   - member
   - internal
@@ -235,6 +293,8 @@
   title: REPPER
   title_long: REPPER - Detecting regions with short gapless REPeats in protein sequences
   section: seqanal
+  updated: December, 2010
+  version: n.a.
   active: 
   - member
   - internal
@@ -243,6 +303,8 @@
   title: RetrieveSeq
   title_long: RetrieveSeq
   section: utils
+  updated: November, 2011
+  version: n.a.
   active: 
   - member
   - internal
@@ -251,6 +313,8 @@
   title: GI2Promoter
   title_long: GI2Promoter
   section: utils
+  updated: December, 2010
+  version: n.a.
   active: 
   - member
   - internal
@@ -259,6 +323,8 @@
   title: Backtranslator
   title_long: Backtranslator
   section: utils
+  updated: December, 2010 
+  version: 1.0
   active: 
   - member
   - internal
@@ -267,6 +333,8 @@
   title: BLASTclust
   title_long: BLASTclust
   section: classification
+  updated: December, 2010
+  version: Blast 2.2.23
   active: 
   - member
   - internal
@@ -275,6 +343,8 @@
   title: Ali2D
   title_long: Ali2D
   section: secstruct
+  updated: December, 2010
+  version: n.a.
   active: 
   - member
   - internal
@@ -283,6 +353,8 @@
   title: HHfilter
   title_long: HHfilter
   section: utils
+  updated: July, 2012
+  version: HHsuite-2.0.15
   active: 
   - member
   - internal
@@ -291,6 +363,8 @@
   title: TCoffee
   title_long: TCoffee
   section: alignment
+  updated: December, 2010
+  version: 8.14
   active: 
   - member
   - internal
@@ -299,6 +373,8 @@
   title: HHomp
   title_long: HHomp - Homology detection of OMPs by HMM-HMM comparison
   section: secstruct
+  updated: December, 2010
+  version: hh 1.2.5, blast 2.2.23
   active: 
   - member
   - internal
@@ -307,12 +383,16 @@
   title: Peaks
   title_long: Peaks
   section: utils
+  updated: December, 2010
+  version: n.a.
   active: 
   - internal
 - name: hhrepid
   title: HHrepID
   title_long: HHrepID
   section: seqanal
+  updated: July, 2012
+  version: HHsuite-2.0.15
   active: 
   - member
   - internal
@@ -321,6 +401,8 @@
   title: daTAA
   title_long: domain annotation of Trimeric Autotransporter Adhesins
   section: classification
+  updated: December, 2010
+  version: 0.1.4 
   active: 
   - member
   - internal
@@ -329,6 +411,8 @@
   title: HHblits
   title_long: HHblits - Homology detection by iterative HMM-HMM comparison
   section: search
+  updated: May, 2012
+  version: HHsuite-2.0.15
   active: 
   - hhgroup
   - member
@@ -338,6 +422,8 @@
   title: CS-BLAST
   title_long: CS-BLAST/ CSI-BLAST
   section: search
+  updated: December, 2010
+  version: 2.1.0
   active: 
   - member
   - internal
@@ -346,6 +432,8 @@
   title: SimShiftDB
   title_long: SimShiftDB
   section: search
+  updated: February, 2012
+  version: n.a.
   active: 
   - member
   - internal
@@ -354,12 +442,16 @@
   title: DAP
   title_long: DAP - Dictionary of Ancestral Peptides
   section: classification
+  updated: n.a.
+  version: n.a.
   active: 
   - dap
 - name: samcc
   title: SamCC
   title_long: Four-helical bundle analysis tool
   section: tertstruct
+  updated: December, 2010
+  version: 4.0 
   active: 
   - member
   - internal
@@ -368,6 +460,8 @@
   title: ClubSub-P
   title_long: Cluster-based Subcellular localization prediction
   section: classification
+  updated: July, 2011
+  version: n.a.
   active:
   - member 
   - internal
@@ -376,6 +470,8 @@
   title: GCView
   title_long: Genomic Context Viewer
   section: classification
+  updated: December, 2010
+  version: n.a.
   active: 
   - member
   - internal
@@ -384,6 +480,8 @@
   title: bFit
   title_long: bFit
   section: tertstruct
+  updated: September, 2011
+  version: n.a.
   active: 
   - member
   - internal
@@ -392,22 +490,18 @@
   title: HHfrag
   title_long: HHfrag -- Dynamic fragment libraries
   section: tertstruct
+  updated: September, 2009
+  version: n.a.
   active:
   - member
   - internal
   - external
-- name: nuc_blast
-  title: NucBlast
-  title_long: test
-  section: search
-  active:
-  - external
-  - internal
-  - member
 - name: hamppred
   title: HAMPpred
   title_long: Hamppred - Description needed
   section: search
+  updated: November, 2011
+  version: n.a.
   active: 
   - member
 
