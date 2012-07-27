@@ -3,18 +3,6 @@
 
 <div class="hr">&nbsp;</div>
 <div class="row">	
-<!--
-	<%tir = ToolInformationReader.new%>
-
-	<% sum_int=0; sum_ext=0; sum_user=0 %>
-	<table style="text-align:center;" border="1" cellspacing="0" cellpadding="2">
-		<tr><td><b>Toolname</b></td><td><b>Version</b></td><td><b>Updated</b></td></tr>
-		<%for i in 0..tir.get_tool_count-1%>
-		<tr><td><%= tir.get_tool_title(i) %></td><td><%=tir.get_tool_version(i)%></td><td><%=tir.get_tool_date(i)%></td></tr>	
-		<%end%>		
-	</table>
-	<div class="hr">&nbsp;</div>
--->
 	<table style="text-align:center;" border="1" cellspacing="0" cellpadding="2">
         <tr><td><b>Toolname</b></td><td><b>Version</b></td><td><b>Updated</b></td></tr>
       <% @tools.each do |tool| %>
