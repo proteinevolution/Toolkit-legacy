@@ -1,0 +1,24 @@
+<h3>Tool Version Information</h3>
+</br>
+
+<div class="hr">&nbsp;</div>
+<div class="row">	
+	<table style="text-align:center;" border="1" cellspacing="0" cellpadding="2">
+        <tr><td><b>Toolname</b></td><td><b>Version</b></td><td><b>Updated</b></td></tr>
+      <% @tools.each do |tool| %>
+        <tr><td><%= tool['title'] %></td><td><%=tool['version']%></td><td><%=tool['updated']%></td></tr>   
+        <%end%>     
+    </table>
+    <div class="hr">&nbsp;</div>
+	
+	
+		
+	Updates, comments or errors, please mail to: 
+	
+<%if LOCATION == "Munich" %>
+    <strong><a href="mailto:toolkit@lmb.uni-muenchen.de">toolkit@lmb.uni-muenchen.de</a></strong>
+<%else%>
+    <strong><a href="mailto:mpi-toolkit@tuebingen.mpg.de">mpi-toolkit@tuebingen.mpg.de</a></strong>
+<%end%>
+
+</div>
