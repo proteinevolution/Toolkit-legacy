@@ -311,12 +311,12 @@
     
     def remove
       logger.debug "Stop queue_worker"    
-      actions.each do |action|
+      actions.each do |action| 
         action.queue_jobs.each do |qj|
           qj.workers.each do |worker|
             if worker.status != STATUS_DONE
-              worker.delete
-            end
+              #worker.delete
+          end
           end
           logger.debug "Destroy worker!"
           AbstractWorker.destroy_all "queue_job_id = #{qj.id}"
@@ -324,17 +324,9 @@
         logger.debug "Destroy queue_jobs!"
         QueueJob.destroy_all "action_id = #{action.id}"
       end
+      
       logger.debug "Destroy actions!"
       Action.delete_all "job_id = #{id}"
-     
-      logger.debug "Delete #{job_dir}"
-      #Dir.foreach(job_dir) do |file|
-      #  if (file !~ /^\.+$/)
-      #    filename = File.join(job_dir, file)
-      #    File.delete(filename)
-      #  end
-      #end
-      
       directory_content = Dir.entries("#{job_dir}")
       logger.debug "Entries length: #{directory_content.length}"
       logger.debug "Entries: #{directory_content}"
@@ -349,5 +341,5 @@
       # do not delete jobdir, this is done be a daily sweep script
       #Dir.delete(job_dir)
     end
-    
+
   end
