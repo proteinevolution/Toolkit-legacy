@@ -16,47 +16,86 @@
   </form>
   </div>
   <% if LOCATION == "Munich" %>
-    <div style="background-color: #666666; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-bottom: 5px; margin-top: 15px;">
+    <div style="background-color: #666666; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-bottom: 2px; margin-top: 15px;">
   <% else %>
-    <div style="background-color: #7CA6A6; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-bottom: 5px; margin-top: 15px;">
+    <div style="background-color: #7CA6A6; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-bottom: 2px; margin-top: 15px;">
   <% end %>
     Recent jobs:
   </div>
-  <%= form_tag({:action => :clear}, {:id => "clearrecentjobs", :name => "clearrecentjobs"}) %>
-  <table id="jobtable">
-    <% num_checkboxes = 0 %>
-    <% @jobs_cart.reverse_each do |jobid| 
-    job = Job.find(:first, :conditions => [ "jobid = ?", jobid])
-    next if (job.nil?)
-    title = job.config['title']
-    tool = job.tool
-    code = job.config['code']
-    num_checkboxes += 1
-    -%>
-    <tr>
-      <td class="<%= job.status -%>"></td>
-      <td><%= check_box_tag("jobid[]", jobid, false, :class => "jobcheckbox") -%></td>
-      <td class="jobcell">
-	<% current = @job && @job.jobid == jobid ? "current" : "" -%>
-	<%= link_to(jobid, {:controller => tool, :action => :check, :jobid => jobid}, 
-	{:onmouseover => "return overlib('ID: #{jobid} #{title}');", 
-	:onmouseout => "return nd();", 
-	:class => "joblink", :id => current} ) %>
+  
+  <!-- buttons to sort jobs organized in a table-->
+  <% if (!@jobs_cart.nil? and @jobs_cart.length > 1) %>
+  <table id="sorttable">
+  	<tr>
+  	  <td class="sub_stat_left">
+  	  	<%= form_tag({:action => :sort_status_desc}, {:id => "sort_status_desc", :name => "sort_status_desc"}) %>  
+          <%= image_submit_tag("up_arrow.png") %>  
+        </form>
       </td>
-      <td class="<%= @tools_hash[tool]['section'] %>"><%= code -%></td>
-    </tr>
-    <% end -%>
+      <td class="sub_stat_right">
+      	<%= form_tag({:action => :sort_status_asc}, {:id => "sort_status_asc", :name => "sort_status_asc"}) %>  
+          <%= image_submit_tag("down_arrow.png") %>  
+        </form>
+  	  </td>
+      <td>
+        <%= form_tag({:action => :sort_jobids_desc}, {:id => "sort_jobids_desc", :name => "sort_jobids_desc"}) %>  
+          <%= image_submit_tag("up_arrow.png") %>  
+        </form>
+      </td>
+      <td class="sub_id_right">
+      	<%= form_tag({:action => :sort_jobids_asc}, {:id => "sort_jobids_asc", :name => "sort_jobids_asc"}) %>  
+          <%= image_submit_tag("down_arrow.png") %>  
+        </form>
+      </td>
+      <td class="sub_type_left">
+      	<%= form_tag({:action => :sort_tool_desc}, {:id => "sort_tool_desc", :name => "sort_tool_desc"}) %>  
+          <%= image_submit_tag("up_arrow.png") %>  
+        </form>
+      </td>
+      <td>
+      	<%= form_tag({:action => :sort_tool_asc}, {:id => "sort_tool_asc", :name => "sort_tool_asc"}) %>  
+          <%= image_submit_tag("down_arrow.png") %>
+        </form>
+      </td>
+    </tr>  
   </table>
+  <% end %>
+  
+  <%= form_tag({:action => :clear}, {:id => "clearrecentjobs", :name => "clearrecentjobs"}) %> 
+    <table id="jobtable">
+      <% num_checkboxes = 0 %>
+      <% @jobs_cart.reverse_each do |jobid| 
+      job = Job.find(:first, :conditions => [ "jobid = ?", jobid])
+      next if (job.nil?)
+      title = job.config['title']
+      tool = job.tool
+      code = job.config['code']
+      num_checkboxes += 1
+      -%>
+      <tr>
+        <td class="<%= job.status -%>"></td>
+        <td><%= check_box_tag("jobid[]", jobid, false, :class => "jobcheckbox") -%></td>
+        <td class="jobcell">
+	      <% current = @job && @job.jobid == jobid ? "current" : "" -%>
+	      <%= link_to(jobid, {:controller => tool, :action => :check, :jobid => jobid}, 
+	      {:onmouseover => "return overlib('ID: #{jobid} #{title}');", 
+	      :onmouseout => "return nd();", 
+	      :class => "joblink", :id => current} ) %>
+        </td>
+        <td class="<%= @tools_hash[tool]['section'] %>"><%= code -%></td>
+      </tr>
+      <% end -%>
+    </table>
 
-  <div class="section">
-    <input type="hidden" id="clear_checkboxes" value="<%= num_checkboxes %>">
-    <a href="#" onclick="selectjobs();">Select all</a>&nbsp;&nbsp;&nbsp;<a href="#" onclick="deselectjobs();">Deselect all</a>
-    <input class="stopbutton" name="clearjobs" type="submit" style="float: none; width: 100%; margin-top: 5px;" value="Clear sel. Jobs" style="width: 100%;" />
-    <br/>
-    <input class="stopbutton" name="removejobs" type="submit" style="float: none; width: 100%; margin-top: 5px;" value="Delete sel. Jobs" style="width: 100%;" onClick="setAction('clearrecentjobs', '/common/removeJobs');" />
-  </div>
+    <div class="section">
+      <input type="hidden" id="clear_checkboxes" value="<%= num_checkboxes %>">
+      <a href="#" onclick="selectjobs();">Select all</a>&nbsp;&nbsp;&nbsp;<a href="#" onclick="deselectjobs();">Deselect all</a>
+      <input class="stopbutton" name="clearjobs" type="submit" style="float: none; width: 100%; margin-top: 5px;" value="Clear sel. Jobs" style="width: 100%;" />
+      <br/>
+      <input class="stopbutton" name="removejobs" type="submit" style="float: none; width: 100%; margin-top: 5px;" value="Delete sel. Jobs" style="width: 100%;" onClick="setAction('clearrecentjobs', '/common/removeJobs');" />
+    </div>
 
-  </form>
+  </form> 
   
   <table id="jobtable">
     <tr>
@@ -76,4 +115,36 @@
       <td style="width: auto; border-right-width: 0px;">error</td>
     </tr>
   </table>
-</div> 	
+  
+  <% if LOCATION == "Munich" %>
+    <div style="background-color: #666666; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-bottom: 5px; margin-top: 15px;">
+  <% else %>
+    <div style="background-color: #7CA6A6; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-bottom: 5px; margin-top: 15px;">
+  <% end %>
+    Server load:
+  </div>
+  
+  <% high_load = 5 %>
+  <% critical_load = 10 %>
+  <% running, queued = File.open("/cluster/user/ritter/toolkit/script/qstat_long.txt").read.split("\n") %>
+  <% run_num = running[/^[0-9]*/].to_i %>
+  <% queue_num = queued[/^[0-9]*/].to_i %>
+  <% if (run_num + queue_num) > critical_load %>
+   <div class="section" style="color: #FF0000; margin-left: 15px" >
+  <% elsif (run_num + queue_num) > high_load %>*
+  	<div class="section" style="color: #FF7F00; margin-left: 15px" >
+  <% else %>
+    <div class="section" style="color: #009900; margin-left: 15px" >
+  <% end %>
+  <%= running %>
+  <br />
+  <%= queued %>
+  </div>
+  
+  <% if LOCATION == "Munich" %>
+    <hr style="color: #666666" />
+  <% else %>
+    <hr style="color: #7CA6A6" />
+  <% end %>
+  
+</div>

@@ -107,4 +107,127 @@ class ApplicationController < ActionController::Base
     redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
   end
   
+  # sorts jobs by comparing their ids lexicographically 
+  # use factor -1 to reverse result
+  def sort_jobids(factor)
+    @jobs_cart.sort! do | jobid1, jobid2 |
+      factor * (jobid1 <=> jobid2)
+    end
+    redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
+  end
+   
+  # sorts jobs by their ids in ascending order by calling sort_jobids with factor -1
+  def sort_jobids_asc
+    sort_jobids(-1)
+  end
+  
+  # sorts jobs by their ids in descending order by calling sort_jobids with factor 1
+  def sort_jobids_desc
+    sort_jobids(1)
+  end
+ 
+  # sorts jobs by their status
+  # order: e > q > r > d
+  def sort_jobstatus(factor)
+    @jobs_cart.sort! do | jobid1, jobid2 |
+      job1 = Job.find(:first, :conditions => [ "jobid = ?", jobid1])
+      job2 = Job.find(:first, :conditions => [ "jobid = ?", jobid2])
+      status1 = job1.status unless job1.nil?
+      status2 = job2.status unless job2.nil?
+      res = 0
+      case status1
+      when 'q'
+        case status2
+        when 'r'
+          res = 1
+        when 'd'
+          res = 1
+        when 'e'
+          res = -1
+        when nil
+          res = 1
+        end
+      when 'r'
+        case status2
+        when 'q'
+          res = -1        
+        when 'd'
+          res = 1
+        when 'e'
+          res = -1
+        when nil
+          res = 1
+        end
+      when 'd'
+        case status2
+        when 'q'
+          res = -1
+        when 'r'
+          res = -1
+        when 'e'
+          res = -1
+        when nil
+          res = 1
+        end
+      when 'e'
+        case status2
+        when 'q'
+          res = 1
+        when 'r'
+          res = 1
+        when 'd'
+          res = 1
+        when nil
+          res = 1
+        end
+      when nil
+        res = status2.nil? ? 0 : -1
+      else
+        res = 0
+      end
+      res * factor
+    end
+    redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
+  end
+  
+  # sorts jobs by their status in ascending order by calling sort_jobstatus
+  def sort_status_asc
+    sort_jobstatus(-1)
+  end
+  
+  # sorts jobs by their status in descending order by calling sort_jobstatus
+  def sort_status_desc
+    sort_jobstatus(1)
+  end
+  
+  # sorts jobs by lexicographic order of their tool-name
+  # use factor -1 to reverse result
+  def sort_jobtool(factor)
+    @jobs_cart.sort! do | jobid1, jobid2 |
+      job1 = Job.find(:first, :conditions => [ "jobid = ?", jobid1])
+      job2 = Job.find(:first, :conditions => [ "jobid = ?", jobid2])
+      if job1.nil? && job2.nil?
+        0
+      elsif job1.nil? && !job2.nil?
+        -1
+      elsif !job1.nil? && job2.nil?
+        1
+      else
+        tool1 = job1.tool
+        tool2 = job2.tool
+        factor * (tool1 <=> tool2)
+      end
+    end
+    redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
+  end
+  
+  # sorts jobs by their toolname in ascending lexicographic order by calling sort_jobtool
+  def sort_tool_asc
+    sort_jobtool(-1)
+  end
+  
+  # sorts jobs by their toolname in descending lexicographic order by calling sort_jobtool
+  def sort_tool_desc
+    sort_jobtool(1)
+  end
 end
