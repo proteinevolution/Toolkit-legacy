@@ -126,7 +126,7 @@
   
   <% high_load = 5 %>
   <% critical_load = 10 %>
-  <% running, queued = File.open("/cluster/user/ritter/toolkit/script/qstat_long.txt").read.split("\n") %>
+  <% running, queued = File.open("#{QUEUE_STATUS_PATH}qstat_long.txt").read.split("\n") %>
   <% run_num = running[/^[0-9]*/].to_i %>
   <% queue_num = queued[/^[0-9]*/].to_i %>
   <% if (run_num + queue_num) > critical_load %>
