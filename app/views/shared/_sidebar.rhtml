@@ -100,51 +100,49 @@
   <table id="jobtable">
     <tr>
       <td class="q"></td>
-      <td style="width: auto; border-right-width: 0px;">queued</td>
+      <td style="width: auto; border-right-width: 0px; padding-left: 5px;">queued</td>
     </tr>
     <tr>
       <td class="r"></td>
-      <td style="width: auto; border-right-width: 0px;">running</td>
+      <td style="width: auto; border-right-width: 0px; padding-left: 5px;">running</td>
     </tr>
     <tr>
       <td class="d"></td>
-      <td style="width: auto; border-right-width: 0px;">done</td>
+      <td style="width: auto; border-right-width: 0px; padding-left: 5px;">done</td>
     </tr>
     <tr>
       <td class="e"></td>
-      <td style="width: auto; border-right-width: 0px;">error</td>
+      <td style="width: auto; border-right-width: 0px; padding-left: 5px;">error</td>
     </tr>
   </table>
   
   <% if LOCATION == "Munich" %>
-    <div style="background-color: #666666; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-bottom: 5px; margin-top: 15px;">
+    <div style="background-color: #666666; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-top: 15px;">
   <% else %>
-    <div style="background-color: #7CA6A6; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-bottom: 5px; margin-top: 15px;">
+    <div style="background-color: #7CA6A6; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-top: 15px;">
   <% end %>
     Server load:
   </div>
   
   <% high_load = 5 %>
   <% critical_load = 10 %>
-  <% running, queued = File.open("#{QUEUE_STATUS_PATH}qstat_long.txt").read.split("\n") %>
-  <% run_num = running[/^[0-9]*/].to_i %>
-  <% queue_num = queued[/^[0-9]*/].to_i %>
-  <% if (run_num + queue_num) > critical_load %>
-   <div class="section" style="color: #FF0000; margin-left: 15px" >
-  <% elsif (run_num + queue_num) > high_load %>*
-  	<div class="section" style="color: #FF7F00; margin-left: 15px" >
-  <% else %>
-    <div class="section" style="color: #009900; margin-left: 15px" >
-  <% end %>
-  <%= running %>
-  <br />
-  <%= queued %>
-  </div>
+  <% jobs = File.open("#{QUEUE_STATUS_PATH}qstat.txt").read.to_i %>
   
-  <% if LOCATION == "Munich" %>
-    <hr style="color: #666666" />
-  <% else %>
-    <hr style="color: #7CA6A6" />
-  <% end %>
+  <table id="jobtable">
+  	<tr>
+      <% if jobs >= 100 %>
+      <td class="e" align="center" style="width: 15px; height: 15px">
+      <% elsif jobs > critical_load %>
+      <td class="e" align="center">
+      <% elsif jobs > high_load %>
+  	  <td class="r" align="center">
+      <% else %>
+      <td class="d" align="center">
+      <% end %>
+      <%= jobs %>
+      </td>
+      <td style="width: auto; border-right-width: 0px; padding-left: 5px;" ><%= jobs == 1 ? "job is" : "jobs are" %> in the queue</td>
+    </tr>
+  </table>
   
 </div>
