@@ -113,7 +113,7 @@ class ApplicationController < ActionController::Base
     @jobs_cart.sort! do | jobid1, jobid2 |
       factor * (jobid1 <=> jobid2)
     end
-    redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
+    redirect_to(:back)
   end
    
   # sorts jobs by their ids in ascending order by calling sort_jobids with factor -1
@@ -187,7 +187,7 @@ class ApplicationController < ActionController::Base
       end
       res * factor
     end
-    redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
+    redirect_to(:back)
   end
   
   # sorts jobs by their status in ascending order by calling sort_jobstatus
@@ -218,7 +218,7 @@ class ApplicationController < ActionController::Base
         factor * (tool1 <=> tool2)
       end
     end
-    redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
+    redirect_to(:back)
   end
   
   # sorts jobs by their toolname in ascending lexicographic order by calling sort_jobtool
