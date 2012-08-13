@@ -106,9 +106,9 @@ class ApplicationController < ActionController::Base
     end
     redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
   end
-  
+  # Testing Commit to WYE
   # sorts jobs by comparing their ids lexicographically 
-  # use factor -1 to reverse result
+  # use factor -1 to reverse result 
   def sort_jobids(factor)
     @jobs_cart.sort! do | jobid1, jobid2 |
       factor * (jobid1 <=> jobid2)
