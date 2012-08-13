@@ -394,6 +394,40 @@ span.small {
 }
 
 /* table definitins*/
+
+/* additions by Hippolyt 2012 */
+#sorttable{
+  border-right-width: 0px;
+  border-left-width: 0px;	
+  border-spacing: 0px;
+  table-layout: fixed;
+  width: 139px;
+  border-collapse: collapse;
+}
+
+#sidebar table#sorttable tr td{
+    float: left;
+}
+
+#sidebar table#sorttable td.sub_stat_left{
+	float: left;
+}
+
+#sidebar table#sorttable td.sub_stat_right{
+	float: left;
+	padding-right: 14px;
+}
+
+#sidebar table#sorttable td.sub_id_right{
+	float: left;
+	padding-right: 54px;
+}
+
+#sidebar table#sorttable td.sub_type_left{
+	float: left;
+}
+/* additions end */
+
 #jobtable{
   border: 1px solid #7CA6A6;
   border-right-width: 0px;
