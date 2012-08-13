@@ -1,4 +1,4 @@
-require 'localization' 
+require 'localization'
 require 'user_system'
 
 # Filters added to this controller will be run for all controllers in the application.
