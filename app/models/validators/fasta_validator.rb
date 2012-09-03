@@ -20,7 +20,7 @@ module Toolkit
             :informat => nil,
             :inputmode => "sequence",
             :on => :create,
-            :header_length => 2000,
+            :header_length => 10000,
             :message => "Infile is not correct FASTA format!",
             :ss_allow => false}
             

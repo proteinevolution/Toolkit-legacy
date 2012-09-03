@@ -22,7 +22,7 @@ module Toolkit
             :max_length => 20000,
             :allow_nil => false,
             :on => :create,
-            :header_length => 2000,
+            :header_length => 10000,
             :message => "Input ERROR!" }
           configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
           # check input fields
