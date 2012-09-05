@@ -7,6 +7,10 @@ hhrep_job:
       title: Results
       title_long: Show result
       forwardsections:
+        forwardhhmsections:
+      - name: forwardhhm
+        title: Forward HMM
+        title_long: Forward query HMM
     - name: results_histogram
       title: Histogram
       title_long: Show results in profile histogram view
@@ -14,7 +18,7 @@ hhrep_job:
     - name: results_showquery
       title: Show query alignment
       title_long: Show or edit the query alignment constructed by HHrep
-      forwardsections:
+      
 
 hhrep_mergeali_job: 
   title: HHrep

@@ -21,6 +21,15 @@
  	   	<% end %>
  	   <% end %>
  	   
+ 	  <!-- addition -->
+ 	  <% if !@cur_section.nil? then sections = @cur_section['forwardhhmsections'] end %>
+ 	  <% if !sections.nil? %>
+ 	    <% sections.each do |section| %>
+ 	      <li><a href="javascript:appearForwardHHM('<%= section['name'] %>');" onmouseover="return overlib('<%= section['title_long']%>');" onmouseout="return nd();"><%= section['title'] %></a></li>
+ 	    <% end %>
+ 	  <% end %>
+ 	  <!-- addition end-->
+ 	  
  	   <% if defined?(export_to) && !export_to.nil? %>
       <li><a href="<%= url_for({:action => 'export_'+export_to+'_to_file', :jobid => @job}) %>" onmouseover="return overlib('Export to file');" onmouseout="return nd();">Save</a></li>
       <li><a target="_blank" href="<%= url_for({:action => 'export_'+export_to+'_to_browser', :jobid => @job}) %>" onmouseover="return overlib('Export to new browser window');" onmouseout="return nd();">Export</a></li>

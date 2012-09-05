@@ -8,3 +8,12 @@ function pasteOMPW() {
 	$('sequence_input').value = ">gi|71159606|sp|P0A915|OMPW_ECOLI Outer membrane protein W precursor\nMKKLTVAALAVTTLLSGSAFAHEAGEFFMRAGSATVRPTEGAGGTLGSLGGFSVTNNTQLGLTFTYMATD\nNIGVELLAATPFRHKIGTRATGDIATVHHLPPTLMAQWYFGDASSKFRPYVGAGINYTTFFDNGFNDHGK\nEAGLSDLSLKDSWGAAGQVGVDYLINRDWLVNMSVWYMDIDTTANYKLGGAQQHDSVRLDPWVFMFSAGY\nRF";
     $('maxpsiblastit').value = 2;
     }
+
+function appearForwardHHM(val)
+{ 
+	if (Element.getStyle(val, 'display') == "none") {
+		new Effect.Appear(val);
+	} else {
+		new Effect.Fade(val);
+	}
+}
