@@ -174,6 +174,19 @@ module ApplicationHelper
     ret = ret << "</div>\n" 
   end
 
+  def is_internal?(ip)
+    begin
+      ip = IPAddr.new(ip)
+      INT_IPS.each do |mask|
+        if mask.include?(ip) then return true end   
+      end 
+      return false
+    rescue Exception => e
+      return false
+    end
+  end
+
+
   #def form_add_button(name, options = {})
   #  label = "#{name}"
   #  #label = l(:"#{@controller.controller_name}_#{name}_button")
