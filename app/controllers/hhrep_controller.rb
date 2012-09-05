@@ -15,6 +15,13 @@ class HhrepController < ToolController
   
 	def results
 		@widescreen = true
+		
+		#added by Hippolyt
+		@fw_values_hhms = [fw_hmm_to_tool_url('hhrep', 'hhpred')+ "&mode=queryhmm",
+                       fw_hmm_to_tool_url('hhrep', 'hhrep')+ "&mode=queryhmm",
+                       fw_hmm_to_tool_url('hhrep', 'hhrepid')+ "&mode=queryhmm"]
+                       
+    @fw_labels_hhms = [tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid')]
 	end
   
 	def results_histogram

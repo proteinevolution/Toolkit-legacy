@@ -17,7 +17,8 @@ class ToolController < ApplicationController
       @page_title = $1 + " <span style=\"font-size: 15px; font-weight: bold;\"> - " + $2 + "</span>"
     end
     if params[:jobid].kind_of?(String)
-      if params[:action] == 'forward'
+      if params[:action] == 'forward' || params[:action] == 'forward_hmm'
+        #              changed here  -^
         @parent_job = Job.find(:first, :conditions => [ "jobid = ?", params[:jobid]])
       else
         @job = Job.find(:first, :conditions => [ "jobid = ?", params[:jobid]])
@@ -144,6 +145,34 @@ class ToolController < ApplicationController
 
   def forward
     logger.debug "Forward!"
+    logger.debug "Toolkit Job: #{params['controller']}"
+    logger.debug "Parent Job: #{@parent_job}"
+    logger.debug "Parent Toolkit Job: #{@parent_job.tool}"
+
+    if (params['controller']==@parent_job.tool)
+      job_params = @parent_job.actions.first.params
+      job_params.each_key do |key|
+        if (key =~ /^(\S+)_file$/)
+          if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
+            params[$1+'_input'] = IO.readlines(job_params[key]).join
+          end
+        else
+          params[key] = job_params[key]
+        end
+      end
+    end
+    fw_params = @parent_job.forward_params
+#    logger.debug "forward_params: #{fw_params.inspect}"
+    fw_params.each_key do |key|
+      params[key] = fw_params[key]
+    end
+    params[:jobid] = ''
+    index
+    render(:action => 'index')
+  end
+  
+  def forward_hmm
+    logger.debug "Forward HMM!"
     logger.debug "Toolkit Job: #{params['controller']}"
     logger.debug "Parent Toolkit Job: #{@parent_job.tool}"
 
@@ -283,6 +312,12 @@ class ToolController < ApplicationController
   def fw_to_tool_url(from, to)
     url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward', :jobid => @job, :forward_action => "forward", :forward_controller => to)
   end
+  
+  # added by Hippolyt
+  def fw_hmm_to_tool_url(from,to)
+    url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward_hmm', :jobid => @job, :forward_action => "forward_hmm", :forward_controller => to)
+  end
+  #end
   
   def process_genomes
     res = ""

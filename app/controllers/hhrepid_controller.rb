@@ -28,6 +28,12 @@ class HhrepidController < ToolController
     @qsc        = (params["qsc"] || 0.3).to_f
     @mode       = params['mode'] || 'background'
     @widescreen = true
+    
+    @fw_values_hhms = [fw_hmm_to_tool_url('hhblits', 'hhpred')+ "&mode=queryhmm",
+                       fw_hmm_to_tool_url('hhblits', 'hhrep')+ "&mode=queryhmm",
+                       fw_hmm_to_tool_url('hhblits', 'hhrepid')+ "&mode=queryhmm"]
+                       
+    @fw_labels_hhms = [tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid')]
   end
   
   def help_params

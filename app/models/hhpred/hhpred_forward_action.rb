@@ -25,5 +25,3 @@ class HhpredForwardAction < Action
     return hash
   end
 end
-
-

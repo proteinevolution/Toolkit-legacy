@@ -53,7 +53,7 @@ class HhblitsController < ToolController
                   fw_to_tool_url('hhblits', 'alnviz') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'blastclust') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'cs_blast') + "&fw_mode=forward",
-		  fw_to_tool_url('hhblits', 'seq2gi') + "&fw_mode=forward",
+		              fw_to_tool_url('hhblits', 'seq2gi') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'hhblits') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'hhfilter') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'hhomp') + "&fw_mode=forward",
@@ -69,6 +69,12 @@ class HhblitsController < ToolController
     @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('cs_blast'), tool_title('seq2gi'), tool_title('hhblits'), 
                   tool_title('hhfilter'), tool_title('hhomp'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid'), tool_title('hhsenser'),
                   tool_title('psi_blast'), tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
+                  
+    @fw_values_hhms = [fw_hmm_to_tool_url('hhblits', 'hhpred')+ "&mode=queryhmm",
+                       fw_hmm_to_tool_url('hhblits', 'hhrep')+ "&mode=queryhmm",
+                       fw_hmm_to_tool_url('hhblits', 'hhrepid')+ "&mode=queryhmm"]
+                       
+    @fw_labels_hhms = [tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid')]
   end
   
   def histograms
@@ -78,7 +84,7 @@ class HhblitsController < ToolController
                   fw_to_tool_url('hhblits', 'alnviz') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'blastclust') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'cs_blast') + "&fw_mode=forward",
-		  fw_to_tool_url('hhblits', 'seq2gi') + "&fw_mode=forward",
+		              fw_to_tool_url('hhblits', 'seq2gi') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'hhblits') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'hhfilter') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'hhomp') + "&fw_mode=forward",
