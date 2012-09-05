@@ -93,7 +93,7 @@ class HhpredAction < Action
 
     # Expand cdd and interpro as list of member databases
     if (@dbs =~ /cdd_/)
-      ['pfam_*', 'smart_*', 'KOG_*', 'COG_*', 'cd_*'].each do |db|
+      ['pfamA_*', 'smart_*', 'KOG_*', 'COG_*', 'cd_*'].each do |db|
         db_path = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', db))[0]
         if (!db_path.nil?)
           @dbs += " " + db_path

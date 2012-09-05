@@ -1,8 +1,9 @@
 <h3>Statistics</h3>
+
 </br>
-<p>(This page is restricted to requests from 10.35.*)</p>
+
+<% if is_internal?(request.remote_ip) %>
 <p>(Only the 50 most recent days are reported.)</p>
-</br>
 <div class="hr">&nbsp;</div>
 <div class="row">	
 
@@ -44,5 +45,10 @@
 		
 	Updates, comments or errors, please mail to: 
 	<strong><a href="mailto:mpi-toolkit@tuebingen.mpg.de">mpi-toolkit@tuebingen.mpg.de</a></strong>
-
 </div>
+<%else%>
+</br>
+<p>(This page is restricted to requests from 10.153.*)</p>
+
+<%end%>
+

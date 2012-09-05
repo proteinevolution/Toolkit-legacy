@@ -38,9 +38,13 @@ module UserGroupModule
     end
     return false
   end
-  
+
+#########################################################################################
+# Method needed for module method  is_active?
+#
+#########################################################################################  
   def is_internal?(ip)
-    begin
+   begin
       ip = IPAddr.new(ip)
       INT_IPS.each do |mask|
         if mask.include?(ip) then return true end		
