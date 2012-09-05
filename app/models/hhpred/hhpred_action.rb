@@ -187,8 +187,13 @@ class HhpredAction < Action
     case @mode
     when 'queryhmm'
       @informat = 'a3m'
-      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
-      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.hhm", "#{@basename}.hhm")
+#      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
+#      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.hhm", "#{@basename}.hhm")
+      files = Dir.entries("#{pjob.job_dir}")
+      a3m_file = files.include?("#{pjob.jobid}.a3m") ? "#{pjob.jobid}.a3m" : files.detect {|f| f.match /#{pjob.jobid}.*\.a3m/}
+      hhm_file = files.include?("#{pjob.jobid}.hhm") ? "#{pjob.jobid}.hhm" : files.detect {|f| f.match /#{pjob.jobid}.*\.hhm/}
+      FileUtils.copy_file("#{pjob.job_dir}/#{a3m_file}", "#{@basename}.a3m")
+      FileUtils.copy_file("#{pjob.job_dir}/#{hhm_file}", "#{@basename}.hhm")
     when 'hhsenser'
       @informat = 'a3m'
       FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
