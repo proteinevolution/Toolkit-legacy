@@ -2,6 +2,19 @@
   
 <%= render(:partial => "shared/resultsections") %>
  
+ <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+<!-- Forward HHMs - begin-->
+<div id="forwardhhm" style="display: none;">
+    <div class="row">
+        <%= form_label("Forward HHM to") %>
+        <%= form_select_single("dest", @fw_values_hhms, @fw_labels_hhms, @fw_values_hhms[1], 1) %>
+    </div>
+	<div class="row">
+			<%  %>
+	    <input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'dest');" value="Forward Query HHM"/>
+	</div>
+    <div class="hr">&nbsp;</div>
+</div>
+<!-- Forward HHMs - end -->
 
 <%= render(:partial => "results", :locals => { :coloring => true }) %>
-

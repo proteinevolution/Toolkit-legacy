@@ -24,26 +24,56 @@ function change_db(dbhhm, dba3m)
     
 }
 
+function appearForwardHHM(val)
+{ 
+	var coloring = 'color_button';
+	var image = 'hitlist_img';
+	var forward = 'forward'
+	
+	if (Element.getStyle(val, 'display') == "none") {
+		if(Element.getStyle(forward, 'display') != "none"){
+			Effect.Fade(forward);
+		}
+		if($(coloring) != null){
+			new Effect.Fade(coloring);
+		}
+		new Effect.Fade(image);
+		new Effect.Fade(forward);
+		sleep(1000);
+		new Effect.Appear(val);
+	} else {
+		new Effect.Fade(val);
+		if($(coloring) != null) {
+			new Effect.Appear(coloring);
+		}
+		new Effect.Appear(image);
+	}
+}
+
 function appearForward(val)
 {
     var coloring = 'color_button';
     var image = 'hitlist_img';
     var forward = 'forward';
+    var forwardhhm = 'forwardhhm';
     
     if (Element.getStyle(val, 'display') == "none") {
-	if ($(coloring) != null) {
-	    new Effect.Fade(coloring);
-	}
-	new Effect.Fade(forward);
-	new Effect.Fade(image);
-	sleep(1000);
-	new Effect.Appear(val);
+		if ($(coloring) != null) {
+		    new Effect.Fade(coloring);
+		}
+		if (Element.getStyle(forwardhhm, 'display') != "none"){
+			new Effect.Fade(forwardhhm);
+		}
+		new Effect.Fade(forward);
+		new Effect.Fade(image);
+		sleep(1000);
+		new Effect.Appear(val);
     } else {
-	new Effect.Fade(val);
-	if ($(coloring) != null) {
-	    new Effect.Appear(coloring);
-	}
-	new Effect.Appear(image);
+		new Effect.Fade(val);
+		if ($(coloring) != null) {
+		    new Effect.Appear(coloring);
+		}
+		new Effect.Appear(image);
     }
 }
 

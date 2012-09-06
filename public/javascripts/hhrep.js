@@ -92,3 +92,12 @@ function show_applet(){	var obj = document.getElementById("applet");	if (!is_
 function setReloadAction() {
 	$('hhrep_form').action = $('action_val').value;
 }
+
+function appearForwardHHM(val)
+{ 
+	if (Element.getStyle(val, 'display') == "none") {
+		new Effect.Appear(val);
+	} else {
+		new Effect.Fade(val);
+	}
+}
