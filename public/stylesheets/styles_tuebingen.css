@@ -407,24 +407,27 @@ span.small {
 
 #sidebar table#sorttable tr td{
     float: left;
+    width: 8px;
 }
 
 #sidebar table#sorttable td.sub_stat_left{
 	float: left;
+	width:7px
 }
 
 #sidebar table#sorttable td.sub_stat_right{
 	float: left;
-	padding-right: 14px;
+	width: 20px;
 }
 
 #sidebar table#sorttable td.sub_id_right{
 	float: left;
-	padding-right: 54px;
+	width: 62px;
 }
 
 #sidebar table#sorttable td.sub_type_left{
 	float: left;
+	width: 8px;
 }
 /* additions end */
 
