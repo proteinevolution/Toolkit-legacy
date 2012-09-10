@@ -114,9 +114,10 @@ class FrpredAction < Action
     if (@inputmode == 'sequence')
       tmp = "echo 'Get more homologs kickstarting PSI-BLAST' >> #{job.statuslog_path}"
       tmp += "; #{FRPREDPERL}/perl/myBuildali.pl #{@infile} -noss -N 500 -cpu 2 -n #{@maxpsiblastit} -e #{@E_psiblast} -cov #{@cov_min} -qid #{@qid_min} -fas &> #{job.statuslog_path}.buildali"
-      
+      tmp += "; #{FRPREDPERL}/perl/frpred_filter_a3m.pl -a3m #{@basename}.a3m -o #{@basename}.a3m "
       tmp += "; #{REFORMAT} a3m fas #{@basename}.a3m #{@infile} -r &> #{job.statuslog_path}.reformat"
       tmp += "; #{FRPREDPERL}/perl/runPsipred.pl #{@basename} #{BIOPROGS}"
+
 		@commands << tmp
     else 
     	@commands << "#{FRPREDPERL}/perl/runPsipred.pl #{@basename} #{BIOPROGS}"
