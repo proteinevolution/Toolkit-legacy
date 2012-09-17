@@ -1,16 +1,10 @@
 class PatsearchController < ToolController
 
 	def index
-		@db_type = params['db_type'] ? params['db_type'] : "prot"
 		@grammar_values = ["pro", "reg"]
 		@grammar_labels = ["Prosite grammar", "Regular expression"]
-		@db_type_labels = ["Protein", "Nucleotide"]
-		@db_type_values = ["prot", "nuc"]
-		if (@db_type == "prot")
-			@std_dbs_paths = Dir.glob(File.join(DATABASES, 'standard', '*.pal')).map() {|p| p.gsub(/\.pal/ ,'')}
-		else
-			@std_dbs_paths = Dir.glob(File.join(DATABASES, 'standard', '*.nal')).map() {|p| p.gsub(/\.nal/ ,'')}
-		end
+    @std_dbs_paths = Dir.glob(File.join(DATABASES, 'standard', '*.pal')).map() {|p| p.gsub(/\.pal/ ,'')}
+
 		@std_dbs_paths.uniq!
 		@std_dbs_paths.sort!
     		## Order up Standard databases that shall be displayed on top
