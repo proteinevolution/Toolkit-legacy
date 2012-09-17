@@ -5,13 +5,6 @@
 
 <h3 class="<%= @section["name"] %>">Databases</h3>
 
-	<% if @db_type %>
-	<div class="row">
-		<%= form_label("Select database format", "database") %>
-		<%= form_radio_buttons("db_type", @db_type_values, @db_type_labels, @db_type, "&nbsp;&nbsp;", "location.href='/#{@tool['name']}?db_type=nuc';") %>	
-	</div><div class="spacer">&nbsp;</div>
-	<% end %>
-
   	<div class="row">
     		<%= form_label("Select databases", "database") %>
     		<div class="formw">

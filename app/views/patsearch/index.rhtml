@@ -27,11 +27,7 @@
 
 <div class="spacer">&nbsp;</div>
 
-<% if @db_type == "prot" %>
-	<%= render(:partial => "shared/protein_dbs") %>
-<% else %>
-	<%= render(:partial => "shared/nucleotide_dbs") %>
-<% end %>
+<%= render(:partial => "shared/protein_dbs") %>
 
 <div class="row">
 	<%= form_label("or enter FASTA sequences", "seq") %>
