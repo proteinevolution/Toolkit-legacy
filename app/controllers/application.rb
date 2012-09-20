@@ -15,6 +15,39 @@ class ApplicationController < ActionController::Base
 #  model  :user
 
   before_filter :setup
+    
+  def save_params
+    params[:action] = "index"
+    #create new action object for current controller and set params
+    actiontype = actiontype.nil? ? params[:controller].capitalize+"Action" : actiontype.to_cc+"Action"
+    newaction = Object.const_get(actiontype).new
+    newaction.params = params
+    #params that should not be saved
+    newaction.params[:jobid] = ""
+    newaction.params[:sequence_input] = ""
+    newaction.params[:mail] = ""
+    #save params
+    tool = params[:controller]
+    newaction.saveparams(@user.id, tool)
+    #newaction.saveparams(-1, tool)
+    #redirect to index page
+    redirect_to(:params => params)
+  end
+  
+  def load_params(id = @user.id)
+    #create new action object for current controller and set params
+    actiontype = actiontype.nil? ? params[:controller].capitalize+"Action" : actiontype.to_cc+"Action"
+    newaction = Object.const_get(actiontype).new
+    #load params from action object and redirect to index page
+    params_tmp = newaction.loadparams(id, params[:controller])
+    #params_tmp[:action] = "index"
+    params_tmp[:redirected] = true
+    redirect_to :params => params_tmp#, :controller => params[:controller]
+  end
+  
+  def load_default_params
+    load_params(-1)
+  end
 
   def setup
     require 'yaml'
@@ -230,4 +263,5 @@ class ApplicationController < ActionController::Base
   def sort_tool_desc
     sort_jobtool(1)
   end
+  
 end
