@@ -39,10 +39,16 @@ class ApplicationController < ActionController::Base
     actiontype = actiontype.nil? ? params[:controller].capitalize+"Action" : actiontype.to_cc+"Action"
     newaction = Object.const_get(actiontype).new
     #load params from action object and redirect to index page
-    params_tmp = newaction.loadparams(id, params[:controller])
-    #params_tmp[:action] = "index"
-    params_tmp[:redirected] = true
-    redirect_to :params => params_tmp#, :controller => params[:controller]
+    tool_params = newaction.loadparams(id, params[:controller])
+    if tool_params.first.nil?
+      #no entry in db
+      load_default_params
+    else
+      params_tmp = tool_params.first['glob']
+      #params_tmp[:action] = "index"
+      params_tmp[:redirected] = true
+      redirect_to :params => params_tmp#, :controller => params[:controller]
+    end
   end
   
   def load_default_params

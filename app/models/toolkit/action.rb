@@ -28,8 +28,7 @@
     end
     
     def loadparams(user_id, tool)
-      tp = (ToolParam.find_by_sql ["SELECT * FROM tool_params WHERE user_id = ? AND tool LIKE ?", user_id, tool]).first['glob']
-      return tp
+      return (ToolParam.find_by_sql ["SELECT * FROM tool_params WHERE user_id = ? AND tool LIKE ?", user_id, tool])
     end
         
     def params
