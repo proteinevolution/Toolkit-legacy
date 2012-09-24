@@ -1,17 +1,36 @@
   class Action < ActiveRecord::Base
     acts_as_tree :order => "created_on"
     has_many :queue_jobs, :dependent => :destroy, :order => "created_on"
-    belongs_to :job, :dependent => false, :order => "created_on"
+    belongs_to :job
 
     serialize :params
     serialize :flash
     
-    include Dbhack
+  include Dbhack
     
     def do_fork?
     	return true
     end    
+
+    def saveparams(user_id, tool)
+      toolparam = (ToolParam.find_by_sql ["SELECT * FROM tool_params WHERE user_id = ? AND tool LIKE ?", user_id, tool])
+      #check database for an existing entry for tool+user and delete it
+      if toolparam.first.nil?
+        id = nil
+      else
+        id = toolparam.first['id']
+      end
+      if !id.nil?
+        logger.debug "id: #{id}"
+        ToolParam.delete(id)
+      end
+      ToolParam.create(:glob => params, :user_id => user_id, :tool => tool)
+    end
     
+    def loadparams(user_id, tool)
+      return (ToolParam.find_by_sql ["SELECT * FROM tool_params WHERE user_id = ? AND tool LIKE ?", user_id, tool])
+    end
+        
     def params
       self[:params] ||= {}
     end
@@ -192,5 +211,8 @@
       end
       params['taxids']=res if (res!="")
     end
+    
+    
+
   end
 

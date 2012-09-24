@@ -1,6 +1,10 @@
 class HhblitsController < ToolController
 
   def index
+    
+    if(@user && !params[:redirected])
+      load_params
+    end
     @inputmode_values = ["sequence", "alignment"]
     @inputmode_labels = ["single FASTA sequence", "alignment"]
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
@@ -38,12 +42,22 @@ class HhblitsController < ToolController
           next
         end
       end
+      
+      
     end
 
     @default_db = @dbvalues[0]
+    @realign = !(params[:realign].nil?)
+    logger.debug "realign: #{params[:realign]}"
     
     # do we need to show output options part of the form?
-    @show_more_options = (@error_params['more_options_on'] == "true")
+    # @show_more_options = (@error_params['more_options_on'] == "true")
+    more_options_param = !params['more_options_on'].nil? && params['more_options_on'] != "false"
+    @show_more_options =  (more_options_param || @error_params['more_options_on']) ? true : nil
+    logger.debug "params more opt: #{params['more_options_on']}"
+    logger.debug "error params: #{@error_params['more_options_on']}"
+    logger.debug "show_more_options: #{@show_more_options}"
+    
   end
   
   def results
@@ -197,5 +211,5 @@ class HhblitsController < ToolController
     index
     render(:action => 'index')
   end
- 
+  
 end
