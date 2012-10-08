@@ -16,7 +16,7 @@
 			<PARAM NAME="type"   value="URL">
 			<PARAM NAME="format" value="FASTA"> -->
 			</APPLET>
-			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhpred/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+			<strong><span style="position: relative; top: -16px;"><a href="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.fas" onmouseover="return overlib('Complete alignment with inserts');" onmouseout="return nd();">Download complete alignment</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<!--	<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>  -->
                         <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
@@ -27,8 +27,7 @@
 			<PARAM NAME="type"   value="URL">
 			<PARAM NAME="format" value="FASTA"> -->
 			</APPLET>
-			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhpred/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></span></strong>
-
+			<strong><span style="position: relative; top: -16px;"><a href="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.reduced.fas" onmouseover="return overlib('50 most distinct sequences w/o inserts');" onmouseout="return nd();">Download reduced alignment</a></span></strong> 
 		</div>
 		<div class="hr">&nbsp;</div>
 
