@@ -1,19 +1,17 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
 
-<!--<%= render(:partial => "shared/resultsections")%>-->
 <%= render(:partial => "shared/resultsections", :locals => {:export => true}) %>
+
+
 
 <h3 class="<%= @section["name"] %>">MARCOIL numerical output (Predicted Coiled Coil domains)</h3>
 
 <div class="row">
-<pre>
-<% if @job.pssm %>
+<pre><% if @job.pssm %>
    <%= @job.render_file(@job.jobid+".DomainsPSSM") %>
 <% else %> 
    <%= @job.render_file(@job.jobid+".Domains") %>
 <% end %>
-</pre>
-</div>
 
 </form>
-
+</div>

@@ -1,6 +1,5 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
 
-<!--<%= render(:partial => "shared/resultsections")%>-->
 <%= render(:partial => "shared/resultsections", :locals => {:export => true}) %>
 
 <h3 class="<%= @section["name"] %>">MARCOIL numerical output (Probability List)</h3>
