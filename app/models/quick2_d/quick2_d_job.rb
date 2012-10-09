@@ -60,58 +60,101 @@ class Quick2DJob < Job
       data += sprintf("%-#{@@descr_width}s", "QUERY")
       data += query['sequence'][i..(stop-1)] + "\n"
 
-      data += export_ss("SS PSIPRED", psipred, i, stop-1)
-      data += export_ss("SS JNET", psipred, i, stop-1)
-
-      data += sprintf("%-#{@@descr_width}s", "SS PROF (Ouali)")
-      if( !prof_o.nil? && !prof_o['pred'].nil? )
-        data += prof_o['pred'][i..(stop-1)] + "\n"
-      else
-        data += "\n"
+      if (exist_ss_params(psipred))
+        data += export_ss("SS PSIPRED", psipred, i, stop-1)
       end
-      data += sprintf("%-#{@@descr_width}s", "CONF")
-      if( !prof_o.nil? && !prof_o['conf'].nil? )
-        tmp = prof_o['conf'][i..(stop-1)]
-        0.upto(tmp.size-1){|ii|
-          tmp[ii] = ((tmp[ii].to_f)*9.0).floor
-        }
-        data +=  tmp.to_s + "\n"
-      else
-        data += "\n"
+      if(exist_ss_params(jnet))
+        data += export_ss("SS JNET", jnet, i, stop-1)
       end
 
-      data += export_ss("SS PROF (Rost)", psipred, i, stop-1)
-
-      data += sprintf("%-#{@@descr_width}s", "CC COILS")
-      if( !coils.nil? && !coils['ccpred'].nil? )
-        data += coils['ccpred'][i..(stop-1)] + "\n"
-      else
-        data += "\n"
+      if(!prof_o.nil? and !prof_o.empty? and !(prof_o['pred'].nil? or prof_o['pred'] !~ /\w/))
+        data += sprintf("%-#{@@descr_width}s", "SS PROF (Ouali)")
+        if( !prof_o.nil? && !prof_o['pred'].nil? )
+          data += prof_o['pred'][i..(stop-1)] + "\n"
+        else
+          data += "\n"
+        end
+        data += sprintf("%-#{@@descr_width}s", "CONF")
+        if( !prof_o.nil? && !prof_o['conf'].nil? )
+          tmp = prof_o['conf'][i..(stop-1)]
+          0.upto(tmp.size-1){|ii|
+            tmp[ii] = ((tmp[ii].to_f)*9.0).floor
+          }
+          data +=  tmp.to_s + "\n"
+        else
+          data += "\n"
+        end
       end
-      data += sprintf("%-#{@@descr_width}s", "CONF")
-      if( !coils.nil? && !coils['conf'].nil? )
-        data += coils['conf'][i..(stop-1)] + "\n"
-      else
-        data += "\n"
+      
+      if(exist_ss_params(prof_r))
+        data += export_ss("SS PROF (Rost)", prof_r, i, stop-1)
+      end
+
+      if(!coils.nil? and !coils.empty? and !coils['ccpred'] == "")
+        data += sprintf("%-#{@@descr_width}s", "CC COILS")
+        if( !coils.nil? && !coils['ccpred'].nil? )
+          data += coils['ccpred'][i..(stop-1)] + "\n"
+        else
+          data += "\n"
+        end
+        data += sprintf("%-#{@@descr_width}s", "CONF")
+        if( !coils.nil? && !coils['conf'].nil? )
+          data += coils['conf'][i..(stop-1)] + "\n"
+        else
+          data += "\n"
+        end
       end
 
       #data += export_tm("TM MEMSAT2", memsat, i, stop-1)
-      data += export_tm("TM HMMTOP", hmmtop, i, stop-1)
-      data += export_tm("TM MEMSATSVM",memsat_svm, i, stop-1)
-      data += export_tm("TM PHOBIUS", phobius, i, stop-1)
-      data += export_tm("TM PROF (Rost)", prof_r, i, stop-1)
+      if(!hmmtop.nil? and !hmmtop.empty?)
+        data += export_tm("TM HMMTOP", hmmtop, i, stop-1)
+      end
+      if(exist_tm_params?(memsat_svm))
+        data += export_tm("TM MEMSATSVM",memsat_svm, i, stop-1)
+      end
+      if(exist_tm_params?(phobius))
+        data += export_tm("TM PHOBIUS", phobius, i, stop-1)
+      end
+      #'conf'=>"", 'pred'=>"", 'sol'=>"", 'tmpred'=>"", 'tmconf'=>""
+      if(exist_tm_params?(prof_r))
+        data += export_tm("TM PROF (Rost)", prof_r, i, stop-1)
+      end
 
-      data += export_do("DO DISOPRED2", disopred, i, stop-1)
-      data += export_do("DO IUPRED", iupred, i, stop-1)
+      if(exist_do_params?(disopred))
+        data += export_do("DO DISOPRED2", disopred, i, stop-1)
+      end
+      if(exist_do_params?(iupred))
+        data += export_do("DO IUPRED", iupred, i, stop-1)
+      end
       #data += export_do("DO VSL", vsl2, i, stop-1)
 
-      data += export_so("SO PROF (Rost)", prof_r, i, stop-1)
-      data += export_so("SO JNET", jnet, i, stop-1)
-
+      if(!prof_r.nil? and !prof_r.empty?)
+        data += export_so("SO PROF (Rost)", prof_r, i, stop-1)
+      end
+      if(!jnet.nil? and !jnet.empty?)
+        data += export_so("SO JNET", jnet, i, stop-1)
+      end
+      
       data += "\n\n"
       i += @@linewidth
     end
     data
+  end
+  
+  def exist_ss_params(dic)
+    !dic.nil? and !dic.empty? and !((dic['pred'].nil? or dic['pred'] !~ /\w/) and (dic['conf'].nil? or dic['conf'] !~ /\w/))
+  end
+  
+  def exist_tm_params?(dic)
+    !dic.nil? and !dic.empty? and !((dic['tmpred'].nil? or dic['tmpred'] !~ /\w/) and (dic['tmconf'].nil? or dic['tmconf'] !~ /\w/))
+  end
+  
+  def exist_do_params?(dic)
+    !dic.nil? and !dic.empty? and !((dic['dopred'].nil? or dic['dopred'] !~ /\w/) and (dic['doconf'].nil? or dic['doconf'].empty? or dic['doconf'] !~ /\w/))
+  end
+  
+  def exist_so_params?(dic)
+    !dic.nil? and !dic.empty? and !((dic['sol'].nil? or dic['sol'] !~ /\w/))
   end
 
 
