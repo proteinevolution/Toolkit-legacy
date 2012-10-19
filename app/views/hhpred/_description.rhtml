@@ -1,5 +1,6 @@
-Sensitive protein homology detection and structure prediction by HMM-HMM-comparison. HHpred builds a 
-profile HMM from a query sequence and compares it with a database of HMMs representing annotated protein 
-families (e.g. PFAM, SMART, CDD, COGs, KOGs) or domains with known structure (PDB, SCOP). The output is a 
-list of closest homologs with alignments. 
-<a href="#" onclick="openHelpWindow('/hhpred/help_ov');">Learn more about HHpred...</a>
+Sensitive protein homology detection and structure prediction by HMM-HMM-comparison. Starting from a query sequence, HHpred builds a multiple sequence alignment
+ using HHblits and turns it into a profile HMM. This is then compared it with a database of HMMs representing proteins with known structure (e.g. PDB, SCOP) or annotated protein
+  families (e.g. PFAM, SMART, CDD, COGs, KOGs). The output is a list of closest homologs with alignments. 
+  HHpred can also build 3d homology models using the identified templates in the PDB database. It can optimize template picking and query-template alignments for 
+  homology modeling. 
+<br>The HHblits software is part of the open source package <a href="ftp://toolkit.genzentrum.lmu.de/pub/HH-suite/" target="_self">HHsuite</a>.
