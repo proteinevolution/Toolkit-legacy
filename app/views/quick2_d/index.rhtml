@@ -27,8 +27,22 @@
 	<%= form_label("Do PSI-BLAST Search", "psiblast_search") %>
 	<% active = true %>
 	<% if ((params['psiblast_check'] && params['psiblast_check'] == 0)) then active = false end %>
-	<%= form_checkbox("psiblast_chk", '1', active) %>
+	<div class="formw">
+		<input type = "checkbox" name = "psiblast_chk" value = "psiblast_chk" onChange = "psiblastChanged();" <%= if active then 'checked' end %> >
+	</div>
+	<!-- <%= form_checkbox("psiblast_chk", '1', active, onchange='psiblastChanged();') %> -->
 </div>
+<!-- copied from hhpred -->
+<% if active -%>
+
+<div class="row">
+  <%= form_label_id("Max. MSA Generation iterations", "maxpsiblastit_label", "maxpsiblastit") %>
+  <%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, '3') %>	
+</div>
+<% else %>
+<%= form_hidden_field("maxpsiblastit", @parent_job.params_main_action['maxhhblitsit']) %>
+<% end %>
+<!-- copy end -->
 <div class="spacer">&nbsp;</div>
 
 
@@ -139,7 +153,7 @@
 	</div>
 	<div class="formw">			
 		<table><tr><td align="left" valign="top">
-			<%= form_checkbox("memsatsvm_chk", '1', true, true) %>
+			<%= form_checkbox("memsatsvm_chk", '1', false, true) %>
 		</td><td>			
 			Timothy Nugent, David T. Jones (2009)
 			Transmembrane protein topology prediction using support vector machines
