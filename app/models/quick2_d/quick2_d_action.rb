@@ -58,6 +58,9 @@ end
 
   def init_vars
     @psiblast    = params['psiblast_chk']  ? true : false
+# added    
+    @psiblastit  = params['maxpsiblastit']
+# end
     @psipred     = params['psipred_chk']   ? true : false
     @jnet        = params['jnet_chk']      ? true : false
     @coils       = params['coils_chk']     ? true : false
@@ -138,7 +141,7 @@ end
     commands = []
     if @psiblast
       commands << "echo 'Running PSI-BLAST [buildali] ' >> #{flash['logfile']}"
-      commands << "#{BUILDALI} -v5 -diff 200 -noss -n 2 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
+      commands << "#{BUILDALI} -v5 -diff 200 -noss -n #{@psiblastit} -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
 
       commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
       commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
