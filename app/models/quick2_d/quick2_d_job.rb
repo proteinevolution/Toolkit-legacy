@@ -352,10 +352,14 @@ class Quick2DJob < Job
     data = ""
     data += sprintf("<span>%-#{@@descr_width}s</span>", name)
     a.upto(b-1){ |j|
+    if(hash['tmpred'][j].nil?)
+      data+=" "
+    else
       if(hash['tmpred'][j].chr=="X")
         data += "<span id=\"#{j}#{id_name}\"style=\"background-color: #{@@tm_color};\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['tmpred'][j].chr}</span>"
       else
         data += "<span id=\"#{j}#{id_name}\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['tmpred'][j].chr}</span>"
+      end
       end
     }
     data += "\n"
