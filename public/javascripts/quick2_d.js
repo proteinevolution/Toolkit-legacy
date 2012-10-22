@@ -119,3 +119,13 @@ function aminoObj(){
    this.M="Methionine";
    this.N="Asparagine";
 }
+
+function psiblastChanged(){
+	if(Element.getStyle("maxpsiblastit", 'display') == "none"){
+		Effect.Appear('maxpsiblastit');
+		Effect.Appear('maxpsiblastit_label');
+	} else{
+		Effect.Fade('maxpsiblastit');
+		Effect.Fade('maxpsiblastit_label');
+	}
+}
