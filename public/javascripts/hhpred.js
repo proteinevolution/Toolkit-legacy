@@ -7,17 +7,17 @@ function appearForward(val)
     var pcoils = 'pcoils';
 	// Element is currently display = none and shall be shown 
     if (Element.getStyle(val, 'display') == "none" && Element.getStyle('noPdb', 'display') == "none") {
-		
 		if ($(coloring) != null) {
 		    new Effect.Fade(coloring);
 		}
 		// Remove all Elements that may be currently shown
-		new Effect.Fade(pcoils);
+		new Effect.Fade('pcoils');
 		new Effect.Fade(create);
 		new Effect.Fade(merge);
 		new Effect.Fade(image);
 		new Effect.Fade('noPdb');
-		//new Effect.Fade('pcoils');
+		new Effect.Fade('forward');
+
 		sleep(1000);
 		
 		// Special Case Createmodel, active checkbox 
@@ -30,7 +30,6 @@ function appearForward(val)
 			// Special Case PCoils, have first element selected 
 			if(val == 'pcoils') {
                 select_first_not_disabled();
-				//new Effect.Appear(val);
             }
 		    checkbox_createmodel(false);
 		}
@@ -38,11 +37,12 @@ function appearForward(val)
     } else {
 		if (val == 'pcoils') {
 			select_first_not_disabled();
-			// new Effect.Appear(val);
+			new Effect.Fade(val);
 		}
 		else {
 			new Effect.Fade(val);
 			new Effect.Fade('noPdb');
+
 			if ($(coloring) != null) {
 				new Effect.Appear(coloring);
 			}
