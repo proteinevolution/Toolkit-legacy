@@ -73,11 +73,9 @@
 </div>
 <!-- PCoils Forwarding is controlled by this snipplet -->
 <div id="pcoils" style="display: none;"> 
-    <input name="hits" id="hits" type="hidden" value=""/>
-    
     <div class="row">
+    	<-- input name="hits" id="hits" type="hidden" value=""/-->
         <input name="submitform" type="submit" class="toolbutton" style="width:35%"  align="left" value="Run PCoils with manually selected template(s)" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'pcoils', :forward_action => 'forward',  :increment_id => 'create', :mode => 'create') %>');" >
-
     </div>
   <div class="row">
   	
