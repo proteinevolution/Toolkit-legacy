@@ -63,7 +63,7 @@
   <%= form_label("Select HMM databases<br><small>(hold Ctr to select several)</small>", "databases") %>
   <div class="formw">
     <table cellspacing="0">
-    <tr align="center"><td><b>Standard</b></td><td width="30px;"></td><td><b>Genomes</b></td></tr>
+    <tr align="center"><td><b>Standard</b></td><td width="30px;"></td><td><b>Proteomes</b></td></tr>
     <tr><td>
     <%= form_select_multiple("hhpred_dbs", @dbvalues, @dblabels, @default_db, 5, false) %>	
     </td><td></td><td>
