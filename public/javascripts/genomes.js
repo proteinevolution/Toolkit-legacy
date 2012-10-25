@@ -150,8 +150,7 @@ function deselect(){
 //	for( i=0; i<dblist.length; i++ ) dblist.options[i].selected = false;
 	deselectrec(tree[0]);
 	c=0;	
-	$('count_label').innerHTML=c+" Genomes selected.";
-
+	$('count_label').innerHTML=c+" Proteomes selected.";
 	document.getElementById('taxids').value ="";
 }
 
@@ -209,14 +208,14 @@ function control(obj){
 	controller(obj[0]);
         var c = count();
         if(c==1){
-		$('count_label').innerHTML=c+" Genome selected";
+		$('count_label').innerHTML=c+" Proteome selected";
 	}
         else{	
-		$('count_label').innerHTML=c+" Genomes selected.";
+		$('count_label').innerHTML=c+" Proteomes selected.";
 	// If the user has selected more than 900 genomes remind him that system may crash
 	}
 	if(c>900){
-		$('count_label').innerHTML=c+" Genomes selected.<br><font color=red><b>You have exceeded the Genome Limit ! 900 Genomes.</b></font>";
+		$('count_label').innerHTML=c+" Proteomes selected.<br><font color=red><b>You have exceeded the Proteome Limit ! 900 Proteomes.</b></font>";
 		button.disabled = true;
 	        $('gtree').setStyle({background:'#FFF8C6'});
 		}
