@@ -13,14 +13,21 @@
       self.queue_job.update_status
       
       tries = 0
-
-      # Location Tuebingen 
+      
+      # Identify the Action which is to be submitted by the toolkit and set the max Memory count to a individual value
+      job =queue_job.action.type 
+      # Memory contains the Nr of GB used for Tuebinger Queue
+      memory =  select_memory(job); 
+      logger.debug "L20 Memory #{memory} "      
+        
+        
+      # Location Tuebingen, using variable Memor Limiting to circumvent Memory constraints and Queue Crowding
       if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
                   if RAILS_ENV == "development"
-                    command = "#{QUEUE_DIR}/qsub -l h_vmem=10G -p 10 #{self.wrapperfile}"
+                    command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G -p 10 #{self.wrapperfile}"
                     logger.debug "qsub command: #{command}"
                   else
-                    command = "#{QUEUE_DIR}/qsub -l h_vmem=18G #{self.wrapperfile}" # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
+                    command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G #{self.wrapperfile}" # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
                     logger.debug "qsub command: #{command}"
                   end
       else
@@ -253,6 +260,29 @@
         raise "Unable to create Commandfile #{self.commandfile} in #{self.class} id: #{id}.\n e.message \n"
       end
     end
+#########################################################################################
+# Individualized Memory Management for each tool, this has to be tested on wye
+#
+#########################################################################################
+def select_memory(method)
+  #init local Vars
+  my_memory = 18  # The Default memory constraint for Clans an Hhpred
 
-  end
+ # Implement versatile memory constraints for each job   
+ my_memory = case method
+  when "HhpredForwardAction" then 19
+  when "HhpredAction" then 19
+  when "HhblitsAction" then 18
+  when "HhblitsForwardAction" then 18
+  when "ClansAction" then 18
+  when "ReformatAction" then 5
+  when "PcoilsAction" then 5
+  when "PsiBlastAction" then 15
+  else 15
+end
+    return my_memory;
+ end
+
+
+end
 
