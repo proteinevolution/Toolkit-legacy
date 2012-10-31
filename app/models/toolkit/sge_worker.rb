@@ -270,16 +270,7 @@ def select_memory(method)
 
  # Implement versatile memory constraints for each job   
  my_memory = case method
-  when "HhpredForwardAction" then 19
-  when "HhpredAction" then 19
-  when "HhblitsAction" then 18
-  when "HhblitsForwardAction" then 18
-  
-  when "ReformatAction" then 4
-  when "PcoilsAction" then 4
-  when "PsiBlastAction" then 15
-  when "SixframeAction" then 5
-
+ 
   ### A ###
   when "AncesconAction" then 2
   when "Aln2plotAction" then 10
@@ -304,6 +295,32 @@ def select_memory(method)
   when "Gi2seqExportAction" then 2  
   when "Gi2seqAction" then 2  
   when "Gi2seqForwardAction" then 2
+  ### H ###  
+  when "HhpredForwardAction" then 19
+  when "HhpredAction" then 19
+  when "HhblitsAction" then 18
+  when "HhblitsForwardAction" then 18
+  when "HhblitsShowtemplalignAction" then 18
+  when "HhpredShowtemplalignAction" then 18
+  when "Hh3dTemplAction" then 18
+  when "HhmakemodelAction" then 18
+  when "HhsenserAction" then 18
+  when "HhsenserForwardAction" then 18
+  when "HhfragAction" then 18
+  when "HhalignAction" then 18
+  when "HhrepidAction" then 18
+  when "HhrepAction" then 18
+  when "HhpredForwardAction" then 18
+  when "HhrepMergealiAction" then 18
+  when "HhclusterAction" then 18
+  when "HhblitsForwardAction" then 18
+  when "HhompAction" then 18
+  when "HhfilterAction" then 18
+  when "HhblitsForwardHmmAction" then 18
+  when "Hmmer3Action" then 10
+  when "HhrepForwardHmmAction" then 18
+  when "Hh3dQuerytemplAction" then 18
+  when "HhmergealiAction" then 18
   ### K ###
   when "KalignAction" then 10
   when "KalignForwardAction" then 5
@@ -314,6 +331,29 @@ def select_memory(method)
   when "MuscleForwardAction" then 5
   when "MafftAction" then 5
   when "MafftForwardAction" then 5
+  ### P ###
+  when "ProtBlastAction" then 15
+  when "PcoilsAction" then 4
+  when "PsiBlastAction" then 15
+  when "PatsearchAction" then 5
+  when "PsiBlastForwardAction" then 5
+  when "PatsearchForwardAction" then 5
+  when "ProtBlastForwardAction" then 5
+  ### R ###
+  when "RepperAction" then 15
+  when "ReformatAction" then 4
+  ### S ###
+  when "SimshiftAction" then 5
+  when "SixframeAction" then 4
+  ### T ###
+  when "TprpredAction" then 10
+  when "TCoffeeAction" then 10
+  when "TCoffeeExportAction" then 4
+  when "TCoffeeForwardAction" then 4
+  ### V ###
+  when "ViewClansAction" then 10
+  when "ViewRepeatsAction" then 5
+  
    else 15
 end
     logger.debug "L319 #{method} : #{my_memory}"
