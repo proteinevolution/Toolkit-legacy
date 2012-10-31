@@ -275,30 +275,48 @@ def select_memory(method)
   when "HhblitsAction" then 18
   when "HhblitsForwardAction" then 18
   
-  when "ReformatAction" then 5
-  when "PcoilsAction" then 5
+  when "ReformatAction" then 4
+  when "PcoilsAction" then 4
   when "PsiBlastAction" then 15
   when "SixframeAction" then 5
-  when "Gi2seqAction" then 5
-  when "Gi2seqForwardAction" then 5
-  when "GcviewAction" then 10
-### A ###
+
+  ### A ###
   when "AncesconAction" then 2
   when "Aln2plotAction" then 10
-  when "AlnvizAction" then 10
-### B ###  
+  when "AlnvizAction" then 5
+  ### B ###  
   when "BlammerAction" then 5
   when "BlammerForwardAction" then 5
   when "BlastclustAction" then 10
   when "BacktransAction" then 2
-### C ###
+  ### C ###
   when "ClansAction"    then 18
   when "CsBlastAction"  then 15
   when "ClustalwAction" then 10
   when "ClustalwForwardAction" then 10
   when "ClustalwExportAction" then 5
-  else 15
+  ### D ###
+  when "DataaAction" then 15
+  ### F ###
+  when "FrpredAction" then 10
+  ### G ###
+  when "GcviewAction" then 10  
+  when "Gi2seqExportAction" then 2  
+  when "Gi2seqAction" then 2  
+  when "Gi2seqForwardAction" then 2
+  ### K ###
+  when "KalignAction" then 10
+  when "KalignForwardAction" then 5
+  ### M ###
+  when "ModellerAction" then 18  
+  when "MarcoilAction" then 5
+  when "MuscleAction" then 5  
+  when "MuscleForwardAction" then 5
+  when "MafftAction" then 5
+  when "MafftForwardAction" then 5
+   else 15
 end
+    logger.debug "L319 #{method} : #{my_memory}"
     return my_memory;
  end
 
