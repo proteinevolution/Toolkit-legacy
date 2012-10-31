@@ -274,10 +274,29 @@ def select_memory(method)
   when "HhpredAction" then 19
   when "HhblitsAction" then 18
   when "HhblitsForwardAction" then 18
-  when "ClansAction" then 18
+  
   when "ReformatAction" then 5
   when "PcoilsAction" then 5
   when "PsiBlastAction" then 15
+  when "SixframeAction" then 5
+  when "Gi2seqAction" then 5
+  when "Gi2seqForwardAction" then 5
+  when "GcviewAction" then 10
+### A ###
+  when "AncesconAction" then 2
+  when "Aln2plotAction" then 10
+  when "AlnvizAction" then 10
+### B ###  
+  when "BlammerAction" then 5
+  when "BlammerForwardAction" then 5
+  when "BlastclustAction" then 10
+  when "BacktransAction" then 2
+### C ###
+  when "ClansAction"    then 18
+  when "CsBlastAction"  then 15
+  when "ClustalwAction" then 10
+  when "ClustalwForwardAction" then 10
+  when "ClustalwExportAction" then 5
   else 15
 end
     return my_memory;
