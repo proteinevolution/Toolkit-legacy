@@ -249,10 +249,17 @@ class CsBlastForwardAction < Action
   def forward_params
     res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
     mode = params['fw_mode']
+    tool = params['forward_controller']
     inputmode = "sequence"
     if (!mode.nil? && mode == "alignment")
       inputmode = "alignment"
+      if(tool == "pcoils")
+        inputmode = "2"
+      end
     end
+    #{'sequence_input' => res.join, 'inputmode' => inputmode}
+    
+    logger.debug "L259 inputmode: #{inputmode} to #{tool}"
     {'sequence_input' => res.join, 'inputmode' => inputmode}
   end
 
