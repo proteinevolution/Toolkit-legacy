@@ -276,8 +276,8 @@ def select_memory(method)
   when "Aln2plotAction" then 10
   when "AlnvizAction" then 5
   ### B ###  
-  when "BlammerAction" then 5
-  when "BlammerForwardAction" then 5
+  when "BlammerAction" then 10
+  when "BlammerForwardAction" then 10
   when "BlastclustAction" then 10
   when "BacktransAction" then 2
   ### C ###
@@ -356,6 +356,14 @@ def select_memory(method)
   
    else 15
 end
+
+#############################################
+# Special Memory allocation for large hhpred jobs
+if (!options.nil? || !options.empty?)
+        if (options['memory']) then my_memory = options['memory'] end
+end
+
+
     logger.debug "L319 #{method} : #{my_memory}"
     return my_memory;
  end
