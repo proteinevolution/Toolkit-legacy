@@ -344,7 +344,7 @@ def select_memory(method)
   when "ReformatAction" then 4
   ### S ###
   when "SimshiftAction" then 5
-  when "SixframeAction" then 4
+  when "SixframeAction" then 10
   ### T ###
   when "TprpredAction" then 10
   when "TCoffeeAction" then 10
