@@ -40,6 +40,7 @@ class HhpredAction < Action
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)
     @seqfile = @basename+".in"
+
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
     @commands = []
     @informat = params['informat'] ? params['informat'] : 'fas'
@@ -47,7 +48,9 @@ class HhpredAction < Action
       reformat(@informat, "fas", @seqfile)
       @informat = "fas"
     end
-
+    # Check if the second line is to long and increase Memory allocation in Tuebingen 
+    @memory = check_sequence_length
+    
     @prefilter = params['prefilter'] ? params['prefilter'] : 'hhblits'
     
     @dbs = params['hhpred_dbs'].nil? ? "" : params['hhpred_dbs']
@@ -299,8 +302,22 @@ class HhpredAction < Action
 
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'cpus' => '3'})
+    queue.submit(@commands, true, {'cpus' => '3', 'memory' => @memory})
   end
+# Check the length of the first Sequence to determine the access Memory needed for WYE and the large UNIPROT DB
+def check_sequence_length
+    # Init local vars
+    memory = 15
+    f = File.open(@seqfile)
+    data = f.readlines
+      sequence_length = data[1].size
+    f.close
+    if sequence_length > 1000
+      memory = 23
+    end
+    logger.debug "L318 Memory Allocation - HHpred - : #{memory}"
+    memory
+end
 
 end
 
