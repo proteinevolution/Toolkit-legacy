@@ -4,7 +4,7 @@ class MafftController < ToolController
   end
 
   def results
-    @fullscreen = true
+    @fullscreen = false
     @fw_values = [fw_to_tool_url('mafft', 'ali2d'),
                   fw_to_tool_url('mafft', 'alnviz'),
                   fw_to_tool_url('mafft', 'aln2plot'),
@@ -12,6 +12,7 @@ class MafftController < ToolController
                   fw_to_tool_url('mafft', 'blastclust'),
                   fw_to_tool_url('mafft', 'clans'),
                   fw_to_tool_url('mafft', 'cs_blast'),
+                  
                   fw_to_tool_url('mafft', 'seq2gi'),
                   fw_to_tool_url('mafft', 'frpred'),
                   fw_to_tool_url('mafft', 'hhblits'),
@@ -20,10 +21,11 @@ class MafftController < ToolController
                   fw_to_tool_url('mafft', 'hhrep'),
                   fw_to_tool_url('mafft', 'hhrepid'),
                   fw_to_tool_url('mafft', 'hhsenser'),
+                  
                   fw_to_tool_url('mafft', 'patsearch'),
                   fw_to_tool_url('mafft', 'pcoils'),
-                  fw_to_tool_url('mafft', 'psi_blast'),
                   fw_to_tool_url('mafft', 'phylip'),
+                  fw_to_tool_url('mafft', 'psi_blast'),
                   fw_to_tool_url('mafft', 'quick2_d'),
                   fw_to_tool_url('mafft', 'reformat'),
                   fw_to_tool_url('mafft', 'repper')]
@@ -35,6 +37,7 @@ class MafftController < ToolController
                   tool_title('blastclust'),
                   tool_title('clans'),
                   tool_title('cs_blast'),
+                  
                   tool_title('seq2gi'),
                   tool_title('frpred'),
                   tool_title('hhblits'),
@@ -43,10 +46,12 @@ class MafftController < ToolController
                   tool_title('hhrep'),
                   tool_title('hhrepid'),
                   tool_title('hhsenser'),
+                  
                   tool_title('patsearch'),
                   tool_title('pcoils'),
                   tool_title('phylip'),
                   tool_title('psi_blast'),
+                  
                   tool_title('quick2_d'),
                   tool_title('reformat'),
                   tool_title('repper')]
