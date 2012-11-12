@@ -8,7 +8,6 @@ class ProtBlastForwardAction < Action
   attr_accessor :hits, :includehits, :alignment
 
   validates_checkboxes(:hits, {:on => :create, :include => :includehits, :alternative => :alignment})
-
   def run
     logger.debug "Forward Action!"
     @basename = File.join(job.job_dir, job.jobid)
@@ -50,7 +49,7 @@ class ProtBlastForwardAction < Action
         end
         @hits = []
         hit_lines.each do |hit_line|
-	   hit_line.scan(/<a href = \#(\d+)>\s*\d+<\/a>\s+(\S+.*)$/) do |name, eval|
+          hit_line.scan(/<a href = \#(\d+)>\s*\d+<\/a>\s+(\S+.*)$/) do |name, eval|
             if (eval =~ /^e.*$/)
               eval = "1" + eval
             end
@@ -61,8 +60,8 @@ class ProtBlastForwardAction < Action
           end
         end
       else
-	      # Remove redundant hits
-   	   @hits.uniq!
+      # Remove redundant hits
+      @hits.uniq!
       end
 
       if (mode.nil? || mode == "alignment")
@@ -108,7 +107,7 @@ class ProtBlastForwardAction < Action
     while (i < @res.size)
       if (@res[i] =~ /^\s*Database:/) then break end
       #><a name = 82736116><
-     if (@res[i] =~ /^\s*><a name =\s*(\w[\w|\d]+)>/)
+      if (@res[i] =~ /^\s*><a name =\s*(\w[\w|\d]+)>/)
         if @hits.include?($1)
           check = true
           i += 1
@@ -139,17 +138,17 @@ class ProtBlastForwardAction < Action
       if (@res[i] =~ /^\s*><a name =\s*(\w[\w|\d]+)>/)
         if @hits.include?($1)
           if (!@seqlen.nil? && @seqlen == "complete")
-             if (@res[i] =~ /(\w\w\|\w[\w|\d]+\|)/)
+            if (@res[i] =~ /(\w\w\|\w[\w|\d]+\|)/)
               #if (@res[i] =~ /([gi\|\d+\||tr\|\w[\w|\d]+\|])/)
               logger.debug "Trembl Hit !"
               #if (@res[i] =~ /(gi\|\d+\|)/)
               File.open(@basename + ".fw_gis", "a") do |file|
                 file.write($1 + "\n")
               end
-#            if (@res[i] =~ /(gi\|\d+\|)/)
-#              File.open(@basename + ".fw_gis", "a") do |file|
-#                file.write($1 + "\n")
-#              end
+            #            if (@res[i] =~ /(gi\|\d+\|)/)
+            #              File.open(@basename + ".fw_gis", "a") do |file|
+            #                file.write($1 + "\n")
+            #              end
             else
               if (@res[i] =~ /<\/a>(\S+)\s/)
                 File.open(@basename + ".fw_gis", "a") do |file|
@@ -168,43 +167,42 @@ class ProtBlastForwardAction < Action
             else
               name.sub!(/<a href=\S+" >/, '')
             end
-             # this removes the complete HREF Tag from the ProtBlast run
+            # this removes the complete HREF Tag from the ProtBlast run
             name.sub!(/<a href=.*>/, '')
             name.sub!(/<\/a>/, '')
 
-
             seq_data = ""
-	    first_res = nil;
-	    last_res = nil;
-	    while (i < @res.size)
-	      if (@res[i] =~ /^<\/PRE>$/) then break end
-	      if (@res[i] =~ /^(\w+):\s*(\d+)\s+(\S+)\s+(\d+)\s*$/) 
-		if ($1 == "Query")
-	   	  if (first_res.nil?) then first_res = $2.to_i end
-		  last_res = $4.to_i
-	        elsif ($1 == "Sbjct")
-		  seq_data += $3
-	        end
-	      end
-	      i += 1
-	    end
-	    if (!first_res.nil? && (last_res - first_res + 1 <= seq_data.length))
-	      if (@seqlen == "slider")
-		if (first_res < @seqlen_start) 
-		  seq_data = seq_data[@seqlen_start - first_res, seq_data.length]
-		  first_res = @seqlen_start
-		end
-		if (!seq_data.nil? && last_res > @seqlen_end)
-		  seq_data = seq_data[0, @seqlen_end - first_res + 1]
-		  last_res = @seqlen_end
-		end
-	      end
-	      if (!seq_data.nil? && seq_data.length > 0) 
-		File.open(@outfile, "a") do |file|
-		  file.write(name + "\n" + seq_data + "\n")
-		end
-	      end
-	    end
+            first_res = nil;
+            last_res = nil;
+            while (i < @res.size)
+              if (@res[i] =~ /^<\/PRE>$/) then break end
+              if (@res[i] =~ /^(\w+):\s*(\d+)\s+(\S+)\s+(\d+)\s*$/)
+                if ($1 == "Query")
+                if (first_res.nil?) then first_res = $2.to_i end
+                last_res = $4.to_i
+                elsif ($1 == "Sbjct")
+                seq_data += $3
+                end
+              end
+              i += 1
+            end
+            if (!first_res.nil? && (last_res - first_res + 1 <= seq_data.length))
+              if (@seqlen == "slider")
+                if (first_res < @seqlen_start)
+                seq_data = seq_data[@seqlen_start - first_res, seq_data.length]
+                first_res = @seqlen_start
+                end
+                if (!seq_data.nil? && last_res > @seqlen_end)
+                seq_data = seq_data[0, @seqlen_end - first_res + 1]
+                last_res = @seqlen_end
+                end
+              end
+              if (!seq_data.nil? && seq_data.length > 0)
+                File.open(@outfile, "a") do |file|
+                  file.write(name + "\n" + seq_data + "\n")
+                end
+              end
+            end
           end
         end
       end
@@ -216,18 +214,28 @@ class ProtBlastForwardAction < Action
       @commands << "#{UTILS}/seq_retrieve.pl -i #{@basename}.fw_gis -o #{@outfile} -b #{BLAST} -unique"
     end
 
-
   end
 
   def forward_params
     res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
     mode = params['fw_mode']
-    inputmode = "sequence"
-    if (!mode.nil? && mode == "alignment")
-      inputmode = "alignment"
+    informat = 'fas'
+    inputmode = "alignment"
+    if (!mode.nil? && mode == "sequence")
+      inputmode = "sequence"
     end
-    {'sequence_input' => res.join, 'inputmode' => inputmode}
+
+    controller = params['forward_controller']
+    if (controller == "patsearch")
+      logger.debug "patsearch"
+      {'db_input' => res.join, 'std_dbs' => ""}
+    elsif (controller == "pcoils")
+      logger.debug "pcoils"
+      {'sequence_input' => res.join, 'inputmode' => '2'}
+    else
+      logger.debug "forwarding to: #{params['forward_controller']}"
+      {'sequence_input' => res.join, 'inputmode' => inputmode, 'informat' => informat}
+    end
   end
 
 end
-

@@ -15,7 +15,7 @@ class PsiBlastForwardAction < Action
 
   validates_checkboxes(:hits, {:on => :create, :include => :includehits, :alternative => :alignment})
 
-  def perform
+  def run
     logger.debug "Forward Action!"
     @basename = File.join(job.job_dir, job.jobid)
     @outfile = @basename + ".forward"
@@ -240,6 +240,7 @@ class PsiBlastForwardAction < Action
     logger.debug "Forward params!"
     res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
     mode = params['fw_mode']
+    informat = 'fas'
     inputmode = "alignment"
     if (!mode.nil? && mode == "sequence")
       inputmode = "sequence"
@@ -286,13 +287,17 @@ class PsiBlastForwardAction < Action
       #db_path = params['std_dbs'].nil? ? "" : params['std_dbs'].join(' ')
       #db_path = params['user_dbs'].nil? ? @db_path : @db_path + ' ' + params['user_dbs'].join(' ')
       #{'sequence_input' => res.join, 'inputmode' => inputmode, 'evalue' => expect, 'matrix' => mat_param, 'ungappedalign' => ungapped_alignment, 'otheradvanced' => other_advanced, 'alignments' => descriptions, 'evalfirstit' => e_thresh, 'smithwat' => smith_wat, 'rounds' => rounds, 'filter' => filter, 'fastmode' => fastmode, 'std_dbs' => db_path}
-    if (params['forward_controller'] == "patsearch")
+    controller = params['forward_controller']
+    if (controller == "patsearch")
       logger.debug "patsearch"
       {'db_input' => res.join, 'std_dbs' => ""}
+    elsif (controller == "pcoils")
+      logger.debug "pcoils"
+      {'sequence_input' => res.join, 'inputmode' => '2'}
     else
       logger.debug "#{params['forward_controller']}"
       logger.debug "anderes forward tool"
-      {'sequence_input' => res.join, 'inputmode' => inputmode}
+      {'sequence_input' => res.join, 'inputmode' => inputmode, 'informat' => informat}
     end
   end
     

@@ -41,7 +41,18 @@ class TCoffeeForwardAction < Action
   
 	def forward_params
 		res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
-		{'sequence_input' => res.join, 'informat' => 'clu', 'inputmode' => 'alignment'}
+		informat = 'clu'
+		
+		controller = params['forward_controller']
+    if (controller == "patsearch")
+      logger.debug "patsearch"
+      {'db_input' => res.join, 'std_dbs' => ""}
+    elsif (controller == "pcoils")
+      logger.debug "pcoils"
+      {'sequence_input' => res.join, 'informat' => informat, 'inputmode' => '2'}
+    else
+		  {'sequence_input' => res.join, 'informat' => informat, 'inputmode' => 'alignment'}
+		end
 	end
     
 end
