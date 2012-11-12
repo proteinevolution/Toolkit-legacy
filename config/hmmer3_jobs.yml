@@ -20,5 +20,5 @@ hmmer3_job:
       forwardsections:
     - name: results_domtbl
       title: Domain table
-      title: Show Domain table
+      title_long: Show Domain table
       forwardsections:
