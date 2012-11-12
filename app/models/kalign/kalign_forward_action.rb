@@ -62,13 +62,15 @@ class KalignForwardAction < Action
 
 	def forward_params
 		res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
-		if (@format=='fas')
-			{'sequence_input' => res.join, 'informat' => 'fas', 'inputmode' => 'alignment'}
-		elsif (@format=='clu')
-			{'sequence_input' => res.join, 'informat' => 'clu', 'inputmode' => 'alignment'}
-		else
-			{'sequence_input' => res.join, 'informat' => 'clu', 'inputmode' => 'alignment'}
-		end
+		informat = 'clu'
+		
+    controller = params['forward_controller']
+    if (controller == "pcoils")
+      logger.debug "pcoils"
+      {'sequence_input' => res.join, 'informat' => informat, 'inputmode' => '2'}
+    else
+      {'sequence_input' => res.join, 'informat' => informat, 'inputmode' => 'alignment'}
+    end
 	end
 
 end
