@@ -64,9 +64,18 @@ class ProbconsForwardAction < Action
   
 	def forward_params
 		res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
-		informat = "fas"
-		if (res[0] =~ /CLUSTAL/) then informat = "clu" end
-		{'sequence_input' => res.join, 'informat' => informat}
+		informat = res[0] =~ /CLUSTAL/ ? "clu" : "fas"
+		
+		controller = params['forward_controller']
+    if (controller == "patsearch")
+      logger.debug "patsearch"
+      {'db_input' => res.join, 'std_dbs' => ""}
+    elsif (controller == "pcoils")
+      logger.debug "pcoils"
+      {'sequence_input' => res.join, 'informat' => informat, 'inputmode' => '2'}
+    else
+      {'sequence_input' => res.join, 'informat' => informat, 'inputmode' => 'alignment'}
+    end
 	end
     
 end
