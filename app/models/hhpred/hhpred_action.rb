@@ -307,7 +307,6 @@ class HhpredAction < Action
 # Check the length of the first Sequence to determine the access Memory needed for WYE and the large UNIPROT DB
 def check_sequence_length
     # Init local vars
-    memory = 15
     f = File.open(@seqfile)
     data = f.readlines
       sequence_length = data[1].size
