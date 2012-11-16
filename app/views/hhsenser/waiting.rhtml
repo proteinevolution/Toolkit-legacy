@@ -29,7 +29,7 @@
 
 	<%= form_tag({:action => :check, :jobid => @job}, {:id => 'waitingform'})%>
 		<input class="stopbutton" name="checknow" value="Kill job!" type="submit" onclick="setAction('waitingform', '<%= url_for(:controller => @job.tool, :action => 'destroy', :jobid => @job)%>');"/>
-		<input class="stopbutton" name="checknow" value="Stop job!" type="submit" onclick="setAction('waitingform', '<%= url_for(:controller => @job.tool, :action => 'stop_hhsenser', :jobid => @job)%>');"/>
+		<!--input class="stopbutton" name="checknow" value="Stop job!" type="submit" onclick="setAction('waitingform', '<%= url_for(:controller => @job.tool, :action => 'stop_hhsenser', :jobid => @job)%>');"/-->
 		<input class="feedbutton" name="checknow" value="Check now!" type="submit" />
 		<%= @nextcheck %>&nbsp;seconds&nbsp;
 	</form>
