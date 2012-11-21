@@ -29,8 +29,47 @@ class HhrepController < ToolController
 	end
   
 	def results_showquery
-		@fw_values = [fw_to_tool_url('hhrep', 'hhpred')]
-		@fw_labels = [tool_title('hhpred')]
+		@fw_values = [fw_to_tool_url('hhrep', 'ancescon')+ "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'alnviz')+ "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'aln2plot')+ "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'cs_blast') + "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'seq2gi') + "&fw_mode=alignment",
+                  
+                  fw_to_tool_url('hhrep', 'frpred') + "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'hhalign') + "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'hhblits') + "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'hhomp') + "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'hhpred')+ "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'hhrepid')+ "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'hhrep')+ "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'hhsenser') + "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'pcoils') + "&fw_mode=alignment",                  
+                  fw_to_tool_url('hhrep', 'phylip') + "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'psi_blast') + "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'quick2_d') + "&fw_mode=alignment",                   
+                  fw_to_tool_url('hhrep', 'reformat') + "&fw_mode=alignment",                   
+                  fw_to_tool_url('hhrep', 'repper') + "&fw_mode=alignment",]
+                  
+		@fw_labels = [tool_title('ancescon'),
+                  tool_title('alnviz'),
+                  tool_title('aln2plot'),
+                  tool_title('cs_blast'),
+                  tool_title('seq2gi'),
+                  tool_title('frpred'),
+                  tool_title('hhalign'),
+                  tool_title('hhblits'),
+                  tool_title('hhomp'),
+                  tool_title('hhpred'), 
+                  tool_title('hhrepid'),
+                  tool_title('hhrep'),
+                  tool_title('hhsenser'),
+                  tool_title('pcoils'),
+                  tool_title('phylip'),
+                  tool_title('psi_blast'),
+                  tool_title('quick2_d'),
+                  tool_title('reformat'),
+                  tool_title('repper'),
+                  ]
 		@widescreen = true
 	end
   
