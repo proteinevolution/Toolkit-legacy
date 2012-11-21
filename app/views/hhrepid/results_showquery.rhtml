@@ -2,7 +2,8 @@
 
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'queryalign'}) %>
 
-<%= form_tag({:action => :run, :jobaction => 'hhrepid_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhrepid"}, {:id => "forward_form"}) %>
+
+<%= form_tag( @fw_values[0], {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
 
 <div class="row">
 
@@ -35,18 +36,13 @@
   </div>
 </div><div class="hr">&nbsp;</div>
 
-<div class="row">
-  <div class="label">Forward alignment to</div>
-  
-  <div class="formw">
-    <select id="destination" name="destination" onchange="toggleForward('forward_form', 'destination');">
-      <option value="<%= @fw_values[0] %>" selected="selected"><%= @fw_labels[0] %></option>
-    </select>
-  </div>
-</div>
+       <div class="row">
+            <%= form_label("Forward results to") %>
+        <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0], 1, "toggle_seqlen('destination');") %>
+        </div>
 
 <div class="row">
-  <input name="submitform" type="submit" class="feedbutton" value="Forward alignment" /> 
+ <input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
   <input name="resetform" type="reset" class="feedbutton" value="&nbsp;&nbsp;Reset &nbsp;&nbsp;" />
   <strong>You may edit the query alignment and forward it</strong>
 </div>
