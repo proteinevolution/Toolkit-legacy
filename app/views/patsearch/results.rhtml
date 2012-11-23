@@ -10,31 +10,62 @@
 </div><div class="hr">&nbsp;</div>
 <% end %>
 
+
 <div id="forward" style="display: none;">
-	<div class="row">
-		<div class="label">Forward results to</div>
-		<div class="formw">
-			<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
-		</div>
-	</div>
+  <% if @job.num_seqs > 0 %>
+    <div class="row">
+        <font color='darkgreen'>
+            <div class = "row" id = "forwarding_info" >
+                <!-- text is set via javascript-->
+            </div>
+        </font>
+        <br/>
+        <div class="label">
+            Forward results to
+        </div>
+        <div class="formw">
+            <!-- former content at bottom -->
+            <% @forward_tool_list_values = @tools_with_more_than_one_inseq_values + @tools_with_one_or_more_inseq_values + @tools_with_exactly_one_inseq_values %>
+            <% @forward_tool_list_labels = @tools_with_more_than_one_inseq_labels + @tools_with_one_or_more_inseq_labels + @tools_with_exactly_one_inseq_labels %>
+            <%= form_select_single("destination", @forward_tool_list_values, @forward_tool_list_labels, @forward_tool_list_values[0]) %>
+        </div>
+    </div>
     
-	<div class="row">
-		<div class="label"></div>
-		<div class="formw">
-			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
-		</div>
-	</div>
-	<div class="hr">&nbsp;</div>
-	
+    <div class="row">
+        <div class="label"></div>
+        <div class="formw">
+            <input name="submitform" id="forwardbutton" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+        </div>
+    </div>
+    <div class="hr">&nbsp;</div>
+  <% else %>
+    <div class="label">There are no results to forward!</div>
+  <% end %>
+    
 </div>
 
 <div class="row">
+    <a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="javascript:select_first()">Select the best ten</a>
+    <br/><br/>
 
-<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="javascript:select_first()">Select the best ten</a>
-<br/><br/>
 <pre>
+	<table>
+	   <% for i in 0...@job.headers.size %>
+        <tr>
+        <td><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= i %>" checked="checked" onChange="count_checked_checkboxes();"/></td>
+        <td><pre><%= @job.headers[i] %></pre></td>
+        </tr>
+        <tr>
+        <td></td>
+        <td><pre><%= @job.seqs[i] %></pre></td>
+        </tr>
+            
+    <% end %>
+	
+	</table>
+	
 <strong>Number of sequences:  <%= @job.num_seqs %> </strong>
 <br/>
 <%= @job.orig_pattern %>
@@ -43,7 +74,7 @@ No match found!
 <% else %>
 <table>
 <% for i in 0...@job.headers.size %>
-<tr><td><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= i %>" checked="checked" /></td><td>
+<tr><td><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= i %>" checked="checked" onChange="count_checked_checkboxes();" /></td><td>
 <pre><%= @job.headers[i] %></pre>
 </td></tr>
 <tr><td></td><td>
@@ -55,6 +86,12 @@ No match found!
 
 </div>
 
+<script type="text/javascript">
+    window.onload = count_checked_checkboxes
+</script>
+
 <%= form_hidden_field('CHECKBOXES', @job.num_seqs) %>
+<%= form_hidden_field('NUMBER_OF_TOOLS_FOR_ONE_SEQ', @tools_with_one_or_more_inseq_values.length + @tools_with_exactly_one_inseq_values.length) %>
+<%= form_hidden_field('NUMBER_OF_TOOLS_FOR_MORE_THAN_ONE_SEQ', @tools_with_more_than_one_inseq_values.length) %>
 
 </form>
