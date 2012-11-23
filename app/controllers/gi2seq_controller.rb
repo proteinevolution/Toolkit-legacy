@@ -30,7 +30,8 @@ class Gi2seqController < ToolController
                                               fw_to_tool_url('gi2seq', 'muscle'),		              
                                               fw_to_tool_url('gi2seq', 'patsearch'), 
                                               fw_to_tool_url('gi2seq', 'probcons'),		              		              
-                                              fw_to_tool_url('gi2seq', 'reformat')]
+                                              fw_to_tool_url('gi2seq', 'reformat'),
+                                              fw_to_tool_url('gi2seq', 't_coffee'),]
     @tools_with_more_than_one_inseq_labels = [tool_title('blastclust'), 
                                               tool_title('clans'), 
                                               tool_title('clubsubp'), 
@@ -40,7 +41,8 @@ class Gi2seqController < ToolController
                                               tool_title('muscle'),
                                               tool_title('patsearch'), 
                                               tool_title('probcons'),		              		              
-                                              tool_title('reformat')] 
+                                              tool_title('reformat'),
+                                              tool_title('t_coffee'),] 
                   
     # one or more sequences necessary - require alignment
     @tools_with_one_or_more_inseq_values = [fw_to_tool_url('gi2seq', 'frpred'),
@@ -65,12 +67,20 @@ class Gi2seqController < ToolController
     # exactly one sequence necessary
     @tools_with_exactly_one_inseq_values = [fw_to_tool_url('gi2seq', 'cs_blast'),
                                             fw_to_tool_url('gi2seq', 'tprpred'),
+                                            fw_to_tool_url('gi2seq', 'pcoils'),
                                             fw_to_tool_url('gi2seq', 'marcoil'),
-                                            fw_to_tool_url('gi2seq', 'hhfrag')]
+                                            fw_to_tool_url('gi2seq', 'hhfrag'),
+                                            fw_to_tool_url('gi2seq', 'backtrans'),
+                                             fw_to_tool_url('gi2seq', 'dataa'),
+                                            ]
     @tools_with_exactly_one_inseq_labels = [tool_title('cs_blast'),
                                             tool_title('tprpred'),
+                                            tool_title('pcoils'),
                                             tool_title('marcoil'),
-                                            tool_title('hhfrag')]
+                                            tool_title('hhfrag'),
+                                            tool_title('backtrans'),
+                                            tool_title('dataa'),
+                                            ]
     #@fullscreen = true
   end
   
