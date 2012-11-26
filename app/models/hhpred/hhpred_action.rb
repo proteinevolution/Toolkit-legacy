@@ -294,6 +294,8 @@ class HhpredAction < Action
     end
 
     prepare_fasta_hhviz_histograms_etc
+    
+    @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{@basename}.a3m #{@basename}.full.fas "
 
     @commands << "#{HHSUITE}/hhfilter -i #{@basename}.reduced.fas -o #{@basename}.top.a3m -id 90 -qid 0 -qsc 0 -cov 0 -diff 10 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{@basename}.top.a3m #{@basename}.repseq.fas -uc 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"

@@ -2,7 +2,7 @@
 
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'align'}) %>
 
-<%= form_tag({:action => :run, :jobaction => 'hhblits_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, :name => "forward_alignment") %>
+<%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred", :name => "forward_alignment"}) %>
 
 <div class="row">
 
@@ -13,7 +13,7 @@
         <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
     </APPLET>
     <br>
-    <strong><span style="position: relative;"><a href="#" onclick="openHelpWindow('/hhblits/help_results#alignment');" style="font-weight:normal;">Reduced alignment: 50 most distinct sequences without inserts in Fasta format</a></span></strong>
+    <strong><span style="position: relative;"><a href="#" onclick="openHelpWindow('/hhpred/help_results#alignment');" style="font-weight:normal;">Reduced alignment: 50 most distinct sequences without inserts in Fasta format</a></span></strong>
 
   </div>
   

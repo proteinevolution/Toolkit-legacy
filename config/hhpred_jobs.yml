@@ -32,10 +32,15 @@ hhpred_job:
       - name: pcoils
         title: Forward to PCoils
         title_long: Forward results to PCoils
-    - name: showalign
-      title: Show query alignment
-      title_long: Show or edit the query alignment constructed by HHpred
-      forwardsections:
+    - name: reducedalign
+      title: Reduced alignment
+      title_long: Show reduced alignment
+    - name: representativealign
+      title: Representative alignment
+      title_long: Show representative alignment
+    - name: fullalign
+      title: Full alignment
+      title_long: Show full alignment
   
 hhmakemodel_job:
   title: HHpred makemodel

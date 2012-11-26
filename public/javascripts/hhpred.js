@@ -257,3 +257,9 @@ function toggle_hitlist(){
 		$('hitlist_btn').value="Hide bar graph";
 	}
 }
+
+function change_resubmit_form_to_hhblits() {
+    var expression = /(.+controller=)hhpred(.+)/;
+    expression.exec($(forward_alignment).action);
+    $(forward_alignment).action = RegExp.$1 + "hhblits" + RegExp.$2;
+}

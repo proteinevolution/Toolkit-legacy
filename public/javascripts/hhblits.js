@@ -190,7 +190,7 @@ function select_genomes() {
 }
 
 function change_resubmit_form_to_hhblits() {
-    var expression = /(.+)hhpred(.+)/;
-    expression.exec(document.forms[2].action);
-    document.forms[2].action = RegExp.$1 + "hhblits" + RegExp.$2;
+    var expression = /(.+controller=)hhpred(.+)/;
+    expression.exec($(forward_alignment).action);
+    $(forward_alignment).action = RegExp.$1 + "hhblits" + RegExp.$2;
 }
