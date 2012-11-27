@@ -23,6 +23,7 @@ class HhpredAction < Action
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat,
                                                     :informat => 'fas',
                                                     :inputmode => 'alignment',
+                                                    :max_length => 3000,
                                                     :max_seqs => 10000,
                                                     :on => :create,
 						                                        :ss_allow => true })
@@ -315,6 +316,12 @@ def check_sequence_length
     f.close
     if sequence_length > 1000
       memory = 23
+    end
+    if sequence_length > 2000
+      memory = 28
+    end
+    if sequence_length > 2500
+      memory = 30
     end
     logger.debug "L318 Memory Allocation - HHpred - : #{memory}"
     memory
