@@ -2,25 +2,28 @@
 
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'align'}) %>
 
-<%= form_tag({:action => :run, :jobaction => 'hhblits_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, :name => "forward_alignment") %>
+<%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred", :name => "forward_alignment"}) %>
 
 <div class="row">
 
+  <%= form_label("Alignment format", "") %>
+  <%= form_select_single("format", ["/hhpred/fullalign/#{@job.jobid}?mode=fas", "/hhpred/fullalign/#{@job.jobid}?mode=a3m"], ['FASTA', 'A3M'], "/hhpred/fullalign/#{@job.jobid}?mode=#{@mode}", 1, "location.href=this.options[this.selectedIndex].value") %>
+  <%= form_hidden_field("hhpred_format", @mode) %>
+</div>
   <div id="applet">
    <!-- <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
       <PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.fas">
       <PARAM NAME="type"   value="URL">
       <PARAM NAME="format" value="FASTA">
-    </APPLET> -->
+    </APPLET> 
     <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
         <PARAM NAME="label"  value="JalView">
-        <PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.fas">
+        <PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.full.fas">
         <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
     </APPLET>
-  </div>
 
-  <strong><span style="position: relative; top: 5px;"><a href="#" onclick="openHelpWindow('/hhblits/help_results#alignment');" style="font-weight:normal;">Representative alignment:~ 100 most distinct sequences with inserts in Fasta format </a></span></strong>
-
+    <strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhblits/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
+ -->
   <div class="hr">&nbsp;</div>
 
   <input name="submitform" type="submit" class="button" value="Start HHblits with this alignment" onclick="change_resubmit_form_to_hhblits();"/>
@@ -28,6 +31,7 @@
   <input name="resetform" type="reset" class="button" value="Undo all changes" />
   <br/>
 </div>
+
 
 
 <div class="spacer">&nbsp;</div>

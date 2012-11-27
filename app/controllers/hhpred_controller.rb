@@ -114,6 +114,26 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @fw_labels = [tool_title('hhrep'), tool_title('hhrepid'),
 		  tool_title('hhomp')]
   end
+
+  def fullalign
+    @widescreen = true
+    @resfile = @job.jobid+".full.fas"
+    @mode = params['mode'] ? params['mode'] : "a3m"
+    if (@mode == "a3m")
+      @resfile = @job.jobid+".a3m"
+    end
+  end
+
+  def reducedalign
+    @widescreen = true
+    @resfile = @job.jobid+".reduced.fas"
+  end
+
+  def representativealign
+    @widescreen = true
+    @resfile = @job.jobid+".fas"
+  end
+
   
   def results_showtemplalign
     @job.actions.last.active = false

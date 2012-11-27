@@ -2,7 +2,7 @@
 
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'align'}) %>
 
-<%= form_tag({:action => :run, :jobaction => 'hhblits_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, :name => "forward_alignment") %>
+<%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, :name => "forward_alignment") %>
 
 <div class="row">
 
@@ -19,13 +19,14 @@
     </APPLET>
   </div>
 
-  <strong><span style="position: relative; top: 5px;"><a href="#" onclick="openHelpWindow('/hhblits/help_results#alignment');" style="font-weight:normal;">Representative alignment:~ 100 most distinct sequences with inserts in Fasta format </a></span></strong>
+  <strong><span style="position: relative; top: 5px;"><a href="#" onclick="openHelpWindow('/hhpred/help_results#alignment');" style="font-weight:normal;">Representative alignment:~ 100 most distinct sequences with inserts in Fasta format </a></span></strong>
 
   <div class="hr">&nbsp;</div>
 
   <input name="submitform" type="submit" class="button" value="Start HHblits with this alignment" onclick="change_resubmit_form_to_hhblits();"/>
   <input name="submitform" type="submit" class="button" value="Start HHpred with this alignment" />
   <input name="resetform" type="reset" class="button" value="Undo all changes" />
+  <button onclick="change_resubmit_form_to_hhblits();">Klick mich</button>
   <br/>
 </div>
 
