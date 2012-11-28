@@ -41,6 +41,11 @@ class Hmmer3Controller < ToolController
                               tool_title('hhpred'),
                               tool_title('hhsenser'), tool_title('quick2_d'),
                               tool_title('reformat'), tool_title('repper')]
+                              
+    # Test of Emission and Acceptance Values of YML DATA  
+    calculate_forwardings(@tool)
+    @fw_values = get_tool_list
+    @fw_labels = get_tool_name_list
 
 	end
 	

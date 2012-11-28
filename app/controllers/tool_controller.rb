@@ -162,7 +162,7 @@ class ToolController < ApplicationController
       end
     end
     fw_params = @parent_job.forward_params
-#    logger.debug "forward_params: #{fw_params.inspect}"
+    logger.debug "forward_params: #{fw_params.inspect}"
     fw_params.each_key do |key|
       params[key] = fw_params[key]
     end
@@ -318,6 +318,52 @@ class ToolController < ApplicationController
     url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward_hmm', :jobid => @job, :forward_action => "forward_hmm", :forward_controller => to)
   end
   #end
+  
+  #######################################################################################
+  # Calculate forwarding list according to the given acceptance, emmision Values
+  # Test Implementation with only one forwarding type
+  #######################################################################################
+  def calculate_forwardings(my_tool)
+    
+    # Init local Vars
+    @tool_list =[]        # Add tool forwarding url list
+    @tool_name_list =[]    # Add the Names of forwardable tools
+  logger.debug "L331 Going into tool Section of #{my_tool['title']}"
+    
+  # check what kind of Results we produce and what type 
+  emission_forward= YAML.load_file(File.join(TOOLKIT_ROOT, 'config', my_tool['name'] + '_jobs.yml'))["#{my_tool['name']}_job"]['forwarding_mechanism']
+  unless emission_forward.nil?
+    emission = emission_forward['emission']
+    type = emission_forward['type']
+    logger.debug "L338 Emitting: #{emission}  of Type #{type} "
+
+  
+   @tools.each do |tool|            
+          if is_active?(tool)
+              tmp = YAML.load_file(File.join(TOOLKIT_ROOT, 'config', tool['name'] + '_jobs.yml'))["#{tool['name']}_job"]
+              tmp_forward = tmp['forwarding_mechanism']
+              unless tmp_forward.nil?
+                    unless tmp_forward['acceptance'].nil?
+                        logger.debug("L347 -> #{tmp['title']} accepts Forwarding of #{tmp_forward['acceptance']} ")
+                        if emission == tmp_forward['acceptance']
+                            @tool_list << fw_to_tool_url(my_tool['name'], tool['name'])
+                            @tool_name_list << tool['title']
+                        end
+                    end
+                  
+              end
+          end
+        end
+     end
+  end
+  
+  def get_tool_list
+    return @tool_list
+  end
+  
+  def get_tool_name_list
+    return @tool_name_list
+  end
   
   def process_genomes
     res = ""
