@@ -11,3 +11,6 @@ hhalign_job:
       title: profile-profile dotplot 
       title_long: Dotplot of the profile-profile comparison
       forwardsections:
+  forwarding_mechanism:
+      acceptance: MSA
+
