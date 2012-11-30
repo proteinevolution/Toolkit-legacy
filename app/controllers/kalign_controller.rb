@@ -6,7 +6,7 @@ class KalignController < ToolController
   end
 
   def results
-    @fullscreen = true
+    @fullscreen = false
     @fw_values = [fw_to_tool_url('kalign', 'ali2d'),
                   fw_to_tool_url('kalign', 'alnviz'),
                   fw_to_tool_url('kalign', 'aln2plot'),
@@ -50,6 +50,12 @@ class KalignController < ToolController
                   tool_title('quick2_d'),
                   tool_title('reformat'),
                   tool_title('repper')]
+                  
+    # Test of Emission and Acceptance Values of YML DATA  
+    calculate_forwardings(@tool)
+    @fw_values = get_tool_list
+    @fw_labels = get_tool_name_list              
+                  
 
   end
 

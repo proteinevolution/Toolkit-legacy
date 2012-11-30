@@ -22,6 +22,8 @@ hmmer3_job:
       title: Domain table
       title_long: Show Domain table
       forwardsections:
-  forwarding_mechanism:
-      emission: MSA
-      type: CLUSTAL
+  forwarding_emission:
+      type: 4
+      format: CLUSTAL
+  forwarding_acceptances:
+     type: 4 
