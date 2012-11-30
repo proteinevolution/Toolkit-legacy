@@ -7,3 +7,5 @@ aln2plot_job:
       title: Results
       title_long: Show result
       forwardsections:
+  forwarding_acceptances:
+      type: 4

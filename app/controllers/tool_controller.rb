@@ -326,32 +326,37 @@ class ToolController < ApplicationController
   def calculate_forwardings(my_tool)
     
     # Init local Vars
-    @tool_list =[]        # Add tool forwarding url list
+    @tool_list =[]         # Add tool forwarding url list
     @tool_name_list =[]    # Add the Names of forwardable tools
+    @tool_mode_list =[]    # Add the modes, currently implemented 1 = Single , 2 = one or more, 3 = 2 or more
   logger.debug "L331 Going into tool Section of #{my_tool['title']}"
     
   # check what kind of Results we produce and what type 
-  emission_forward= YAML.load_file(File.join(TOOLKIT_ROOT, 'config', my_tool['name'] + '_jobs.yml'))["#{my_tool['name']}_job"]['forwarding_mechanism']
+  emission_forward= YAML.load_file(File.join(TOOLKIT_ROOT, 'config', my_tool['name'] + '_jobs.yml'))["#{my_tool['name']}_job"]['forwarding_emission']
   unless emission_forward.nil?
-    emission = emission_forward['emission']
-    type = emission_forward['type']
+    emission = emission_forward['type']
+    # Convert the emission Value to string (binary) and then to int  e.g. 4 -> "100" -> 100 to be able to use & operator
+    emission = emission.to_s(2).to_i
+    type = emission_forward['format']
     logger.debug "L338 Emitting: #{emission}  of Type #{type} "
 
   
    @tools.each do |tool|            
           if is_active?(tool)
               tmp = YAML.load_file(File.join(TOOLKIT_ROOT, 'config', tool['name'] + '_jobs.yml'))["#{tool['name']}_job"]
-              tmp_forward = tmp['forwarding_mechanism']
-              unless tmp_forward.nil?
-                    unless tmp_forward['acceptance'].nil?
-                        logger.debug("L347 -> #{tmp['title']} accepts Forwarding of #{tmp_forward['acceptance']} ")
-                        if emission == tmp_forward['acceptance']
-                            @tool_list << fw_to_tool_url(my_tool['name'], tool['name'])
-                            @tool_name_list << tool['title']
-                        end
-                    end
-                  
-              end
+              acceptor = tmp['forwarding_acceptances']
+
+                    unless acceptor.nil?
+                      # Convert the emission Value to string (binary) and then to int  e.g. 4 -> "100" -> 100 to be able to use & operator
+                       if emission & acceptor['type'].to_s(2).to_i > 0
+
+                             @tool_list << fw_to_tool_url(my_tool['name'], tool['name'])
+                             @tool_name_list << tool['title']
+                             @tool_mode_list << acceptor['type']
+                       end
+                   end 
+
+
           end
         end
      end
@@ -363,6 +368,10 @@ class ToolController < ApplicationController
   
   def get_tool_name_list
     return @tool_name_list
+  end
+  
+  def get_tool_mode_list
+    return @tool_mode_list
   end
   
   def process_genomes

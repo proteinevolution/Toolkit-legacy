@@ -15,3 +15,5 @@ ali2d_job:
       title: Colored Results
       title_long: Show results colored and with confidence of the secondary structure
       forwardsections:
+  forwarding_acceptances:
+      type: 4
