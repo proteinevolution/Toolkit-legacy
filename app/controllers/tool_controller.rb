@@ -361,7 +361,7 @@ class ToolController < ApplicationController
      end
   end
   
-  get_tool_emission
+ def get_tool_emission
     return @emission
   end
 
