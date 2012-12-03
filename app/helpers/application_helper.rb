@@ -91,18 +91,31 @@ module ApplicationHelper
   def form_file(name, onchange="", onkeyup="")
     wrap_form_widget(file_field_tag(name, :onchange => onchange, :onkeyup => onkeyup, :maxlength => 500000, :size => 60, :id => name), @errors[name])
   end
+  
+  def form_select_single_with_hash(name, values, labels, kwarguments)
+    default = kwarguments.has_key?(:default) ? kwarguments[:default] : ""
+    maxsize = kwarguments.has_key?(:maxsize) ? kwarguments[:maxsize] : 1
+    onchange = kwarguments.has_key?(:onchange) ? kwarguments[:onchange] : ""
+    disable = kwarguments.has_key?(:disable) ? kwarguments[:disable] : false
+    noformw = kwarguments.has_key?(:noformw) ? kwarguments[:noformw] : false 
+    form_select_single(name, values, labels, default, maxsize, onchange, disable, noformw, kwarguments)
+  end
 
-  def form_select_single(name, values, labels, default="", maxsize=1, onchange="", disable=false, noformw=false)
+  def form_select_single(name, values, labels, default="", maxsize=1, onchange="", disable=false, noformw=false, kwargs={})
     #size = maxsize > values.length ? values.length : maxsize 
     size = maxsize
     selected = (params['reviewing']||params[name]) ? params[name] : default.to_s
     selected = @error_params[name] ? @error_params[name] : selected
     options = ""
+    
+    modes = kwargs.has_key?(:modes) ? kwargs[:modes] : []
     for i in 0..values.length-1 do
       value = values[i].to_s
       label = labels[i].to_s
+      mode = modes.empty? ? "" : modes[i]
+      mode_attr = mode == "" ? "" : "acceptance=\"#{mode}\""
       sel_attr = selected == value ? "selected=\"selected\"" : ""
-      options << "<option value=\"#{value}\" #{sel_attr}>#{label}</option>\n"
+      options << "<option value=\"#{value}\" #{sel_attr} #{mode_attr}>#{label}</option>\n"
     end
     if (noformw)
       select_tag(name, options, :id => name, :size => size, :onchange => onchange, :disabled => disable)

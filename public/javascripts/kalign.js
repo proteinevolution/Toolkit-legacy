@@ -35,7 +35,7 @@ function change(num, block)
   var number = parseInt($('CHECKBOXES').value, 10);
   var blocks = parseInt($('BLOCKS').value, 10);
   var mode = $(kalign_form).elements["hits[]"][(block * number)+num].checked;
-  for (b = 0; b < (blocks + 1); b++) {
+  for (b = 0; b < blocks; b++) {
     $(kalign_form).elements["hits[]"][(b * number)+num].checked = mode;
   }
 }
