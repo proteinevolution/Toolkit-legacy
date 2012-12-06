@@ -41,6 +41,8 @@ hhpred_job:
     - name: fullalign
       title: Full alignment
       title_long: Show full alignment
+  forwarding_acceptances:
+     type: 5
   
 hhmakemodel_job:
   title: HHpred makemodel

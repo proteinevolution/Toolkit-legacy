@@ -11,3 +11,5 @@ phylip_job:
       title: Results UPGMA
       title_long: Show result of UPGMA
       forwardsections:
+  forwarding_acceptances:
+      type: 4

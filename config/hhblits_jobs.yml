@@ -30,3 +30,9 @@ hhblits_job:
     - name: fullalign
       title: Full alignment
       title_long: Show full alignment
+  forwarding_acceptances:
+      type: 5
+  forwarding_emission:
+      type: 20
+      format: A3M
+

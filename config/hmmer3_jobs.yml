@@ -23,7 +23,7 @@ hmmer3_job:
       title_long: Show Domain table
       forwardsections:
   forwarding_emission:
-      type: 4
+      type: 5
       format: CLUSTAL
   forwarding_acceptances:
      type: 4 

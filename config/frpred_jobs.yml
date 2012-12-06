@@ -27,3 +27,6 @@ frpred_job:
       title: Jmol applet
       title_long: Show Jmol applet
       forwardsections:
+  forwarding_acceptances:
+      type: 5
+

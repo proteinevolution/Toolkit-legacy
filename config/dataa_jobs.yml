@@ -15,3 +15,5 @@ dataa_job:
       title: Description 
       title_long: Description
       forwardsections:
+  forwarding_acceptances:
+      type: 1

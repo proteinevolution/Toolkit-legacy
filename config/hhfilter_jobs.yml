@@ -9,4 +9,9 @@ hhfilter_job:
       forwardsections:
       - name: forward
         title: Forward
-        title_long: Forward results      
+        title_long: Forward results
+  forwarding_emission:
+      type: 7
+      format: SEQ,MSA
+  forwarding_acceptances:
+      type: 4      

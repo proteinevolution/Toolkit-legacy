@@ -29,6 +29,8 @@ hhomp_job:
       title: Browse database
       title_long: Browse database
       forwardsections:
+  forwarding_acceptances:
+      type: 5
 
 hhompdb_job: 
   title: HHomp

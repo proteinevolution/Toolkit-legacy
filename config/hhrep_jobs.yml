@@ -18,7 +18,12 @@ hhrep_job:
     - name: results_showquery
       title: Show query alignment
       title_long: Show or edit the query alignment constructed by HHrep
-      
+  forwarding_acceptances:
+     type: 5
+  forwarding_emission:
+     type: 4
+     format: MSA
+   
 
 hhrep_mergeali_job: 
   title: HHrep

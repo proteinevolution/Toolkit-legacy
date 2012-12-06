@@ -15,3 +15,5 @@ ancescon_job:
       title: Tree
       title_long: Show tree
       forwardsections:
+  forwarding_acceptances:
+      type: 4
