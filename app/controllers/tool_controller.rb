@@ -330,6 +330,7 @@ class ToolController < ApplicationController
     @tool_name_list =[]    # Add the Names of forwardable tools
     @tool_mode_list =[]    # Add the modes, currently implemented 1 = Single , 2 = one or more, 3 = 2 or more
     @emission = 0 
+    @my_tool_name = my_tool['title']
   logger.debug "L331 Going into tool Section of #{my_tool['title']}"
     
   # check what kind of Results we produce and what type 
@@ -337,7 +338,7 @@ class ToolController < ApplicationController
   unless emission_forward.nil?
     @emission = emission_forward['type']
     # Convert the emission Value to string (binary) and then to int  e.g. 4 -> "100" -> 100 to be able to use & operator
-    @emission = @emission.to_s(2).to_i
+    #@emission = @emission.to_s(2).to_i
     type = emission_forward['format']
     logger.debug "L338 Emitting: #{@emission}  of Type #{type} "
 
@@ -352,7 +353,7 @@ class ToolController < ApplicationController
                        if @emission & acceptor['type'] > 0
 
                              @tool_list << fw_to_tool_url(my_tool['name'], tool['name'])
-                             @tool_name_list << tool['title'] #+" "+acceptor['type'].to_s(2)+" #{emission} = #{emission & acceptor['type']} "
+                             @tool_name_list << tool['title'] +" "+acceptor['type'].to_s(2)+" #{@emission.to_s(2)} = #{(@emission & acceptor['type']).to_s(2)} "
                              @tool_mode_list << acceptor['type']
                        end
                    end
@@ -377,6 +378,30 @@ class ToolController < ApplicationController
     return @tool_mode_list
   end
   
+  # Append a String to each of the Urls (possible with already set params)
+  # +parameter+:: String with parameter to be set
+  #
+  def add_parameters_to_all_forwardings(parameter)
+    @tool_list.map!{|i| i+"#{parameter}"}
+  end
+  
+  # Append a String to selected Urls
+  # +parameter+:: String with parameter to be set
+  # +modes+:: Array of Integer Modes [Value 1= SEQ, 2 = SEQS, 4 = MSA 8 = GI, 16 = HMM, 32 = Txt, 64 = Blast, 128 = PDB]
+  # If the mode is accepted, the Parameter will be set
+    def add_parameters_to_selected_forwardings(parameter, modes)
+      @tool_mode_list.each_with_index {|accept_mode, i| 
+         modes.each{ |mode|
+            #logger.debug "L394 #{@tool_name_list[i]} - Accept #{accept_mode} : Mode #{mode} "
+            if accept_mode == mode
+              #logger.debug "L396   MATCH  "
+              @tool_list[i] = @tool_list[i]+parameter
+            end
+        }
+      }
+  end
+  
+
   def process_genomes
     res = ""
     params.keys.each do |key|

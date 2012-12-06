@@ -52,6 +52,11 @@ class HhfilterController < ToolController
                   tool_title('hhrepid'),
                   
                   ]
+                                
+    # Test of Emission and Acceptance Values of YML DATA  
+    calculate_forwardings(@tool)
+    @fw_values = get_tool_list
+    @fw_labels = get_tool_name_list             
 
 	end
 	

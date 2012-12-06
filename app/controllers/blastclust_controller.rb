@@ -7,17 +7,28 @@ class BlastclustController < ToolController
 
 	def results
 		@fw_values = [fw_to_tool_url('blastclust', 'clans'), 
-		              fw_to_tool_url('blastclust', 'clustalw'), fw_to_tool_url('blastclust', 'kalign'),
-		              fw_to_tool_url('blastclust', 'mafft'), fw_to_tool_url('blastclust', 'muscle'),		              
+		              fw_to_tool_url('blastclust', 'clustalw'), 
+                  fw_to_tool_url('blastclust', 'kalign'),
+		              fw_to_tool_url('blastclust', 'mafft'), 
+                  fw_to_tool_url('blastclust', 'muscle'),		              
 		              fw_to_tool_url('blastclust', 'probcons'),		              		              
 		              fw_to_tool_url('blastclust', 'reformat')]
 	
 		@fw_labels = [tool_title('clans'), 
-		              tool_title('clustalw'), tool_title('kalign'),
-		              tool_title('mafft'), tool_title('muscle'),
+		              tool_title('clustalw'), 
+                  tool_title('kalign'),
+		              tool_title('mafft'), 
+                  tool_title('muscle'),
 		              tool_title('probcons'),		              		              
 		              tool_title('reformat')] 
 		@fullscreen = true
+    
+        # Test of Emission and Acceptance Values of YML DATA  
+    calculate_forwardings(@tool)
+    @fw_values = get_tool_list
+    @fw_labels = get_tool_name_list    
+    
+    
 	end
 	
 
