@@ -230,7 +230,11 @@ function calculate_forwarding(){
 			}
 		}
 		if(tool_array.options.selectedIndex >= 0 && tool_array[tool_array.options.selectedIndex].disabled){
-			tool_array[tool_array.options.selectedIndex].selected = false;
+			for(i = 0; i < total_tools; i++){
+				if(!tool_array[i].disabled){
+					tool_array[i].selected = true;
+				}
+			}
 		}
 		if(enabled_tools > 0){
 			$(forwardbutton).disabled = false;
@@ -248,7 +252,11 @@ function calculate_forwarding(){
 			}
 		}
 		if(tool_array.options.selectedIndex >= 0 && tool_array[tool_array.options.selectedIndex].disabled){
-			tool_array[tool_array.options.selectedIndex].selected = false;
+			for(i = 0; i < total_tools; i++){
+				if(!tool_array[i].disabled){
+					tool_array[i].selected = true;
+				}
+			}
 		}
 		if(enabled_tools > 0){
 			$(forwardbutton).disabled = false;
@@ -258,10 +266,6 @@ function calculate_forwarding(){
 	} else{
 		for(i = 0; i < total_tools; i++){
 			tool_array[i].disabled = true;
-		}
-		// $('forwarding_info').innerHTML = "Note: No sequence is currently selected. Forwarding is therefore not possible.";
-		if(tool_array.options.selectedIndex >= 0){
-			tool_array[tool_array.options.selectedIndex].selected = false;
 		}
 		$(forwardbutton).disabled = true;
 	}
