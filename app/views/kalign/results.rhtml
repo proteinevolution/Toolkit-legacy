@@ -29,9 +29,9 @@
 </div>
 
 <div class="row">
-	<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="javascript:select_first()">Select the best ten</a>
+	<a href="javascript:select();">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:deselect();">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:select_first();">Select the best ten</a>
 	<br/><br/>
 	<strong>Number of sequences: <%= @job.num_seqs %></strong>
 	<br/><br/>
@@ -61,6 +61,10 @@
 <%= form_hidden_field('NUMBER_OF_LINES_PER_SEQUENCE', @job.aln_blocks.length) %>
 
 </form>
+
+<script type="text/javascript">
+	window.onload = calculate_forwarding();
+</script>
 
 <div class="hr">&nbsp;</div>
 <div class="row">

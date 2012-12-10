@@ -214,7 +214,6 @@ function domain_slider_update(v) {
 }
 
 function calculate_forwarding(){
-	alert("calculating forwarding");
 	var number_of_lines_per_sequence = $('NUMBER_OF_LINES_PER_SEQUENCE') == undefined ? 1 : $('NUMBER_OF_LINES_PER_SEQUENCE').value;
 	var checked_checkboxes = Math.floor($$('input[type="checkbox"]:checked').length / number_of_lines_per_sequence);
 	var total_tools = parseInt($('NUMBER_OF_FORWARDING_ACCEPTORS').value);

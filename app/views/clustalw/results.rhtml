@@ -14,14 +14,14 @@
 	<div class="row">
 		<div class="label">Forward results to</div>
 		<div class="formw">
-			<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+			<%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => @fw_values[0], :modes => @tool_mode_list}) %>
 		</div>
 	</div>
     
 	<div class="row">
 		<div class="label"></div>
 		<div class="formw">
-			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+			<input name="submitform" id="forwardbutton" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
 		</div>
 	</div>
 	<div class="hr">&nbsp;</div>
@@ -45,7 +45,7 @@
 				<td></td>
 			<% else %>
 				<td valign="top">
-					<input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= block.index(line) %>" checked="checked" onclick="javascript:change(<%= block.index(line) %>, <%= @job.aln_blocks.index(block) %>)" />
+					<input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= block.index(line) %>" checked="checked" onclick="javascript:change(<%= block.index(line) %>, <%= @job.aln_blocks.index(block) %>);calculate_forwarding();" />
 				</td>
 			<% end %>
 			<td><pre><%= line %></pre></td>
@@ -58,6 +58,8 @@
 
 <%= form_hidden_field('CHECKBOXES', @job.num_seqs) %>
 <%= form_hidden_field('BLOCKS', @job.aln_blocks.size) %>
+<%= form_hidden_field('NUMBER_OF_FORWARDING_ACCEPTORS', @fw_values.length)%>
+<%= form_hidden_field('EMISSION_TYPE', @emission)%>
 
 </form>
 
@@ -66,3 +68,7 @@
 	Thompson, J., Higgiin, D., and Gibson, T. (1994) CLUSTALW: improving the sensitivity of progressive multiple sequence alignment through sequence weighting, position specific gap penalties and weight matrix choice. <em>Nuc. Acids Res.</em>,
 	<strong>22</strong>, 4673-4680.
 </div>
+
+<script type="text/javascript">
+	window.onload = calculate_forwarding();
+</script>

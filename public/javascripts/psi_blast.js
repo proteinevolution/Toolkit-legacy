@@ -4,6 +4,7 @@ function deselect(){
 		$('hit_checkbox'+i).checked=false;
 		$('hit_checkbox'+(number+i)).checked=false;
   }
+  calculate_forwarding();
 }
 
 function select(){
@@ -12,6 +13,7 @@ function select(){
 		$('hit_checkbox'+i).checked=true;
 		$('hit_checkbox'+(number+i)).checked=true;
 	}
+  calculate_forwarding();
 }
 
 function select_first(){
@@ -25,6 +27,7 @@ function select_first(){
 		$('hit_checkbox'+i).checked=false;
 		$('hit_checkbox'+(number+i)).checked=false;
 	}
+  calculate_forwarding();
 }
 
 function change(num, block){ 
