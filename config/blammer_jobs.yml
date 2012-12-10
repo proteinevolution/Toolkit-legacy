@@ -13,6 +13,6 @@ blammer_job:
   forwarding_acceptances:
      type: 64
   forwarding_emission:
-      type: 6
+      type: 7
       format: S,MSA
 

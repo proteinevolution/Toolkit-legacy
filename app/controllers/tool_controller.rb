@@ -342,6 +342,7 @@ class ToolController < ApplicationController
     type = emission_forward['format']
     logger.debug "L338 Emitting: #{@emission}  of Type #{type} "
 
+    
 
    @tools.each do |tool|            
           if is_active?(tool)
@@ -359,7 +360,8 @@ class ToolController < ApplicationController
                    end
           end
         end
-     end
+    end
+    @emission = (@emission | 1) ^1
   end
   
  def get_tool_emission
@@ -383,6 +385,19 @@ class ToolController < ApplicationController
   #
   def add_parameters_to_all_forwardings(parameter)
     @tool_list.map!{|i| i+"#{parameter}"}
+  end
+  
+  # Append a String to a unique forwarding URL
+  # +parameter+:: String with parameter to be set
+  # +tool+:: Sting of the name of the tool 
+  #
+  def add_parameter_to_single_forwarding(parameter, tool)
+      @tool_list.each_with_index { |url, i|
+          if (url =~ /forward_controller=#{tool}/)
+             @tool_list[i] = url+""+parameter
+          end
+      }
+  
   end
   
   # Append a String to selected Urls
