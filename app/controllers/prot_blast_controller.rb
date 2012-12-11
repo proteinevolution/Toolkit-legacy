@@ -86,6 +86,16 @@ class ProtBlastController < ToolController
                   tool_title('repper'), 
                   tool_title('t_coffee')]
 
+    # Test of Emission and Acceptance Values of YML DATA  
+    calculate_forwardings(@tool)
+    add_parameters_to_selected_forwardings("&fw_mode=alignment", [4,5,6])
+    add_parameters_to_selected_forwardings("&fw_mode=seqs", [1,2,3,11])
+    @fw_values = get_tool_list
+    @fw_labels = get_tool_name_list 
+
+
+
+
 # Test if current Protblast Job is a uniprot Job and remove Blammer tool from @fw_values and @fw_label
    if(@job.is_uniprot == 1)
      @fw_values.delete(fw_to_tool_url('prot_blast', 'blammer'))

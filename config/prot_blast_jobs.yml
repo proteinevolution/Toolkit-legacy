@@ -23,3 +23,7 @@ prot_blast_job:
       forwardsections:
   forwarding_acceptances:
      type: 1
+  forwarding_emission:
+      type: 71
+      format: MSA
+

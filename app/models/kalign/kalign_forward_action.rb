@@ -1,5 +1,6 @@
 class KalignForwardAction < Action
-
+  require 'ForwardActions.rb'
+  include ForwardActions
 	attr_accessor :hits
 
 	validates_checkboxes(:hits, {:on => :create})
@@ -60,18 +61,9 @@ class KalignForwardAction < Action
 		job.update_status
 	end
 
-	def forward_params
-		res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
-		informat = 'clu'
-		
-    controller = params['forward_controller']
-    if (controller == "pcoils")
-      logger.debug "pcoils"
-      {'sequence_input' => res.join, 'informat' => informat, 'inputmode' => '2'}
-    else
-      {'sequence_input' => res.join, 'informat' => informat, 'inputmode' => 'alignment'}
-    end
-	end
+  def forward_params
+    forward_alignment_tools()
+  end
 
 end
 

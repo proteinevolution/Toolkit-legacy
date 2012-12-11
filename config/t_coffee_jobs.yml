@@ -15,6 +15,6 @@ t_coffee_job:
       title_long: Show colored TCoffee results
   forwarding_emission:
       type: 4
-      format: CLUSTAL
+      format: clu
   forwarding_acceptances:
       type: 3
