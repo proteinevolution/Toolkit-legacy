@@ -247,7 +247,7 @@ class CsBlastAction < Action
     
     # cmd for blast run 
     @commands << "echo 'Starting BLAST search' &> #{job.statuslog_path}"
-    @commands << "#{CSBLAST}/bin/csblast -i #{@infile} -j #{@rounds} -h #{@e_thresh} -D #{CSBLAST}/data/K4000.lib #{@alignment} --blast-path #{BLAST}/bin -e #{@expect} -F #{@filter} -G #{@gapopen} -E #{@gapext} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} >>#{job.statuslog_path}"
+    @commands << "#{CSBLAST}/bin/csblast -i #{@infile} -j #{@rounds} -h #{@e_thresh} -D #{CSBLAST}/data/K4000.crf #{@alignment} --blast-path #{BLAST}/bin -e #{@expect} -F #{@filter} -G #{@gapopen} -E #{@gapext} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} >>#{job.statuslog_path}"
      
     @commands << "echo 'Finished BLAST search' >> #{job.statuslog_path}"
     # run perl script to fix blast errors. TODO: Find out what script does 
