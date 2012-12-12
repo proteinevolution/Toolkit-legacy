@@ -13,7 +13,7 @@ class HhblitsController < ToolController
     @maxit = ['1','2','3','4','5','6','7','8']
     @cov_minval = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90']
     @EvalHHblits  = ['1e-4', '1e-3', '1e-2','0.01','0.02','0.05', '0.1']
-    @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
+    @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3','0.35', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
     @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
 
     searchpat = File.join(DATABASES, @tool['name'], '*.cs219')
@@ -79,10 +79,29 @@ class HhblitsController < ToolController
                   fw_to_tool_url('hhblits', 'quick2_d') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'reformat') + "&fw_mode=forward",
                   fw_to_tool_url('hhblits', 'repper') + "&fw_mode=forward"]
-
-    @fw_labels = [tool_title('aln2plot'), tool_title('alnviz'), tool_title('blastclust'), tool_title('cs_blast'), tool_title('seq2gi'), tool_title('hhblits'), 
-                  tool_title('hhfilter'), tool_title('hhomp'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid'), tool_title('hhsenser'),
-                  tool_title('psi_blast'), tool_title('quick2_d'), tool_title('reformat'), tool_title('repper')]
+    # 15 Tools
+    @fw_labels = [tool_title('aln2plot'), 
+                  tool_title('alnviz'), 
+                  tool_title('blastclust'), 
+                  tool_title('cs_blast'), 
+                  tool_title('seq2gi'), 
+                  tool_title('hhblits'), 
+                  tool_title('hhfilter'), 
+                  tool_title('hhomp'), 
+                  tool_title('hhpred'), 
+                  tool_title('hhrep'), 
+                  tool_title('hhrepid'), 
+                  tool_title('hhsenser'),
+                  tool_title('psi_blast'), 
+                  tool_title('quick2_d'), 
+                  tool_title('reformat'), 
+                  tool_title('repper')]
+                  
+                   
+                  
+                  
+                  
+                  
                   
     @fw_values_hhms = [fw_hmm_to_tool_url('hhblits', 'hhpred')+ "&mode=queryhmm",
                        fw_hmm_to_tool_url('hhblits', 'hhrep')+ "&mode=queryhmm",

@@ -213,3 +213,65 @@ function domain_slider_update(v) {
   $('slider_label_right').style.left = parseInt($('slider_bar_handle_right').style.left) + 2;
 }
 
+function calculate_forwarding(){
+	var number_of_lines_per_sequence = $('NUMBER_OF_LINES_PER_SEQUENCE') == undefined ? 1 : $('NUMBER_OF_LINES_PER_SEQUENCE').value;
+	var checked_checkboxes = Math.floor($$('input[type="checkbox"]:checked').length / number_of_lines_per_sequence);
+	var total_tools = parseInt($('NUMBER_OF_FORWARDING_ACCEPTORS').value);
+	var tool_array = $('destination');
+	
+	if(checked_checkboxes > 1){
+		var enabled_tools = 0;
+		for(i = 0; i < total_tools; i++){
+			if((parseInt((($(destination))[i]).getAttribute('acceptance')) & parseInt($(EMISSION_TYPE).value)) != 0){
+				tool_array[i].disabled = false;
+				enabled_tools++;
+			} else{
+				tool_array[i].disabled = true;
+			}
+		}
+		if(tool_array.options.selectedIndex >= 0 && tool_array[tool_array.options.selectedIndex].disabled){
+			for(i = 0; i < total_tools; i++){
+				if(!tool_array[i].disabled){
+					tool_array[i].selected = true;
+				}
+			}
+		}
+		if(enabled_tools > 0){
+			$(forwardbutton).disabled = false;
+			tool_array.disabled = false;
+		} else{
+			$(forwardbutton).disabled = true;
+			tool_array.disabled = true;
+		}
+	} else if(checked_checkboxes == 1){
+		var enabled_tools = 0;
+		for(i = total_tools - 1; i >= 0; i--){
+			if((parseInt((($(destination))[i]).getAttribute('acceptance')) & 1) != 0){
+				tool_array[i].disabled = false;
+				enabled_tools++;
+			} else{
+				tool_array[i].disabled = true;
+			}
+		}
+		if(tool_array.options.selectedIndex >= 0 && tool_array[tool_array.options.selectedIndex].disabled){
+			for(i = total_tools - 1; i >= 0; i--){
+				if(!tool_array[i].disabled){
+					tool_array[i].selected = true;
+				}
+			}
+		}
+		if(enabled_tools > 0){
+			$(forwardbutton).disabled = false;
+			tool_array.disabled = false;
+		} else{
+			$(forwardbutton).disabled = true;
+			tool_array.disabled = true;
+		}
+	} else{
+		for(i = 0; i < total_tools; i++){
+			tool_array[i].disabled = true;
+		}
+		tool_array.disabled = true;
+		$(forwardbutton).disabled = true;
+	}
+}

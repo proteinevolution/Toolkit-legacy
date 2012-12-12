@@ -21,3 +21,9 @@ prot_blast_job:
       title: E-value distribution
       title_long: Show E-value distribution
       forwardsections:
+  forwarding_acceptances:
+     type: 1
+  forwarding_emission:
+      type: 71
+      format: MSA
+

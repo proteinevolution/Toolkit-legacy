@@ -14,3 +14,6 @@ hhrepid_job:
       title: Show query alignment
       title_long: Show or edit the query alignment constructed by HHrep
       forwardsections:
+  forwarding_acceptances:
+     type: 5
+

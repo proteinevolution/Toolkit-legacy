@@ -37,8 +37,10 @@ class CsBlastController < ToolController
     #   -alignment: use alignment of alignhits.pl
     #   -seqs: use sequence by hsp or complete sequence
     
-    # fill the possible forwarding parameters to cs_blast, here additional forwarding parameters can be added
-    @fw_values = [fw_to_tool_url('cs_blast', 'ancescon')+ "&fw_mode=alignment",
+    # fill the possible forwarding parameters to cs_blast, here additional forwarding parameters can be added 30 tools
+
+    @fw_values = [fw_to_tool_url('cs_blast', 'ali2d')+ "&fw_mode=alignment",
+                  fw_to_tool_url('cs_blast', 'ancescon')+ "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'alnviz')+ "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'aln2plot')+ "&fw_mode=alignment", 
                   fw_to_tool_url('cs_blast', 'blammer'), 
@@ -50,6 +52,7 @@ class CsBlastController < ToolController
                   fw_to_tool_url('cs_blast', 'frpred') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'hhalign') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'hhblits') + "&fw_mode=alignment",
+                  fw_to_tool_url('cs_blast', 'hmmer3') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'hhomp') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'hhpred') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 'hhrep') + "&fw_mode=alignment",
@@ -67,13 +70,15 @@ class CsBlastController < ToolController
                   fw_to_tool_url('cs_blast', 'reformat') + "&fw_mode=alignment",                   
                   fw_to_tool_url('cs_blast', 'repper') + "&fw_mode=alignment",
                   fw_to_tool_url('cs_blast', 't_coffee') + "&fw_mode=seqs"]
+                  
     # labels are added to the tools               
-    @fw_labels = [tool_title('ancescon'),tool_title('alnviz'),
+    @fw_labels = [tool_title('ali2d'),
+                  tool_title('ancescon'),tool_title('alnviz'),
                   tool_title('aln2plot'),tool_title('blammer'),  
                   tool_title('blastclust'), tool_title('clans'), 
                   tool_title('clustalw'), tool_title('cs_blast'), 
 		              tool_title('seq2gi'),   tool_title('frpred'),
-                  tool_title('hhalign'),tool_title('hhblits'), 
+                  tool_title('hhalign'),tool_title('hhblits'), tool_title('hmmer3'), 
                   tool_title('hhomp'),tool_title('hhpred'),
                   tool_title('hhrep'),tool_title('hhrepid'),
                   tool_title('hhsenser'), tool_title('kalign'),   tool_title('mafft'), 
@@ -82,7 +87,19 @@ class CsBlastController < ToolController
 		              tool_title('probcons'), tool_title('psi_blast'),
 		              tool_title('quick2_d'), tool_title('reformat'),   
                   tool_title('repper'), tool_title('t_coffee')]
-                 
+         
+                  
+                  
+                  
+                  
+    # Test of Emission and Acceptance Values of YML DATA  
+    calculate_forwardings(@tool)
+    add_parameters_to_selected_forwardings("&fw_mode=alignment", [4,5,6])
+    add_parameters_to_selected_forwardings("&fw_mode=seqs", [1,2,3,11])
+    @fw_values = get_tool_list
+    @fw_labels = get_tool_name_list                 
+
+
 # Test if current CSblast Job is a uniprot Job and remove Blammer tool from @fw_values and @fw_label
    if(@job.is_uniprot == 1)
      @fw_values.delete(fw_to_tool_url('cs_blast', 'blammer'))

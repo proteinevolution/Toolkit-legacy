@@ -96,6 +96,7 @@ function deselect()
 	$('hit_checkbox'+i).checked=false;
 	$('hit_checkbox'+(number+i)).checked=false;
     }
+    calculate_forwarding();
 }
 function select()
 {
@@ -104,6 +105,7 @@ function select()
 	$('hit_checkbox'+i).checked=true;
 	$('hit_checkbox'+(number+i)).checked=true;
     }
+    calculate_forwarding();
 }
 
 function select_first(first)
@@ -125,6 +127,7 @@ function select_first(first)
   	$('hit_checkbox'+i).checked=false;
 	$('hit_checkbox'+(number+i)).checked=false;
     }
+    calculate_forwarding();
 }
 
 function change(num, block)
@@ -137,6 +140,7 @@ function change(num, block)
 	var mode = $('hit_checkbox'+(number+num-1)).checked;
 	$('hit_checkbox'+(num-1)).checked=mode;
     }
+    calculate_forwarding();
 }
 
 function change_radio(num, block)

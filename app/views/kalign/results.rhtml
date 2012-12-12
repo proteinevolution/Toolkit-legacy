@@ -12,16 +12,22 @@
 
 <div id="forward" style="display: none;">
 	<div class="row">
+		<font color='darkgreen'>
+			<div class = "row" id = "forwarding_info" >
+			    Note: Some options might be disabled due to the number of selected sequences.
+			</div>
+		</font>
+		<br/>
 		<div class="label">Forward results to</div>
 		<div class="formw">
-			<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+			<%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => @fw_values[0], :modes => @tool_mode_list}) %>
 		</div>
 	</div>
     
 	<div class="row">
 		<div class="label"></div>
 		<div class="formw">
-			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+			<input name="submitform" id="forwardbutton" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
 		</div>
 	</div>
 	<div class="hr">&nbsp;</div>
@@ -29,9 +35,9 @@
 </div>
 
 <div class="row">
-	<a href="javascript:select()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="javascript:deselect()">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="javascript:select_first()">Select the best ten</a>
+	<a href="javascript:select();">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:deselect();">Deselect all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:select_first();">Select the best ten</a>
 	<br/><br/>
 	<strong>Number of sequences: <%= @job.num_seqs %></strong>
 	<br/><br/>
@@ -42,7 +48,7 @@
             <% if line =~ /^[\s\.\:\*]+$/ %>
               <td></td>
             <% else %>
-	      <td ><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= block.index(line) %>" checked="checked" onclick="javascript:change(<%=block.index(line) %>, <%= @job.aln_blocks.index(block) %>)"/>
+	      <td ><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= block.index(line) %>" checked="checked" onclick="javascript:change(<%=block.index(line) %>, <%= @job.aln_blocks.index(block) %>);calculate_forwarding();"/>
               </td>
             <% end %>
             <td><pre><%= line %></pre></td>
@@ -56,8 +62,15 @@
 
 <%= form_hidden_field('CHECKBOXES', @job.num_seqs) %>
 <%= form_hidden_field('BLOCKS', @job.aln_blocks.size) %>
+<%= form_hidden_field('NUMBER_OF_FORWARDING_ACCEPTORS', @fw_values.length)%>
+<%= form_hidden_field('EMISSION_TYPE', @emission)%>
+<%= form_hidden_field('NUMBER_OF_LINES_PER_SEQUENCE', @job.aln_blocks.length) %>
 
 </form>
+
+<script type="text/javascript">
+	window.onload = calculate_forwarding();
+</script>
 
 <div class="hr">&nbsp;</div>
 <div class="row">

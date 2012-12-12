@@ -31,6 +31,7 @@ class HhrepController < ToolController
 	def results_showquery
 		@fw_values = [fw_to_tool_url('hhrep', 'ancescon')+ "&fw_mode=alignment",
                   fw_to_tool_url('hhrep', 'alnviz')+ "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'ali2d')+ "&fw_mode=alignment",
                   fw_to_tool_url('hhrep', 'aln2plot')+ "&fw_mode=alignment",
                   fw_to_tool_url('hhrep', 'cs_blast') + "&fw_mode=alignment",
                   fw_to_tool_url('hhrep', 'seq2gi') + "&fw_mode=alignment",
@@ -42,16 +43,21 @@ class HhrepController < ToolController
                   fw_to_tool_url('hhrep', 'hhpred')+ "&fw_mode=alignment",
                   fw_to_tool_url('hhrep', 'hhrepid')+ "&fw_mode=alignment",
                   fw_to_tool_url('hhrep', 'hhrep')+ "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'hmmer3')+ "&fw_mode=alignment",
                   fw_to_tool_url('hhrep', 'hhsenser') + "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'modeller') + "&fw_mode=alignment",
                   fw_to_tool_url('hhrep', 'pcoils') + "&fw_mode=alignment",                  
                   fw_to_tool_url('hhrep', 'phylip') + "&fw_mode=alignment",
                   fw_to_tool_url('hhrep', 'psi_blast') + "&fw_mode=alignment",
                   fw_to_tool_url('hhrep', 'quick2_d') + "&fw_mode=alignment",                   
                   fw_to_tool_url('hhrep', 'reformat') + "&fw_mode=alignment",                   
-                  fw_to_tool_url('hhrep', 'repper') + "&fw_mode=alignment",]
+                  fw_to_tool_url('hhrep', 'repper') + "&fw_mode=alignment",
+                  fw_to_tool_url('hhrep', 'hhfilter') + "&fw_mode=alignment",
+                  ]
                   
 		@fw_labels = [tool_title('ancescon'),
                   tool_title('alnviz'),
+                  tool_title('ali2d'),
                   tool_title('aln2plot'),
                   tool_title('cs_blast'),
                   tool_title('seq2gi'),
@@ -62,14 +68,24 @@ class HhrepController < ToolController
                   tool_title('hhpred'), 
                   tool_title('hhrepid'),
                   tool_title('hhrep'),
+                  tool_title('hmmer3'),
                   tool_title('hhsenser'),
+                  tool_title('modeller'),
                   tool_title('pcoils'),
                   tool_title('phylip'),
                   tool_title('psi_blast'),
                   tool_title('quick2_d'),
                   tool_title('reformat'),
                   tool_title('repper'),
+                  tool_title('hhfilter'),
                   ]
+    # Test of Emission and Acceptance Values of YML DATA  
+    calculate_forwardings(@tool)
+    add_parameters_to_selected_forwardings("&fw_mode=alignment", [4,5,6])
+    @fw_values = get_tool_list
+    @fw_labels = get_tool_name_list               
+                  
+                  
 		@widescreen = true
 	end
   

@@ -1,5 +1,6 @@
 class BlastclustForwardAction < Action
-  
+  require 'ForwardActions.rb'
+  include ForwardActions
 	attr_accessor :hits
 	
 	validates_checkboxes(:hits, {:on => :create})
@@ -42,8 +43,9 @@ class BlastclustForwardAction < Action
 	end
   
 	def forward_params
-		res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
-		{'sequence_input' => res.join, 'informat' => 'fas'}
+		#res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
+		#{'sequence_input' => res.join, 'informat' => 'fas'}
+    forward_alignment_tools()
 	end
     
 end

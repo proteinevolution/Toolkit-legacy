@@ -4,6 +4,7 @@ function deselect()
   for(i = 0; i < (2*number); i++) {
     $(prot_blast_form).elements["hits[]"][i].checked = false;
   }
+  calculate_forwarding();
 }
 function select()
 { 
@@ -11,6 +12,7 @@ function select()
   for(i = 0; i < (2*number); i++) {
     $(prot_blast_form).elements["hits[]"][i].checked = true;
   }
+  calculate_forwarding();
 }
 function select_first()
 { 
@@ -23,6 +25,7 @@ function select_first()
       $(prot_blast_form).elements["hits[]"][i].checked = false;
     }
   }
+  calculate_forwarding();
 }
 
 function change(num, block)
@@ -64,6 +67,10 @@ function show_hide_field(name) {
  	Effect.Appear('hide_' + name, { duration: 0.0 });
  	$(name + '_on').value = 'true';
     }
+}
+
+function test(){
+	alert((($(destination))[0]).getAttribute('acceptance'))
 }
 
 

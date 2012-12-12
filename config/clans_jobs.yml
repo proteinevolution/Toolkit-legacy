@@ -7,6 +7,8 @@ clans_job:
       title: Select cutoff
       title_long: Select cutoff
       forwardsections:
+  forwarding_acceptances:
+      type: 3
 
 cluster_job:
   title: CLANS

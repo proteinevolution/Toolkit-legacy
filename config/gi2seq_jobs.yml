@@ -14,3 +14,8 @@ gi2seq_job:
       title: Unretrieveable Sequences
       title_long: Show unretrieveable Sequences
       forwardsections:
+  forwarding_acceptances:
+      type: 8
+  forwarding_emission:
+      type: 3
+      format: SEQ

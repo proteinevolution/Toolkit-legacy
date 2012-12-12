@@ -19,3 +19,8 @@ marcoil_job:
       title: Predicted Domains
       title_long: Show predicted Domains
       forwardsections:
+  forwarding_acceptances:
+      type: 1
+      mode: FAS
+
+

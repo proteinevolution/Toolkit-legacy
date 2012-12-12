@@ -5,6 +5,7 @@ function deselect()
   for(i = 0; i < (number); i++) {
     $(blastclust_form).elements["hits[]"][i].checked = false;
   }
+  calculate_forwarding();
 }
 
 function select()
@@ -13,6 +14,7 @@ function select()
   for(i = 0; i < (number); i++) {
     $(blastclust_form).elements["hits[]"][i].checked = true;
   }
+  calculate_forwarding();
 }
 
 function select_first()
@@ -26,4 +28,5 @@ function select_first()
       $(blastclust_form).elements["hits[]"][(i)].checked = false;      
     }
   }
+  calculate_forwarding();
 }

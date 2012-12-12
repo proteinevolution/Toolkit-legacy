@@ -13,3 +13,8 @@ t_coffee_job:
     - name: results_color
       title: Colored
       title_long: Show colored TCoffee results
+  forwarding_emission:
+      type: 4
+      format: clu
+  forwarding_acceptances:
+      type: 3

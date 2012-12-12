@@ -25,5 +25,5 @@ hhsenser_job:
       title: Intermediate
       title_long: Show intermediate alignments
       forwardsection:
-
-
+  forwarding_acceptances:
+     type: 5
