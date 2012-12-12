@@ -4,6 +4,7 @@ function deselect()
   for(i = 0; i < (2*number); i++) {
     $(cs_blast_form).elements["hits[]"][i].checked = false;
   }
+  calculate_forwarding();
 }
 function select()
 { 
@@ -11,6 +12,7 @@ function select()
   for(i = 0; i < (2*number); i++) {
     $(cs_blast_form).elements["hits[]"][i].checked = true;
   }
+  calculate_forwarding();
 }
 function select_first()
 { 
@@ -23,6 +25,7 @@ function select_first()
       $(cs_blast_form).elements["hits[]"][i].checked = false;
     }
   }
+  calculate_forwarding();
 }
 
 function change(num, block)

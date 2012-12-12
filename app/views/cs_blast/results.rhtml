@@ -12,8 +12,14 @@
 <div id="forward" style="display: none;">
 	<% if(@job.is_uniprot == 1)%>
         <div class="row">
+		<font color='darkgreen'>
+			<div class = "row" id = "forwarding_info" >
+			    Note: Some options might be disabled due to the number of selected sequences.
+			</div>
+		</font>
+		<br/>
             <%= form_label("Forward results to *") %>
-        <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[3], 1, "toggle_seqlen('destination');") %>
+        <%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => @fw_values[3], :maxsize => 1, :onchange => "toggle_seqlen('destination');", :modes => @tool_mode_list}) %>
         </div>
         <div class="row">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  
                          &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
@@ -21,8 +27,14 @@
         </div>
     <% else%>
         <div class="row">
+		<font color='darkgreen'>
+			<div class = "row" id = "forwarding_info" >
+			    Note: Some options might be disabled due to the number of selected sequences.
+			</div>
+		</font>
+		<br/>
             <%= form_label("Forward results to") %>
-        <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[4], 1, "toggle_seqlen('destination');") %>
+        <%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => @fw_values[4], :maxsize => 1, :onchange => "toggle_seqlen('destination');", :modes => @tool_mode_list}) %>
         </div>
     <% end%>
 	
@@ -41,7 +53,7 @@
 		<div class="formw">
 			<input id="seqlen_slider" name="seqlen" type="radio" value="slider" checked="checked" disabled />&nbsp;Forward slider region<br/>
 			<input id="seqlen_complete" name="seqlen" type="radio" value="complete" disabled />&nbsp;Forward full length sequence&nbsp;
-			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+			<input name="submitform" id="forwardbutton" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
 		</div>
 	</div>
 	<div class="hr">&nbsp;</div>
@@ -105,7 +117,7 @@
 		<% num = 0 %>
 		<% @job.hits_better.each do |hit| %>
 		<tr>
-			<td><%= check_box_tag("hits[]", hit[:id], true, {:onclick => "javascript:change(#{num}, 0);", :style => "margin: 0px 5px; padding: 0px;"}) %></td>
+			<td><%= check_box_tag("hits[]", hit[:id], true, {:onclick => "javascript:change(#{num}, 0);calculate_forwarding();", :style => "margin: 0px 5px; padding: 0px;"}) %></td>
 			<td><pre><%= hit[:content] %></pre></td>
 		</tr>
 		<% num += 1 %>
@@ -116,7 +128,7 @@
 		</tr>
 		<% @job.hits_worse.each do |hit| %>
 		<tr>
-			<td><%= check_box_tag("hits[]", hit[:id], false, {:onclick => "javascript:change(#{num}, 0);", :style => "margin: 0px 5px; padding: 0px;"}) %></td>
+			<td><%= check_box_tag("hits[]", hit[:id], false, {:onclick => "javascript:change(#{num}, 0);calculate_forwarding();", :style => "margin: 0px 5px; padding: 0px;"}) %></td>
 			<td style="background-color: #ffe0e0;"><pre><%= hit[:content] %></pre></td>
 		</tr>
 		<% num += 1 %>
@@ -128,7 +140,7 @@
 		<% @job.alignments.each do |section| %>
 		<tr>
 			<td valign="top" >
-				<%= check_box_tag("hits[]", section[:id], section[:check], {:onclick => "javascript:change(#{num}, 1);", :style => "margin: 0px 5px; padding: 0px;"}) %>
+				<%= check_box_tag("hits[]", section[:id], section[:check], {:onclick => "javascript:change(#{num}, 1);calculate_forwarding();", :style => "margin: 0px 5px; padding: 0px;"}) %>
 			</td>
 			<td><pre><%= section[:content].join("\n") %></pre></td>
 		</tr>
@@ -143,5 +155,11 @@
 </div>
     
 <%= hidden_field_tag("CHECKBOXES", @job.num_checkboxes, {:id => "CHECKBOXES"}) %>
+<%= form_hidden_field('NUMBER_OF_FORWARDING_ACCEPTORS', @fw_values.length)%>
+<%= form_hidden_field('EMISSION_TYPE', @emission)%>
 
 </form>
+
+<script type="text/javascript">
+	window.onload = calculate_forwarding();
+</script>
