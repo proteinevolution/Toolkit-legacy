@@ -12,6 +12,12 @@
 
 <div id="forward" style="display: none;">
 	<div class="row">
+		<font color='darkgreen'>
+			<div class = "row" id = "forwarding_info" >
+			    Note: Some options might be disabled due to the number of selected sequences.
+			</div>
+		</font>
+		<br/>
 		<div class="label">Forward results to</div>
 		<div class="formw">
 			<%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => @fw_values[0], :modes => @tool_mode_list}) %>
