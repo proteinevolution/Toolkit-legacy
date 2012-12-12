@@ -22,4 +22,7 @@ cs_blast_job:
       title_long: Show E-value distribution
       forwardsections:
   forwarding_acceptances:
-      type: 5	
+      type: 5
+  forwarding_emission:
+      type: 71
+      format: MSA	

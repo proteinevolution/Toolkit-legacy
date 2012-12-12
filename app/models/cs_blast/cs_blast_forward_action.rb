@@ -1,4 +1,7 @@
 class CsBlastForwardAction < Action
+  require 'ForwardActions.rb'
+  include ForwardActions
+  
   HITLIST_START_IDENT = 'Sequences producing significant alignments:                      (bits) Value'
   HITLIST_END_IDENT = '</PRE>'
   
@@ -247,25 +250,7 @@ class CsBlastForwardAction < Action
   end
 
   def forward_params
-    res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
-    mode = params['fw_mode']
-    informat = 'fas'
-    inputmode = "alignment"
-    if (!mode.nil? && mode == "sequence")
-      inputmode = "sequence"
-    end
-
-    controller = params['forward_controller']
-    if (controller == "patsearch")
-      logger.debug "patsearch"
-      {'db_input' => res.join, 'std_dbs' => ""}
-    elsif (controller == "pcoils")
-      logger.debug "pcoils"
-      {'sequence_input' => res.join, 'inputmode' => '2'}
-    else
-      logger.debug "forwarding to: #{params['forward_controller']}"
-      {'sequence_input' => res.join, 'inputmode' => inputmode, 'informat' => informat}
-    end
+    forward_alignment_tools()
   end
 end
 
