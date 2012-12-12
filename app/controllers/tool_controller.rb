@@ -354,7 +354,7 @@ class ToolController < ApplicationController
                        if @emission & acceptor['type'] > 0
 
                              @tool_list << fw_to_tool_url(my_tool['name'], tool['name'])
-                             @tool_name_list << tool['title'] +" "+acceptor['type'].to_s(2)+" #{@emission.to_s(2)} = #{(@emission & acceptor['type']).to_s(2)} "
+                             @tool_name_list << tool['title'] #+" "+acceptor['type'].to_s(2)+" #{@emission.to_s(2)} = #{(@emission & acceptor['type']).to_s(2)} "
                              @tool_mode_list << acceptor['type']
                        end
                    end
