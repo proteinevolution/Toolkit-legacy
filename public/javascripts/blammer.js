@@ -38,7 +38,7 @@ function change(num, block)
   var number = parseInt($('CHECKBOXES').value, 10);
   var blocks = parseInt($('BLOCKS').value, 10);
   var mode = $(blammer_form).elements["hits[]"][(block * number)+num].checked;
-  for (b = 0; b < (blocks + 1); b++) {
+  for (b = 0; b < (blocks); b++) {
     $(blammer_form).elements["hits[]"][(b * number)+num].checked = mode;
   }
 }
