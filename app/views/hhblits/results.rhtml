@@ -13,21 +13,15 @@
   <input name="hits" id="hits" type="hidden" value=""/>
 
   <div class="row">
-		<font color='darkgreen'>
-			<div class = "row" id = "forwarding_info" >
-			    Note: Some options might be disabled due to the number of selected sequences.
-			</div>
-		</font>
-		<br/>
     <%= form_label("Forward results to") %>
-    <%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => @fw_values[5], :maxsize => 1, :onchange => "toggle_seqlen('destination');", :modes => @tool_mode_list}) %>
+    <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[5], 1, "toggle_seqlen('destination');") %>
   </div>
 
   <div class="row">
     <%= form_label("Select hits to forward") %>
     <div class="formw">
       <input name="includehits" type="radio" value="selected" checked="checked" />&nbsp;selected hits<br/>
-      <input name="submitform" id="forwardbutton" type="submit" class="feedbutton" onClick="extract_selected(); setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+      <input name="submitform" type="submit" class="feedbutton" onClick="extract_selected(); setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
       <input name="includehits" type="radio" value="byevalue" />&nbsp;hits with e-value better than&nbsp;
       <input name="hitsevalue" type="text" value="0.001" />
     </div>
@@ -91,17 +85,9 @@
 <form></form>
 <div class="spacer">&nbsp;</div>	
 
-<%= form_hidden_field('NUMBER_OF_LINES_PER_SEQUENCE', 2)%>
-<%= form_hidden_field('NUMBER_OF_FORWARDING_ACCEPTORS', @fw_values.length)%>
-<%= form_hidden_field('EMISSION_TYPE', @emission)%>
-
 <div class="row">
 
   <%= @job.results.join %>
 </div>
 
 </form>
-
-<script type="text/javascript">
-	window.onload = calculate_forwarding();
-</script>
