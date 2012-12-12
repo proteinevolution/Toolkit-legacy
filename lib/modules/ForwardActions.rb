@@ -20,7 +20,8 @@ module ForwardActions
     mode = params['fw_mode']
     informat = 'fas'
     if (res[0] =~ /CLUSTAL/) then informat = "clu" end
-      
+    
+    logger.debug "L24 Informat : #{informat}"  
     inputmode = "alignment"
     if (!mode.nil? && mode == "sequence")
       inputmode = "sequence"
@@ -32,7 +33,7 @@ module ForwardActions
       {'db_input' => res.join, 'std_dbs' => ""}
     elsif (controller == "pcoils")
       logger.debug "pcoils"
-      {'sequence_input' => res.join, 'inputmode' => '2'}
+      {'sequence_input' => res.join, 'informat' => informat, 'inputmode' => '2'}
     else
       logger.debug "forwarding to: #{params['forward_controller']}"
       {'sequence_input' => res.join, 'inputmode' => inputmode, 'informat' => informat}
