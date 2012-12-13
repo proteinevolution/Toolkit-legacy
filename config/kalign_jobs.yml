@@ -13,5 +13,5 @@ kalign_job:
   forwarding_emission:
       type: 4
   forwarding_acceptances:
-      type: 5
+      type: 2
 
