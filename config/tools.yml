@@ -422,8 +422,8 @@
   title: CS-BLAST
   title_long: CS-BLAST/ CSI-BLAST
   section: search
-  updated: December, 2010
-  version: 2.1.0
+  updated: December, 2012
+  version: 2.2.3
   active: 
   - member
   - internal
