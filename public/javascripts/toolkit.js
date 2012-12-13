@@ -230,7 +230,7 @@ function calculate_forwarding(){
 			}
 		}
 		if(tool_array.options.selectedIndex >= 0 && tool_array[tool_array.options.selectedIndex].disabled){
-			for(i = 0; i < total_tools; i++){
+			for(i = total_tools - 1; i >= 0; i--){
 				if(!tool_array[i].disabled){
 					tool_array[i].selected = true;
 				}
