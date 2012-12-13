@@ -64,6 +64,7 @@
 
 <%= form_hidden_field('CHECKBOXES', @job.num_seqs) %>
 <%= form_hidden_field('BLOCKS', @job.aln_blocks.size) %>
+<%= form_hidden_field('NUMBER_OF_LINES_PER_SEQUENCE', @job.aln_blocks.size) %>
 <%= form_hidden_field('NUMBER_OF_FORWARDING_ACCEPTORS', @fw_values.length)%>
 <%= form_hidden_field('EMISSION_TYPE', @emission)%>
 
