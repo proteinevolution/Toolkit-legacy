@@ -17,4 +17,4 @@ t_coffee_job:
       type: 4
       format: clu
   forwarding_acceptances:
-      type: 3
+      type: 2
