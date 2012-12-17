@@ -154,6 +154,10 @@ class HhblitsController < ToolController
   end
 
   def reducedalign
+    calculate_forwardings(@tool)
+    @fw_values = get_tool_list
+    @fw_labels = get_tool_name_list
+    #add_parameters_to_all_forwardings("&fw_mode=alignment")
     @widescreen = true
     @resfile = @job.jobid+".reduced.fas"
   end

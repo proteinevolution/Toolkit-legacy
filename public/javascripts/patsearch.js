@@ -9,7 +9,8 @@ function deselect()
   for(i = 0; i < (2*number); i++) {
     $(patsearch_form).elements["hits[]"][i].checked = false;
   }
-  count_checked_checkboxes()
+  calculate_forwarding();
+  //count_checked_checkboxes()
 }
 function select()
 { 
@@ -17,7 +18,8 @@ function select()
   for(i = 0; i < (2*number); i++) {
     $(patsearch_form).elements["hits[]"][i].checked = true;
   }
-  count_checked_checkboxes();
+  calculate_forwarding();
+  //count_checked_checkboxes();
 }
 function select_first()
 { 
@@ -30,7 +32,8 @@ function select_first()
       $(patsearch_form).elements["hits[]"][i].checked = false;
     }
   }
- count_checked_checkboxes(); 
+ calculate_forwarding();
+  //count_checked_checkboxes(); 
 }
 
 function change(num, block)

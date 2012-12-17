@@ -2,7 +2,33 @@
 
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'align'}) %>
 
-<%= form_tag({:action => :run, :jobaction => 'hhblits_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, :name => "forward_alignment") %>
+<%= form_tag({:action => :run, :jobaction => 'hhblits_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, {:id => @job.tool+"_form", :name => "forward_alignment"}) %>
+
+
+
+<div id="forward" >
+	<div class="row">
+		<font color='darkgreen'>
+			<div class = "row" id = "forwarding_info" >
+			    Note: Some options might be disabled due to the number of selected sequences.
+			</div>
+		</font>
+		<br/>
+		<div class="label">Forward results to</div>
+		<div class="formw">
+			<%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => @fw_values[0], :modes => @tool_mode_list}) %>
+		</div>
+	</div>
+    
+	<div class="row">
+		<div class="label"></div>
+		<div class="formw">
+			<input name="submitform" id="forwardbutton" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+		</div>
+	</div>
+	<div class="hr">&nbsp;</div>
+	
+</div>
 
 <div class="row">
 
@@ -20,8 +46,6 @@
   <div class="hr">&nbsp;</div>
 
 </div>
-
-
 
 <div class="spacer">&nbsp;</div>
 

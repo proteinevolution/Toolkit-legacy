@@ -15,7 +15,7 @@
 	<div class="row">
 		<font color='darkgreen'>
 			<div class = "row" id = "forwarding_info" >
-			    <!-- text is set via javascript-->
+			    Note: Some options might be disabled due to the number of selected sequences.
 			</div>
 		</font>
 		<br/>
@@ -23,10 +23,7 @@
 		    Forward results to
 		</div>
 		<div class="formw">
-			<!-- former content at bottom -->
-			<% @forward_tool_list_values = @tools_with_more_than_one_inseq_values + @tools_with_one_or_more_inseq_values + @tools_with_exactly_one_inseq_values %>
-			<% @forward_tool_list_labels = @tools_with_more_than_one_inseq_labels + @tools_with_one_or_more_inseq_labels + @tools_with_exactly_one_inseq_labels %>
-			<%= form_select_single("destination", @forward_tool_list_values, @forward_tool_list_labels, @forward_tool_list_values[0]) %>
+			<%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => @fw_values[0], :modes => @tool_mode_list}) %>
 		</div>
 	</div>
     
@@ -60,7 +57,7 @@
 	<table>
 	<% for i in 0...@job.header.size %>
 		<tr>
-		<td><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= i %>" checked="checked" onChange="count_checked_checkboxes();"/></td>
+		<td><input style="margin: 0px; padding: 0px;" type="checkbox" name="hits[]" value="<%= i %>" checked="checked" onChange="calculate_forwarding();"/></td>
 		<td><pre><%= @job.header[i] %></pre></td>
 		</tr>
 		<tr>
@@ -74,25 +71,11 @@
 </div>
 
 <script type="text/javascript">
-	window.onload = count_checked_checkboxes
+	window.onload = calculate_forwarding
 </script>
 
 <%= form_hidden_field('CHECKBOXES', @job.num_seqs) %>
-<%= form_hidden_field('NUMBER_OF_TOOLS_FOR_ONE_SEQ', @tools_with_one_or_more_inseq_values.length + @tools_with_exactly_one_inseq_values.length) %>
-<%= form_hidden_field('NUMBER_OF_TOOLS_FOR_MORE_THAN_ONE_SEQ', @tools_with_more_than_one_inseq_values.length) %>
+<%= form_hidden_field('NUMBER_OF_FORWARDING_ACCEPTORS', @fw_values.length)%>
+<%= form_hidden_field('EMISSION_TYPE', @emission)%>
 
 </form>
-
-<!--			<%= form_select_single("destination", @tools_with_more_than_one_inseq_values, @tools_with_more_than_one_inseq_labels, @tools_with_more_than_one_inseq_values[0]) %> -->
-<!--				<% if @job.num_seqs > 1 %>
-					<%= form_select_single("destination",
-										   @tools_with_more_than_one_inseq_values, 
-										   @tools_with_more_than_one_inseq_labels, 
-										   @tools_with_more_than_one_inseq_values[0]) %>
-				<% elsif @job.num_seqs == 1 %>
-				    <%= form_select_single("destination", 
-				    					   @tools_with_one_or_more_inseq_values.concat(@tools_with_exactly_one_inseq_values).sort, 
-				    					   @tools_with_one_or_more_inseq_labels.concat(@tools_with_exactly_one_inseq_labels).sort, 
-				    					   ((@tools_with_one_or_more_inseq_values.concat(@tools_with_exactly_one_inseq_values)).sort)[0])%>
-	            <% end %>
--->
