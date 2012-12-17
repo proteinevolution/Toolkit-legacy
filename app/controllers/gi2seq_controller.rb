@@ -19,69 +19,10 @@ class Gi2seqController < ToolController
   end
   
   def results
-    # tools to forward to
-    # put into different lists, depending on number of necessary input sequences
-    @tools_with_more_than_one_inseq_values = [fw_to_tool_url('gi2seq', 'blastclust'), 
-                                              fw_to_tool_url('gi2seq', 'clans'), 
-                                              fw_to_tool_url('gi2seq', 'clubsubp'),
-                                              fw_to_tool_url('gi2seq', 'clustalw'), 
-                                              fw_to_tool_url('gi2seq', 'kalign'),
-                                              fw_to_tool_url('gi2seq', 'mafft'), 
-                                              fw_to_tool_url('gi2seq', 'muscle'),		              
-                                              fw_to_tool_url('gi2seq', 'patsearch'), 
-                                              fw_to_tool_url('gi2seq', 'probcons'),		              		              
-                                              fw_to_tool_url('gi2seq', 'reformat'),
-                                              fw_to_tool_url('gi2seq', 't_coffee'),]
-    @tools_with_more_than_one_inseq_labels = [tool_title('blastclust'), 
-                                              tool_title('clans'), 
-                                              tool_title('clubsubp'), 
-                                              tool_title('clustalw'), 
-                                              tool_title('kalign'),
-                                              tool_title('mafft'), 
-                                              tool_title('muscle'),
-                                              tool_title('patsearch'), 
-                                              tool_title('probcons'),		              		              
-                                              tool_title('reformat'),
-                                              tool_title('t_coffee'),] 
-                  
-    # one or more sequences necessary - require alignment
-    @tools_with_one_or_more_inseq_values = [fw_to_tool_url('gi2seq', 'frpred'),
-                                            fw_to_tool_url('gi2seq', 'hhblits'),
-                                            fw_to_tool_url('gi2seq', 'hhpred'),
-                                            fw_to_tool_url('gi2seq', 'hhrep'),
-                                            fw_to_tool_url('gi2seq', 'hhrepid'),
-                                            fw_to_tool_url('gi2seq', 'hhsenser'),
-                                            fw_to_tool_url('gi2seq', 'psi_blast'),
-                                            fw_to_tool_url('gi2seq', 'prot_blast'),
-                                            fw_to_tool_url('gi2seq', 'repper')]
-    @tools_with_one_or_more_inseq_labels = [tool_title('frpred'),
-                                            tool_title('hhblits'),
-                                            tool_title('hhpred'),
-                                            tool_title('hhrep'),
-                                            tool_title('hhrepid'),
-                                            tool_title('hhsenser'),
-                                            tool_title('psi_blast'),
-                                            tool_title('prot_blast'),
-                                            tool_title('repper')]
-                           
-    # exactly one sequence necessary
-    @tools_with_exactly_one_inseq_values = [fw_to_tool_url('gi2seq', 'cs_blast'),
-                                            fw_to_tool_url('gi2seq', 'tprpred'),
-                                            fw_to_tool_url('gi2seq', 'pcoils'),
-                                            fw_to_tool_url('gi2seq', 'marcoil'),
-                                            fw_to_tool_url('gi2seq', 'hhfrag'),
-                                            fw_to_tool_url('gi2seq', 'backtrans'),
-                                             fw_to_tool_url('gi2seq', 'dataa'),
-                                            ]
-    @tools_with_exactly_one_inseq_labels = [tool_title('cs_blast'),
-                                            tool_title('tprpred'),
-                                            tool_title('pcoils'),
-                                            tool_title('marcoil'),
-                                            tool_title('hhfrag'),
-                                            tool_title('backtrans'),
-                                            tool_title('dataa'),
-                                            ]
-    #@fullscreen = true
+    @fullscreen = true
+    calculate_forwardings(@tool)
+    @fw_values = get_tool_list
+    @fw_labels = get_tool_name_list
   end
   
   def gi2seq_export_browser
