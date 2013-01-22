@@ -26,6 +26,7 @@ class HhpredAction < Action
                                                     :max_length => 3000,
                                                     :max_seqs => 10000,
                                                     :on => :create,
+                                                    :single_gaps =>false,
 						                                        :ss_allow => true })
 
   validates_jobid(:jobid)

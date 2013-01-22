@@ -3,12 +3,12 @@ require 'active_record'
 module Toolkit
   module Validations
     module ValidatesFasta
-
+      
       def self.append_features(base)
         super
         base.extend(ClassMethods)
       end
-
+      
       module ClassMethods
         
         def validates_fasta (*attr_names)
@@ -22,11 +22,12 @@ module Toolkit
             :on => :create,
             :header_length => 10000,
             :message => "Infile is not correct FASTA format!",
+            :single_gaps =>true,
             :ss_allow => false}
-            
-           
-
-            
+          
+          
+          
+          
           if attr_names.last.is_a?(Hash)
             configuration.update(attr_names.pop) 
           end
@@ -65,7 +66,7 @@ module Toolkit
               end
             end
             
-
+            
             # get inputmode
             inputmode = configuration[:inputmode].nil? ? "sequence" : configuration[:inputmode]
             if (record.respond_to?(inputmode))
@@ -108,6 +109,16 @@ module Toolkit
             
             val_array = "\n#{value}".split(/\n>/)
             val_array.shift
+            
+            #Check if only one Array Element, which contains gaps and return Error MSG
+            if (val_array.length == 1 and !configuration[:single_gaps])
+              lines = val_array[0].split(/\n/)
+              lines.shift
+              if(lines.to_s=~ /-/)
+                error = "Input Sequence may not contain Gaps"
+              end
+            end
+
             if (val_array.length > configuration[:max_seqs])
               error = "Input contains more than #{configuration[:max_seqs]} sequences!"
             elsif (val_array.length < configuration[:min_seqs])							
@@ -133,39 +144,39 @@ module Toolkit
                   error = "Secondary structure confidence values not allowed for this tool"
                   break
                 end
-                 if(configuration[:ss_allow] && header =~ /^ss_con.*/)
-                    lines.each do |line|
-                      seq += line
-                    end
-                
-                else 
-                lines.each do |line|
-                  if (line =~ /^\s*\d*(.*?)\d*\s*$/)
-                    seq += $1
-                  else
+                if(configuration[:ss_allow] && header =~ /^ss_con.*/)
+                  lines.each do |line|
                     seq += line
                   end
-                end
+                  
+                else 
+                  lines.each do |line|
+                    if (line =~ /^\s*\d*(.*?)\d*\s*$/)
+                      seq += $1
+                    else
+                      seq += line
+                    end
+                  end
                 end
                 # End Fix for Ticket #99
                 grouped_check = false								
                 seq.gsub!(/ /, '')
                 seq.tr!('_~.*', '-')
                 
-		logger.debug "Vor allen Aenderungen: #{seq}"
-              
+                logger.debug "Vor allen Aenderungen: #{seq}"
+                
                 seq.gsub!(/[JOUZjouz]/, 'X')
                 logger.debug "Nach Buchstaben: #{seq}"
-
-                  seq.gsub!(/[\/,+&\\]/, '')
-                  logger.debug "Nach Sonderzeichen: #{seq}"
-
-					 # for single sequence
-					 if (configuration[:max_seqs] == 1)
-					 	seq.gsub!(/-/, '')
-					 end          
-              
- 
+                
+                seq.gsub!(/[\/,+&\\]/, '')
+                logger.debug "Nach Sonderzeichen: #{seq}"
+                
+                # for single sequence
+                if (configuration[:max_seqs] == 1)
+                  seq.gsub!(/-/, '')
+                end          
+                
+                
                 # for grouped fasta
                 if (format == "gfas")
                   change = seq.gsub!(/\#$/, '')
@@ -184,10 +195,10 @@ module Toolkit
                   #error += " #{header}"
                   local_whitelist = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/,+&\\-1234567890"
                   changes = seq.tr!("^#{local_whitelist}", "+")
-                   #error += "\n SEQ #{seq}"
-                   changes = seq.tr!("^#{local_whitelist}", "+")
-                   #error += "\n SEQ #{seq}"
-                   #break
+                  #error += "\n SEQ #{seq}"
+                  changes = seq.tr!("^#{local_whitelist}", "+")
+                  #error += "\n SEQ #{seq}"
+                  #break
                 else
                   changes = seq.tr!("^#{configuration[:white_list]}", "+")
                 end
@@ -224,7 +235,7 @@ module Toolkit
                 end
               end
             end
-
+            
             if (!error.nil?)
               if (attr.to_s.include?('_file'))
                 attr = attr.to_s.sub!('_file', '_input').to_sym
