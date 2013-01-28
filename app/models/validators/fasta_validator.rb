@@ -22,7 +22,6 @@ module Toolkit
             :on => :create,
             :header_length => 10000,
             :message => "Infile is not correct FASTA format!",
-            :single_gaps =>true,
             :ss_allow => false}
           
           
@@ -109,15 +108,6 @@ module Toolkit
             
             val_array = "\n#{value}".split(/\n>/)
             val_array.shift
-            
-            #Check if only one Array Element, which contains gaps and return Error MSG
-            if (val_array.length == 1 and !configuration[:single_gaps])
-              lines = val_array[0].split(/\n/)
-              lines.shift
-              if(lines.to_s=~ /-/)
-                error = "Input Sequence may not contain Gaps"
-              end
-            end
 
             if (val_array.length > configuration[:max_seqs])
               error = "Input contains more than #{configuration[:max_seqs]} sequences!"
