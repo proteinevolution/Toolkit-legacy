@@ -2,9 +2,7 @@ class HhblitsController < ToolController
 
   def index
     
-    if(@user && !params[:redirected])
-      load_params
-    end
+
     @inputmode_values = ["sequence", "alignment"]
     @inputmode_labels = ["single FASTA sequence", "alignment"]
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
