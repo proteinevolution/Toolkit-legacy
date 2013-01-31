@@ -34,7 +34,7 @@ class AncesconAction < Action
     @informat = "fas"
     
     @otheradvanced = params["otheradvanced"] ? params["otheradvanced"] : ""
-    
+     
     #check other advanced options
     @options = ""
     if (@otheradvanced =~ /-o|-O/) then @options += " -O" end
