@@ -12,8 +12,7 @@ class AncesconJob < Job
   def export
     ret = IO.readlines(File.join(job_dir, jobid + @@export_ext)).join
   end
-  
-  
+    
   
   attr_reader :lines
   
