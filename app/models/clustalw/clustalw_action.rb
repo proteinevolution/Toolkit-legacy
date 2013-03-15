@@ -1,5 +1,5 @@
 class ClustalwAction < Action
-  CLUSTALW = File.join(BIOPROGS, 'clustal', 'clustalw')
+  CLUSTALW = File.join(BIOPROGS, 'clustalw-2.1')
   CLUSTALO = File.join(BIOPROGS, 'clustal-omega')
 
 
@@ -39,7 +39,7 @@ class ClustalwAction < Action
     if (@version == '-o')
 	@commands << "#{CLUSTALO}/clustalo -infile=#{@infile} -o #{@outfile} -align #{@otheradvanced}  &> #{job.statuslog_path}"	
     else
-    	@commands << "#{CLUSTALW}/clustalw -infile=#{@infile} -align #{@otheradvanced} &> #{job.statuslog_path}"
+    	@commands << "#{CLUSTALW}/clustalw2 -infile=#{@infile} -align #{@otheradvanced} &> #{job.statuslog_path}"
     end
 
     logger.debug "Commands:\n"+@commands.join("\n")

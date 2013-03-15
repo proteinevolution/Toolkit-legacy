@@ -103,8 +103,8 @@
   title: ClustalW
   title_long: ClustalW
   section: alignment
-  updated: May, 2011
-  version: 1.82, Omega 0.2.0
+  updated: March, 2013
+  version: 2.1, Omega 0.2.0
   active: 
   - member
   - internal
@@ -284,7 +284,7 @@
   title_long: MARCOIL
   section: seqanal
   updated: May, 2011
-  version: n.a.
+  version: 1.0
   active:
   - member
   - internal
