@@ -99,9 +99,19 @@
   - member
   - internal
   - external
+- name: msaprobs
+  title: MSAProbs
+  title_long: MSAProbs
+  section: alignment
+  updated: April, 2013
+  version: 0.9.7
+  active: 
+  - member
+  - internal
+  - external
 - name: clustalw
-  title: ClustalW
-  title_long: ClustalW
+  title: Clustal Omega
+  title_long: Clustal Omega
   section: alignment
   updated: March, 2013
   version: 2.1, Omega 0.2.0

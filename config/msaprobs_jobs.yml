@@ -1,7 +1,7 @@
-clustalw_job: 
-  title: Clustal Omega
+msaprobs_job: 
+  title: MSAProbs
   hidden: false
-  code: CLUO
+  code: MSAP
   resultsections:  
     - name: results
       title: Results
