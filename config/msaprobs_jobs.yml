@@ -1,0 +1,17 @@
+msaprobs_job: 
+  title: MSAProbs
+  hidden: false
+  code: MSAP
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results
+  forwarding_emission:
+      type: 4
+  forwarding_acceptances:
+      type: 2
+
