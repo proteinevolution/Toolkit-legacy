@@ -1,5 +1,5 @@
 function appearForward(val)
-{   alert("Hello Schlauch");
+{
     var coloring = 'color_button';
     var image = 'hitlist_img';
     var create = 'createmodel';
