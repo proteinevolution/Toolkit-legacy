@@ -1,3 +1,6 @@
+<%= javascript_include_tag "jquery.js" %>
+<%= javascript_include_tag "jquery.tablesorter.js" %>
+<script>$.noConflict();</script>
 <div id="sidebar">
   <% if LOCATION == "Munich" %>  
     <div style="background-color: #666666; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px;">
@@ -23,7 +26,7 @@
     Recent jobs:
   </div>
   
-  <!-- buttons to sort jobs organized in a table-->
+  <!-- buttons to sort jobs organized in a table
   <% if (!@jobs_cart.nil? and @jobs_cart.length > 1) %>
   <table id="sorttable">
   	<tr>
@@ -60,9 +63,11 @@
     </tr>  
   </table>
   <% end %>
-  
+  -->
   <%= form_tag({:action => :clear}, {:id => "clearrecentjobs", :name => "clearrecentjobs"}) %> 
-    <table id="jobtable">
+    <table id="jobtable" class="tablesorter">
+    	<thead><th><%= image_tag("up-down-arrow.png") %> </th><th></th><th class="jobcell"><%= image_tag("up-down-arrow.png") %></th><th class="search"><%= image_tag("up-down-arrow.png") %></th></thead>
+		<tbody>
       <% num_checkboxes = 0 %>
       <% @jobs_cart.reverse_each do |jobid| 
       job = Job.find(:first, :conditions => [ "jobid = ?", jobid])
@@ -73,7 +78,7 @@
       num_checkboxes += 1
       -%>
       <tr>
-        <td class="<%= job.status -%>"></td>
+        <td class="<%= job.status -%>" style="color:transparent"> <%= job.status -%></td>
         <td><%= check_box_tag("jobid[]", jobid, false, :class => "jobcheckbox") -%></td>
         <td class="jobcell">
 	      <% current = @job && @job.jobid == jobid ? "current" : "" -%>
@@ -85,6 +90,7 @@
         <td class="<%= @tools_hash[tool]['section'] %>"><%= code -%></td>
       </tr>
       <% end -%>
+	  </tbody>
     </table>
 
     <div class="section">
@@ -104,7 +110,7 @@
     </tr>
     <tr>
       <td class="r"></td>
-      <td style="width: auto; border-right-width: 0px; padding-left: 5px;">running</td>
+      <td style="width: auto; border-right-width: 0px; padding-left: 5px;  ">running</td>
     </tr>
     <tr>
       <td class="d"></td>
@@ -116,6 +122,10 @@
     </tr>
   </table>
   
+<script type="text/javascript">
 
+jQuery("#jobtable").tablesorter();
+
+</script>
   
 </div>
