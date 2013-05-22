@@ -418,6 +418,26 @@ span.small {
   border-collapse: collapse;
 }
 
+#sidebar table#jobtable thead th  {
+
+  vertical-align:  middle;
+  text-align:left;
+  width: 13px;  
+  height: 16px; 
+}
+#sidebar table#jobtable thead th.search  {
+
+  vertical-align: left; 
+  width: 30px;  
+}
+#sidebar table#jobtable thead th.jobcell  {
+
+  vertical-align: left; 
+  width: 72px;
+}
+
+
+
 #sidebar table#jobtable tr td {
   border: 1px solid #666666;
   vertical-align: middle;	

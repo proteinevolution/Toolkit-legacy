@@ -431,6 +431,28 @@ span.small {
 }
 /* additions end */
 
+#sidebar table#jobtable thead th  {
+
+  vertical-align:  middle;
+  text-align:left;
+  width: 13px;  
+  height: 16px; 
+}
+#sidebar table#jobtable thead th.search  {
+
+  vertical-align: left; 
+  width: 30px;  
+}
+#sidebar table#jobtable thead th.jobcell  {
+
+  vertical-align: left; 
+  width: 72px;
+}
+
+
+
+
+
 #jobtable{
   border: 1px solid #7CA6A6;
   border-right-width: 0px;
