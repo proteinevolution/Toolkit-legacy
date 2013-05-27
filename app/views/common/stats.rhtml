@@ -1,6 +1,24 @@
+<%= javascript_include_tag "raphael.js" %>
+<%= javascript_include_tag "morris.js" %>
 <h3>Statistics</h3>
 
 </br>
+
+<div id="bar-example" style="height: 350px; width:800px; "></div>
+
+</br>
+<br><br><br><br>
+        <%chart_stats =" "%>
+        <% sum_int=0; sum_ext=0; sum_user=0 %>
+        <%(Stat.find(:all).map{|r| r.toolname}).uniq.sort.each do |n| %>
+        <% visits_int=0; visits_ext=0; visits_user=0%>
+        <% Stat.find(:all, :conditions => ["toolname=?", n]).each do |e| %>
+        <% visits_int += e.visits_int; visits_ext += e.visits_ext; visits_user += e.visits_user%>
+        <% end %>
+        <% sum_int+=visits_int; sum_ext+=visits_ext; sum_user+=visits_user %>
+		<%chart_stats << "{ y: \'#{n}\', a: #{visits_int}, b: #{visits_ext}, c: #{visits_user} }," %>  
+        <% end %>
+        
 
 <% if is_internal?(request.remote_ip) %>
 <p>(Only the 50 most recent days are reported.)</p>
@@ -48,7 +66,29 @@
 </div>
 <%else%>
 </br>
-<p>(This page is restricted to requests from 10.153.*)</p>
+<p>(This page is restricted to requests from 10.153.*)  </p>
 
 <%end%>
+
+
+
+<script>
+Morris.Bar({
+  element: 'bar-example',
+  data: [
+    <%= chart_stats%>
+  ],
+  ykeys: ['a', 'b','c'],
+  xkey: 'y',
+  labels: ['Jobs at our department', 'Jobs external users ', 'Jobs of logged in users'],
+  stacked:true,
+  barColors:['green','darkblue', 'darkred'],
+  hideHover: 'auto',
+
+});
+
+</script>
+
+
+
 
