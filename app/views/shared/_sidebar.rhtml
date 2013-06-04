@@ -1,0 +1,131 @@
+<%= javascript_include_tag "jquery.js" %>
+<%= javascript_include_tag "jquery.tablesorter.js" %>
+<script>$.noConflict();</script>
+<div id="sidebar">
+  <% if LOCATION == "Munich" %>  
+    <div style="background-color: #666666; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px;">
+  <% else %>
+    <div style="background-color: #7CA6A6; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px;">
+  <% end %>
+    Show results of job:
+  </div>
+  <div class="section">
+    <%= form_tag(:action => :check)%>
+    <% if @errors['check_jobid'] %>
+    <p class='formerror'><%= @errors['check_jobid'] %></p>
+    <% end %>
+    <%= text_field_tag("jobid", '', {:style => "width: 100%;"}) %>
+    <input class="checkbutton" name="showres" type="submit" value="Show results" style="width: 100%;" />
+  </form>
+  </div>
+  <% if LOCATION == "Munich" %>
+    <div style="background-color: #666666; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-bottom: 2px; margin-top: 15px;">
+  <% else %>
+    <div style="background-color: #7CA6A6; color: #FFFFFF; font-size: 12px; font-weight: bold; padding: 1px 2px 2px 2px; margin-bottom: 2px; margin-top: 15px;">
+  <% end %>
+    Recent jobs:
+  </div>
+  
+  <!-- buttons to sort jobs organized in a table
+  <% if (!@jobs_cart.nil? and @jobs_cart.length > 1) %>
+  <table id="sorttable">
+  	<tr>
+  	  <td class="sub_stat_left">
+  	  	<%= form_tag({:action => :sort_status_desc}, {:id => "sort_status_desc", :name => "sort_status_desc"}) %>  
+          <%= image_submit_tag("up_arrow.png") %>  
+        </form>
+      </td>
+      <td class="sub_stat_right">
+      	<%= form_tag({:action => :sort_status_asc}, {:id => "sort_status_asc", :name => "sort_status_asc"}) %>  
+          <%= image_submit_tag("down_arrow.png") %>  
+        </form>
+  	  </td>
+      <td>
+        <%= form_tag({:action => :sort_jobids_desc}, {:id => "sort_jobids_desc", :name => "sort_jobids_desc"}) %>  
+          <%= image_submit_tag("up_arrow.png") %>  
+        </form>
+      </td>
+      <td class="sub_id_right">
+      	<%= form_tag({:action => :sort_jobids_asc}, {:id => "sort_jobids_asc", :name => "sort_jobids_asc"}) %>  
+          <%= image_submit_tag("down_arrow.png") %>  
+        </form>
+      </td>
+      <td class="sub_type_left">
+      	<%= form_tag({:action => :sort_tool_desc}, {:id => "sort_tool_desc", :name => "sort_tool_desc"}) %>  
+          <%= image_submit_tag("up_arrow.png") %>  
+        </form>
+      </td>
+      <td>
+      	<%= form_tag({:action => :sort_tool_asc}, {:id => "sort_tool_asc", :name => "sort_tool_asc"}) %>  
+          <%= image_submit_tag("down_arrow.png") %>
+        </form>
+      </td>
+    </tr>  
+  </table>
+  <% end %>
+  -->
+  <%= form_tag({:action => :clear}, {:id => "clearrecentjobs", :name => "clearrecentjobs"}) %> 
+    <table id="jobtable" class="tablesorter">
+    	<thead><th><%= image_tag("up-down-arrow.png") %> </th><th></th><th class="jobcell"><%= image_tag("up-down-arrow.png") %></th><th class="search"><%= image_tag("up-down-arrow.png") %></th></thead>
+		<tbody>
+      <% num_checkboxes = 0 %>
+      <% @jobs_cart.reverse_each do |jobid| 
+      job = Job.find(:first, :conditions => [ "jobid = ?", jobid])
+      next if (job.nil?)
+      title = job.config['title']
+      tool = job.tool
+      code = job.config['code']
+      num_checkboxes += 1
+      -%>
+      <tr>
+        <td class="<%= job.status -%>" style="color:transparent"> <%= job.status -%></td>
+        <td><%= check_box_tag("jobid[]", jobid, false, :class => "jobcheckbox") -%></td>
+        <td class="jobcell">
+	      <% current = @job && @job.jobid == jobid ? "current" : "" -%>
+	      <%= link_to(jobid, {:controller => tool, :action => :check, :jobid => jobid}, 
+	      {:onmouseover => "return overlib('ID: #{jobid} #{title}');", 
+	      :onmouseout => "return nd();", 
+	      :class => "joblink", :id => current} ) %>
+        </td>
+        <td class="<%= @tools_hash[tool]['section'] %>"><%= code -%></td>
+      </tr>
+      <% end -%>
+	  </tbody>
+    </table>
+
+    <div class="section">
+      <input type="hidden" id="clear_checkboxes" value="<%= num_checkboxes %>">
+      <a href="#" onclick="selectjobs();">Select all</a>&nbsp;&nbsp;&nbsp;<a href="#" onclick="deselectjobs();">Deselect all</a>
+      <input class="stopbutton" name="clearjobs" type="submit" style="float: none; width: 100%; margin-top: 5px;" value="Clear sel. Jobs" style="width: 100%;" />
+      <br/>
+      <input class="stopbutton" name="removejobs" type="submit" style="float: none; width: 100%; margin-top: 5px;" value="Delete sel. Jobs" style="width: 100%;" onClick="setAction('clearrecentjobs', '/common/removeJobs');" />
+    </div>
+
+  </form> 
+  
+  <table id="jobtable">
+    <tr>
+      <td class="q"></td>
+      <td style="width: auto; border-right-width: 0px; padding-left: 5px;">queued</td>
+    </tr>
+    <tr>
+      <td class="r"></td>
+      <td style="width: auto; border-right-width: 0px; padding-left: 5px;  ">running</td>
+    </tr>
+    <tr>
+      <td class="d"></td>
+      <td style="width: auto; border-right-width: 0px; padding-left: 5px;">done</td>
+    </tr>
+    <tr>
+      <td class="e"></td>
+      <td style="width: auto; border-right-width: 0px; padding-left: 5px;">error</td>
+    </tr>
+  </table>
+  
+<script type="text/javascript">
+
+jQuery("#jobtable").tablesorter();
+
+</script>
+  
+</div>

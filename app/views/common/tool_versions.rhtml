@@ -1,16 +1,20 @@
+
 <h3>Tool Version Information</h3>
 </br>
 
 <div class="hr">&nbsp;</div>
 <div class="row">	
-	<table style="text-align:center;" border="1" cellspacing="0" cellpadding="2">
-        <tr><td><b>Toolname</b></td><td><b>Version</b></td><td><b>Updated</b></td></tr>
+	<table id="versions" class="tablesorter"   style="text-align:center;" border="1" cellspacing="0" cellpadding="2">
+	<thead>
+        <tr><th><b>Toolname  <%= image_tag("up-down-arrow.png") %></b></th><th><b>Version  <%= image_tag("up-down-arrow.png") %> </b></th><th><b>Updated  <%= image_tag("up-down-arrow.png") %></b></th></tr>
+	</thead>
+	<tbody>
       <% @tools.each do |tool| %>
         <tr><td><%= tool['title'] %></td><td><%=tool['version']%></td><td><%=tool['updated']%></td></tr>   
-        <%end%>     
+        <%end%>   
+	</tbody>   	  
     </table>
     <div class="hr">&nbsp;</div>
-	
 	
 		
 	Updates, comments or errors, please mail to: 
@@ -20,5 +24,13 @@
 <%else%>
     <strong><a href="mailto:mpi-toolkit@tuebingen.mpg.de">mpi-toolkit@tuebingen.mpg.de</a></strong>
 <%end%>
+
+
+<script type="text/javascript">
+
+jQuery("#versions").tablesorter({sortList:[[0,0],[0,1]], widgets: ['zebra']});
+
+</script>
+
 
 </div>

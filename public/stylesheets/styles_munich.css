@@ -1,4 +1,4 @@
-/* main styles */ 
+/* main styles */
 html {
   height: 100%; 
 }
@@ -29,7 +29,7 @@ table {
   margin-bottom: 0px;
   margin-left: auto;
   /*width: 900px;*/
-  background-image: url(../images/background_tuebingen.gif);
+  background-image: url(../images/background_munich.gif);
   background-repeat: repeat-y;
   background-position: left;
   background-color: #FFF;
@@ -52,10 +52,12 @@ table {
 }
 
 #content {
+
   margin: 0px 0px 0px 170px;
   padding: 0px 10px 70px 0px;
   width: 720px;
   position: relative;
+  
 }
  @media screen and (-webkit-min-device-pixel-ratio:0)
  {
@@ -84,8 +86,6 @@ a {
 #content div.label, div.labelj a {
   font-weight: normal;
 }
-
-
 
 #footer a, #footer a:visited {
   color: #005FA9;
@@ -129,30 +129,6 @@ p.message {
   font-size: 12px;
 }
 
-p.search {
-  background-color: #F4EEDF;
-}
-p.alignment {
-  background-color: #FFEECC;
-}
-p.seqanal {
-  background-color: #CFE7B8;
-}
-p.secstruct {
-  background-color: #E2EFF9;
-}
-p.tertstruct {
-  background-color: #DCDCE7;
-}
-
-p.classification {
-  background-color: #F1EBEB;
-}
-p.utils {
-  background-color: #F3CFCF;
-}
-
-
 h1 {
   font-weight: bold;
   font-size: 11px;
@@ -174,7 +150,7 @@ h3 {
   clear: both;
   display: block;
   font-weight: bold;
-  background-color: #E6F2F2;
+  background-color: #E8E8E8;
   font-size: 11px;
   color: #000;
   margin-top: 10px;
@@ -287,12 +263,13 @@ span.small {
 	padding: 0;
 	border: 0;
 }
-#header #minerva {
+#header #lmulogo {
 	position: absolute;
-	top: 18px;
-	left: 3px;
+	top: 0px;
+	left: 0px;
+	z-index: 100;
 }
-#header #mpilogo {
+#header #genecenterlogo {
 	position: absolute;
 	top: 25px;
 	left: 170px;
@@ -310,14 +287,14 @@ span.small {
   z-index: 10;
   border-right: 1px solid #FFF;
   border-left: 1px solid #FFF;
-  background-color: #E6F2F2;
+  background-color: #E8E8E8;
   float: right;
 }
 #metanav li	{
   float: right;
   padding: 0;
   margin: 0;
-  border-left: 1px solid #999;
+  border-left: 1px solid #666666;
 }
 #metanav li#greeting {
   padding: 1px 10px 0px 10px;
@@ -327,7 +304,7 @@ span.small {
 #metanav li a	{
   max-height: 12px;
   display: block;
-  background-color: #E6F2F2;
+  background-color: #E8E8E8;
   color: #666666;
   border: 0;
   margin: 0;
@@ -337,20 +314,20 @@ span.small {
 }
 #metanav li#home	{
   float: left;
-  border-left-width: 0px;
-  border-right: 1px solid #FFF;
+  border-left: 1px solid #666666;
+  border-right: 1px solid #666666;
 }
 #metanav li#home a {
-  width: 140px;
+  width: 139px;
   padding: 1px 0px 2px 0px;
   text-align:  center;
   text-transform: uppercase;
 }
 #metanav li a:hover {
-  background-color: #C9DBD8;
+  background-color: #CFCFCF;
 }
 #metanav li.current a {
-  background-color: #C9DBD8;
+  background-color: #CFCFCF;
 }
 
 /* sidebar */
@@ -377,7 +354,7 @@ span.small {
 	clear: both;
 	margin: 0px;
 	padding: 8px;
-	border-bottom: 1px solid #7CA6A6;
+/*	border-bottom: 1px solid #666666; */
 }
 #sidebar ul {
 	margin: 0;
@@ -390,12 +367,12 @@ span.small {
 	display: block;
 	padding: 0px 0px 0px 10px;
 	margin: 0;
-	border-bottom: 1px solid #7CA6A6;
+	border-bottom: 1px solid #666666;
 }
 
-/* table definitins*/
+/* table definitions*/
 
-/* additions by Hippolyt 2012 */
+/* additions by Hippolyt */
 #sorttable{
   border-right-width: 0px;
   border-left-width: 0px;	
@@ -431,6 +408,16 @@ span.small {
 }
 /* additions end */
 
+#jobtable{
+  border: 1px solid #666666;
+  border-right-width: 0px;
+  border-left-width: 0px;	
+  border-spacing: 0px;
+  table-layout: fixed;
+  width: 139px;
+  border-collapse: collapse;
+}
+
 #sidebar table#jobtable thead th  {
 
   vertical-align:  middle;
@@ -451,20 +438,8 @@ span.small {
 
 
 
-
-
-#jobtable{
-  border: 1px solid #7CA6A6;
-  border-right-width: 0px;
-  border-left-width: 0px;	
-  border-spacing: 0px;
-  table-layout: fixed;
-  width: 139px;
-  border-collapse: collapse;
-}
-
 #sidebar table#jobtable tr td {
-  border: 1px solid #7CA6A6;
+  border: 1px solid #666666;
   vertical-align: middle;	
 }
 
@@ -505,25 +480,29 @@ span.small {
   background-color: #E89F9F;	
 }
 
-
 /* joblist jobstatus bullets */
-#jobtable td.s {
+#sidebar table#jobtable td.s {
+  border-left-width: 0px;	 
   background-color: #CCC;
   width: 13px;
 }
-#jobtable td.d {
+#sidebar table#jobtable td.d {
+  border-left-width: 0px;	 
   background-color: #6AB94B;
   width: 13px;
 }
-#jobtable td.q {
+#sidebar table#jobtable td.q {
+  border-left-width: 0px;	 
   background-color: #D6ABAB;
   width: 13px;
 }
-#jobtable td.r {
+#sidebar table#jobtable td.r {
+  border-left-width: 0px;	 
   background-color: #FFCC66;
   width: 13px;
 }
-#jobtable td.e {
+#sidebar table#jobtable td.e {
+  border-left-width: 0px;	 
   background-color: #CC0000;
   width: 13px;
 }
@@ -550,11 +529,11 @@ span.small {
 #jobtable input.jobcheckbox{
   padding: 0px;
   margin: 0px;
-  margin-right: -5px;
+  margin-right: -9px;
 }
 
 #sidebar a:hover, #sidebar a#current {
-  background-color: #C9DBD8;
+  background-color: #CFCFCF;
 }
 #jobtable td {
   font-size: 9px;
@@ -593,9 +572,9 @@ div div.label {
   text-align: right;
 }
 
-div div.label {
-  padding: 4;
-  margin: 0;
+div div.labelj {
+  padding: 0;
+  margin: 4;
   float: left;
   width: 200px;
   font-weight: normal;
@@ -650,7 +629,7 @@ div.top {
 div.hr {
   clear: both;
   margin: 0px 0px 10px 0px;
-  border-bottom: 1px solid #E6F2F2;
+  border-bottom: 1px solid #E8E8E8;
 }
 
 div.alignres {
@@ -688,37 +667,11 @@ ul.arrow-marker li {
   color: #005FA9;
 }
 
-
-ul.search {
-  background-color: #F4EEDF;
-}
-ul.alignment {
-  background-color: #FFEECC;
-}
-ul.seqanal {
-  background-color: #CFE7B8;
-}
-ul.secstruct {
-  background-color: #E2EFF9;
-}
-ul.tertstruct {
-  background-color: #DCDCE7;
-}
-
-ul.classification {
-  background-color: #F1EBEB;
-}
-ul.utils {
-  background-color: #F3CFCF;
-}
-
-
-
 /*  Für Tool/Job Menu */
 #content #jobsection {
   clear: both;
   position: relative;
-  /*background-image: url(../images/tab_border_bottom.gif);*/
+/*  background-image: url(../images/tab_border_bottom_grey.gif); */
   background-position: bottom;
   background-repeat: repeat-x;
   height: 30px;
@@ -737,7 +690,7 @@ ul.utils {
   padding:0;
 }
 #jobsection ul li a {
-  border: 1px solid #7CA6A6;
+  border: 1px solid #666666;
   border-bottom: 0px;
   display:block;
   padding:2px 5px;
@@ -745,24 +698,23 @@ ul.utils {
   color: #000;
 }
 #jobsection li.current a {
-  background-color: #E6F2F2;
+  background-color: #E8E8E8;
   border-bottom: 0px;
 }
 #jobsection li a:hover {
-  background-color: #C9DBD8;
+  background-color: #CFCFCF;
 }
 
 #content #resultactions {
   clear: both;
   position: relative;
-  background-color: #E6F2F2;
+  background-color: #E8E8E8;
   background-position: bottom;
   background-repeat: repeat-x;
   margin: -10px 0px 0px 0px;
   height: 16px;
   margin-bottom: 10px;
-  border: 1px solid #7CA6A6;
-  border-top: 0px;
+  border: 1px solid #666666;
 }
 #resultactions ul {
   position: absolute;
@@ -788,10 +740,10 @@ ul.utils {
   top: 1px;
 }
 #resultactions li a:hover {
-  background-color: #C9DBD8;
+  background-color: #CFCFCF;
 }
 #resultactions li.current a {
-  background-color: #C9DBD8;
+  background-color: #CFCFCF;
 }
 
 #jalview{
@@ -923,8 +875,6 @@ ul.utils {
 }
 
 
-
-
 /* Front page */ 
 
 body div.sub {
@@ -950,69 +900,7 @@ body div.main {
   width: 450px;
   margin-right: 10px;
 }
-.morris-hover{position:absolute;z-index:500;}
-.morris-hover.morris-default-style {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-attachment: scroll;
-    background-clip: border-box;
-    background-color: rgba(255, 255, 255, 0.8);
-    background-image: none;
-    background-origin: padding-box;
-    background-position: 0 0;
-    background-repeat: repeat;
-    background-size: auto auto;
-    border-bottom-color: rgba(230, 230, 230, 0.8);
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-style: solid;
-    border-bottom-width: 2px;
-    border-image-outset: 0 0 0 0;
-    border-image-repeat: stretch stretch;
-    border-image-slice: 100% 100% 100% 100%;
-    border-image-source: none;
-    border-image-width: 1 1 1 1;
-    border-left-color-ltr-source: physical;
-    border-left-color-rtl-source: physical;
-    border-left-color-value: rgba(230, 230, 230, 0.8);
-    border-left-style-ltr-source: physical;
-    border-left-style-rtl-source: physical;
-    border-left-style-value: solid;
-    border-left-width-ltr-source: physical;
-    border-left-width-rtl-source: physical;
-    border-left-width-value: 2px;
-    border-right-color-ltr-source: physical;
-    border-right-color-rtl-source: physical;
-    border-right-color-value: rgba(230, 230, 230, 0.8);
-    border-right-style-ltr-source: physical;
-    border-right-style-rtl-source: physical;
-    border-right-style-value: solid;
-    border-right-width-ltr-source: physical;
-    border-right-width-rtl-source: physical;
-    border-right-width-value: 2px;
-    border-top-color: rgba(230, 230, 230, 0.8);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-top-style: solid;
-    border-top-width: 2px;
-    color: #666666;
-    font-family: sans-serif;
-    font-size: 12px;
-    padding-bottom: 6px;
-    padding-left: 6px;
-    padding-right: 6px;
-    padding-top: 6px;
-    text-align: center;
-}
-.morris-hover.morris-default-style .morris-hover-row-label {
-    font-weight: bold;
-    margin-bottom: 0.25em;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0.25em;
-}
+
 .clearall {
   margin: 0 0 10px;
   padding: 10px 0 0 0;
