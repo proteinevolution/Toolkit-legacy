@@ -17,8 +17,7 @@ class HhfragJob < Job
 
 
 
- # attr_reader :psipred, :coils, :alignment,  :pssm
-
+  attr_reader :ta
 
   def before_results(controller_params)
 

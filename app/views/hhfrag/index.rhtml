@@ -23,6 +23,12 @@
 </div>
 
 <div class="spacer">&nbsp;</div>
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div class="row">
+    <%= form_label("Predict torsion angles","predict_ta") %>
+    <%= form_checkbox("ta", "-f", false, false,"") %> 
+</div>
 
 
 <div class="spacer">&nbsp;</div>

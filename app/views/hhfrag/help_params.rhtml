@@ -1,5 +1,6 @@
 <ul id="helpindex" class="<%= @section['theme'] %>">
 	<li><a href="#input">Input</a></li>
+	<li><a href="#input">Predict torsion angles</a></li>
 </ul>
 
 <h2><%= @tool['title'] %> Parameters</h2>
@@ -8,6 +9,14 @@
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
  Enter or upload a protein sequence in FASTA or raw format.
+  <br>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="predict_ta"></a>
+<h3 class="<%= @section["name"] %>">Predict Torsion Angles</h3>
+<div class="row">
+ Analyze the structural consistency and recurrence of fragments assigned to each target position and compute consensus torsion angles.
   <br>
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
