@@ -27,6 +27,7 @@ class HhfragAction < Action
     @outfile = @basename+".frags"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @informat = params['informat'] ? params['informat'] : 'fas'
+    @predict_ta = params['ta']
     reformat(@informat, "fas", @infile)
     @commands = []
     
@@ -37,7 +38,7 @@ class HhfragAction < Action
     params_dump
     
       # Just run hhfrag
-      @commands << "#{HHFRAG}/hhfrag.sh #{@infile} #{@outdir} >>#{job.statuslog_path}"
+      @commands << "#{HHFRAG}/hhfrag.sh #{@infile} #{@outdir} #{@predict_ta}  >>#{job.statuslog_path}"
       # Fire up method to copy file from temp to folder
 
 
