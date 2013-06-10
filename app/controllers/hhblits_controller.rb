@@ -181,6 +181,28 @@ class HhblitsController < ToolController
     export_to_file
   end
   
+    def export_fullalign_to_browser
+    @job.set_export_ext(".full.fas")
+    export_to_browser
+  end
+  
+  def export_fullalign_to_file
+    @job.set_export_ext(".full.fas")
+    export_to_file
+  end
+  
+  def export_reducedalign_to_browser
+    @job.set_export_ext(".reduced.fas")
+    export_to_browser
+  end
+  
+  def export_reducedalign_to_file
+    @job.set_export_ext(".reduced.fas")
+    export_to_file
+  end
+  
+  
+  
   def help_histograms
     render(:layout => "help")
   end
