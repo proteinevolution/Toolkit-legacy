@@ -1,6 +1,6 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => 'Show/Edit Alignment'}) %>
 
-<%= render(:partial => "shared/resultsections", :locals => {:export_to => 'align'}) %>
+<%= render(:partial => "shared/resultsections", :locals => {:export_to => 'reducedalign'}) %>
 
 <%= form_tag({:action => :run, :jobaction => 'hhblits_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, {:id => @job.tool+"_form", :name => "forward_alignment"}) %>
 
