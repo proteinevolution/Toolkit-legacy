@@ -27,14 +27,27 @@ significance for their occurrence.
   </div>
 </div>
 
-<div class="spacer">&nbsp;</div>
-
 <h3 class="<%= @section["name"] %>">Options</h3>
 
+
+<%basic ='false'%>
+<% if ((params['advanced_options'] && params['advanced_options'] == "false") ||
+      (@error_params['advanced_options'] && @error_params['advanced_options'] == "false")) 
+    basic = 'true' 
+end %>
+
+<div id="basic" style="display: <%= basic %>;">
+    <%= form_label("E-value inclusion  TPR & SEL", "E_tprsel") %>
+    <%= form_select_single("Evaltprsel", @eval_cutoff, @eval_cutoff, '1e-6') %>
+
+</div>
+
+<%basic = 'true'%>
 <% display = 'none' %>
 <% if ((params['advanced_options'] && params['advanced_options'] == "true") ||
       (@error_params['advanced_options'] && @error_params['advanced_options'] == "true")) 
-   	display = 'true' 
+   	display = 'true'
+    basic   = 'none' 
    end %>
 	
 
@@ -57,17 +70,26 @@ significance for their occurrence.
 	</div>
 </div>
 
+
 <% if (display == 'none')
 		display = 'true'
+        basic   = 'none'
 	else
 		display = 'none'
+        basic   = 'true'
 	end %>
-
+<br>
 <div id="advanced_link" style="display: <%= display %>;">
 	<div class="row">
-		<a href="#" onclick="Effect.Appear('advanced'); Effect.Fade('advanced_link'); setValue('advanced_options', 'true');">Show advanced options</a>
+		<h3><a href="#" onclick="Effect.Appear('advanced'); Effect.Fade('basic');Effect.Appear('basic_link'); Effect.Fade('advanced_link'); setValue('advanced_options', 'true');">Show advanced options</a></h3>
 	</div>
 </div>
+<div id="basic_link" style="display: <%= basic %>;  ">
+    <div class="row">
+        <h3><a href="#" onclick="Effect.Fade('advanced'); Effect.Appear('basic'); Effect.Fade('basic_link');Effect.Appear('advanced_link'); setValue('advanced_options', 'false');">Hide advanced options</a></h3>
+    </div>
+	</div>
+
 
 <%= form_hidden_field("advanced_options", "false") %>
 
