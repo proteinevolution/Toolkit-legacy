@@ -8,7 +8,7 @@ class TprpredAction < Action
   end
 
   attr_accessor :sequence_input, :sequence_file, :mail, :jobid
-  attr_accessor :evalue, :minhits, :maxrows
+  attr_accessor :evalue, :minhits, :maxrows, :Evaltprsel
 
   validates_input(:sequence_input, :sequence_file, {:informat => 'fas', 
                                                     :inputmode => 'sequence',
@@ -46,11 +46,11 @@ class TprpredAction < Action
 
   def perform
     params_dump
-    
+
     if (@advanced == "true")
     	@commands << "#{TPRPRED}/tprpred #{@infile} -r #{@pssm} -o #{@outfile} -E #{@evalue} -e #{@evalue} -N #{@minhits} -n #{@minhits} -L #{maxrows} &> #{job.statuslog_path}"
     else
-    	@commands << "#{TPRPRED}/tprpred_wrapper.pl #{@infile} > #{@outfile}"
+    	@commands << "#{TPRPRED}/tprpred_wrapper.pl -in #{@infile} -cut #{params['Evaltprsel']} > #{@outfile}"
     end
 
     logger.debug "Commands:\n"+@commands.join("\n")
