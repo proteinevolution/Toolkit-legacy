@@ -4,8 +4,8 @@ class Quick2DAction < Action
   JNET        = File.join(BIOPROGS, 'ruby', 'jnet.rb')
   MEMSAT      = File.join(BIOPROGS, 'ruby', 'memsat.rb')
   DISOPRED    = File.join(BIOPROGS, 'ruby', 'disopred.rb')
-  IUPRED = File.join(BIOPROGS, 'iupred', 'iupred')
-  IUPREDDIR = File.join(BIOPROGS, 'iupred')
+  IUPRED      = File.join(BIOPROGS, 'iupred', 'iupred')
+  IUPREDDIR   = File.join(BIOPROGS, 'iupred')
   HMMTOP      = File.join(BIOPROGS, 'hmmtop2.1', 'hmmtop')
   HMMTOPARCH  = File.join(BIOPROGS, 'hmmtop2.1', 'hmmtop.arch')
   HMMTOPPSV   = File.join(BIOPROGS, 'hmmtop2.1', 'hmmtop.psv')
@@ -13,9 +13,12 @@ class Quick2DAction < Action
   PROFOUALI    = File.join(PROFOUALIDIR, 'Prof')
   NCOILSDIR   = File.join(BIOPROGS, 'coils')
   NCOILS      = File.join(NCOILSDIR, 'ncoils-linux')
-  PROFROST    = File.join(BIOPROGS, 'ruby', 'profRost.rb')
-  DIFFSEQS    = File.join(BIOPROGS, 'ruby', 'getDiffSequences.rb')
-  PSIPRED     = File.join(BIOPROGS, 'ruby', 'psipred.rb')
+#  NCOILSDIR   = File.join(BIOPROGS, 'pcoils')
+#  NCOILS      = File.join(NCOILSDIR, 'run_Coils')
+  PROFROST     = File.join(BIOPROGS, 'ruby', 'profRost.rb')
+  DIFFSEQS     = File.join(BIOPROGS, 'ruby', 'getDiffSequences.rb')
+  PSIPRED      = File.join(BIOPROGS, 'ruby', 'psipred.rb')
+  PREDISI      = File.join(BIOPROGS, 'predisi', 'predisi_q2d.sh')
   
   #VSL2        = JAVA_1_5_EXEC+" -jar "+File.join(BIOPROGS, 'VSL2', 'VSL2.jar')
 
@@ -43,7 +46,7 @@ end
                      :informat => 'fas',
                      :inputmode => 'alignment',
                      :max_seqs => 5000,
-                     :max_length => 1000,
+                     :max_length => 10000,
                      :on => :create } )
 
   validates_jobid(:jobid)
@@ -66,12 +69,13 @@ end
     @coils       = params['coils_chk']     ? true : false
     @profouali   = params['profouali_chk'] ? true : false
     @profrost    = params['profrost_chk']  ? true : false
+    @predisi     = params['predisi_chk']   ? true : false
     @memsatsvm   = params['memsatsvm_chk'] ? true : false
-    @phobius     = params['phobius_chk'] ? true : false
-    #@memsat      = params['memsat2_chk']   ? true : false
+    @phobius     = params['phobius_chk']   ? true : false
+    #@memsat      = params['memsat2_chk']  ? true : false
     @hmmtop      = params['hmmtop_chk']    ? true : false
     @disopred    = params['disopred2_chk'] ? true : false
-    @iupred      = params['iupred_chk'] ? true : false
+    @iupred      = params['iupred_chk']    ? true : false
     #@vsl2        = params['vsl2_chk']      ? true : false
     @informat    = params['informat']
     logger.debug("Format: "+@informat+"\n")
@@ -108,6 +112,7 @@ end
   #  mem['memsatfile']   = basename+".memsat2"
     mem['memsatsvmfile'] = basename+".memsatsvm"
     mem['phobiusfile'] = basename+".phobius"
+    mem['predisifile'] = basename+".predisi"
     mem['hmmtopfile']   = basename+".hmmtop"
     mem['profoualifile']= basename+".profouali"
     mem['coilsfile']    = basename+".coils"
@@ -141,7 +146,7 @@ end
     commands = []
     if @psiblast
       commands << "echo 'Running PSI-BLAST [buildali] ' >> #{flash['logfile']}"
-      commands << "#{BUILDALI} -v5 -diff 200 -noss -n #{@psiblastit} -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
+      commands << "#{BUILDALI} -v 5 -diff 200 -noss -n #{@psiblastit} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
 
       commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
       commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
@@ -191,6 +196,8 @@ end
     if( @disopred ) then commands << "echo 'Running DISOPRED2' >> #{flash['logfile']}; #{DISOPRED} #{flash['queryfile']}" end
     if( @iupred ) then commands << "echo 'Running IUPRED' >> #{flash['logfile']}; #{IUPRED} #{flash['queryfile']} long #{IUPREDDIR} > #{flash['iupredfile']}" end
     if( @phobius ) then commands << "echo 'Running PHOBIUS' >> #{flash['logfile']}; #{PHOBIUS} #{flash['queryfile']} > #{flash['phobiusfile']}" end
+    if( @predisi ) then commands << "echo 'Running PREDISI' >> #{flash['logfile']}; #{PREDISI} #{flash['queryfile']} #{flash['predisifile']}"   end
+    
     if( @hmmtop )   then commands << "echo 'Running HMMTOP2.1' >> #{flash['logfile']}; export HMMTOP_ARCH=#{HMMTOPARCH}; export HMMTOP_PSV=#{HMMTOPPSV}; #{HMMTOP} -pi=mpred -pl -sf=FAS -if=#{flash['alnfasfile']} > #{flash['hmmtopfile']}" end
     if( @profouali )then commands << "echo 'Running PROFOUALI' >> #{flash['logfile']}; export PROF_DIR=#{PROFOUALIDIR}; #{PROFOUALI} -d -c -v -m 1 -a #{flash['clufile']} -p #{flash['matrixfile']} -o #{flash['profoualifile']}; echo 'Hide exitstate !=0 by this echo cmd'" end
     if( @coils )    then commands <<    "echo 'Running NCOILS' >> #{flash['logfile']}; export COILSDIR=#{NCOILSDIR}; #{NCOILS} -f < #{flash['queryfile']} > #{flash['coilsfile']}" end
