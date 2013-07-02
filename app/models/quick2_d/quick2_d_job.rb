@@ -11,12 +11,13 @@ class Quick2DJob < Job
 
   @@loop_color    = "#FFFFFF"
   @@query_color   = "#FFFAE0"
-  #@@tm_color      = "#E2FFEA"
   @@tm_color      = "#74e25f"
-  #@@do_color      = "#e4f5f7"#"#EDEEEB"
   @@do_color      = "#ddc57c"
-  #@@cc_color      = "#F0E0FF"
+  @@sp_color      = "#FF99FF"
+  @@cleavage_color= "#33FFCC"
   @@cc_color      = "#be80ff"
+
+
 
   @@sol_color     = "#ffff69"
 
@@ -51,6 +52,7 @@ class Quick2DJob < Job
     iupred = readIUPred
   #  vsl2     = readVSL2
     coils    = readCoils
+    predisi  = readPREDISI
 
     data     = ""
     len      = query['sequence'].length
@@ -108,6 +110,9 @@ class Quick2DJob < Job
       #data += export_tm("TM MEMSAT2", memsat, i, stop-1)
       if(!hmmtop.nil? and !hmmtop.empty?)
         data += export_tm("TM HMMTOP", hmmtop, i, stop-1)
+      end
+      if(!predisi.nil? and !predisi.empty?)
+        data += export_sp("SP PREDISI", predisi, i, stop-1)
       end
       if(exist_tm_params?(memsat_svm))
         data += export_tm("TM MEMSATSVM",memsat_svm, i, stop-1)
@@ -192,6 +197,17 @@ class Quick2DJob < Job
   end
 
 
+  def export_sp(name, blub, a, b)
+    ret = sprintf("%-#{@@descr_width}s", name)
+    if( !blub.nil? && !blub['sppred'].nil?)
+      ret += blub['sppred'] + "\n"
+      blub['sppred']=""
+    else
+      ret += "\n"
+    end
+    ret
+  end
+
   def export_do(name, blub, a, b)
     ret = sprintf("%-#{@@descr_width}s", name)
     if( !blub.nil? && !blub['dopred'].nil? )
@@ -244,6 +260,11 @@ class Quick2DJob < Job
     memsat_svm = readMemsatSvm
     phobius = readPhobius
     hmmtop   = readHMMTOP
+    predisi  = readPREDISI
+    
+    #logger.debug "L248 GetData HMMTOP  ->  #{hmmtop}"
+    logger.debug "L248 GetData PREDISI ->  #{predisi}"
+    
     disopred = readDisopred
     iupred = readIUPred
 # vsl2     = readVSL2
@@ -292,6 +313,8 @@ class Quick2DJob < Job
       data += printTMHTML("TM PROF (Rost)", "prof_tm", prof_r, i, stop)
       data += printTMHTML("TM MEMSAT-SVM","memsat_svm", memsat_svm, i, stop)
       data += printTMHTML("TM PHOBIUS","phobius", phobius, i, stop)
+      
+      data += printSPHTML("SP PREDISI", "predisi", predisi, i, stop)
 
       data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)
       data += printDOHTML("DO IUPRED","iupred",iupred,i,stop)
@@ -315,6 +338,7 @@ class Quick2DJob < Job
     ret += "<span>CC = </span><span style=\"background-color: #{@@cc_color};\">Coiled Coils</span></br>"
     ret += "<span>TM = </span><span style=\"background-color: #{@@tm_color};\">Transmembrane</span><span> (\'+\'=outside, \'-\'=inside)</span></br>"
     ret += "<span>DO = </span><span style=\"background-color: #{@@do_color};\">Disorder</span></br>"
+    ret += "<span>SP = </span><span style=\"background-color: #{@@sp_color};\">Signal Peptide</span><span style=\"background-color: #{@@cleavage_color};\"> Cleavage Site </span></br>"
     ret += "<span>SO = </span><span style=\"background-color: #{@@sol_color};\">Solvent accessibility</span><span> (A <b>b</b>urried residue has at most 25% of its surface exposed to the solvent.)</span></br>"
   end
 
@@ -359,6 +383,26 @@ class Quick2DJob < Job
         data += "<span id=\"#{j}#{id_name}\"style=\"background-color: #{@@tm_color};\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['tmpred'][j].chr}</span>"
       else
         data += "<span id=\"#{j}#{id_name}\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['tmpred'][j].chr}</span>"
+      end
+      end
+    }
+    data += "\n"
+    data
+  end
+
+  def printSPHTML(name, id_name, hash, a, b)
+    if( hash['sppred'].nil?|| hash['sppred']=="") then return "" end
+    data = ""
+    data += sprintf("<span>%-#{@@descr_width}s</span>", name)
+    a.upto(b-1){ |j|
+    if(hash['sppred'][j].nil?)
+      data+=" "
+    else
+      if(hash['sppred'][j].chr=="S")
+        data += "<span id=\"#{j}#{id_name}\"style=\"background-color: #{@@sp_color};\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['sppred'][j].chr}</span>"
+      elsif (hash['sppred'][j].chr=="C")
+        data += "<span id=\"#{j}#{id_name}\"style=\"background-color: #{@@cleavage_color};\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{hash['sppred'][j].chr}</span>"
+        
       end
       end
     }
@@ -657,6 +701,28 @@ class Quick2DJob < Job
     logger.debug "#{ret['tmpred']}"
     ret
   end
+
+  def readPREDISI
+    if( !File.exists?( self.actions[0].flash['predisifile'] ) ) then return {} end
+    ret={'sppred'=>""}
+    ar = IO.readlines( self.actions[0].flash['predisifile'] )
+    # Predisi should output only one line and then 
+    ar.each do |line|
+     
+      logger.debug "L673 PREDISI : #{line}"
+      if( line =~ /(\d+)\s+(Y|N)\s+(.+)/ )
+        cleavage_count = $1
+        if($2 =~ /Y/)
+          ret['sppred']+= "S" * (cleavage_count.to_i-1)
+          ret['sppred']+= "C"
+        end
+        logger.debug "L676  #{$1} #{$2} #{$3} "
+      end
+    end
+    ret
+  end
+
+
 
 
   def readMemsatSvm

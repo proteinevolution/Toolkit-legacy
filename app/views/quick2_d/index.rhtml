@@ -180,6 +180,24 @@
 	</div>
 </div>
 <div class="spacer">&nbsp;</div>
+
+<div class="row">
+    <div class="label">
+        <%= form_label("PREDISI") %>    
+    </div>
+    <div class="formw">         
+        <table><tr><td align="left" valign="top">
+            <%= form_checkbox("predisi_chk", '1', true, true) %>
+        </td><td> 
+		    PrediSi: prediction of signal peptides and their cleavage positions. 
+		    Hiller K, Grote A, Scheer M, Münch R, Jahn D.
+            <em>Nucleic Acids Res</em> <b>1;32, W375-9</b>,Jul 2004.
+        </td>
+        </tr></table>
+    </div>
+</div>
+<div class="spacer">&nbsp;</div>
+
 			
 <div class="row">	<div class="label">
 		<%= form_label("DISOPRED2") %>
