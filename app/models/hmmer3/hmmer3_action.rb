@@ -75,7 +75,10 @@ class Hmmer3Action < Action
                 @commands << "#{PERL}/reformat.pl -i=fas -o=sto -f=#{@infile} -a=#{@infile_sto}"
                 @commands << "#{HMMER3}/binaries/hmmbuild #{@infile_hmm} #{@infile_sto}"
 		            @commands << "#{HMMER3}/binaries/hmmsearch #{@hmmsearchopt} --tblout #{@outfile_tbl} --domtblout #{@outfile_domtbl}  -o #{@outfile} -A #{@outfile_multi_sto}   #{@infile_hmm} #{@db_path}  "
-                @commands << "#{PERL}/reformat.pl -i=sto -o=fas -f=#{@outfile_multi_sto} -a=#{@outfile_fas}"
+                #@commands << "#{PERL}/reformat.pl -i=sto -o=fas -f=#{@outfile_multi_sto} -a=#{@outfile_fas}"
+                @commands << "if [[ -s #{@outfile_multi_sto} ]] ; then #{PERL}/reformat.pl -i=sto -o=fas -f=#{@outfile_multi_sto} -a=#{@outfile_fas}; else echo \"Empty File\" >> #{@outfile_fas} ; fi"
+                
+
                 #@commands << "#{HMMER3}/binaries/hmmalign #{@infile_hmm} #{@db_path}  >>  #{@outfile_sto}  "
 		logger.debug "Commands:\n"+@commands.join("\n")
 		queue.submit(@commands)
