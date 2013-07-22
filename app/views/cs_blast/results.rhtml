@@ -124,7 +124,7 @@
 		<% end %>
 		<tr>
 			<td></td>
-			<td><pre>Hits with E-Value worse than <%= CsBlastJob::E_THRESH %></pre></td>
+			<td><pre>Hits with E-Value worse than <%= @job.e_thres %></pre></td>
 		</tr>
 		<% @job.hits_worse.each do |hit| %>
 		<tr>
