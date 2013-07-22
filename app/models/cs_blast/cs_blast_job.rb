@@ -6,7 +6,14 @@ class CsBlastJob < Job
   FOOTER_START_IDENT = '<PRE>'
   E_THRESH = 0.01
   
-  attr_reader :header, :hits_better, :hits_worse, :alignments, :footer, :num_checkboxes
+  attr_reader :header, :hits_better, :hits_worse, :alignments, :footer, :num_checkboxes , :e_thres
+
+  attr_accessor  :evalfirstit
+
+ 
+
+ # E_THRESH = params['evalfirstit']
+
 
   @@export_ext = ".export"
   def set_export_ext(val)
@@ -18,6 +25,9 @@ class CsBlastJob < Job
 
   # Parse out the main components of the BLAST output file in preparation for result display
   def before_results(controller_params)
+    
+     @e_thres = params['evalfirstit'].to_f
+    
     resfile = File.join(job_dir, jobid+".csblast")
     raise("ERROR with resultfile!") if !File.readable?(resfile) || !File.exists?(resfile) || File.zero?(resfile)
     res = IO.readlines(resfile).map {|line| line.chomp}
@@ -110,7 +120,7 @@ class CsBlastJob < Job
     	  id = $1
     	  evalue = $2
         logger.debug "Hit : #{id} Value #{evalue} Hit  #{hit} "
-    	  if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= E_THRESH
+        if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= @e_thres
     	    @hits_better << { :id => id, :content => hit }
     	  else
     	    @hits_worse << { :id => id, :content => hit }
@@ -133,7 +143,7 @@ class CsBlastJob < Job
  			# Score = 30.4 bits (68), Expect =   167,   Method: Composition-based stats.
     	    when /Expect\s*=\s*(\S+)/
     	      evalue = $1
-    	      if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f > E_THRESH
+    	      if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f > @e_thres
     	      	section[:check] = false
     	      end
     	      section[:content] << line
