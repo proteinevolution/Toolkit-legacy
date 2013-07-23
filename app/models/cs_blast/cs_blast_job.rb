@@ -25,10 +25,13 @@ class CsBlastJob < Job
   # Parse out the main components of the BLAST output file in preparation for result display
   def before_results(controller_params)
     
+     
      @e_thres = params['evalfirstit'].to_f
      
-     if(@_thres.nil?)
+     if(@e_thres == 0.0)
         @e_thres = E_THRESH
+      else
+        @e_thres = params['evalfirstit'].to_f
      end
     
     resfile = File.join(job_dir, jobid+".csblast")
