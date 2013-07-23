@@ -12,7 +12,6 @@ class CsBlastJob < Job
 
  
 
- # E_THRESH = params['evalfirstit']
 
 
   @@export_ext = ".export"
@@ -27,6 +26,10 @@ class CsBlastJob < Job
   def before_results(controller_params)
     
      @e_thres = params['evalfirstit'].to_f
+     
+     if(@_thres.nil?)
+        @e_thres = E_THRESH
+     end
     
     resfile = File.join(job_dir, jobid+".csblast")
     raise("ERROR with resultfile!") if !File.readable?(resfile) || !File.exists?(resfile) || File.zero?(resfile)
