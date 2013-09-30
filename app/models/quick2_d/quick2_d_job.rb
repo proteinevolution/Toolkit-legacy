@@ -133,12 +133,12 @@ class Quick2DJob < Job
       end
       #data += export_do("DO VSL", vsl2, i, stop-1)
 
-      if(!prof_r.nil? and !prof_r.empty?)
-        data += export_so("SO PROF (Rost)", prof_r, i, stop-1)
-      end
-      if(!jnet.nil? and !jnet.empty?)
-        data += export_so("SO JNET", jnet, i, stop-1)
-      end
+#      if(!prof_r.nil? and !prof_r.empty?)
+#        data += export_so("SO PROF (Rost)", prof_r, i, stop-1)
+#      end
+#      if(!jnet.nil? and !jnet.empty?)
+#        data += export_so("SO JNET", jnet, i, stop-1)
+#      end
       
       data += "\n\n"
       i += @@linewidth
@@ -320,9 +320,9 @@ class Quick2DJob < Job
       data += printDOHTML("DO IUPRED","iupred",iupred,i,stop)
 #      data += printDOHTML("DO VSL2", "vsl2", vsl2, i, stop)
 
-      data += printSOLHTML("SO Prof (Rost)", "sol_prof", prof_r, i, stop)
+      #data += printSOLHTML("SO Prof (Rost)", "sol_prof", prof_r, i, stop)
 
-      data += printSOLHTML("SO JNET", "sol_jnet", jnet, i, stop)
+      #data += printSOLHTML("SO JNET", "sol_jnet", jnet, i, stop)
 
 
       data += "\n"
@@ -339,7 +339,7 @@ class Quick2DJob < Job
     ret += "<span>TM = </span><span style=\"background-color: #{@@tm_color};\">Transmembrane</span><span> (\'+\'=outside, \'-\'=inside)</span></br>"
     ret += "<span>DO = </span><span style=\"background-color: #{@@do_color};\">Disorder</span></br>"
     ret += "<span>SP = </span><span style=\"background-color: #{@@sp_color};\">Signal Peptide</span><span style=\"background-color: #{@@cleavage_color};\"> Cleavage Site </span></br>"
-    ret += "<span>SO = </span><span style=\"background-color: #{@@sol_color};\">Solvent accessibility</span><span> (A <b>b</b>urried residue has at most 25% of its surface exposed to the solvent.)</span></br>"
+    #ret += "<span>SO = </span><span style=\"background-color: #{@@sol_color};\">Solvent accessibility</span><span> (A <b>b</b>urried residue has at most 25% of its surface exposed to the solvent.)</span></br>"
   end
 
 
@@ -473,6 +473,9 @@ class Quick2DJob < Job
     end
     ret['header'] = IO.readlines( self.actions[0].flash['headerfile']).join
     ret['sequence'].gsub!(/\s+/,"")
+    
+    @query_sequence_length = ret['sequence'].length
+    
     ret
   end
 
@@ -645,43 +648,77 @@ class Quick2DJob < Job
 
 
   def readPhobius
+    
+    query    = readQuery
+    
 	if( !File.exists?( self.actions[0].flash['phobiusfile'] ) ) then return {} end
 	ret={'tmconf'=>[], 'tmpred'=>"" }
 	ar = IO.readlines( self.actions[0].flash['phobiusfile'])
 	start_array = Array.new
 	end_array = Array.new
-	result=""
+  
+  # Outside + Domains
+  outside_start_array = Array.new
+  outside_end_array   = Array.new
+  
+    
+  result=""
+	
+  
 	ar.each do |line|
+   
+   
+    # Check for Outside Domains 
+    line =~ /NON CYTOPLASMIC/
+    if $& then
+      line =~ /(\d+)\s+(\d+)/
+      outside_start_array.push($1)
+      outside_end_array.push($2)
+      logger.debug "L666 NON CYTOPLASMIC Start#{$1} End #{$2} "
+    end
+    
+  
+    # Check for Transmembrane Fragment
 		line=~ /TRANSMEM/
 		if $& then
 			line =~ /(\d+)\s+(\d+)/
 			start_array.push($1)
 			end_array.push($2)
-		end
+	end
+  
 	end
 
-	start_array.length.times { |i|
-		(start_array[i].to_i-1-result.length).times { result +=" " }
-		(end_array[i].to_i-result.length).times { result += "X" }
-	}
+  result=""
+  for  i in 0..@query_sequence_length
+    result = result+ "--"  
+   end
+
+    # Set Transmembrane Regions
+    start_array.length.times { |i|
+    result[start_array[i].to_i-1..end_array[i].to_i] ='X'*( end_array[i].to_i+1 - start_array[i].to_i )
+    }
+    # Set Outside Regions
+    outside_start_array.length.times { |i|
+    result[outside_start_array[i].to_i-1..outside_end_array[i].to_i] ='+'*( outside_end_array[i].to_i+1 - outside_start_array[i].to_i )
+    }
+
+
+#  outside_start_array.length.times { |i|
+#    (outside_start_array[i].to_i-1-result.length).times { result +=" " }
+#    (outside_end_array[i].to_i-result.length).times { result += "+" }
+#  }
+
+#	start_array.length.times { |i|
+#		(start_array[i].to_i-1-result.length).times { result +=" " }
+#		(end_array[i].to_i-result.length).times { result += "X" }
+#	}
 	(readQuery['sequence'].length-result.length+1).times{ result += " " }
 	ret['tmpred'] += result
 
 	ret
   end
 
-  #~ def readVSL2
-    #~ if( !File.exists?( self.actions[0].flash['vsl2file'] ) ) then return {} end
-    #~ ret={'dopred'=>""}
-    #~ ar = IO.readlines( self.actions[0].flash['vsl2file'] )
-    #~ ar.each do |line|
-      #~ if( line =~ /^\d+\s+\S+\s+\S+\s+([D.])\s*$/ )
-        #~ ret['dopred']+=$1
-      #~ end
-    #~ end
-    #~ ret['dopred'].gsub!(/\./, " ")
-    #~ ret
-  #~ end
+
 
 
   def readHMMTOP
@@ -703,6 +740,7 @@ class Quick2DJob < Job
   end
 
   def readPREDISI
+
     if( !File.exists?( self.actions[0].flash['predisifile'] ) ) then return {} end
     ret={'sppred'=>""}
     ar = IO.readlines( self.actions[0].flash['predisifile'] )
