@@ -47,6 +47,7 @@ class Quick2DJob < Job
    # memsat   = readMemsat
     memsat_svm = readMemsatSvm
     phobius = readPhobius
+    phobius_sp =readPhobius_sp
     hmmtop   = readHMMTOP
     disopred = readDisopred
     iupred = readIUPred
@@ -114,6 +115,10 @@ class Quick2DJob < Job
       if(!predisi.nil? and !predisi.empty?)
         data += export_sp("SP PREDISI", predisi, i, stop-1)
       end
+      if(!hmmtop.nil? and !hmmtop.empty?)
+        data += export_sp("SP HMMTOP", hmmtop, i, stop-1)
+      end
+      
       if(exist_tm_params?(memsat_svm))
         data += export_tm("TM MEMSATSVM",memsat_svm, i, stop-1)
       end
@@ -133,12 +138,12 @@ class Quick2DJob < Job
       end
       #data += export_do("DO VSL", vsl2, i, stop-1)
 
-      if(!prof_r.nil? and !prof_r.empty?)
-        data += export_so("SO PROF (Rost)", prof_r, i, stop-1)
-      end
-      if(!jnet.nil? and !jnet.empty?)
-        data += export_so("SO JNET", jnet, i, stop-1)
-      end
+#      if(!prof_r.nil? and !prof_r.empty?)
+#        data += export_so("SO PROF (Rost)", prof_r, i, stop-1)
+#      end
+#      if(!jnet.nil? and !jnet.empty?)
+#        data += export_so("SO JNET", jnet, i, stop-1)
+#      end
       
       data += "\n\n"
       i += @@linewidth
@@ -259,7 +264,8 @@ class Quick2DJob < Job
  #   memsat   = readMemsat
     memsat_svm = readMemsatSvm
     phobius = readPhobius
-    hmmtop   = readHMMTOP
+    hmmtop    = readHMMTOP
+    phobius_sp = readPhobius_sp
     predisi  = readPREDISI
     
     #logger.debug "L248 GetData HMMTOP  ->  #{hmmtop}"
@@ -315,14 +321,14 @@ class Quick2DJob < Job
       data += printTMHTML("TM PHOBIUS","phobius", phobius, i, stop)
       
       data += printSPHTML("SP PREDISI", "predisi", predisi, i, stop)
-
+      data += printSPHTML("SP PHOBIUS", "phobius_sp", phobius_sp, i, stop)
       data += printDOHTML("DO DISOPRED2", "disopred", disopred, i, stop)
       data += printDOHTML("DO IUPRED","iupred",iupred,i,stop)
 #      data += printDOHTML("DO VSL2", "vsl2", vsl2, i, stop)
 
-      data += printSOLHTML("SO Prof (Rost)", "sol_prof", prof_r, i, stop)
+      #data += printSOLHTML("SO Prof (Rost)", "sol_prof", prof_r, i, stop)
 
-      data += printSOLHTML("SO JNET", "sol_jnet", jnet, i, stop)
+      #data += printSOLHTML("SO JNET", "sol_jnet", jnet, i, stop)
 
 
       data += "\n"
@@ -339,7 +345,7 @@ class Quick2DJob < Job
     ret += "<span>TM = </span><span style=\"background-color: #{@@tm_color};\">Transmembrane</span><span> (\'+\'=outside, \'-\'=inside)</span></br>"
     ret += "<span>DO = </span><span style=\"background-color: #{@@do_color};\">Disorder</span></br>"
     ret += "<span>SP = </span><span style=\"background-color: #{@@sp_color};\">Signal Peptide</span><span style=\"background-color: #{@@cleavage_color};\"> Cleavage Site </span></br>"
-    ret += "<span>SO = </span><span style=\"background-color: #{@@sol_color};\">Solvent accessibility</span><span> (A <b>b</b>urried residue has at most 25% of its surface exposed to the solvent.)</span></br>"
+    #ret += "<span>SO = </span><span style=\"background-color: #{@@sol_color};\">Solvent accessibility</span><span> (A <b>b</b>urried residue has at most 25% of its surface exposed to the solvent.)</span></br>"
   end
 
 
@@ -391,7 +397,7 @@ class Quick2DJob < Job
   end
 
   def printSPHTML(name, id_name, hash, a, b)
-    if( hash['sppred'].nil?|| hash['sppred']=="") then return "" end
+    if( hash['sppred'].nil?) then return "" end
     data = ""
     data += sprintf("<span>%-#{@@descr_width}s</span>", name)
     a.upto(b-1){ |j|
@@ -473,6 +479,9 @@ class Quick2DJob < Job
     end
     ret['header'] = IO.readlines( self.actions[0].flash['headerfile']).join
     ret['sequence'].gsub!(/\s+/,"")
+    
+    @query_sequence_length = ret['sequence'].length
+    
     ret
   end
 
@@ -608,7 +617,16 @@ class Quick2DJob < Job
     #~ ret
   #~ end
 
-
+#########################################################################################
+# Extract all Disordered Information from Disopred .horiz_d file
+#
+#DISOPRED predictions for a false positive rate threshold of: 5%
+#
+#conf: 960000000000000000000000000000000000000000000000000000000000
+#pred: **..........................................................
+#  AA: MMLALVCVLFGFAWLIDRLGLRRFSRVLGLTSVLLVFAVGCGPLPSWMLHHLQHTGVNDF
+#              10        20        30        40        50        60
+#########################################################################################
   def readDisopred
     if( !File.exists?( self.actions[0].flash['disopredfile'] ) ) then return {} end
     ret={'doconf'=>"", 'dopred'=>""}
@@ -624,7 +642,6 @@ class Quick2DJob < Job
     ret['dopred'].gsub!(/\*/, "D")
     ret
   end
-
 
   def readIUPred
     if( !File.exists?( self.actions[0].flash['iupredfile'] ) ) then return {} end
@@ -642,48 +659,211 @@ class Quick2DJob < Job
     end
     ret
   end
+#########################################################################################
+# Extract the Data from Phobius for SP Prediction
+#
+# ID   gi
+#FT   SIGNAL        1     18
+#FT   DOMAIN        1      2       N-REGION.
+#FT   DOMAIN        3     13       H-REGION.
+#FT   DOMAIN       14     18       C-REGION.
+#FT   DOMAIN       19     27       NON CYTOPLASMIC.
+#FT   TRANSMEM     28     49
+#FT   DOMAIN       50    253       CYTOPLASMIC.
+#
+#########################################################################################
+  def readPhobius_sp
+    # Initialize all Variables 
+    query    = readQuery
+    if( !File.exists?( self.actions[0].flash['phobiusfile'] ) ) then return {} end
+    ret={'sppred' =>""}
+    ar = IO.readlines( self.actions[0].flash['phobiusfile'])
+    
+    # Signal Peptide
+    sp_start_array = Array.new
+    sp_end_array = Array.new
+    
+    # Cleavage Site
+    cs_start_array = Array.new
+    cs_end_array = Array.new
+    
+    
+    result=""
+    
+    
+   # Calculate Output from data 
+   ar.each do |line|
+   
+   # Check for Signal Peptide
+    line =~ /SIGNAL/
+      if $& then
+        line =~ /(\d+)\s+(\d+)/
+        sp_start_array.push($1)
+        sp_end_array.push($2)
+        logger.debug "L80 SIGNAL PEPTIDE Start#{$1} End #{$2} "
+      end
+   
+    
+    # Check for Cleavage Site in Signal
+    line =~ /C-REGION/
+      if $& then
+        line =~ /(\d+)\s+(\d+)/
+        cs_start_array.push($1)
+        cs_end_array.push($2)
+        logger.debug "L80 Cleavage Site Start#{$1} End #{$2} "
+      end
+    
+     end
+    
+    result=""
+    for  i in 0..@query_sequence_length
+      result = result+ "--"  
+    end
+    
+    # Signal Peptide
+    sp_start_array.length.times { |i|
+    result[sp_start_array[i].to_i-1..sp_end_array[i].to_i] ='S'*( sp_end_array[i].to_i+1 - sp_start_array[i].to_i )
+    }
+    
+    # Cleavage Site
+    cs_start_array.length.times { |i|
+    result[cs_start_array[i].to_i-1..cs_end_array[i].to_i] ='C'*( cs_end_array[i].to_i+1 - cs_start_array[i].to_i )
+    }
+    
+    ret['sppred'] += result
+    
+    ret
+  end
 
 
+
+#########################################################################################
+# Extract the Data from Phobius for TM Prediction
+#
+# ID   gi
+#FT   SIGNAL        1     18
+#FT   DOMAIN        1      2       N-REGION.
+#FT   DOMAIN        3     13       H-REGION.
+#FT   DOMAIN       14     18       C-REGION.
+#FT   DOMAIN       19     27       NON CYTOPLASMIC.
+#FT   TRANSMEM     28     49
+#FT   DOMAIN       50    253       CYTOPLASMIC.
+#
+#########################################################################################
   def readPhobius
-	if( !File.exists?( self.actions[0].flash['phobiusfile'] ) ) then return {} end
-	ret={'tmconf'=>[], 'tmpred'=>"" }
-	ar = IO.readlines( self.actions[0].flash['phobiusfile'])
-	start_array = Array.new
-	end_array = Array.new
-	result=""
-	ar.each do |line|
-		line=~ /TRANSMEM/
-		if $& then
-			line =~ /(\d+)\s+(\d+)/
-			start_array.push($1)
-			end_array.push($2)
-		end
-	end
+    
+    query    = readQuery
+    
+    if( !File.exists?( self.actions[0].flash['phobiusfile'] ) ) then return {} end
+    ret={'tmconf'=>[], 'tmpred'=>"" , 'sppred' =>""}
+    ar = IO.readlines( self.actions[0].flash['phobiusfile'])
+    start_array = Array.new
+    end_array = Array.new
+    
+    # Outside + Domains
+    outside_start_array = Array.new
+    outside_end_array   = Array.new
+    
+    # Signal Peptide
+    sp_start_array = Array.new
+    sp_end_array = Array.new
+    
+    result=""
+    
+    
+    ar.each do |line|
+      
+      # Check for Signal Peptide
+      line =~ /SIGNAL/
+      if $& then
+        line =~ /(\d+)\s+(\d+)/
+        sp_start_array.push($1)
+        sp_end_array.push($2)
+      end
+      
+      # Check for Outside Domains 
+      line =~ /NON CYTOPLASMIC/
+      if $& then
+        line =~ /(\d+)\s+(\d+)/
+        outside_start_array.push($1)
+        outside_end_array.push($2)
+      end
+      
+      
+      # Check for Transmembrane Fragment
+      line=~ /TRANSMEM/
+      if $& then
+        line =~ /(\d+)\s+(\d+)/
+        start_array.push($1)
+        end_array.push($2)
+      end
+      
+    end
 
-	start_array.length.times { |i|
-		(start_array[i].to_i-1-result.length).times { result +=" " }
-		(end_array[i].to_i-result.length).times { result += "X" }
-	}
+  result=""
+  for  i in 0..@query_sequence_length
+    result = result+ "--"  
+   end
+
+    # Set Transmembrane Regions
+    start_array.length.times { |i|
+    result[start_array[i].to_i-1..end_array[i].to_i] ='X'*( end_array[i].to_i+1 - start_array[i].to_i )
+    }
+    # Set Outside Regions
+    outside_start_array.length.times { |i|
+    result[outside_start_array[i].to_i-1..outside_end_array[i].to_i] ='+'*( outside_end_array[i].to_i+1 - outside_start_array[i].to_i )
+    }
+
+    # Set Signal Peptide Regions, we need to check wether the next Element is in / outside find the next element to the Sp 
+    # Test for  outside Regions, Sp can only exist once
+    start_after_sp = sp_end_array[i].to_i+1
+    outside_start_array.length.times { |i|
+    if outside_start_array[i].to_i == start_after_sp
+      start_after_sp = '+'
+    else
+      start_after_sp = '-'
+    end
+    }
+    sp_start_array.length.times { |i|
+    result[sp_start_array[i].to_i-1..sp_end_array[i].to_i] =start_after_sp*( sp_end_array[i].to_i+1 - sp_start_array[i].to_i )
+    }
+
+    sp_result = ""
+    # Signal Peptide Identification
+    sp_start_array.length.times { |i|
+    sp_result[sp_start_array[i].to_i-1..sp_end_array[i].to_i] =start_after_sp*( sp_end_array[i].to_i+1 - sp_start_array[i].to_i )
+    }
+    ret['sppred'] += sp_result
+
+
+#  outside_start_array.length.times { |i|
+#    (outside_start_array[i].to_i-1-result.length).times { result +=" " }
+#    (outside_end_array[i].to_i-result.length).times { result += "+" }
+#  }
+
+#	start_array.length.times { |i|
+#		(start_array[i].to_i-1-result.length).times { result +=" " }
+#		(end_array[i].to_i-result.length).times { result += "X" }
+#	}
 	(readQuery['sequence'].length-result.length+1).times{ result += " " }
 	ret['tmpred'] += result
 
 	ret
   end
 
-  #~ def readVSL2
-    #~ if( !File.exists?( self.actions[0].flash['vsl2file'] ) ) then return {} end
-    #~ ret={'dopred'=>""}
-    #~ ar = IO.readlines( self.actions[0].flash['vsl2file'] )
-    #~ ar.each do |line|
-      #~ if( line =~ /^\d+\s+\S+\s+\S+\s+([D.])\s*$/ )
-        #~ ret['dopred']+=$1
-      #~ end
-    #~ end
-    #~ ret['dopred'].gsub!(/\./, " ")
-    #~ ret
-  #~ end
-
-
+#########################################################################################
+# Extract the information from the hmmtop output, see example output below
+#
+#
+#>HP: 297 gi 312803 emb CAA43985 1  cdk2  Homo sapiens   OUT   0
+#The best model:
+#
+#     seq  MENFQKVEKI GEGTYGVVYK ARNKLTGEVV ALKKIRDTET EGVPSTAIRE    50
+#     pred OOOOOOOOOO OOOOOOOOOO OOOOOOOOOO OOOOOOOOOO OOOOOOOOOO
+#
+#     seq  ISLLKELNHP NIVKLLDVIH TENKLYLVFE FLHQDLKKFM DASALTGIPL   100
+#     pred OOOOOOOOOO OOOOOOOOOO OOOOOOOOOO OOOOOOOOOO OOOOOOOOOO
+#########################################################################################
   def readHMMTOP
     if( !File.exists?( self.actions[0].flash['hmmtopfile'] ) ) then return {} end
     ret={'tmpred'=>""}
@@ -703,6 +883,7 @@ class Quick2DJob < Job
   end
 
   def readPREDISI
+
     if( !File.exists?( self.actions[0].flash['predisifile'] ) ) then return {} end
     ret={'sppred'=>""}
     ar = IO.readlines( self.actions[0].flash['predisifile'] )
