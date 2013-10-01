@@ -397,7 +397,7 @@ class Quick2DJob < Job
   end
 
   def printSPHTML(name, id_name, hash, a, b)
-    if( hash['sppred'].nil?|| hash['sppred']=="") then return "" end
+    if( hash['sppred'].nil?) then return "" end
     data = ""
     data += sprintf("<span>%-#{@@descr_width}s</span>", name)
     a.upto(b-1){ |j|
