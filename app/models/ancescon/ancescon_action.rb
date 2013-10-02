@@ -6,7 +6,7 @@ class AncesconAction < Action
     PERL   = File.join(BIOPROGS, 'perl')
   end
 
-  attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :otheradvanced
+  attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :otheradvanced, :full_name
 
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
                                                     :informat => 'fas', 
@@ -32,6 +32,7 @@ class AncesconAction < Action
     @informat = params['informat'] ? params['informat'] : 'fas'
     reformat(@informat, "fas", @seqfile)
     @informat = "fas"
+    @full_name = params['full_name'] ? params['full_name']: 0
     
     @otheradvanced = params["otheradvanced"] ? params["otheradvanced"] : ""
      
@@ -59,7 +60,12 @@ class AncesconAction < Action
     
     res.each do |line|
       if (line =~ /^>\s*(\S+?)\s+/)
-      	name = $1
+      	if (@full_name.to_i == 1)
+          name = line[0,150]
+        else
+          name = $1
+        end
+       
       	line = "Sequence#{seq_num}".ljust(20)
       	names.write(line + name + "\n")
       	line = ">" + line + "\n"
