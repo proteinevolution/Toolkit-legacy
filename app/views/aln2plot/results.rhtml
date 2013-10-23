@@ -6,7 +6,11 @@
   
 <div class="row">
 	<img hspace="14" src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>-1.png" />
+	<p><a href="<%= url_for({:action => 'export_png_to_file', :jobid => @job, :pngnr => 1}) %>">Export Hydrophobicity plot to file</a></p>
+	<br/>
 	<img src="<%= @job.url_for_job_dir %>/<%= @job.jobid %>-2.png" />
+	<p><a href="<%= url_for({:action => 'export_png_to_file', :jobid => @job, :pngnr => 2}) %>">Export Side Chain Volume plot to file</a></p>
+	<br/>
 </div>
 <div class="alignres">
 <%= @job.render_file(@job.jobid + ".data") %>
