@@ -24,7 +24,9 @@
       # Location Tuebingen, using variable Memor Limiting to circumvent Memory constraints and Queue Crowding
       if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
                   if RAILS_ENV == "development"
-                    command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G -p 10 #{self.wrapperfile}"
+                    # Parameter -p 10 not available on OLT
+                    #command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G -p 10 #{self.wrapperfile}"
+                    command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G #{self.wrapperfile}"
                     logger.debug "qsub command: #{command}"
                   else
                     command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G #{self.wrapperfile}" # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
@@ -191,7 +193,6 @@
           end
           if RAILS_ENV == "development"
             f.write "echo 'Job orig #{id.to_s} DONE!' >> #{queue_job.action.job.statuslog_path}\n"
-            f.write "ssh ws04 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{STATUS_DONE}'\n" # naga
           end
           f.write "else\n"
           if (LOCATION == "Munich")
