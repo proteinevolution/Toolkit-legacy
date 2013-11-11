@@ -2,7 +2,7 @@
     acts_as_tree :order => "created_on"
     has_many :actions, :order => "created_on"
     #    Gibt Fehler beim speichern eines Jobs, wenn man eingeloggt ist (updated? not found...)
-    #    belongs_to :user
+        belongs_to :user
 
     include Dbhack
     
@@ -216,6 +216,7 @@
 
     def config
       #    	RAILS_DEFAULT_LOGGER.debug "###: " + self.class.to_s.to_us
+      #logger.debug " L219 Loading YAMLDATA for #{tool.to_us} "
       (YAML.load_file(File.join(TOOLKIT_ROOT, 'config', tool.to_us + '_jobs.yml')))[self.class.to_s.to_us]
     end
 
@@ -318,24 +319,26 @@
               #worker.delete
           end
           end
-          logger.debug "Destroy worker!"
+          logger.debug "L322 Destroy worker!"
           AbstractWorker.destroy_all "queue_job_id = #{qj.id}"
         end
-        logger.debug "Destroy queue_jobs!"
+        logger.debug "L325 Destroy queue_jobs!"
         QueueJob.destroy_all "action_id = #{action.id}"
       end
       
-      logger.debug "Destroy actions!"
+      #logger.debug "Destroy actions!"
       Action.delete_all "job_id = #{id}"
+      logger.debug "L331 JobDir: #{job_dir}"
       directory_content = Dir.entries("#{job_dir}")
-      logger.debug "Entries length: #{directory_content.length}"
-      logger.debug "Entries: #{directory_content}"
+      #logger.debug "Entries length: #{directory_content.length}"
+      #logger.debug "Entries: #{directory_content}"
       directory_content.each  do |file|
-        logger.debug "File: #{file}"
-        if (File.exists? file)
-          if (file != ".." && file != ".")
-            system ("rm -r #{file}")
-          end
+         if (file != ".." && file != ".")
+          file = "#{job_dir}/#{file}"
+          #if (File.exists? file)
+            FileUtils.remove_entry_secure(file)
+           # system ("rm -r #{file}")
+          #end
         end
       end
       # do not delete jobdir, this is done be a daily sweep script
