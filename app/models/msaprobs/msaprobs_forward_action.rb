@@ -41,7 +41,6 @@ class MsaprobsForwardAction < Action
   end
 
   def forward_params
-    logger.debug "L44 TEST : #{test}"
     forward_alignment_tools()
   end
 
