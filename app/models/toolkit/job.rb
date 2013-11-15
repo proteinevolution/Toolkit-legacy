@@ -2,7 +2,7 @@
     acts_as_tree :order => "created_on"
     has_many :actions, :order => "created_on"
     #    Gibt Fehler beim speichern eines Jobs, wenn man eingeloggt ist (updated? not found...)
-        belongs_to :user
+ #       belongs_to :user
 
     include Dbhack
     
