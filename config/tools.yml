@@ -508,9 +508,9 @@
   - external
 - name: hamppred
   title: HAMPpred
-  title_long: Hamppred - Description needed
-  section: search
-  updated: November, 2011
+  title_long: HAMPpred - Description needed
+  section: classification
+  updated: November, 2013
   version: n.a.
   active: 
   - member
