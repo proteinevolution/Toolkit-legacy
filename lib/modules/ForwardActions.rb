@@ -41,8 +41,8 @@ module ForwardActions
 end
 
 def  test
-  "  -- >  #{self.type.name} (\##{self.id}): #{self.to_s}"
+  "  -- >  #{self.class} (\##{self.id}): #{self.to_s}"
   
 end
   
-end  
+end
