@@ -222,22 +222,22 @@ class HamppredJob  < Job
 		@resultsa.push("<br><font color='brown'><b>View 3D structural alignments between your query and template structures by clicking on the <img src=\"#{$DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" height=\"15\" align=\"middle\" /> buttons above the alignments.</b></font>")
 	end
 	if(Nseqs<=5&& prob < 60)
-		@resultsa.push("<font color='red'> <b>Note</b>: Your query alignment consists of only #{Nseqs} sequence")
-		if Nseqs !=1 
-		@resultsa.push("s")
-		end
-		@resultsa.push("(at 90&#37 maximum pairwise sequence identity). You may be able to improve sensitivity vastly")
-		@resultsa.push("by using our intermediate HMM searching method 'HHsenser' to enlarge the query alignment: ")
-		@resultsa.push("Just press <b>\"Resubmit using HHsenser</b>\" above. ")
-		@resultsa.push("<br>Alternatively, you may try to build a bigger query alignment <i>by hand</i>: ")
-		@resultsa.push("Run PSI-BLAST with your query and decide individually for each database match with E-value ")
-		@resultsa.push("< 1...10 whether to include it in the alignment. If you can't decide whether to include ")
-		@resultsa.push("a candidate sequence, you may use a very powerful technique called ")
-		@resultsa.push("i>backvalidation</i> [Koretke <i>et al.</i> 2001]: ")
-		@resultsa.push("Start PSI-BLAST with the candidate sequence and check whether you can find your original ")
-		@resultsa.push("query sequence or any other already accepted sequence with sufficient E-value (e.g. < 0.01) ")
-		@resultsa.push("Repeat PSI-BLAST iterations until you have at least 10 sequences (if possible). ")
-		@resultsa.push("Use this seed alignment to jump-start HHpred.</font><br><br>")
+#		@resultsa.push("<font color='red'> <b>Note</b>: Your query alignment consists of only #{Nseqs} sequence")
+#		if Nseqs !=1
+#		@resultsa.push("s")
+#		end
+#		@resultsa.push("(at 90&#37 maximum pairwise sequence identity). You may be able to improve sensitivity vastly")
+#		@resultsa.push("by using our intermediate HMM searching method 'HHsenser' to enlarge the query alignment: ")
+#		@resultsa.push("Just press <b>\"Resubmit using HHsenser</b>\" above. ")
+#		@resultsa.push("<br>Alternatively, you may try to build a bigger query alignment <i>by hand</i>: ")
+#		@resultsa.push("Run PSI-BLAST with your query and decide individually for each database match with E-value ")
+#		@resultsa.push("< 1...10 whether to include it in the alignment. If you can't decide whether to include ")
+#		@resultsa.push("a candidate sequence, you may use a very powerful technique called ")
+#		@resultsa.push("i>backvalidation</i> [Koretke <i>et al.</i> 2001]: ")
+#		@resultsa.push("Start PSI-BLAST with the candidate sequence and check whether you can find your original ")
+#		@resultsa.push("query sequence or any other already accepted sequence with sufficient E-value (e.g. < 0.01) ")
+#		@resultsa.push("Repeat PSI-BLAST iterations until you have at least 10 sequences (if possible). ")
+#		@resultsa.push("Use this seed alignment to jump-start HHpred.</font><br><br>")
 	elsif  prob>40 && prob < 90 && rand>0.8
 		@resultsa.push("<br><font color='blue'>\n<b>Need help to find out how to validate your hits? Click <a href=\"\#\" title=\"HHpred FAQs\" onclick=\"openHelpWindow('help_faq','correct match');\">here.</a></b>\n</font>")
 	elsif rand > 0.8

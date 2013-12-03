@@ -1,16 +1,20 @@
 class HamppredAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
   HHBLITS = File.join(BIOPROGS, 'hhblits')
+  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
+  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   CSBLAST = File.join(BIOPROGS, 'csblast')
   HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')
+  PSIPRED = File.join(BIOPROGS, 'psipred')
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
                 :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs,:prefilter
 
-  validates_input(:sequence_input, :sequence_file, {:informat=> :informat, 
-                                                    :inputmode => 'sequences',
+  validates_input(:sequence_input, :sequence_file, {:informat_field => :informat,
+                                                    :informat => 'fas',
+                                                    :inputmode => 'sequence',
                                                     :max_seqs => 1,
                                                     :min_seqs => 0,
                                                     :on => :create })
@@ -34,6 +38,9 @@ class HamppredAction < Action
       @informat = "fas"
     end
 
+    # Check if the second line is too long and increase Memory allocation in Tuebingen 
+    @memory = check_sequence_length
+
     @prefilter = params['prefilter'] ? params['prefilter'] : 'hhblits'
     
     @dbs = params['hhpred_dbs'].nil? ? "" : params['hhpred_dbs']
@@ -42,6 +49,7 @@ class HamppredAction < Action
     if @genomes_dbs.kind_of?(Array) then @genomes_dbs = @genomes_dbs.join(' ') end
     
     @dbs = @dbs + " " + @genomes_dbs
+    @maxhhblitsit = params['maxhhblitsit']
     @E_hhblits = params["Ehhblitsval"].nil? ? '' : "-e "+params["Ehhblitsval"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
     @qid_min = params["qid_min"].nil? ? '' : '-qid '+params["qid_min"]
@@ -147,12 +155,12 @@ class HamppredAction < Action
   # Prepare FASTA files for 'Show Query Alignemt', HHviz bar graph, and HMM histograms
   def prepare_fasta_hhviz_histograms_etc
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
-    @commands << "#{HH}/hhfilter -i #{@basename}.a3m -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 100"
-    @commands << "#{HH}/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.fas -d 160 -uc"  # max. 160 chars in description
+    @commands << "#{HHSUITE}/hhfilter -i #{@basename}.a3m -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 100"
+    @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.fas -d 160 -uc"  # max. 160 chars in description
 
     # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
-    @commands << "#{HH}/hhfilter -i #{@basename}.a3m -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 50"
-    @commands << "#{HH}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas -uc"
+    @commands << "#{HHSUITE}/hhfilter -i #{@basename}.a3m -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 50"
+    @commands << "#{HHSUITELIB}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas -uc"
     @commands << "rm #{@local_dir}/#{job.jobid}.reduced.a3m"
 
     # Generate graphical display of hits
@@ -192,18 +200,32 @@ class HamppredAction < Action
 
   def perform
     params_dump
-
+    # Export variable needed for HHSuite
+    @commands << "export  HHLIB=#{HHLIB} "
+    @commands << "export  PATH=$PATH:#{HHSUITE} "
      # Create a fasta File later on used for the domain resubmission of the results
-     @commands << "#{HH}/reformat.pl #{@informat} a2m #{@seqfile} #{@basename}.resub_domain.a2m"
+     @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a2m #{@seqfile} #{@basename}.resub_domain.a2m"
 
     if job.parent.nil? || @mode.nil?
       # Create alignment
           
-      @commands << "#{HH}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+      if(@prefilter=='psiblast')
+         @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
+         @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
+      else
+          if @maxhhblitsit == '0'
+              @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
+              @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+          else
+              @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
+              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+          end
+      end
+      @commands << "#{HHSUITELIB}/addss.pl #{@basename}.a3m"
 
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-      @commands << "#{HH}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     end
 
       ####################################################
@@ -225,19 +247,40 @@ class HamppredAction < Action
 
       # HHsearch with query HMM against HMM database
       @commands << "echo 'Searching #{@dbnames} ...' >> #{job.statuslog_path}"
-      @commands << "#{HH}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs #{HHBLITS}/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HHSUITE}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs #{HHBLITS}/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     
 
     prepare_fasta_hhviz_histograms_etc
 
-    @commands << "#{HH}/hhfilter -i #{@basename}.reduced.fas -o #{@basename}.top.a3m -id 90 -qid 0 -qsc 0 -cov 0 -diff 10 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
-    @commands << "#{HH}/reformat.pl a3m fas #{@basename}.top.a3m #{@basename}.repseq.fas -uc 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "#{HHSUITE}/hhfilter -i #{@basename}.reduced.fas -o #{@basename}.top.a3m -id 90 -qid 0 -qsc 0 -cov 0 -diff 10 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{@basename}.top.a3m #{@basename}.repseq.fas -uc 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     @commands << "#{HH}/tenrep.rb -i #{@basename}.repseq.fas -h #{@basename}.hhr -p 40 -o #{@basename}.tenrep_file"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.tenrep_file -o #{@basename}.tenrep_file"
 
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'cpus' => '3'})
+    queue.submit(@commands, true, {'cpus' => '3', 'memory' => @memory})
+  end
+
+  # Check the length of the first Sequence to determine the access Memory needed for WYE and the large UNIPROT DB
+  def check_sequence_length
+    # Init local vars
+    f = File.open(@seqfile)
+    data = f.readlines
+      sequence_length = data[1].size
+    f.close
+    memory = 18
+    if sequence_length > 1000
+      memory = 23
+    end
+    if sequence_length > 2000
+      memory = 28
+    end
+    if sequence_length > 2500
+      memory = 30
+    end
+    logger.debug "L281 Memory Allocation - HAMPpred - : #{memory}"
+    memory
   end
 
 end
