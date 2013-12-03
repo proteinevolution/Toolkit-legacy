@@ -283,7 +283,7 @@ def select_memory(method)
   when "BlastclustAction" then 10
   when "BacktransAction" then 2
   ### C ###
-  when "ClansAction"    then 18
+  when "ClansAction"    then 25
   when "CsBlastAction"  then 15
   when "ClustalwAction" then 10
   when "ClustalwForwardAction" then 10
@@ -293,13 +293,13 @@ def select_memory(method)
   ### F ###
   when "FrpredAction" then 10
   ### G ###
-  when "GcviewAction" then 10  
+  when "GcviewAction" then 20
   when "Gi2seqExportAction" then 2  
   when "Gi2seqAction" then 2  
   when "Gi2seqForwardAction" then 2
   ### H ###  
   when "HhpredForwardAction" then 19
-  when "HhpredAction" then 19
+  when "HhpredAction" then 22
   when "HhblitsAction" then 18
   when "HhblitsForwardAction" then 18
   when "HhblitsShowtemplalignAction" then 18
