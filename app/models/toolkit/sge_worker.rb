@@ -24,9 +24,9 @@
       # Location Tuebingen, using variable Memor Limiting to circumvent Memory constraints and Queue Crowding
       if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
                   if RAILS_ENV == "development"
-                    # Parameter -p 10 not available on OLT
+                    # Parameter -p 10 not available on OLT, use instead h_rt
                     #command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G -p 10 #{self.wrapperfile}"
-                    command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G #{self.wrapperfile}"
+                    command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G -l h_rt=1:0:0 #{self.wrapperfile}"
                     logger.debug "qsub command: #{command}"
                   else
                     command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G #{self.wrapperfile}" # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
