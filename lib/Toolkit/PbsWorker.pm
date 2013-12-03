@@ -24,7 +24,7 @@ sub exec {
     $self->update;
 
     open($fh, ">$commandfile") or die("Cannot open '$commandfile'!\n");    
-    print $fh "#!/bin/sh\n";
+    print $fh "#!/bin/bash\n";
     print $fh "#PBS -e localhost:$job_dir/stderr\n";
     print $fh "#PBS -o localhost:$job_dir/stdout\n";
     print $fh "#PBS -q web\n";

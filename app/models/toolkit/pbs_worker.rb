@@ -47,7 +47,8 @@
 
       begin
         f = File.open(self.wrapperfile, 'w')
-        f.write "#!/bin/sh\n"
+        f.write "#!/bin/bash\n"
+        # f.write "#!/bin/sh\n"
         # SET STATUS OF THIS JOB TO RUNNING
         f.write "#PBS -u toolkit\n"
         f.write "#PBS -e localhost:#{queue_job.action.job.job_dir}/#{id.to_s}.stderr\n"
@@ -129,7 +130,8 @@
     def writeShCmdsFile
       begin
         f = File.open(self.commandfile, 'w')
-        f.write "#!/bin/sh\n"
+        f.write "#!/bin/bash\n"
+        # f.write "#!/bin/sh\n"
         # FILE SIZE LIMIT 1Gb (1024 * 1000000), MEMORY LIMIT 6Gb (see man bash -> ulimit)
         f.write "ulimit -f 1000000 -m 6000000\n"   
  		  f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"

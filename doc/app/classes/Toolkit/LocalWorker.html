@@ -129,7 +129,7 @@
  7:       <span class="ruby-identifier">commandfile</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">queue_job</span>.<span class="ruby-identifier">action</span>.<span class="ruby-identifier">job_dir</span>, <span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span><span class="ruby-operator">+</span><span class="ruby-value str">&quot;.sh&quot;</span>)
  8:       <span class="ruby-keyword kw">begin</span>
  9:         <span class="ruby-identifier">f</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">commandfile</span>, <span class="ruby-value str">'w'</span>)
-10:         <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-value str">&quot;#!/bin/sh\n&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">commands</span>)
+10:         <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-value str">&quot;#!/bin/bash\n&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">commands</span>)
 11:         <span class="ruby-identifier">f</span>.<span class="ruby-identifier">chmod</span>(<span class="ruby-value">0755</span>)
 12:         <span class="ruby-identifier">f</span>.<span class="ruby-identifier">close</span>
 13:       <span class="ruby-keyword kw">rescue</span>

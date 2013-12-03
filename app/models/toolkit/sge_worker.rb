@@ -223,7 +223,8 @@
     def writeShCmdsFile
       begin
         f = File.open(self.commandfile, 'w')
-        f.write "#!/bin/sh\n"
+        f.write "#!/bin/bash\n"
+        # f.write "#!/bin/sh\n"
         # FILE SIZE LIMIT 1Gb (1024 * 1000000), MEMORY LIMIT 6Gb (see man bash -> ulimit)
         f.write "ulimit -f 1000000\n" #-m 6000000\n"
         f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"

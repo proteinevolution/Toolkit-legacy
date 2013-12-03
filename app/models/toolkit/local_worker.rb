@@ -12,7 +12,8 @@
         
         logger.debug "L12 write File with commands #{commands}"
         
-        f.write("#!/bin/sh\n")
+        f.write "#!/bin/bash\n"
+        # f.write("#!/bin/sh\n")
         f.write "ulimit -f 1000000\n" #-m 6000000\n"
         f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"
         f.write "source /etc/profile\n"
@@ -39,7 +40,8 @@
       end
       self.commandfile = commandfile
       save!
-      job_call = "cd #{queue_job.action.job.job_dir};/bin/sh #{commandfile}"
+      job_call = "cd #{queue_job.action.job.job_dir};/bin/bash #{commandfile}"
+      # job_call = "cd #{queue_job.action.job.job_dir};/bin/sh #{commandfile}"
       logger.debug "L26 CMD :#{job_call}"
       output = `#{job_call}`   
       logger.debug "L28 #{output} "

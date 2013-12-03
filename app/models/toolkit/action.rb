@@ -133,7 +133,7 @@
 
     # reformat
     def reformat(informat, outformat, infile, outfile=infile)
-      system(File.join(BIOPROGS, 'perl') + "/reformat.pl -f=#{infile} -a=#{outfile} -i=#{informat} -o=#{outformat} &> #{outfile}.reform_log")            
+      system(File.join(BIOPROGS, 'perl') + "/reformat.pl -f=#{infile} -a=#{outfile} -i=#{informat} -o=#{outformat} >> #{outfile}.reform_log 2>&1")
       if ($? != 0) then raise "Error in Reformat Execution" end
     end
 
