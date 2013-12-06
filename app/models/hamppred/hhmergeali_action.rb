@@ -82,6 +82,9 @@ class HhmergealiAction < Action
     @commands << "#{HH}/reformat.pl a3m fas -r -noss #{@basename}.qt.reduced.a3m #{@basename}.qt.reduced.fas";
     @commands << "#{HH}/reformat.pl a3m fas -noss #{@basename}.qt.a3m #{@basename}.qt.fas";
 
+    @commands << "gzip -c #{@basename}.qt.fas >  #{@basename}.qt.fas.gz ";
+    @commands << "gzip -c #{@basename}.qt.reduced.fas >  #{@basename}.qt.reduced.fas.gz ";
+
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
 
