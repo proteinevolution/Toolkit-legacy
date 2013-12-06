@@ -59,7 +59,9 @@
 <% if @parent_job.nil? || @parent_job.params['mode'] != 'realign'  -%>
 <div class="row">
 	 <%= form_label("HAMPpred Database", "database") %>
-	 <%= form_select_single("hhpred_dbs", @dbvalues, @dblabels, @default_db, 1, false) %>  
+         <!-- We only have one choice, but to be compatible with the hhpred classes, we require an array as result. -->
+	 <!-- :disable => false gives an empty result db -->
+	 <%= form_select_single_with_hash("hhpred_dbs", @dbvalues, @dblabels, { :default => @default_db, :disable => false, :array => true }) %>  
 </div>	
  
 <% else %>

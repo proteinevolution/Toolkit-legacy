@@ -107,6 +107,7 @@ module ApplicationHelper
     selected = (params['reviewing']||params[name]) ? params[name] : default.to_s
     selected = @error_params[name] ? @error_params[name] : selected
     options = ""
+    create_array = kwargs.has_key?(:array) ? kwargs[:array] : false
     
     modes = kwargs.has_key?(:modes) ? kwargs[:modes] : []
     for i in 0..values.length-1 do
@@ -117,10 +118,11 @@ module ApplicationHelper
       sel_attr = selected == value ? "selected=\"selected\"" : ""
       options << "<option value=\"#{value}\" #{sel_attr} #{mode_attr}>#{label}</option>\n"
     end
+    nameparam = create_array ? name + '[]' : name
     if (noformw)
-      select_tag(name, options, :id => name, :size => size, :onchange => onchange, :disabled => disable)
+      select_tag(nameparam, options, :id => name, :size => size, :onchange => onchange, :disabled => disable)
     else
-      wrap_form_widget select_tag(name, options, :id => name, :size => size, :onchange => onchange, :disabled => disable)
+      wrap_form_widget select_tag(nameparam, options, :id => name, :size => size, :onchange => onchange, :disabled => disable)
     end
   end
 
