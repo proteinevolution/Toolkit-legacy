@@ -29,7 +29,7 @@ class HamppredShowtemplalignAction < Action
    
     #Search in selected databases for a3m file
     @dir = ""
-    action_params = HhpredAction.find(:first, :conditions=>{:job_id=>job_id}).params
+    action_params = HamppredAction.find(:first, :conditions=>{:job_id=>job_id}).params
     dbs_dir = []
     dbs_dir.concat(action_params['hhpred_dbs']) if !action_params['hhpred_dbs'].nil?
     dbs_dir.concat(action_params['genomes_hhpred_dbs']) if !action_params['genomes_hhpred_dbs'].nil?
