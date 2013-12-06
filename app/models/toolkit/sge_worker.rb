@@ -298,6 +298,9 @@ def select_memory(method)
   when "Gi2seqAction" then 2  
   when "Gi2seqForwardAction" then 2
   ### H ###  
+  when "HamppredAction" then 22
+  when "HamppredForwardAction" then 19
+  when "HamppredShowtemplalignAction" then 18
   when "HhpredForwardAction" then 19
   when "HhpredAction" then 22
   when "HhblitsAction" then 18
@@ -312,7 +315,6 @@ def select_memory(method)
   when "HhalignAction" then 18
   when "HhrepidAction" then 18
   when "HhrepAction" then 18
-  when "HhpredForwardAction" then 18
   when "HhrepMergealiAction" then 18
   when "HhclusterAction" then 18
   when "HhblitsForwardAction" then 18

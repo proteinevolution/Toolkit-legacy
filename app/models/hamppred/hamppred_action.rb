@@ -269,7 +269,7 @@ class HamppredAction < Action
     data = f.readlines
       sequence_length = data[1].size
     f.close
-    memory = 18
+    # sequence_length <= 1000: Don't set minimum memory here, because minimum memory is set in the worker classes.
     if sequence_length > 1000
       memory = 23
     end
