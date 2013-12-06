@@ -36,36 +36,3 @@ hamppred_job:
       title: Show query alignment
       title_long: Show or edit the query alignment constructed by HHpred
       forwardsections:
-  
-hhmakemodel_job:
-  title: HHpred makemodel
-  hidden: false
-  code: HHMM
-  resultsections:  
-    - name: results_makemodel
-      title: Results
-      title_long: Show results in alignment view
-      forwardsections:
-    - name: histograms_makemodel
-      title: Histogram
-      title_long: Show results in profile histogram view
-      forwardsections:
-    - name: showalign_makemodel
-      title: Show query alignment
-      title_long: Show or edit the query alignment constructed by HHpred
-      forwardsections:
-  
-hhmergeali_job:
-  title: HHpred mergeali
-  hidden: false
-  code: HHMA
-  
-hh3d_templ_job:
-  title: HHpred 3d template
-  hidden: true
-  code: HHPR
-  
-hh3d_querytempl_job:
-  title: HHpred 3d query-template
-  hidden: true
-  code: HHPR
