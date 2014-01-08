@@ -337,7 +337,7 @@ def select_memory(method)
   when "MafftForwardAction" then 5
   ### P ###
   when "ProtBlastAction" then 15
-  when "PcoilsAction" then 4
+  when "PcoilsAction" then 5
   when "PsiBlastAction" then 15
   when "PatsearchAction" then 5
   when "PsiBlastForwardAction" then 5
