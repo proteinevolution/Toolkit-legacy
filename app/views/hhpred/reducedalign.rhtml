@@ -31,11 +31,7 @@
 <div class="row">
 
   <div id="applet">
-    <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
-        <PARAM NAME="label"  value="JalView">
-        <PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.reduced.fas">
-        <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
-    </APPLET>
+    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".reduced.fas"}) %>
     <br>
     <strong><span style="position: relative;"><a href="#" onclick="openHelpWindow('/hhpred/help_results#alignment');" style="font-weight:normal;">Reduced alignment: 50 most distinct sequences without inserts in Fasta format</a></span></strong>
 

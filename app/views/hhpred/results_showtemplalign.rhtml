@@ -7,18 +7,10 @@
 	<div class="row">
 
  		<div id="applet">
-                        <applet codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35">
-				<PARAM NAME="label"  value="JalView">
-				<PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.template.fas">
-                        	<param name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
-			</applet> 
+                   <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".template.fas"}) %>
 			<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <applet codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35">
-				<PARAM NAME="label"  value="JalView">
-				<PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.template.reduced.fas">
-                        	<param name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
-			</applet>
+                   <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".template.reduced.fas"}) %>
 			<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
 			
 		</div>

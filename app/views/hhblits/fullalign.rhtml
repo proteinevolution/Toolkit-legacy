@@ -11,16 +11,7 @@
   <%= form_hidden_field("hhblits_format", @mode) %>
 </div>
   <div id="applet">
-   <!-- <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
-      <PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.fas">
-      <PARAM NAME="type"   value="URL">
-      <PARAM NAME="format" value="FASTA">
-    </APPLET> 
-    <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
-        <PARAM NAME="label"  value="JalView">
-        <PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.full.fas">
-        <PARAM name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
-    </APPLET>
+    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".full.fas"}) %>
 
     <strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhblits/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
  -->
