@@ -110,16 +110,7 @@
 <div id="color_button" class="row">
 
   <div id="jalview">
-	<!--<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>-->
-        <applet codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35"  >
-        <!--<param name="file" value="test.tenrep_file">
-        <applet codebase="/applets/jalview/"     archive="jalviewApplet.jar" code="jalview.bin.JalviewLite" -->
-	<PARAM NAME="label"  value="JalView">
-	<PARAM NAME="file"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.tenrep_file">
-	<param name="userDefinedColour" value="D,E=blue; K,R=red; H=orange; M,I,V,L=green;F,W,Y=228B22; N,Q=E066FF; C=yellow; P=D3D3D3">
-	<!--<PARAM NAME="type"   value="URL">
-	<PARAM NAME="format" value="FASTA"> -->
-	</APPLET> 
+    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".tenrep_file"}) %>
   </div>
   
   <div id="help_jal"><a href="#" onclick="openHelpWindow('/hhpred/help_results#jalview');">View alignment</a></div>
