@@ -18,6 +18,10 @@ class CommonController < ApplicationController
   def stats
   	@widescreen=true;
   end
+
+  def db_stats
+        @widescreen=true;
+  end
   
   def user_stats
   	@fullscreen=true;

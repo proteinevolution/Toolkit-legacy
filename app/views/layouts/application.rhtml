@@ -99,8 +99,9 @@
 	  <li <% if @meta_section == "remote_debug" -%> class="current"<% end -%> ><%= link_to "Remote Debug", :controller => "/common", :action => "remote_debug" -%></li> 
 	  <% end %>
 	  <% if is_internal?(request.remote_ip) %>
-	  <li <% if @meta_section == "stats" -%> class="current"<% end -%> ><%= link_to "Statistics", :controller => "/common", :action => "stats" -%></li>
-	  <li <% if @meta_section == "user_stats" -%> class="current"<% end -%> ><%= link_to "User-statistics", :controller => "/common", :action => "user_stats" -%></li>				 
+	    <li <% if @meta_section == "stats" -%> class="current"<% end -%> ><%= link_to "Tool Statistics", :controller => "/common", :action => "stats" -%></li>
+	    <li <% if @meta_section == "db_stats" -%> class="current"<%end -%> ><%= link_to "DB Statistics", :controller => "/common", :action => "db_stats" -%></li>
+	    <li <% if @meta_section == "user_stats" -%> class="current"<% end -%> ><%= link_to "User Statistics", :controller => "/common", :action => "user_stats" -%></li>				 
 	  <% end %>
 	  <li <% if @meta_section == "contact" -%> class="current"<% end -%> ><%= link_to "Contact", :controller => "/common", :action => "contact" -%></li> 
 	  <li <% if @meta_section == "admin_userdbs" -%> class="current"<% end -%> ><%= link_to "Personal Databases", :controller => "/userdb", :action => "admin_userdbs" -%></li> 

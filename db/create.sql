@@ -109,6 +109,17 @@ create table stats (
   primary key (id)
 );
 
+drop table if exists dbstats;
+create table dbstats (
+  id                    int             not null auto_increment,
+  dbname                varchar(50)     not null,
+  visits_int            int             default 0,
+  visits_ext            int             default 0,
+  visits_user           int             default 0,
+  day                   varchar(10)     null,
+  primary key (id)
+);
+
 DROP TABLE IF EXISTS watchlists;
 CREATE TABLE watchlists (
   id                    int             NOT NULL auto_increment,
