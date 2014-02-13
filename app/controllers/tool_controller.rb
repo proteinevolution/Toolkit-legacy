@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class ToolController < ApplicationController
   before_filter :prepare, :run_callbacks  
   
@@ -45,9 +46,10 @@ class ToolController < ApplicationController
     # Allgemeines param-Feld setzen (für resubmit, usw...)
     params['reviewing'] = true
     logger.debug  " -> Running current Application"
+    # KFT: Observation: The jobid is indeed found in params[:job], not in params[:jobid] when forwarding!!?!
     job = Job.find(:first, :conditions => [ "jobid = ?", params[:job]])
     if (job.nil?)
-      logger.debug "Job has not yet been initialized, creating new id"
+      logger.debug "Job for #{params[:job]} has not yet been initialized (id is #{params[:jobid].empty? ? "empty" : params[:jobid]}), creating new id"
       job = Object.const_get(params[:job].to_cc+"Job").create(params, @user)
       logger.debug "Created new Job .... "
       if (job.config['hidden'] == false && @jobs_cart.index(job.jobid).nil?)
@@ -55,7 +57,7 @@ class ToolController < ApplicationController
         logger.debug "Pushing Job into Job Cart : "+job.jobid.to_s
       end
       
-      # write statistics
+      # write tool statistics
       if (job.tool.camelize == job.class.to_s.gsub(/Job/, '').camelize)
         toolname = job.tool.camelize
         day = sprintf("%04d-%02d-%02d", DateTime.now.year, DateTime.now.month, DateTime.now.day)
@@ -74,8 +76,35 @@ class ToolController < ApplicationController
         end
         stats.save!
       end
-      
+
     end
+
+    # write database statistics
+    # Doing it here collects statistic for new jobs as well as for forwarded
+    # jobs. If that's only desired for new jobs, move the code in front of
+    # the previous end statement.
+    dbnames = Dbstat.checkDatabasesForUsage(params)
+    logger.debug "dbnames are #{dbnames || 'empty'} for job #{params[:job]} (#{params[:jobid]})"
+    if (dbnames)
+      dbnames.each do |dbname|
+        day = sprintf("%04d-%02d-%02d", DateTime.now.year, DateTime.now.month, DateTime.now.day)
+        dbstats = Dbstat.find(:first, :conditions => [ "dbname=? AND day=?", dbname, day ])
+        if dbstats.nil?
+          dbstats = Dbstat.new(:dbname => dbname, :day => day)
+        end
+        if @user.nil?
+          if is_internal?(request.remote_ip)
+            dbstats.visits_int = (dbstats.visits_int || 0) + 1
+          else
+            dbstats.visits_ext = (dbstats.visits_ext || 0) + 1
+          end
+        else
+          dbstats.visits_user = (dbstats.visits_user || 0) + 1
+        end
+        dbstats.save!
+      end
+    end
+
     errors = job.run(params[:jobaction], params)
     # Errors while validation?
     if (!errors.nil?)
