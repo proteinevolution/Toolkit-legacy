@@ -49,7 +49,7 @@ class ToolController < ApplicationController
     # KFT: Observation: The jobid is indeed found in params[:job], not in params[:jobid] when forwarding!!?!
     job = Job.find(:first, :conditions => [ "jobid = ?", params[:job]])
     if (job.nil?)
-      logger.debug "Job for #{params[:job]} has not yet been initialized (id is #{params[:jobid].empty? ? "empty" : params[:jobid]}), creating new id"
+      logger.debug "Job for #{params[:job]} has not yet been initialized (id is #{params[:jobid] || 'nil'}), creating new id"
       job = Object.const_get(params[:job].to_cc+"Job").create(params, @user)
       logger.debug "Created new Job .... "
       if (job.config['hidden'] == false && @jobs_cart.index(job.jobid).nil?)
