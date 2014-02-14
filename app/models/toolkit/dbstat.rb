@@ -4,7 +4,24 @@ class Dbstat < ActiveRecord::Base
      # /ebio/abt1/kfaidt/toolkit/databases/hhpred/new_dbs/pdb70_9Jan14 to
      # pdb70
      basename = File.basename(dbname); # keep extension, if exists
-     basename.sub!(/_\d?\d\w\w\w\d\d\z/, '')
+     
+     versionNumberPattern = '_v?(\d+\.)+\d+\w?'
+     datePattern = '_\d?\d\w\w\w\d\d'
+     endPattern = '\z'
+
+     # database names containing both version number and date are
+     # considered distinguished special versions and not normalized.
+     if ((basename=~Regexp.new(versionNumberPattern+datePattern+endPattern)) \
+         or (basename=~Regexp.new(datePattern+versionNumberPattern+endPattern)))
+       return basename
+     end
+
+     # remove date
+     basename.sub!(Regexp.new(datePattern + endPattern), '')
+
+     # remove version number
+     basename.sub!(Regexp.new(versionNumberPattern + endPattern), '')
+
      basename
    end
 
