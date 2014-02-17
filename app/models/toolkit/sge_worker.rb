@@ -338,7 +338,7 @@ def select_memory(method)
   ### P ###
   when "ProtBlastAction" then 15
   when "PcoilsAction" then 6
-  when "PsiBlastAction" then 15
+  when "PsiBlastAction" then 18
   when "PatsearchAction" then 5
   when "PsiBlastForwardAction" then 5
   when "PatsearchForwardAction" then 5
