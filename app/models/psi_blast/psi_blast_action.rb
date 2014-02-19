@@ -183,10 +183,11 @@ class PsiBlastAction < Action
   def perform
     params_dump
     # use nr70f for all but last round?
+    # replaced nr70f by nr70 in Tuebingen
     if (@rounds.to_i > 1 && @fastmode == 'T')
-      # first run with nr70f
-      @commands << "echo 'Starting  BLAST search, Round 1 with nr70f' &> #{job.statuslog_path}"
-      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@basename}.psiblast_tmp -d #{DATABASES}/standard/nr70f #{@alignment} -I T -C #{@basename}.ksf #{@other_advanced}  >> #{job.statuslog_path}"
+      # first run with nr70
+      @commands << "echo 'Starting  BLAST search, Round 1 with nr70' &> #{job.statuslog_path}"
+      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@basename}.psiblast_tmp -d #{DATABASES}/standard/nr70 #{@alignment} -I T -C #{@basename}.ksf #{@other_advanced}  >> #{job.statuslog_path}"
       @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j 1 -m 0          -v #{@descriptions} -b #{@descriptions} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -R #{@basename}.ksf #{@other_advanced} >> #{job.statuslog_path}"
     else
       @commands << "echo 'Starting BLAST search' &> #{job.statuslog_path}"

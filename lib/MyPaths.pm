@@ -6,16 +6,18 @@ use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION);
 use Exporter;
 our $VERSION=1.00;
 our @ISA          = qw(Exporter);
-our @EXPORT       = qw($nr $nre $nrf $nr90 $nr70 $nr90f $nr70f $dummydb $perl $hh $dsspdir $dssp $pdbdir $ncbidir $execdir $datadir $blastpgp $calhhm $hmmerdir $newdbs $olddbs $PBS $database_dir $bioprogs_dir $pdb_dir $tmp_dir);
+#our @EXPORT       = qw($nr $nre $nrf $nr90 $nr70 $nr90f $nr70f $dummydb $perl $hh $dsspdir $dssp $pdbdir $ncbidir $execdir $datadir $blastpgp $calhhm $hmmerdir $newdbs $olddbs $PBS $database_dir $bioprogs_dir $pdb_dir $tmp_dir);
+our @EXPORT       = qw($nr $nre $nr90 $nr70 $dummydb $perl $hh $dsspdir $dssp $pdbdir $ncbidir $execdir $datadir $blastpgp $calhhm $hmmerdir $newdbs $olddbs $PBS $database_dir $bioprogs_dir $pdb_dir $tmp_dir);
 
 # Set directory paths and file locations
+# filtered databases are replaced by unfiltered databases in Tuebingen
 our $nr;                           # nr database from NCBI
 our $nre;                          # nre database from NCBI
-our $nrf;                          # filtered nr database
+#our $nrf;                          # filtered nr database
 our $nr90;                         # nr database with max seqid 90% (cd-hit)
 our $nr70;                         # nr database with max seqid 90% (cd-hit)
-our $nr90f;                        # filtered nr database with max seqid 90% (cd-hit)
-our $nr70f;                        # filtered nr database with max seqid 70% (cd-hit)
+#our $nr90f;                        # filtered nr database with max seqid 90% (cd-hit)
+#our $nr70f;                        # filtered nr database with max seqid 70% (cd-hit)
 our $dummydb;                      # blast database consisting of just one sequence
 our $perl;                         # perl directory: querydb.pl, alignhits.pl
 our $hh;                           # hhfilter, hhsearch, hhalign, hhmake, hhcorr 
@@ -59,11 +61,11 @@ if (defined $ENV{TK_ROOT}) {
     $olddbs ="$database_dir/hhpred/old_dbs";
     $nr    =   "$database_dir/standard/nr";             # nr database to be used
     $nre   =   "$database_dir/standard/nre";            # nr database to be used
-    $nrf   =   "$database_dir/standard/nrf";            # nr database to be used
+#    $nrf   =   "$database_dir/standard/nrf";            # nr database to be used
     $nr90  =   "$database_dir/standard/nr90";           # large nr database to be used
     $nr70  =   "$database_dir/standard/nr70";           # large nr database to be used
-    $nr90f =   "$database_dir/standard/nr90f";          # large nr database to be used
-    $nr70f =   "$database_dir/standard/nr70f";          # reduced nr database to be used
+#    $nr90f =   "$database_dir/standard/nr90f";          # large nr database to be used
+#    $nr70f =   "$database_dir/standard/nr70f";          # reduced nr database to be used
     $dummydb=  "$database_dir/do_not_delete/do_not_delete"; # blast database consisting of just one sequence
 
 } elsif (-e "/cluster/bioprogs/hhpred") {
@@ -82,11 +84,11 @@ if (defined $ENV{TK_ROOT}) {
     $olddbs ="$database_dir/hhpred/old_dbs";
     $nr    =   "$database_dir/nr";             # nr database to be used
     $nre   =   "$database_dir/nre";            # nr database to be used
-    $nrf   =   "$database_dir/nrf";            # nr database to be used
+#    $nrf   =   "$database_dir/nrf";            # nr database to be used
     $nr90  =   "$database_dir/nr90";           # large nr database to be used
     $nr70  =   "$database_dir/nr70";           # large nr database to be used
-    $nr90f =   "$database_dir/nr90f";          # large nr database to be used
-    $nr70f =   "$database_dir/nr70f";          # reduced nr database to be used
+#    $nr90f =   "$database_dir/nr90f";          # large nr database to be used
+#    $nr70f =   "$database_dir/nr70f";          # reduced nr database to be used
     $dummydb=  "$database_dir/do_not_delete/do_not_delete"; # blast database consisting of just one sequence
 
 } elsif (-e "/cluster/bioprogs/hhpred") {
@@ -105,11 +107,11 @@ if (defined $ENV{TK_ROOT}) {
 #    $newdbs =  "/raid/users/soeding";
     $nr    =   "$database_dir/nr";             # nr database to be used
     $nre   =   "$database_dir/nre";            # nr database to be used
-    $nrf   =   "$database_dir/nrf";            # nr database to be used
+#    $nrf   =   "$database_dir/nrf";            # nr database to be used
     $nr90  =   "$database_dir/nr90";           # large nr database to be used
     $nr70  =   "$database_dir/nr70";           # large nr database to be used
-    $nr90f =   "$database_dir/nr90f";          # large nr database to be used
-    $nr70f =   "$database_dir/nr70f";          # reduced nr database to be used
+#    $nr90f =   "$database_dir/nr90f";          # large nr database to be used
+#    $nr70f =   "$database_dir/nr70f";          # reduced nr database to be used
     $dummydb=  "$database_dir/do_not_delete/do_not_delete"; # blast database consisting of just one sequence
 
 
@@ -126,11 +128,11 @@ if (defined $ENV{TK_ROOT}) {
     $dssp=     "/raid/db/dssp/bin/dsspcmbi"; # where is the dssp executable? 
     $newdbs ="/raid/users/soeding";
     $nr    =   "$database_dir/nr";             # nr database to be used
-    $nrf   =   "$database_dir/nrf";            # nr database to be used
+#    $nrf   =   "$database_dir/nrf";            # nr database to be used
     $nr90  =   "$database_dir/nr90";           # large nr database to be used
     $nr70  =   "$database_dir/nr70";           # large nr database to be used
-    $nr90f =   "$database_dir/nr90f";          # large nr database to be used
-    $nr70f =   "$database_dir/nr70f";          # reduced nr database to be used
+#    $nr90f =   "$database_dir/nr90f";          # large nr database to be used
+#    $nr70f =   "$database_dir/nr70f";          # reduced nr database to be used
     $dummydb=  "$database_dir/do_not_delete/do_not_delete"; # blast database consisting of just one sequence
 }
 
