@@ -328,21 +328,27 @@
       
       #logger.debug "Destroy actions!"
       Action.delete_all "job_id = #{id}"
-      logger.debug "L331 JobDir: #{job_dir}"
-      directory_content = Dir.entries("#{job_dir}")
-      #logger.debug "Entries length: #{directory_content.length}"
-      #logger.debug "Entries: #{directory_content}"
-      directory_content.each  do |file|
-         if (file != ".." && file != ".")
-          file = "#{job_dir}/#{file}"
-          #if (File.exists? file)
-            FileUtils.remove_entry_secure(file)
-           # system ("rm -r #{file}")
-          #end
+      begin
+        logger.debug "L332 JobDir: #{job_dir}"
+        directory_content = Dir.entries("#{job_dir}")
+        #logger.debug "Entries length: #{directory_content.length}"
+        #logger.debug "Entries: #{directory_content}"
+        directory_content.each  do |file|
+          if (file != ".." && file != ".")
+            file = "#{job_dir}/#{file}"
+            #if (File.exists? file)
+              FileUtils.remove_entry_secure(file)
+             # system ("rm -r #{file}")
+            #end
+          end
         end
+        # do not delete jobdir, this is done be a daily sweep script
+        #Dir.delete(job_dir)
+ 
+      rescue SystemCallError => ex
+        # Probably the directory already has been deleted. Nothing more to do.
+        logger.debug "L350 SystemCallError: #{ex}"
       end
-      # do not delete jobdir, this is done be a daily sweep script
-      #Dir.delete(job_dir)
     end
 
   end
