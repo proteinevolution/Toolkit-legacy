@@ -163,6 +163,8 @@ class SgeWorker < AbstractWorker
       f.write "  fi\n"
       f.write "}\n\n"
 
+      f.write "export TK_ROOT=" + TOOLKIT_ROOT + "\n"
+
       f.write "hostname > #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
       if RAILS_ENV == "development"
         f.write "echo 'Starting job #{id.to_s}...' >> #{queue_job.action.job.statuslog_path}\n"
