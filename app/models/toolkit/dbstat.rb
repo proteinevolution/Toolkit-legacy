@@ -39,7 +39,7 @@ class Dbstat < ActiveRecord::Base
      #         does not match the plausibility conditions).
      
      # the kind of databases to consider
-     db_keys = [ "std_dbs", "hhpred_dbs" ]
+     db_keys = [ "std_dbs", "hhpred_dbs", "hhblits_dbs" ]
 
      # if these databases are used at once, the usage is considered nonsense
      # and not recorded
