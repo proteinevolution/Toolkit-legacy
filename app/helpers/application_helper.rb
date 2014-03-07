@@ -169,15 +169,28 @@ module ApplicationHelper
     end
     wrap_form_widget(content)
   end
+
+  def form_reset_buttons
+    # the test on sequence_input should be replaced with a test on a resubmit... action
+    # possible actions: resubmit, resubmit_domain, ...
+    if params['sequence_input']
+      # A button "Reset form" may not be understood, because
+      # it doesn't clear the form, but restores the original input.
+      ret = "<input name=\"resetform\" id=\"resetform\" type=\"reset\" class=\"toolbutton\" value=\"Restore input\" />"
+      ret = ret << "<input name=\"newform\" id=\"newform\" type=\"button\" class=\"toolbutton\" onclick=\"window.location.href='#{url_for(:action => 'index')}';\" value=\"New form\" /><br/>"
+    else
+      ret = "<input name=\"resetform\" id=\"resetform\" type=\"reset\" class=\"toolbutton\" value=\"Reset form\" /><br/>"
+    end
+  end
  
   def form_submit_buttons
     ret = "<input name=\"submitform\" id=\"submitform\"  type=\"submit\" class=\"toolbutton\" value=\"Submit job\" />"
-    ret = ret << "<input name=\"resetform\" id=\"resetform\" type=\"reset\" class=\"toolbutton\" value=\"Reset form\" /><br/>"
+    ret = ret << form_reset_buttons()
   end
     
   def form_submit_snail_buttons(message)
     ret = "<input name=\"submitform\" type=\"submit\" class=\"snailbutton\" value=\"Submit job\" onmouseover=\"return overlib('#{message}');\" onmouseout=\"return nd();\" />"
-    ret = ret << "<input name=\"resetform\" type=\"reset\" class=\"toolbutton\" value=\"Reset form\" /><br/>"
+    ret = ret << form_reset_buttons()
   end
 
   def wrap_form_widget(content, errormsg=nil)
