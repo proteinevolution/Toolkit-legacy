@@ -27,7 +27,11 @@ class SgeWorker < AbstractWorker
       if RAILS_ENV == "development"
         # Parameter -p 10 not available on OLT, use instead h_rt
         #command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G -p 10 #{self.wrapperfile}"
-        command = "#{QUEUE_DIR}/qsub -l s_vmem=#{warning_memory}M -l h_vmem=#{memory}G -l s_rt=0:59:59 -l h_rt=1:0:0 #{self.wrapperfile}"
+        command = "#{QUEUE_DIR}/qsub -l s_vmem=#{warning_memory}M -l h_vmem=#{memory}G"
+        unless has_long_execution_time(job)
+          command = command + " -l s_rt=0:59:59 -l h_rt=1:0:0"
+        end
+        command = command + " #{self.wrapperfile}"
         logger.debug "L31 qsub command: #{command}"
       else
         # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
@@ -142,7 +146,7 @@ class SgeWorker < AbstractWorker
       f.write "    echo >> #{queue_job.action.job.statuslog_path}\n"
       f.write "    case \"$1\" in\n"
       # Signal SIGUSR1 only used in development environment of Tuebingen in this way (see trap calls)
-      if LOCATION == "Tuebingen" && RAILS_ENV == "development"
+      if LOCATION == "Tuebingen" && RAILS_ENV == "development" && !has_long_execution_time(queue_job.action.type)
         f.write "        USR1) echo \"Grit time limit exceeded.\" >> #{queue_job.action.job.statuslog_path}\n"
         f.write "            ;;\n"
       end
@@ -180,7 +184,7 @@ class SgeWorker < AbstractWorker
       f.write "trap 'sig_handler USR2' USR2\n" # handles signals caused by -notify
       if LOCATION == "Tuebingen"
         f.write "trap 'sig_handler XCPU' XCPU\n" # handles signals caused by -l s_vmem
-        if RAILS_ENV == "development"
+        if RAILS_ENV == "development" && !has_long_execution_time(queue_job.action.type)
           f.write "trap 'sig_handler USR1' USR1\n" # handles signals caused by -l s_rt
         end
       end
@@ -346,7 +350,7 @@ class SgeWorker < AbstractWorker
                   ### P ###
                 when "ProtBlastAction" then 15
                 when "PcoilsAction" then 6
-                when "PsiBlastAction" then 18
+                when "PsiBlastAction" then 20
                 when "PatsearchAction" then 5
                 when "PsiBlastForwardAction" then 5
                 when "PatsearchForwardAction" then 5
@@ -393,5 +397,10 @@ private
     else
       file.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{status}\n"
     end
+  end
+
+  def has_long_execution_time(method)
+    longjobs= [ "HhsenserAction", "HhrepidAction" ]
+    longjobs.include?(method)
   end
 end
