@@ -24,7 +24,7 @@ class PeaksJob < Job
   end
   
   def gruff_file
-     File.join(url_for_jobdir, "#{jobid}.png")
+     File.join(url_for_job_dir, "#{jobid}.png")
   end 
   
 end
