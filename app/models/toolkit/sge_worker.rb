@@ -29,7 +29,7 @@ class SgeWorker < AbstractWorker
         #command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G -p 10 #{self.wrapperfile}"
         command = "#{QUEUE_DIR}/qsub -l s_vmem=#{warning_memory}M -l h_vmem=#{memory}G"
         unless has_long_execution_time(job)
-          command = command + " -l s_rt=0:59:59 -l h_rt=1:0:0"
+          command = command + " -l s_rt=0:55:00 -l h_rt=1:00:00"
         end
         command = command + " #{self.wrapperfile}"
         logger.debug "L31 qsub command: #{command}"
@@ -303,7 +303,7 @@ class SgeWorker < AbstractWorker
                   ### D ###
                 when "DataaAction" then 15
                   ### F ###
-                when "FrpredAction" then 10
+                when "FrpredAction" then 15
                   ### G ###
                 when "GcviewAction" then 20
                 when "Gi2seqExportAction" then 2  
