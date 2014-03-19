@@ -232,10 +232,10 @@ class ToolController < ApplicationController
       @tmp_sequence ='XX'
       logger.debug "L 173 Rendering Resubmit!"
       job_params = @job.actions.first.params
-      tmp_params = job_params.keys
-      tmp_params.sort!
-      tmp_params.each do |key|
-      #job_params.each_key do |key|
+      #tmp_params = job_params.keys
+      #tmp_params.sort! # kft- sort! does not work, because some of the keys are strings, other are keys which cannot be compared to strings.
+      #tmp_params.each do |key|
+      job_params.each_key do |key|
         if (key =~ /^(\S+)_file$/) 
               if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
                 @tmp_sequence = IO.readlines(job_params[key]).join
