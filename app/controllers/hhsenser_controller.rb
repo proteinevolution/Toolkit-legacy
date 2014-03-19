@@ -7,8 +7,8 @@ class HhsenserController < ToolController
 		@psiblast_eval = ['1e-3', '1e-4', '1e-6', '1e-7', '1e-8', '1e-10']
 		@cov_minval = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90']
 		@ymax = ['10', '100', '500', '1000', '5000']
-		@dblabels = ['nr', 'nr + environmental', 'nr_eukaryotes', 'nr_prokaryotes', 'nr_bacteria', 'nr_archaea']
-		@dbvalues = [File.join(DATABASES,'standard','nr'), File.join(DATABASES,'standard','nre'), File.join(DATABASES,'standard','nr_euk'), File.join(DATABASES,'standard','nr_pro'), File.join(DATABASES,'standard','nr_bac'), File.join(DATABASES,'standard','nr_arc')]
+		@dblabels = ['nr', 'nr + environmental', 'nr_eukaryotes', 'nr_prokaryotes', 'nr_bacteria', 'nr_archaea', 'nr_viruses']
+		@dbvalues = [File.join(DATABASES,'standard','nr'), File.join(DATABASES,'standard','nre'), File.join(DATABASES,'standard','nr_euk'), File.join(DATABASES,'standard','nr_pro'), File.join(DATABASES,'standard','nr_bac'), File.join(DATABASES,'standard','nr_arc'), File.join(DATABASES, 'standard', 'nr_vir')]
 		@default_db = @dbvalues[0]
 	end
   
