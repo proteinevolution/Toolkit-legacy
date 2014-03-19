@@ -350,7 +350,7 @@ class SgeWorker < AbstractWorker
                   ### P ###
                 when "ProtBlastAction" then 15
                 when "PcoilsAction" then 6
-                when "PsiBlastAction" then 20
+                when "PsiBlastAction" then 25
                 when "PatsearchAction" then 5
                 when "PsiBlastForwardAction" then 5
                 when "PatsearchForwardAction" then 5
