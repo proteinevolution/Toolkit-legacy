@@ -83,9 +83,9 @@ class ClansAction < Action
     end
     
     #now create the nxnblast command
-    @commands << "#{JAVA_1_5_EXEC} -jar #{CLANS}/allblast.jar -infile #{@infile} -blastpath \"#{@blastcommand}\" -formatdbpath #{BLAST}/formatdb -referencedb \"#{@db_path}\" -eval #{@evalue} -saveblast #{@outfile} -tmpdir #{job.job_dir}/ > #{job.statuslog_path} 2> /dev/null"
+    @commands << "#{JAVA_1_5_EXEC} -Xmx8G -jar #{CLANS}/allblast.jar -infile #{@infile} -blastpath \"#{@blastcommand}\" -formatdbpath #{BLAST}/formatdb -referencedb \"#{@db_path}\" -eval #{@evalue} -saveblast #{@outfile} -tmpdir #{job.job_dir}/ > #{job.statuslog_path} 2> /dev/null"
     #now bin the values
-    @commands << "#{JAVA_1_5_EXEC} -jar #{CLANS}/plotblast.jar -i #{@outfile} -o #{@basename} 2>&1 1>> #{job.statuslog_path}"
+    @commands << "#{JAVA_1_5_EXEC} -Xmx8G -jar #{CLANS}/plotblast.jar -i #{@outfile} -o #{@basename} 2>&1 1>> #{job.statuslog_path}"
 
 
     logger.debug "Commands:\n"+@commands.join("\n")

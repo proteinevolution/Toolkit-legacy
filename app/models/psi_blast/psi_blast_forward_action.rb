@@ -219,7 +219,7 @@ class PsiBlastForwardAction < Action
       if( job.params_main_action['taxids'] )
         ret = []
         genomesjar = File.join(BIOPROGS, "genomes", "genomes.jar")
-        cmd = "#{JAVA_1_5_EXEC} -jar #{genomesjar} -pep -nolog -dbs #{job.params_main_action['taxids']} 2>&1"
+        cmd = "#{JAVA_1_5_EXEC} -Xmx1G -jar #{genomesjar} -pep -nolog -dbs #{job.params_main_action['taxids']} 2>&1"
         proc = IO.popen(cmd)
         ret = proc.readlines.map{|line| line.chomp};
         proc.close

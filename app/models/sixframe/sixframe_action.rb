@@ -31,7 +31,7 @@ validates_email(:mail)
   def perform
     params_dump
 
-    @commands << "#{JAVA_EXEC} -cp #{SIXFRAME}/ translate -i #{@infile} -o #{@outfile} -seq #{@showseq} -mode #{@mode} -annot #{@relPrint} &> #{job.statuslog_path}"
+    @commands << "#{JAVA_EXEC} -Xmx3G -cp #{SIXFRAME}/ translate -i #{@infile} -o #{@outfile} -seq #{@showseq} -mode #{@mode} -annot #{@relPrint} &> #{job.statuslog_path}"
 	  
 	 logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
