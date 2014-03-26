@@ -134,12 +134,12 @@ module Toolkit
                 
               end
               
-            end						
+            end
             
             if (names.size > configuration[:max_seqs])
-              error = "Input contains more than #{configuration[:max_seqs]} sequences!"
-            elsif (names.size< configuration[:min_seqs])
-              error = "Input contains less than #{configuration[:min_seqs]} sequences!"
+              error = "Input contains more than #{configuration[:max_seqs]} sequence#{1 == configuration[:max_seqs] ? "" : "s"}!"
+            elsif (error.nil? && names.size< configuration[:min_seqs])
+              error = "Input contains less than #{configuration[:min_seqs]} sequence#{1 == configuration[:min_seqs] ? "" : "s"}!"
             end
             
             length = nil
