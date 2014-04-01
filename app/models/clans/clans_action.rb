@@ -126,7 +126,9 @@ class ClansAction < Action
     
     @commands = ["gnuplot #{@outfile}"]
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'cpus' => '3'})
+    #queue.submit(@commands, true, {'cpus' => '3'})
+    # no evidence found, that 3 cpus are used anywhere
+    queue.submit(@commands, true, {'cpus' => '1'})
         
   end
     

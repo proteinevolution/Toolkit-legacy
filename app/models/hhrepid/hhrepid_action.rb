@@ -84,11 +84,13 @@ class HhrepidAction < Action
 
   # Put action code in here
   def perform
-    
+
+    cpus = 1
     # Setting new Prefilter 
     if @mode != 'queryhmm'
               @commands << "#{HH}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
                 if(@prefilter=='psiblast')
+                   cpus = 2
                    @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
                    @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &> #{job.statuslog_path}"
                 else
@@ -96,6 +98,7 @@ class HhrepidAction < Action
                         @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
                         @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
                     else
+                        cpus = 8
                         @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
                         @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
                     end
@@ -129,7 +132,7 @@ class HhrepidAction < Action
     q.on_done = 'run_hhrepid'
     q.save!
 
-    q.submit(@commands, false)
+    q.submit(@commands, false, { 'cpus' => cpus.to_s() })
   end
 
   def run_hhrepid
