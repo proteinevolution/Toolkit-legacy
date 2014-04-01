@@ -107,7 +107,7 @@ class SgeWorker < AbstractWorker
         f.write '#$' + " -pe #{queue}\n"
         #f.write '#$' + " -q #{queue}\n"
       else
-        if (cpus && cpus > 1)
+        if (cpus && cpus.to_i > 1)
           f.write '#$' + " -pe parallel #{cpus}\n"
         end
         if (RAILS_ENV == "production")
