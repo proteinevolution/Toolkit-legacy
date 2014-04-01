@@ -60,7 +60,47 @@
 	</table>
 	<div class="hr">&nbsp;</div>	
 	<% end %>
-		
+
+	<% currentyear=Time.now.strftime("%Y").to_i %>
+	<% (0..5).each do |count| %>
+	<% year = currentyear - count %>
+	<h4><%= year %></h4>	
+	<% sum_int=0; sum_ext=0; sum_user=0 %>
+	<table style="text-align:center;" border="1" cellspacing="0" cellpadding="2">
+		<tr><td><b>Toolname</b></td><td><b>Job count of our department</b></td><td><b>Job count of external users</b></td><td><b>Job count of logged users</b></td></tr>
+
+		<% (Stat.find(:all, :conditions => ["day like ?", year.to_s + '%']).map{|r| r.toolname}).uniq.sort.each do |n| %>
+		<% visits_int=0; visits_ext=0; visits_user=0%>
+		<% Stat.find(:all, :conditions => ["day like ? and toolname=?", year.to_s + '%', n]).each do |e| %>
+		<% visits_int += e.visits_int; visits_ext += e.visits_ext; visits_user += e.visits_user%>
+		<% end %>
+		<% sum_int+=visits_int; sum_ext+=visits_ext; sum_user+=visits_user %>
+		<tr><td><%= n %></td><td><%= visits_int %></td><td><%= visits_ext %></td><td><%= visits_user %></td></tr>	
+		<% end %>
+
+		<tr><td><strong>SUM</strong></td><td><strong><%= sum_int %></strong></td><td><strong><%= sum_ext %></strong></td><td><strong><%= sum_user %></strong></td></tr>
+	</table>
+	<div class="hr">&nbsp;</div>	
+	<% end %>
+
+	<h4>Summary</h4>	
+	<% sum_int=0; sum_ext=0; sum_user=0 %>
+	<table style="text-align:center;" border="1" cellspacing="0" cellpadding="2">
+		<tr><td><b>Year</b></td><td><b>Job count of our department</b></td><td><b>Job count of external users</b></td><td><b>Job count of logged users</b></td></tr>
+		<% currentyear=Time.now.strftime("%Y").to_i %>
+		<% (2008..currentyear).reverse_each do |year| %>
+		<% visits_int=0; visits_ext=0; visits_user=0%>
+		<% Stat.find(:all, :conditions => ["day like ?", year.to_s + '%']).each do |e| %>
+		<% visits_int += e.visits_int; visits_ext += e.visits_ext; visits_user += e.visits_user%>
+		<% sum_int+=e.visits_int; sum_ext+=e.visits_ext; sum_user+=e.visits_user %>
+		<% end %>
+		<tr><td><%= year %></td><td><%= visits_int %></td><td><%= visits_ext %></td><td><%= visits_user %></td></tr>	
+		<% end %>
+
+		<tr><td><strong>SUM</strong></td><td><strong><%= sum_int %></strong></td><td><strong><%= sum_ext %></strong></td><td><strong><%= sum_user %></strong></td></tr>
+	</table>
+	<div class="hr">&nbsp;</div>
+
 	Updates, comments or errors, please mail to: 
 	<strong><a href="mailto:mpi-toolkit@tuebingen.mpg.de">mpi-toolkit@tuebingen.mpg.de</a></strong>
 </div>
@@ -88,7 +128,3 @@ Morris.Bar({
 });
 
 </script>
-
-
-
-
