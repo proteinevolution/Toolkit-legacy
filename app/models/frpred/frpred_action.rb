@@ -101,17 +101,19 @@ class FrpredAction < Action
   
   def perform
     params_dump
+    cpus = 1
     
     if (@pdb)
       @commands << "#{FRPRED}/DSSP/dsspcmbi #{@pdb_file} #{@pdb_file}.dssp"
     end
 
-    tmp = "echo 'Running sable on query sequnece with 3 PSI-BLAST iterations' >> #{job.statuslog_path}"
+    tmp = "echo 'Running sable on query sequence with 3 PSI-BLAST iterations' >> #{job.statuslog_path}"
     tmp += "; #{FRPREDPERL}/perl/FRpred_sable.pl -f #{@infile} -o #{@basename} -b #{BIOPROGS} "
     @commands << tmp
     
     # exec buildali if input is only one sequence
     if (@inputmode == 'sequence')
+      cpus = 2
       tmp = "echo 'Get more homologs kickstarting PSI-BLAST' >> #{job.statuslog_path}"
       tmp += "; #{FRPREDPERL}/perl/myBuildali.pl #{@infile} -noss -N 500 -cpu 2 -n #{@maxpsiblastit} -e #{@E_psiblast} -cov #{@cov_min} -qid #{@qid_min} -fas &> #{job.statuslog_path}.buildali"
       tmp += "; #{FRPREDPERL}/perl/frpred_filter_a3m.pl -a3m #{@basename}.a3m -o #{@basename}.a3m "
@@ -134,7 +136,8 @@ class FrpredAction < Action
     q = queue
     q.on_done = 'run_methods'
     q.save!
-    q.submit_parallel(@commands, false)
+    #possible optimization: Reduce cpus to 1 in every command or give each command 2 cpus.
+    q.submit_parallel(@commands, false, {'cpus' => cpus.to_s()})
     
   end
   

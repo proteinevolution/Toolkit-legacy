@@ -200,6 +200,7 @@ class HamppredAction < Action
 
   def perform
     params_dump
+    cpus = 1
     # Export variable needed for HHSuite
     @commands << "export  HHLIB=#{HHLIB} "
     @commands << "export  PATH=$PATH:#{HHSUITE} "
@@ -210,6 +211,7 @@ class HamppredAction < Action
       # Create alignment
           
       if(@prefilter=='psiblast')
+         cpus = 4
          @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
          @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
       else
@@ -217,6 +219,7 @@ class HamppredAction < Action
               @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
               @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
           else
+              cpus = 8
               @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
               @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
           end
@@ -228,6 +231,9 @@ class HamppredAction < Action
       @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     end
 
+      if cpus < 4
+        cpus = 4
+      end
       ####################################################
       ### NO CALIBRATION WITH NEW HHSEARCH VERSION
       #
@@ -259,7 +265,9 @@ class HamppredAction < Action
 
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'cpus' => '3', 'memory' => @memory})
+    # queue.submit(@commands, true, {'cpus' => '3', 'memory' => @memory})
+    # declare as much cpus as are specified by the commands
+    queue.submit(@commands, true, {'cpus' => cpus.to_s(), 'memory' => @memory})
   end
 
   # Check the length of the first Sequence to determine the access Memory needed for WYE and the large UNIPROT DB
