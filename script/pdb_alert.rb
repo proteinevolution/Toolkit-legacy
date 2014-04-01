@@ -14,6 +14,10 @@ require 'tempfile'
 RSUB_LOG_TEMPFILE = Tempfile.new('rsub')
 RSUB_PATH = TOOLKIT_ROOT+"/script/rsub"
 RSUB_OPTS = "--logfile #{RSUB_LOG_TEMPFILE.path} --jobspath #{TMP}/rsub -a '-o #{TMP}/rsub -wd #{TMP}/rsub'"
+RSUB_PARALLEL_OPTS = RSUB_OPTS
+if LOCATION=="Tuebingen" # -pe parallel is configured
+  RSUB_PARALLEL_OPTS = "--logfile #{RSUB_LOG_TEMPFILE.path} --jobspath #{TMP}/rsub -a '-o #{TMP}/rsub -wd #{TMP}/rsub -pe parallel 4'"
+end
 PDB_ALERT_TMP = TMP+"/pdbalert"
 HHPRED = BIOPROGS+"/hhpred"
 CAL_DATABASE = DATABASES+"/hhpred/cal.hhm"
@@ -45,7 +49,7 @@ def create_hmm ( subdir,file,params )
   hhm_file = File.join(PDB_ALERT_TMP,'hhm',"#{subdir}:,#{file.gsub(/\.fas/,'.hhm')}")
   if !File.exists?(hhm_file)
     STDOUT.write("\n#{Time.now} - Building Alignment for #{file}.......\n")
-    system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/buildali.pl -nodssp -cpu 4 -v 1 -n #{params['maxpsiblastit']} -diff 1000 -e #{params['Epsiblastval']} -cov #{params['cov_min']} -fas #{infile}\"")
+    system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_PARALLEL_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/buildali.pl -nodssp -cpu 4 -v 1 -n #{params['maxpsiblastit']} -diff 1000 -e #{params['Epsiblastval']} -cov #{params['cov_min']} -fas #{infile}\"")
     STDOUT.write("\n#{Time.now} - Creating HHM for #{file}..........\n")
     system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhmake -v 1 -cov #{params['cov_min']} -qid #{params['qid_min']} -diff 100 -i #{a3m_file} -o #{hhm_file}\"")
     system("rm #{a3m_file}")
@@ -102,7 +106,7 @@ def perform_hhsearch ( hmm_file=nil )
 #        STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file}......\n")
 #        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
         STDOUT.write("\n#{Time.now} - Performing HHsearch for #{hhm_file}......\n")
-        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{pdb_database} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
+        system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_PARALLEL_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{pdb_database} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
 #        system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
       end
     end
@@ -422,7 +426,7 @@ def on_hold_sequence_search(hmm_file=nil)
 #      STDOUT.write("\n#{Time.now} - Calibrating #{hhm_file} for on-hold sequences......\n")
 #      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{CAL_DATABASE} -cal -#{params['alignmode']} -ssm #{params['ss_scoring']} -sc #{params['compbiascorr']} -norealign 1\"")
       STDOUT.write("\n#{Time.now} - Performing HHsearch for #{hhm_file} with on-hold sequence database (#{on_hold_db})......\n")
-      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{on_hold_db} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
+      system("#{QUEUE_SETTINGS}; #{RSUB_PATH} #{RSUB_PARALLEL_OPTS} --interval 60 -c \"export TK_ROOT=#{TOOLKIT_ROOT}; #{HHPRED}/hhsearch -cpu 4 -v 1 -i #{hhm_file} -d #{on_hold_db} -o #{out_file} -p #{params['Pmin']} -P #{params['Pmin']} -Z #{params['maxlines']} -B #{params['maxlines']} -seq #{params['maxseq']} -aliw #{params['width']} -#{params['alignmode']} -ssm #{params['ss_scoring']} #{@realign} #{@mapt} -sc #{params['compbiascorr']} \"")
 #      system("rm #{PDB_ALERT_TMP}/hhm/#{file.gsub(/\.hhm/,'.hhr')}")
     end
   end
