@@ -56,6 +56,7 @@ class BfitAction < Action
   # Put action code in here
   def perform
     @commands << "export PYTHONPATH=#{SAMCC}"
+    @commands << "export LD_LIBRARY_PATH=#{PYTHON}:$LD_LIBRARY_PATH"
     if @ensemble == 'T'
       #@commands << "#{PYTHON}/python #{BFIT}/bFit.py -e #{@pdb_file1} -l #{@model} -g #{@optimization} -w -p -o #{@outpath}"
       @commands << "#{PYTHON}/python #{BFIT}/bFit.py -e #{@pdb_file1} -l #{@model} -g #{@optimization} -w -p -o #{@outpath}"

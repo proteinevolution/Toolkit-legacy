@@ -36,15 +36,15 @@ class HhfragAction < Action
 
   def perform
     params_dump
+    # If hhfrag runs on the cluster, it should request 4 CPUs (see hhfrag.sh).
     
       # Just run hhfrag
       @commands << "#{HHFRAG}/hhfrag.sh #{@infile} #{@outdir} #{@predict_ta}  >>#{job.statuslog_path}"
       # Fire up method to copy file from temp to folder
 
-
    
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands)
+    queue.submit(@commands, nil, { 'cpus' => '4' })
   end
   
 end

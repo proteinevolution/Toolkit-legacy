@@ -216,6 +216,7 @@ class HhpredAction < Action
 
   def perform
     params_dump
+    cpus = 1
     # Export variable needed for HHSuite
     @commands << "export  HHLIB=#{HHLIB} "
     @commands << "export  PATH=$PATH:#{HHSUITE} "
@@ -226,6 +227,7 @@ class HhpredAction < Action
       # Create alignment
 
       if(@prefilter=='psiblast')
+         cpus = 4
          @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
          @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
       else
@@ -233,6 +235,7 @@ class HhpredAction < Action
               @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
               @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
           else
+              cpus = 8
               @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
               @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
           end
@@ -245,6 +248,9 @@ class HhpredAction < Action
     end
 
     if @mode == 'hhsenser'
+      if cpus < 4
+        cpus = 4
+      end
       # Trim alignment
       @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n 0 -maxres 300 -diff 1000 -#{@informat} #{@basename}.a3m &> #{job.statuslog_path}"
       # Start HHsenser
@@ -273,6 +279,9 @@ class HhpredAction < Action
       @commands << "#{HHPERL}/hhrealign.pl -v 2 -resort -i #{@basename}_parent.hhr -o #{@basename}.hhr -q #{@basename}.hhm -d #{@dbs_realign} #{realign_options} #{@ss_scoring} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@compbiascorr} 1>> #{job.statuslog_path} 2>&1";
     else
 
+      if cpus < 4
+        cpus = 4
+      end
       ####################################################
       ### NO CALIBRATION WITH NEW HHSEARCH VERSION
       #
@@ -306,7 +315,9 @@ class HhpredAction < Action
 
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'cpus' => '3', 'memory' => @memory})
+    # queue.submit(@commands, true, {'cpus' => '3', 'memory' => @memory})
+    # declare as much cpus as are specified in the commands
+    queue.submit(@commands, true, {'cpus' => cpus.to_s(), 'memory' => @memory})
   end
 # Check the length of the first Sequence to determine the access Memory needed for WYE and the large UNIPROT DB
 def check_sequence_length

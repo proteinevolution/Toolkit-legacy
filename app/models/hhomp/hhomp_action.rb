@@ -106,7 +106,8 @@ class HhompAction < Action
     prepare_fasta_hhviz_histograms_etc    
 
     logger.debug "Commands:\n"+@commands.join("\n") 
-    queue.submit(@commands)
+    # optimization: why give blastpgp above only one cpu?
+    queue.submit(@commands, nil, { 'cpus' => cpus.to_s() })
   end
 
 end
