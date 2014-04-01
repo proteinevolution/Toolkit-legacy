@@ -29,6 +29,8 @@ class SgeWorker < AbstractWorker
         #command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G -p 10 #{self.wrapperfile}"
         command = "#{QUEUE_DIR}/qsub -l s_vmem=#{warning_memory}M -l h_vmem=#{memory}G"
         unless has_long_execution_time(job)
+          # try to get into short queue. Values from qconf -sq short.q
+          # should be set in local_environment.rb
           command = command + " -l s_rt=0:55:00 -l h_rt=1:00:00"
         end
         command = command + " #{self.wrapperfile}"
@@ -101,20 +103,24 @@ class SgeWorker < AbstractWorker
       # SGE options
       f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
 
-      if LOCATION == "Tuebingen" && RAILS_ENV == "development"
+      if LINUX == 'SL6'
+        f.write '#$' + " -pe #{queue}\n"
+        #f.write '#$' + " -q #{queue}\n"
       else
-        if LINUX == 'SL6'
-          f.write '#$' + " -pe #{queue}\n"
-          #f.write '#$' + " -q #{queue}\n"
-        else
+        if (cpus && cpus > 1)
+          f.write '#$' + " -pe parallel #{cpus}\n"
+        end
+        if (RAILS_ENV == "production")
+          # for compatibility only
           f.write '#$' + " -q #{queue}\n"
         end
-        if RAILS_ENV == "development"
-          if queue == "express.q"
-            f.write '#$' + " -l express=TRUE\n"
-          end
+      end
+      if LOCATION != "Tuebingen" && RAILS_ENV == "development"
+        if queue == "express.q"
+          f.write '#$' + " -l express=TRUE\n"
         end
       end
+
       f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
       f.write '#$' + " -o #{queue_job.action.job.job_dir}\n"
       f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
@@ -225,7 +231,7 @@ class SgeWorker < AbstractWorker
       f.chmod(0755)
       f.close
     rescue  Exception => e
-      raise "Unable to create Wrapperfile #{self.wrapperfile} in #{self.class} id: #{id}.\n e.message\n"
+      raise "Unable to create Wrapperfile #{self.wrapperfile} in #{self.class} id: #{id}.\n#{e.message}\n"
     end
   end
   
@@ -270,7 +276,7 @@ class SgeWorker < AbstractWorker
       f.chmod(0755)
       f.close
     rescue  Exception => e
-      raise "Unable to create Commandfile #{self.commandfile} in #{self.class} id: #{id}.\n e.message \n"
+      raise "Unable to create Commandfile #{self.commandfile} in #{self.class} id: #{id}.\n#{e.message}\n"
     end
   end
 
@@ -287,6 +293,7 @@ class SgeWorker < AbstractWorker
                   
                   ### A ###
                 when "AncesconAction" then 2
+                when "Ali2dAction" then 18
                 when "Aln2plotAction" then 10
                 when "AlnvizAction" then 5
                   ### B ###  
@@ -355,6 +362,8 @@ class SgeWorker < AbstractWorker
                 when "PsiBlastForwardAction" then 5
                 when "PatsearchForwardAction" then 5
                 when "ProtBlastForwardAction" then 5
+                  ### Q ###
+                when "Quick2DAction" then 18
                   ### R ###
                 when "RepperAction" then 15
                 when "ReformatAction" then 4

@@ -128,7 +128,9 @@ class HhblitsAction < Action
     
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, {'cpus' => '4', 'queue' => QUEUES[:hhblits]})
+    #queue.submit(@commands, true, {'cpus' => '4', 'queue' => QUEUES[:hhblits]})
+    # declare as much cpus as are used by the commands
+    queue.submit(@commands, true, {'cpus' => '8', 'queue' => QUEUES[:hhblits]})
     
   end
   

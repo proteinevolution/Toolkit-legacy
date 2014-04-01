@@ -97,7 +97,7 @@ class HhsenserAction < Action
     @commands << "#{HHPERL}/reformat.pl fas clu #{@basename}_permissive_masterslave.reduced.fas #{@basename}_permissive_masterslave.reduced.clu -v #{@v} &> #{job.statuslog_path}_reform"
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true)
+    queue.submit(@commands, true, { 'cpus' => '2' })
   end
 
   def run_screening
@@ -163,7 +163,7 @@ class HhsenserAction < Action
     q = queue
     q.on_done = 'screening_search'
     q.save!
-    q.submit(@commands, false)
+    q.submit(@commands, false, { 'cpus' => '2' })
   end
   
   def screening_search

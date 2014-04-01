@@ -117,7 +117,7 @@ class HhrepMergealiAction < Action
 				q.on_done = 'create_links'
 				q.save!
 			end
-			q.submit(@commands, false)
+                        q.submit(@commands, false, { 'cpus' => '2' })
 			
 		end
 		
