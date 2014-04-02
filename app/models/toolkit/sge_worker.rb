@@ -89,11 +89,15 @@ class SgeWorker < AbstractWorker
     queue = QUEUES[:normal]
     cpus = nil
     additional = false
+    timelimit = nil
 
     if (!options.nil? || !options.empty?)
       if (options['queue']) then queue = options['queue'] end
       if (options['cpus']) then cpus = options['cpus'] end
       if (options['additional']) then additional = true end
+    end
+    if (defined? QUEUETIMELIMITS && QUEUETIMELIMITS) then
+      timelimit = QUEUETIMELIMITS[QUEUES.index(queue)]
     end
 
     begin
@@ -121,12 +125,6 @@ class SgeWorker < AbstractWorker
         end
       end
 
-      f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
-      f.write '#$' + " -o #{queue_job.action.job.job_dir}\n"
-      f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
-      f.write '#$' + " -notify\n" # to handle resource limits not specified in sge_worker.rb
-      f.write '#$' + " -w n\n"
-
       if (queue == QUEUES[:long] && LOCATION == "Tuebingen")
         f.write '#$' + " -l long\n"
       end
@@ -134,6 +132,18 @@ class SgeWorker < AbstractWorker
       if (queue == QUEUES[:immediate] && LOCATION == "Tuebingen")
         f.write '#$' + " -l immediate\n"
       end
+
+      if (timelimit)
+        f.write '#$' + " -l h_rt=\'#{timelimit}\'\n"
+        # This timelimit of the wrapper file can be overwritten in the command
+        # line (which indeed might be done by this class).
+      end
+
+      f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
+      f.write '#$' + " -o #{queue_job.action.job.job_dir}\n"
+      f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
+      f.write '#$' + " -notify\n" # to handle resource limits not specified in sge_worker.rb
+      f.write '#$' + " -w n\n"
 
       # Source all modules on SL6
       if LINUX == 'SL6'
