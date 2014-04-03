@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class GcviewAction < Action
 
   GCVIEW = File.join(BIOPROGS, 'gcview')
@@ -156,6 +157,7 @@ class GcviewAction < Action
   end
 
   def perform
+    cpus = 1
 
     for i in 0..@inputSequences_length-1
 
@@ -197,6 +199,7 @@ class GcviewAction < Action
         @commands << "cp #{old_tmp_file} #{@tmpdir}"
         @commands << "python #{GCVIEW}/psiblast_parser.py #{blast_file} #{output_file} \"#{jobending}|#{@inputTags[i]}\"" 
       elsif (@jobtype[i] == 'sequence')
+        cpus = 4
         psiblast_file = File.join(@tmpdir, job.jobid+"_#{i+1}.psiblast")
         output_file = File.join(job.job_dir, "#{@inputSequences[i]}.txt")
         @commands << "#{BLAST}/blastpgp -a 4 -i #{@basename}_#{i+1}.in -F F -h 0.001 -s F -e 10 -M BLOSUM62 -G 11 -E 1 -j 1 -m 0 -v 100 -b 100 -T T -o #{psiblast_file} -d \"#{@database_nr}\" -I T &>> #{job.statuslog_path}"
@@ -208,7 +211,7 @@ class GcviewAction < Action
     @commands << "echo 'Running GCView...' >> #{job.statuslog_path}"
     @commands << "python #{GCVIEW}/tool.py #{@configfile} &>> #{job.statuslog_path}"
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands)
+    queue.submit(@commands, nil, {'cpus' => cpus.to_s()})
   end
 
 
