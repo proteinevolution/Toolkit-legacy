@@ -18,6 +18,13 @@
 </div>
 
 <div class="row">
+	<%= form_label("Examples") %>
+	<div class="formw">
+		<strong>TPR    </strong> <a href="#" onClick="javascript:pasteTPR();">paste</a>&nbsp;&nbsp;
+		<strong>OMPW</strong> <a href="#" onClick="javascript:pasteOMPW();">paste</a>
+	</div>
+
+<div class="row">
 	<%= form_label("or upload a local file") %>
 	<%= form_file("sequence_file") %>
 </div>
