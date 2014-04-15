@@ -12,7 +12,7 @@ public/robots.txt
 *~
 *.lock
 *.DS_Store
-\#*#
+\#*\#
 
 .project
 .idea
