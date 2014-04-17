@@ -14,9 +14,10 @@ require 'tempfile'
 RSUB_LOG_TEMPFILE = Tempfile.new('rsub')
 RSUB_PATH = TOOLKIT_ROOT+"/script/rsub"
 RSUB_OPTS = "--logfile #{RSUB_LOG_TEMPFILE.path} --jobspath #{TMP}/rsub -a '-o #{TMP}/rsub -wd #{TMP}/rsub'"
-RSUB_PARALLEL_OPTS = RSUB_OPTS
 if LOCATION=="Tuebingen" # -pe parallel is configured
-  RSUB_PARALLEL_OPTS = "--logfile #{RSUB_LOG_TEMPFILE.path} --jobspath #{TMP}/rsub -a '-o #{TMP}/rsub -wd #{TMP}/rsub -pe parallel 4'"
+  RSUB_PARALLEL_OPTS = "--logfile #{RSUB_LOG_TEMPFILE.path} --jobspath #{TMP}/rsub -l h_vmem=5G -a '-o #{TMP}/rsub -wd #{TMP}/rsub -pe parallel 4'"
+else
+  RSUB_PARALLEL_OPTS = RSUB_OPTS + " -l h_vmem=16G"
 end
 PDB_ALERT_TMP = TMP+"/pdbalert"
 HHPRED = BIOPROGS+"/hhpred"
@@ -269,7 +270,7 @@ def create_toolkit_str_job ( alignments )
         :params => parameters,
         :job => job,
         :status => 'i',
-        :forward_controller => 'hhpred',
+        :forward_controller => 'modeller',
         :forward_action => 'results'
         )
 
