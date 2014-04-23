@@ -12,12 +12,12 @@ require 'tempfile'
 
 
 RSUB_LOG_TEMPFILE = Tempfile.new('rsub')
-RSUB_PATH = TOOLKIT_ROOT+"/script/rsub"
-RSUB_OPTS = "--logfile #{RSUB_LOG_TEMPFILE.path} --jobspath #{TMP}/rsub -a '-o #{TMP}/rsub -wd #{TMP}/rsub'"
+RSUB_PATH = ((defined? GEM_PATH && !GEM_PATH.nil?) ? "export GEM_PATH=" + GEM_PATH + ";" : "") + TOOLKIT_ROOT+"/script/rsub"
+RSUB_OPTS = "--logfile #{RSUB_LOG_TEMPFILE.path} --jobspath #{TMP}/rsub --resources h_rt=4:0:0 --args '-o #{TMP}/rsub -wd #{TMP}/rsub'"
 if LOCATION=="Tuebingen" # -pe parallel is configured
-  RSUB_PARALLEL_OPTS = "--logfile #{RSUB_LOG_TEMPFILE.path} --jobspath #{TMP}/rsub -l h_vmem=5G -a '-o #{TMP}/rsub -wd #{TMP}/rsub -pe parallel 4'"
+  RSUB_PARALLEL_OPTS = "--logfile #{RSUB_LOG_TEMPFILE.path} --jobspath #{TMP}/rsub --resources h_vmem=5G --args '-o #{TMP}/rsub -wd #{TMP}/rsub -pe parallel 4'"
 else
-  RSUB_PARALLEL_OPTS = RSUB_OPTS + " -l h_vmem=16G"
+  RSUB_PARALLEL_OPTS = RSUB_OPTS + " --resources h_vmem=16G"
 end
 PDB_ALERT_TMP = TMP+"/pdbalert"
 HHPRED = BIOPROGS+"/hhpred"
