@@ -78,9 +78,14 @@ class Submit
            "Defines or redefines the priority of the job relative to other jobs (PRIO is in the range -1023 to 1024)." ) do |val|
         @sge_config[:priority] = val
       end
-      o.on("-l", "--resources RESSOURCE", String,
+      o.on("-l", "--resources RESOURCE", String,
            "Launch  the job in a queue meeting the given resource request list (format: name=value,...)." ) do |val|
-        @sge_config[:ressources] = val
+        values = @sge_config[:ressources]
+        if values.nil? then
+          values = []
+          @sge_config[:ressources] = values
+        end
+        values.push(val)
       end
       o.on("-a", "--args ARGS", String,
            "Additional submit arguments to be passed to qsub." ) do |val|
