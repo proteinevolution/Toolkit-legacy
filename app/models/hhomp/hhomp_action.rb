@@ -85,6 +85,7 @@ class HhompAction < Action
 
   def perform
     params_dump
+    cpus = 2
     
     # Create alignment
     @commands << "#{HHOMPPERL}/buildali.pl -nodssp -bb -cpu 2 -v #{@v} -n #{@maxpsiblastit} #{@E_psiblast} #{@cov_min} -diff 100 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
@@ -111,9 +112,3 @@ class HhompAction < Action
   end
 
 end
-
-
-
-
-
-
