@@ -20,7 +20,8 @@ NOW   = Time.now
 
 USERDBDIR = File.join(DATABASES, 'userdbs', 'not_login')
 
-logger = Logger.new( File.join(File.dirname(__FILE__), '..', 'log' ,'sweep.log') )
+# max log file size: 100MB. Keep 6 of them.
+logger = Logger.new( File.join(File.dirname(__FILE__), '..', 'log' ,'sweep.log'), 6, 104857600 )
 
 def delete_job(job, logger)
   if( job[:jobid]=~/^tu_/ || job[:jobid]=~/^HH_/ ) then

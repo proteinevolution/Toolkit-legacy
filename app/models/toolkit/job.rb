@@ -11,7 +11,8 @@
     @@export_type = 'application/octet-stream'
 
     def logger
-      @logger ||= Logger.new("#{RAILS_ROOT}/log/#{self.class.name.to_us}.log")
+      # max log file size: 100MB. Keep 6 of them.
+      @logger ||= Logger.new("#{RAILS_ROOT}/log/#{self.class.name.to_us}.log", 6, 104857600)
     end
 
     def self.set_export_file_ext(val)
