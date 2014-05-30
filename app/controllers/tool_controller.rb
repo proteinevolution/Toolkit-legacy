@@ -28,7 +28,8 @@ class ToolController < ApplicationController
   end
   
   def logger
-    @logger ||= Logger.new("#{RAILS_ROOT}/log/tool_controller.log")
+    # max log file size: 1G. Keep 5 of them.
+    @logger ||= Logger.new("#{RAILS_ROOT}/log/tool_controller.log", 5, 1073741824)
   end
   
   def run_callbacks(action=params[:action])
