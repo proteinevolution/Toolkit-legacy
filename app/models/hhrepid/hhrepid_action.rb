@@ -1,6 +1,5 @@
 class HhrepidAction < Action
   HH      = File.join(BIOPROGS, 'hhpred')
-  HHBLITS = File.join(BIOPROGS, 'hhblits')
   HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
   HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')  

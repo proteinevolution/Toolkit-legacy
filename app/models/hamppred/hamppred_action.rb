@@ -1,6 +1,6 @@
 class HamppredAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
-  HHBLITS = File.join(BIOPROGS, 'hhblits')
+  HHBLITS = File.join(BIOPROGS, 'hhsuite/bin/hhblits')
   HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
   HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
@@ -253,7 +253,7 @@ class HamppredAction < Action
 
       # HHsearch with query HMM against HMM database
       @commands << "echo 'Searching #{@dbnames} ...' >> #{job.statuslog_path}"
-      @commands << "#{HHSUITE}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs #{HHBLITS}/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HHSUITE}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     
 
     prepare_fasta_hhviz_histograms_etc
