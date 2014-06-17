@@ -332,7 +332,7 @@ class SgeWorker < AbstractWorker
                 when "HamppredShowtemplalignAction" then 18
                 when "HhpredForwardAction" then 19
                 when "HhpredAction" then 22
-                when "HhblitsAction" then 18
+                when "HhblitsAction" then 20
                 when "HhblitsForwardAction" then 18
                 when "HhblitsShowtemplalignAction" then 18
                 when "HhpredShowtemplalignAction" then 18
