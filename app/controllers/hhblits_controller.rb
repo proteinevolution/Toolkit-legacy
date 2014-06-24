@@ -15,18 +15,25 @@ class HhblitsController < ToolController
     @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
 
     searchpat = File.join(DATABASES, @tool['name'], '*.cs219')
-    dbvalues_pre = Dir.glob(searchpat)
+
+    # Dir.glob seems to return totally unsorted lists
+    dbvalues_pre = Dir.glob(searchpat).sort {|x,y| y <=> x }
     
     @dbvalues = Array.new
     @dblabels = Array.new
 
     sortlist = Array["uniprot", "nr"]
+    # First sort according to sortlist. Under the same sortlist element,
+    # keep sorting of dbvalues_pre. The databases have to be named
+    # accordingly, i.e. uniprot20_2013_03, when newer databases are to be
+    # listed first. The labels can be changed using a *.name.* file.
+
     # Allow non-standard libraries only on internal server:
     if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
     sortlist.each do |el|
       dbvalues_pre.each do |val|
         if (!val.index(/#{el}/).nil?)
-          dbvalues_pre.delete(val)
+          #dbvalues_pre.delete(val) led to missing entries. Now sortlist must be unique.
           base = File.basename(val, ".cs219")
           dir = File.dirname(val)
           @dbvalues.push(File.join(dir, base))
@@ -35,7 +42,8 @@ class HhblitsController < ToolController
             @dblabels.push(base)
           else
             name[0].gsub!(/^\S+\.name\.(\S+)$/, '\1')
-            @dblabels.push(base + "_" + name[0])
+            #@dblabels.push(base + "_" + name[0])
+            @dblabels.push(name[0])
           end
           next
         end
