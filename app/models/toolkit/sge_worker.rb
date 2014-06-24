@@ -163,7 +163,10 @@ class SgeWorker < AbstractWorker
       f.write "    case \"$1\" in\n"
       # Signal SIGUSR1 only used in development environment of Tuebingen in this way (see trap calls)
       if LOCATION == "Tuebingen" && RAILS_ENV == "development" && !has_long_execution_time(queue_job.action.type)
-        f.write "        USR1) echo \"Grit time limit exceeded.\" >> #{queue_job.action.job.statuslog_path}\n"
+        f.write "        USR1) echo \"Probably grit time limit exceeded.\" >> #{queue_job.action.job.statuslog_path}\n"
+        f.write "            ;;\n"
+      else
+        f.write "        USR1) echo \"Program stopped, job terminated.\" >> #{queue_job.action.job.statuslog_path}\n"
         f.write "            ;;\n"
       end
       f.write "        USR2) echo \"Termination of job by user or because of reaching a resource limit.\" >> #{queue_job.action.job.statuslog_path}\n"
@@ -197,12 +200,19 @@ class SgeWorker < AbstractWorker
       end
       f.write "REPEATED=\"\"\n"
 
-      f.write "trap 'sig_handler USR2' USR2\n" # handles signals caused by -notify
+      # handles signals caused by -notify and hard limits
+      f.write "trap 'sig_handler USR2' USR2\n"
+
+      # handles signals caused by -notify and, only used in case of
+      # LOCATION == "Tuebingen" and RAILS_ENV == "development" and !has_long_execution_time(queue_job.action.type),
+      # signals caused by -l s_rt
+      f.write "trap 'sig_handler USR1' USR1\n"
+
       if LOCATION == "Tuebingen"
-        f.write "trap 'sig_handler XCPU' XCPU\n" # handles signals caused by -l s_vmem
-        if RAILS_ENV == "development" && !has_long_execution_time(queue_job.action.type)
-          f.write "trap 'sig_handler USR1' USR1\n" # handles signals caused by -l s_rt
-        end
+
+        # handles signals caused by -l s_vmem
+        f.write "trap 'sig_handler XCPU' XCPU\n"
+
       end
 
       # ALL THE SUBSHELL SCRIPT 
@@ -332,7 +342,7 @@ class SgeWorker < AbstractWorker
                 when "HamppredShowtemplalignAction" then 18
                 when "HhpredForwardAction" then 19
                 when "HhpredAction" then 22
-                when "HhblitsAction" then 18
+                when "HhblitsAction" then 20
                 when "HhblitsForwardAction" then 18
                 when "HhblitsShowtemplalignAction" then 18
                 when "HhpredShowtemplalignAction" then 18
