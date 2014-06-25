@@ -27,7 +27,7 @@ module Toolkit
                 if (!@tools.nil?)
                   @tools.each do |tool|
                     name_short = tool['name']
-                    name_short.gsub!(/_/, '')
+                    name_short = name_short.gsub(/_/, '')
                     if (value.to_s =~ /^#{tool['name']}$/i || value.to_s =~ /^#{name_short}$/i)
                       record.errors.add(attr, "Job-IDs must not match with a toolname!")
                       break
