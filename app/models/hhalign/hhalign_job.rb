@@ -43,7 +43,7 @@ class HhalignJob < Job
 					pfamid = target
 					pfamid.sub!(/^pfam/, 'PF')
 					# link to PFAM domain
-					res[i].sub!(target, "<a href=\"http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?#{pfamid}\" target=\"_blank\">#{target}</a>")
+					res[i].sub!(target, "<a href=\"http://pfam.xfam.org/family?acc=#{pfamid}\" target=\"_blank\">#{target}</a>")
 	    
 				# SMART identifier? (smart00382)
 				elsif ( target =~ /^SM\d{5}/ || target =~ /^smart\d{5}/)
@@ -106,7 +106,7 @@ class HhalignJob < Job
 					pfamid = target
 					pfamid.sub!(/^pfam/, 'PF')
 					# link to PFAM domain
-					res[i].sub!(target, "<a href=\"http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?#{pfamid}\" target=\"_blank\">#{target}</a>")
+					res[i].sub!(target, "<a href=\"http://pfam.xfam.org/family?acc=#{pfamid}\" target=\"_blank\">#{target}</a>")
 	    
 				# SMART identifier? (smart00382)
 				elsif ( target =~ /^SM\d{5}/ || target =~ /^smart\d{5}/)
