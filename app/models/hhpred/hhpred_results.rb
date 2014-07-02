@@ -337,7 +337,7 @@ class HHpredJob  < Job
 				pfamid = template
 				pfamid.sub(/^pfam/, "PF")
 				#link to PFAM domain family?acc=
-				line[b].sub(/#{template}/, "<a href=\"http:\/\/pfam.sanger.ac.uk\/family?acc=#{pfamid}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
+				line[b].sub(/#{template}/, "<a href=\"http:\/\/pfam.xfam.org\/family?acc=#{pfamid}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
 		
 			# PRODOM identifier? (PD012345)
 			elsif  template =~ /^PD\d{6}/
@@ -575,7 +575,7 @@ class HHpredJob  < Job
 				cite_pfam=1
 
 				# link to Pfam-A domain
-				href="http:\/\/pfam.sanger.ac.uk\/family?acc=#{pfamid}"
+				href="http:\/\/pfam.xfam.org\/family?acc=#{pfamid}"
 				line[b].sub(/#{template}/, "<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>/g")
 				line[b-1].chomp
 				line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_Pfam.jpg\" alt=\"Pfam\" title=\"Pfam\" #{logo_attr} height=\"20\" ></a>\n"
