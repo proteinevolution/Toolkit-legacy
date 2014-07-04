@@ -18,6 +18,11 @@ class SgeWorker < AbstractWorker
     job = queue_job.action.type
     # Memory contains the Nr of GB used for Tuebinger Queue
     memory = select_memory(job);
+    if (options['cpus'] && options['cpus'].to_i > 1)
+        # The sge engine will multiply the given memory with the number of cpus
+        cpus = options['cpus'].to_i
+        memory = (memory + cpus - 1) / cpus
+    end
     # to get a signal before SIGKILL, we define a warning memory limit, which is 100M below memory.
     warning_memory = memory * 1024 - 100
     logger.debug "L23 Memory #{memory} "
@@ -301,7 +306,8 @@ class SgeWorker < AbstractWorker
   end
 
   #########################################################################################
-  # Individualized Memory Management for each tool, this has to be tested on wye
+  # Individualized Memory Management for each tool
+  # It should return the maximal memory used, independend of the number of cpus used.
   #
   #########################################################################################
   def select_memory(method)
@@ -342,7 +348,7 @@ class SgeWorker < AbstractWorker
                 when "HamppredShowtemplalignAction" then 18
                 when "HhpredForwardAction" then 19
                 when "HhpredAction" then 22
-                when "HhblitsAction" then 20
+                when "HhblitsAction" then 28
                 when "HhblitsForwardAction" then 18
                 when "HhblitsShowtemplalignAction" then 18
                 when "HhpredShowtemplalignAction" then 18
