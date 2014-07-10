@@ -123,7 +123,7 @@ Localization::load_localized_strings
 require 'environments/user_environment'
 
 # avoid 'application error(rails)' message
-require File.join(File.dirname(__FILE__), '..', 'lib', 'modules', 'rescue')
+#require File.join(File.dirname(__FILE__), '..', 'lib', 'modules', 'rescue')
 
 #memcache
 cache_params = *([memcache_servers, memcache_options].flatten)
