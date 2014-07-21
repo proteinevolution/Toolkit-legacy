@@ -361,12 +361,12 @@ class SgeWorker < AbstractWorker
                 when "Gi2seqAction" then 2  
                 when "Gi2seqForwardAction" then 2
                   ### H ###  
-                when "HamppredAction" then 22
+                when "HamppredAction" then 28
                 when "HamppredForwardAction" then 19
                 when "HamppredShowtemplalignAction" then 18
                 when "HhpredForwardAction" then 19
-                when "HhpredAction" then 22
-                when "HhblitsAction" then 32
+                when "HhpredAction" then 28
+                when "HhblitsAction" then 28
                 when "HhblitsForwardAction" then 18
                 when "HhblitsShowtemplalignAction" then 18
                 when "HhpredShowtemplalignAction" then 18
