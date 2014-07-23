@@ -132,6 +132,7 @@ ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.merge!({ 'cache' => CACHE 
 
 #specify internal IPs
 INT_IPS = INTERNAL_IPS.map {|ip| IPAddr.new(ip) }
+BLOCK_IPS = BLOCKED_IPS.map {|ip| IPAddr.new(ip) }
 
 #mail settings
 ActionMailer::Base.smtp_settings = {
