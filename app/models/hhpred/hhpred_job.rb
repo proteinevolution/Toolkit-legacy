@@ -333,7 +333,7 @@ class HhpredJob  < Job
       @results.push("<form action=\"/hhpred/resubmit_domain/#{jobid}\" method=\"post\">\n")
       @results.push("<input type=\"hidden\" id=\"domain_start\" name=\"domain_start\"/>\n")
       @results.push("<input type=\"hidden\" id=\"domain_end\" name=\"domain_end\"/>\n")
-      @results.push("<input type=\"submit\" class=\"feedbutton\" style=\"border-width:2px;\" value=\"Resubmit\"/>\n")
+      @results.push("<input type=\"submit\" class=\"feedbutton\" style=\"border-width:2px;\" value=\"Resubmit section\"/>\n")
       @results.push("</form>\n")
       @results.push("</div>\n")
       @results.push("</div>\n")
