@@ -55,4 +55,16 @@ module UserGroupModule
     end
   end
   
+  def is_ip_blocked?(ip)
+    begin
+      ip = IPAddr.new(ip)
+      BLOCK_IPS.each do |mask|
+        if mask.include?(ip) then return true end   
+      end 
+      return false
+    rescue Exception => e
+      return false
+    end
+  end
+
 end

@@ -10,7 +10,12 @@ class ToolController < ApplicationController
       logger.debug "Wrong group!"
       redirect_to(:host => DOC_ROOTHOST, :controller => 'common', :action => 'notallowed')
     end
-    
+
+    if is_ip_blocked?(request.remote_ip)
+      logger.debug "ip #{request.remote_ip} blocked"
+      redirect_to(:host => DOC_ROOTHOST, :controller => 'common', :action => 'blocked')
+    end
+
     @section = @sections_hash[@tool["section"]]
     @layout_page_title = @tool["title_long"]
     @page_title = @layout_page_title
