@@ -13,6 +13,15 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
     @ss_scoring_values = ['2', '0', '4']
     @ss_scoring_labels = ['yes', 'no', 'predicted vs predicted only']
+    @msa_factor_values = ['first', '10', '30', '50', '70', '75', '90', '100']
+    @msa_factor_labels = ['residues of first sequence',
+                          'fraction of gaps <10%',
+                          'fraction of gaps <30%',
+                          'fraction of gaps <50%',
+                          'fraction of gaps <70%',
+                          'fraction of gaps <75%',
+                          'fraction of gaps <90%',
+                          'assigning all columns to match states']
     @compbiascorr_values = ['1', '0']
     @compbiascorr_labels = ['yes', 'no']
     @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
@@ -20,8 +29,6 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @prefilter_labels = ['HHblits', 'Psiblast']
     searchpat = File.join(DATABASES, @tool['name'], 'new_dbs', '*')
     dbvalues_pre = Dir.glob(searchpat)
-    
-    logger.debug "L 24 HHpredController #{params['sequence_input']}"
     
     @dbvalues = Array.new
     
@@ -56,6 +63,9 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
 
     # do we need to show output options part of the form?
     @show_more_options = (@error_params['more_options_on'] == "true")
+
+    # handle dependencies
+    @js_onload="adjustMSAFactorValues();adjustMoreOptionsDisplay();"
   end
   
   def results
@@ -208,7 +218,9 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
   def resubmit_domain
 
     basename = File.join(@job.job_dir, @job.jobid)
-    @my_command = "#{BIOPROGS}/perl/alicutter.pl #{basename}.resub_domain.a2m #{basename}.in.cut #{params[:domain_start]} #{params[:domain_end]} "
+    extension = ".resub_domain.a2m"
+
+    @my_command = "#{BIOPROGS}/perl/alicutter.pl #{basename}#{extension} #{basename}.in.cut #{params[:domain_start]} #{params[:domain_end]} "
     logger.debug("Running Alicutter -hhpred- #{@my_command}")
     system(@my_command)   
     job_params = @job.actions.first.params
