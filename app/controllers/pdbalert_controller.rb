@@ -14,7 +14,8 @@ class PdbalertController < ApplicationController
   end
 
   def logger
-    @logger ||= Logger.new("#{RAILS_ROOT}/log/pdbalert_controller.log")
+    # max log file size: 10MB, Keep 6 of them.
+    @logger ||= Logger.new("#{RAILS_ROOT}/log/pdbalert_controller.log", 6, 10485760)
   end
 
   def help_ov

@@ -10,7 +10,12 @@ class ToolController < ApplicationController
       logger.debug "Wrong group!"
       redirect_to(:host => DOC_ROOTHOST, :controller => 'common', :action => 'notallowed')
     end
-    
+
+    if is_ip_blocked?(request.remote_ip)
+      logger.debug "ip #{request.remote_ip} blocked"
+      redirect_to(:host => DOC_ROOTHOST, :controller => 'common', :action => 'blocked')
+    end
+
     @section = @sections_hash[@tool["section"]]
     @layout_page_title = @tool["title_long"]
     @page_title = @layout_page_title
@@ -28,7 +33,8 @@ class ToolController < ApplicationController
   end
   
   def logger
-    @logger ||= Logger.new("#{RAILS_ROOT}/log/tool_controller.log")
+    # max log file size: 1G. Keep 5 of them.
+    @logger ||= Logger.new("#{RAILS_ROOT}/log/tool_controller.log", 5, 1073741824)
   end
   
   def run_callbacks(action=params[:action])

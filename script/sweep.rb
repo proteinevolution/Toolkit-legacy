@@ -20,11 +20,15 @@ NOW   = Time.now
 
 USERDBDIR = File.join(DATABASES, 'userdbs', 'not_login')
 
-logger = Logger.new( File.join(File.dirname(__FILE__), '..', 'log' ,'sweep.log') )
+# max log file size: 100MB. Keep 6 of them.
+logger = Logger.new( File.join(File.dirname(__FILE__), '..', 'log' ,'sweep.log'), 6, 104857600 )
 
 def delete_job(job, logger)
-  if( job[:jobid]=~/^tu_/ ) then return end
-  if( job[:jobid]=~/^HH_/ ) then return end
+  if( job[:jobid]=~/^tu_/ || job[:jobid]=~/^HH_/ ) then
+    logger.debug("No, not deleting job(id='#{job[:id]}, jobid='#{job[:jobid]}')")
+    puts "No, not deleting job(id='#{job[:id]}', jobid='#{job[:jobid]}')"
+    return
+  end
   logger.debug("DELETING JOB ID:#{job[:id]} JOBID: #{job[:jobid]}")
   job.actions.each do |action|
     action.queue_jobs.each do |qj|
@@ -39,7 +43,7 @@ def delete_job(job, logger)
   logger.debug "Destroy job!"
   Job.delete(job[:id]) 	
   logger.debug "Delete #{job.job_dir}"
-  system("rm -rf #{job.job_dir}")   
+  FileUtils.rm_rf job.job_dir
 end
 
 
@@ -82,7 +86,7 @@ Dir.foreach(USERDBDIR) do |dir|
   if( (NOW.to_f-File.ctime(file).to_f)>WEEK )
     logger.debug("Deleting userdb #{dir} - older than 1 week")
     puts "Deleting userdb #{dir} - older than 1 week"
-    system("rm -f #{file}")
+    FileUtils.rm_f file
   end
 end
 
@@ -98,12 +102,12 @@ Dir.foreach(TMP) do |id|
     if( res.nil? )
       logger.debug("Deleting #{file} - no job for id='#{id}' in the db")
       puts "Deleting #{file} - no job for id='#{id}' in the db"
-      system("rm -rf #{file}")
-    else
-	out = `more #{File.join(file,"*.hhr")}`
-	if out.include?("/cluster/user/michael/galaxy/")
-	   delete_job(res, logger)
-	end	
+      FileUtils.rm_rf file
+#    else
+#	out = `more #{File.join(file,"*.hhr")}`
+#	if out.include?("/cluster/user/michael/galaxy/")
+#	   delete_job(res, logger)
+#	end	
     end
    
   end

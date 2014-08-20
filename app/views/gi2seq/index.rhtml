@@ -8,6 +8,13 @@
 	<%= form_label("Paste identifiers", "input") %>
 	<%= form_text_area("sequence_input") %>
   </div>
+<div class="row">
+  <div class="formw">
+    <span style="color: green;">
+      Retrieve sequences from GI Numbers. <a href="#" onClick="javascript:pasteExample();">Paste example GI numbers.</a>
+    </span>
+  </div>
+</div>
   <div class="row">
 	<%= form_label("or upload a local file") %>
 	<%= form_file("sequence_file") %>

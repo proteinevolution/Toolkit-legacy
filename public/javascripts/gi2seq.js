@@ -27,3 +27,8 @@ function select_first()
   }
   calculate_forwarding();
 }
+
+function pasteExample()
+{
+  $('sequence_input').value = "114796395\n114796457\n33300828\n119391784\n29366706\n118769\n66473268\n72527918"
+}

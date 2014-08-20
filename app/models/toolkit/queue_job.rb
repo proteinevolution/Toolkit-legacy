@@ -5,7 +5,8 @@ class QueueJob < ActiveRecord::Base
   include Dbhack
   
   def logger
-    @logger ||= Logger.new("#{RAILS_ROOT}/log/#{self.class.name.to_us}.log")
+    # max log file size: 100MB. Keep 6 of them.
+    @logger ||= Logger.new("#{RAILS_ROOT}/log/#{self.class.name.to_us}.log", 6, 104857600)
   end
 
   # final  : boolean (nil|true|false)

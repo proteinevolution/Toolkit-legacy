@@ -12,22 +12,35 @@ class HhblitsController < ToolController
     @cov_minval = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90']
     @EvalHHblits  = ['1e-4', '1e-3', '1e-2','0.01','0.02','0.05', '0.1']
     @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3','0.35', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
-    @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
+    @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
-    searchpat = File.join(DATABASES, @tool['name'], '*.cs219')
-    dbvalues_pre = Dir.glob(searchpat)
+    suffix = '.cs219'
+
+    searchpat = File.join(DATABASES, @tool['name'], '*' + suffix)
+
+    # Dir.glob seems to return totally unsorted lists
+    dbvalues_pre = Dir.glob(searchpat).sort {|x,y| 
+      bx = File.basename(x, suffix)
+      by = File.basename(y, suffix)
+      (bx == by) ? 0 : bx.starts_with?(by) ? 1 : by.starts_with?(bx) ? -1 : by <=> bx
+    }
     
     @dbvalues = Array.new
     @dblabels = Array.new
 
     sortlist = Array["uniprot", "nr"]
+    # First sort according to sortlist. Under the same sortlist element,
+    # keep sorting of dbvalues_pre. The databases have to be named
+    # accordingly, i.e. uniprot20_2013_03, when newer databases are to be
+    # listed first. The labels can be changed using a *.name.* file.
+
     # Allow non-standard libraries only on internal server:
     if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
     sortlist.each do |el|
       dbvalues_pre.each do |val|
         if (!val.index(/#{el}/).nil?)
-          dbvalues_pre.delete(val)
-          base = File.basename(val, ".cs219")
+          #dbvalues_pre.delete(val) led to missing entries. Now sortlist must be unique.
+          base = File.basename(val, suffix)
           dir = File.dirname(val)
           @dbvalues.push(File.join(dir, base))
           name = Dir.glob(File.join(dir, base + ".name*"))
@@ -35,7 +48,8 @@ class HhblitsController < ToolController
             @dblabels.push(base)
           else
             name[0].gsub!(/^\S+\.name\.(\S+)$/, '\1')
-            @dblabels.push(base + "_" + name[0])
+            #@dblabels.push(base + "_" + name[0])
+            @dblabels.push(name[0])
           end
           next
         end

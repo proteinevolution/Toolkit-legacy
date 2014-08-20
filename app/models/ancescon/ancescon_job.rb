@@ -47,7 +47,7 @@ class AncesconJob < Job
     @basename = File.join(job_dir, jobid)
     out = File.new(@basename + ".export", "w+")
     
-    out.write(IO.readlines(@basename + "_1.tre"))
+    out.write(IO.readlines(@basename + ".aln.tre"))
     out.write("\n")
     out.write(IO.readlines(@basename + ".names"))
     out.write("\n")

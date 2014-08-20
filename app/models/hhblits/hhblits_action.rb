@@ -1,5 +1,5 @@
 class HhblitsAction < Action
-  HHBLITS = File.join(BIOPROGS, 'hhblits')
+  
   HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
   HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')

@@ -7,6 +7,7 @@
   <PARAM NAME="format" value="FASTA">
 </APPLET> --> 
 <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35">
+  <PARAM NAME="permissions" value="sandbox"/>
   <PARAM NAME="label" value="JalView"/>
   <PARAM NAME="file" value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid + file_extension %>"/>
 <% if defined?(userDefinedColour) && !userDefinedColour.nil? %>

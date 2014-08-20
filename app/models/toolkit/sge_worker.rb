@@ -18,28 +18,25 @@ class SgeWorker < AbstractWorker
     job = queue_job.action.type
     # Memory contains the Nr of GB used for Tuebinger Queue
     memory = select_memory(job);
-    # to get a signal before SIGKILL, we define a warning memory limit, which is 100M below memory.
-    warning_memory = memory * 1024 - 100
+    if (options['cpus'] && options['cpus'].to_i > 1)
+        # The sge engine will multiply the given memory with the number of cpus
+        cpus = options['cpus'].to_i
+        memory = (memory + cpus - 1) / cpus
+    end
     logger.debug "L23 Memory #{memory} "
 
     # Location Tuebingen, using variable memory limiting to circumvent memory constraints and queue crowding
-    if LOCATION == "Tuebingen" #&& RAILS_ENV == "development"
-      if RAILS_ENV == "development"
-        # Parameter -p 10 not available on OLT, use instead h_rt
-        #command = "#{QUEUE_DIR}/qsub -l h_vmem=#{memory}G -p 10 #{self.wrapperfile}"
-        command = "#{QUEUE_DIR}/qsub -l s_vmem=#{warning_memory}M -l h_vmem=#{memory}G"
-        unless has_long_execution_time(job)
-          # try to get into short queue. Values from qconf -sq short.q
-          # should be set in local_environment.rb
-          command = command + " -l s_rt=0:55:00 -l h_rt=1:00:00"
-        end
-        command = command + " #{self.wrapperfile}"
-        logger.debug "L31 qsub command: #{command}"
-      else
+    if LOCATION == "Tuebingen"
+      # to get a signal before SIGKILL, we define a warning memory limit, which is 100M below memory.
+      warning_memory = memory * 1024 - 100
+      #if RAILS_ENV == "development"
+        # Parameter -p 10 not available on OLT, try to specify short queue in local_environment.rb
+        #command = "#{QUEUE_DIR}/qsub -l s_vmem=#{warning_memory}M -l h_vmem=#{memory}G -p 10 #{self.wrapperfile}"
+      #else
         # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
         command = "#{QUEUE_DIR}/qsub -l s_vmem=#{warning_memory}M -l h_vmem=#{memory}G #{self.wrapperfile}"
         logger.debug "qsub command: #{command}"
-      end
+      #end
     else
       # LOCATION = Munich !!  
       if LINUX == "SL6"
@@ -89,12 +86,18 @@ class SgeWorker < AbstractWorker
     queue = QUEUES[:normal]
     cpus = nil
     additional = false
+    timelimit = nil
+    warningtimelimit = nil
 
     if (!options.nil? || !options.empty?)
       if (options['queue']) then queue = options['queue'] end
       if (options['cpus']) then cpus = options['cpus'] end
       if (options['additional']) then additional = true end
     end
+    if (defined? QUEUETIMELIMITS && QUEUETIMELIMITS) then
+      timelimit = QUEUETIMELIMITS[QUEUES.index(queue)]
+    end
+    usequeue = queue && queue != "" && queue[0] != "-"[0]
 
     begin
       f = File.open(self.wrapperfile, 'w')
@@ -104,13 +107,13 @@ class SgeWorker < AbstractWorker
       f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
 
       if LINUX == 'SL6'
-        f.write '#$' + " -pe #{queue}\n"
-        #f.write '#$' + " -q #{queue}\n"
+          f.write '#$' + " -pe #{queue}\n"
+          #f.write '#$' + " -q #{queue}\n"
       else
         if (cpus && cpus.to_i > 1)
           f.write '#$' + " -pe parallel #{cpus}\n"
         end
-        if (RAILS_ENV == "production")
+        if usequeue
           # for compatibility only
           f.write '#$' + " -q #{queue}\n"
         end
@@ -121,19 +124,49 @@ class SgeWorker < AbstractWorker
         end
       end
 
+      if LOCATION == "Tuebingen"
+        # The switches -l immediate and -l long are used
+        # only to select the immediate/long queue
+        if usequeue # (RAILS_ENV == "production")
+          if queue == QUEUES[:long]
+            f.write '#$' + " -l long\n"
+          else
+            if queue == QUEUES[:immediate]
+              f.write '#$' + " -l immediate\n"
+            end
+          end
+        end
+        # else: The sge setup for the test and development systems
+        # does not supply the immediate/long ressource. Appropriate
+        # replacements are not known.
+        # Direct execution on the web server is very problematic.
+        # Therefore, that's avoided even in the immediate case.
+      end
+
+      if (timelimit)
+        delaytime=300
+        # delaytime interval [s] in which the system is supposed to react.
+        # It should be large enough, that the resulting s_rt value still
+        # qualifies jobs for the short queue, if h_rt would allow for the
+        # short queue.
+        # => delaytime should be at least the difference between the queue
+        # limits of h_rt and s_rt.
+        f.write '#$' + " -l h_rt=#{timelimit}\n"
+        warningtimelimit = SgeWorker.addSeconds2Timelimit(-delaytime, timelimit)
+        if warningtimelimit > delaytime
+          f.write '#$' + " -l s_rt=#{warningtimelimit}\n"
+        else
+          warningtimelimit = nil
+        end
+        # These timelimits of the wrapper file can be overwritten in the command
+        # line
+      end
+
       f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
       f.write '#$' + " -o #{queue_job.action.job.job_dir}\n"
       f.write '#$' + " -e #{queue_job.action.job.job_dir}\n"
       f.write '#$' + " -notify\n" # to handle resource limits not specified in sge_worker.rb
       f.write '#$' + " -w n\n"
-
-      if (queue == QUEUES[:long] && LOCATION == "Tuebingen")
-        f.write '#$' + " -l long\n"
-      end
-
-      if (queue == QUEUES[:immediate] && LOCATION == "Tuebingen")
-        f.write '#$' + " -l immediate\n"
-      end
 
       # Source all modules on SL6
       if LINUX == 'SL6'
@@ -152,8 +185,11 @@ class SgeWorker < AbstractWorker
       f.write "    echo >> #{queue_job.action.job.statuslog_path}\n"
       f.write "    case \"$1\" in\n"
       # Signal SIGUSR1 only used in development environment of Tuebingen in this way (see trap calls)
-      if LOCATION == "Tuebingen" && RAILS_ENV == "development" && !has_long_execution_time(queue_job.action.type)
-        f.write "        USR1) echo \"Grit time limit exceeded.\" >> #{queue_job.action.job.statuslog_path}\n"
+      if warningtimelimit
+        f.write "        USR1) echo \"Probably grit time limit exceeded.\" >> #{queue_job.action.job.statuslog_path}\n"
+        f.write "            ;;\n"
+      else
+        f.write "        USR1) echo \"Program stopped, job terminated.\" >> #{queue_job.action.job.statuslog_path}\n"
         f.write "            ;;\n"
       end
       f.write "        USR2) echo \"Termination of job by user or because of reaching a resource limit.\" >> #{queue_job.action.job.statuslog_path}\n"
@@ -187,12 +223,19 @@ class SgeWorker < AbstractWorker
       end
       f.write "REPEATED=\"\"\n"
 
-      f.write "trap 'sig_handler USR2' USR2\n" # handles signals caused by -notify
+      # handles signals caused by -notify and hard limits
+      f.write "trap 'sig_handler USR2' USR2\n"
+
+      # handles signals caused by -notify and, only used in case of
+      # warningtimelimit
+      # signals caused by -l s_rt (or probably other reasons)
+      f.write "trap 'sig_handler USR1' USR1\n"
+
       if LOCATION == "Tuebingen"
-        f.write "trap 'sig_handler XCPU' XCPU\n" # handles signals caused by -l s_vmem
-        if RAILS_ENV == "development" && !has_long_execution_time(queue_job.action.type)
-          f.write "trap 'sig_handler USR1' USR1\n" # handles signals caused by -l s_rt
-        end
+
+        # handles signals caused by -l s_vmem
+        f.write "trap 'sig_handler XCPU' XCPU\n"
+
       end
 
       # ALL THE SUBSHELL SCRIPT 
@@ -281,7 +324,8 @@ class SgeWorker < AbstractWorker
   end
 
   #########################################################################################
-  # Individualized Memory Management for each tool, this has to be tested on wye
+  # Individualized Memory Management for each tool
+  # It should return the maximal memory used, independend of the number of cpus used.
   #
   #########################################################################################
   def select_memory(method)
@@ -317,12 +361,12 @@ class SgeWorker < AbstractWorker
                 when "Gi2seqAction" then 2  
                 when "Gi2seqForwardAction" then 2
                   ### H ###  
-                when "HamppredAction" then 22
+                when "HamppredAction" then 28
                 when "HamppredForwardAction" then 19
                 when "HamppredShowtemplalignAction" then 18
                 when "HhpredForwardAction" then 19
-                when "HhpredAction" then 22
-                when "HhblitsAction" then 18
+                when "HhpredAction" then 28
+                when "HhblitsAction" then 28
                 when "HhblitsForwardAction" then 18
                 when "HhblitsShowtemplalignAction" then 18
                 when "HhpredShowtemplalignAction" then 18
@@ -363,7 +407,7 @@ class SgeWorker < AbstractWorker
                 when "PatsearchForwardAction" then 5
                 when "ProtBlastForwardAction" then 5
                   ### Q ###
-                when "Quick2DAction" then 18
+                when "Quick2DAction" then 25 # disopred2 needed more than 22
                   ### R ###
                 when "RepperAction" then 15
                 when "ReformatAction" then 4
@@ -392,6 +436,14 @@ class SgeWorker < AbstractWorker
     return my_memory;
   end
 
+  def SgeWorker.addSeconds2Timelimit(seconds, timelimit)
+    if timelimit =~ /(\d\d?):(\d\d?):(\d\d?)/
+      (60 * $1.to_i + $2.to_i) * 60 + $3.to_i + seconds
+    else
+      timelimit.to_i + seconds
+    end
+  end
+
 private
 
   def write_qupdate_call(file, id, status, indent)
@@ -406,10 +458,5 @@ private
     else
       file.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{status}\n"
     end
-  end
-
-  def has_long_execution_time(method)
-    longjobs= [ "HhsenserAction", "HhrepidAction" ]
-    longjobs.include?(method)
   end
 end

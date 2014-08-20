@@ -97,15 +97,27 @@ class UserdbController < ApplicationController
     command_file = path + ".sh"
     path.sub!(/^(.*)\/.+?$/, '\1')
 
+    queue = QUEUES[:immediate]
+    usequeue = queue && queue != "" && queue[0] != "-"[0]
+    timelimit = nil
+    if (defined? QUEUETIMELIMITS && QUEUETIMELIMITS) then
+      timelimit = QUEUETIMELIMITS[:immediate]
+    end
+
     File.open(command_file, "w") do |f|
       f.write "#!/bin/sh\n"
       f.write '#$' + " -N TOOLKIT_userdb\n"
-      f.write '#$' + " -q #{QUEUES[:immediate]}\n"
+      if usequeue
+        f.write '#$' + " -q #{queue}\n"
+        f.write '#$' + " -l immediate\n"
+      end
+      if timelimit
+        f.write '#$' + " -l h_rt=#{timelimit}\n"
+      end
       f.write '#$' + " -o /dev/null\n"
       f.write '#$' + " -e /dev/null\n"
       f.write '#$' + " -w n\n"
-      f.write '#$' + " -wd #{path}\n"
-      f.write '#$' + " -l immediate\n\n"
+      f.write '#$' + " -wd #{path}\n\n"
       f.write("#{format_command} #{updatedb_commmand}")
     end
 

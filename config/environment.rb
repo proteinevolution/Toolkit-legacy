@@ -20,7 +20,12 @@ memcache_options = {
 memcache_servers = [ '127.0.0.1:11211' ]
 
 #global settings
-TOOLKIT_RELEASE = '2.17.0'
+TOOLKIT_RELEASE = '2.18.0'
+if (LOCATION == "Munich")
+  TOOLKIT_COPYRIGHT = '&#169; 2008-2014'
+else
+  TOOLKIT_COPYRIGHT = '&#169; 2008-2014'
+end
 DOC_ROOTURL     = 'http://' + DOC_ROOTHOST
 BIOPROGS        = TOOLKIT_ROOT+'/bioprogs'
 TMP             = TOOLKIT_ROOT+'/tmp/'+RAILS_ENV
@@ -123,7 +128,7 @@ Localization::load_localized_strings
 require 'environments/user_environment'
 
 # avoid 'application error(rails)' message
-require File.join(File.dirname(__FILE__), '..', 'lib', 'modules', 'rescue')
+#require File.join(File.dirname(__FILE__), '..', 'lib', 'modules', 'rescue')
 
 #memcache
 cache_params = *([memcache_servers, memcache_options].flatten)
@@ -132,6 +137,7 @@ ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.merge!({ 'cache' => CACHE 
 
 #specify internal IPs
 INT_IPS = INTERNAL_IPS.map {|ip| IPAddr.new(ip) }
+BLOCK_IPS = BLOCKED_IPS.map {|ip| IPAddr.new(ip) }
 
 #mail settings
 ActionMailer::Base.smtp_settings = {
