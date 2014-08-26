@@ -303,8 +303,20 @@ class ToolController < ApplicationController
   def help_faq
     render(:layout => "help")
   end
-  
-  protected
+
+  # compute the default value of forwarding selection
+  # Example: default_forwarding('psi_blast')
+  # returns a suitable selection if tool psi_blast should be default.
+  def default_forwarding(toolname)
+    title = tool_title(toolname)
+    tool_index = @fw_labels.index(title)
+    if (tool_index)
+      @fw_values[tool_index]
+    end
+  end
+
+protected
+
   def results_forward
   end
 
