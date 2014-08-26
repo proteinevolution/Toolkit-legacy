@@ -11,7 +11,7 @@
 <div id="forward" style="display: none;">
 
 	<% if(@job.is_uniprot == 1)%>
-		<div class="row">
+	    <div class="row">
 		<font color='darkgreen'>
 			<div class = "row" id = "forwarding_info" >
 			    Note: Some options might be disabled due to the number of selected sequences.
@@ -19,14 +19,14 @@
 		</font>
 		<br/>
 	        <%= form_label("Forward results to *") %>
-	        <%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => @fw_values[14], :maxsize => 1, :onchange => "toggle_seqlen('destination');", :modes => @tool_mode_list}) %>
+	        <%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => controller.default_forwarding('psi_blast'), :maxsize => 1, :onchange => "toggle_seqlen('destination');", :modes => @tool_mode_list}) %>
 	    </div>
 	    <div class="row">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  
 		                 &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
 		<font color="purple">* Forwarding to Blammer is not available for Uniprot databases</font>
 		</div>
 	<% else%>
-		<div class="row">
+	    <div class="row">
 		<font color='darkgreen'>
 			<div class = "row" id = "forwarding_info" >
 			    Note: Some options might be disabled due to the number of selected sequences.
@@ -34,7 +34,7 @@
 		</font>
 		<br/>
 	        <%= form_label("Forward results to") %>
-	        <%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => @fw_values[15], :maxsize => 1, :onchange => "toggle_seqlen('destination');", :modes => @tool_mode_list}) %>
+	        <%= form_select_single_with_hash("destination", @fw_values, @fw_labels, {:default => controller.default_forwarding('psi_blast'), :maxsize => 1, :onchange => "toggle_seqlen('destination');", :modes => @tool_mode_list}) %>
 	    </div>
 	<% end%>
 	<div class="row">
