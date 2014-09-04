@@ -61,7 +61,7 @@ class HhpredAction < Action
     if @genomes_dbs.kind_of?(Array) then @genomes_dbs = @genomes_dbs.join(' ') end
     
     @dbs = @dbs + " " + @genomes_dbs
-    @maxhhblitsit = params['maxhhblitsit']
+    @maxhhblitsit = params['maxhhblitsit'].nil? ? '2' : params['maxhhblitsit']
     @E_hhblits = params["Ehhblitsval"].nil? ? '' : "-e "+params["Ehhblitsval"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
     @qid_min = params["qid_min"].nil? ? '' : '-qid '+params["qid_min"]
@@ -85,7 +85,7 @@ class HhpredAction < Action
     @relaunch = params["relaunch"]
     @hhviz = params["hhviz"]
     @inputmode = params["inputmode"]
-    @msa_factor = ((@informat == "a3m" || @informat == "a2m" || params["msa_factor"].nil?) ? '' : "-M "+params["msa_factor"])
+    @match_mode = ((@informat == "a3m" || @informat == "a2m" || params["match_mode"].nil?) ? '' : params["match_mode"])
     @sequences = []
     @seqnames  = []
     @v = 1
@@ -148,6 +148,7 @@ class HhpredAction < Action
       if db.gsub!(/(cdd|COG|KOG|\/pfam|smart|cd|pfamA|pfamB)(_\S*)/, '\1\2/db/\1.hhm')
 #      elsif db.gsub!(/(scop|pdb)([^_]\S*)/, '\1\2/db/\1.hhm')
       elsif db.gsub!(/(scop|pdb)(\S*)/, '\1\2/db/\1.hhm')
+      elsif db.gsub!(/SCOPe(\S*)/, 'SCOPe\1/db/scop.hhm')
       elsif db.gsub!(/(panther|tigrfam|pirsf|supfam|CATH)(_\S*)/, '\1\2/db/\1.hmm')
       elsif db.gsub!(/([^\/]+)$/, '\1/db/\1.hhm' )
       end
@@ -218,13 +219,15 @@ class HhpredAction < Action
   def perform
     params_dump
     cpus = 1
-    a2mFile = "#{@basename}.resub_domain.a2m"
+    a2mBase = "#{@basename}.resub_domain"
+    a2mFile = "#{a2mBase}.a2m"
     a3mFile = "#{@basename}.a3m"
+    msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
     # Export variable needed for HHSuite
     @commands << "export  HHLIB=#{HHLIB} "
     @commands << "export  PATH=$PATH:#{HHSUITE} "
      # Create a fasta File later on used for the domain resubmission of the results
-     @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a2m #{@seqfile} #{a2mFile} #{@msa_factor}"
+    @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a2m #{@seqfile} #{a2mFile}#{msa_factor}"
 
     if job.parent.nil? || @mode.nil?
       # Create alignment
@@ -233,14 +236,15 @@ class HhpredAction < Action
          cpus = 4
          @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
          if (@informat == "a2m" || @informat == "a3m")
-           @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000 #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
+           @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000 #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &>> #{job.statuslog_path}"
          else
-           @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000 #{@E_hhblits} #{@cov_min} -a2m #{a2mFile} &> #{job.statuslog_path}"
+           @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000 #{@E_hhblits} #{@cov_min} -a2m #{a2mFile} &>> #{job.statuslog_path}"
+           @commands << "mv #{a2mBase}.a3m #{a3mFile}"
          end
       else
           if @maxhhblitsit == '0'
             @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
-            @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{seqfile} #{a3mFile} #{msa_factor}"
+            @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{seqfile} #{a3mFile}#{msa_factor}"
           else
               cpus = 8
               @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
@@ -259,9 +263,9 @@ class HhpredAction < Action
         cpus = 4
       end
       # Trim alignment
-      @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n 0 -maxres 300 -diff 1000 -#{@informat} #{a3mFile} &> #{job.statuslog_path}"
+      @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n 0 -maxres 300 -diff 1000 -#{@informat} #{a3mFile} &>> #{job.statuslog_path}"
       # Start HHsenser
-      @commands << "#{HHPERL}/buildinter.pl -v #{@v} -cpu 4 -Emax 0.1 -e 0.001 -Ey 0.01 -E 0.001 -Ymax 100 -accmax 10 -rejmax 10 -idmax 0 -extnd 20  #{a3mFile} &> #{job.statuslog_path}"
+      @commands << "#{HHPERL}/buildinter.pl -v #{@v} -cpu 4 -Emax 0.1 -e 0.001 -Ey 0.01 -E 0.001 -Ymax 100 -accmax 10 -rejmax 10 -idmax 0 -extnd 20  #{a3mFile} &>> #{job.statuslog_path}"
 
       # Copy -Y.a3m file to .a3m file
       @commands << "cp #{@basename}-Y.a3m #{a3mFile}"

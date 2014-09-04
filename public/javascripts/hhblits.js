@@ -1,3 +1,5 @@
+// change_format() disables match mode selection, adjustMatchModeValues() hides
+// it, if input format is a2m or a3m. Use only one of them.
 function change_format()
 {
     var informat = $("informat");
@@ -7,7 +9,31 @@ function change_format()
 	    disable = true;
 	}
     }
-    $('match_modus').disabled = disable;
+    $('match_mode').disabled = disable;
+}
+
+function adjustMatchModeValues() {
+    var msadiv = $('match_mode_selection');
+    var format = $('informat').value;
+    var displayState = 'block';
+    if (format == 'a3m' || format == 'a2m') {
+	displayState = 'none';
+    }
+
+    msadiv.style.display = displayState;
+}
+
+function resetDisplayValues(default_format) {
+    // On reset, adjustMatchModeValues() is not triggered by a change of the
+    // input mode (the same would apply to change_format). Then we have to
+    // toggle the display of the match state assignment according to the
+    // default input format.
+    // Because the onreset-handler is performed before the reset, we have to
+    // reset the relevant values before calling the adjusting function.
+
+    $('informat').value = default_format;
+    adjustMatchModeValues();
+    return true;
 }
 
 function change_db(dbhhm, dba3m)

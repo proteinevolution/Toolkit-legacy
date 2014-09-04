@@ -28,8 +28,10 @@ class HhsenserAction < Action
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
     @commands = []
     @informat = params['informat'] ? params['informat'] : 'fas'
-    reformat(@informat, "fas", @seqfile)
-    @informat = "fas"
+    if (@informat != "a3m" && @informat != "a2m")
+      reformat(@informat, "fas", @seqfile)
+      @informat = "fas"
+    end
     
     @db = params["database"]
     @extnd = params["extnd"]
@@ -43,6 +45,7 @@ class HhsenserAction < Action
     @e_max = '0.1'
     @e_hmm = '1e-3'
     @maxpsiblastit = '8'
+    @match_mode = ((@informat == "a3m" || @informat == "a2m" || params["match_mode"].nil?) ? '' : params["match_mode"])
     
     @v = '2'
     
@@ -58,7 +61,8 @@ class HhsenserAction < Action
   def perform
     params_dump
     
-    @commands << "#{HHPERL}/buildali.pl -v #{@v} -cpu 2 -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} -db #{@db} #{@seqfile} &> #{job.statuslog_path}"
+    msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
+    @commands << "#{HHPERL}/buildali.pl -v #{@v} -cpu 2 -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} -db #{@db}#{msa_factor} #{@seqfile} &>> #{job.statuslog_path}"
 
     if (@screen)
       run_screening
@@ -259,7 +263,7 @@ class HhsenserAction < Action
     
     system("echo 'Waiting for HHpred to pre-screen for structural domains ...' >> #{job.statuslog_path}")
     
-    scop_db = Dir.glob(File.join(DATABASES, 'hhpred/new_dbs/scop*'))[0]
+    scop_db = Dir.glob(File.join(DATABASES, 'hhpred/new_dbs/SCOPe70*'))[0]
     
     tf = Tempfile.new("hhsenser")
     tf.puts(IO.readlines(@seqfile).join)
@@ -270,9 +274,11 @@ class HhsenserAction < Action
       'job' => 'hhpred', 'action' => 'run', 
       'sequence_input' => nil,
       'sequence_file' => tf,
-      'informat' => 'fas', 'width' => '80', 'maxlines' => '100',
+      'informat' => @informat, 'match_mode' => @match_mode,
+      'width' => '80', 'maxlines' => '100',
+      'prefilter' => 'psiblast',
       'cov_min' => '20', 'Pmin' => '20', 'maxseq' => '1', 'qid_min' => '0',
-      'ss_scoring' => '2', 'maxpsiblastit' => '8', 'Espiblastbal' => '1E-3',
+      'ss_scoring' => '2', 'maxhhblitsit' => '8', 'Ehhblitsval' => '1E-3',
       'alignmode' => 'global', 'hhpred_dbs' => [scop_db]}
     
     hhpred_job = Object.const_get("HhpredJob").create(hhpred_params, @user)	

@@ -7,6 +7,7 @@
 	<li><a href="#clustered">Use clustered database</a></li>
 	<li><a href="#ymax">Terminate search</a></li>
 	<li><a href="#prescreen">Prescreen sequence</a></li>
+	<li><a href="#match_mode">Match state assignment</a></li>
 	<li><a href="#references">References</a></li>
 	<li><a href="#contact">Contact</a></li>
 </ul>
@@ -312,6 +313,17 @@ If you would like to perform searches without this limit, please contact us dire
 With this opion, you can choose to automatically prescreen your sequence for known structural domains. If a significant match with a structural domain (from the SCOP database) is found that would dissect the input sequence into two regions of more than 50 residues each, the search will halt with a note that your sequence consists of multiple structural domains. You will be provided a link to the results of this prescreen, as well as links that will restart HHsenser with the identified subsequences.<br><br>
 
 Why should HHsenser be run preferably with single-domain sequences? First, the job will execute faster. But more importantly, PSI-BLAST is prone to generate alignments corrupted with non-homologous sequences or sequence fragments when multi-domain sequences are used in the search. Even though HHsenser employs a specially designed filtering procedure to suppress this effect as much as possible, multi-domain sequences will still be at a much higher risk of producing HHsenser alignments with many false positives.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="match_mode"></a>
+<h3 class="<%= @section["name"] %>">Match state assignment</h3>
+<div class="row">
+With this option you can choose the match state assignment for alignment with a format different to A2M/A3M.
+This value is the percentage threshold up to which percentage of gaps a column should be assigned as a match 
+state, e.g. a value of 50 means that all columns with less than 50% gaps are assigned as match states.
+With the value 'first' all columns with a residue in 1st sequence are assigned as match states. <BR><BR>
+This parameter is not available with input formats a2m and a3m, because with these input formats the match state assignment is taken from the input.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 

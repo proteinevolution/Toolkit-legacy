@@ -258,8 +258,8 @@ function toggle_hitlist(){
 	}
 }
 
-function adjustMSAFactorValues() {
-    var msadiv = $('msa_factor_selection');
+function adjustMatchModeValues() {
+    var msadiv = $('match_mode_selection');
     var format = $('informat').value;
     var displayState = 'block';
     if (format == 'a3m' || format == 'a2m') {
@@ -293,7 +293,7 @@ function resetDisplayValues(default_show_more_options, default_format) {
     //adjustMoreOptionsDisplay();
 
     $('informat').value = default_format;
-    adjustMSAFactorValues();
+    adjustMatchModeValues();
     return true;
 }
 
