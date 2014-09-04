@@ -7,7 +7,19 @@ class HhblitsController < ToolController
     @inputmode_labels = ["single FASTA sequence", "alignment"]
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
     @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
-    @match_modus = ['first','0','10','20','30','40','50','60', '70', '80', '90']
+    @match_mode_values = ['first','0','10','20','30','40','50','60', '70', '80', '90', '100']
+    @match_mode_labels = ['residues of first sequence',
+                          'no gaps',
+                          'fraction of gaps <10%',
+                          'fraction of gaps <20%',
+                          'fraction of gaps <30%',
+                          'fraction of gaps <40%',
+                          'fraction of gaps <50%',
+                          'fraction of gaps <60%',
+                          'fraction of gaps <70%',
+                          'fraction of gaps <80%',
+                          'fraction of gaps <90%',
+                          'assigning all columns to match states']
     @maxit = ['1','2','3','4','5','6','7','8']
     @cov_minval = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90']
     @EvalHHblits  = ['1e-4', '1e-3', '1e-2','0.01','0.02','0.05', '0.1']
