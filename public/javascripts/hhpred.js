@@ -258,6 +258,45 @@ function toggle_hitlist(){
 	}
 }
 
+function adjustMatchModeValues() {
+    var msadiv = $('match_mode_selection');
+    var format = $('informat').value;
+    var displayState = 'block';
+    if (format == 'a3m' || format == 'a2m') {
+	displayState = 'none';
+    }
+
+    msadiv.style.display = displayState;
+}
+
+function adjustMoreOptionsDisplay() {
+    // because more_options_on is not available on server, visibility has to be adjusted now.
+    if ($('more_options_on').value == 'true') {
+	$('more_options').style.display = 'block';
+	$('show_more_options').style.display = 'none';
+	$('hide_more_options').style.display = 'inline';
+    } else {
+	$('more_options').style.display = 'none';
+	$('hide_more_options').style.display = 'none';
+	$('show_more_options').style.display = 'inline';
+    }
+}
+
+function resetDisplayValues(default_show_more_options, default_format) {
+    // On reset, we have to toggle the display of the match state assignment according to the default input format.
+    // Because the onreset-handler is performed before the reset, we have to reset the relevant values before calling
+    // the adjusting functions.
+
+    // if we don't want to close the more options region, if it's open, comment the two lines of code following
+    // this comment.
+    //$('more_options_on').value = default_show_more_options;
+    //adjustMoreOptionsDisplay();
+
+    $('informat').value = default_format;
+    adjustMatchModeValues();
+    return true;
+}
+
 function change_resubmit_form_to_hhblits() {
     var expression = /(.+controller=)hhpred(.+)/;
     expression.exec($(forward_alignment).action);

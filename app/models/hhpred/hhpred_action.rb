@@ -46,7 +46,7 @@ class HhpredAction < Action
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
     @commands = []
     @informat = params['informat'] ? params['informat'] : 'fas'
-    if (@informat != "a3m")
+    if (@informat != "a3m" && @informat != "a2m")
       reformat(@informat, "fas", @seqfile)
       @informat = "fas"
     end
@@ -61,7 +61,7 @@ class HhpredAction < Action
     if @genomes_dbs.kind_of?(Array) then @genomes_dbs = @genomes_dbs.join(' ') end
     
     @dbs = @dbs + " " + @genomes_dbs
-    @maxhhblitsit = params['maxhhblitsit']
+    @maxhhblitsit = params['maxhhblitsit'].nil? ? '2' : params['maxhhblitsit']
     @E_hhblits = params["Ehhblitsval"].nil? ? '' : "-e "+params["Ehhblitsval"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
     @qid_min = params["qid_min"].nil? ? '' : '-qid '+params["qid_min"]
@@ -85,6 +85,7 @@ class HhpredAction < Action
     @relaunch = params["relaunch"]
     @hhviz = params["hhviz"]
     @inputmode = params["inputmode"]
+    @match_mode = ((@informat == "a3m" || @informat == "a2m" || params["match_mode"].nil?) ? '' : params["match_mode"])
     @sequences = []
     @seqnames  = []
     @v = 1
@@ -147,6 +148,7 @@ class HhpredAction < Action
       if db.gsub!(/(cdd|COG|KOG|\/pfam|smart|cd|pfamA|pfamB)(_\S*)/, '\1\2/db/\1.hhm')
 #      elsif db.gsub!(/(scop|pdb)([^_]\S*)/, '\1\2/db/\1.hhm')
       elsif db.gsub!(/(scop|pdb)(\S*)/, '\1\2/db/\1.hhm')
+      elsif db.gsub!(/SCOPe(\S*)/, 'SCOPe\1/db/scop.hhm')
       elsif db.gsub!(/(panther|tigrfam|pirsf|supfam|CATH)(_\S*)/, '\1\2/db/\1.hmm')
       elsif db.gsub!(/([^\/]+)$/, '\1/db/\1.hhm' )
       end
@@ -217,11 +219,15 @@ class HhpredAction < Action
   def perform
     params_dump
     cpus = 1
+    a2mBase = "#{@basename}.resub_domain"
+    a2mFile = "#{a2mBase}.a2m"
+    a3mFile = "#{@basename}.a3m"
+    msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
     # Export variable needed for HHSuite
     @commands << "export  HHLIB=#{HHLIB} "
     @commands << "export  PATH=$PATH:#{HHSUITE} "
      # Create a fasta File later on used for the domain resubmission of the results
-     @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a2m #{@seqfile} #{@basename}.resub_domain.a2m"
+    @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a2m #{@seqfile} #{a2mFile}#{msa_factor}"
 
     if job.parent.nil? || @mode.nil?
       # Create alignment
@@ -229,22 +235,27 @@ class HhpredAction < Action
       if(@prefilter=='psiblast')
          cpus = 4
          @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
-         @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
+         if (@informat == "a2m" || @informat == "a3m")
+           @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000 #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &>> #{job.statuslog_path}"
+         else
+           @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000 #{@E_hhblits} #{@cov_min} -a2m #{a2mFile} &>> #{job.statuslog_path}"
+           @commands << "mv #{a2mBase}.a3m #{a3mFile}"
+         end
       else
           if @maxhhblitsit == '0'
-              @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
-              @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+            @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
+            @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{seqfile} #{a3mFile}#{msa_factor}"
           else
               cpus = 8
               @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
-              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@basename}.resub_domain.a2m #{@E_hhblits} -d #{HHBLITS_DB} -o #{@basename}.hhblits -oa3m #{a3mFile} -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
           end
       end
-      @commands << "#{HHSUITELIB}/addss.pl #{@basename}.a3m"
+      @commands << "#{HHSUITELIB}/addss.pl #{a3mFile}"
 
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     end
 
     if @mode == 'hhsenser'
@@ -252,24 +263,22 @@ class HhpredAction < Action
         cpus = 4
       end
       # Trim alignment
-      @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n 0 -maxres 300 -diff 1000 -#{@informat} #{@basename}.a3m &> #{job.statuslog_path}"
+      @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n 0 -maxres 300 -diff 1000 -#{@informat} #{a3mFile} &>> #{job.statuslog_path}"
       # Start HHsenser
-      @commands << "#{HHPERL}/buildinter.pl -v #{@v} -cpu 4 -Emax 0.1 -e 0.001 -Ey 0.01 -E 0.001 -Ymax 100 -accmax 10 -rejmax 10 -idmax 0 -extnd 20  #{@basename}.a3m &> #{job.statuslog_path}"
-      # new command?
-      # $command = "$hh/buildinter.pl -v $v -cpu 2 -quick -Emax 0.1 -e 0.001 -Ey 0.01 -E 0.001 -Ymax 100 -idmax 0 -extnd 20  $seqfile &> $basename.log";
+      @commands << "#{HHPERL}/buildinter.pl -v #{@v} -cpu 4 -Emax 0.1 -e 0.001 -Ey 0.01 -E 0.001 -Ymax 100 -accmax 10 -rejmax 10 -idmax 0 -extnd 20  #{a3mFile} &>> #{job.statuslog_path}"
 
       # Copy -Y.a3m file to .a3m file
-      @commands << "cp #{@basename}-Y.a3m #{@basename}.a3m"
+      @commands << "cp #{@basename}-Y.a3m #{a3mFile}"
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     end
 
     if @mode == 'realign'
 
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
 
       # If cov_min is 20 and qid_min is 0, we can realign with hhm files instead of a3m files ($hhrealign_options="-hhm").
       # This speeds up realignment a lot because we don't have to filter all template alignments.
@@ -306,7 +315,7 @@ class HhpredAction < Action
 
     prepare_fasta_hhviz_histograms_etc
     
-    @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{@basename}.a3m #{@basename}.full.fas "
+    @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{a3mFile} #{@basename}.full.fas "
 
     @commands << "#{HHSUITE}/hhfilter -i #{@basename}.reduced.fas -o #{@basename}.top.a3m -id 90 -qid 0 -qsc 0 -cov 0 -diff 10 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{@basename}.top.a3m #{@basename}.repseq.fas -uc 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
@@ -319,6 +328,7 @@ class HhpredAction < Action
     # declare as much cpus as are specified in the commands
     queue.submit(@commands, true, {'cpus' => cpus.to_s(), 'memory' => @memory})
   end
+
 # Check the length of the first Sequence to determine the access Memory needed for WYE and the large UNIPROT DB
 def check_sequence_length
     # Init local vars
@@ -327,20 +337,16 @@ def check_sequence_length
       sequence_length = data[1].size
     f.close
     if sequence_length > 1000
-      memory = 23
+      memory = 29
     end
     if sequence_length > 2000
-      memory = 28
+      memory = 34
     end
     if sequence_length > 2500
-      memory = 30
+      memory = 36
     end
     logger.debug "L318 Memory Allocation - HHpred - : #{memory}"
     memory
 end
 
 end
-
-
-
-
