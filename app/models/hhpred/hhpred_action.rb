@@ -244,7 +244,7 @@ class HhpredAction < Action
       else
           if @maxhhblitsit == '0'
             @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
-            @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{seqfile} #{a3mFile}#{msa_factor}"
+            @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{a3mFile}#{msa_factor}"
           else
               cpus = 8
               @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
