@@ -71,7 +71,7 @@ class SgeWorker < AbstractWorker
       raise "Unable to submit job!"
     end
 
-    save!
+    # save!
   end
   
   def delete

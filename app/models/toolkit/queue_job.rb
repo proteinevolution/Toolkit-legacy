@@ -120,5 +120,14 @@ class QueueJob < ActiveRecord::Base
     action.update_status
   end
 
-end
+  def save!
+    begin
+      super
+    rescue ActiveRecord::StatementInvalid => e
+      logger.debug("L127 queue_job.rb QueueJob.save!: Got statement invalid #{e.message} ... trying again")
+      ActiveRecord::Base.verify_active_connections!
+      super
+    end
+  end
 
+end
