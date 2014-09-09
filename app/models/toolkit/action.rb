@@ -213,7 +213,15 @@
       params['taxids']=res if (res!="")
     end
     
-    
+    def save
+      begin
+        super
+      rescue ActiveRecord::StatementInvalid => e
+        logger.debug("L220 action.rb Action.save: Got statement invalid #{e.message} ... trying again")
+        ActiveRecord::Base.verify_active_connections!
+        super
+      end
+    end
 
   end
 

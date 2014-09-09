@@ -30,11 +30,11 @@
 <div id='match_mode_selection' class="row">
   <%= form_label("Match state assignment", "match_mode") %>
   <% disable = false
-     # Have @error_params to be considered?
-     #if ((params['informat'] && (params['informat'] == "a2m" || params['informat'] == "a3m")) || (@error_params['informat'] && (@error_params['informat'] == "a2m" || @error_params['informat'] == "a3m"))) then disable = true end
+     # Have @error_params to be considered? That if statement should not be necessary otherwise.
+     if ((params['informat'] && (params['informat'] == "a2m" || params['informat'] == "a3m")) || (@error_params['informat'] && (@error_params['informat'] == "a2m" || @error_params['informat'] == "a3m"))) then disable = true end
   %>
   <div class="formw">
-    <%= form_select_single("match_mode", @match_mode_values, @match_mode_labels, '50', 1, "", disable, false) %> (For A2M/A3M format the match assignment of the input is used.)     
+    <%= form_select_single("match_mode", @match_mode_values, @match_mode_labels, '50', 1, "", disable, false) %> (For A2M/A3M format the match assignment of the input is used.)
   </div>
 </div>
 

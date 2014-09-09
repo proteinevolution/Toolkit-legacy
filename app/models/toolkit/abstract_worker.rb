@@ -17,5 +17,15 @@
       @logger ||= Logger.new("#{RAILS_ROOT}/log/#{name}.log", 6, 104857600)
     end
 
+    def save!
+      begin
+        super
+      rescue ActiveRecord::StatementInvalid => e
+        logger.debug("L24 abstract_worker.rb AbstractWorker.save!: Got statement invalid #{e.message} ... trying again")
+        ActiveRecord::Base.verify_active_connections!
+        super
+      end
+    end
+
   end
 
