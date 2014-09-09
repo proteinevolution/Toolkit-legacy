@@ -61,8 +61,11 @@
 
 <!-- Only show if informat != 'a3m' && informat != 'a2m' -->
 <div id='match_mode_selection' class="row">
-     <%= form_label("Match state assignment by", "match_mode") %>
-     <%= form_select_single("match_mode", @match_mode_values, @match_mode_labels, @match_mode_values[0]) %>
+     <%= form_label("Match state assignment", "match_mode") %>
+     <div class="formw">
+       <%= form_select_single("match_mode", @match_mode_values, @match_mode_labels, @match_mode_values[0]) %>
+       (For A2M/A3M format the match assignment of the input is used.)
+     </div>
 </div>
 
 <div class="spacer">&nbsp;</div>

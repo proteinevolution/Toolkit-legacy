@@ -1,26 +1,27 @@
-// change_format() disables match mode selection, adjustMatchModeValues() hides
-// it, if input format is a2m or a3m. Use only one of them.
-function change_format()
-{
-    var informat = $("informat");
-    var disable = false;
-    for( i=0; i<informat.length; i++ ) {
-	if (informat.options[i].selected == true && (informat.options[i].value == "a2m" || informat.options[i].value == "a3m")) {
-	    disable = true;
-	}
-    }
-    $('match_mode').disabled = disable;
-}
-
 function adjustMatchModeValues() {
-    var msadiv = $('match_mode_selection');
-    var format = $('informat').value;
-    var displayState = 'block';
-    if (format == 'a3m' || format == 'a2m') {
-	displayState = 'none';
-    }
+    var hide_mode = false;
+    if (hide_mode) {
+	var msadiv = $('match_mode_selection');
+	var format = $('informat').value;
+	var displayState = 'block';
+	if (format == 'a3m' || format == 'a2m') {
+	    displayState = 'none';
+	}
 
-    msadiv.style.display = displayState;
+	msadiv.style.display = displayState;
+    } else {
+	var msainput = $('match_mode');
+	var format = $('informat').value;
+	var disable = false;
+	var visible = 'visible';
+	if (format == 'a3m' || format == 'a2m') {
+	    disable = true;
+	    visible = 'hidden';
+	}
+
+	msainput.disabled = disable;	
+	msainput.style.visibility = visible;
+    }
 }
 
 function resetDisplayValues(default_format) {

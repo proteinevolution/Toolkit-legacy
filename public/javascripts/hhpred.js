@@ -259,14 +259,29 @@ function toggle_hitlist(){
 }
 
 function adjustMatchModeValues() {
-    var msadiv = $('match_mode_selection');
-    var format = $('informat').value;
-    var displayState = 'block';
-    if (format == 'a3m' || format == 'a2m') {
-	displayState = 'none';
-    }
+    var hide_mode = false;
+    if (hide_mode) {
+	var msadiv = $('match_mode_selection');
+	var format = $('informat').value;
+	var displayState = 'block';
+	if (format == 'a3m' || format == 'a2m') {
+	    displayState = 'none';
+	}
 
-    msadiv.style.display = displayState;
+	msadiv.style.display = displayState;
+    } else {
+	var msainput = $('match_mode');
+	var format = $('informat').value;
+	var disable = false;
+	var visible = 'visible';
+	if (format == 'a3m' || format == 'a2m') {
+	    disable = true;
+	    visible = 'hidden';
+	}
+
+	msainput.disabled = disable;
+	msainput.style.visibility = visible;
+    }
 }
 
 function adjustMoreOptionsDisplay() {
