@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<resultset statement="SELECT * FROM tool_params
+" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="id">196</field>
+	<field name="user_id">-1</field>
+	<field name="glob">--- 
+Pmin: &quot;20&quot;
+maxlines: &quot;100&quot;
+jobid: &quot;&quot;
+width: &quot;80&quot;
+more_options_on: &quot;false&quot;
+gv: Save Parameters
+maxit: &quot;1&quot;
+EvalHHblits: 1e-3
+cov_min: &quot;0&quot;
+controller: hhblits
+sequence_file: &quot;&quot;
+realign: &quot;1&quot;
+mail: &quot;&quot;
+alignmode: local
+sequence_input: &quot;&quot;
+mact: &quot;0.5&quot;
+action: index
+informat: fas
+hhblits_dbs: /ebio/abt1/kfaidt/toolkit/databases/hhblits/uniprot20_2013_03
+match_mode: &quot;50&quot;
+maxseq: &quot;1&quot;
+</field>
+	<field name="tool">hhblits</field>
+  </row>
+</resultset>

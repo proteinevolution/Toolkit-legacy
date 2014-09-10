@@ -13,13 +13,17 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @mactval = ['0.0', '0.01', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95']
     @ss_scoring_values = ['2', '0', '4']
     @ss_scoring_labels = ['yes', 'no', 'predicted vs predicted only']
-    @msa_factor_values = ['first', '10', '30', '50', '70', '75', '90', '100']
-    @msa_factor_labels = ['residues of first sequence',
+    @match_mode_values = ['first', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100']
+    @match_mode_labels = ['residues of first sequence',
+                          'no gaps',
                           'fraction of gaps <10%',
+                          'fraction of gaps <20%',
                           'fraction of gaps <30%',
+                          'fraction of gaps <40%',
                           'fraction of gaps <50%',
+                          'fraction of gaps <60%',
                           'fraction of gaps <70%',
-                          'fraction of gaps <75%',
+                          'fraction of gaps <80%',
                           'fraction of gaps <90%',
                           'assigning all columns to match states']
     @compbiascorr_values = ['1', '0']

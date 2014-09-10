@@ -21,6 +21,11 @@ memcache_servers = [ '127.0.0.1:11211' ]
 
 #global settings
 TOOLKIT_RELEASE = '2.18.0'
+if (LOCATION == "Munich")
+  TOOLKIT_COPYRIGHT = '&#169; 2008-2014'
+else
+  TOOLKIT_COPYRIGHT = '&#169; 2008-2014'
+end
 DOC_ROOTURL     = 'http://' + DOC_ROOTHOST
 BIOPROGS        = TOOLKIT_ROOT+'/bioprogs'
 TMP             = TOOLKIT_ROOT+'/tmp/'+RAILS_ENV

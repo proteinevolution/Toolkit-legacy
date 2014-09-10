@@ -27,8 +27,8 @@
 </div>
 <div class="row">
   <%= form_label("Select input format", "format") %>
-<!--  <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "document.getElementById('msa_factor_selection').style.display=((this.value != 'a3m' && this.value != 'a2m') ? 'block' : 'none');") %> -->
-      <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "adjustMSAFactorValues();") %>
+<!--  <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "document.getElementById('match_mode_selection').style.display=((this.value != 'a3m' && this.value != 'a2m') ? 'block' : 'none');") %> -->
+      <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "adjustMatchModeValues();") %>
 </div><div class="spacer">&nbsp;</div>
 
 <% else -%>
@@ -193,16 +193,19 @@
   <!--  WORKAROUND -->
   <% if @parent_job.nil? || @parent_job.params['mode'].nil? -%>
   <!-- Only show if informat != 'a3m' && informat != 'a2m' -->
-  <div id='msa_factor_selection'>
+  <div id='match_mode_selection'>
     <div class="hr">&nbsp;</div>
     <div class="row">
-      <%= form_label("Match state assignment by", "msa_factor") %>
-      <%= form_select_single("msa_factor", @msa_factor_values, @msa_factor_labels, @msa_factor_values[0]) %>
-      <!--<%= form_radio_buttons("msa_factor", @msa_factor_values, @msa_factor_labels, @msa_factor_values[0]) %>-->
+      <%= form_label("Match state assignment", "match_mode") %>
+      <div class="formw">
+        <%= form_select_single("match_mode", @match_mode_values, @match_mode_labels, @match_mode_values[0]) %>
+      	<!--<%= form_radio_buttons("match_mode", @match_mode_values, @match_mode_labels, @match_mode_values[0]) %>-->
+	(For A2M/A3M format the match assignment of the input is used.)
+      </div>
     </div>
   </div>
   <% else %>
-  <%= form_hidden_field("msa_factor", @parent_job.params_main_action['msa_factor']) %>
+  <%= form_hidden_field("match_mode", @parent_job.params_main_action['match_mode']) %>
   <% end -%>
 
   <div class="spacer">&nbsp;</div>

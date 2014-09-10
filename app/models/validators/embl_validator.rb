@@ -150,9 +150,9 @@ module Toolkit
 						end
 						
 						if (num_seqs > configuration[:max_seqs])
-							error = "Input contains more than #{configuration[:max_seqs]} sequences!"
-						elsif (num_seqs < configuration[:min_seqs])
-						  error = "Input contains less than #{configuration[:min_seqs]} sequences!"
+                                                        error = "Input contains more than #{configuration[:max_seqs]} sequence#{1 == configuration[:max_seqs] ? "" : "s"}!"
+						elsif (error.nil? && num_seqs < configuration[:min_seqs])
+                                                  error = "Input contains less than #{configuration[:min_seqs]} sequence#{1 == configuration[:min_seqs] ? "" : "s"}!"
 						
 						end
 

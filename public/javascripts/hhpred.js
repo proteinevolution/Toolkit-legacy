@@ -258,15 +258,30 @@ function toggle_hitlist(){
 	}
 }
 
-function adjustMSAFactorValues() {
-    var msadiv = $('msa_factor_selection');
-    var format = $('informat').value;
-    var displayState = 'block';
-    if (format == 'a3m' || format == 'a2m') {
-	displayState = 'none';
-    }
+function adjustMatchModeValues() {
+    var hide_mode = false;
+    if (hide_mode) {
+	var msadiv = $('match_mode_selection');
+	var format = $('informat').value;
+	var displayState = 'block';
+	if (format == 'a3m' || format == 'a2m') {
+	    displayState = 'none';
+	}
 
-    msadiv.style.display = displayState;
+	msadiv.style.display = displayState;
+    } else {
+	var msainput = $('match_mode');
+	var format = $('informat').value;
+	var disable = false;
+	var visible = 'visible';
+	if (format == 'a3m' || format == 'a2m') {
+	    disable = true;
+	    visible = 'hidden';
+	}
+
+	msainput.disabled = disable;
+	msainput.style.visibility = visible;
+    }
 }
 
 function adjustMoreOptionsDisplay() {
@@ -293,7 +308,7 @@ function resetDisplayValues(default_show_more_options, default_format) {
     //adjustMoreOptionsDisplay();
 
     $('informat').value = default_format;
-    adjustMSAFactorValues();
+    adjustMatchModeValues();
     return true;
 }
 

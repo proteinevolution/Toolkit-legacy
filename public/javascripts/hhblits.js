@@ -1,13 +1,40 @@
-function change_format()
-{
-    var informat = $("informat");
-    var disable = false;
-    for( i=0; i<informat.length; i++ ) {
-	if (informat.options[i].selected == true && (informat.options[i].value == "a2m" || informat.options[i].value == "a3m")) {
-	    disable = true;
+function adjustMatchModeValues() {
+    var hide_mode = false;
+    if (hide_mode) {
+	var msadiv = $('match_mode_selection');
+	var format = $('informat').value;
+	var displayState = 'block';
+	if (format == 'a3m' || format == 'a2m') {
+	    displayState = 'none';
 	}
+
+	msadiv.style.display = displayState;
+    } else {
+	var msainput = $('match_mode');
+	var format = $('informat').value;
+	var disable = false;
+	var visible = 'visible';
+	if (format == 'a3m' || format == 'a2m') {
+	    disable = true;
+	    visible = 'hidden';
+	}
+
+	msainput.disabled = disable;	
+	msainput.style.visibility = visible;
     }
-    $('match_modus').disabled = disable;
+}
+
+function resetDisplayValues(default_format) {
+    // On reset, adjustMatchModeValues() is not triggered by a change of the
+    // input mode (the same would apply to change_format). Then we have to
+    // toggle the display of the match state assignment according to the
+    // default input format.
+    // Because the onreset-handler is performed before the reset, we have to
+    // reset the relevant values before calling the adjusting function.
+
+    $('informat').value = default_format;
+    adjustMatchModeValues();
+    return true;
 }
 
 function change_db(dbhhm, dba3m)

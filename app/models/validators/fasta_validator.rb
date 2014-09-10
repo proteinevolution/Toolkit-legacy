@@ -110,9 +110,9 @@ module Toolkit
             val_array.shift
 
             if (val_array.length > configuration[:max_seqs])
-              error = "Input contains more than #{configuration[:max_seqs]} sequences!"
-            elsif (val_array.length < configuration[:min_seqs])							
-              error = "Input contains less than #{configuration[:min_seqs]} sequences!"
+              error = "Input contains more than #{configuration[:max_seqs]} sequence#{1 == configuration[:max_seqs] ? "" : "s"}!"
+            elsif (val_array.length < configuration[:min_seqs])
+              error = "Input contains less than #{configuration[:min_seqs]} sequence#{1 == configuration[:min_seqs] ? "" : "s"}!"
             else
               lc = 0
               val_array.each do |val|
