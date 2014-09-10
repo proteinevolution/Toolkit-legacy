@@ -18,12 +18,16 @@ class Seq2giAction < Action
 		params_to_file(@infile,'sequence_input','sequence_file')
 		@commands = []
 
+                @oneperline = params['oneperline'] ? true : false
+
 	end
 
 	def perform
 		params_dump
 
-		@commands << "#{PERL}/getgis.pl #{@infile} #{@outfile} &> #{job.statuslog_path}"
+                option = @oneperline ? "-1 " : ""
+
+          @commands << "#{PERL}/getgis.pl #{option}#{@infile} #{@outfile} &> #{job.statuslog_path}"
 	  
 		logger.debug "Commands:\n"+@commands.join("\n")
 		queue.submit(@commands)
