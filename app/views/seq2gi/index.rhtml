@@ -20,6 +20,15 @@
 
 <div class="spacer">&nbsp;</div>
 
+<h3 class="<%= @section["name"] %>">Option</h3>
+
+<div class="row">
+     <%= form_label("Extract only last gi number per input line", "onegiperline") %>
+     <%= form_checkbox("oneperline", 1, false) %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
 <%= render(:partial => "shared/joboptions") %> 
 
 <div class="row">

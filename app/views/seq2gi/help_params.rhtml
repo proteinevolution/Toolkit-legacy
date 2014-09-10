@@ -1,5 +1,6 @@
 <ul id="helpindex" class="<%= @section['theme'] %>">
 	<li><a href="#input">Input file</a></li>
+	<li><a href="#onegiperline">Extract only last gi number per input line</a></li>
 </ul>
 
 <h2><%= @tool['title'] %> Parameters</h2>
@@ -7,6 +8,14 @@
 <a name="input"></a>
 <h3 class="<%= @section["name"] %>">Input</h3> 
 <div class="row">
-Enter a file with GI-numbers. This tool finds only numbers with the format: <b> gi|number| </b>!
+Enter a file with GI-numbers. This tool finds only numbers with the format: <b> gi|number </b>!<BR>
+Exception: If a line starts with <b>&gt;NR20|</b>, the <b>gi</b> prefix is not necessary.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="onegiperline"></a>
+<h3 class="<%= @section["name"] %>">Extract only last gi number per input line</h3>
+<div class="row">
+If this option is checked, only at most one gi number per input line (the last one) will be listed. Otherwise, all found gi numbers are listed.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
