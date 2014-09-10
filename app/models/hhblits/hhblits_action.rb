@@ -52,8 +52,8 @@ class HhblitsAction < Action
     @commands = []
 
     @db = params['hhblits_dbs']
-    
-    @match_modus = params['match_modus'].nil? ? 'a3m' : params['match_modus']
+
+    @match_mode = ((@informat == "a3m" || @informat == "a2m" || params["match_mode"].nil?) ? '' : params["match_mode"])
     @maxit = params['maxit']
     @E_hhblits = params["EvalHHblits"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
@@ -110,10 +110,11 @@ class HhblitsAction < Action
   
   def perform
     params_dump
+    msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
     @commands << "export  PATH=$PATH:#{HHSUITE} "
     @commands << "export  HHLIB=#{HHLIB} "
     
-    @commands << "#{HHSUITE}/hhblits -cpu 8 -v #{@v} -i #{@infile} -d #{@db} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile} -M #{@match_modus} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
+    @commands << "#{HHSUITE}/hhblits -cpu 8 -v #{@v} -i #{@infile} -d #{@db} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile}#{msa_factor} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
 
     @commands << "#{HHSUITELIB}/addss.pl #{@a3m_outfile}"
 
