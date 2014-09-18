@@ -23,6 +23,9 @@ class HhsenserController < ToolController
     @dblabels = ['nr', 'nr + environmental', 'nr_eukaryotes', 'nr_prokaryotes', 'nr_bacteria', 'nr_archaea', 'nr_viruses']
     @dbvalues = [File.join(DATABASES,'standard','nr'), File.join(DATABASES,'standard','nre'), File.join(DATABASES,'standard','nr_euk'), File.join(DATABASES,'standard','nr_pro'), File.join(DATABASES,'standard','nr_bac'), File.join(DATABASES,'standard','nr_arc'), File.join(DATABASES, 'standard', 'nr_vir')]
     @default_db = @dbvalues[0]
+
+    # handle dependencies
+    @js_onload="adjustMatchModeValues();"
   end
   
   def results
