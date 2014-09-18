@@ -81,7 +81,9 @@ class HhblitsController < ToolController
     logger.debug "params more opt: #{params['more_options_on']}"
     logger.debug "error params: #{@error_params['more_options_on']}"
     logger.debug "show_more_options: #{@show_more_options}"
-    
+
+    # handle dependencies
+    @js_onload="adjustMatchModeValues();"
   end
   
   def results
