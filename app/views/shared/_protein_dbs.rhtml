@@ -2,6 +2,7 @@
 
 <script src="/javascripts/genomes.js" type="text/javascript"></script>
 <script src="/javascripts/proteintree.js" type="text/javascript"></script>
+<script src="/javascripts/combinedselects.js" type="text/javascript"></script>
 
 <h3 class="<%= @section["name"] %>">Databases</h3>
 
@@ -10,7 +11,7 @@
     		<div class="formw">
     			<div class="db">
 					<h6>Standard</h6>
-    				<%= form_select_multiple("std_dbs", @std_dbs_paths, @std_dbs_labels, @std_dbs_paths[@std_dbs_labels.index('nr')],5,false) %>	
+    				<%= form_select_multiple("std_dbs", @std_dbs_paths, @std_dbs_labels, @std_dbs_paths[@std_dbs_labels.index('nr')],5,false,"",'onSimpleClick(event, "user_dbs")') %>
     			</div>
     			
     			<%# User-DBs %>
@@ -30,7 +31,7 @@
 						end %>
 						<div id="userdbs_box" class="db">
 							<h6>Personal</h6>
-							<%= form_select_multiple("user_dbs", user_dbs_paths, user_dbs_labels, [],5,false) %>	
+							<%= form_select_multiple("user_dbs", user_dbs_paths, user_dbs_labels, [],5,false,"",'onSimpleClick(event, "std_dbs")') %>
 						</div>
 				<% else %>
 						<div id="userdbs_box" style="display: none;" class="db">
