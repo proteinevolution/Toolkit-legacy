@@ -126,7 +126,7 @@ module ApplicationHelper
     end
   end
 
-  def form_select_multiple(name, values, labels, default=[], maxsize=5, wrap=true, onchange="")
+  def form_select_multiple(name, values, labels, default=[], maxsize=5, wrap=true, onchange="", onclick="")
     #    size = maxsize > values.length ? values.length : maxsize 
     size = maxsize
     selected = (params['reviewing']||params[name]) ? (params[name] ? params[name] : "") : default.to_s
@@ -141,16 +141,16 @@ module ApplicationHelper
       options << "<option value=\"#{value}\"  #{sel_attr}>#{label}</option>\n"
     end
     if wrap
-      wrap_form_widget(select_tag(name+'[]', options, :id => name, :multiple => true, :size => size, :class => style, :onchange => onchange), @errors[name])
+      wrap_form_widget(select_tag(name+'[]', options, :id => name, :multiple => true, :size => size, :class => style, :onchange => onchange, :onclick => onclick), @errors[name])
     else
       ret = ""
       if (!@errors[name].nil?)
         ret = ret << "<p class='formerror'>#{@errors[name]}</p>\n"
       end
-      ret = ret << select_tag(name+'[]', options, :id => name, :multiple => true, :size => size, :class => style, :onchange => onchange)
+      ret = ret << select_tag(name+'[]', options, :id => name, :multiple => true, :size => size, :class => style, :onchange => onchange, :onclick => onclick)
     end
   end
-  
+
   def form_radio_buttons(name, values, labels, default="", sep="<br/>", onchange="", id_value=0)
     checkval = params[name] ? params[name] : default.to_s
     checkval = @error_params[name] ? @error_params[name] : checkval
