@@ -347,7 +347,7 @@ class SgeWorker < AbstractWorker
                 when "BacktransAction" then 2
                   ### C ###
                 when "ClansAction"    then 25
-                when "CsBlastAction"  then 15
+                when "CsBlastAction"  then 18
                 when "ClustalwAction" then 10
                 when "ClustalwForwardAction" then 10
                 when "ClustalwExportAction" then 5
@@ -372,7 +372,7 @@ class SgeWorker < AbstractWorker
                 when "HhpredShowtemplalignAction" then 18
                 when "Hh3dTemplAction" then 18
                 when "HhmakemodelAction" then 18
-                when "HhsenserAction" then 18
+                when "HhsenserAction" then 20
                 when "HhsenserForwardAction" then 18
                 when "HhfragAction" then 18
                 when "HhalignAction" then 18
@@ -399,9 +399,9 @@ class SgeWorker < AbstractWorker
                 when "MafftAction" then 5
                 when "MafftForwardAction" then 5
                   ### P ###
-                when "ProtBlastAction" then 15
+                when "ProtBlastAction" then 18
                 when "PcoilsAction" then 6
-                when "PsiBlastAction" then 25
+                when "PsiBlastAction" then 30
                 when "PatsearchAction" then 5
                 when "PsiBlastForwardAction" then 5
                 when "PatsearchForwardAction" then 5
