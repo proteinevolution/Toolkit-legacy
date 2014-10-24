@@ -180,7 +180,7 @@ class SgeWorker < AbstractWorker
       f.write "  if [[ $REPEATED != *$1* ]]\n"
       f.write "  then\n"
       f.write "    REPEATED=\"$REPEATED\"\" $1\"\n"
-      write_qupdate_call(f, id, STATUS_ERROR, "    ")
+      write_qupdate_call(f, id, STATUS_ERROR, "    ","")
 
       f.write "    echo >> #{queue_job.action.job.statuslog_path}\n"
       f.write "    case \"$1\" in\n"
@@ -217,7 +217,7 @@ class SgeWorker < AbstractWorker
       end
 
       # SET STATUS OF THIS JOB TO RUNNING
-      write_qupdate_call(f, id, STATUS_RUNNING, "")
+      write_qupdate_call(f, id, STATUS_RUNNING, "","")
       if RAILS_ENV == "development"
         f.write "echo 'Status set to running...' >> #{queue_job.action.job.statuslog_path}\n"
       end
@@ -243,7 +243,8 @@ class SgeWorker < AbstractWorker
         f.write "echo 'Before executing the commandfile...' #{self.commandfile} >> #{queue_job.action.job.statuslog_path}\n"
       end
 
-      f.write "#{self.commandfile}\n"
+      #f.write "#{self.commandfile}\n"
+      f.write "{ { _utime=\"$( { { TIMEFORMAT='%0U';time (#{self.commandfile} 1>&4 2>&3); } 3>&2 2>&1; } )\"; } 4>&1 1>&3; } 3>/dev/null\n"
       # CAPTURE EXITSTATUS OF THE 'CHILD'-SHELL SCRIPT WHICH IS SAVED IN $? INTO A VARIABLE WITH THE SAME NAME IN THIS SHELL 
       f.write "exitstatus=$?\n"
       # were there any errors?
@@ -251,7 +252,7 @@ class SgeWorker < AbstractWorker
         if RAILS_ENV == "development"
           f.write "echo 'Running Additional Script '\n"
         end
-        write_qupdate_call(f, id, STATUS_DONE, "")
+        write_qupdate_call(f, id, STATUS_DONE, "","_utime")
 
         if RAILS_ENV == "development"
           f.write "echo 'Running under developement environment ' >> #{queue_job.action.job.statuslog_path}\n"
@@ -259,15 +260,15 @@ class SgeWorker < AbstractWorker
 
       else
         f.write "if [ ${exitstatus} -eq 0 ] ; then\n"
-        write_qupdate_call(f, id, STATUS_DONE, "  ")
+        write_qupdate_call(f, id, STATUS_DONE, "  ","_utime")
         if RAILS_ENV == "development"
-          f.write "  echo 'Job orig #{id.to_s} DONE!' >> #{queue_job.action.job.statuslog_path}\n"
+          f.write "  echo \"Queue worker #{id.to_s} DONE! (${_utime}s cpu time)\" >> #{queue_job.action.job.statuslog_path}\n"
         end
         f.write "else\n"
-        write_qupdate_call(f, id, STATUS_ERROR, "  ")
+        write_qupdate_call(f, id, STATUS_ERROR, "  ", "_utime")
         f.write "  echo 'Error while executing Job!' >> #{queue_job.action.job.statuslog_path}\n"
         if RAILS_ENV == "development"
-          f.write "  echo 'Exit status '${exitstatus} >> #{queue_job.action.job.statuslog_path}\n"
+          f.write "  echo \"Used ${_utime}s cpu time, exit status ${exitstatus}\" >> #{queue_job.action.job.statuslog_path}\n"
         end
         f.write "fi\n"
       end
@@ -446,17 +447,21 @@ class SgeWorker < AbstractWorker
 
 private
 
-  def write_qupdate_call(file, id, status, indent)
+  def write_qupdate_call(file, id, status, indent, timevar)
     file.write indent
+    qupdate_call = File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{status}"
+    unless timevar.empty?
+      qupdate_call += " $#{timevar}"
+    end
     if (LOCATION == "Munich")
       # Munich setup is different from Tuebingen.
       if RAILS_ENV == "development"
-        file.write "ssh ws04 '" + FILE.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{status}'\n"
+        qupdate_call = "ssh ws04 \"" + qupdate_call + "\""
       else
-        file.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{status}'\n"
+        qupdate_call = "ssh ws01 \"" + qupdate_call + "\""
       end
-    else
-      file.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{status}\n"
     end
+    qupdate_call += "\n"
+    file.write qupdate_call;
   end
 end

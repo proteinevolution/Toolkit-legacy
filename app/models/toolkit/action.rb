@@ -212,6 +212,14 @@
       end
       params['taxids']=res if (res!="")
     end
+
+    def getTime
+      total = 0
+      queue_jobs.each do |qj|
+        total += qj.getTime
+      end
+      total
+    end
     
     def save
       begin

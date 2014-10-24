@@ -75,7 +75,11 @@ class HhsenserAction < Action
   def run_hhsenser(cpus)
     # Run the hhsenser program
     # tmax is available time - 15 min for pre- and post loop computations.
-    @commands << "#{HHPERL}/buildinter.pl -v #{@v} -tmax 23:45 -Emax #{@e_max} -extnd #{@extnd} -Ymax #{@ymax} -E #{@e_hmm} -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} #{@repr_seq} -db #{@db} #{@basename}.a3m >> #{job.statuslog_path} 2>&1; echo 'Hide exit state!';"
+    tmax = "23:45" # currently, no access to queue configuration implemented.
+    if (LOCATION == "Tuebingen" && RAILS_ENV == "development")
+      tmax = "0:45"
+    end
+    @commands << "#{HHPERL}/buildinter.pl -v #{@v} -tmax #{tmax} -Emax #{@e_max} -extnd #{@extnd} -Ymax #{@ymax} -E #{@e_hmm} -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} #{@repr_seq} -db #{@db} #{@basename}.a3m >> #{job.statuslog_path} 2>&1; echo 'Hide exit state!';"
 
     # Prepare strict alignments
     @commands << "cp #{@basename}-X.a3m #{@basename}_strict.a3m"

@@ -56,12 +56,7 @@ class ToolController < ApplicationController
     job = Job.find(:first, :conditions => [ "jobid = ?", params[:job]])
     if (job.nil?)
       logger.debug "Job for #{params[:job]} has not yet been initialized (id is #{params[:jobid] || 'nil'}), creating new id"
-      job = Object.const_get(params[:job].to_cc+"Job").create(params, @user)
-      logger.debug "Created new Job .... "
-      if (job.config['hidden'] == false && @jobs_cart.index(job.jobid).nil?)
-      	@jobs_cart.push(job.jobid) 
-        logger.debug "Pushing Job into Job Cart : "+job.jobid.to_s
-      end
+      job = Object.const_get(params[:job].to_cc+"Job").make(params, @user)
       
       # write tool statistics
       if (job.tool.camelize == job.class.to_s.gsub(/Job/, '').camelize)
@@ -71,8 +66,9 @@ class ToolController < ApplicationController
         if stats.nil?
           stats = Stat.new(:toolname => toolname, :day => day)
         end
+        internalp = is_internal?(request.remote_ip)
         if @user.nil?
-          if is_internal?(request.remote_ip)
+          if internalp
             stats.visits_int = (stats.visits_int || 0) + 1
           else
             stats.visits_ext = (stats.visits_ext || 0) + 1
@@ -81,6 +77,18 @@ class ToolController < ApplicationController
           stats.visits_user = (stats.visits_user || 0) + 1
         end
         stats.save!
+        # For execution time statistics, consider external jobs only (when
+        # in production environment). Here, external jobs include
+        # external jobs by logged in users.
+        unless (internalp && (RAILS_ENV == "production"))
+          job.setStat(stats)
+        end
+      end
+      job.firstSave!
+      logger.debug "Created new Job .... "
+      if (job.config['hidden'] == false && @jobs_cart.index(job.jobid).nil?)
+      	@jobs_cart.push(job.jobid) 
+        logger.debug "Pushing Job into Job Cart : "+job.jobid.to_s
       end
 
     end
