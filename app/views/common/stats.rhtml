@@ -35,10 +35,10 @@
 		<% visits_int += e.visits_int; visits_ext += e.visits_ext; visits_user += e.visits_user; jobs_count += e.jobs_count; jobs_time += e.jobs_time %>
 		<% end %>
 		<% sum_int+=visits_int; sum_ext+=visits_ext; sum_user+=visits_user; sum_jobs+=jobs_count; sum_time+=jobs_time %>
-		<tr><td><%= n %></td><td><%= visits_int %></td><td><%= visits_ext %></td><td><%= visits_user %></td><td><%= jobs_count > 0 ? jobs_time / jobs_count : " " %></td></tr>	
+		<tr><td><%= n %></td><td><%= visits_int %></td><td><%= visits_ext %></td><td><%= visits_user %></td><td><%= Stat.time2string(jobs_time, jobs_count) %></td></tr>	
 		<% end %>
 
-		<tr><td><strong>Total</strong></td><td><strong><%= sum_int %></strong></td><td><strong><%= sum_ext %></strong></td><td><strong><%= sum_user %></strong></td><td><strong><%= sum_jobs > 0 ? sum_time / sum_jobs : " " %></strong></td></tr>	
+		<tr><td><strong>Total</strong></td><td><strong><%= sum_int %></strong></td><td><strong><%= sum_ext %></strong></td><td><strong><%= sum_user %></strong></td><td><strong><%= Stat.time2string(sum_time, sum_jobs) %></strong></td></tr>	
 			
 	</table>
 	<div class="hr">&nbsp;</div>
@@ -53,9 +53,9 @@
 		<% sum_int=0; sum_ext=0; sum_user=0; sum_jobs=0; sum_time=0; %>
 		<% (Stat.find(:all, :conditions => ["day=?", d])).sort{|x,y| x.toolname <=> y.toolname}.each do |e| %>
 		<% sum_int+=e.visits_int; sum_ext+=e.visits_ext; sum_user+=e.visits_user; sum_jobs += e.jobs_count; sum_time += e.jobs_time %>		
-		<tr><td><%= e.toolname %></td><td><%= e.visits_int %></td><td><%= e.visits_ext %></td><td><%= e.visits_user %></td><td><%= e.jobs_count > 0 ? e.jobs_time / e.jobs_count : " " %></td></tr>
+		<tr><td><%= e.toolname %></td><td><%= e.visits_int %></td><td><%= e.visits_ext %></td><td><%= e.visits_user %></td><td><%= e.time2string %></td></tr>
 		<% end %>
-		<tr><td><strong>Total</strong></td><td><strong><%= sum_int %></strong></td><td><strong><%= sum_ext %></strong></td><td><strong><%= sum_user %></strong></td><td><strong><%= sum_jobs > 0 ? sum_time / sum_jobs : " " %></strong></td></tr>	
+		<tr><td><strong>Total</strong></td><td><strong><%= sum_int %></strong></td><td><strong><%= sum_ext %></strong></td><td><strong><%= sum_user %></strong></td><td><strong><%= Stat.time2string(sum_time, sum_jobs) %></strong></td></tr>	
 	
 	</table>
 	<div class="hr">&nbsp;</div>	
@@ -75,10 +75,10 @@
 		<% visits_int += e.visits_int; visits_ext += e.visits_ext; visits_user += e.visits_user; jobs_count += e.jobs_count; jobs_time += e.jobs_time %>
 		<% end %>
 		<% sum_int+=visits_int; sum_ext+=visits_ext; sum_user+=visits_user; sum_jobs+=jobs_count; sum_time+=jobs_time %>
-		<tr><td><%= n %></td><td><%= visits_int %></td><td><%= visits_ext %></td><td><%= visits_user %></td><td><%= jobs_count > 0 ? jobs_time / jobs_count : " " %></td></tr>	
+		<tr><td><%= n %></td><td><%= visits_int %></td><td><%= visits_ext %></td><td><%= visits_user %></td><td><%= Stat.time2string(jobs_time, jobs_count) %></td></tr>	
 		<% end %>
 
-		<tr><td><strong>Total</strong></td><td><strong><%= sum_int %></strong></td><td><strong><%= sum_ext %></strong></td><td><strong><%= sum_user %></strong></td><td><strong><%= sum_jobs > 0 ? sum_time / sum_jobs : " " %></strong></td></tr>
+		<tr><td><strong>Total</strong></td><td><strong><%= sum_int %></strong></td><td><strong><%= sum_ext %></strong></td><td><strong><%= sum_user %></strong></td><td><strong><%= Stat.time2string(sum_time, sum_jobs) %></strong></td></tr>
 	</table>
 	<div class="hr">&nbsp;</div>	
 	<% end %>
@@ -94,15 +94,15 @@
 		<% visits_int += e.visits_int; visits_ext += e.visits_ext; visits_user += e.visits_user; jobs_count += e.jobs_count; jobs_time += e.jobs_time %>
 		<% sum_int+=e.visits_int; sum_ext+=e.visits_ext; sum_user+=e.visits_user; sum_jobs += e.jobs_count; sum_time += e.jobs_time; %>
 		<% end %>
-		<tr><td><%= year %></td><td><%= visits_int %></td><td><%= visits_ext %></td><td><%= visits_user %></td><td><%= jobs_count > 0 ? jobs_time / jobs_count : " " %></td></tr>
+		<tr><td><%= year %></td><td><%= visits_int %></td><td><%= visits_ext %></td><td><%= visits_user %></td><td><%= Stat.time2string(jobs_time, jobs_count) %></td></tr>
 		<% end %>
 
-		<tr><td><strong>Total</strong></td><td><strong><%= sum_int %></strong></td><td><strong><%= sum_ext %></strong></td><td><strong><%= sum_user %></strong></td><td><strong><%= sum_jobs > 0 ? sum_time / sum_jobs : " " %></strong></td</tr>
+		<tr><td><strong>Total</strong></td><td><strong><%= sum_int %></strong></td><td><strong><%= sum_ext %></strong></td><td><strong><%= sum_user %></strong></td><td><strong><%= Stat.time2string(sum_time, sum_jobs) %></strong></td</tr>
 	</table>
 	<div class="hr">&nbsp;</div>
 	<h4>Explanation</h4>
 	Jobs of logged on users are not counted in the internal/external users columns.
-	For computing the average computing time, only successful jobs of external users which run longer than a second are considered (including external users logged on). The time is in seconds.
+	For computing the average computing time, only successful jobs of external users which run longer than a second are considered (including external users logged on).
 	<div class="hr">&nbsp;</div>
 	Updates, comments or errors, please mail to: 
 	<strong><a href="mailto:mpi-toolkit@tuebingen.mpg.de">mpi-toolkit@tuebingen.mpg.de</a></strong>
