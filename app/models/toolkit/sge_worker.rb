@@ -20,8 +20,8 @@ class SgeWorker < AbstractWorker
     memory = select_memory(job);
     if (options['cpus'] && options['cpus'].to_i > 1)
         # The sge engine will multiply the given memory with the number of cpus
-        cpus = options['cpus'].to_i
-        memory = (memory + cpus - 1) / cpus
+        min_cpu_number = options['cpus'].to_i
+        memory = (memory + min_cpu_number - 1) / min_cpu_number
     end
     logger.debug "L23 Memory #{memory} "
 
@@ -104,7 +104,10 @@ class SgeWorker < AbstractWorker
       f.write "#!/bin/bash\n"
       #f.write "#!/bin/sh\n"
       # SGE options
-      f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
+      toolShortcut = getToolShortcut || "TOOLKIT"
+      # truncate toolShortcut to 7 characters because qstat only shows 10
+      # characters in its tabular view.
+      f.write '#$' + " -N #{toolShortcut[0...7]}_#{queue_job.action.job.jobid}\n"
 
       if LINUX == 'SL6'
           f.write '#$' + " -pe #{queue}\n"
@@ -261,9 +264,9 @@ class SgeWorker < AbstractWorker
       else
         f.write "if [ ${exitstatus} -eq 0 ] ; then\n"
         write_qupdate_call(f, id, STATUS_DONE, "  ","_utime")
-        if RAILS_ENV == "development"
+        #if RAILS_ENV == "development"
           f.write "  echo \"Queue worker #{id.to_s} DONE! (${_utime}s cpu time)\" >> #{queue_job.action.job.statuslog_path}\n"
-        end
+        #end
         f.write "else\n"
         write_qupdate_call(f, id, STATUS_ERROR, "  ", "_utime")
         f.write "  echo 'Error while executing Job!' >> #{queue_job.action.job.statuslog_path}\n"
@@ -300,8 +303,20 @@ class SgeWorker < AbstractWorker
         f.write "module load python2.6\n"
       end
       # print the process id of this shell execution
-      f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 
+      f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
       logger.debug "Exec_host file geschrieben."
+      if (!(options.nil? || options.empty?) && options['ncpuvar'])
+        ncpuvar=options['ncpuvar']
+        if (options['cpus']) then
+          min_cpu_number = options['cpus'].to_i()
+        else
+          min_cpu_number = 1
+        end
+        # $NSLOTS gives the number of allocated cpus on the sge cluster,
+        # when the job was submitted using qsub.
+        # Otherwise, it has to initialized with the minimum cpus value.
+        f.write "#{ncpuvar}=${NSLOTS:-#{min_cpu_number}}\n"
+      end
       f.write "exitstatus=0;\n"
 
       commands.each do |cmd|
@@ -429,7 +444,7 @@ class SgeWorker < AbstractWorker
 
     #############################################
     # Special Memory allocation for large hhpred jobs
-    if (!options.nil? || !options.empty?)
+    if (!options.nil? && !options.empty?)
       if (options['memory']) then my_memory = options['memory'] end
     end
 

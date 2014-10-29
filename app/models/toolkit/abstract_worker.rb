@@ -21,6 +21,14 @@
       exec_time
     end
 
+    def getToolShortcut
+      if queue_job
+        queue_job.getToolShortcut
+      else
+        nil
+      end
+    end
+
     def save!
       begin
         super
