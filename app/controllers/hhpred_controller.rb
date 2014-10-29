@@ -70,7 +70,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @show_more_options = (@error_params['more_options_on'] == "true")
 
     # handle dependencies
-    @js_onload="adjustMSAFactorValues();adjustMoreOptionsDisplay();"
+    @js_onload="adjustMatchModeValues();adjustMoreOptionsDisplay();"
   end
   
   def results

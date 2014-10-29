@@ -4,7 +4,7 @@
 <a href="#" onClick="openHelpWindow('/hhpred/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>  
 <h2><%= @page_title %></h2>
 
-<%= form_tag({:action => :run, :job => 'hhpred', :parent => @parent_job}, {:multipart => true, :onreset => "return resetDisplayValues('#{@show_more_options ? 'true' : 'false'}', '#{@informat_values[0]}');" })%>
+<%= form_tag({:action => :run, :job => 'hhpred', :parent => @parent_job}, {:multipart => true, :onreset => "return resetDisplayValues('#{@show_more_options ? 'true' : 'false'}', '#{params['informat'] || @informat_values[0]}');" })%>
 
 
 <h3 class="<%= @section["name"] %>">Input</h3>

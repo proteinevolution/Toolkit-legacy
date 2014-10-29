@@ -7,6 +7,7 @@ create table jobs (
   user_id               int             null,
   status                char(1)         null,
   tool                  varchar(100)    null,
+  stat_id		int		null,
   created_on            datetime        null,
   updated_on            datetime        null,
   viewed_on             datetime        null,
@@ -93,6 +94,7 @@ create table queue_workers (
   queue_job_id          int             not null,
   qid                   varchar(100)    default 0,
   pid                   int             default 0,
+  exec_time		int		default 0,
   options               text            null,
   created_on            datetime        null,
   primary key (id)
@@ -106,6 +108,8 @@ create table stats (
   visits_ext            int             default 0,
   visits_user           int             default 0,
   day                   varchar(10)     null,
+  jobs_count		int		default 0,
+  jobs_time		int		default 0,
   primary key (id)
 );
 

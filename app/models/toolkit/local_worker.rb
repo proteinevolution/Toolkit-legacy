@@ -18,6 +18,17 @@
         f.write "export TK_ROOT=#{ENV['TK_ROOT']}\n"
         f.write "source /etc/profile\n"
         
+        if (!(options.nil? || options.empty?) && options['ncpuvar'])
+          # ranges not supported yet fully (should use max_cpu_number)
+          ncpuvar=options['ncpuvar']
+          if (options['cpus']) then
+            min_cpu_number = options['cpus'].to_i()
+          else
+            min_cpu_number = 1
+          end
+          f.write "#{ncpuvar}=${#{ncpuvar}:-$((`nproc`>#{min_cpu_number}?#{min_cpu_number}:`nproc`))}\n"
+        end
+
         f.write "exitstatus=0;\n"
         commands.each do |cmd|
           f.write"if [ ${exitstatus} -eq 0 ] ; then\n"

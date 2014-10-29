@@ -38,9 +38,6 @@ class HamppredAction < Action
       @informat = "fas"
     end
 
-    # Check if the second line is too long and increase Memory allocation in Tuebingen 
-    @memory = check_sequence_length
-
     @prefilter = params['prefilter'] ? params['prefilter'] : 'hhblits'
     
     @dbs = params['hhpred_dbs'].nil? ? "" : params['hhpred_dbs']
@@ -78,6 +75,9 @@ class HamppredAction < Action
     @v = 1
     @diff = '-diff 100'
     @local_dir = '/tmp'
+
+    # Check if the second line is too long and increase Memory allocation in Tuebingen 
+    @memory = check_sequence_length
 
     process_databases
  
@@ -277,22 +277,20 @@ class HamppredAction < Action
     data = f.readlines
       sequence_length = data[1].size
     f.close
-    # sequence_length <= 1000: Don't set minimum memory here, because minimum memory is set in the worker classes.
+
+    # minimum memory set in worker classes
     if sequence_length > 1000
-      memory = 23
+      memory = 29
     end
     if sequence_length > 2000
-      memory = 28
+      memory = 34
     end
     if sequence_length > 2500
-      memory = 30
+      memory = 36
     end
-    logger.debug "L281 Memory Allocation - HAMPpred - : #{memory}"
+
+    logger.debug "L313 Memory Allocation - HAMPpred - : #{memory}"
     memory
   end
 
 end
-
-
-
-

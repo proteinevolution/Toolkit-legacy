@@ -17,6 +17,18 @@
       @logger ||= Logger.new("#{RAILS_ROOT}/log/#{name}.log", 6, 104857600)
     end
 
+    def getTime
+      exec_time
+    end
+
+    def getToolShortcut
+      if queue_job
+        queue_job.getToolShortcut
+      else
+        nil
+      end
+    end
+
     def save!
       begin
         super

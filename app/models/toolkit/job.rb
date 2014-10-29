@@ -1,6 +1,12 @@
   class Job < ActiveRecord::Base
     acts_as_tree :order => "created_on"
     has_many :actions, :order => "created_on"
+
+    # A job may be related to a stat, but does not need to. Letting rails handle this relation
+    # produces too much overhead, i.e. it requires restarting the web server more often because
+    # it gets type mismatches from different class versions otherwise. Workaround: getStat method.
+    # belongs_to :stat
+
     #    Gibt Fehler beim speichern eines Jobs, wenn man eingeloggt ist (updated? not found...)
  #       belongs_to :user
 
@@ -61,15 +67,24 @@
       id
     end
 
-    def self.create(parameters, user)
-      logger.debug "CREATE JOB!"
+    def self.make(parameters, user)
       job = new
       job.init_on_create(parameters, user)
-      job.save!
-      logger.debug "###### Job-dir: #{job.job_dir}"
-      if !File.exist?(job.job_dir)
-      	Dir.mkdir(job.job_dir, 0755)
+      job
+    end
+
+    def firstSave!()
+      save!
+      logger.debug "###### Job-dir: #{job_dir}"
+      if !File.exist?(job_dir)
+      	Dir.mkdir(job_dir, 0755)
       end
+    end
+
+    def self.create(parameters, user)
+      logger.debug "CREATE JOB!"
+      job = self.make(parameters, user)
+      job.firstSave!
       job
     end
 
@@ -87,7 +102,9 @@
       
       self.jobid = parameters['jobid']
       self.tool = parameters[:controller]
-      self.parent = Job.find(:first, :conditions => [ "jobid = ?", parameters['parent']])
+      if parameters['parent']
+        self.parent = Job.find(:first, :conditions => [ "jobid = ?", parameters['parent']])
+      end
       self.status = STATUS_INIT
 
       if (!@user.nil?)
@@ -265,10 +282,10 @@
 
     def update_status
       self.reload
-      stat = actions.inject(STATUS_DONE)  do |s, action|
+      newstate = actions.inject(STATUS_DONE)  do |s, action|
         STATUS_CMP[action.status] < STATUS_CMP[s] ? action.status : s
       end
-      self.status = stat
+      self.status = newstate
       self.save!
       if (done? || error?)
       	logger.debug "Job update status done"
@@ -283,8 +300,16 @@
           end
           actions.first.params['mail_transmitted'] = true
           actions.first.save!
-          
       	end
+        if done?
+          stat = getStat;
+          if stat
+            mytime = getTime()
+            if (mytime >= 1)
+              stat.addJob(mytime)
+            end
+          end
+        end
       end
     end
 
@@ -352,11 +377,64 @@
       end
     end
 
+    def getTime
+      total = 0
+      actions.each do |action|
+        total += action.getTime
+      end
+
+      # Add times of child jobs (jobs which have this job as a
+      # parent), which not have an own stat reference to count them
+      children.each do |childJob|
+        unless childJob.getStat
+          total += childJob.getTime
+        end
+      end
+      total
+    end
+
+    # getToolShortcut determines the "code" of the tool, which the user
+    # started.
+    # This may be different from the tool attribute (i.e. an hhpred job started
+    # for prescreening by tool hhsenser has tool hhpred but shortcut HHSE).
+    # returns a tool name or nil, but never an empty string.
+    def getToolShortcut
+      if parent && !getStat # for compatibility with getTime method
+        parent.getToolShortcut
+        # the child tool property can be recognized by the id suffix. Without
+        # adding its shortcut to the tool shortcut, log files can be parsed
+        # with less overhead.
+      else
+        shortcut = config['code']
+        if shortcut && !shortcut.empty?
+          shortcut
+        else
+          nil
+        end
+      end
+    end
+
+    def getStat
+      if self.stat_id
+        Stat.find(self.stat_id)
+      else
+        nil
+      end
+    end
+
+    def setStat(stat)
+      if stat
+        self.stat_id = stat.id
+      else
+        self.stat_id = nil
+      end
+    end
+
   def save!
     begin
       super
     rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L359 job.rb Job.save!: Got statement invalid #{e.message} ... trying again")
+      logger.debug("L416 job.rb Job.save!: Got statement invalid #{e.message} ... trying again")
       ActiveRecord::Base.verify_active_connections!
       super
     end

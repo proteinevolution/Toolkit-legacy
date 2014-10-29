@@ -20,8 +20,8 @@ class SgeWorker < AbstractWorker
     memory = select_memory(job);
     if (options['cpus'] && options['cpus'].to_i > 1)
         # The sge engine will multiply the given memory with the number of cpus
-        cpus = options['cpus'].to_i
-        memory = (memory + cpus - 1) / cpus
+        min_cpu_number = options['cpus'].to_i
+        memory = (memory + min_cpu_number - 1) / min_cpu_number
     end
     logger.debug "L23 Memory #{memory} "
 
@@ -104,7 +104,10 @@ class SgeWorker < AbstractWorker
       f.write "#!/bin/bash\n"
       #f.write "#!/bin/sh\n"
       # SGE options
-      f.write '#$' + " -N TOOLKIT_#{queue_job.action.job.jobid}\n"
+      toolShortcut = getToolShortcut || "TOOLKIT"
+      # truncate toolShortcut to 7 characters because qstat only shows 10
+      # characters in its tabular view.
+      f.write '#$' + " -N #{toolShortcut[0...7]}_#{queue_job.action.job.jobid}\n"
 
       if LINUX == 'SL6'
           f.write '#$' + " -pe #{queue}\n"
@@ -180,7 +183,7 @@ class SgeWorker < AbstractWorker
       f.write "  if [[ $REPEATED != *$1* ]]\n"
       f.write "  then\n"
       f.write "    REPEATED=\"$REPEATED\"\" $1\"\n"
-      write_qupdate_call(f, id, STATUS_ERROR, "    ")
+      write_qupdate_call(f, id, STATUS_ERROR, "    ","")
 
       f.write "    echo >> #{queue_job.action.job.statuslog_path}\n"
       f.write "    case \"$1\" in\n"
@@ -217,7 +220,7 @@ class SgeWorker < AbstractWorker
       end
 
       # SET STATUS OF THIS JOB TO RUNNING
-      write_qupdate_call(f, id, STATUS_RUNNING, "")
+      write_qupdate_call(f, id, STATUS_RUNNING, "","")
       if RAILS_ENV == "development"
         f.write "echo 'Status set to running...' >> #{queue_job.action.job.statuslog_path}\n"
       end
@@ -243,7 +246,8 @@ class SgeWorker < AbstractWorker
         f.write "echo 'Before executing the commandfile...' #{self.commandfile} >> #{queue_job.action.job.statuslog_path}\n"
       end
 
-      f.write "#{self.commandfile}\n"
+      #f.write "#{self.commandfile}\n"
+      f.write "{ { _utime=\"$( { { TIMEFORMAT='%0U';time (#{self.commandfile} 1>&4 2>&3); } 3>&2 2>&1; } )\"; } 4>&1 1>&3; } 3>/dev/null\n"
       # CAPTURE EXITSTATUS OF THE 'CHILD'-SHELL SCRIPT WHICH IS SAVED IN $? INTO A VARIABLE WITH THE SAME NAME IN THIS SHELL 
       f.write "exitstatus=$?\n"
       # were there any errors?
@@ -251,7 +255,7 @@ class SgeWorker < AbstractWorker
         if RAILS_ENV == "development"
           f.write "echo 'Running Additional Script '\n"
         end
-        write_qupdate_call(f, id, STATUS_DONE, "")
+        write_qupdate_call(f, id, STATUS_DONE, "","_utime")
 
         if RAILS_ENV == "development"
           f.write "echo 'Running under developement environment ' >> #{queue_job.action.job.statuslog_path}\n"
@@ -259,15 +263,15 @@ class SgeWorker < AbstractWorker
 
       else
         f.write "if [ ${exitstatus} -eq 0 ] ; then\n"
-        write_qupdate_call(f, id, STATUS_DONE, "  ")
-        if RAILS_ENV == "development"
-          f.write "  echo 'Job orig #{id.to_s} DONE!' >> #{queue_job.action.job.statuslog_path}\n"
-        end
+        write_qupdate_call(f, id, STATUS_DONE, "  ","_utime")
+        #if RAILS_ENV == "development"
+          f.write "  echo \"Queue worker #{id.to_s} DONE! (${_utime}s cpu time)\" >> #{queue_job.action.job.statuslog_path}\n"
+        #end
         f.write "else\n"
-        write_qupdate_call(f, id, STATUS_ERROR, "  ")
+        write_qupdate_call(f, id, STATUS_ERROR, "  ", "_utime")
         f.write "  echo 'Error while executing Job!' >> #{queue_job.action.job.statuslog_path}\n"
         if RAILS_ENV == "development"
-          f.write "  echo 'Exit status '${exitstatus} >> #{queue_job.action.job.statuslog_path}\n"
+          f.write "  echo \"Used ${_utime}s cpu time, exit status ${exitstatus}\" >> #{queue_job.action.job.statuslog_path}\n"
         end
         f.write "fi\n"
       end
@@ -299,8 +303,20 @@ class SgeWorker < AbstractWorker
         f.write "module load python2.6\n"
       end
       # print the process id of this shell execution
-      f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 
+      f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
       logger.debug "Exec_host file geschrieben."
+      if (!(options.nil? || options.empty?) && options['ncpuvar'])
+        ncpuvar=options['ncpuvar']
+        if (options['cpus']) then
+          min_cpu_number = options['cpus'].to_i()
+        else
+          min_cpu_number = 1
+        end
+        # $NSLOTS gives the number of allocated cpus on the sge cluster,
+        # when the job was submitted using qsub.
+        # Otherwise, it has to initialized with the minimum cpus value.
+        f.write "#{ncpuvar}=${NSLOTS:-#{min_cpu_number}}\n"
+      end
       f.write "exitstatus=0;\n"
 
       commands.each do |cmd|
@@ -347,7 +363,7 @@ class SgeWorker < AbstractWorker
                 when "BacktransAction" then 2
                   ### C ###
                 when "ClansAction"    then 25
-                when "CsBlastAction"  then 15
+                when "CsBlastAction"  then 18
                 when "ClustalwAction" then 10
                 when "ClustalwForwardAction" then 10
                 when "ClustalwExportAction" then 5
@@ -372,7 +388,7 @@ class SgeWorker < AbstractWorker
                 when "HhpredShowtemplalignAction" then 18
                 when "Hh3dTemplAction" then 18
                 when "HhmakemodelAction" then 18
-                when "HhsenserAction" then 18
+                when "HhsenserAction" then 20
                 when "HhsenserForwardAction" then 18
                 when "HhfragAction" then 18
                 when "HhalignAction" then 18
@@ -399,9 +415,9 @@ class SgeWorker < AbstractWorker
                 when "MafftAction" then 5
                 when "MafftForwardAction" then 5
                   ### P ###
-                when "ProtBlastAction" then 15
+                when "ProtBlastAction" then 18
                 when "PcoilsAction" then 6
-                when "PsiBlastAction" then 25
+                when "PsiBlastAction" then 30
                 when "PatsearchAction" then 5
                 when "PsiBlastForwardAction" then 5
                 when "PatsearchForwardAction" then 5
@@ -428,7 +444,7 @@ class SgeWorker < AbstractWorker
 
     #############################################
     # Special Memory allocation for large hhpred jobs
-    if (!options.nil? || !options.empty?)
+    if (!options.nil? && !options.empty?)
       if (options['memory']) then my_memory = options['memory'] end
     end
 
@@ -446,17 +462,21 @@ class SgeWorker < AbstractWorker
 
 private
 
-  def write_qupdate_call(file, id, status, indent)
+  def write_qupdate_call(file, id, status, indent, timevar)
     file.write indent
+    qupdate_call = File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{status}"
+    unless timevar.empty?
+      qupdate_call += " $#{timevar}"
+    end
     if (LOCATION == "Munich")
       # Munich setup is different from Tuebingen.
       if RAILS_ENV == "development"
-        file.write "ssh ws04 '" + FILE.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{status}'\n"
+        qupdate_call = "ssh ws04 \"" + qupdate_call + "\""
       else
-        file.write "ssh ws01 '" + File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{status}'\n"
+        qupdate_call = "ssh ws01 \"" + qupdate_call + "\""
       end
-    else
-      file.write File.join(TOOLKIT_ROOT,"script","qupdate.sh")+" #{id} #{status}\n"
     end
+    qupdate_call += "\n"
+    file.write qupdate_call;
   end
 end

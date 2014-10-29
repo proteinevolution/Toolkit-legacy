@@ -67,14 +67,19 @@ class HhsenserAction < Action
     if (@screen)
       run_screening
     else
-      run_hhsenser
+      run_hhsenser(2)
     end
 
   end
   
-  def run_hhsenser
+  def run_hhsenser(cpus)
     # Run the hhsenser program
-    @commands << "#{HHPERL}/buildinter.pl -v #{@v} -tmax 24:00 -Emax #{@e_max} -extnd #{@extnd} -Ymax #{@ymax} -E #{@e_hmm} -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} #{@repr_seq} -db #{@db} #{@basename}.a3m >> #{job.statuslog_path} 2>&1; echo 'Hide exit state!';"
+    # tmax is available time - 15 min for pre- and post loop computations.
+    tmax = "23:45" # currently, no access to queue configuration implemented.
+    if (LOCATION == "Tuebingen" && RAILS_ENV == "development")
+      tmax = "0:45"
+    end
+    @commands << "#{HHPERL}/buildinter.pl -v #{@v} -tmax #{tmax} -Emax #{@e_max} -extnd #{@extnd} -Ymax #{@ymax} -E #{@e_hmm} -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} #{@repr_seq} -db #{@db} #{@basename}.a3m >> #{job.statuslog_path} 2>&1; echo 'Hide exit state!';"
 
     # Prepare strict alignments
     @commands << "cp #{@basename}-X.a3m #{@basename}_strict.a3m"
@@ -101,7 +106,9 @@ class HhsenserAction < Action
     @commands << "#{HHPERL}/reformat.pl fas clu #{@basename}_permissive_masterslave.reduced.fas #{@basename}_permissive_masterslave.reduced.clu -v #{@v} &> #{job.statuslog_path}_reform"
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands, true, { 'cpus' => '2' })
+    # -tmax 23:45 above specifies that the job should terminate gracefully within 24h.
+    # queue.submit(@commands, true, { 'cpus' => cpus, 'queue' => QUEUES[:long] })
+    queue.submit(@commands, true, { 'cpus' => cpus })
   end
 
   def run_screening
@@ -254,7 +261,7 @@ class HhsenserAction < Action
       
       logger.debug "run hhsenser!"
 #      @commands << "#{HH}/buildali.pl -v #{@v} -cpu 2 -n 1 -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -db #{@db} #{@basename}.a3m &> #{job.statuslog_path}"
-      run_hhsenser
+      run_hhsenser(1)
       
     end
   end
