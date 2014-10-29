@@ -34,12 +34,22 @@ class MsaprobsAction < Action
 
   def perform
     params_dump
+    cpus = "6-64"
+    memory = nil
 
-	@commands << "#{MSAPROBS}/msaprobs #{@infile} -o #{@outfile}  -clustalw &> #{job.statuslog_path}"	
+    shellvar = "NTHREADS"
+
+    # useful values to be determined
+    #if File.size(@infile) > 4000
+    #  cpus = 32-64
+    #  memory = 36
+    #end
+
+    @commands << "#{MSAPROBS}/msaprobs #{@infile} -o #{@outfile} -clustalw -num_threads $#{shellvar} &> #{job.statuslog_path}"	
 
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands)
+    queue.submit(@commands, true, { 'cpus' => cpus.to_s(), 'memory' => memory, 'ncpuvar' => shellvar })
 
   end
 

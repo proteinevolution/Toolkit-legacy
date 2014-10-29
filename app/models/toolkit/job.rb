@@ -393,6 +393,27 @@
       total
     end
 
+    # getToolShortcut determines the "code" of the tool, which the user
+    # started.
+    # This may be different from the tool attribute (i.e. an hhpred job started
+    # for prescreening by tool hhsenser has tool hhpred but shortcut HHSE).
+    # returns a tool name or nil, but never an empty string.
+    def getToolShortcut
+      if parent && !getStat # for compatibility with getTime method
+        parent.getToolShortcut
+        # the child tool property can be recognized by the id suffix. Without
+        # adding its shortcut to the tool shortcut, log files can be parsed
+        # with less overhead.
+      else
+        shortcut = config['code']
+        if shortcut && !shortcut.empty?
+          shortcut
+        else
+          nil
+        end
+      end
+    end
+
     def getStat
       if self.stat_id
         Stat.find(self.stat_id)

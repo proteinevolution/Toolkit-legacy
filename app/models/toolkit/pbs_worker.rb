@@ -139,6 +139,11 @@
         # print the process id of this shell execution
         f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n" 
          
+        if (!(options.nil? || options.empty?) && options['ncpuvar'])
+          # not really supported yet (see sge_worker.rb)
+          ncpuvar=options['ncpuvar']
+          f.write "#{ncpuvar}=${#{ncpuvar}:-1}\n"
+        end
         f.write "exitstatus=0;\n"
 
         commands.each do |cmd|

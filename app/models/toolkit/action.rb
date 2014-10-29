@@ -220,6 +220,15 @@
       end
       total
     end
+
+    def getToolShortcut
+      # not suited for assigning memory etc. That should depend on the action subclass.
+      if job
+        job.getToolShortcut
+      else
+        nil
+      end
+    end
     
     def save
       begin

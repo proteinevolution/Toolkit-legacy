@@ -124,6 +124,14 @@ class QueueJob < ActiveRecord::Base
     workers.sum(:exec_time)
   end
 
+  def getToolShortcut
+    if action
+      action.getToolShortcut
+    else
+      nil
+    end
+  end
+
   def save!
     begin
       super
