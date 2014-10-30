@@ -49,7 +49,7 @@ my %three2one=(
     # new mappings (previously not substituted)
     "LCG"=>"G","LCA"=>"A","5CM"=>"C","6OG"=>"G","GHP"=>"G","3MY"=>"Y","OMY"=>"Y","2JG"=>"S",
     "GPL"=>"K","SOS"=>"N","MLY"=>"K","2SO"=>"H","CAF"=>"C","CAS"=>"C","PFF"=>"F",
-    "DI"=>"I","56A"=>"H",
+    "DI"=>"I","56A"=>"H","U2X"=>"Y",
 
     # mappings of multiple structure components (mapping to a sequence of one-letter codes)
     "CR8"=>"HYG",
@@ -84,6 +84,7 @@ my %three2one=(
     "MYR"=>"X",
     "0QE"=>"X",
     "MPT"=>"X",
+    "UNK"=>"X",
 
     # obsoleted codes not superceded by an other compound (keeping previous mapping)
     "ACL"=>"R","ALM"=>"A","ASK"=>"D","CLE"=>"L","CGL"=>"E","LYM"=>"K",
