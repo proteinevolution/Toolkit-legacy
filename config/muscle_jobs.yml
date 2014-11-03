@@ -14,4 +14,4 @@ muscle_job:
       type: 4
       format: fas
   forwarding_acceptances:
-      type: 4
+      type: 2

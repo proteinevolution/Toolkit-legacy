@@ -29,6 +29,16 @@
   <%= form_label("Use long sequence names ", "full_name") %>
   <%= form_checkbox("full_name", '1', @full_name) %>    
 </div>
+
+<div id="treefile">
+
+	<div class="row">
+		<%= form_label("Upload local tree-file (optional)", "treeInput" ) %>
+		<%= form_file("treefile")%>
+	</div>
+	
+</div>
+
 <div class="row">
 	<%= form_label("Other advanced options", "otheradvanced") %>
 	<%= form_text_field("otheradvanced", "", "", 50) %>
