@@ -352,7 +352,7 @@ class SgeWorker < AbstractWorker
     my_memory = case method
                   
                   ### A ###
-                when "AncesconAction" then 2
+                when "AncesconAction" then 3
                 when "Ali2dAction" then 18
                 when "Aln2plotAction" then 10
                 when "AlnvizAction" then 5
@@ -360,7 +360,7 @@ class SgeWorker < AbstractWorker
                 when "BlammerAction" then 10
                 when "BlammerForwardAction" then 10
                 when "BlastclustAction" then 10
-                when "BacktransAction" then 2
+                when "BacktransAction" then 3
                   ### C ###
                 when "ClansAction"    then 25
                 when "CsBlastAction"  then 18
@@ -372,10 +372,10 @@ class SgeWorker < AbstractWorker
                   ### F ###
                 when "FrpredAction" then 15
                   ### G ###
-                when "GcviewAction" then 20
-                when "Gi2seqExportAction" then 2  
-                when "Gi2seqAction" then 2  
-                when "Gi2seqForwardAction" then 2
+                when "GcviewAction" then 30
+                when "Gi2seqExportAction" then 3  
+                when "Gi2seqAction" then 3  
+                when "Gi2seqForwardAction" then 3
                   ### H ###  
                 when "HamppredAction" then 28
                 when "HamppredForwardAction" then 19

@@ -59,7 +59,7 @@ module Toolkit
                 if (configuration[:informat] == "gfas")
                   format = "gfas"
                 else
-                  #logger.debug "##### informat_field empty and informat not fas! Exit Validator!"
+                  #logger.debug "##### informat_field empty and informat not fas (but #{configuration[:informat]})! Exit Validator!"
                   next
                 end
               end
@@ -104,6 +104,16 @@ module Toolkit
             value.gsub!(/\xd\xa/, '\n')
             value.gsub!(/\xd/, '\n')
             value.gsub!(/\x1/, ' ')
+
+            # check for clustal format to give an understandable error message
+            if (value =~ /^CLUSTAL\n/ || value =~ /^MSAPROBS\n/ )
+              if (1 == configuration[:max_seqs])
+                error = "Input seems to be an alignment in CLUSTAL format. Here a sequence in fasta format is expected."
+              else
+                error = "Input seems to be an alignment in CLUSTAL format. Here sequences in fasta format are expected."
+              end
+            else
+
             if (value !~ /^>/) then value = ">" + Time.now.to_s.gsub!(/ /, '_') + "\n" + value end
             
             val_array = "\n#{value}".split(/\n>/)
@@ -224,6 +234,8 @@ module Toolkit
                   newseq += ">#{header}\n#{seq}\n"
                 end
               end
+            end
+
             end
             
             if (!error.nil?)
