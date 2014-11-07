@@ -372,7 +372,7 @@ class SgeWorker < AbstractWorker
                   ### F ###
                 when "FrpredAction" then 15
                   ### G ###
-                when "GcviewAction" then 20
+                when "GcviewAction" then 30
                 when "Gi2seqExportAction" then 3  
                 when "Gi2seqAction" then 3  
                 when "Gi2seqForwardAction" then 3
