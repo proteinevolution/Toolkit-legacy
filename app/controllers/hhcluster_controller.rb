@@ -125,7 +125,7 @@ class HhclusterController < ToolController
       end
     end
     
-    scop_db = Dir.glob(File.join(DATABASES, 'hhpred/new_dbs/scop*'))[0]
+    scop_db = Dir.glob(File.join(DATABASES, 'hhpred/new_dbs/SCOPe70*'))[0]
     
     hhpred_params = {:controller => 'hhpred', 'jobid' => nil, 'reviewing' => 'true',
       'job' => 'hhpred', 'action' => 'run', 

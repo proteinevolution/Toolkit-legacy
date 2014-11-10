@@ -1,6 +1,7 @@
 require 'fasta_reader.rb'
 
 class HamppredJob  < Job
+  require 'Biolinks.rb'
 
   attr_reader :results
   @@export_ext = ".hhr"
@@ -15,7 +16,9 @@ class HamppredJob  < Job
 
   def before_results(controller_params = nil )
 
+    location = "HamppredJob.before_results"
     logger.debug "Before results on job #{jobid}"
+    timepoint = Process.times.utime # time
 
     self.viewed_on = Time.now
     self.save!
@@ -46,12 +49,14 @@ class HamppredJob  < Job
     first_hash = Hash.new
     last_hash = Hash.new
 
+    # No file *.PDBlist exists anywhere. Was it an attempt to speed up displaying the result page? TODO: remove this.
     # get databases of HHpred job
     @pdb_ids = Hash.new
     @dbs = actions.first.params['hhpred_dbs'].nil? ? "" : actions.first.params['hhpred_dbs']
     @dbs.each do |db|
       if db.gsub!(/(cdd|COG|KOG|\/pfam|smart|cd|pfamA|pfamB)(_\S*)/, '\1\2/db/\1.PDBlist')
       elsif db.gsub!(/(scop|pdb)(\S*)/, '\1\2/db/\1.PDBlist')
+      elsif db.gsub!(/SCOPe(\S*)/, 'SCOPe\1/db/scop.PDBlist')
       elsif db.gsub!(/(panther|tigrfam|pirsf|supfam|CATH)(_\S*)/, '\1\2/db/\1.PDBlist')
       elsif db.gsub!(/([^\/]+)$/, '\1/db/\1.PDBlist' )
       end
@@ -63,6 +68,9 @@ class HamppredJob  < Job
       end
     end
 
+    tp2 = Process.times.utime # time
+    logger.debug("L70: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
     coloring = controller_params[:mode] ? controller_params[:mode] : 'letters'
     program = controller_params[:action]
     if (!actions.first.flash.nil? && !actions.first.flash['hhcluster'].nil?)
@@ -93,6 +101,9 @@ class HamppredJob  < Job
     results = File.open(resfile, "r")
     line = results.readlines
 
+    tp2 = Process.times.utime # time
+    logger.debug("L103: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
 
     # Read parameters from hhsearch call and format query line and parameter line
     i =0
@@ -123,7 +134,9 @@ class HamppredJob  < Job
         break
       end
     end #end each# If list of PDB codes is given, link them to NCBIs MMDB
-
+    tp2 = Process.times.utime # time
+    logger.debug("L136: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
 
     if    File.exists?(jobDir+"/sequence_file" )
       # Read sequence file
@@ -188,6 +201,10 @@ class HamppredJob  < Job
     #break_lines(queryline,maxlinelen+7, "       ")
     #break_lines(paramline,maxlinelen+7, "       ")
 
+    tp2 = Process.times.utime # time
+    logger.debug("L203: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
+
     ###############################################################
     # Reformat HHpred output
 
@@ -230,23 +247,28 @@ class HamppredJob  < Job
     line[i+1] =~ /.{#{cutres}}(.{5})/
       prob = $1.to_i
 
+    tp2 = Process.times.utime # time
+    logger.debug("L249: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
     #Does the query have a structure or structural model?
     querypdb = "" # PDB structure file or query
     if File.exists?(basename+".pdb")
       #Query has a structureal model prepared by user (MODELLER)
       querypdb = basename+".pdb"
 
-    elsif  line[0] =~/^Query:\s+[defgh]\d[a-z0-9]{3}[a-z0-9_\.][a-z0-9_]\s+[a-z]\.\d+\.\d+\.\d+\s+/
+    elsif  line[0] =~/^Query\s+([defgh]\d[a-z0-9]{3}[a-z0-9_\.][a-z0-9_])\s+[a-z]\.\d+\.\d+\.\d+\s+/
       #Query is SCOP sequence
-      dirs= Dir.glob(DATABASES+"/hhcluster/new_dbs/scop70*")
-      querypdb = dirs[dirs.length-1]+"/query.pdb"
-      if !File.exists?(querypdb).results
-        lo.resultsgger.debug("WARNING in #{$0}: called '#{BIOPROGS}/hhpred/makepdbfile.pl #{basename}.a3m &> /dev/null' to generate PDB file for SCOP query sequence #{query}");
-        querypdb = basename+".pdb"
+      queryname = $1
+      scopedir = Biolinks.scope_db_dir()
+      if (scopedir)
+        querydbpdb = scopedir+"/#{queryname}.pdb"
+        if File.exists?(querydbpdb)
+          querypdb = querydbpdb
+          # system("cp #{querydbpdb} #{querypdb}")
+        end
       end
-      if !File.exists?(querypdb)
-        logger.debug("WARNING in #{$0}: Could not find pdb file for SCOP sequence #{query}");
-        querypdb=""
+      if querypdb.empty?
+        logger.debug("WARNING in #{location}: Could not find pdb file for SCOP sequence #{query}");
       end
     elsif  query =~/^(\d[a-z0-9]{3})([A-Za-z0-9])?_\d+$/ || query =~ /^(\d[A-Za-z0-9]{3})()$/  || query =~/^(\d[A-Za-z0-9]{3})_([A-Za-z0-9])$/
       # Query isDALI or PDB sequence
@@ -258,7 +280,7 @@ class HamppredJob  < Job
       dirs=  Dir.glob(DATABASES+"/hhpred/new_dbs/pdb70*")
       querypdb = basename+".pdb"
       if !File.exists?("#{dirs.first}/#{pdbid}#{chain}.pdb")
-        logger.debug("WARNING in #{$0}: Could not find pdb file for sequence #{query}. Interpreted as pdbcore=#{pdbid}, chain=#{chain}");
+        logger.debug("WARNING in #{location}: Could not find pdb file for sequence #{query}. Interpreted as pdbcore=#{pdbid}, chain=#{chain}");
         querypdb=""
       else
         system("cp "+dirs.first+"/"+pdbid+chain+".pdb"+" "+querypdb)
@@ -279,22 +301,22 @@ class HamppredJob  < Job
     end
 
     if(nseqs.to_i <=5&& prob  < 60)
-#      @results.push("<font color='red'> <b>Note</b>: Your query alignment consists of only #{nseqs} sequence")
-#      if nseqs.to_i !=1
-#        @results.push("s")
-#      end
-#      @results.push("(at 90&#37 maximum pairwise sequence identity). You may be able to improve sensitivity vastly")
-#      @results.push("by using our intermediate HMM searching method 'HHsenser' to enlarge the query alignment: ")
-#      @results.push("Just press <b>\"Resubmit using HHsenser</b>\" above. ")
-#      @results.push("<br>Alternatively, you may try to build a bigger query alignment <i>by hand</i>: ")
-#      @results.push("Run PSI-BLAST with your query and decide individually for each database match with E-value ")
-#      @results.push("< 1...10 whether to include it in the alignment. If you can't decide whether to include ")
-#      @results.push("a candidate sequence, you may use a very powerful technique called ")
-#      @results.push("i>backvalidation</i> [Koretke <i>et al.</i> 2001]: ")
-#      @results.push("Start PSI-BLAST with the candidate sequence and check whether you can find your original ")
-#      @results.push("query sequence or any other already accepted sequence with sufficient E-value (e.g. < 0.01) ")
-#      @results.push("Repeat PSI-BLAST iterations until you have at least 10 sequences (if possible). ")
-#      @results.push("Use this seed alignment to jump-start HHpred.</font><br><br>")
+      @results.push("<font color='red'> <b>Note</b>: Your query alignment consists of only #{nseqs} sequence")
+      if nseqs.to_i !=1
+        @results.push("s")
+      end
+      @results.push("(at 90&#37 maximum pairwise sequence identity). You may be able to improve sensitivity vastly")
+      @results.push("by using our intermediate HMM searching method 'HHsenser' to enlarge the query alignment: ")
+      @results.push("Just press <b>\"Resubmit using HHsenser</b>\" above. ")
+      @results.push("<br>Alternatively, you may try to build a bigger query alignment <i>by hand</i>: ")
+      @results.push("Run PSI-BLAST with your query and decide individually for each database match with E-value ")
+      @results.push("< 1...10 whether to include it in the alignment. If you can't decide whether to include ")
+      @results.push("a candidate sequence, you may use a very powerful technique called ")
+      @results.push("i>backvalidation</i> [Koretke <i>et al.</i> 2001]: ")
+      @results.push("Start PSI-BLAST with the candidate sequence and check whether you can find your original ")
+      @results.push("query sequence or any other already accepted sequence with sufficient E-value (e.g. < 0.01) ")
+      @results.push("Repeat PSI-BLAST iterations until you have at least 10 sequences (if possible). ")
+      @results.push("Use this seed alignment to jump-start HHpred.</font><br><br>")
     elsif  prob >40 && prob  < 90 && rand() >0.8
       @results.push("<br><font color='blue'>\n<b>Need help to find out how to validate your hits? Click <a href=\"\#\" title=\"HHpred FAQs\" onclick=\"openHelpWindow('/hhpred/help_faq#correct match');\">here.<\/a></b>\n</font>")
     elsif rand() > 0.8
@@ -303,6 +325,9 @@ class HamppredJob  < Job
       @results.push("<br><font color='green'> <b>Need help on how to interpret your results? Click <a href=\"\#\" title=\"HHpred Results\" onclick=\"openHelpWindow('/hhpred/help_results');\">here.<\/a></b></font>")
     end
 
+    tp2 = Process.times.utime # time
+    logger.debug("L332: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
     ##############################################################################
     # if requested, print hhviz output and the domain slider
 
@@ -330,10 +355,10 @@ class HamppredJob  < Job
       @results.push("</div>\n")
       @results.push("</div>\n")
       @results.push("<div class=\"row\" style=\"position:absolute; top:50px; width:785px;\">\n")
-      @results.push("<form action=\"/hamppred/resubmit_domain/#{jobid}\" method=\"post\">\n")
+      @results.push("<form action=\"/hhpred/resubmit_domain/#{jobid}\" method=\"post\">\n")
       @results.push("<input type=\"hidden\" id=\"domain_start\" name=\"domain_start\"/>\n")
       @results.push("<input type=\"hidden\" id=\"domain_end\" name=\"domain_end\"/>\n")
-      @results.push("<input type=\"submit\" class=\"feedbutton\" style=\"border-width:2px;\" value=\"Resubmit\"/>\n")
+      @results.push("<input type=\"submit\" class=\"feedbutton\" style=\"border-width:2px;\" value=\"Resubmit section\"/>\n")
       @results.push("</form>\n")
       @results.push("</div>\n")
       @results.push("</div>\n")
@@ -356,6 +381,9 @@ class HamppredJob  < Job
     end
     @results.push("</div>\n")
 
+    tp2 = Process.times.utime # time
+    logger.debug("L388: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
     #################################################################################
     # profile_logos
 
@@ -392,12 +420,15 @@ class HamppredJob  < Job
           seq = a.chomp!
           break
         end
+        ## Comment this so no automatic coiled Coils Prediction Button fires up
         if coiled_coil != 0
-          @results.push("<div clas=\"row\">\n")
-          url ="#{DOC_ROOTURL}/hamppred/run/#{jobid}?jobaction=hamppred_coils&forward_controller=pcoils&forward_action=forward"
-          @results.push("<input type=\"button\" title=\"Run coiled-coil prediction\" value=\"Run PCOILS\" onclick=\"location.href='#{url}'\">\n")
-          @results.push("<font color=\"purple\">&nbsp;&nbsp;&nbsp;HHpred has detected hits to coiled coil-containing proteins. Press button to run PCOILS prediction on your query</font>\n")
-          @results.push("</div>\n")
+          #@results.push("<div class=\"row\">\n")
+          #@results.push("</div>\n")
+          #@results.push("<br>HHpred has detected coiled coil containing regions, you may consider running PCoils\n ")
+          #url ="#{DOC_ROOTURL}/hhpred/run/#{jobid}?jobaction=hhpred_coils&forward_controller=pcoils&forward_action=forward"
+          #@results.push("<input type=\"button\" title=\"Run coiled-coil prediction\" value=\"Run PCOILS\" onclick=\"location.href='#{url}'\">\n")
+          @results.push("<pre><font color=\"purple\">HHpred has detected hits to coiled coil-containing proteins.<br>You may consider running a PCOILS prediction on your query.<br></font>\n")
+          #@results.push("</div>\n")
 
         end
       end
@@ -406,8 +437,11 @@ class HamppredJob  < Job
 
     end
 
-    @results.push("<pre>#{queryline} \n#{paramline} \n\n")
+    @results.push("<pre>#{queryline} \n#{paramline} \n")
 
+    tp2 = Process.times.utime # time
+    logger.debug("L446: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
 
     ########################################################################################################
     ############################### Summary hit list  ######################################################
@@ -452,8 +486,8 @@ class HamppredJob  < Job
           pfamid = template
           pfamid.sub!(/^pfam/, "PF")
           #link to PFAM domain family?acc=
+          descr[m] = descr[m].gsub(/[><=;]/," - ")
           line[b].sub!(/#{template}/, "<a href=\"http:\/\/pfam.xfam.org\/family?acc=#{pfamid}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
-
           # PRODOM identifier? (PD012345)
         elsif  template =~ /^PD\d{6}/
           # link to PRODOM domain
@@ -533,11 +567,7 @@ class HamppredJob  < Job
           end
 
           # Link to SCOP at family level
-          if  template =~ /^[eu]/
-            line[b].sub!(/#{family}/, "<a href=\"http:\/\/www.mrc-lmb.cam.ac.uk\/agm\/cgi-bin\/find2.cgi?search_text=#{pdbc}&index=pox-SCOP_1_72\" target=\"_blank\">#{family}<\/a>")
-          else
-            line[b].sub!(/#{family}/, "<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{template}&lev=fa\" target=\"_blank\">#{family}<\/a>")
-          end
+          line[b].sub!(/#{family}/, Biolinks.scop_family_link(family))
 
           # Link to NCBI MMDB
           line[b].sub!(/#{template}/,"<a href=\"http:\/\/www.ncbi.nlm.nih.gov\/entrez\/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=#{ucpdbcode}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
@@ -573,6 +603,9 @@ class HamppredJob  < Job
 
     end
 
+    tp2 = Process.times.utime # time
+    logger.debug("L614: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
     ########################################################################################################
     ###########################  Alignments  ###############################################################
     logo_attr ="border=\"0\" align=\"middle\""
@@ -605,9 +638,9 @@ class HamppredJob  < Job
         if (program.eql?("histograms") || program.eql?("histograms_makemodel"))
           line[b].chomp!
           if !makemodel
-            line[b]=line[b]+ "<a href=\"#{DOC_ROOTURL}/hamppred/results/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"><\/a>\n"
+            line[b]=line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/results/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"><\/a>\n"
           else
-            line[b] = line[b]+ "<a href=\"#{DOC_ROOTURL}/hamppred/results_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"><\/a>\n\n"
+            line[b] = line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/results_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"><\/a>\n\n"
           end
 
           mapname="#{jobid}_#{m}"
@@ -641,16 +674,16 @@ class HamppredJob  < Job
         else
           line[b].chomp!
           if !makemodel
-            line[b] =line[b]+ "<a href=\"#{DOC_ROOTURL}/hamppred/histograms/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"><\/a>\n";
+            line[b] =line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/histograms/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"><\/a>\n";
           else
-            line[b] =line[b]+ "<a href=\"#{DOC_ROOTURL}/hamppred/histograms_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"><\/a>\n\n";
+            line[b] =line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/histograms_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"><\/a>\n\n";
           end
         end
 
         # Add logo for template alignment
         line[b].chomp!
         if !makemodel
-          line[b]=line[b]+"<a href=\"#{DOC_ROOTURL}/hamppred/run/#{jobid}?jobaction=hamppred_showtemplalign&forward_controller=hhpred&forward_action=results_showtemplalign&alformat=fasta&hits=#{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" title=\"Show template alignment\" #{logo_attr} /><\/a>\n"
+          line[b]=line[b]+"<a href=\"#{DOC_ROOTURL}/hhpred/run/#{jobid}?jobaction=hhpred_showtemplalign&forward_controller=hhpred&forward_action=results_showtemplalign&alformat=fasta&hits=#{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" title=\"Show template alignment\" #{logo_attr} /><\/a>\n"
         end
 
         ########################################################################################################
@@ -873,10 +906,9 @@ class HamppredJob  < Job
           line[b-1]= line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_supfam.gif\" alt=\"Superfamily\" title=\"Superfamily\" #{logo_attr} height=\"30\"><\/a>"
 
           # Link/logo to SCOP
-          href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{scopid}"
+          href=Biolinks.scop_sid_href(scopid)
           line[b-1].chomp!
-          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"><\/a>"
-
+          line[b-1]=line[b-1] + Biolinks.scope_picture_link(href, link_attr, logo_attr)
           add_inter_pro_link_logo(b,line, link_attr, logo_attr)
           add_structure_database_logos(b,template,pdbcode, line, link_attr, logo_attr)
           add_pubmed_logo(b,ucpdbcode, line, link_attr, logo_attr)
@@ -907,13 +939,11 @@ class HamppredJob  < Job
           add_structure_database_logos(b,template,pdbcode,line, link_attr, logo_attr)
           add_pubmed_logo(b,ucpdbcode, line, link_attr, logo_attr)
 
-          ###############################Ab hier $ in Strings checken
-
           # SCOP identifier? (d3lkfa_,d3pmga1,d3pga1_,d3grs_3,g1m26.1,d1n7daa)
         elsif  template =~ /^[defgh](\d[a-z0-9]{3})([a-z0-9_\.])[a-z0-9_]$/
           pdbcode   = $1
           ucpdbcode = $1.upcase
-          templpdb  = nil
+          templpdb = nil # Initialize templpdb, in case the code is in a loop...
           pdbc      = $1
           if $2 != "_"
             pdbc=pdbc+"%20#{$2}"
@@ -922,55 +952,61 @@ class HamppredJob  < Job
 
           # Is query AND template structure known?
           if  querypdb != ""
-            dirs=Dir.glob("#{DATABASES}/hhpred/new_dbs/scop*")
-            templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
-            if !File.exists?(templpdb)
+            scopedir = Biolinks.scope_db_dir()
+            if (scopedir)
+              templpdb=scopedir+"/#{template}.pdb"
+            end
+            unless templpdb && File.exists?(templpdb)
               dirs=Dir.glob("#{DATABASES}/hhcluster/scop25*")
-              templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
+              if (0 < dirs.length)
+                templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
+              else
+                templpdb=nil
+              end
             end
 
-            if  File.exists?(templpdb)
+            if  templpdb && File.exists?(templpdb)
               line[b-1].chomp!
-              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hamppred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
+              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
 
             else
-              logger.debug("WARNING in #{$0}: Could not find pdb file for SCOP sequence #{template}")
+              logger.debug("WARNING in #{location}: Could not find pdb file for SCOP sequence #{template}")
             end
           else
-
-            dirs=Dir.glob("#{DATABASES}/hhpred/new_dbs/scop*")
-            templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
-            if !File.exists?(templpdb)
+            scopedir = Biolinks.scope_db_dir()
+            if (scopedir)
+              templpdb=scopedir+"/#{template}.pdb"
+            end
+            unless templpdb && File.exists?(templpdb)
               dirs=Dir.glob("#{DATABASES}/hhcluster/scop25*")
-              templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
+              if (0 < dirs.length)
+                templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
+              else
+                templpdb=nil
+              end
             end
 
             if  File.exists?(templpdb)
               line[b-1].chomp!
-              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hamppred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hamppred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
+              line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
 
             else
               logger.debug("WARNING in #{0}: Could not find pdb file for SCOP sequence #{template}")
             end
           end
           # Link to SCOP
-          if  template =~ /^[eu]/
-            href="http:\/\/www.mrc-lmb.cam.ac.uk/agm\/cgi-bin\/find2.cgi?search_text=#{pdbc}&index=pox-SCOP_1_72"
+          href=Biolinks.scop_sid_href(template)
 
-          else
-            href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{template}"
+          line[b].sub!(/#{shortname}/,"<a href=\"#{href}\" target=\"_blank\">#{shortname}<\/a>")
+          line[b-1].chomp!
+          line[b-1]=line[b-1] + Biolinks.scope_picture_link(href, link_attr, logo_attr) + "\n"
 
-            line[b].sub!(/#{shortname}/,"<a href=\"#{href}\" target=\"_blank\">#{shortname}<\/a>")
-            line[b-1].chomp!
-            line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"><\/a>\n"
+          # Link to PDB
+          href="http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}"
+          line[b].sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
 
-            # Link to PDB
-            href="http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}"
-            line[b].sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
-
-            add_structure_database_logos(i,template,pdbcode, line, link_attr, logo_attr);
-            add_pubmed_logo(i,ucpdbcode, line, link_attr, logo_attr)
-          end
+          add_structure_database_logos(i,template,pdbcode, line, link_attr, logo_attr);
+          add_pubmed_logo(i,ucpdbcode, line, link_attr, logo_attr)
 
           # DALI/PDB identifier?  (8fabA_0,1a0i_2)
         elsif  template =~ /^(\d[a-z0-9]{3})([A-Za-z0-9])?_\d+$/
@@ -986,11 +1022,11 @@ class HamppredJob  < Job
               templpdb=dir+"/#{template}.pdb";
               if  File.exists?(templpdb)
                 line[b-1].chomp!
-                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hamppred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hamppred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
+                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
                 break
               end
             end
-          #else logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
+            #else logger.debug("WARNING in #{location}: Could not find pdb file for PDB sequence #{template}")
 
           else
             dirs=Dir.glob("#{DATABASES}/hhpred/new_dbs/pdb*")
@@ -998,7 +1034,7 @@ class HamppredJob  < Job
               templpdb=dir+"/#{template}.pdb";
               if  File.exists?(templpdb)
                 line[b-1].chomp!
-                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hamppred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
+                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
                 break
               end
             end
@@ -1009,11 +1045,11 @@ class HamppredJob  < Job
 
           # Link to SCOP family
           if line[b]=~/SCOP:.*\s+([a-z]\.\d+\.\d+\.\d+)\s+/
-            line[b].gsub!(/([a-z]\.\d+\.\d+\.\d+)/,"<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?key=#{$1}\" target=\"_blank\">#{$1}<\/a>")
+            line[b].gsub!(/([a-z]\.\d+\.\d+\.\d+)/, Biolinks.scop_family_link($1))
             # Link to SCOP with pdb code
-            href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/pdb.cgi?pdb=#{pdbcode}"
+            href = Biolinks.scop_pdb_href(pdbcode)
             line[b-1].chomp!
-            line[b-1]= line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"><\/a>\n"
+            line[b-1]= line[b-1] + Biolinks.scope_picture_link(href, link_attr, logo_attr) + "\n"
           end
 
           # Link to PDB
@@ -1038,7 +1074,7 @@ class HamppredJob  < Job
               templpdb=dir+"/#{template}.pdb";
               if  File.exists?(templpdb)
                 line[b-1].chomp!
-                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hamppred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hamppred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
+                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
 #            else
 #              logger.debug("WARNING in #{0}: Could not find pdb file for PDB sequence #{template}")
 #              logger.debug("Path: #{templpdb}")
@@ -1051,10 +1087,10 @@ class HamppredJob  < Job
               templpdb=dir+"/#{template}.pdb"
               if  File.exists?(templpdb)
                 line[b-1].chomp!
-                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hamppred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hamppred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
+                line[b-1]=line[b-1]+"<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
 
 #            else
-#              logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
+#              logger.debug("WARNING in #{location}: Could not find pdb file for PDB sequence #{template}")
                 break
               end
             end
@@ -1066,12 +1102,11 @@ class HamppredJob  < Job
 
           # Link to SCOP family
           if line[b]=~/SCOP:.*\s+([a-z]\.\d+\.\d+\.\d+)\s+/
-            line[b].gsub!(/[a-z]\.\d+\.\d+\.\d+/){|match| match = "<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?key=#{match}\" target=\"_blank\">#{match}<\/a>"}
-            #,"<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?key=#{$1}\" target=\"_blank\">#{$1}<\/a>")
+            line[b].gsub!(/[a-z]\.\d+\.\d+\.\d+/){|match| match = Biolinks.scop_family_link(match)}
             # Link to SCOP with pdb code
-            href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/pdb.cgi?pdb=#{pdbcode}"
+            href=Biolinks.scop_pdb_href(pdbcode)
             line[b-1].chomp!
-            line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"><\/a>\n"
+            line[b-1]=line[b-1] + Biolinks.scope_picture_link(href, link_attr, logo_attr) + "\n"
           end
 
           add_structure_database_logos(b,template,pdbcode, line,link_attr, logo_attr)
@@ -1184,6 +1219,9 @@ class HamppredJob  < Job
 
     @results.push("<input type=\"hidden\" id=\"checkboxes\" name=\"checkboxes\" value=\"#{m}\" \>\n")
     @results.push("<input type=\"hidden\" id=\"createmodel_disabled_Checkboxes\" name=\"createmodel_disabled_Checkboxes\" value=\"#{createmodel_diabled_checkboxes}\" \>\n")
+    tp2 = Process.times.utime # time
+    logger.debug("L1238: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
 
     b = ifirst
     while b< line.length
@@ -1191,6 +1229,9 @@ class HamppredJob  < Job
       b = b+1
     end #end while
 
+    tp2 = Process.times.utime # time
+    logger.debug("L1248: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
 
     @results.push("<br></pre>\n")
     @results.push("Please cite as appropriate: \n")
@@ -1211,6 +1252,9 @@ class HamppredJob  < Job
     @results.push("<BR><BR><i>CATH/Gene3D</i>: Pearl F, Todd A, Sillitoe I, Dibley M, Redfern O, Lewis T, Bennett C, Marsden R, Grant A, Lee D, Akpor A, Maibaum M, Harrison A, Dallman T, Reeves G, Diboun I, Addou S, Lise S, Johnston C, Sillero A, Thornton J, Orengo C. (2005) The CATH Domain Structure Database and related resources Gene3D and DHS provide comprehensive domain family information for genome analysis. NAR 33: D247-D251") if (@cite_CATH  >0 )
     @results.push("<BR><BR><i>PRODOM</i>: Bru, C. <i>et al.</i> (2005) The ProDom database of protein domain families: more emphasis on 3D. NAR 33: D212-215.") if (@cite_prodom  >0)
     #exit(0)
+    tp2 = Process.times.utime # time
+    logger.debug("L1271: used #{tp2 - timepoint}") # time
+    timepoint = tp2 # time
 
 end #end method
 
