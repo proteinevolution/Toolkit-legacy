@@ -234,11 +234,21 @@
       begin
         super
       rescue ActiveRecord::StatementInvalid => e
-        logger.debug("L220 action.rb Action.save: Got statement invalid #{e.message} ... trying again")
+        logger.debug("L237 action.rb Action.save: Got statement invalid #{e.message} ... trying again")
+        ActiveRecord::Base.verify_active_connections!
+        super
+      end
+    end
+
+    # save and save! don't call each other. save! i.e. is called in Job.run.
+    def save!
+      begin
+        super
+      rescue ActiveRecord::StatementInvalid => e
+        logger.debug("L248 action.rb Action.save!: Got statement invalid #{e.message} ... trying again")
         ActiveRecord::Base.verify_active_connections!
         super
       end
     end
 
   end
-
