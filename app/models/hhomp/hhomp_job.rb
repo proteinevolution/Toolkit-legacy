@@ -1,4 +1,5 @@
 class HhompJob < Job
+  require 'Biolinks.rb'
   
   @@export_ext = ".export"
   def set_export_ext(val)
@@ -94,7 +95,7 @@ class HhompJob < Job
 				if (name =~ /^[defgh](\d[a-z0-9]{3})[a-z0-9_.][a-z0-9_]$/)	# SCOP hit 
 					pdb_code = $1.upcase!					
 					@res[i].sub!(/#{num}/, "<a href=\##{num}>#{num}<\/a>")
-					@res[i].sub!(/#{fam}/, "<a href='http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=#{name}&lev=fa' target='_blank'>#{fam}<\/a>")				
+					@res[i].sub!(/#{fam}/, Biolinks.scop_family_link(fam))
 					@res[i].sub!(/#{name}/, "<a href='http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=#{pdb_code}' onmouseover=\"return overlib('#{@longnames[num]}');\" onmouseout=\"return nd();\" target='_blank'>#{name}<\/a>")
 				else 	                  # HHomp hit
 					@res[i].sub!(/#{num}/, "<a href=\##{num}>#{num}<\/a>")
@@ -133,7 +134,7 @@ class HhompJob < Job
 				pdb_code = $1.upcase!				
 				@res[i] =~ /^>(\S+)\s+(\S+)\s+/
 				fam = $2
-				@res[i].sub!(/#{fam}/, "<a href='http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=#{name}&lev=fa' target='_blank'>#{fam}<\/a>")
+				@res[i].sub!(/#{fam}/, Biolinks.scop_family_link(fam))
 				@res[i].sub!(/#{name}/, "<a href='http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=#{pdb_code}' onmouseover=\"return overlib('#{@longnames[num]}');\" onmouseout=\"return nd();\" target='_blank'>#{name}<\/a>")
 				pdbfile = File.join(DATABASES, 'hhomp', 'scop_db', name + ".pdb")
 				if (@pdb_file)

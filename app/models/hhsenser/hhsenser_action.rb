@@ -144,7 +144,7 @@ class HhsenserAction < Action
     @commands << "#{HH}/hhmake -v #{@v} -diff 100 -i #{@basename}.hhpred.a3m -o #{@basename}.hhpred.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     
     # Find SCOP database
-    scop_db = Dir.glob(File.join(DATABASES, 'hhpred/new_dbs/scop*'))[0]
+    scop_db = Dir.glob(File.join(DATABASES, 'hhpred/new_dbs/SCOPe70*'))[0]
     
     # HHsearch with query HMM against SCOP database
     @commands << "echo 'Searching #{scop_db.sub(/^.*\/(.*)$/, '\1')} database ...' >> #{job.statuslog_path}"
