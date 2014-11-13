@@ -13,6 +13,7 @@ class HhmakemodelJob  < Job
 
   def before_results(controller_params = nil )
 
+    location = "HhmakemodelJob.before_results"
     logger.debug "Before results on job #{jobid}"
 
     self.viewed_on = Time.now
@@ -224,17 +225,18 @@ class HhmakemodelJob  < Job
       #Query has a structureal model prepared by user (MODELLER)
       querypdb = basename+".pdb"
       
-    elsif  line[0] =~/^Query:\s+[defgh]\d[a-z0-9]{3}[a-z0-9_\.][a-z0-9_]\s+[a-z]\.\d+\.\d+\.\d+\s+/
+    elsif  line[0] =~/^Query\s+([defgh]\d[a-z0-9]{3}[a-z0-9_\.][a-z0-9_])\s+[a-z]\.\d+\.\d+\.\d+\s+/
       #Query is SCOP sequence
-      dirs= Dir.glob(DATABASES+"/hhcluster/new_dbs/scop70*")
-      querypdb = dirs[dirs.length-1]+"/query.pdb" 
-      if !File.exists?(querypdb).results
-        lo.resultsgger.debug("WARNING in #{$0}: called '#{BIOPROGS}/hhpred/makepdbfile.pl #{basename}.a3m &> /dev/null' to generate PDB file for SCOP query sequence #{query}");
-        querypdb = basename+".pdb" 
+      queryname = $1
+      scopedir = Biolinks.scope_db_dir()
+      if (scopedir)
+        querydbpdb = scopedir+"/#{queryname}.pdb" 
+        if File.exists?(querydbpdb)
+          querypdb = querydbpdb
+        end
       end
-      if !File.exists?(querypdb)
-        logger.debug("WARNING in #{$0}: Could not find pdb file for SCOP sequence #{query}"); 
-        querypdb=""
+      if querypdb.empty?
+        logger.debug("WARNING in #{location}: Could not find pdb file for SCOP sequence #{query}"); 
       end
     elsif  query =~/^(\d[a-z0-9]{3})([A-Za-z0-9])?_\d+$/ || query =~ /^(\d[A-Za-z0-9]{3})()$/  || query =~/^(\d[A-Za-z0-9]{3})_([A-Za-z0-9])$/
       # Query isDALI or PDB sequence
@@ -246,7 +248,7 @@ class HhmakemodelJob  < Job
       dirs=  Dir.glob(DATABASES+"/hhpred/new_dbs/pdb70*")
       querypdb = basename+".pdb"
       if !File.exists?("#{dirs[dirs.last]}/#{pdbid}#{chain}.pdb")
-        logger.debug("WARNING in #{$0}: Could not find pdb file for sequence #{query}. Interpreted as pdbcore=#{pdbid}, chain=#{chain}"); 
+        logger.debug("WARNING in #{location}: Could not find pdb file for sequence #{query}. Interpreted as pdbcore=#{pdbid}, chain=#{chain}"); 
         querypdb=""
       else
         system("cp"+dirs[dir.last]+"/"+pdbid+chain+".pdb"+" "+querypdb)
@@ -479,11 +481,7 @@ class HhmakemodelJob  < Job
           end
           
           # Link to SCOP at family level
-          if  template =~ /^[eu]/ 
-            line[b].sub!(/#{family}/, "<a href=\"http:\/\/www.mrc-lmb.cam.ac.uk\/agm\/cgi-bin\/find2.cgi?search_text=#{pdbc}&index=pox-SCOP_1_72\" target=\"_blank\">#{family}<\/a>")
-          else 
-            line[b] .sub!(/#{family}/, "<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{template}&lev=fa\" target=\"_blank\">#{family}<\/a>")
-          end
+          line[b] .sub!(/#{family}/, Biolinks.scop_family_link(family))
           
           # Link to NCBI MMDB
           line[b].sub!(/#{template}/,"<a href=\"http:\/\/www.ncbi.nlm.nih.gov\/entrez\/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=#{ucpdbcode}\" target=\"_blank\" title=\"#{descr[m]}\">#{template}<\/a>")
@@ -821,10 +819,10 @@ class HhmakemodelJob  < Job
           line[b-1].chomp!
           line[b-1]= line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_supfam.gif\" alt=\"Superfamily\" title=\"Superfamily\" #{logo_attr} height=\"30\"><\/a>"
           
-          # Link/logo to SCOP                                                                                                                                                                                                                
-          href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{scopid}"
+          # Link/logo to SCOP
+          href=Biolinks.scop_sid_href(scopid)
           line[b-1].chomp!
-          line[b-1]=line[b-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"><\/a>"
+          line[b-1]=line[b-1] + Biolinks.scope_picture_link(href, link_attr, logo_attr)
 
           add_inter_pro_link_logo(b,line, link_attr, logo_attr)
           add_structure_database_logos(b,template,pdbcode, line, link_attr, logo_attr)
@@ -872,30 +870,41 @@ class HhmakemodelJob  < Job
           
           # Is query AND template structure known?
           if  querypdb != ""
-            dirs=Dir.glob("#{DATABASES}/hhpred/new_dbs/scop*")
-            templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
-            if !File.exists?( templpdb) 
-              dirs=Dir.glob("#{DATABASES}/hhcluster/scop25*")
-              templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
+            scopedir = Biolinks.scope_db_dir()
+            if (scopedir)
+              templpdb=scopedir+"/#{template}.pdb"
             end
-            
-            if  File.exists?(templpdb) 
+            unless templpdb && File.exists?(templpdb)
+              dirs=Dir.glob("#{DATABASES}/hhcluster/scop25*")
+              if (0 < dirs.length)
+                templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
+              else
+                templpdb=nil
+              end
+            end
+
+            if templpdb && File.exists?(templpdb)
               line[b-1].chomp!
               line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"
               
             else 
-              logger.debug("WARNING in #{$0}: Could not find pdb file for SCOP sequence #{template}")
+              logger.debug("WARNING in #{location}: Could not find pdb file for SCOP sequence #{template}")
             end
           else
-            
-            dirs=Dir.glob("#{DATABASES}/hhpred/new_dbs/scop*")
-            templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
-            if !File.exists?(templpdb) 
-              dirs=Dir.glob("#{DATABASES}/hhcluster/scop25*") 
-              templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
+            scopedir = Biolinks.scope_db_dir()
+            if (scopedir)
+              templpdb=scopedir+"/#{template}.pdb"
+            end
+            unless templpdb && File.exists?(templpdb)
+              dirs=Dir.glob("#{DATABASES}/hhcluster/scop25*")
+              if (0 < dirs.length)
+                templpdb=dirs[dirs.length-1]+"/#{template}.pdb"
+              else
+                templpdb = nil
+              end
             end
             
-            if  File.exists?(templpdb) 
+            if templpdb && File.exists?(templpdb) 
               line[b-1].chomp!
               line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
               
@@ -903,24 +912,19 @@ class HhmakemodelJob  < Job
               logger.debug("WARNING in #{0}: Could not find pdb file for SCOP sequence #{template}")
             end
           end
-          # Link to SCOP 
-          if  template =~ /^[eu]/
-            href="http:\/\/www.mrc-lmb.cam.ac.uk/agm\/cgi-bin\/find2.cgi?search_text=#{pdbc}&index=pox-SCOP_1_72"
-            
-          else
-            href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?sid=#{template}"
-            
-            line[b].sub!(/#{shortname}/,"<a href=\"#{href}\" target=\"_blank\">#{shortname}<\/a>")
-            line[b-1].chomp!
-            line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"><\/a>\n"
-	    
-            # Link to PDB
-            href="http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}"
-            line[b] .sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
-            
-            add_structure_database_logos(i,template,pdbcode, line);
-            add_pubmed_logo(i,ucpdbcode, line)
-          end
+          # Link to SCOP
+          href = Biolinks.scop_sid_href(template)
+
+          line[b].sub!(/#{shortname}/,"<a href=\"#{href}\" target=\"_blank\">#{shortname}<\/a>")
+          line[b-1].chomp!
+          line[b-1]+= Biolinks.scope_picture_link(href, link_attr, logo_attr) + "\n"
+
+          # Link to PDB
+          href="http:\/\/pdb.rcsb.org\/pdb\/explore.do?structureId=#{ucpdbcode}"
+          line[b] .sub!(/#{template}/,"<a href=\"#{href}\" target=\"_blank\">#{template}<\/a>")
+
+          add_structure_database_logos(i,template,pdbcode, line);
+          add_pubmed_logo(i,ucpdbcode, line)
           
           # DALI/PDB identifier?  (8fabA_0,1a0i_2)
         elsif  template =~ /^(\d[a-z0-9]{3})([A-Za-z0-9])?_\d+$/ 
@@ -937,7 +941,7 @@ class HhmakemodelJob  < Job
               line[b-1].chomp!
               line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_querytempl?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&querypdb=#{querypdb}&forward_controller=hhpred&forward_action=results_hh3d_querytempl','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_QT_struct.png\" title=\"Show query-template 3D superposition\" #{logo_attr} /><\/a>\n"		    
               
-            else logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
+            else logger.debug("WARNING in #{location}: Could not find pdb file for PDB sequence #{template}")
               
             end
           else 
@@ -948,7 +952,7 @@ class HhmakemodelJob  < Job
               line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
               
             else 
-              logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
+              logger.debug("WARNING in #{location}: Could not find pdb file for PDB sequence #{template}")
             end
           end
           
@@ -957,11 +961,11 @@ class HhmakemodelJob  < Job
           
           # Link to SCOP family
           if line[b]=~/SCOP:.*\s+([a-z]\.\d+\.\d+\.\d+)\s+/
-            line[b].gsub!(/([a-z]\.\d+\.\d+\.\d+)/,"<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?key=#{$1}\" target=\"_blank\">#{$1}<\/a>")
+            line[b].gsub!(/([a-z]\.\d+\.\d+\.\d+)/,Biolinks.scop_family_link($1))
             # Link to SCOP with pdb code  
-            href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/pdb.cgi?pdb=#{pdbcode}"
+            href = Biolinks.scop_pdb_href(pdbcode)
             line[b-1].chomp!
-            line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"><\/a>\n"
+            line[b-1]+= Biolinks.scope_picture_link(href, link_attr, logo_attr) + "\n"
           end
           
           # Link to PDB
@@ -998,7 +1002,7 @@ class HhmakemodelJob  < Job
               line[b-1]+="<a href=\"#\" onclick=\"var win = window.open('#{DOC_ROOTURL}/hhpred/run/hh3d_templ?parent=#{jobid}&hit=#{m}&templpdb=#{templpdb}&forward_controller=hhpred&forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_T_struct.png\" title=\"Show template 3D structure\" #{logo_attr} /><\/a>\n"
               
             else 
-              logger.debug("WARNING in #{$0}: Could not find pdb file for PDB sequence #{template}")
+              logger.debug("WARNING in #{location}: Could not find pdb file for PDB sequence #{template}")
             end
           end
           
@@ -1008,12 +1012,11 @@ class HhmakemodelJob  < Job
           
           # Link to SCOP family
           if line[b]=~/SCOP:.*\s+([a-z]\.\d+\.\d+\.\d+)\s+/
-            line[b].gsub!(/[a-z]\.\d+\.\d+\.\d+/){|match| match = "<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?key=#{match}\" target=\"_blank\">#{match}<\/a>"}
-            #,"<a href=\"http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/search.cgi?key=#{$1}\" target=\"_blank\">#{$1}<\/a>")
-            # Link to SCOP with pdb code  
-            href="http:\/\/scop.mrc-lmb.cam.ac.uk\/scop\/pdb.cgi?pdb=#{pdbcode}"
+            line[b].gsub!(/[a-z]\.\d+\.\d+\.\d+/){|match| match = Biolinks.scop_family_link(match)}
+            # Link to SCOP with pdb code
+            href = Biolinks.scop_pdb_ref(pdbcode)
             line[b-1].chomp!
-            line[b-1]+= "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_SCOP.jpg\" alt=\"SCOP\" title=\"SCOP\" #{logo_attr} height=\"25\"><\/a>\n"
+            line[b-1]+= Biolinks.scope_picture_link(href, link_attr, logo_attr) + "\n"
           end
 				
           add_structure_database_logos(b,template,pdbcode, line,link_attr, logo_attr)

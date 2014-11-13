@@ -136,6 +136,7 @@ class HamppredAction < Action
       if db.gsub!(/(cdd|COG|KOG|\/pfam|smart|cd|pfamA|pfamB)(_\S*)/, '\1\2/db/\1.hhm')
 #      elsif db.gsub!(/(scop|pdb)([^_]\S*)/, '\1\2/db/\1.hhm')
       elsif db.gsub!(/(scop|pdb)(\S*)/, '\1\2/db/\1.hhm')
+      elsif db.gsub!(/SCOPe(\S*)/, 'SCOPe\1/db/scop.hhm')
       elsif db.gsub!(/(panther|tigrfam|pirsf|supfam|CATH)(_\S*)/, '\1\2/db/\1.hmm')
       elsif db.gsub!(/([^\/]+)$/, '\1/db/\1.hhm' )
       end

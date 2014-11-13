@@ -20,7 +20,10 @@ memcache_options = {
 memcache_servers = [ '127.0.0.1:11211' ]
 
 #global settings
-TOOLKIT_RELEASE = '2.18.0'
+TOOLKIT_RELEASE = '2.18.1'
+# 2.18.0: Port to Ubuntu Precise
+# 2.18.1: Using SCOPe 2.04 databases instead of scop 1.75 databases (tools
+#         using still older databases were not updated).
 if (LOCATION == "Munich")
   TOOLKIT_COPYRIGHT = '&#169; 2008-2014'
 else

@@ -104,7 +104,7 @@ class SgeWorker < AbstractWorker
       f.write "#!/bin/bash\n"
       #f.write "#!/bin/sh\n"
       # SGE options
-      toolShortcut = getToolShortcut || "TOOLKIT"
+      toolShortcut = makeSGEname(getToolShortcut || "TOOLKIT")
       # truncate toolShortcut to 7 characters because qstat only shows 10
       # characters in its tabular view.
       f.write '#$' + " -N #{toolShortcut[0...7]}_#{queue_job.action.job.jobid}\n"
@@ -478,5 +478,11 @@ private
     end
     qupdate_call += "\n"
     file.write qupdate_call;
+  end
+
+  def makeSGEname(name)
+    # prerequisite (not checked): name is alphanumeric.
+    # SGE requires, that name does not start with a digit.
+    name.sub(/\A(\d)/, 't\1')
   end
 end
