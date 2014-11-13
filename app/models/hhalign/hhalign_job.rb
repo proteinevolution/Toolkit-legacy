@@ -1,4 +1,5 @@
 class HhalignJob < Job
+  require 'Biolinks.rb'
   
   @@export_ext = ".hhr"
   def set_export_ext(val)
@@ -68,7 +69,7 @@ class HhalignJob < Job
 					# Link to NCBI MMDB
 					res[i].sub!(target, "<a href=\"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=#{ucpdbcode}\" target=\"_blank\">#{target}</a>")
 					# Link to SCOP at family level
-					res[i].sub!(family, "<a href=\"http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=#{target}&lev=fa\" target=\"_blank\">#{family}</a>")
+					res[i].sub!(family, Biolinks.scop_family_link(family))
 										
 				# DALI/PDB identifier?  (8fabA_0,1a0i_2)
 				elsif ( target =~ /^(\d[a-z0-9]{3})([A-Za-z0-9])?_\d+$/ )
@@ -131,7 +132,7 @@ class HhalignJob < Job
 					# Link to NCBI MMDB
 					res[i].sub!(target, "<a href=\"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=#{ucpdbcode}\" target=\"_blank\">#{target}</a>")
 					# Link to SCOP at family level
-					res[i].sub!(family, "<a href=\"http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?sid=#{target}&lev=fa\" target=\"_blank\">#{family}</a>")
+					res[i].sub!(family, Biolinks.scop_family_link(family))
 										
 				# DALI/PDB identifier?  (8fabA_0,1a0i_2)
 				elsif ( target =~ /^(\d[a-z0-9]{3})([A-Za-z0-9])?_\d+$/ )

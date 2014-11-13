@@ -6,7 +6,9 @@ require File.join(File.dirname(__FILE__), '../config/environment')
 #######################################################################################################################################################################
 
 PDB = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pdb70_*'))[0]
-SCOP = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'scop70_*'))[0]
+# use new SCOPe database
+#SCOP = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'scop70_*'))[0]
+SCOP = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'SCOPe70_*'))[0]
 PFAM = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pfamA_*'))[0]
 
 def create_hh_id ( name )
