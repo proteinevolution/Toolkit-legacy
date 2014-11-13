@@ -232,11 +232,11 @@ class HhmakemodelJob  < Job
       if (scopedir)
         querydbpdb = scopedir+"/#{queryname}.pdb" 
         if File.exists?(querydbpdb)
-          querydb = querydbpdb
+          querypdb = querydbpdb
         end
-      if querydb.empty?
+      end
+      if querypdb.empty?
         logger.debug("WARNING in #{location}: Could not find pdb file for SCOP sequence #{query}"); 
-        querypdb=""
       end
     elsif  query =~/^(\d[a-z0-9]{3})([A-Za-z0-9])?_\d+$/ || query =~ /^(\d[A-Za-z0-9]{3})()$/  || query =~/^(\d[A-Za-z0-9]{3})_([A-Za-z0-9])$/
       # Query isDALI or PDB sequence
