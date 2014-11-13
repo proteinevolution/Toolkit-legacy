@@ -1,6 +1,13 @@
-The files with names matching hh*
-in this directory currently are identical to the
-files with the same name in ../hhpred.
+Following files probably are referenced, but only available in directory ../hhpred:
+hh3d_querytempl_action.rb
+hh3d_querytempl_job.rb
+hh3d_templ_action.rb
+hh3d_templ_job.rb
+hhmakemodel_action.rb
+hhmakemodel_forward_action.rb
+hhmakemodel_job.rb
+hhmergeali_action.rb
+hhmergeali_job.rb
 
 As long as HAMP does not need a different version of a file,
 it is deactivated (is not used).
