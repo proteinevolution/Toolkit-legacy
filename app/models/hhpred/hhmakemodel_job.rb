@@ -1,4 +1,5 @@
 class HhmakemodelJob  < Job
+  require 'Biolinks.rb'
    
   attr_reader :results 
   @@export_ext = ".hhr"
