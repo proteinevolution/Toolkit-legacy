@@ -1,4 +1,5 @@
 class HhmakemodelJob  < Job
+  require 'Biolinks.rb'
    
   attr_reader :results 
   @@export_ext = ".hhr"
@@ -1014,7 +1015,7 @@ class HhmakemodelJob  < Job
           if line[b]=~/SCOP:.*\s+([a-z]\.\d+\.\d+\.\d+)\s+/
             line[b].gsub!(/[a-z]\.\d+\.\d+\.\d+/){|match| match = Biolinks.scop_family_link(match)}
             # Link to SCOP with pdb code
-            href = Biolinks.scop_pdb_ref(pdbcode)
+            href = Biolinks.scop_pdb_href(pdbcode)
             line[b-1].chomp!
             line[b-1]+= Biolinks.scope_picture_link(href, link_attr, logo_attr) + "\n"
           end
