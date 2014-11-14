@@ -67,7 +67,16 @@ class ApplicationController < ActionController::Base
     @meta_section = nil
     @errors = session[:errors] ? session[:errors] : {}
     @error_params = session[:params] ? session[:params] : {}
-    session['user'] = session['user'].nil? ? nil : session['user'].reload
+    #session['user'] = session['user'].nil? ? nil : session['user'].reload
+    unless session['user'].nil?
+      begin
+        session['user'] = session['user'].reload
+      rescue ActiveRecord::StatementInvalid => e
+        logger.debug("L75 ApplicationController.setup: Got statement invalid #{e.message} ... trying again")
+        ActiveRecord::Base.verify_active_connections!
+        session['user'] = session['user'].reload
+      end
+    end
     @user = session['user']
     session[:errors] = nil
     session[:params] = nil
