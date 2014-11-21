@@ -49,7 +49,7 @@ my %three2one=(
     # new mappings (previously not substituted)
     "LCG"=>"G","LCA"=>"A","5CM"=>"C","6OG"=>"G","GHP"=>"G","3MY"=>"Y","OMY"=>"Y","2JG"=>"S",
     "GPL"=>"K","SOS"=>"N","MLY"=>"K","2SO"=>"H","CAF"=>"C","CAS"=>"C","PFF"=>"F",
-    "DI"=>"I","56A"=>"H","U2X"=>"Y","0G"=>"G","0C"=>"C","0U"=>"U","C1S"=>"C","MHO"=>"M"
+    "DI"=>"I","56A"=>"H","U2X"=>"Y","0G"=>"G","0C"=>"C","0U"=>"U","C1S"=>"C","MHO"=>"M",
 
     # mappings of multiple structure components (mapping to a sequence of one-letter codes)
     "CR8"=>"HYG",
