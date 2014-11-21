@@ -22,16 +22,20 @@ class ProtBlastAction < Action
   # shared/joboptions.rhtml
   attr_accessor :jobid, :mail 
 
-#  validates_input(:sequence_input, :sequence_file, {:informat => 'fas', 
-#                                                    :inputmode => 'sequence',
-#                                                    :min_seqs =>0,
-#                                                    :max_seqs => 1,
-#                                                    :on => :create })
-  validates_input(:sequence_input, :sequence_file, {:informat=> :informat, 
-                                                    :inputmode => 'sequences',
+  validates_input(:sequence_input, :sequence_file, {:informat => 'fas', 
+                                                    :inputmode => 'sequence',
+                                                    :min_seqs =>0,
                                                     :max_seqs => 1,
-                                                    :min_seqs => 0,
                                                     :on => :create })
+# reactivate restriction to fasta format, because protblast does not seem to
+# handle other formats correctly. Probably the following was only a test,
+# i.e. for checking specific other formats used by forwarding
+# and doing a reformat if required.
+#  validates_input(:sequence_input, :sequence_file, {:informat=> :informat, 
+#                                                    :inputmode => 'sequences',
+#                                                    :max_seqs => 1,
+#                                                    :min_seqs => 0,
+#                                                    :on => :create })
 
   validates_jobid(:jobid)
   

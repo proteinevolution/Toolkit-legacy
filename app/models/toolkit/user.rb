@@ -6,9 +6,20 @@ class User < ActiveRecord::Base
   has_many :userdbs, :dependent => :destroy
 
   attr_accessor :new_password
+
+  def logger
+    # max log file size: 10MB. Keep 6 of them.
+    @logger ||= Logger.new("#{RAILS_ROOT}/log/#{self.class.name.to_us}.log", 6, 10485760)
+  end
   
   def initialize(attributes = nil)
-    super
+    begin
+      super
+    rescue ActiveRecord::StatementInvalid => e
+      logger.debug("L14 user.rb Job.save!: Got statement invalid #{e.message} ... trying again")
+      ActiveRecord::Base.verify_active_connections!
+      super
+    end
     @new_password = false
   end
 

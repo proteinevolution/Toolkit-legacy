@@ -53,11 +53,20 @@ class BlammerController < ToolController
 		              tool_title('repper')]
                   
     # Test of Emission and Acceptance Values of YML DATA  
-    calculate_forwardings(@tool)
+
+    # Don't sent clustal format to tools expecting one or multiple sequences
+    # only: They won't handle it correctly!
+    # Therefore, job properties are different with clustal format.
+    job_params = @job.params_main_action
+    if "clustal" == job_params["outformat"] then
+      jobtype = "_clustal_job"
+    else
+      jobtype = "_job"
+    end
+    jobname = @tool['name'] + jobtype
+    calculate_forwardings(@tool, jobname)
     @fw_values = get_tool_list
     @fw_labels = get_tool_name_list                  
-                  
-
   end
 
   def blammer_export_browser

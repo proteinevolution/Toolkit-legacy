@@ -378,24 +378,23 @@ protected
   # Calculate forwarding list according to the given acceptance, emmision Values
   # Test Implementation with only one forwarding type
   #######################################################################################
-  def calculate_forwardings(my_tool)
+  def calculate_forwardings(my_tool, my_job_name=my_tool['name']+"_job")
     
     # Init local Vars
     @tool_list =[]         # Add tool forwarding url list
     @tool_name_list =[]    # Add the Names of forwardable tools
     @tool_mode_list =[]    # Add the modes, currently implemented 1 = Single , 2 = one or more, 3 = 2 or more
     @emission = 0 
-    @my_tool_name = my_tool['title']
-  logger.debug "L331 Going into tool Section of #{my_tool['title']}"
-    
+    my_tool_name = my_tool['name']
+
   # check what kind of Results we produce and what type 
-  emission_forward= YAML.load_file(File.join(SERVER_ROOT, 'config', my_tool['name'] + '_jobs.yml'))["#{my_tool['name']}_job"]['forwarding_emission']
+  emission_forward= YAML.load_file(File.join(SERVER_ROOT, 'config', my_tool_name + '_jobs.yml'))["#{my_job_name}"]['forwarding_emission']
   unless emission_forward.nil?
     @emission = emission_forward['type']
     # Convert the emission Value to string (binary) and then to int  e.g. 4 -> "100" -> 100 to be able to use & operator
     #@emission = @emission.to_s(2).to_i
-    type = emission_forward['format']
-    logger.debug "L338 Emitting: #{@emission}  of Type #{type} "
+    datatype = emission_forward['format']
+    logger.debug "L338 Emitting: #{@emission} of data type #{datatype} "
 
     
 
@@ -408,7 +407,7 @@ protected
                       # Convert the emission Value to string (binary) and then to int  e.g. 4 -> "100" -> 100 to be able to use & operator
                        if @emission & acceptor['type'] > 0
 
-                             @tool_list << fw_to_tool_url(my_tool['name'], tool['name'])
+                             @tool_list << fw_to_tool_url(my_tool_name, tool['name'])
                              @tool_name_list << tool['title'] #+" "+acceptor['type'].to_s(2)+" #{@emission.to_s(2)} = #{(@emission & acceptor['type']).to_s(2)} "
                              @tool_mode_list << acceptor['type']
                        end
