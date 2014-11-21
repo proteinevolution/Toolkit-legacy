@@ -16,3 +16,20 @@ blammer_job:
       type: 7
       format: S,MSA
 
+blammer_clustal_job:
+  title: Blammer
+  hidden: false
+  code: BLAM
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results
+  forwarding_acceptances:
+     type: 64
+  forwarding_emission:
+      type: 4
+      format: MSA
