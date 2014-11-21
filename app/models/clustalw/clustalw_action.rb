@@ -37,7 +37,7 @@ class ClustalwAction < Action
     params_dump
 
     if (@version == '-o')
-	@commands << "#{CLUSTALO}/clustalo -i #{@infile} -o #{@outfile} --outfmt=clustal --force #{@otheradvanced}  &> #{job.statuslog_path}"	
+	@commands << "#{CLUSTALO}/clustalo -i #{@infile} -o #{@outfile} --outfmt=clustal -v --force #{@otheradvanced}  &> #{job.statuslog_path}"	
     else
     	@commands << "#{CLUSTALW}/clustalw2 -infile=#{@infile} -align #{@otheradvanced} &> #{job.statuslog_path}"
     end
