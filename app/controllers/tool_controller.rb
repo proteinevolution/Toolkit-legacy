@@ -149,7 +149,16 @@ class ToolController < ApplicationController
         job.status = STATUS_DONE
         job.save!
       end
-      redirect_to :back
+      begin
+        redirect_to :back
+      rescue ActionController::RedirectBackError
+        # This happens quite often. Trying to display index page of current tool.
+        # If this is the correct page, it fortunately keeps the user input,
+        # probably because the parameters have been put into the session above.
+        # If controller/action is not appropriate, it probably still is better
+        # then displaying "Internal Server Error".
+        redirect_to(:host => DOC_ROOTHOST, :action => "index", :controller => job.tool)
+      end
     else
       job.reload
       if job.done?

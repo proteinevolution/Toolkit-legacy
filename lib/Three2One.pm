@@ -85,6 +85,7 @@ my %three2one=(
     "0QE"=>"X",
     "MPT"=>"X",
     "UNK"=>"X",
+    "AME"=>"X",
 
     # obsoleted codes not superceded by an other compound (keeping previous mapping)
     "ACL"=>"R","ALM"=>"A","ASK"=>"D","CLE"=>"L","CGL"=>"E","LYM"=>"K",
