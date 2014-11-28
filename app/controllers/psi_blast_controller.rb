@@ -92,7 +92,7 @@ class PsiBlastController < ToolController
                   
     # Test of Emission and Acceptance Values of YML DATA  
     calculate_forwardings(@tool)
-    add_parameters_to_selected_forwardings("&fw_mode=alignment", [4,5,6])
+    add_parameters_to_selected_forwardings("&fw_mode=alignment", [4,5,6,7])
     add_parameters_to_selected_forwardings("&fw_mode=seqs", [1,2,3,11])
     @fw_values = get_tool_list
     @fw_labels = get_tool_name_list 

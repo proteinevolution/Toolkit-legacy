@@ -308,6 +308,11 @@
             if (mytime >= 1)
               stat.addJob(mytime)
             end
+            if (File.exists?(statuslog_path))
+                File.open(statuslog_path, "a") do |file|
+                  file.puts "#{tool} job completed (#{mytime}s cpu time)."
+                end
+            end
           end
         end
       end

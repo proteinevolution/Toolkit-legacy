@@ -263,10 +263,10 @@ class SgeWorker < AbstractWorker
 
       else
         f.write "if [ ${exitstatus} -eq 0 ] ; then\n"
-        write_qupdate_call(f, id, STATUS_DONE, "  ","_utime")
-        #if RAILS_ENV == "development"
+        if RAILS_ENV == "development"
           f.write "  echo \"Queue worker #{id.to_s} DONE! (${_utime}s cpu time)\" >> #{queue_job.action.job.statuslog_path}\n"
-        #end
+        end
+        write_qupdate_call(f, id, STATUS_DONE, "  ","_utime")
         f.write "else\n"
         write_qupdate_call(f, id, STATUS_ERROR, "  ", "_utime")
         f.write "  echo 'Error while executing Job!' >> #{queue_job.action.job.statuslog_path}\n"
