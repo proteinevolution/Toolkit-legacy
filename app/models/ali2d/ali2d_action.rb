@@ -63,7 +63,6 @@ class Ali2dAction < Action
     q.on_done = 'memsat_runs'
     q.save!
     
-    logger.debug "L67 Submission Perform : #{@commnands.to_s}"
     q.submit(@commands, false)
     
 
@@ -101,7 +100,6 @@ class Ali2dAction < Action
     q.on_done = 'build_params'
     q.save!
     
-    logger.debug "L105 Submission Memsut_runs : #{@commnands.to_s}"
     q.submit_parallel(@commands, false)
     
 
@@ -119,7 +117,6 @@ class Ali2dAction < Action
     q.on_done = 'run_viewer'
     q.save!
     
-    logger.debug "L105 Submission Build_params : #{@commnands.to_s}"
     q.submit(@commands, false)
   end
 
