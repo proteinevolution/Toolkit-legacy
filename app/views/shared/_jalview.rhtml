@@ -1,15 +1,14 @@
 <!-- Example call:
    render(:partial => "shared/jalview", :locals => {:file_extension => ".j.align"})
 -->
-<!-- <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
-  <PARAM NAME="input"  value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid + file_extension %>">
-  <PARAM NAME="type"   value="URL">
-  <PARAM NAME="format" value="FASTA">
-</APPLET> --> 
 <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35">
   <PARAM NAME="permissions" value="sandbox"/>
   <PARAM NAME="label" value="JalView"/>
+  <% if defined?(file) && !file.nil? %>
+  <PARAM NAME="file" value="<%= file %>"/>
+  <% else %>
   <PARAM NAME="file" value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid + file_extension %>"/>
+  <% end %>
 <% if defined?(userDefinedColour) && !userDefinedColour.nil? %>
   <PARAM NAME="userDefinedColour" value="<%= userDefinedColour %>"/>
 <% else %>
