@@ -1,4 +1,7 @@
+require 'checked_hits'
+
 class PsiBlastJob < Job
+  include CheckedHits
   
   @@export_ext = ".export"
   # no longer used, take user evalue for next iterations  
@@ -17,14 +20,7 @@ class PsiBlastJob < Job
 
   # Check if one of the selected databases is a Uniprot database
   def is_uniprot
-      uniprot = 0;
-      if (@header.to_s =~ /SwissProt/)
-        uniprot = 1   
-      end
-      if (@header.to_s =~ /TREMBL/)
-        uniprot = 1   
-      end
-      return uniprot
+    uniprot?(@header)
   end
   
   # Parse out the main components of the BLAST output file in preparation for result display
@@ -181,8 +177,8 @@ class PsiBlastJob < Job
           section = { :id => id, :check => false, :content => [line] }
         elsif( line=~/Expect\s*=\s*(\S+)/ )
           evalue = $1
-          if( !@ids.has_key?(section[:id]) )
-            section[:check] = false
+          if( @ids.has_key?(section[:id]) )
+            section[:check] = true
           end
           section[:content] << line
         elsif( !section.nil? )
@@ -209,7 +205,7 @@ class PsiBlastJob < Job
       if( db=~/not_login/ )
         db.sub!(/^.*not_login.*?_(.*)$/, '\1')
         dbs << db 
-      elsif( db=~/\/genomes\/\S+?\/data\/.+?\/(.+?)\/.+/ )
+      elsif( db =~ %r{/genomes/\S+?/data/.+?/(.+?)/.+} )
         if( !genomes.has_key?($1) ) 
           genomes[$1]=1
           dbs << $1 
