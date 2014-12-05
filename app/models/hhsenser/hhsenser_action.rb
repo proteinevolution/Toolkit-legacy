@@ -105,7 +105,7 @@ class HhsenserAction < Action
     @commands << "#{HHPERL}/reformat.pl a3m fas #{@basename}_permissive.reduced.a3m #{@basename}_permissive_masterslave.reduced.fas -r -v #{@v} &> #{job.statuslog_path}_reform"
     @commands << "#{HHPERL}/reformat.pl fas clu #{@basename}_permissive_masterslave.reduced.fas #{@basename}_permissive_masterslave.reduced.clu -v #{@v} &> #{job.statuslog_path}_reform"
 
-    logger.debug "Commands:\n"+@commands.join("\n")
+    logger.debug "L108 Commands:\n"+@commands.join("\n")
     # -tmax 23:45 above specifies that the job should terminate gracefully within 24h.
     # queue.submit(@commands, true, { 'cpus' => cpus, 'queue' => QUEUES[:long] })
     queue.submit(@commands, true, { 'cpus' => cpus })
@@ -117,7 +117,13 @@ class HhsenserAction < Action
     
     # Read query sequence and determine its length
     resfile = @basename + ".hhpred.a3m"
-    return false if !File.readable?(resfile) || !File.exists?(resfile)
+    if !File.readable?(resfile) || !File.exists?(resfile)
+      logger.error("No .hhpred.a3m file in HhsenserAction.run_screening")
+      self.status = STATUS_ERROR
+      self.save
+      job.update_status
+      return false
+    end
     @res = IO.readlines(resfile, ">")
     
     seq = ""
@@ -137,7 +143,7 @@ class HhsenserAction < Action
     seq.delete!("^[a-zA-Z]")
     length = seq.count("a-zA-Z")
     
-    logger.debug "Sequence length: #{length}"
+    logger.debug "L146 Sequence length: #{length}"
     
     # Make HMM file
     @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
@@ -170,7 +176,7 @@ class HhsenserAction < Action
     self.flash = @hash
     self.save!
     
-    logger.debug "Commands:\n"+@commands.join("\n")
+    logger.debug "L179 Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'screening_search'
     q.save!
@@ -178,7 +184,7 @@ class HhsenserAction < Action
   end
   
   def screening_search
-    logger.debug "screening_search"
+    logger.debug "L187 screening_search"
     
     @basename = File.join(job.job_dir, job.jobid)
     @commands = []
@@ -222,12 +228,12 @@ class HhsenserAction < Action
     i2 = $5.to_i
     l_templ = $6.to_f
 
-    logger.debug "Probab=#{probab}, Evalue=#{e_value}, cols=#{cols}, i1=#{i1}, i2=#{i2}, L_templ=#{l_templ}\n\n"
+    logger.debug "L231 Probab=#{probab}, Evalue=#{e_value}, cols=#{cols}, i1=#{i1}, i2=#{i2}, L_templ=#{l_templ}\n\n"
 
     # Found a SCOP domain with significance that disects the sequence?
     if (probab >= 80 && e_value <= 0.1 && cols >= (0.5 * l_templ) && (i1 > 51 || (length - i2) > 50) )
       # Show page "Your sequence contains multiple domains" with link to result of HHpred and subsequences 
-      logger.debug "Multi domains!"
+      logger.debug "L236 Multi domains!"
       # Save subsequences in files
       subseq = nil
       if (i1 > 51)
@@ -250,7 +256,7 @@ class HhsenserAction < Action
       outFile = File.new(@basename + ".subseq#{subseq}", "w+")
       outFile.write(">#{name}:#{subseq} (#{i1}-#{i2})\n#{seq[(i1-1)..(i2-2)]}\n")
 
-      logger.debug "Subseqs erzeugt!"
+      logger.debug "L259 Subseqs erzeugt!"
 
       qj = queue_jobs.last
       qj.final = true
@@ -259,7 +265,7 @@ class HhsenserAction < Action
       
     else
       
-      logger.debug "run hhsenser!"
+      logger.debug "L268 run hhsenser!"
 #      @commands << "#{HH}/buildali.pl -v #{@v} -cpu 2 -n 1 -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -db #{@db} #{@basename}.a3m &> #{job.statuslog_path}"
       run_hhsenser(1)
       
@@ -292,14 +298,24 @@ class HhsenserAction < Action
     
     hhpred_job.run(nil, hhpred_params)
 
-    while (!hhpred_job.done?) do
+    limit = 3600 * 48 # ca. 2 days
+    seconds_count = 0
+    while !(hhpred_job.finished?) && seconds_count < limit do
       sleep(1)
+      ++seconds_count
       hhpred_job.reload
     end
 
-    system("echo '#{hhpred_job.jobid}' > #{@basename}.hhpred_id")
-    FileUtils.cp(File.join(hhpred_job.job_dir, hhpred_job.jobid) + ".a3m", @basename + ".hhpred.a3m")
+    if !hhpred_job.finished?
+      logger.debug("L310 hhpred job for pre-screening timed out")
+      # It's not probable, that the job is still running.
+      # hhpred job will be removed when hhsenser job is removed.
+    end
 
+    system("echo '#{hhpred_job.jobid}' > #{@basename}.hhpred_id")
+    if hhpred_job.done?
+      FileUtils.cp(File.join(hhpred_job.job_dir, hhpred_job.jobid) + ".a3m", @basename + ".hhpred.a3m")
+    end
   end
   
 end

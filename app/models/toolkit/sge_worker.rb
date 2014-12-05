@@ -23,7 +23,7 @@ class SgeWorker < AbstractWorker
         min_cpu_number = options['cpus'].to_i
         memory = (memory + min_cpu_number - 1) / min_cpu_number
     end
-    logger.debug "L23 Memory #{memory} "
+    logger.debug "L26 Memory #{memory} "
 
     # Location Tuebingen, using variable memory limiting to circumvent memory constraints and queue crowding
     if LOCATION == "Tuebingen"
@@ -35,34 +35,33 @@ class SgeWorker < AbstractWorker
       #else
         # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
         command = "#{QUEUE_DIR}/qsub -l s_vmem=#{warning_memory}M -l h_vmem=#{memory}G #{self.wrapperfile}"
-        logger.debug "qsub command: #{command}"
+        logger.debug "L38 qsub command: #{command}"
       #end
     else
       # LOCATION = Munich !!  
       if LINUX == "SL6"
         #command = "#{QUEUE_DIR}/qsub -pe threadssl6.pe 1 #{self.wrapperfile}" 
         command = "#{QUEUE_DIR}/qsub  #{self.wrapperfile}"
-        logger.debug "L42 qsub command: #{command}"
+        logger.debug "L45 qsub command: #{command}"
       else
         command = "#{QUEUE_DIR}/qsub  #{self.wrapperfile}"
       end
     end
     
-    logger.debug "L48 ID"+`id`
-    logger.debug
+    logger.debug "L51 ID"+`id`
     # Remove all Line Carriage characters from returned result command
     res = `#{command}`.chomp
-    logger.debug "L52 Original  QID : #{res} "
+    logger.debug "L54 Original  QID : #{res} "
     self.qid = res.gsub(/Your job (\d+) .*$/, '\1')
-    logger.debug "L54 Substituded QID : #{qid} "
+    logger.debug "L56 Substituded QID : #{qid} "
     
     while (!$?.success? && tries < 5)
-      logger.debug "L57 #{$?.success?} in  PE Queue"
+      logger.debug "L59 #{$?.success?} in  PE Queue"
       res = `#{command}`.chomp
       
       #res = `#{command}`.chomp
       self.qid = res.gsub(/Your job (\d+) .*$/, '\1')
-      logger.debug "L62 Your job has quid #{self.qid}"
+      logger.debug "L64 Your job has quid #{self.qid}"
       tries += 1
     end
     
@@ -74,10 +73,22 @@ class SgeWorker < AbstractWorker
     # save!
   end
   
-  def delete
-    command = "#{QUEUE_DIR}/qdel #{qid}"
-    logger.debug "Worker command: #{command}"
-    system(command)
+  def stop
+    # possible improvement: synchronize with execute method and with cleaning
+    # up of directory (see Job.remove).
+
+    # in case the job just has been submitted, it still might be in the
+    # execute method and qid is not set yet.
+    if !self.qid
+      # don't wait, better improve synchronization.
+      logger.debug "L84 No qid available (yet) for stopping worker #{id}"
+    end
+
+    if self.qid
+      command = "#{QUEUE_DIR}/qdel #{qid}"
+      logger.debug "L89: Worker command: #{command}"
+      system(command)
+    end
   end
   
   # creates a shell wrapper file for all jobcomputations-commands that are executed on the queue, sets the status of the job
@@ -187,26 +198,25 @@ class SgeWorker < AbstractWorker
 
       f.write "    echo >> #{queue_job.action.job.statuslog_path}\n"
       f.write "    case \"$1\" in\n"
-      # Signal SIGUSR1 only used in development environment of Tuebingen in this way (see trap calls)
+
       if warningtimelimit
-        f.write "        USR1) echo \"Probably grit time limit exceeded.\" >> #{queue_job.action.job.statuslog_path}\n"
+        f.write "        USR1) echo \"Probably grid time limit reached. Job terminating.\" >> #{queue_job.action.job.statuslog_path}\n"
         f.write "            ;;\n"
       else
-        f.write "        USR1) echo \"Program stopped, job terminated.\" >> #{queue_job.action.job.statuslog_path}\n"
+        f.write "        USR1) echo \"Signal caught: SIG$1. Program stopped, job terminating.\" >> #{queue_job.action.job.statuslog_path}\n"
         f.write "            ;;\n"
       end
       f.write "        USR2) echo \"Termination of job by user or because of reaching a resource limit.\" >> #{queue_job.action.job.statuslog_path}\n"
       f.write "            ;;\n"
       # Signal SIGXCPU only used in Tuebingen in this way (see trap calls)
       if LOCATION == "Tuebingen"
-        f.write "        XCPU) echo \"Grit memory limit exceeded.\" >> #{queue_job.action.job.statuslog_path}\n"
+        f.write "        XCPU) echo \"Grid memory limit exceeded. Job terminating.\" >> #{queue_job.action.job.statuslog_path}\n"
         f.write "            ;;\n"
       end
       # Always provide this "otherwise" case for detecting incorrect or additional installations of this signal handler
       f.write "        *) echo \"Signal caught: SIG$1.\" >> #{queue_job.action.job.statuslog_path}\n"
       f.write "            ;;\n"
       f.write "    esac\n"
-      f.write "    echo 'Job going to be killed by grid engine.' >> #{queue_job.action.job.statuslog_path}\n"
       # let the shell script determine the exception
       # f.write "    exit\n"
       f.write "  fi\n"
@@ -297,14 +307,14 @@ class SgeWorker < AbstractWorker
       end
       # Have to decide where the module load shall be put ....
       if (LOCATION == 'Munich' && LINUX == 'SL6')
-        logger.debug "L241 Location Munich Source etc/profiles "
+        logger.debug "L310 Location Munich Source etc/profiles "
         f.write "source /etc/profile\n"
         f.write "module load perl\n"
         f.write "module load python2.6\n"
       end
       # print the process id of this shell execution
       f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
-      logger.debug "Exec_host file geschrieben."
+      logger.debug "L317 Exec_host file written."
       if (!(options.nil? || options.empty?) && options['ncpuvar'])
         ncpuvar=options['ncpuvar']
         if (options['cpus']) then
@@ -448,7 +458,7 @@ class SgeWorker < AbstractWorker
       if (options['memory']) then my_memory = options['memory'] end
     end
 
-    logger.debug "L376 #{method} : #{my_memory}"
+    logger.debug "L461 #{method} : #{my_memory}"
     return my_memory;
   end
 

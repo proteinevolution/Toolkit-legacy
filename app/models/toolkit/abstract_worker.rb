@@ -6,8 +6,12 @@
       # Implement this method in derived classes
     end
 
-    def delete
+    def stop
       # Implement this method in derived classes    
+    end
+
+    def before_destroy
+      stop unless status == STATUS_DONE || status == STATUS_INIT || status == STATUS_ERROR
     end
 
     def logger
@@ -33,7 +37,7 @@
       begin
         super
       rescue ActiveRecord::StatementInvalid => e
-        logger.debug("L24 abstract_worker.rb AbstractWorker.save!: Got statement invalid #{e.message} ... trying again")
+        logger.debug("L40 abstract_worker.rb AbstractWorker.save!: Got statement invalid #{e.message} ... trying again")
         ActiveRecord::Base.verify_active_connections!
         super
       end
