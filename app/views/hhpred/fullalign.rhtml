@@ -2,7 +2,7 @@
 
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'align'}) %>
 
-<%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred", :name => "forward_alignment"}) %>
+<%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, :name => "forward_alignment") %>
 
 <div class="row">
 
