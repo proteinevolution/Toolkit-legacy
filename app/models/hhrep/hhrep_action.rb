@@ -103,6 +103,9 @@ class HhrepAction < Action
                    @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
                    @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &> #{job.statuslog_path}"
                 else
+                    # Export variable needed for HHSuite
+                    @commands << "export  HHLIB=#{HHLIB}"
+
                     if @maxhhblitsit == '0'
                         @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
                         @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
