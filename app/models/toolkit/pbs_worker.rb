@@ -26,7 +26,7 @@
       save!
     end
     
-    def delete
+    def stop
       command = "#{QUEUE_DIR}/qdel #{qid}"
       logger.debug "Worker command: #{command}"
       system(command)

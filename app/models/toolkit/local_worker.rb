@@ -72,7 +72,7 @@
 #      if options[:sync] then Process.wait else Process.detach(p) end
 #    end
     
-    def delete
+    def stop
       # TODO: Kill job by PID
     end
     

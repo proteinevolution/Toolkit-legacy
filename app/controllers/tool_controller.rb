@@ -7,12 +7,12 @@ class ToolController < ApplicationController
     
     # check if user is allowed to view tool
     if (!is_active?(@tool))
-      logger.debug "Wrong group!"
+      logger.debug "L10 Wrong group!"
       redirect_to(:host => DOC_ROOTHOST, :controller => 'common', :action => 'notallowed')
     end
 
     if is_ip_blocked?(request.remote_ip)
-      logger.debug "ip #{request.remote_ip} blocked"
+      logger.debug "L15 ip #{request.remote_ip} blocked"
       redirect_to(:host => DOC_ROOTHOST, :controller => 'common', :action => 'blocked')
     end
 
@@ -51,11 +51,11 @@ class ToolController < ApplicationController
   def run
     # Allgemeines param-Feld setzen (für resubmit, usw...)
     params['reviewing'] = true
-    logger.debug  " -> Running current Application"
+    logger.debug  "L54 -> Running current Application"
     # KFT: Observation: The jobid is indeed found in params[:job], not in params[:jobid] when forwarding!!?!
     job = Job.find(:first, :conditions => [ "jobid = ?", params[:job]])
     if (job.nil?)
-      logger.debug "Job for #{params[:job]} has not yet been initialized (id is #{params[:jobid] || 'nil'}), creating new id"
+      logger.debug "L58 Job for #{params[:job]} has not yet been initialized (id is #{params[:jobid] || 'nil'}), creating new id"
       job = Object.const_get(params[:job].to_cc+"Job").make(params, @user)
       
       # write tool statistics
@@ -85,10 +85,10 @@ class ToolController < ApplicationController
         end
       end
       job.firstSave!
-      logger.debug "Created new Job .... "
+      logger.debug "L88 Created new Job .... "
       if (job.config['hidden'] == false && @jobs_cart.index(job.jobid).nil?)
       	@jobs_cart.push(job.jobid) 
-        logger.debug "Pushing Job into Job Cart : "+job.jobid.to_s
+        logger.debug "L91 Pushing Job into Job Cart : "+job.jobid.to_s
       end
 
     end
@@ -98,7 +98,7 @@ class ToolController < ApplicationController
     # jobs. If that's only desired for new jobs, move the code in front of
     # the previous end statement.
     dbnames = Dbstat.checkDatabasesForUsage(params)
-    logger.debug "dbnames are #{dbnames || 'empty'} for job #{params[:job]} (#{params[:jobid]})"
+    logger.debug "L101 dbnames are #{dbnames || 'empty'} for job #{params[:job]} (#{params[:jobid]})"
     if (dbnames)
       dbnames.each do |dbname|
         day = sprintf("%04d-%02d-%02d", DateTime.now.year, DateTime.now.month, DateTime.now.day)
@@ -181,13 +181,13 @@ class ToolController < ApplicationController
     tool = @job.tool
     
     if ((@job.jobid !~ /^tu_/ && @job.jobid !~ /^HH_/) || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin')) ) 
-      logger.debug "Delete job in jobs_cart"
-     if @jobs_cart.delete(@job.jobid).nil?
-        logger.debug "L 139 Could not delete #{@job.jobid} from Cart"
-     end  
+      logger.debug "L184 Delete job #{@job.jobid} in jobs_cart"
+      if @jobs_cart.delete(@job.jobid).nil?
+        logger.debug "L186 Could not delete #{@job.jobid} from Cart"
+      end
       @job.remove
       if Job.exists?(@job.id)
-        logger.debug "L145 Destroy job #{@job.id} in database"
+        logger.debug "L190 Job #{@job.id} still exists in database."
         #Job.remove(@job.id)
       end
 
@@ -196,10 +196,10 @@ class ToolController < ApplicationController
   end
 
   def forward
-    logger.debug "Forward!"
-    logger.debug "Toolkit Job: #{params['controller']}"
-    logger.debug "Parent Job: #{@parent_job}"
-    logger.debug "Parent Toolkit Job: #{@parent_job.tool}"
+    logger.debug "L199 Forward!"
+    logger.debug "L200 Toolkit Job: #{params['controller']}"
+    logger.debug "L201 Parent Job: #{@parent_job}"
+    logger.debug "L202 Parent Toolkit Job: #{@parent_job.tool}"
 
     if (params['controller']==@parent_job.tool)
       job_params = @parent_job.actions.first.params
@@ -214,7 +214,7 @@ class ToolController < ApplicationController
       end
     end
     fw_params = @parent_job.forward_params
-    logger.debug "forward_params: #{fw_params.inspect}"
+    logger.debug "L217 forward_params: #{fw_params.inspect}"
     fw_params.each_key do |key|
       params[key] = fw_params[key]
     end
@@ -224,9 +224,9 @@ class ToolController < ApplicationController
   end
   
   def forward_hmm
-    logger.debug "Forward HMM!"
-    logger.debug "Toolkit Job: #{params['controller']}"
-    logger.debug "Parent Toolkit Job: #{@parent_job.tool}"
+    logger.debug "L227 Forward HMM!"
+    logger.debug "L228 Toolkit Job: #{params['controller']}"
+    logger.debug "L229 Parent Toolkit Job: #{@parent_job.tool}"
 
     if (params['controller']==@parent_job.tool)
       job_params = @parent_job.actions.first.params
@@ -241,7 +241,7 @@ class ToolController < ApplicationController
       end
     end
     fw_params = @parent_job.forward_params
-#    logger.debug "forward_params: #{fw_params.inspect}"
+#    logger.debug "L244 forward_params: #{fw_params.inspect}"
     fw_params.each_key do |key|
       params[key] = fw_params[key]
     end
@@ -253,7 +253,7 @@ class ToolController < ApplicationController
   
   def resubmit
       @tmp_sequence ='XX'
-      logger.debug "L 173 Rendering Resubmit!"
+      logger.debug "L256 Rendering Resubmit!"
       job_params = @job.actions.first.params
       #tmp_params = job_params.keys
       #tmp_params.sort! # kft- sort! does not work, because some of the keys are strings, other are keys which cannot be compared to strings.
@@ -268,7 +268,7 @@ class ToolController < ApplicationController
         else
           params[key] = job_params[key]
           if (key=~ /sequence_input/)
-                logger.debug "L 202 Processing Param sequence_input "
+                logger.debug "L271 Processing Param sequence_input "
                 params['sequence_input'] = @tmp_sequence
           end
         end
@@ -403,7 +403,7 @@ protected
     # Convert the emission Value to string (binary) and then to int  e.g. 4 -> "100" -> 100 to be able to use & operator
     #@emission = @emission.to_s(2).to_i
     datatype = emission_forward['format']
-    logger.debug "L338 Emitting: #{@emission} of data type #{datatype} "
+    logger.debug "L406 Emitting: #{@emission} of data type #{datatype} "
 
     
 
@@ -470,9 +470,9 @@ protected
     def add_parameters_to_selected_forwardings(parameter, modes)
       @tool_mode_list.each_with_index {|accept_mode, i| 
          modes.each{ |mode|
-            #logger.debug "L394 #{@tool_name_list[i]} - Accept #{accept_mode} : Mode #{mode} "
+            #logger.debug "L473 #{@tool_name_list[i]} - Accept #{accept_mode} : Mode #{mode} "
             if accept_mode == mode
-              #logger.debug "L396   MATCH  "
+              #logger.debug "L475   MATCH  "
               @tool_list[i] = @tool_list[i]+parameter
             end
         }

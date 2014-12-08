@@ -1,5 +1,7 @@
 class HhompJob < Job
   require 'Biolinks.rb'
+  require 'checked_hits'
+  include CheckedHits
   
   @@export_ext = ".export"
   def set_export_ext(val)
@@ -263,90 +265,13 @@ class HhompJob < Job
 	
 	# for BLAST output	
 	
-	HEADER_END_IDENT = 'Searching..................................................done'
-   HITLIST_START_IDENT = 'Sequences producing significant alignments:                      (bits) Value'
-  	HITLIST_END_IDENT = '</PRE>'
-  	ALIGNMENT_END_IDENT = '</PRE>'
-  	FOOTER_START_IDENT = '<PRE>'
   	E_THRESH = 0.01
   	
 	attr_reader :blast_header, :hits_better, :hits_worse, :blast_alignments, :footer, :num_checkboxes	
 	
 	def before_blast_results()
-		resfile = File.join(job_dir, jobid+".blast")
-    	raise("ERROR with resultfile!") if !File.readable?(resfile) || !File.exists?(resfile) || File.zero?(resfile)
-    	res = IO.readlines(resfile).map {|line| line.chomp}
-
-    	no_hits = false
-    	res.each do |line|
-	    	if (line =~ /No hits found/i) then no_hits = true end
-    	end
-    
-    	# extract query and database information
-    	header_start = res.first =~ /<PRE>/ ? 1 : 0
-
-    	header_end = header_start + 1
-    	res.reverse_each do |line|
-      	if (line =~ /^\s*Searching\.+done/)
-        		header_end = res.rindex(line)-2
-        		break
-      	end
-    	end
-
-    	@blast_header = res[header_start..header_end]
-    
-    	@hits_better = []
-    	@hits_worse = []
-    	@blast_alignments = []
-    
-    	if (!no_hits)    
-	   	# extract hitlist
-    		hits_start = res.rindex(HITLIST_START_IDENT)+2
-    		hits_end = res.size-2 - res[hits_start..-1].reverse.rindex(HITLIST_END_IDENT)
-    		hits = res[hits_start..hits_end]
-    	
-    		hits.each do |hit|
-    	  		hit =~ /#(\d+)>\s*\S+<\/a>\s+(\S+)\s*$/
-    	  		id = $1
-    	  		evalue = $2
-    	  		if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= E_THRESH
-    	    		@hits_better << { :id => id, :content => hit }
-    	  		else
-    	    		@hits_worse << { :id => id, :content => hit }
-    	  		end  
-    		end
-    	
-    		@num_checkboxes = hits.size;
-    	
-    		# extract alignment sections, @alignments is an array that contains arrays (one for each hit in hitlist)
-    		aln_start = hits_end+2
-    		aln_end = res.rindex(ALIGNMENT_END_IDENT)
-    		last_section = res[aln_start..aln_end].inject({ :id => nil, :check => true, :content => [] }) do |section, line|
-    	  		case line
-    	    	#><a name = 4539527>
-    	    	when /><a name =\s*(\d+)>/
-    	      	@blast_alignments << section if !section[:id].nil?
-    	      	{ :id => $1, :check => true, :content => [line] }
-    	    	# Score =  185 bits (470), Expect = 2e-46,   Method: Composition-based stats.
-    	    	when /Expect = (\S+)/
-    	      	evalue = $1
-    	      	if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f > E_THRESH
-    	      		section[:check] = false
-    	      	end
-    	      	section[:content] << line
-    	      	section
-    	    	else
-    	      	if line !~ /<.*PRE>/ then section[:content] << line end 
-    	      	section
-    	  		end
-    		end
-    		@blast_alignments << last_section
-    
-    	end
-    	    
-    	# extract footer
-    	@footer = res[res.rindex(FOOTER_START_IDENT)+1..-1]
-    	return true
+          @blast_header, @blast_alignments, @footer = show_hits(jobid + ".blast", E_THRESH, "E-value", false)
+    	  return true
 	end	
 
 	

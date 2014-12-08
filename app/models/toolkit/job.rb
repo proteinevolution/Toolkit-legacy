@@ -75,14 +75,14 @@
 
     def firstSave!()
       save!
-      logger.debug "###### Job-dir: #{job_dir}"
+      logger.debug "###### L78 Job-dir: #{job_dir}"
       if !File.exist?(job_dir)
       	Dir.mkdir(job_dir, 0755)
       end
     end
 
     def self.create(parameters, user)
-      logger.debug "CREATE JOB!"
+      logger.debug "L85 CREATE JOB!"
       job = self.make(parameters, user)
       job.firstSave!
       job
@@ -108,7 +108,7 @@
       self.status = STATUS_INIT
 
       if (!@user.nil?)
-        logger.debug "###### User: #{@user.id}"
+        logger.debug "###### L111 User: #{@user.id}"
         self.user_id = @user.id
       end
       
@@ -127,7 +127,7 @@
       
       parameters = sanitize_params(parameters)
       
-      #RAILS_DEFAULT_LOGGER.debug "############# Running job! \n### " + parameters.inspect
+      #RAILS_DEFAULT_LOGGER.debug "############# L130 Running job! \n### " + parameters.inspect
       
       fw_c = parameters[:forward_controller] ? parameters[:forward_controller] : parameters[:controller]
       fw_a = parameters[:forward_action] ? parameters[:forward_action] : 'results'
@@ -141,7 +141,7 @@
       parameters.each do |key,value|                                                 
         if (key != "controller" && key != "action" && key != "job" && key != "parent" && key != "method" &&
             key != "forward_controller" && key != "forward_action" && newaction.respond_to?(key))
-          #logger.debug "##### eval mit key: #{key} und value: #{value}!"
+          #logger.debug "##### L144 eval mit key: #{key} und value: #{value}!"
           eval "newaction."+key+" = value"
         end
       end
@@ -188,7 +188,7 @@
         newaction.save!
         newaction.run
       else
-        logger.debug "#########   Errors found!!!\n";
+        logger.debug "######### L191  Errors found!!!\n";
         newaction.errors.each_full { |msg| logger.debug msg }
         error_hash = {}
         newaction.errors.each { |attr, msg| error_hash[attr] = msg }
@@ -207,6 +207,10 @@
 
     def error?
       self.status == STATUS_ERROR
+    end
+
+    def finished?
+      done? || error?
     end
 
     def statuslog
@@ -233,8 +237,8 @@
     end
 
     def config
-      #    	RAILS_DEFAULT_LOGGER.debug "###: " + self.class.to_s.to_us
-      #logger.debug " L219 Loading YAMLDATA for #{tool.to_us} "
+      #    	RAILS_DEFAULT_LOGGER.debug "### L240: " + self.class.to_s.to_us
+      #logger.debug " L241 Loading YAMLDATA for #{tool.to_us} "
       (YAML.load_file(File.join(TOOLKIT_ROOT, 'config', tool.to_us + '_jobs.yml')))[self.class.to_s.to_us]
     end
 
@@ -282,20 +286,26 @@
 
     def update_status
       self.reload
-      newstate = actions.inject(STATUS_DONE)  do |s, action|
-        STATUS_CMP[action.status] < STATUS_CMP[s] ? action.status : s
+      # update_status may be called by still running workers after
+      # the job has been removed. Then avoid exceptions because the
+      # action list already is cleared.
+      if actions.empty?
+        return
+      else
+        newstate = actions.inject(STATUS_DONE)  do |s, action|
+          STATUS_CMP[action.status] < STATUS_CMP[s] ? action.status : s
+        end
       end
       self.status = newstate
       self.save!
-      if (done? || error?)
-      	logger.debug "Job update status done"
+      if (finished?)
+      	logger.debug "L302 Job update status #{newstate}"
       	if (!params_main_action['mail'].nil?)# && params_main_action['mail_transmitted'] == false)
-          logger.debug "mail founded!"
           if (done?)
-            logger.debug "Mailer with mail: #{params_main_action['mail']}"
+            logger.debug "L305 Mailer with mail: #{params_main_action['mail']}"
             ToolkitMailer.deliver_mail_done(params_main_action)
           else
-            logger.debug "Error-mailer with mail: #{params_main_action['mail']}"
+            logger.debug "L308 Error-mailer with mail: #{params_main_action['mail']}"
             ToolkitMailer.deliver_mail_error(params_main_action)
           end
           actions.first.params['mail_transmitted'] = true
@@ -342,28 +352,28 @@
     end
     
     def remove
-      logger.debug "Stop queue_worker"    
+      logger.debug "L355 Stop queue_worker"    
       actions.each do |action| 
         action.queue_jobs.each do |qj|
-          qj.workers.each do |worker|
-            if worker.status != STATUS_DONE
-              #worker.delete
-          end
-          end
-          logger.debug "L322 Destroy worker!"
+          logger.debug "L358 Destroy worker!"
           AbstractWorker.destroy_all "queue_job_id = #{qj.id}"
         end
-        logger.debug "L325 Destroy queue_jobs!"
+        logger.debug "L361 Destroy queue_jobs!"
         QueueJob.destroy_all "action_id = #{action.id}"
       end
       
-      #logger.debug "Destroy actions!"
+      #logger.debug "L365 Destroy actions!"
       Action.delete_all "job_id = #{id}"
+      # remove children
+      children.each do |childJob|
+        childJob.remove
+      end
+
       begin
-        logger.debug "L332 JobDir: #{job_dir}"
+        logger.debug "L373 Cleaning up JobDir: #{job_dir}"
         directory_content = Dir.entries("#{job_dir}")
-        #logger.debug "Entries length: #{directory_content.length}"
-        #logger.debug "Entries: #{directory_content}"
+        #logger.debug "L375 Entries length: #{directory_content.length}"
+        #logger.debug "L376 Entries: #{directory_content}"
         directory_content.each  do |file|
           if (file != ".." && file != ".")
             file = "#{job_dir}/#{file}"
@@ -378,7 +388,7 @@
  
       rescue SystemCallError => ex
         # Probably the directory already has been deleted. Nothing more to do.
-        logger.debug "L350 SystemCallError: #{ex}"
+        logger.debug "L391 SystemCallError: #{ex}"
       end
     end
 
@@ -439,7 +449,7 @@
     begin
       super
     rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L416 job.rb Job.save!: Got statement invalid #{e.message} ... trying again")
+      logger.debug("L452 job.rb Job.save!: Got statement invalid #{e.message} ... trying again")
       ActiveRecord::Base.verify_active_connections!
       super
     end
