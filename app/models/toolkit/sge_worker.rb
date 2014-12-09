@@ -6,73 +6,58 @@ class SgeWorker < AbstractWorker
     basename = File.join(queue_job.action.job.job_dir, id.to_s)
     self.commandfile = basename+".sh"
     self.wrapperfile = basename+"wrapper.sh"    
-    writeShWrapperFile
-    writeShCmdsFile
+    writeShWrapperFile(basename)
+    writeShCmdsFile(basename)
     self.status = STATUS_QUEUED
     save!
     self.queue_job.update_status
     
     tries = 0
-    
-    # Identify the Action which is to be submitted by the toolkit and set the max Memory count to a individual value
-    job = queue_job.action.type
-    # Memory contains the Nr of GB used for Tuebinger Queue
-    memory = select_memory(job);
-    if (options['cpus'] && options['cpus'].to_i > 1)
-        # The sge engine will multiply the given memory with the number of cpus
-        min_cpu_number = options['cpus'].to_i
-        memory = (memory + min_cpu_number - 1) / min_cpu_number
-    end
-    logger.debug "L26 Memory #{memory} "
 
-    # Location Tuebingen, using variable memory limiting to circumvent memory constraints and queue crowding
     if LOCATION == "Tuebingen"
-      # to get a signal before SIGKILL, we define a warning memory limit, which is 100M below memory.
-      warning_memory = memory * 1024 - 100
       #if RAILS_ENV == "development"
         # Parameter -p 10 not available on OLT, try to specify short queue in local_environment.rb
-        #command = "#{QUEUE_DIR}/qsub -l s_vmem=#{warning_memory}M -l h_vmem=#{memory}G -p 10 #{self.wrapperfile}"
+        #command = "#{QUEUE_DIR}/qsub -p 10 #{self.wrapperfile}"
       #else
-        # set h_vmem to 18G instead of 10G, because Clans does not work always with 10G
-        command = "#{QUEUE_DIR}/qsub -l s_vmem=#{warning_memory}M -l h_vmem=#{memory}G #{self.wrapperfile}"
-        logger.debug "L38 qsub command: #{command}"
+        command = "#{QUEUE_DIR}/qsub #{self.wrapperfile}"
+        logger.debug "L23 qsub command: #{command}"
       #end
     else
       # LOCATION = Munich !!  
       if LINUX == "SL6"
         #command = "#{QUEUE_DIR}/qsub -pe threadssl6.pe 1 #{self.wrapperfile}" 
         command = "#{QUEUE_DIR}/qsub  #{self.wrapperfile}"
-        logger.debug "L45 qsub command: #{command}"
+        logger.debug "L30 qsub command: #{command}"
       else
         command = "#{QUEUE_DIR}/qsub  #{self.wrapperfile}"
       end
     end
     
-    logger.debug "L51 ID"+`id`
+    logger.debug "L36 ID"+`id`
     # Remove all Line Carriage characters from returned result command
     res = `#{command}`.chomp
-    logger.debug "L54 Original  QID : #{res} "
+    logger.debug "L39 Original  QID: #{res}"
     self.qid = res.gsub(/Your job (\d+) .*$/, '\1')
-    logger.debug "L56 Substituded QID : #{qid} "
+    logger.debug "L41 Substituded QID: #{qid}"
     
     while (!$?.success? && tries < 5)
-      logger.debug "L59 #{$?.success?} in  PE Queue"
-      res = `#{command}`.chomp
-      
-      #res = `#{command}`.chomp
-      self.qid = res.gsub(/Your job (\d+) .*$/, '\1')
-      logger.debug "L64 Your job has quid #{self.qid}"
       tries += 1
+      logger.debug "L45 Try no. #{tries} in  PE Queue"
+      res = `#{command}`.chomp
+ 
+      self.qid = res.gsub(/Your job (\d+) .*$/, '\1')
+      logger.debug "L49 Job has QID #{qid}"
     end
-    
     save!
     if (!$?.success? && tries == 5)
       raise "Unable to submit job!"
     end
-
-    # save!
+    # Avoid parallel writing to .exec_host file?
+    # For administration, it's more convenient to have easily the qid of waiting jobs.
+    # If that leads to problems, get JOB_ID in wrapper file below.
+    system("echo 'QID #{qid}' >> #{basename}.exec_host")
   end
-  
+
   def stop
     # possible improvement: synchronize with execute method and with cleaning
     # up of directory (see Job.remove).
@@ -81,19 +66,19 @@ class SgeWorker < AbstractWorker
     # execute method and qid is not set yet.
     if !self.qid
       # don't wait, better improve synchronization.
-      logger.debug "L84 No qid available (yet) for stopping worker #{id}"
+      logger.debug "L69 No qid available (yet) for stopping worker #{id}"
     end
 
     if self.qid
       command = "#{QUEUE_DIR}/qdel #{qid}"
-      logger.debug "L89: Worker command: #{command}"
+      logger.debug "L74: Worker command: #{command}"
       system(command)
     end
   end
   
   # creates a shell wrapper file for all jobcomputations-commands that are executed on the queue, sets the status of the job
   # this must be a wrapper to be able to print to stdout and stderr files when disk file size limit is reached in the subshell.
-  def writeShWrapperFile
+  def writeShWrapperFile(basename)
     queue = QUEUES[:normal]
     cpus = nil
     additional = false
@@ -167,13 +152,34 @@ class SgeWorker < AbstractWorker
         # limits of h_rt and s_rt.
         f.write '#$' + " -l h_rt=#{timelimit}\n"
         warningtimelimit = SgeWorker.addSeconds2Timelimit(-delaytime, timelimit)
-        if warningtimelimit > delaytime
+        if USE_SOFT_LIMITS && (warningtimelimit > delaytime)
           f.write '#$' + " -l s_rt=#{warningtimelimit}\n"
         else
           warningtimelimit = nil
         end
         # These timelimits of the wrapper file can be overwritten in the command
         # line
+      end
+
+      # Location Tuebingen, using variable memory limiting to circumvent memory constraints and queue crowding
+      if LOCATION == "Tuebingen"
+        # Identify the Action which is to be submitted by the toolkit and set the max Memory count to a individual value
+        action_class = queue_job.action.class
+        # Memory contains the Nr of GB used for Tuebinger Queue
+        memory = select_memory(action_class);
+        if (cpus && cpus.to_i > 1)
+          # The sge engine will multiply the given memory with the number of cpus
+          min_cpu_number = cpus.to_i
+          memory = (memory + min_cpu_number - 1) / min_cpu_number
+        end
+        logger.debug "L175 Memory #{memory} "
+
+        f.write '#$' + " -l h_vmem=#{memory}G\n"
+        if USE_SOFT_LIMITS
+          # to get a signal before SIGKILL, we define a warning memory limit, which is 100M below memory.
+          warning_memory = memory * 1024 - 100
+          f.write '#$' + " -l s_vmem=#{warning_memory}M\n"
+        end
       end
 
       f.write '#$' + " -wd #{queue_job.action.job.job_dir}\n"
@@ -209,8 +215,8 @@ class SgeWorker < AbstractWorker
       f.write "        USR2) echo \"Termination of job by user or because of reaching a resource limit.\" >> #{queue_job.action.job.statuslog_path}\n"
       f.write "            ;;\n"
       # Signal SIGXCPU only used in Tuebingen in this way (see trap calls)
-      if LOCATION == "Tuebingen"
-        f.write "        XCPU) echo \"Grid memory limit exceeded. Job terminating.\" >> #{queue_job.action.job.statuslog_path}\n"
+      if LOCATION == "Tuebingen" && USE_SOFT_LIMITS
+        f.write "        XCPU) echo \"Grid memory limit reached. Job terminating.\" >> #{queue_job.action.job.statuslog_path}\n"
         f.write "            ;;\n"
       end
       # Always provide this "otherwise" case for detecting incorrect or additional installations of this signal handler
@@ -224,7 +230,12 @@ class SgeWorker < AbstractWorker
 
       f.write "export TK_ROOT=" + TOOLKIT_ROOT + "\n"
 
-      f.write "hostname > #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
+      f.write "echo \"HOSTNAME `hostname`\" >> #{basename}.exec_host\n"
+      # is equivalent to f.write "echo \"HOSTNAME $HOSTNAME\" >> #{basename}.exec_host\n"
+      # JOB_ID is same as QID. If storing QID leads to problems, use that instead:
+      # f.write "echo \"JOB_ID $JOB_ID\" >> #{basename}.exec_host\n"
+      # Not required, because currently the tools don't submit array jobs:
+      # f.write "echo \"SGE_TASK_ID $SGE_TASK_ID\" >> #{basename}.exec_host\n"
       if RAILS_ENV == "development"
         f.write "echo 'Starting job #{id.to_s}...' >> #{queue_job.action.job.statuslog_path}\n"
       end
@@ -244,7 +255,7 @@ class SgeWorker < AbstractWorker
       # signals caused by -l s_rt (or probably other reasons)
       f.write "trap 'sig_handler USR1' USR1\n"
 
-      if LOCATION == "Tuebingen"
+      if LOCATION == "Tuebingen" && USE_SOFT_LIMITS
 
         # handles signals caused by -l s_vmem
         f.write "trap 'sig_handler XCPU' XCPU\n"
@@ -294,7 +305,7 @@ class SgeWorker < AbstractWorker
   
   # creates a jobcomputation-commands file (sh script) + minimal errorhandling and limiting of memory and disk-file-size
   # if a program does not return 0 the subsequent commands are not executed and the script exits
-  def writeShCmdsFile
+  def writeShCmdsFile(basename)
     begin
       f = File.open(self.commandfile, 'w')
       f.write "#!/bin/bash\n"
@@ -307,14 +318,14 @@ class SgeWorker < AbstractWorker
       end
       # Have to decide where the module load shall be put ....
       if (LOCATION == 'Munich' && LINUX == 'SL6')
-        logger.debug "L310 Location Munich Source etc/profiles "
+        logger.debug "L321 Location Munich Source etc/profiles "
         f.write "source /etc/profile\n"
         f.write "module load perl\n"
         f.write "module load python2.6\n"
       end
       # print the process id of this shell execution
-      f.write "echo $$ >> #{queue_job.action.job.job_dir}/#{id.to_s}.exec_host\n"
-      logger.debug "L317 Exec_host file written."
+      f.write "echo \"PID $$\" >> #{basename}.exec_host\n"
+      logger.debug "L328 Exec_host file written."
       if (!(options.nil? || options.empty?) && options['ncpuvar'])
         ncpuvar=options['ncpuvar']
         if (options['cpus']) then
@@ -458,7 +469,7 @@ class SgeWorker < AbstractWorker
       if (options['memory']) then my_memory = options['memory'] end
     end
 
-    logger.debug "L461 #{method} : #{my_memory}"
+    logger.debug "L472 #{method} : #{my_memory}"
     return my_memory;
   end
 
