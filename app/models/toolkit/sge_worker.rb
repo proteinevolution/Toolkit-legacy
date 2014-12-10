@@ -164,9 +164,9 @@ class SgeWorker < AbstractWorker
       # Location Tuebingen, using variable memory limiting to circumvent memory constraints and queue crowding
       if LOCATION == "Tuebingen"
         # Identify the Action which is to be submitted by the toolkit and set the max Memory count to a individual value
-        action_class = queue_job.action.class
+        action_classname = queue_job.action.type # inherited from ActiveRecord
         # Memory contains the Nr of GB used for Tuebinger Queue
-        memory = select_memory(action_class);
+        memory = select_memory(action_classname);
         if (cpus && cpus.to_i > 1)
           # The sge engine will multiply the given memory with the number of cpus
           min_cpu_number = cpus.to_i
@@ -460,7 +460,7 @@ class SgeWorker < AbstractWorker
                 when "ViewClansAction" then 10
                 when "ViewRepeatsAction" then 5
 
-                else 15
+                else my_memory
                 end
 
     #############################################
