@@ -4,7 +4,7 @@ class ToolkitMailer < ActionMailer::Base
     @subject        = "MPI Bioinformatics Toolkit: job #{params['jobid']} completed"
     @body["params"] = params
     @recipients     = params['mail']
-    @from           = TOOLKIT_MAIL
+    @from           = TOOLKIT_MAIL_NOREPLY
     @sent_on        = sent_at
     @headers        = {}
   end
@@ -13,7 +13,7 @@ class ToolkitMailer < ActionMailer::Base
     @subject        = "MPI Bioinformatics Toolkit: error in job #{params['jobid']}"
     @body["params"] = params
     @recipients     = params['mail']
-    @from           = TOOLKIT_MAIL
+    @from           = TOOLKIT_MAIL_NOREPLY
     @sent_on        = sent_at
     @headers        = {}
   end
