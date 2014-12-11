@@ -1,7 +1,7 @@
 module UserSystem
   CONFIG = {
     # Source address for user emails
-    :email_from => TOOLKIT_MAIL,
+    :email_from => TOOLKIT_MAIL_NOREPLY,
 
     # Destination email for system errors
     :admin_email => '',

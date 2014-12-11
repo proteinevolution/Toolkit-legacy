@@ -4,7 +4,7 @@ class PdbalertMailer < ActionMailer::Base
      @subject        = "PDB Alert: match found for #{params['db']}"
      @body["params"] = params
      @recipients     = params['mail']
-     @from           = TOOLKIT_MAIL
+     @from           = TOOLKIT_MAIL_NOREPLY
      @sent_on        = sent_at
      @headers        = {}
    end
@@ -13,7 +13,7 @@ class PdbalertMailer < ActionMailer::Base
      @subject        = "PDB Alert: on-hold structure match found for #{params['db']}"
      @body["params"] = params
      @recipients     = params['mail']
-     @from           = TOOLKIT_MAIL
+     @from           = TOOLKIT_MAIL_NOREPLY
      @sent_on        = sent_at
      @headers        = {}
    end
@@ -22,7 +22,7 @@ class PdbalertMailer < ActionMailer::Base
     @subject        = "PDB Alert: no activity for 1 year. Account deletion pending"
     @body["params"] = params
     @recipients     = params['mail']
-    @from           = TOOLKIT_MAIL
+    @from           = TOOLKIT_MAIL_NOREPLY
     @sent_on        = sent_at
     @headers        = {}
   end
@@ -31,7 +31,7 @@ class PdbalertMailer < ActionMailer::Base
     @subject        = "PDB Alert(reminder)"
     @body["params"] = params
     @recipients     = params['mail']
-    @from           = TOOLKIT_MAIL
+    @from           = TOOLKIT_MAIL_NOREPLY
     @sent_on        = sent_at
     @headers        = {}
   end

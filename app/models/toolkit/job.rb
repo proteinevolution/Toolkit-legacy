@@ -329,7 +329,11 @@
     end
 
     def run_on
-      actions.last.created_on
+      if (actions.last)
+        actions.last.created_on
+      else
+        0
+      end
     end
 
     # returns the forward controller of the last action that has not yet
