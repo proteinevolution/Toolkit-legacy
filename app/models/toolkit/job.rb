@@ -356,28 +356,36 @@
     end
     
     def remove
-      logger.debug "L355 Stop queue_worker"    
+      logger.debug "L359 Stop queue_worker"    
       actions.each do |action| 
         action.queue_jobs.each do |qj|
-          logger.debug "L358 Destroy worker!"
+          logger.debug "L362 Destroy worker!"
           AbstractWorker.destroy_all "queue_job_id = #{qj.id}"
         end
-        logger.debug "L361 Destroy queue_jobs!"
+        logger.debug "L365 Destroy queue_jobs!"
         QueueJob.destroy_all "action_id = #{action.id}"
       end
       
-      #logger.debug "L365 Destroy actions!"
+      #logger.debug "L369 Destroy actions!"
       Action.delete_all "job_id = #{id}"
       # remove children
       children.each do |childJob|
         childJob.remove
       end
 
+      # a job without actions will cause errors, so for consistence, delete it too.
+      logger.debug "L377 destroy job #{id}"
+      destroy
+
+      cleanup_jobdir
+    end
+
+    def cleanup_jobdir
       begin
-        logger.debug "L373 Cleaning up JobDir: #{job_dir}"
+        logger.debug "L385 Cleaning up JobDir: #{job_dir}"
         directory_content = Dir.entries("#{job_dir}")
-        #logger.debug "L375 Entries length: #{directory_content.length}"
-        #logger.debug "L376 Entries: #{directory_content}"
+        #logger.debug "L387 Entries length: #{directory_content.length}"
+        #logger.debug "L388 Entries: #{directory_content}"
         directory_content.each  do |file|
           if (file != ".." && file != ".")
             file = "#{job_dir}/#{file}"
@@ -391,8 +399,10 @@
         #Dir.delete(job_dir)
  
       rescue SystemCallError => ex
-        # Probably the directory already has been deleted. Nothing more to do.
-        logger.debug "L391 SystemCallError: #{ex}"
+        # Probably the directory or a file already has been deleted.
+        # I.e., the sge engine already cleans up files after a queue job finishes.
+        # Nothing more to do.
+        logger.debug "L405 SystemCallError: #{ex}"
       end
     end
 
@@ -453,7 +463,7 @@
     begin
       super
     rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L452 job.rb Job.save!: Got statement invalid #{e.message} ... trying again")
+      logger.debug("L466 job.rb Job.save!: Got statement invalid #{e.message} ... trying again")
       ActiveRecord::Base.verify_active_connections!
       super
     end

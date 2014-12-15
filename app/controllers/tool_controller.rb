@@ -183,23 +183,18 @@ class ToolController < ApplicationController
     if ((@job.jobid !~ /^tu_/ && @job.jobid !~ /^HH_/) || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin')) ) 
       logger.debug "L184 Delete job #{@job.jobid} in jobs_cart"
       if @jobs_cart.delete(@job.jobid).nil?
-        logger.debug "L186 Could not delete #{@job.jobid} from Cart"
+        logger.debug "L186 Could not delete #{@job.jobid} from cart" # Probably because it was cleared from cart by user before.
       end
       @job.remove
-      if Job.exists?(@job.id)
-        logger.debug "L190 Job #{@job.id} still exists in database."
-        #Job.remove(@job.id)
-      end
-
     end
     redirect_to(:host => DOC_ROOTHOST, :controller => tool)
   end
 
   def forward
-    logger.debug "L199 Forward!"
-    logger.debug "L200 Toolkit Job: #{params['controller']}"
-    logger.debug "L201 Parent Job: #{@parent_job}"
-    logger.debug "L202 Parent Toolkit Job: #{@parent_job.tool}"
+    logger.debug "L194 Forward!"
+    logger.debug "L195 Toolkit Job: #{params['controller']}"
+    logger.debug "L196 Parent Job: #{@parent_job}"
+    logger.debug "L197 Parent Toolkit Job: #{@parent_job.tool}"
 
     if (params['controller']==@parent_job.tool)
       job_params = @parent_job.actions.first.params
@@ -214,7 +209,7 @@ class ToolController < ApplicationController
       end
     end
     fw_params = @parent_job.forward_params
-    logger.debug "L217 forward_params: #{fw_params.inspect}"
+    logger.debug "L212 forward_params: #{fw_params.inspect}"
     fw_params.each_key do |key|
       params[key] = fw_params[key]
     end
@@ -224,9 +219,9 @@ class ToolController < ApplicationController
   end
   
   def forward_hmm
-    logger.debug "L227 Forward HMM!"
-    logger.debug "L228 Toolkit Job: #{params['controller']}"
-    logger.debug "L229 Parent Toolkit Job: #{@parent_job.tool}"
+    logger.debug "L222 Forward HMM!"
+    logger.debug "L223 Toolkit Job: #{params['controller']}"
+    logger.debug "L224 Parent Toolkit Job: #{@parent_job.tool}"
 
     if (params['controller']==@parent_job.tool)
       job_params = @parent_job.actions.first.params
@@ -241,7 +236,7 @@ class ToolController < ApplicationController
       end
     end
     fw_params = @parent_job.forward_params
-#    logger.debug "L244 forward_params: #{fw_params.inspect}"
+#    logger.debug "L239 forward_params: #{fw_params.inspect}"
     fw_params.each_key do |key|
       params[key] = fw_params[key]
     end
@@ -253,7 +248,7 @@ class ToolController < ApplicationController
   
   def resubmit
       @tmp_sequence ='XX'
-      logger.debug "L256 Rendering Resubmit!"
+      logger.debug "L251 Rendering Resubmit!"
       job_params = @job.actions.first.params
       #tmp_params = job_params.keys
       #tmp_params.sort! # kft- sort! does not work, because some of the keys are strings, other are keys which cannot be compared to strings.
@@ -268,7 +263,7 @@ class ToolController < ApplicationController
         else
           params[key] = job_params[key]
           if (key=~ /sequence_input/)
-                logger.debug "L271 Processing Param sequence_input "
+                logger.debug "L266 Processing Param sequence_input "
                 params['sequence_input'] = @tmp_sequence
           end
         end
@@ -403,7 +398,7 @@ protected
     # Convert the emission Value to string (binary) and then to int  e.g. 4 -> "100" -> 100 to be able to use & operator
     #@emission = @emission.to_s(2).to_i
     datatype = emission_forward['format']
-    logger.debug "L406 Emitting: #{@emission} of data type #{datatype} "
+    logger.debug "L401 Emitting: #{@emission} of data type #{datatype} "
 
     
 
@@ -470,9 +465,9 @@ protected
     def add_parameters_to_selected_forwardings(parameter, modes)
       @tool_mode_list.each_with_index {|accept_mode, i| 
          modes.each{ |mode|
-            #logger.debug "L473 #{@tool_name_list[i]} - Accept #{accept_mode} : Mode #{mode} "
+            #logger.debug "L468 #{@tool_name_list[i]} - Accept #{accept_mode} : Mode #{mode} "
             if accept_mode == mode
-              #logger.debug "L475   MATCH  "
+              #logger.debug "L470   MATCH  "
               @tool_list[i] = @tool_list[i]+parameter
             end
         }
