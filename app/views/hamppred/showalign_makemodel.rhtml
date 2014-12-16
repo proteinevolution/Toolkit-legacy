@@ -5,10 +5,10 @@
 <div class="row">
 
 	<div id="applet">
-	  <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".fas"}) %>
+          <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".fas"}) %>
 		<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhpred/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	  <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".reduced.fas"}) %>
+          <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".reduced.fas"}) %>
 		<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhpred/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></span></strong>
 			
 	</div>
