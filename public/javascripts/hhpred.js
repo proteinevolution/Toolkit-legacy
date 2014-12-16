@@ -5,50 +5,48 @@ function appearForward(val)
     var create = 'createmodel';
     var merge = 'mergeali';
     var pcoils = 'pcoils';
-	// Element is currently display = none and shall be shown 
-    if (Element.getStyle(val, 'display') == "none" && Element.getStyle('noPdb', 'display') == "none") {
-		if ($(coloring) != null) {
-		    new Effect.Fade(coloring);
-		}
-		// Remove all Elements that may be currently shown
-		new Effect.Fade('pcoils');
-		new Effect.Fade(create);
-		new Effect.Fade(merge);
-		new Effect.Fade(image);
-		new Effect.Fade('noPdb');
-		new Effect.Fade('forward');
 
-		sleep(1000);
-		
-		// Special Case Createmodel, active checkbox 
-		if (val == 'createmodel') {
-		    checkbox_createmodel(true);
-		    select_first_not_disabled();
-		} 
-		else
-		{
-			// Special Case PCoils, have first element selected 
-			if(val == 'pcoils') {
+    // Element is currently display = none and shall be shown
+    if (Element.getStyle(val, 'display') == "none" && Element.getStyle('noPdb', 'display') == "none") {
+	if ($(coloring) != null) {
+	    new Effect.Fade(coloring);
+	}
+	// Remove all Elements that may be currently shown
+	new Effect.Fade('pcoils');
+	new Effect.Fade(create);
+	new Effect.Fade(merge);
+	new Effect.Fade(image);
+	new Effect.Fade('noPdb');
+	new Effect.Fade('forward');
+
+	sleep(1000);
+
+	// Special Case Createmodel, active checkbox
+	if (val == 'createmodel') {
+	    checkbox_createmodel(true);
+	    select_first_not_disabled();
+	} else {
+	    // Special Case PCoils, have first element selected 
+	    if(val == 'pcoils') {
                 select_first_not_disabled();
             }
-		    checkbox_createmodel(false);
-		}
-		new Effect.Appear(val);
+	    checkbox_createmodel(false);
+	}
+	new Effect.Appear(val);
     } else {
-		if (val == 'pcoils') {
-			select_first_not_disabled();
-			new Effect.Fade(val);
-		}
-		else {
-			new Effect.Fade(val);
-			new Effect.Fade('noPdb');
+	if (val == 'pcoils') {
+	    select_first_not_disabled();
+	    new Effect.Fade(val);
+	} else {
+	    new Effect.Fade(val);
+	    new Effect.Fade('noPdb');
 
-			if ($(coloring) != null) {
-				new Effect.Appear(coloring);
-			}
-			new Effect.Appear(image);
-			checkbox_createmodel(false);
-		}
+	    if ($(coloring) != null) {
+		new Effect.Appear(coloring);
+	    }
+	    new Effect.Appear(image);
+	    checkbox_createmodel(false);
+	}
     }
 }
 
@@ -145,13 +143,17 @@ function select_first(first)
 
 
 function change_label(id, labelA, labelB){
-	if($(id).innerHTML == labelA){
-		   $(id).innerHTML = labelA;  
-	}else{
-		  $(id).innerHTML = labelB;
-	}
-   
+// Switching labels by javascript without knowing the context is not useful,
+// because labels are not switched i.e. on reset. -kft
+// To fix that, the value of the radio button and a template to compare it to
+// need to be supplied.
+//	if($(id).innerHTML == labelA){
+//		   $(id).innerHTML = labelB;
+//	}else{
+//		  $(id).innerHTML = labelA;
+//	}
 }
+
 function init_label(id, radioChecked, labelChecked, labelUnchecked){
 		alert($(id).innerHTML+"\n"+$(radioChecked).checked);
 }
@@ -318,12 +320,7 @@ function change_resubmit_form_to_hhblits() {
     $(forward_alignment).action = RegExp.$1 + "hhblits" + RegExp.$2;
 }
 
-
 function pasteExample()
 {
   $('sequence_input').value = ">gi|147642904|sp|Q5FVL3.2|FA69B_RAT RecName: Full=Protein FAM69B; AltName: Full=Pancreatitis-induced protein 49; Short=PIP49\nMRRLRRLVHLVLLCPFSKGLQGRLPGLRVKYVLLVWLGIFVGSWMVYVHYSSYSELCRGHVCQVVICDQY\nQKGIISGSVCQDLCELQKVEWRTCLSSAPGQQVYSGLWQDKEVTIKCGIEEALNSKAWPDAVPRRELVLF\nDKPTRGTSIKEFREMTLSFLKANLGDLPSLPALVDQILLMADFNKDSRVSLAEAKSVWALLQRNEFLLLL\nSLQEKEHASRLLGYCGDLYLTESIPHGSWHGAVLLPALRPLLPSVLHRALQQWFGPAWPWRAKIAIGLLE\nFVEELFHGSYGTFYMCETTLANVGYTATYDFKMADLQQVAPEATVRRFLQGRHCEQSSDCIYGRDCRAPC\nDKLMRQCKGDLIQPNLAKVCELLRDYLLPGAPADLYEELGKQLRTCTTLSGLASQVEAHHSLVLSHLKTL\nLWREISNTNYS";  
 }
-
-
-
-
