@@ -26,7 +26,7 @@
 	<input name="hits" id="hits" type="hidden" value=""/>
 	
 	<div class="row">
-		<input name="submitform" type="submit" class="toolbutton" style="width:28%" value="Create model from&#x0A;manually selected template(s)" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hamp_makemodel', :parent => @job, :forward_controller => 'modeller', :forward_action => 'forward',  :increment_id => 'create', :mode => 'create') %>');" >
+		<input name="submitform" type="submit" class="toolbutton" style="width:28%" value="Create model from&#x0A;manually selected template(s)" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'modeller', :forward_action => 'forward',  :increment_id => 'create', :mode => 'create') %>');" >
 		<strong>
 		<ol>
 		<li><p  align="justify">
@@ -36,7 +36,7 @@
 	</div>
 
 	<div class="row">
-		<input name="submitform" type="submit" class="toolbutton" style="width:28%" value="&nbsp Automatically select best templates &nbsp" onClick="select_first(20); extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hamp_makemodel', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_makemodel', :mode => 'filter', :increment_id => 'true') %>');" />
+		<input name="submitform" type="submit" class="toolbutton" style="width:28%" value="&nbsp Automatically select best templates &nbsp" onClick="select_first(20); extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmakemodel', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_makemodel', :mode => 'filter', :increment_id => 'true') %>');" />
 		<strong>
 		<ol start = 2>
 		<li>
@@ -65,7 +65,7 @@
 <div id="mergeali" style="display: none;">
 	<div class="row">
 		<div class="formw">		
-			<input name="submitform" type="submit" class="feedbutton" value="Merge alignments" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hamp_mergeali', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_hhmergeali', :increment_id => 'true') %>');" />		
+			<input name="submitform" type="submit" class="feedbutton" value="Merge alignments" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => 'run', :job => 'hhmergeali', :parent => @job, :forward_controller => 'hhpred', :forward_action => 'results_hhmergeali', :increment_id => 'true') %>');" />		
 		</div>
 	</div>
 	<div class="row">
@@ -79,9 +79,9 @@
 <div id="color_button" class="row">
 
   <div id="jalview">
-    <%= render(:partial => "shared/jalview", :locals => {:file_extension => '.tenrep_file'}) %>
+    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".tenrep_file"}) %>
   </div>
-
+  
   <div id="help_jal"><a href="#" onclick="openHelpWindow('/hhpred/help_results#jalview');">View alignment</a></div>
 
 
@@ -105,7 +105,7 @@
 
 <div class="row">
 	<!-- All the histograms and Data comes from job.results -->
-	<%=  @job.results.join  %>	
+       <%=  @job.results.join  %>
 </div>
 
 

@@ -25,5 +25,3 @@ class HamppredForwardAction < Action
     return hash
   end
 end
-
-

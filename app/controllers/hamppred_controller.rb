@@ -177,8 +177,8 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
   def resubmit_domain
 
     basename = File.join(@job.job_dir, @job.jobid)
-    @my_command = "#{BIOPROGS}/perl/alicutter.pl #{basename}.resub_domain.a2m #{basename}.in.cut #{params[:domain_start]} #{params[:domain_end]} "
-    logger.debug("Running Alicutter -hhpred- #{@my_command}")
+    @my_command = "#{BIOPROGS}/perl/alicutter.pl #{basename}.resub_domain.a2m #{basename}.in.cut #{params[:domain_start].to_i} #{params[:domain_end].to_i} "
+    logger.debug("Running Alicutter -hamppred- #{@my_command}")
     system(@my_command)   
     job_params = @job.actions.first.params
     job_params.sort

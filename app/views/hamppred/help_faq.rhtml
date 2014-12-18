@@ -124,7 +124,7 @@ query HMM against other databases.
 If your query alignment has less than 50 sequences, you may try to enrich it by pressing 
 "Resubmit with HHsenser" on the results page. HHsenser is a novel, very sensitive homolog search 
 method based on recursive PSI-BLAST and HMM-HMM comparison for validation of putative homologs.
-Alternatively, you may try to use manual PSI-BLAST iterations to try to find more distant homologs 
+Alternatively, you may try to use manual MSA generation iterations to try to find more distant homologs 
 for your query alignment and jump-start HHpred with the manually enriched alignment.
 
 <br><br> <i><b>Try out other structure prediction servers!</b></i>: A list of servers can be found at 
@@ -146,7 +146,7 @@ same kind of domain present at the C-terminal part. Is there is a possibility th
 produce high-scoring false positive hits to the same kind of domain in the N-terminal part? I have seen similar "boundary effects" 
 with PSI-blast.</b><br>
 <div class="row">
-Yes, absolutely. This may be caused by PSI-BLAST, which is used by HHpred to build the alignments from which the query and database 
+Yes, absolutely. This may be caused by PSI-BLAST, which may be used by HHpred to build the alignments from which the query and database 
 HMMs are generated. PSI-BLAST may find sequences which contain the C-terminal query domain in two or more copies. In this case, PSI-BLAST 
 may extend the alignments too much into the N-terminal region of the query. (PSI-BLAST alignments are "greedy".) After each PSI-BLAST iteration,
 a larger part of the N-termional region can get corrupted by sequences related to the non-homologous C-terminal domain. In the final search through 
@@ -197,12 +197,12 @@ Just press the "Reload" button of your browser.
 <a name="forever"></a><br>
 <b>My job is running since more than 24 hours. The status screen still asks me to wait. What is going on?</b>
 <div class="row">
-Once your job is started, it should show a message in the log window, e.g. "Building alignment for query with PSI-BLAST ..."
+Once your job is started, it should show a message in the log window, e.g. "Building alignment for query with HHblits ..."
  or similar. If this does not happen within a few minutes then your job has probably not been launched correctly.
 Try again and if the problem persists, please notify us by email, giving the job ID.<br>
 If the log window shows that your job has been started but it hangs at the same point for more than a few minutes 
 then it depends how long your query sequence is. Sequences/alignments of less than 300 residues should not take more than
-a few minutes per PSI-BLAST iteration while very long sequences may take up to a few hours.
+a few minutes per HHblits iteration while very long sequences may take up to a few hours.
 In any case, if your job is not finished after 1 hour (length<300 residues) or after 24 hours (length=6000 residues), 
 chances are that something went wrong, probably on our side. Try again and if the problem persists, please send us a note 
 specifying the job ID. Thank you.
@@ -309,7 +309,7 @@ Just click 'Submit new job' or 'Submit with parameters of this job'.
 Each job gets a job-ID (a five-digit number) that appears in the list of recent jobs in the light-blue pane 
 on the left. You can click on any of these job IDs to check the status and view the results. 
 Remember that CDD contains Pfam, SMART, COG, KOG, and CD (plus a few hundred other domains).<br>
-If you want to search another database with the same query, you can skip the PSI-BLAST search by clicking 
+If you want to search another database with the same query, you can skip the MSA Query search by clicking 
 'Resubmit query HMM' on the results page. Alternatively, you may press the tab 'Edit Query Alignment' 
 and in the window that opens, press 'Restart HHpred with this alignment'.
 </div>
