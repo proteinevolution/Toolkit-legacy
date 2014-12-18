@@ -318,11 +318,11 @@ class HamppredJob  < Job
       @results.push("Repeat PSI-BLAST iterations until you have at least 10 sequences (if possible). ")
       @results.push("Use this seed alignment to jump-start HHpred.</font><br><br>")
     elsif  prob >40 && prob  < 90 && rand() >0.8
-      @results.push("<br><font color='blue'>\n<b>Need help to find out how to validate your hits? Click <a href=\"\#\" title=\"HHpred FAQs\" onclick=\"openHelpWindow('/hhpred/help_faq#correct match');\">here.<\/a></b>\n</font>")
+      @results.push("<br><font color='blue'>\n<b>Need help to find out how to validate your hits? Click <a href=\"\#\" title=\"HAMPpred FAQs\" onclick=\"openHelpWindow('/hamppred/help_faq#correct match');\">here.<\/a></b>\n</font>")
     elsif rand() > 0.8
       @results.push("<br><font color='darkgreen'> <b>Note: Corrupted alignments are the most common source of high-scoring false positives. Check the query alignment by clicking </font><font color='black'>Show Query Alignment</font><font color='darkgreen'> above. To check the template alignments use the <img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" height=\"15\" align=\"middle\" /> logos.</b></font>")
     elsif  rand() > 0.8
-      @results.push("<br><font color='green'> <b>Need help on how to interpret your results? Click <a href=\"\#\" title=\"HHpred Results\" onclick=\"openHelpWindow('/hhpred/help_results');\">here.<\/a></b></font>")
+      @results.push("<br><font color='green'> <b>Need help on how to interpret your results? Click <a href=\"\#\" title=\"HAMPpred Results\" onclick=\"openHelpWindow('/hamppred/help_results');\">here.<\/a></b></font>")
     end
 
     tp2 = Process.times.utime # time
@@ -355,7 +355,7 @@ class HamppredJob  < Job
       @results.push("</div>\n")
       @results.push("</div>\n")
       @results.push("<div class=\"row\" style=\"position:absolute; top:50px; width:785px;\">\n")
-      @results.push("<form action=\"/hhpred/resubmit_domain/#{jobid}\" method=\"post\">\n")
+      @results.push("<form action=\"/hamppred/resubmit_domain/#{jobid}\" method=\"post\">\n")
       @results.push("<input type=\"hidden\" id=\"domain_start\" name=\"domain_start\"/>\n")
       @results.push("<input type=\"hidden\" id=\"domain_end\" name=\"domain_end\"/>\n")
       @results.push("<input type=\"submit\" class=\"feedbutton\" style=\"border-width:2px;\" value=\"Resubmit section\"/>\n")
@@ -424,10 +424,10 @@ class HamppredJob  < Job
         if coiled_coil != 0
           #@results.push("<div class=\"row\">\n")
           #@results.push("</div>\n")
-          #@results.push("<br>HHpred has detected coiled coil containing regions, you may consider running PCoils\n ")
-          #url ="#{DOC_ROOTURL}/hhpred/run/#{jobid}?jobaction=hhpred_coils&forward_controller=pcoils&forward_action=forward"
+          #@results.push("<br>HAMPpred has detected coiled coil containing regions, you may consider running PCoils\n ")
+          #url ="#{DOC_ROOTURL}/hamppred/run/#{jobid}?jobaction=hamppred_coils&forward_controller=pcoils&forward_action=forward"
           #@results.push("<input type=\"button\" title=\"Run coiled-coil prediction\" value=\"Run PCOILS\" onclick=\"location.href='#{url}'\">\n")
-          @results.push("<pre><font color=\"purple\">HHpred has detected hits to coiled coil-containing proteins.<br>You may consider running a PCOILS prediction on your query.<br></font>\n")
+          @results.push("<pre><font color=\"purple\">HAMPpred has detected hits to coiled coil-containing proteins.<br>You may consider running a PCOILS prediction on your query.<br></font>\n")
           #@results.push("</div>\n")
 
         end
@@ -638,9 +638,9 @@ class HamppredJob  < Job
         if (program.eql?("histograms") || program.eql?("histograms_makemodel"))
           line[b].chomp!
           if !makemodel
-            line[b]=line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/results/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"><\/a>\n"
+            line[b]=line[b]+ "<a href=\"#{DOC_ROOTURL}/hamppred/results/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"><\/a>\n"
           else
-            line[b] = line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/results_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"><\/a>\n\n"
+            line[b] = line[b]+ "<a href=\"#{DOC_ROOTURL}/hamppred/results_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_alignments.jpg\" alt=\"Alignments\" title=\"show query-template alignments\" #{logo_attr} height=\"30\"><\/a>\n\n"
           end
 
           mapname="#{jobid}_#{m}"
@@ -674,16 +674,16 @@ class HamppredJob  < Job
         else
           line[b].chomp!
           if !makemodel
-            line[b] =line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/histograms/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"><\/a>\n";
+            line[b] =line[b]+ "<a href=\"#{DOC_ROOTURL}/hamppred/histograms/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"><\/a>\n";
           else
-            line[b] =line[b]+ "<a href=\"#{DOC_ROOTURL}/hhpred/histograms_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"><\/a>\n\n";
+            line[b] =line[b]+ "<a href=\"#{DOC_ROOTURL}/hamppred/histograms_makemodel/#{jobid}##{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_histogram_single.png\" alt=\"Histograms\" title=\"Show histograms\" #{logo_attr} height=\"30\"><\/a>\n\n";
           end
         end
 
         # Add logo for template alignment
         line[b].chomp!
         if !makemodel
-          line[b]=line[b]+"<a href=\"#{DOC_ROOTURL}/hhpred/run/#{jobid}?jobaction=hhpred_showtemplalign&forward_controller=hhpred&forward_action=results_showtemplalign&alformat=fasta&hits=#{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" title=\"Show template alignment\" #{logo_attr} /><\/a>\n"
+          line[b]=line[b]+"<a href=\"#{DOC_ROOTURL}/hamppred/run/#{jobid}?jobaction=hamppred_showtemplalign&forward_controller=hamppred&forward_action=results_showtemplalign&alformat=fasta&hits=#{m}\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_template_ali.png\" title=\"Show template alignment\" #{logo_attr} /><\/a>\n"
         end
 
         ########################################################################################################

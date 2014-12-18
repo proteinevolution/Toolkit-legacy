@@ -4,7 +4,8 @@ function appearForward(val)
     var image = 'hitlist_img';
     var create = 'createmodel';
     var merge = 'mergeali';
-    
+
+    // Element is currently display = none and shall be shown
     if (Element.getStyle(val, 'display') == "none" && Element.getStyle('noPdb', 'display') == "none") {
 	if ($(coloring) != null) {
 	    new Effect.Fade(coloring);
@@ -12,18 +13,22 @@ function appearForward(val)
 	new Effect.Fade(create);
 	new Effect.Fade(merge);
 	new Effect.Fade(image);
-	new Effect.Fade('noPdb');		
+	new Effect.Fade('noPdb');
+
 	sleep(1000);
-	new Effect.Appear(val);
+
+	// Special Case Createmodel, active checkbox
 	if (val == 'createmodel') {
 	    checkbox_createmodel(true);
 	    select_first_not_disabled();
 	} else {
 	    checkbox_createmodel(false);
 	}
+	new Effect.Appear(val);
     } else {
 	new Effect.Fade(val);
 	new Effect.Fade('noPdb');
+
 	if ($(coloring) != null) {
 	    new Effect.Appear(coloring);
 	}
@@ -125,13 +130,15 @@ function select_first(first)
 
 
 function change_label(id, labelA, labelB){
-	if($(id).innerHTML == labelA){
-		   $(id).innerHTML = labelB;  
-	}else{
-		  $(id).innerHTML = labelA;
-	}
-
+// Switching labels by javascript without knowing the context is not useful,
+// because labels are not switched i.e. on reset. -kft
+//	if($(id).innerHTML == labelA){
+//		   $(id).innerHTML = labelB;
+//	}else{
+//		  $(id).innerHTML = labelA;
+//	}
 }
+
 function init_label(id, radioChecked, labelChecked, labelUnchecked){
 		alert($(id).innerHTML+"\n"+$(radioChecked).checked);
 }
@@ -236,4 +243,9 @@ function toggle_hitlist(){
 		Effect.Appear('hitlist_img');
 		$('hitlist_btn').value="Hide bar graph";
 	}
+}
+
+function pasteExample()
+{
+  $('sequence_input').value = ">gi|147642904|sp|Q5FVL3.2|FA69B_RAT RecName: Full=Protein FAM69B; AltName: Full=Pancreatitis-induced protein 49; Short=PIP49\nMRRLRRLVHLVLLCPFSKGLQGRLPGLRVKYVLLVWLGIFVGSWMVYVHYSSYSELCRGHVCQVVICDQY\nQKGIISGSVCQDLCELQKVEWRTCLSSAPGQQVYSGLWQDKEVTIKCGIEEALNSKAWPDAVPRRELVLF\nDKPTRGTSIKEFREMTLSFLKANLGDLPSLPALVDQILLMADFNKDSRVSLAEAKSVWALLQRNEFLLLL\nSLQEKEHASRLLGYCGDLYLTESIPHGSWHGAVLLPALRPLLPSVLHRALQQWFGPAWPWRAKIAIGLLE\nFVEELFHGSYGTFYMCETTLANVGYTATYDFKMADLQQVAPEATVRRFLQGRHCEQSSDCIYGRDCRAPC\nDKLMRQCKGDLIQPNLAKVCELLRDYLLPGAPADLYEELGKQLRTCTTLSGLASQVEAHHSLVLSHLKTL\nLWREISNTNYS";  
 }
