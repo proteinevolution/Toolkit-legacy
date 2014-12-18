@@ -2,6 +2,12 @@ class UserController < ApplicationController
 #  before_filter :login_required, :only => [:welcome,:change_password]
 #  layout  'scaffold'
 
+  def logger
+    # Be careful of what to log because of protection of data privacy.
+    # max log file size: 10M. Keep 2 of them.
+    @logger ||= Logger.new("#{RAILS_ROOT}/log/user_controller.log", 2, 10485670)
+  end
+
   def login
     @meta_section = "login"
     return if generate_blank
@@ -9,12 +15,16 @@ class UserController < ApplicationController
     if session['user'] = User.authenticate(params['user']['login'], params['user']['password'])
       flash['notice'] = l(:user_login_succeeded)
       @user = session['user']
-		@user.jobs.each do |job|
-			if (!@jobs_cart.include?(job.jobid) && job.config['hidden'] == false ) 
-				@jobs_cart.push(job.jobid)
-			end
-		end
-		redirect_to :host => DOC_ROOTHOST, :action => 'welcome'
+      @user.jobs.each do |job|
+        if (!@jobs_cart.include?(job.jobid))
+          if (job.config.nil?)
+            logger.debug("L21 Missing config of #{job.type}:#{job.jobid} in #{job.tool.to_us}_jobs.yml")
+          elsif (job.config['hidden'] == false)
+            @jobs_cart.push(job.jobid)
+          end
+        end
+      end
+      redirect_to :host => DOC_ROOTHOST, :action => 'welcome'
     else
       @login = params['user']['login']
       flash.now['message'] = l(:user_login_failed)
@@ -70,14 +80,14 @@ class UserController < ApplicationController
     params['user'].delete('form')
     begin
       User.transaction do
-        logger.debug "User #{@user}"
+        # logger.debug "L83 User #{@user}" # don't log because of privacy
         @user.change_password(params['user']['password'], params['user']['password_confirmation'])
-        logger.debug "Password changed"
+        logger.debug "L85 Password changed"
         if @user.save
           UserNotify.deliver_change_password(@user, params['user']['password'])
           flash.now['notice'] = l(:user_updated_password, "#{@user.login}")
         end
-        logger.debug "User saved"
+        logger.debug "L90 User saved"
       end
     rescue
       flash.now['message'] = l(:user_change_password_email_error)
