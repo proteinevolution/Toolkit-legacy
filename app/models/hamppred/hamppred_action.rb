@@ -1,6 +1,5 @@
 class HamppredAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
-  HHBLITS = File.join(BIOPROGS, 'hhsuite/bin/hhblits')
   HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
   HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
@@ -33,7 +32,7 @@ class HamppredAction < Action
     params_to_file(@seqfile, 'sequence_input', 'sequence_file')
     @commands = []
     @informat = params['informat'] ? params['informat'] : 'fas'
-    if (@informat != "a3m")
+    if (@informat != "a3m" && @informat != "a2m")
       reformat(@informat, "fas", @seqfile)
       @informat = "fas"
     end
@@ -182,8 +181,13 @@ class HamppredAction < Action
     case @mode
     when 'queryhmm'
       @informat = 'a3m'
-      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
-      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.hhm", "#{@basename}.hhm")
+#      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
+#      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.hhm", "#{@basename}.hhm")
+      files = Dir.entries("#{pjob.job_dir}")
+      a3m_file = files.include?("#{pjob.jobid}.a3m") ? "#{pjob.jobid}.a3m" : files.detect {|f| f.match /#{pjob.jobid}.*\.a3m/}
+      hhm_file = files.include?("#{pjob.jobid}.hhm") ? "#{pjob.jobid}.hhm" : files.detect {|f| f.match /#{pjob.jobid}.*\.hhm/}
+      FileUtils.copy_file("#{pjob.job_dir}/#{a3m_file}", "#{@basename}.a3m")
+      FileUtils.copy_file("#{pjob.job_dir}/#{hhm_file}", "#{@basename}.hhm")
     when 'hhsenser'
       @informat = 'a3m'
       FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
@@ -214,7 +218,7 @@ class HamppredAction < Action
       if(@prefilter=='psiblast')
          cpus = 4
          @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
-         @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &> #{job.statuslog_path}"
+         @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &>> #{job.statuslog_path}"
       else
           if @maxhhblitsit == '0'
               @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
@@ -222,7 +226,7 @@ class HamppredAction < Action
           else
               cpus = 8
               @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
-              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
           end
       end
       @commands << "#{HHSUITELIB}/addss.pl #{@basename}.a3m"
@@ -265,9 +269,9 @@ class HamppredAction < Action
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.tenrep_file -o #{@basename}.tenrep_file"
 
 
-    logger.debug "Commands:\n"+@commands.join("\n")
+    logger.debug "L272 Commands:\n"+@commands.join("\n")
     # queue.submit(@commands, true, {'cpus' => '3', 'memory' => @memory})
-    # declare as much cpus as are specified by the commands
+    # declare as much cpus as are specified in the commands
     queue.submit(@commands, true, {'cpus' => cpus.to_s(), 'memory' => @memory})
   end
 
@@ -290,7 +294,7 @@ class HamppredAction < Action
       memory = 36
     end
 
-    logger.debug "L313 Memory Allocation - HAMPpred - : #{memory}"
+    logger.debug "L297 Memory Allocation - HAMPpred - : #{memory}"
     memory
   end
 

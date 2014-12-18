@@ -108,7 +108,7 @@ class ApplicationController < ActionController::Base
     if @job.nil?
       @error = {'check_jobid' => 'Unknown jobid!'}
       session[:errors] = @error
-      redirect_to :back
+      redirect_to_back_or_index
     else
       if ((@user.nil? && @job.user_id.nil?) || (!@user.nil? && 
           (@user.groups.include?('admin') || @job.user_id.nil? || @user.id == @job.user_id)))
@@ -125,7 +125,7 @@ class ApplicationController < ActionController::Base
       else
         @error = {'check_jobid' => 'Permission denied!'}
         session[:errors] = @error
-        redirect_to :back
+        redirect_to_back_or_index
       end
     end
   end
@@ -143,18 +143,21 @@ class ApplicationController < ActionController::Base
     if (!(params[:jobid].nil? || params[:jobid].empty?))
       params[:jobid].each do |jobid| 
         @job = Job.find(:first, :conditions => [ "jobid = ?", jobid])
-        if (!@job.nil? && ((@job.jobid !~ /^tu_/ && @job.jobid !~ /^HH_/) || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin'))) )        
-          @job.remove
-          logger.debug "Delete job in jobs_cart"
+        if (@job.nil?)
+          # even remove jobs which are not found in the database
+          logger.debug "L148 Delete zombie job from jobs_cart"
           @jobs_cart.delete(@job.id)
-          logger.debug "Destroy job #{@job.id} in database"
-          Job.delete(@job.id)
+        elsif ((@job.jobid !~ /^tu_/ && @job.jobid !~ /^HH_/) || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin')))
+          logger.debug "L151 Delete job from jobs_cart"
+          @jobs_cart.delete(@job.id)
+          @job.remove
+          # jobs which should not be deleted in the database even are not removed from the jobs cart by removeJobs.
         end
       end
     end
     redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
   end
-  # Testing Commit to WYE
+
   # sorts jobs by comparing their ids lexicographically 
   # use factor -1 to reverse result 
   def sort_jobids(factor)
@@ -277,6 +280,20 @@ class ApplicationController < ActionController::Base
   # sorts jobs by their toolname in descending lexicographic order by calling sort_jobtool
   def sort_tool_desc
     sort_jobtool(1)
+  end
+
+  def redirect_to_back_or_index
+      begin
+        redirect_to :back
+      rescue ActionController::RedirectBackError
+        # This happens quite often, i.e. when using the browser history to select some previous toolkit page
+        # showing an already deleted job etc.
+        # Trying to display index page of current tool.
+        # If this is the correct page, it fortunately seems to keep the user input sometimes.
+        # If controller/action is not appropriate, it probably still is better
+        # then displaying "Internal Server Error".
+        redirect_to(:host => DOC_ROOTHOST, :action => "index")
+      end
   end
   
 end

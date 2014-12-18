@@ -383,7 +383,7 @@ class SgeWorker < AbstractWorker
                 when "BlastclustAction" then 10
                 when "BacktransAction" then 3
                   ### C ###
-                when "ClansAction"    then 28 # uses blastpgp
+                when "ClansAction"    then 50 # uses blastpgp
                 when "CsBlastAction"  then 18
                 when "ClustalwAction" then 10
                 when "ClustalwForwardAction" then 10
@@ -393,7 +393,7 @@ class SgeWorker < AbstractWorker
                   ### F ###
                 when "FrpredAction" then 15
                   ### G ###
-                when "GcviewAction" then 30 # uses blastpgp
+                when "GcviewAction" then 50 # uses blastpgp
                 when "Gi2seqExportAction" then 3  
                 when "Gi2seqAction" then 3  
                 when "Gi2seqForwardAction" then 3
@@ -416,9 +416,9 @@ class SgeWorker < AbstractWorker
                 when "HhrepidAction" then 18
                 when "HhrepAction" then 18
                 when "HhrepMergealiAction" then 18
-                when "HhclusterAction" then 28 # uses blastpgp
+                when "HhclusterAction" then 50 # uses blastpgp
                 when "HhblitsForwardAction" then 18
-                when "HhompAction" then 28 # uses blastpgp
+                when "HhompAction" then 50 # uses blastpgp
                 when "HhfilterAction" then 18
                 when "HhblitsForwardHmmAction" then 18
                 when "Hmmer3Action" then 10
@@ -436,7 +436,7 @@ class SgeWorker < AbstractWorker
                 when "MafftAction" then 5
                 when "MafftForwardAction" then 5
                   ### P ###
-                when "ProtBlastAction" then 28 # uses blastpgp
+                when "ProtBlastAction" then 50 # uses blastpgp
                 when "PcoilsAction" then 6
                 when "PsiBlastAction" then 50 # uses blastpgp
                 when "PatsearchAction" then 5
@@ -444,7 +444,7 @@ class SgeWorker < AbstractWorker
                 when "PatsearchForwardAction" then 5
                 when "ProtBlastForwardAction" then 5
                   ### Q ###
-                when "Quick2DAction" then 28 # disopred2 needed more than 22, uses blastpgp
+                when "Quick2DAction" then 50 # disopred2 needed more than 22, uses blastpgp
                   ### R ###
                 when "RepperAction" then 15
                 when "ReformatAction" then 4

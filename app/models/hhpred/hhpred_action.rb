@@ -1,3 +1,4 @@
+# -*- coding: undecided -*-
 class HhpredAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
   HHBLITS = File.join(BIOPROGS, 'hhblits')
@@ -90,7 +91,7 @@ class HhpredAction < Action
     @diff = '-diff 100'
     @local_dir = '/tmp'
 
-    # Check if the second line is to long and increase Memory allocation in Tuebingen 
+    # Check if the second line is too long and increase Memory allocation in Tuebingen 
     @memory = check_sequence_length
 
     process_databases
@@ -101,7 +102,11 @@ class HhpredAction < Action
 
     # Expand cdd and interpro as list of member databases
     if (@dbs =~ /cdd_/)
-      ['pfamA_*', 'smart_*', 'KOG_*', 'COG_*', 'cd_*'].each do |db|
+      # kft Dec 2014: In Aug 2012, Jörn replaced usage of pfam by pfamA here.
+      # Changed back to pfam now, because pfam meets the official documentation
+      # of cdd and the reason of replacing it by pfamA is unknown.
+      # (This change was discussed with Hongbo, who appreciated it, too)
+      ['pfam_*', 'smart_*', 'KOG_*', 'COG_*', 'cd_*'].each do |db|
         db_path = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', db))[0]
         if (!db_path.nil?)
           @dbs += " " + db_path
@@ -325,7 +330,7 @@ class HhpredAction < Action
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.tenrep_file -o #{@basename}.tenrep_file"
 
 
-    logger.debug "Commands:\n"+@commands.join("\n")
+    logger.debug "L332 Commands:\n"+@commands.join("\n")
     # queue.submit(@commands, true, {'cpus' => '3', 'memory' => @memory})
     # declare as much cpus as are specified in the commands
     queue.submit(@commands, true, {'cpus' => cpus.to_s(), 'memory' => @memory})
@@ -350,7 +355,7 @@ class HhpredAction < Action
       memory = 36
     end
 
-    logger.debug "L354 Memory Allocation - HHpred - : #{memory}"
+    logger.debug "L357 Memory Allocation - HHpred - : #{memory}"
     memory
   end
 
