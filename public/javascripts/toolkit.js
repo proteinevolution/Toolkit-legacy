@@ -148,7 +148,7 @@ function MM_showHideLayers()
 
 function openUserdbWindow(url) 
 {
-    var userdbwin = window.open(url,'userdbwindow','width=700,height=320,left=0,top=0,scrollbars=yes,resizable=no');
+    var userdbwin = window.open(url,'userdbwindow','width=700,height=360,left=0,top=0,scrollbars=yes,resizable=no');
     userdbwin.focus(); 
 }
 

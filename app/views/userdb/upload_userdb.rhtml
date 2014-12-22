@@ -8,6 +8,8 @@
 	<% if !@uploaded_db.nil? %>
 		<p style="color: green; margin-left: 10px; font-weight: bold;">Successfully uploaded '<%= @uploaded_db %>' database. Database will be usable as soon as it is formatted. (This may take a few seconds.)</p>
 		<div class="hr">&nbsp;</div>
+	<% else %>
+	    <p>&nbsp;</p>
 	<% end %>
 	<% if !@user.nil? %>
 		<p style="margin-left: 10px;">You are currently logged in as user '<%= @user.login %>'. The total size of your personal databases may not exceed <span style="color: red; font-weight: bold;">100 MB</span>. Databases will be stored until you delete them in the database administration section.</p>

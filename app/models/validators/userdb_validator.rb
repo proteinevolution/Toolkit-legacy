@@ -19,6 +19,11 @@ module Toolkit
 					configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
 
 					validates_each(attr_names, configuration) do | record, attr, value |
+
+                                                if value.is_a?(String) && value.empty?
+                                                  record.errors.add(attr, "Please select a file.")
+                                                  next
+                                                end
 						
 						if value.eof
 							next
