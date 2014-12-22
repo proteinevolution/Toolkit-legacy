@@ -374,7 +374,7 @@ class SgeWorker < AbstractWorker
                   
                   ### A ###
                 when "AncesconAction" then 3
-                when "Ali2dAction" then 18
+                when "Ali2dAction" then 50 # runs use memsat2 which uses blastpgp
                 when "Aln2plotAction" then 10
                 when "AlnvizAction" then 5
                   ### B ###  

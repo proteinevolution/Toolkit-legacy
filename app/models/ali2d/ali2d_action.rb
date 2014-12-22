@@ -99,8 +99,9 @@ class Ali2dAction < Action
     q = queue
     q.on_done = 'build_params'
     q.save!
-    
-    q.submit_parallel(@commands, false)
+
+    # each command contains  a call of memsat2.pl, which calls blastpgp -a 2 ...
+    q.submit_parallel(@commands, false, { 'cpus' => '2' })
     
 
   end
