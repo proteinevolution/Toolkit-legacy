@@ -34,6 +34,7 @@ class Stat < ActiveRecord::Base
     result += "#{h}h" if h > 0
     result += "#{m}m" if m > 0
     result += "#{s}s" if s > 0
+    result
   end
 
   def time2string()
