@@ -6,14 +6,21 @@
 
 	<div class="row">
 
- 		<div id="applet">
-		  <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".qt.fas"}) %>
-			<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		  <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".qt.reduced.fas"}) %>
-			<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
-			
-		</div>
+ 		<table id="applet">
+		  <tr>
+		  <td>
+		    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".qt.fas"}) %>
+		  </td><td>
+		    <strong>complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+		  </td><td>
+		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  </td><td>
+		    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".qt.reduced.fas"}) %>
+		  </td><td>
+		    <strong>reduced alignment: 50 most distinct sequences with inserted residues deleted</strong>
+		  </td>
+		  </tr>	
+		</table>
 		<div class="hr">&nbsp;</div>
 
 	  	<input name="submitform" type="submit" class="feedbutton" value="Restart HHpred with this alignment" /> 
