@@ -223,25 +223,21 @@
 
 <h3 class="<%= @section["name"] %>">Alignment</h3>
 <div class="row">
-	<div id="applet">
-  	<!--	<APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
-		<PARAM NAME="input"  value="<%= DOC_ROOTURL %>/hhomp_ali/<%= @page %>.fas">
-		<PARAM NAME="type"   value="URL">
-		<PARAM NAME="format" value="FASTA">
-		</APPLET> -->
+	<table id="applet">
+	  <tr>
+	    <td>
 		<%= render(:partial => "shared/jalview", :locals => {:file => "#{DOC_ROOTURL}/hhomp_ali/#{@page}.fas" }) %>
-		<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<!-- <APPLET codebase="/applets/jalview/" ARCHIVE="jalview.jar" CODE="jalview.ButtonAlignApplet.class" width=70 height=35>
-		<PARAM NAME="input"  value="<%= DOC_ROOTURL %>/hhomp_ali/<%= @page %>.reduced.fas">
-		<PARAM NAME="type"   value="URL">
-		<PARAM NAME="format" value="FASTA">
-		</APPLET> -->
+	    </td><td>
+		<strong>complete alignment</strong>
+	    </td><td>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    </td><td>
 		<%= render(:partial => "shared/jalview", :locals => {:file => "#{DOC_ROOTURL}/hhomp_ali/#{@page}.reduced.fas"}) %>
-
-		<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
-			
-	</div>	
+	    </td><td>
+		<strong>reduced alignment: 50 most distinct sequences with inserted residues deleted</strong>
+	    </td>
+	  </tr>
+	</table>	
 </div>
 
 <div class="hr">&nbsp;</div>

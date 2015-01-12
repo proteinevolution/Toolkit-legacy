@@ -95,6 +95,21 @@ function toggleForward(id)
     }
 }
 
+function show_hide_field(name) {
+    if ($(name + '_on').value == 'true') {
+	Effect.Fade(name);
+ 	Effect.Fade('hide_' + name, { duration: 0.0 });
+ 	Effect.Appear('show_' + name, { duration: 0.0 });
+	$(name + '_on').value = 'false';
+
+    } else {
+ 	Effect.Appear(name);
+ 	Effect.Fade('show_' + name, { duration: 0.0 });
+ 	Effect.Appear('hide_' + name, { duration: 0.0 });
+ 	$(name + '_on').value = 'true';
+    }
+}
+
 function openHelpWindow(url) 
 {	
     var helpwindow = window.open(url,'helpwindow','width=950,height=700,left=0,top=0,scrollbars=yes,resizable=no'); 	

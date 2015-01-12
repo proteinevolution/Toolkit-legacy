@@ -18,15 +18,22 @@
 
 	<div class="row">
 
- 		<div id="applet">
-                  <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".align"}) %>
-			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/cs_blast/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".ralign"}) %>
+ 		<table id="applet">
+		  <tr>
+		  <td>
+                    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".align"}) %>
+		  </td><td>
+		    <strong><a href="#" onclick="openHelpWindow('/cs_blast/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a></strong>
+		  </td><td>
+		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  </td><td>
+                    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".ralign"}) %>
+		  </td><td>
+		    <strong><a href="#" onclick="openHelpWindow('/cs_blast/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></strong>
+		  </td>
+		  </tr>
 
-			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/cs_blast/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></span></strong>
-			
-		</div>
+		</table>
 	</div><div class="hr">&nbsp;</div>
 
 	<div class="row">
