@@ -3,40 +3,25 @@
 <div class="hr">&nbsp;</div>
 
 <%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}) %>
+<%= form_jalview_buttons("complete alignment",
+    			 "reduced alignment: 50 most distinct sequences with inserted residues deleted",
+			 15, 0,
+			 ".qt.fas", ".qt.reduced.fas") %>
+
+        <div class="spacer">&nbsp;</div>
 
 	<div class="row">
-
- 		<table id="applet">
-		  <tr>
-		  <td>
-		    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".qt.fas"}) %>
-		  </td><td>
-		    <strong>complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</strong>
-		  </td><td>
-		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		  </td><td>
-		    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".qt.reduced.fas"}) %>
-		  </td><td>
-		    <strong>reduced alignment: 50 most distinct sequences with inserted residues deleted</strong>
-		  </td>
-		  </tr>	
-		</table>
-		<div class="hr">&nbsp;</div>
-
 	  	<input name="submitform" type="submit" class="feedbutton" value="Restart HHpred with this alignment" /> 
    	<input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
    	<strong>You may edit this merged query-template alignment and submit it to HHpred&nbsp;&nbsp;</strong>
    	<br/>
 	</div>
 
-	<div class="spacer">&nbsp;</div>	
-
-
-
+	<div class="spacer">&nbsp;</div>
 
 	<div class="row">
 		<%= text_area_tag("result_textbox_to_file", @job.render_file(@job.jobid+".qt.fas"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
-	</div>	
+	</div>
 	
 
 </form>

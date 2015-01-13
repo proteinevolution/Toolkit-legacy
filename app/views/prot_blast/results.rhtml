@@ -74,11 +74,7 @@
 		<%= @job.render_file(@job.jobid+".html") %>
 	</div>
 
-	<div id="jalview">	
-           <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".j.align"}) %>
-	</div>
-
-	<div id="help_jal"><a href="#" onclick="openHelpWindow('/prot_blast/help_results#jalview');">View alignment without inserts</a></div>
+	<%= form_jalview_button("View alignment without inserts", 0, ".j.align", nil, "jalview", "prot_blast") %>
 
 	<br/>
 	<span id="show_references" style="display: <%= @show_references ? 'none' : 'true' %>"><a href="javascript:show_hide_field('references');">Show references</a></span>

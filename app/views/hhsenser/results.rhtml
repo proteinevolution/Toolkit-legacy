@@ -50,17 +50,12 @@
 	<div class="hr">&nbsp;</div>
 </div>
 
-<div class="row">
-	<table id="applet" border="0" cellpadding="0" width="100%">
-	  <tr>
-	    <td width="13%"><%= render(:partial => "shared/jalview", :locals => {:file_extension => "_strict.reduced.fas"}) %></td>
-	    <td width="33%"><strong>alignment with 100 most distinct sequences<br/>&nbsp;</strong></td>
-	    <td width="13%"><%= render(:partial => "shared/jalview", :locals => {:file_extension => "_strict_masterslave.reduced.fas"}) %></td>
-	    <td><strong>reduced alignment: 100 most distinct sequences with inserted residues deleted</strong></td>
-	  </tr>
-	</table
-</div>
-<div class="hr">&nbsp;</div>
+<%= form_jalview_buttons("alignment with 100 most distinct sequences",
+    			 "reduced alignment: 100 most distinct sequences with inserted residues deleted",
+			 25, 30,
+			 "_strict.reduced.fas", "_strict_masterslave.reduced.fas",
+			 nil, nil,
+			 2, 2) %>
 
 <div class = "row">
 	<span style="font-weight: bold;">Download alignment files:</span>
