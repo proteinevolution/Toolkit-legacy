@@ -3,27 +3,13 @@
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'queryalign'}) %>
 
 <%= form_tag({:action => :run, :jobaction => 'hhomp_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhomp"}) %>
-
+<%= form_jalview_buttons("complete alignment with inserts",
+    			 "reduced alignment: 50 most distinct sequences without inserts",
+			 20, 0,
+			 ".fas", ".reduced.fas",
+			 "alignment", "hhomp") %>
 	<div class="row">
-
- 		<table id="applet">
-		  <tr>
-		  <td>
-                    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".fas"}) %>
-		  </td><td>
-		    <strong><a href="#" onclick="openHelpWindow('/hhomp/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a></strong>
-		  </td><td>
-		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		  </td><td>
-                    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".reduced.fas"}) %>
-		  </td><td>
-		    <strong><a href="#" onclick="openHelpWindow('/hhomp/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></strong>
-		  </td>
-		  </tr>	
-		</table>
-		<div class="hr">&nbsp;</div>
-
-	  	<input name="submitform" type="submit" class="feedbutton" value="Restart HHomp with this alignment" /> 
+	<input name="submitform" type="submit" class="feedbutton" value="Restart HHomp with this alignment" /> 
    	<input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
    	<strong>You may edit the template alignment below and submit it to HHomp&nbsp;&nbsp;</strong>
    	<br/>

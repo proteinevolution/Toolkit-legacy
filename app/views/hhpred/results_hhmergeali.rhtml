@@ -6,35 +6,21 @@
 <%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}) %>
 
     <!-- Merging Query Template Alignments may lead to .qt Files that are to large for the average browser to proces, we cutoff at ~25 MB  -->
-   
+
+<%= form_jalview_buttons("complete alignment",
+    			 "reduced alignment: 50 most distinct sequences with inserted residues deleted",
+			 15, 0,
+			 ".qt.fas", ".qt.reduced.fas") %>
+	<div class="spacer">&nbsp;</div>
+
 	<div class="row">
-
- 		<table id="applet">
-		  <tr>
-		  <td>
-		    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".qt.fas"}) %>
-		  </td><td>
-		    <strong>complete alignment</strong>
-		  </td><td>
-		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		  </td><td>
-		    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".qt.reduced.fas"}) %>
-		  </td><td>
-		    <strong>reduced alignment: 50 most distinct sequences with inserted residues deleted</strong>
-		  </td>
-		  </tr>
-		</table>
-		<div class="hr">&nbsp;</div>
-
-	  	<input name="submitform" type="submit" class="feedbutton" value="Restart HHpred with this alignment" /> 
+	<input name="submitform" type="submit" class="feedbutton" value="Restart HHpred with this alignment" /> 
    	<input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
    	<strong>You may edit this merged query-template alignment and submit it to HHpred&nbsp;&nbsp;</strong>
    	<br/>
 	</div>
 
-	<div class="spacer">&nbsp;</div>	
-
-
+	<div class="spacer">&nbsp;</div>
 
  
     <div class="row">

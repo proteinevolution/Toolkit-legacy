@@ -108,13 +108,7 @@
 </div>
 
 <div id="color_button" class="row">
-
-  <div id="jalview">
-    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".tenrep_file"}) %>
-  </div>
-  
-  <div id="help_jal"><a href="#" onclick="openHelpWindow('/hhpred/help_results#jalview');">View alignment</a></div>
-
+<%= form_jalview_button("View alignment", 0, ".tenrep_file", nil, "jalview", "hhpred") %>
 
   <div class="labelj">
     <a href="#" onclick="openHelpWindow('/hhpred/help_params#coloring');">Color alignments</a>

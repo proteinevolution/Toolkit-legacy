@@ -1,7 +1,7 @@
 <!-- Example call:
    render(:partial => "shared/jalview", :locals => {:file_extension => ".j.align"})
 -->
-<input id="<%= "show_" + ((defined?(file) && file) ? file : file_extension) %>" style="display:true" type="button" class="toolbutton" onClick="show_hide_field('<%= (defined?(file) && file) ? file : file_extension %>');" value="Activate Jalview">
+<input id="<%= "show_" + ((defined?(file) && file) ? file : file_extension) %>" style="display:true" type="button" class="activatejalviewbutton" onClick="show_hide_field('<%= (defined?(file) && file) ? file : file_extension %>');" value="Activate Jalview">
 <input id="<%= ((defined?(file) && file) ? file : file_extension)+"_on" %>" name="<%= ((defined?(file) && file) ? file : file_extension)+"_on" %>" type="hidden" value="false" />
 <APPLET codebase="/applets/jalview/" code="jalview.bin.JalviewLite" archive="jalviewApplet.jar"  width="110" height="35" id="<%= (defined?(file) && file) ? file : file_extension %>" style="display:none;">
   <PARAM NAME="permissions" value="sandbox"/>

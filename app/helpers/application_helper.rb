@@ -39,12 +39,9 @@ module ApplicationHelper
       url = url_for(:controller => controller, :action => "help_params") + "#" + anchor
       "<a href=\"#\" onClick=\"openHelpWindow('#{url}');\" ><div class=\"label\"  id=\"#{labelid}\"    >#{labeltext}</div></a>" 
     end
-  
-  
-  
-  
+
   end
-  
+
   def form_checkbox(name, value=1, default=true, noformw=false, onchange="", disable=false)
     checked = (params['reviewing']||params.has_key?(name)) ? (params[name] ? params[name] : false) : default
     checked = @error_params.empty? ? checked : (@error_params[name] ? @error_params[name] : false)
@@ -220,5 +217,120 @@ module ApplicationHelper
   #  #label = l(:"#{@controller.controller_name}_#{name}_button")
   #  "#{self.send(:submit_tag, label, options)}"
   #end
+
+  # form_jalview_label formats a label for a jalview button
+  # labeltext   text of label
+  # len         size of label (in em unit). Defaults to length of labeltext. If 0, size of label remains unspecified.
+  # anchor      section name in help file. If nil, no link to help file is generated.
+  # controller  the help results file of that controller is used
+  # lines       number of lines which are used (only 1 or 2 allowed)
+  def form_jalview_label(labeltext, len=nil, anchor=nil, controller=nil, lines=1)
+    if (len.nil?)
+      len=labeltext.length
+    end
+    if 0 == len
+      style_clause = ""
+    else
+      style_clause = "width:#{len}em;"
+    end
+    if 2==lines
+      style_clause += "padding-top:4px;" # standard value (10px) reduced by 6px
+    end
+    if !style_clause.empty?
+      style_clause = " style=\"#{style_clause}\""
+    end
+    if anchor.nil?
+      "<div class=\"help_jal\" #{style_clause}><strong>#{labeltext}</strong></div>"
+    else
+      if controller.nil?
+        url = url_for(:action => "help_results") + "#" + anchor
+      else
+        url = url_for(:controller => controller, :action => "help_results") + "#" + anchor
+      end
+        
+      "<div class=\"help_jal\"#{style_clause}><a href=\"#\" onClick=\"openHelpWindow('#{url}');\">#{labeltext}</a></div>"
+    end
+  end
+
+  # form_jalview_buttons formats two jalview buttons with labels in a row
+  # label1     label to first jalview button
+  # label2     label to second jalview button
+  # len1       width of label1 (number of printed characters).
+  #            If nil, defaults to number of characters in text. If 0, omitted.
+  # len2       width of label2
+  # ext1       file extension to use by first jalview button
+  # ext2       file extension to use by second jalview button
+  # anchor     section name in help file. If nil, no link to help file is generated.
+  # controller the help results file of that controller is used
+  # lines      number of lines used by labels (default 1, only 1 or 2 allowed)
+  # colors     special user defined colors to use by jalview
+  def form_jalview_buttons(label1, label2, len1, len2, ext1, ext2, anchor=nil, controller=nil, lines=1, colors=nil)
+    res = <<-END_OF_STRING
+    <div class="row">
+    END_OF_STRING
+    res += form_jalview_button(label1, len1, ext1, nil, anchor, controller, lines, colors) + "\n"
+    res += form_jalview_button(label2, len2, ext2, nil, anchor, controller, lines, colors)
+    res += <<-END_OF_STRING
+      <div class="hr">&nbsp;</div>
+    </div>
+    END_OF_STRING
+    res
+  end
+
+  # form_jalview_buttons_f formats two jalview buttons with labels in a row
+  # label1     label to first jalview button
+  # label2     label to second jalview button
+  # len1       width of label1 (number of printed characters).
+  #            If nil, defaults to number of characters in text. If 0, omitted.
+  # len2       width of label2
+  # file1      file to use by first jalview button
+  # file2      file to use by second jalview button
+  # anchor     section name in help file. If nil, no link to help file is generated.
+  # controller the help results file of that controller is used
+  # lines      number of lines used by labels (default 1, only 1 or 2 allowed)
+  # colors     special user defined colors to use by jalview
+  def form_jalview_buttons_f(label1, label2, len1, len2, file1, file2, anchor=nil, controller=nil, lines=1, colors=nil)
+    res = <<-END_OF_STRING
+    <div class="row">
+    END_OF_STRING
+    res += form_jalview_button(label1, len1, nil, file1, anchor, controller, lines, colors) + "\n"
+    res += form_jalview_button(label2, len2, nil, file2, anchor, controller, lines, colors)
+    res += <<-END_OF_STRING
+      <div class="hr">&nbsp;</div>
+    </div>
+    END_OF_STRING
+    res
+  end
+
+  # form_jalview_button formats a jalview buttons with a label
+  # label      label to jalview button
+  # len        width of label (number of printed characters).
+  #            If nil, defaults to number of characters in text. If 0, omitted.
+  # ext        file extension to use by jalview
+  # file       file name to use by jalview (alternative to ext)
+  # anchor     section name in help file. If nil, no link to help file is generated.
+  # controller the help results file of that controller is used
+  # lines      number of lines used by label (default 1, only 1 or 2 allowed)
+  # colors     special user defined colors to use by jalview
+  def form_jalview_button(label, len, ext=nil, file=nil, anchor=nil, controller=nil, lines=1, colors=nil)
+    res = <<-END_OF_STRING
+      <div class="jalview">
+    END_OF_STRING
+    locals = nil
+    if (!file.nil?)
+      locals = {:file => file}
+    elsif (!ext.nil?)
+      locals = {:file_extension => ext}
+    end
+    if (!colors.nil?)
+      locals[:userDefinedColour] = colors
+    end
+    res += render(:partial => "shared/jalview", :locals => locals)
+    res += <<-END_OF_STRING
+      </div>
+    END_OF_STRING
+    res += form_jalview_label(label, len, anchor, controller, lines)
+    res
+  end
 
 end

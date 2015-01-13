@@ -3,26 +3,13 @@
 <%= render(:partial => "shared/resultsections") %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
-  
-<div class="row">
-  <div id="applet">
 
-    <table styles="width: 700px;">
-      <tr>
-	<td>
-         <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".align"}) %>
-	</td><td>
-	  <strong>complete alignment</strong>
-	</td><td>
-         <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".ralign"}) %>
-	</td><td>
-	  <strong>reduced alignment: 50 most distinct sequences with inserted residues deleted</strong>
-	</td>
-      </tr>
-    </table>
-  </div>
-</div>
-<div class="hr">&nbsp;</div>
+<%= form_jalview_buttons("complete alignment",
+    			 "reduced alignment: 50 most distinct sequences with inserted residues deleted",
+			 15, 30,
+			 ".align", ".ralign",
+			 nil, nil,
+			 2) %>
 
 <div class = "row">
   <span style="font-weight: bold;">Download alignment files:</span>
