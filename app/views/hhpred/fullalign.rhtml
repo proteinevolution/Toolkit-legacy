@@ -10,13 +10,12 @@
   <%= form_select_single("format", ["/hhpred/fullalign/#{@job.jobid}?mode=fas", "/hhpred/fullalign/#{@job.jobid}?mode=a3m"], ['FASTA', 'A3M'], "/hhpred/fullalign/#{@job.jobid}?mode=#{@mode}", 1, "location.href=this.options[this.selectedIndex].value") %>
   <%= form_hidden_field("hhpred_format", @mode) %>
 </div>
-  <div id="applet">
-    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".full.fas"}) %>
 
-    <strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhblits/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
- -->
+<div class="row">
+<%= form_jalview_button("complete alignment with inserts", 0, ".full.fas", nil, "alignment", "hhpred") %>
   <div class="hr">&nbsp;</div>
-
+</div>
+<div>
   <input name="submitform" type="submit" class="button" value="Start HHblits with this alignment" onclick="change_resubmit_form_to_hhblits();"/>
   <input name="submitform" type="submit" class="button" value="Start HHpred with this alignment" />
   <input name="resetform" type="reset" class="button" value="Undo all changes" />

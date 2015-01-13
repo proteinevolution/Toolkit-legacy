@@ -5,12 +5,8 @@
 <%= form_tag({:action => :run, :jobaction => 'hhblits_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, :name => "forward_alignment") %>
 
 <div class="row">
-
-  <div id="applet">
-    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".fas"}) %>
-  </div>
-
-  <strong><span style="position: relative; top: 5px;"><a href="#" onclick="openHelpWindow('/hhblits/help_results#alignment');" style="font-weight:normal;">Representative alignment:~ 100 most distinct sequences with inserts in Fasta format </a></span></strong>
+  <%= form_jalview_button("Representative alignment:~ 100 most distinct sequences with inserts in Fasta format",
+      			  0, ".fas", nil, "alignment", "hhblits") %>
 
   <div class="hr">&nbsp;</div>
 

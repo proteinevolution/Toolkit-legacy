@@ -6,13 +6,21 @@
 
 	<div class="row">
 
- 		<div id="applet">
-                   <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".fas"}) %>
-			<strong><span style="position: relative; top: -16px;"><a href="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.fas" onmouseover="return overlib('Complete alignment with inserts');" onmouseout="return nd();">Download complete alignment</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".reduced.fas"}) %>
-			<strong><span style="position: relative; top: -16px;"><a href="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.reduced.fas" onmouseover="return overlib('50 most distinct sequences w/o inserts');" onmouseout="return nd();">Download reduced alignment</a></span></strong> 
-		</div>
+ 		<table id="applet">
+		  <tr>
+		  <td>
+                    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".fas"}) %>
+		  </td><td>
+		    <strong><a href="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.fas" onmouseover="return overlib('Complete alignment with inserts');" onmouseout="return nd();">Download complete alignment</a></strong>
+		  </td><td>
+		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  </td><td>
+                    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".reduced.fas"}) %>
+		  </td><td>
+		    <strong><a href="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.reduced.fas" onmouseover="return overlib('50 most distinct sequences w/o inserts');" onmouseout="return nd();">Download reduced alignment</a></strong> 
+		  </td>
+		  </tr>
+		</table>
 		<div class="hr">&nbsp;</div>
 
                 <br/>

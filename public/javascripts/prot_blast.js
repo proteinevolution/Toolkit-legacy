@@ -54,21 +54,6 @@ function toggle_seqlen(list)
 	}
 }
 
-function show_hide_field(name) {
-    if ($(name + '_on').value == 'true') {
-	Effect.Fade(name);
- 	Effect.Fade('hide_' + name, { duration: 0.0 });
- 	Effect.Appear('show_' + name, { duration: 0.0 });
-	$(name + '_on').value = 'false';
-
-    } else {
- 	Effect.Appear(name);
- 	Effect.Fade('show_' + name, { duration: 0.0 });
- 	Effect.Appear('hide_' + name, { duration: 0.0 });
- 	$(name + '_on').value = 'true';
-    }
-}
-
 function test(){
 	alert((($(destination))[0]).getAttribute('acceptance'))
 }
