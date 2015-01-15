@@ -13,7 +13,7 @@ class HhfilterAction < Action
 
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat, 
                                                     :inputmode => 'alignment',
-                                                    :max_seqs => 1000,
+                                                    :max_seqs => 21000,
                                                     :min_seqs => 2,                                                    
                                                     :on => :create })
 
