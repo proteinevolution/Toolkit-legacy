@@ -83,7 +83,7 @@ p.formerror {
 	font-weight: bold;
 }
 
-input.sectionbutton, input.toolbutton, input.checkbutton, input.feedbutton, input.stopbutton {
+input.sectionbutton, input.toolbutton, input.checkbutton, input.feedbutton, input.stopbutton, input.activatejalviewbutton {
 	font-size: 10px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	border-width: 3px;
@@ -99,6 +99,12 @@ input.sectionbutton, input.toolbutton, input.checkbutton, input.feedbutton, inpu
 input.toolbutton {
 	float: right;
 	margin: 10px 3px 10px 10px;
+	padding: 0px 2px;
+	font-weight: bold;
+}
+input.activatejalviewbutton {
+	float: right;
+	margin: 6px 3px 10px 10px;
 	padding: 0px 2px;
 	font-weight: bold;
 }
@@ -159,7 +165,7 @@ input.helpbutton {
 	padding-right: 5px;
 	
 }
-input.sectionbutton:hover, input.toolbutton:hover, input.checkbutton:hover, input.feedbutton:hover, input.snailbutton:hover {
+input.sectionbutton:hover, input.toolbutton:hover, input.checkbutton:hover, input.feedbutton:hover, input.snailbutton:hover, input.activatejalviewbutton:hover {
 	border-top-color: #AEDF9A;
 	border-left-color: #94DA78;
 	border-right-color: #94DA78;

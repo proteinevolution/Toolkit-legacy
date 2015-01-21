@@ -3,18 +3,10 @@
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'queryalign'}) %>
 
 <%= form_tag( @fw_values[0], {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
-
-	<div class="row">
-
- 		<div id="applet">
-                  <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".fas"}) %>
-			<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".reduced.fas"}) %>
-			<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
-			
-		</div>
-	</div><div class="hr">&nbsp;</div>
+<%= form_jalview_buttons("complete alignment",
+    			 "reduced alignment: 50 most distinct sequences with inserted residues deleted",
+			 15, 0,
+			 ".fas", ".reduced.fas") %>
 
        <div class="row">
             <%= form_label("Forward alignment to") %>

@@ -794,16 +794,19 @@ ul.utils {
   background-color: #C9DBD8;
 }
 
-#jalview{
+#jalview, div.jalview {
   float:right;
+  height: 36px;
+  width: 110px;
 }
 
-#help_jal{
+#help_jal, div.help_jal {
   float:right;
   padding-top:10px;
+  text-align:right;
 }
 
-#help_jal a{
+#help_jal a, div.help_jal a{
   font-weight:normal;
 }
 

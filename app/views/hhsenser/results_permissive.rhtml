@@ -21,16 +21,10 @@
 	<div class="hr">&nbsp;</div>
 </div>
 
-<div class="row">
-	<div id="applet">
-          <%= render(:partial => "shared/jalview", :locals => {:file_extension => "_permissive_masterslave.fas"}) %>
-		<strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <%= render(:partial => "shared/jalview", :locals => {:file_extension => "_permissive_masterslave.reduced.fas"}) %>
-		<strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>		
-	</div>
-</div>
-<div class="hr">&nbsp;</div>
+<%= form_jalview_buttons("complete alignment",
+    			 "reduced alignment: 50 most distinct sequences with inserted residues deleted",
+			 15, 0,
+			 "_permissive_masterslave.fas", "_permissive_masterslave.reduced.fas") %>
 
 <div class = "row">
 	<span style="font-weight: bold;">Download alignment files:</span>
