@@ -2,21 +2,11 @@
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'templalign'}) %>
 
 <%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}) %>
-
+<%= form_jalview_buttons("complete alignment",
+    			 "reduced alignment: 50 most distinct sequences with inserted residues deleted",
+			 15, 0,
+			 "template.fas", "template.reduced.fas") %>
 <div class="row">
-  
-  <div id="applet">
-    <%= render(:partial => "shared/jalview", :locals => {:file_extension => "template.fas"}) %>
-
-    <strong><span style="position: relative; top: -16px;">complete alignment&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <%= render(:partial => "shared/jalview", :locals => {:file_extension => "template.reduced.fas"}) %>
-
-    <strong><span style="position: relative; top: -16px;">reduced alignment: 50 most distinct sequences with inserted residues deleted</span></strong>
-    
-  </div>
-  <div class="hr">&nbsp;</div>
-  
   <input name="submitform" type="submit" class="feedbutton" value="Start HHpred with this alignment" /> 
   <input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
   <strong>You may edit the template alignment below and submit it to HHpred&nbsp;&nbsp;</strong>

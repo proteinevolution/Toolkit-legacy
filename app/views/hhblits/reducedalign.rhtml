@@ -31,14 +31,9 @@
 </div>
 
 <div class="row">
+  <%= form_jalview_button("Reduced alignment: 50 most distinct sequences without inserts in Fasta format",
+      			  0, ".reduced.fas", nil, "alignment", "hhblits") %>
 
-  <div id="applet">
-    <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".reduced.fas"}) %>
-    <br>
-    <strong><span style="position: relative;"><a href="#" onclick="openHelpWindow('/hhblits/help_results#alignment');" style="font-weight:normal;">Reduced alignment: 50 most distinct sequences without inserts in Fasta format</a></span></strong>
-
-  </div>
-  
   <div class="hr">&nbsp;</div>
 
 </div>

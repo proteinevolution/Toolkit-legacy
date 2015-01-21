@@ -4,18 +4,12 @@
 
 <%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
 
+<%= form_jalview_buttons("complete alignment with inserts",
+    			 "reduced alignment: 50 most distinct sequences without inserts",
+			 25, 0,
+			 ".fas", ".reduced.fas",
+			 "alignment", "hhpred") %>
 	<div class="row">
-
- 		<div id="applet">
-		   <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".fas"}) %>
-			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhpred/help_results#alignment');" style="font-weight:normal;">complete alignment with inserts</a>&nbsp;&nbsp;&nbsp;&nbsp;</span></strong>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		  <%= render(:partial => "shared/jalview", :locals => {:file_extension => ".reduced.fas"}) %>
-			<strong><span style="position: relative; top: -16px;"><a href="#" onclick="openHelpWindow('/hhpred/help_results#alignment');" style="font-weight:normal;">reduced alignment: 50 most distinct sequences without inserts</a></span></strong>
-
-		</div>
-		<div class="hr">&nbsp;</div>
-
                 <br/>
                 <strong>You may edit the query alignment below and forward it to some tools&nbsp;&nbsp;</strong>
                 <br/>
