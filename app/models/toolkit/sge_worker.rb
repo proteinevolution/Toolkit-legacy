@@ -384,7 +384,7 @@ class SgeWorker < AbstractWorker
                 when "BacktransAction" then 3
                   ### C ###
                 when "ClansAction"    then 50 # uses blastpgp
-                when "CsBlastAction"  then 18
+                when "CsBlastAction"  then 50 # uses blastpgp
                 when "ClustalwAction" then 10
                 when "ClustalwForwardAction" then 10
                 when "ClustalwExportAction" then 5
