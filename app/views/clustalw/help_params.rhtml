@@ -1,6 +1,7 @@
 <ul id="helpindex" class="<%= @section['theme'] %>">
 	<li><a href="#input">Input format</a></li>
-	<li><a href="#otheradvanced">Other advanced options</a></li>
+	<li><a href="#otheradvanced">ClustalO: Other advanced options</a></li>
+	<li><a href="#otheradvancedw">ClustalW: Other advanced options</a></li>
 </ul>
 
 <h2><%= @tool['title'] %> Parameters</h2>
@@ -64,11 +65,54 @@ The accepted amino acid codes are:
 </pre>
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
-
 <a name="otheradvanced"></a>
-<h3 class="<%= @section["name"] %>">Other advanced options</h3>
+<h3 class="<%= @section["name"] %>">Clustal Omega: Other advanced options</h3>
 <div class="row">
-Use this textfield to specify advanced options via commandline. The options supported by ClustalW are:
+Use this textfield to specify advanced options via commandline. After removing some options not useful in this toolkit web environment, remaining options supported by <em>Clustal Omega</em> are (for <em>ClustalW</em> options see <a href="#otheradvancedw">next section</a>):
+<br/>
+<br/>
+<pre style="font-size: 11px;">
+Sequence Input:
+  --dealign                 Dealign input sequences
+  --is-profile              disable check if profile, force profile (default no)
+<!--  -t, --seqtype={Protein, RNA, DNA} Force a sequence type (default: auto)
+  --infmt={a2m=fa[sta],clu[stal],msf,phy[lip],selex,st[ockholm],vie[nna]} Forced sequence input file format (default: auto)
+-->
+Clustering:
+  --pileup                  Sequentially align sequences
+  --full                    Use full distance matrix for guide-tree calculation (might be slow; mBed is default)
+  --full-iter               Use full distance matrix for guide-tree calculation during iteration (might be slowish; mBed is default)
+  --cluster-size=&lt;n&gt;        soft maximum of sequences in sub-clusters
+  --trans=&lt;n&gt;               use transitivity (default: 0)
+  --use-kimura              use Kimura distance correction for aligned sequences (default no)
+  --percent-id              convert distances into percent identities (default no)
+                            
+Alignment Output:
+  --residuenumber, --resno  print residue numbers (default no)
+  --wrap=&lt;n&gt;                number of residues before line-wrap in output
+  --output-order={input-order,tree-order} MSA output order like in input/guide-tree
+                            
+Iteration:
+  --iterations, --iter=&lt;n&gt;  Number of (combined guide-tree/HMM) iterations
+  --max-guidetree-iterations=&lt;n&gt; Maximum number of guidetree iterations
+  --max-hmm-iterations=&lt;n&gt;  Maximum number of HMM iterations
+                            
+Limits (will exit early, if exceeded):
+  --maxnumseq=&lt;n&gt;           Maximum allowed number of sequences
+  --maxseqlen=&lt;l&gt;           Maximum allowed sequence length
+                            
+Miscellaneous:
+  -h, --help                Print this help and exit
+  -v, --verbose             Verbose output (increases if given multiple times)
+  --version                 Print version information and exit
+  --long-version            Print long version information and exit
+
+</pre>
+</div>
+<a name="otheradvancedw"></a>
+<h3 class="<%= @section["name"] %>">ClustalW: Other advanced options</h3>
+<div class="row">
+Use this textfield to specify advanced options via commandline. Options supported by <em>ClustalW</em> are (for <em>Clustal Omega</em> options see <a href="#otheradvanced">previous section</a>):
 <br/>
 <br/>
 <pre style="font-size: 11px;">
