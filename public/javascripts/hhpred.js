@@ -205,18 +205,6 @@ function show_hide_more_options() {
     }
 }
 
-function select_genomes() {
-
-    $('genomes_first').value = 'false';
-    if ($('genomes_first').value == 'true') {
-
-	$('genomes_first').value = 'false';
-	dblist = $('hhpred_dbs');
-        for( i=0; i<dblist.length; i++ ) dblist.options[i].selected = false;
-
-    }
-}
-
 function select_templates(val){
     
     var number = parseInt($('checkboxes').value, 10);

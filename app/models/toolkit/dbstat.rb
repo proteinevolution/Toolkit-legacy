@@ -5,7 +5,7 @@ class Dbstat < ActiveRecord::Base
      # pdb70
      basename = File.basename(dbname); # keep extension, if exists
      
-     versionNumberPattern = '_v?(\d+\.)+\d+\w?'
+     versionNumberPattern = '_v?(\d+\.)*\d+\w?'
      datePattern = '_\d?\d\w\w\w\d\d'
      endPattern = '\z'
 
@@ -39,17 +39,18 @@ class Dbstat < ActiveRecord::Base
      #         does not match the plausibility conditions).
      
      # the kind of databases to consider
-     db_keys = [ "std_dbs", "hhpred_dbs", "hhblits_dbs" ]
+     db_keys = [ "std_dbs", "hhpred_dbs", "hhblits_dbs", "genomes_hhpred_dbs" ]
+     genomes_keys = [ "genomes_hhpred_dbs" ]
 
-     # if these databases are used at once, the usage is considered nonsense
-     # and not recorded
-     nonsense_combination = [ "nr70", "nr90" ]
+     # If every pattern of one of these combinations matches a selected
+     # database, the database selection considered nonsense and not recorded.
+     nonsense_combinations = [ [ /\Anr70/, /\Anr90/ ] ]
 
      # if more than maxdb_count databases are used, the usage is considered
      # as bulk database usage and not recorded
      maxdb_count = 5
 
-     nonsense = (not nonsense_combination.empty?)
+     nonsense = (not nonsense_combinations.empty?)
      found_dbnames = Array.new
      db_keys.each do |db_key|
        db_list = params[db_key]
@@ -59,24 +60,30 @@ class Dbstat < ActiveRecord::Base
              return nil
            end
            new_dbname = Dbstat.normalizeDBName(db)
+           if (genomes_keys.include?(db_key))
+             new_dbname = "Genome " + new_dbname
+           end
            unless found_dbnames.include?(new_dbname)
              found_dbnames.push(new_dbname)
-             if (nonsense and (not nonsense_combination.include?(new_dbname)))
-               nonsense = false
-             end
-           end
+          end
          end
        end
      end
      if (nonsense)
-       nonsense_combination.each do |ndb|
-         unless found_dbnames.include?(ndb)
-           nonsense = false
-           break
+       nonsense = false
+       nonsense_combinations.each do |nonsense_combination|
+         if !(nonsense_combination.empty?)
+           nonsense = true
+           nonsense_combination.each do |ndb|
+             unless found_dbnames.find { |n| n =~ ndb }
+               nonsense = false
+               break
+             end
+           end
+           if (nonsense)
+             return nil
+           end
          end
-       end
-       if (nonsense)
-         return nil
        end
      end
 
