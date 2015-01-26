@@ -390,6 +390,7 @@ class SgeWorker < AbstractWorker
                 when "ClustalwExportAction" then 5
                   ### D ###
                 when "DataaAction" then 15
+                when "Dataa2Action" then 3
                   ### F ###
                 when "FrpredAction" then 15
                   ### G ###

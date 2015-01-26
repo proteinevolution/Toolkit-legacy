@@ -1,0 +1,31 @@
+<h2><%= @tool['title'] %> Output</h2> 
+
+  <div class='row'>
+    The program provides three main elements of output: a graphical
+    representation of the predicted domain architeture, a tabular
+    representation of the annotation results, including annotation
+    qualitiy metrics, and an alignment of the query sequence to the
+    respective consensus sequences of the annotated domains and
+    motifs. By clicking an element in one of the representations,
+    the same element is highlighted in all other representations as
+    well.
+  </div>
+
+  <div class='row'>
+    In the results table, the domain type, which roughly
+    corresponds to the categories provided in daTAA(1), and a more
+    detailed subtype are given, together with the N- and C-terminal
+    residue positions of the domain annotation. Score and p-value
+    indictate the annotation quality with respect to its
+    architectural logic (deduced from probabilistic rules on the
+    domain order in TAAs) and the alignment of the query sequence
+    to the annotated domains sequence profile. The sequence
+    probability (Seq. prob.) value, contrarily, represents the
+    actual score of the sequence-profile alignment divided by the
+    maximum score that is achievable with this domain. Note, that a
+    sequence probability value of 0 does not necessarily indicate
+    bad annotation, but rather that the annotation is reasonable
+    with respect to architectural logic, despite the actual
+    sequence diverges from canonical sequences of this
+    domain/motif.
+  </div>
