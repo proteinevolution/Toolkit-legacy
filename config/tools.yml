@@ -407,6 +407,15 @@
   - member
   - internal
   - external
+- name: dataa2
+  title: DATAA2
+  title_long: Domain Annotation of Trimeric Autotransporter Adhesins
+  section: classification
+  updated: January, 2015
+  version: 0.1.0
+  active: 
+  - member
+  - internal
 - name: dataa
   title: daTAA
   title_long: domain annotation of Trimeric Autotransporter Adhesins

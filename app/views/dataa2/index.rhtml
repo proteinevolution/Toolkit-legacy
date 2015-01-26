@@ -1,0 +1,45 @@
+<a href="#" onClick="openHelpWindow('/dataa2/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 20px;"></a><h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<%= form_tag({:action => :run, :job => 'dataa2'}, {:multipart => true})%> 
+
+<p style="font-size:12px; font-weight:bold;">Annotate your sequence:</p>
+<br/>
+
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Enter ONE sequence in fasta format", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+  <div class="formw">
+    <span style="color: green;">
+      Annotate domains of trimeric autotransporter adhesins. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
+    </span>
+  </div>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+<div class="row">
+  <%= form_label("Select HMM file", "hmmfile") %>
+  <div class="formw">
+    <%= form_select_single("hmmfile", @dbvalues, @dblabels, @default_db) %>	
+  </div>	
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<%= render(:partial => "shared/joboptions") %>
+
+<div class="row">
+	<%= form_submit_buttons %>
+</div>
+
+</form>

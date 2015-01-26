@@ -1,0 +1,10 @@
+<div id="jobsection">
+	<ul>
+		<li <%= params[:action].nil? || params[:action] == 'index' ? 'class="current"' : '' %>>
+			<%= link_to('Search database',{:action => 'index'}, {:onmouseover => "return overlib('Goto Main page');", :onmouseout => "return nd();"}) %>
+		</li>
+		<li <%= params[:action] == 'browse' ? 'class="current"' : '' %>>
+			<%= link_to('Knowledge base',{:action => 'browse'}, {:onmouseover => "return overlib('Goto Main page');", :onmouseout => "return nd();"}) %>
+		</li>
+	</ul>
+</div>

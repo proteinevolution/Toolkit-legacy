@@ -1,0 +1,15 @@
+dataa2_job: 
+  title: dataa2
+  hidden: false
+  code: DTAA 
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show result
+      forwardsections:
+    - name: browse
+      title: Browse database
+      title_long: Browse database
+      forwardsections:
+  forwarding_acceptances:
+      type: 1

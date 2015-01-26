@@ -1,0 +1,152 @@
+a:link {
+    color:#000000;
+    text-decoration:none;
+}
+
+#dataa2container {
+    display: table;
+    width:800px;
+}
+
+#row {
+    display: table-row;
+}
+
+#scale {
+    width:45px;
+    display:table-cell;
+    vertical-align:top;
+}
+
+#dommodel {
+    width:200px;
+    display:table-cell;
+    vertical-align:top;
+    text-align:center;
+}
+
+#dommodel svg:hover{
+    cursor:pointer;
+}
+
+#domtable {
+    width:555px;
+    display:table-cell;
+    padding-left:20px;
+    vertical-align:top;
+}
+
+#domtable table {
+    border-collapse:collapse;
+    box-shadow: 10px 10px 5px #999;
+    border-spacing:0;
+}
+
+#domtable tr:nth-child(odd) {
+    background-color:#F2F2F2;
+}
+
+#domtable tr:nth-child(even) {
+    background-color:#FEFEFE;
+}
+
+/*
+#domtable tr:hover td {
+    background-color:#8888FF;
+    border-top: 1px solid #7B7B7B;
+    border-bottom: 1px solid #7B7B7B;
+}
+*/
+
+#domtable tr:hover {
+cursor:pointer;
+}
+
+#domtable td {
+    border-bottom: 1px solid #7B7B7B;
+    border-top: 1px solid #7B7B7B;
+    font-size:12px;
+    min-width:50px;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+#domtable th {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color:#CCCCCC;
+    font-weight:bold;
+}
+
+#domtable th:first-child {
+    border-radius: 6px 0 0 0;
+}
+
+#domtable th:last-child {
+    border-radius: 0 6px 0 0;
+}
+
+#domtable th:only-child{
+    border-radius: 6px 6px 0 0;
+}
+
+#domtable td:first-child {
+    padding-left:5px;
+    border-left:solid #7B7B7B 1px;
+}
+
+#domtable td:last-child {
+    border-right:solid #7B7B7B 1px;
+}
+
+#dataa2alignment {
+background-color:#FFF;
+overflow:auto;
+list-style-type:none;
+padding-left:10px;
+font-family:monospace;
+}
+
+.dataa2alignment li {
+clear:both;
+white-space: nowrap;
+display:block;
+}
+
+#alignment-label {
+text-overflow: ellipsis;
+overflow: hidden;
+float:left;
+width:140px;
+padding-right:10px;
+}
+
+#alignment-qline {
+margin-top:0.3em;
+margin-bottom:0.3em;
+white-space: nowrap;
+cursor:pointer;
+}
+
+#alignment-aline {
+margin-top:0.3em;
+margin-bottom:0.75em;
+white-space: nowrap;
+cursor:pointer;
+}
+
+#alignment-pline {
+margin-top:0.75em;
+margin-bottom:0.3em;
+white-space: nowrap;
+}
+
+#alignment-panel {
+margin-top:2.0em;
+margin-bottom:2.0em;
+}
+
+#alignment-width-selection {
+font-size:0.8em;
+}

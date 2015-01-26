@@ -1,0 +1,611 @@
+<% if @id.empty? %>
+<a href="#" onClick="openHelpWindow('/dataa2/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 20px;"></a>
+
+<h2><%= @page_title %></h2>
+
+<%= render(:partial => "links") %>
+
+<% else %>
+
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+
+<%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
+
+<% end %>
+
+  <style type='text/css'>
+
+  .dataa2_dkb {
+
+  }
+
+  .dataa2_dkb h4 {
+  float:none;
+  margin-bottom:5px;
+  margin-top:8px;
+  display:block;
+  text-indent: 0px;
+  }
+
+  .dataa2_dkb .contentlist {
+  margin-top:40px;
+  margin-bottom:20px;
+  padding-bottom:10px;
+  }
+
+  .dataa2_dkb .contentlist h3 {
+  text-indent: 0px;
+  }
+
+  .dataa2_dkb .contentlist ul {
+
+  }
+
+  .dataa2_dkb .contentlist ul ul {
+  margin-top:5px;
+  margin-bottom:5px;
+  }
+
+  .dataa2_dkb .contentlist ul ul ul {
+  margin-top:5px;
+  margin-bottom:5px;
+  }
+
+  .dataa2_dkb .contentlist a {
+  color: #000;
+  }
+
+  .dataa2_dkb .preview_container {
+  display:block;
+  margin-top:10px;
+  margin-bottom:5px;
+  }
+
+  .dataa2_dkb .preview_content {
+  display:inline;
+  float:left;
+  width:90%
+  }
+
+  .dataa2_dkb .toggle_button_container {
+  display:inline;
+  float:left;
+  width:10%;
+  }
+
+  .dataa2_dkb .toggle_button_container .toggle_button  {
+  border: 0 none;
+  border-radius: 2px 2px 2px 2px;
+  background:#EEE;
+  height: 1.5em;
+  }
+
+  .dataa2_dkb .preview_content .preview {
+  background:#EEE;
+  min-height: 1.5em;
+  margin-right:10px;
+  margin-left:10%;
+  max-width:90%;
+  overflow:auto;
+  text-align:center;
+  }
+
+  .dataa2_dkb .preview_content .full {
+  background:#EEE;
+  padding-left:5px;
+  padding-bottom:px;
+  margin-right:10px;
+  margin-left:10%;
+  text-align:center;
+  }
+
+  .dataa2_dkb .preview_content .full img {
+  max-width:80%;
+  }
+
+  .dataa2_dkb .sequence {
+  letter-spacing:0.2em;
+  font-family:monospace;
+  white-space:nowrap;
+  }
+  </style>
+
+<script type='text/javascript'>
+<!--
+  function dataa2_dkb_toggle(a, b, button) {
+  if (a.style.display === 'none') {
+  a.style.display = 'block';
+  b.style.display = 'none';
+  
+  } else {
+  a.style.display = 'none';
+  b.style.display = 'block';
+  }
+  if (button.innerHTML === 'more') {
+  button.innerHTML = 'less';
+  } else {
+  button.innerHTML = 'more';
+  }
+  }
+
+  function dataa2_createPreviewPanel(consensusHTML, profileHTML) {
+  // find the last script tag
+  var scripts= document.getElementsByTagName('script');
+  var callerScript = scripts[scripts.length-1];
+  var previewContainer = document.createElement('div');
+  // create div containers for the content
+  previewContainer.className = 'preview_container';
+  var contentBlock = document.createElement('div');
+  contentBlock.className = 'preview_content';
+  var smallContainer = document.createElement('div');
+  smallContainer.className = 'preview';
+  smallContainer.innerHTML = consensusHTML;
+  var bigContainer = document.createElement('div');
+  bigContainer.className = 'full';
+  bigContainer.innerHTML = profileHTML;
+  contentBlock.appendChild(smallContainer);
+  contentBlock.appendChild(bigContainer);
+  bigContainer.style.display = 'none';
+  smallContainer.style.display = 'block';
+  var toggleButtonContainer = document.createElement('div');
+  toggleButtonContainer.className = 'toggle_button_container';
+  var toggleButton = document.createElement('button');
+  toggleButton.className = 'toggle_button';
+  toggleButton.innerHTML = 'more';
+  toggleButton.addEventListener('click', function() {dataa2_dkb_toggle(smallContainer, bigContainer, this); });
+  toggleButtonContainer.appendChild(toggleButton);
+  var clearBlock = document.createElement('div');
+  clearBlock.style.clear='both';
+  previewContainer.appendChild(contentBlock);
+  previewContainer.appendChild(toggleButtonContainer);
+  previewContainer.appendChild(clearBlock);
+  callerScript.parentNode.insertBefore(previewContainer, callerScript);
+  }
+
+  -->
+  </script>
+
+  <div class='dataa2_dkb'>
+    <h2>daTAA2 domain knowledgebase</h2><a name='taas' id=
+    "taas"></a>
+
+    <h3 class='classification'>Trimeric Autotransporter
+    Adhesins</h3>
+
+    <div class='paragraph'>
+      Trimeric autotransporter adhesins (TAAs) are modular, highly
+      repetitive outer membrane proteins that mediate adhesion to
+      external surfaces in many Gram-negative bacteria. They share
+      a basic architecture of variable arrays of typically more
+      slender stalks and bulkier head regions, each composed of one
+      or multiple specific domains and motifs, and ending in the
+      C-terminal membrane anchor.
+    </div>
+
+    <div class='paragraph'>
+      Most TAAs in the non-redundant protein database at NCBI are
+      from proteobacteria and here almost exclusively from the
+      &alpha;, &beta; and &gamma; branches, but this is clearly due
+      to a sampling bias, as TAAs are also well-represented in
+      bacterial clades whose detailed exploration has only begun in
+      recent years. Thus, Verrucomicrobia, Bacteroidetes,
+      Synergistetes, Fusobacteria, and the Gram-negative branch of
+      Firmicutes (the Negativicutes) all show a broad
+      representation of TAAs in their genomes. In addition, TAAs
+      are also found in a few species of Chlorobia and unicellular
+      Cyanobacteria.
+    </div>
+
+    <div class='paragraph'>
+      <span>For a more detailed description, please see <a href=
+      'http://dx.doi.org/10.1016/j.ijmm.2014.12.010'>Bassler et
+      al., 2014. A domain dictionary of trimeric autotransporter
+      adhesins</a>.</span>
+    </div>
+
+    <div class='contentlist'>
+      <h3 class='classification'>List of Structural Elements</h3>
+
+      <ul>
+        <li><a href='#anchor'>The Anchor</a></li>
+
+        <li>
+          <a href='#stalk'>Stalk Region</a>
+
+          <ul>
+            <li><a href='#coiledcoil'>The Coiled Coil</a></li>
+
+            <li><a href='#fgg'>FGG Motif</a></li>
+
+            <li><a href='#eibsaddle'>Eib Saddle Motif</a></li>
+          </ul>
+        </li>
+
+        <li>
+          <a href='#connectors'>Connectors</a>
+
+          <ul>
+            <li><a href='#alphatobetaconnectors'>&alpha;-to-&beta;
+            connectors</a></li>
+
+            <li><a href='#necks'>&beta;-to-&alpha;
+            connectors</a></li>
+          </ul>
+        </li>
+
+        <li>
+          <a href='#stalk'>Head Region</a>
+
+          <ul>
+            <li>
+              <a href='#transversalheads'>Transversal Head
+              Domains</a>
+
+              <ul>
+                <li><a href='#ylhead'>YadA-like Head
+                Domain</a></li>
+
+                <li><a href='#gin'>GIN Domain</a></li>
+              </ul>
+            </li>
+
+            <li><a href='#interleavedheads'>Interleaved Head
+            Domains</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><a name='anchor' id="anchor"></a>
+
+    <h3 class='classification'>The anchor</h3>
+
+    <div class='paragraph'>
+      The anchor domain locks the protein to the outer membrane of
+      the host bacteria, and is the only homologous domain in TAAs,
+      thus used to define the protein family. It is composed of
+      three protein chains, each forming a long amphipathic helix
+      followed by a four-stranded &beta;-meander, which, during
+      export, assemble into a 12-standed &beta;-barrel that is
+      thought to provide the pore through which upstream head and
+      stalk domains exit the periplasm.
+    </div>
+
+    <div class='paragraph'>
+      It is most similar to the translocation domain of canonical
+      single-chain autotransporters and intimins, which are
+      12-stranded &beta;-barrels as well. They also have
+      similarities with the translocation domain of invasins, which
+      are, however, located on the N-, not on the C-terminus of
+      their respective proteins. <a href=
+      'http://toolkit.tuebingen.mpg.de/hhomp/browse'>HHomp</a>
+      gives a more detailed overview of homologies in outer
+      membrane proteins.
+    </div><script type='text/javascript'>
+<!--
+      dataa2_createPreviewPanel('anchor consensus sequence: <span class="sequence">lnlrinkldkranaGiAgAaAlAglPqpydpgkssvaaGvGtYrGesAvAvGasyrsngnvvkagvstngdvgagaGvgyqw<\/span>', '<img src="/images/dataa2/knowledgebase/anchor_logo.png" />');
+      dataa2_createPreviewPanel('PDB accession: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=2gr7">2gr7<\/a>', '<img src="/images/dataa2/knowledgebase/anchor.png" />');
+      -->
+    </script> <a name='stalk' id="stalk"></a>
+
+    <h3 class='classification'>The stalk</h3>
+
+    <div class='paragraph'>
+      The slender regions in TAA fibres are referred to as stalk.
+      They mainly consist of variants of the basic parallel,
+      three-helical coiled coil that can occasionally be disturbed
+      by a number of intercepting, non-helical motifs.
+    </div><a name='coiledcoil' id="coiledcoil"></a>
+
+    <h4 class='classification'>The coiled coil</h4>
+
+    <div class='paragraph'>
+      Coiled coils are bundles of &alpha;-helices that interact
+      through seams of residues projected into the core of the
+      bundle along the length of the helices (reviewed in <a href=
+      'http://dx.doi.org/10.1016/j.tibs.2003.10.008'>Lupas and
+      Gruber, 2005</a>).
+    </div>
+
+    <div class='paragraph'>
+      In TAAs, three periodicities of coiled coils have been
+      observed: the left-handed heptad (7/2), the fairly neutral
+      hendecad (11/3), and the right-handed pentadecads (15/3). To
+      our knowledge, TAAs are so far the only protein fibres in
+      which both left- and right-handed periodicities have been
+      observed. Left- and right-handed coiled coils of TAAs
+      frequently contain the stabilising motifs RxD and YxD,
+      respectively, which are specific to their respective
+      orientation and therefore can be used as an identifying
+      feature.
+    </div>
+
+    <div class='paragraph'>
+      Different from canonical coiled coils, the core residues of
+      left-handed coiled coils in the stalks of TAAs are often
+      occupied by polar residues, particularly in position d, but
+      occasionally in both a and d. The most frequent of such polar
+      core patterns has an asparagine in position d, and has
+      therefore been named N@<span style=
+      'font-style:italic;'>d</span>. It is thought that this helps
+      to keep the chains in an unfolded and monomeric state and
+      thereby eases export.
+    </div><a name='fgg' id="fgg"></a>
+
+    <h4 class='classification'>The FGG motif</h4>
+
+    <div class='paragraph'>
+      The most common elaboration from the coiled coil in the stalk
+      of TAAs is the FGG motif. It interrupts the helices, forms a
+      three-stranded &beta;-meander, which ends near the point of
+      origin of the insertion of the next chain trimer, thereby
+      performing a topological crossover of 120&#730; clockwise
+      (seen from the N-terminus). The motif can be found in all
+      major taxa of TAA-bearing bacteria.
+    </div><script type='text/javascript'>
+<!--
+        dataa2_createPreviewPanel('FGG consensus sequence: <span class="sequence">vAnaLGGGAtvndGtitaPtYnigGttynnVgdA<\/span>', '<img src="/images/dataa2/knowledgebase/fgg_logo.png" />');
+        dataa2_createPreviewPanel('PDB accession: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=2yo2">2yo2<\/a>', '<img src="/images/dataa2/knowledgebase/fgg.png" />');
+        -->
+    </script> <a name='eibsaddle' id="eibsaddle"></a>
+
+    <h4 class='classification'>The Eib saddle</h4>
+
+    <div class='paragraph'>
+      A non-helical insertion in coiled coils. It has so far only
+      been found in the Eib proteins of <span style=
+      'font-style:italic'>E. coli</span>.
+    </div><a name='connectors' id="connectors"></a>
+
+    <h3 class='classification'>Connector domains</h3>
+
+    <div class='paragraph'>
+      In TAAs, many transitions between the &alpha;-helical stalk
+      regions and the head domains, composed predominantly of
+      &beta;-strands, are mediated by a number of conserved
+      connector domains. They can functionally be classified into
+      &alpha;-to-&beta; connectors, going from stalks to heads, and
+      &beta;-to-&alpha; connectors, going from heads to stalks.
+    </div><a name='necks' id="necks"></a>
+
+    <h4 class='classification'>&beta;-to-&alpha; connectors -
+    necks</h4>
+
+    <div class='paragraph'>
+      All &beta;-to-&alpha; connectors that we have observed so far
+      can be grouped into one group of homologous domains, called
+      necks. The vast majority of necks belong to one of two length
+      variants, the short neck (19 residues) and the long neck (22
+      residues), which differ by the insertion of three residues in
+      the loop between their two &beta;-strands. In addition, a
+      number of necks with longer insertions at the same location
+      have been observed and are referred to as insert necks
+      (ISNeck). Canonical long and short necks typically in in
+      Glu-Leu, and transit seemingly unspecific into all coiled
+      coil variants. Another short neck subtype, however, ends in
+      YV, and transits into right-handed coiled coils only, the
+      forming an YxD motif between the C-terminus of the neck and
+      the N-terminal residues of the first coiled coil repeat.
+    </div>
+
+    <div class='paragraph'>
+      In all neck variants, the last hydrophobic residue marks the
+      first a position of the coiled coil, and is in the current
+      annotation treated as such, although it appears to be
+      evolutionarily coupled to the neck domain.
+    </div>
+
+    <div class='paragraph'>
+      Another peculiarity in the neck family is the KG domain.
+      Although it lacks the N-terminus of necks, and thus the first
+      &beta;-strand by which necks connect to the &beta;-sheets of
+      the upstream head domain, its C-terminus is clearly
+      homologous to necks. KG domains are found in Hia- and
+      NadA-like adhesins from <span style=
+      'font-style:italic;'>Haemophilus</span> and <span style=
+      'font-style:italic;'>Neisseria</span>, typically immediately
+      downstream of interleaved head domains. Considering this
+      aspect, the missing N-terminal &beta;-strand might represent
+      a special adaptation to their coupling to interleaved heads.
+    </div><script type='text/javascript'>
+<!--
+          dataa2_createPreviewPanel('neck consensus sequences:<div><table style="margin-left:auto; margin-right:auto;"><tr><td>short neck<\/td><td class="sequence">ItNVAaG-------------------------------------------tadTDAVNVgQL<\/td><\/tr><tr><td>YV neck<\/td><td class="sequence">ITNVAdP-------------------------------------------tddtDAvNKkYV<\/td><\/tr><tr><td>long neck<\/td><td class="sequence">ItNVAaGdis----------------------------------------atSTDAVNGSQL<\/td><\/tr><tr><td>ISNeck1<\/td><td class="sequence">VTNVtSGLkkYGnaNfdalnnsatdltkqvDdAYkGLlNLnEKgagktplVADNTAATVGDL<\/td><\/tr><tr><td>ISNeck2<\/td><td class="sequence">ITNVASGLkgagvls-dAtg------------------------------dvLnNAANVGDL<\/td><\/tr><tr><td>KG<\/td><td class="sequence">-------------------------kTsvikpknGKlvtgktannattdtNkGsGlVTGNtV<\/td><\/tr><\/table><\/div>',
+          'short neck <br /><img src="/images/dataa2/knowledgebase/shortneck_logo.png" /><br /><br />long neck<br /><img src="/images/dataa2/knowledgebase/longneck_logo.png" /><br /><br />ISNeck1<br /><img src="/images/dataa2/knowledgebase/isneck1_logo.png" /><br /><br />ISNeck2<br /><img src="/images/dataa2/knowledgebase/isneck2_logo.png" />');
+          dataa2_createPreviewPanel('PDB accession: <span style="white-space:nowrap;">short neck: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=3d9x">3d9x<\/a>,<\/span> <span style="white-space:nowrap;">long neck: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=3laa">3laa<\/a>,<\/span> <span style="white-space:nowrap;">insert neck 1: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=1s7m">1s7m<\/a>,<\/span> <span style="white-space:nowrap;">KG: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=3emi">3emi<\/a><\/span>', '<img src="/images/dataa2/knowledgebase/necks.png" />');
+          -->
+    </script> <a name='alphatobetaconnectors' id=
+    "alphatobetaconnectors"></a>
+
+    <h4 class='classification'>&alpha;-to-&beta; connectors</h4>
+
+    <div class='paragraph'>
+      Currently two types of &alpha;-to-&beta; connectors are
+      described in daTAA, HANS and DALL, named for prominent motifs
+      in their sequences.
+    </div>
+
+    <div class='paragraph'>
+      The HANS motif is found exclusively upstream of YadA-like
+      head domains, and mediates an abrupt transition from the
+      preceding coiled coil into the succeeding &beta;-strands of
+      the head. It has been shown before that HANS motifs exhibit a
+      notable degree of structural flexibility, thus it is assumed
+      that HANS motifs serve the precise regulation of the fibre
+      stiffness. Although the KYFHANS consensus is fairly conserved
+      in many instances, there are also a number of cases in which
+      it is hardly or not recognisable, and in which the presence
+      of a HANS motif can only be assumed from the position between
+      a coiled coil and a YadA-like head, and which could as well
+      be a novel connector type.
+    </div>
+
+    <div class='paragraph'>
+      Different from the HANS motif, DALL domains never transit
+      into head domains, but instantly transit into long or short
+      necks instead. In the course of this, the DALL-neck tandem
+      forms a joint &beta;-strand, resulting in an
+      &alpha;-&beta;-&alpha; structure that conceptually resembles
+      a minimal-sized head domain.
+    </div>
+
+    <div class='paragraph'>
+      Three different subtypes of DALL domains are considered in
+      daTAA2, DALL1-3, of which DALL1 and DALL3 pair with both long
+      and short necks, whereas DALL2 seems to pair with long necks
+      only.
+    </div>
+
+    <div class='row'>
+      <script type='text/javascript'>
+<!--
+          dataa2_createPreviewPanel('DALL consensus sequences:<div><table style="margin-left:auto; margin-right:auto;"><tr><td>DALL1<\/td><td class="sequence">aAVkYDkndGvny-------------nsVTLGGgn-gtp<\/td><\/tr><tr><td>DALL2<\/td><td class="sequence">DALLWdeta-----------------gAFsAsHGgtnSK<\/td><\/tr><tr><td>DALL3<\/td><td class="sequence">DgLVqQd------gtglITIGketgGteIniAnkdGarR<\/td><\/tr><\/table><\/div>',
+          'DALL1 <br /><img src="/images/dataa2/knowledgebase/dall1_logo.png" /><br /><br />DALL2<br /><img src="/images/dataa2/knowledgebase/dall2_logo.png" /><br /><br />DALL3<br /><img src="/images/dataa2/knowledgebase/dall3_logo.png" />');
+
+          dataa2_createPreviewPanel('PDB accession: <span style="white-space:nowrap;">DALL1: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=2yo3">2yo3<\/a>,<\/span> <span style="white-space:nowrap;">DALL2: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=2ynz">2ynz<\/a><\/span>', '<img src="/images/dataa2/knowledgebase/dall.png" />');
+          -->
+      </script>
+    </div><br>
+    <br>
+
+    <div class='row'>
+      <script type='text/javascript'>
+<!--
+          dataa2_createPreviewPanel('HANS consensus sequences: <span class="sequence">GsTKYFHANSTeaD<\/span>',
+          'HANS <br /><img src="/images/dataa2/knowledgebase/hans_logo.png" />');
+          dataa2_createPreviewPanel('PDB accession: <span style="white-space:nowrap;">HANS: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=2yo3">2yo3<\/a><\/span>', '<img src="/images/dataa2/knowledgebase/hans.png">');
+          -->
+        </script></div>
+
+      <a name='heads' id="heads"></a>
+
+      <h3 class='classification'>Head domains</h3>
+
+        <div class='paragraph'>
+          Heads are the more bulky segments of TAA fibres that are
+          mainly composed of &beta;-strands. Two basic topologies
+          can be distinguished: transversal and interleaved head
+          domains. In transversal heads, the &beta;-strands are
+          oriented perpendicular to the fibre axis, whereas in
+          interleaved heads, they run parallel to it.
+        </div>
+
+          <a name='transversalheads' id="transversalheads"></a>
+
+          <h4 class='classification' style='white-space:nowrap;'>Transversal head domains</h4>
+
+            <div class='paragraph'>
+              Transversal heads are a group of head domains that
+              were classified according to similar topological
+              principles. It should be noted, however, that the
+              domains in this group are not homologous.
+            </div>
+
+          <a name='ylhead' id="ylhead"></a>
+
+          <h4 class='classification'>YadA-like head domain</h4>
+
+            <div class='paragraph'>
+              YadA-like heads (Ylheads) are prism-shaped trimers of
+              left-handed &beta;-helices. Every chain of the trimer
+              forms one &beta;-helix, which itself is composed of
+              an array of Ylhead motifs that each form an inner and
+              outer strand of the helix. The number of Ylhead
+              motifs in a domain, and thus the size of the domain,
+              is variable. Due to spatial restrictions on the
+              inside of the trimer, the inner strand is composed
+              exclusively of small amino acids, and the fifth
+              residue is a quasi invariable glycine, resulting in
+              the easily recognisable SVAIGNN consensus motif; the
+              sequence of the outer strand is more variable, but is
+              dominated by polar amino acids.
+            </div>
+            <div class='row'>
+      <script type='text/javascript'>
+      <!--
+            dataa2_createPreviewPanel('Ylhead consensus sequences: <div><table style="margin-left:auto; margin-right:auto;"><tr><td>outer strand</td><td class="sequence">akAsgdn</td></tr><tr><td>inner strand</td><td class="sequence">svAiGnn</td></tr></table></div>',
+            'Ylhead outer strand <br /><img src="/images/dataa2/knowledgebase/ylheadouter_logo.png" /><br /><br />Ylhead inner strand<br /><img src="/images/dataa2/knowledgebase/ylheadinner_logo.png" />');
+
+            dataa2_createPreviewPanel('PDB accession: <span style="white-space:nowrap;">Ylhead: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=1p9h">1p9h</a></span>', '<img src="/images/dataa2/knowledgebase/ylhead.png">');
+            -->
+          </script>
+        </div>
+
+          <a name='gin' id="gin"></a>
+
+          <h4 class='classification'>GIN domain</h4>
+
+            <div class='paragraph'>
+              GIN domains consist of a single, mainly antiparallel
+              &beta;-sheet, which trimerises to form a triangular
+              prism. Similar to YadA-like heads, their length in
+              the direction of the fibre axis is variable by
+              addition or deletion of single GIN motifs. Unlike
+              Ylheads, however, they consist of two different
+              motifs, one for strands that are directed in the
+              direction of the subsequent neck (neck-directed,
+              n-directed), and one for strands that are headed in
+              the opposite direction (anti-neck-directed,
+              a-directed). In the majority of cases, these motifs
+              alternate, resulting in a antiparallel &beta;-sheet.
+              In some instances, however, an n-directed strand
+              follows upon another, then leading to a topological
+              crossover of 120&#730;.
+            </div>
+            <div class='row'>
+      <script type='text/javascript'>
+      <!--
+            dataa2_createPreviewPanel('GIN consensus sequences: <div><table style="margin-left:auto; margin-right:auto;"><tr><td>n-strand</td><td class="sequence">-tgvtaG</td></tr><tr><td>a-strand</td><td class="sequence">GvvINN-</td></tr></table></div>',
+            'GIN n-strand <br /><img src="/images/dataa2/knowledgebase/ginn_logo.png" /><br /><br />GIN a-strand<br /><img src="/images/dataa2/knowledgebase/gina_logo.png" />');
+
+            dataa2_createPreviewPanel('PDB accession: <span style="white-space:nowrap;">GIN: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=3d9x">3d9x</a></span>', '<img src="/images/dataa2/knowledgebase/gin.png">');
+            -->
+          </script>
+        </div>
+
+        <div class='paragraph'>
+          All Ylhead and GIN domains transit via neck domains into
+          stalk segments.
+        </div>
+
+          <a name='interleavedheads' id="interleavedheads"></a>
+
+          <h4 class='classification'>Interleaved head domains</h4>
+
+            <div class='paragraph'>
+              The interleaved heads, tryptophan ring (TrpRing),
+              FxG, and GIN, form the second group of head domains,
+              and, different from the transversal heads, appear to
+              be homologous. Only the structure of TrpRings has
+              been solved so far, but using profile-profile
+              alignments it became clear that the domains in this
+              group are homologous and thus we can predict the
+              structures of the other domains as well.
+            </div>
+
+            <div class='paragraph'>
+              The tryptophan ring domain structure shows an
+              up-and-down topology of five &beta;-strands per
+              chain, in which the subunits interleave to form three
+              &beta;-sheets, each containing strands from all three
+              subunits.
+            </div>
+
+            <div class='paragraph'>
+              Since the N- and C-termini of TrpRings are fairly
+              close to the trimer axis, they do not need connectors
+              to transit from stalk segments into them. They
+              usually appear coupled to GIN domains on their
+              C-terminus. We have never observed TrpRings returning
+              directly into coiled coils, although this should be
+              topologically unproblematic. The reason for this is
+              unclear.
+            </div>
+            <div class='row'>
+            <script type='text/javascript'>
+      <!--
+        dataa2_createPreviewPanel('Interleaved heads consensus sequences: <div><table style="margin-left:auto; margin-right:auto;"><tr><td>TrpRing</td><td class="sequence">GWVVSad-gneYsdqVKNANEVkFkG-egGAtVsGKTddGvRtITVdV-</td></tr><tr><td>FxG</td><td class="sequence">GLkFaGndGt--vihkKLGeTLtIkGGatdatklsd--nN---IgVvad</td></tr><tr><td>GANG</td><td class="sequence">-------------------KTtVtaG-kNitVTstTnaDGsTiYtVaTa</td></tr></table></div>',
+        'TrpRing <br /><img src="/images/dataa2/knowledgebase/trpring_logo.png" /><br /><br />FxG<br /><img src="/images/dataa2/knowledgebase/fxg_logo.png" /><br /><br />GANG<br /><img src="/images/dataa2/knowledgebase/gang_logo.png" />');
+
+        dataa2_createPreviewPanel('PDB accession: <span style="white-space:nowrap;">GIN: <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=3d9x">3d9x</a></span>', '<img src="/images/dataa2/knowledgebase/trpring.png">');
+        -->
+      </script>
+    </div>
+  </div>

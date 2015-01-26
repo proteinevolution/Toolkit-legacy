@@ -1,0 +1,56 @@
+<h2><%= @tool['title'] %> Overview</h2> 
+
+<div class='row'>
+    daTAA2 performs an automated domain annotation on Trimeric
+    Autotransporter Adhesins by finding the highest-scoring path
+    trough a network of Markov states for a given protein sequence.
+    It comes with a number of precompiled Markov models, designed
+    to perform annotations with different parameters. They were
+    compiled from manually curated, representative alignments of
+    all relevant TAA domains.
+  </div>
+
+  <h3 class='classification'>Comparison to daTAA1</h3>
+
+  <div class='row'>
+    daTAA2 differs in multiple aspects from daTAA(1). It implements
+    a distinct annotation algorithm: daTAA(1) annotates domains
+    based on profile Hidden Markov Models (HMM)-Sequence
+    alignments. daTAA2, on the other hand, uses a precompiled
+    network of HMM states, in which the overall annotation is not
+    only based on sequence comparison, but also on probabilistic
+    rules on the domain order in TAAs, derrived from a database
+    wide analysis of domain architecture in TAAs.
+  </div>
+
+  <div class='row'>
+    The overall annotation in daTAA2 does not come as an array of
+    high-scoring sequence-profile alignments, as it does in many
+    domain annotation solutions like daTAA(1) or Pfam, but instead
+    represents the most likely domain configuration of the whole
+    query sequence. Using this mechanism, daTAA2 avoids the
+    intrinsic resolution limitations of daTAA(1), which suffers
+    from the linear dependance of annotation significance on
+    profile length, and is able to annotate small features, like
+    the indivual strands of GIN domains.
+  </div>
+
+  <div class='row'>
+    Finally, the HMMs of daTAA2 are based upon a full-scale data
+    update, including updated domain definitions and previously
+    unknown domains.
+  </div>
+
+  <h3 class='classification'>References and Further
+  Information</h3>
+
+  <div class='row'>
+    <a href='http://dx.doi.org/10.1016/j.ijmm.2014.12.010' style=
+    'color:#000;'>Bassler, J., Hernandez Alvarez, B., Hartmann, M.
+    D. &amp; Lupas, A. N. A domain dictionary of trimeric
+    autotransporter adhesins. Int. J. Med. Microbiol. (2014).
+    doi:10.1016/j.ijmm.2014.12.010</a><br>
+    <br>
+    <a href='#' style='color:#000;'>daTAA2 application note: in
+    preparation.</a>
+  </div>
