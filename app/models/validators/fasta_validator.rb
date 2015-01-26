@@ -218,7 +218,7 @@ module Toolkit
                     length = seq.length
                   else
                     if (length != seq.length)
-                      error = "All sequences must have the same length!"
+                      error = "All sequences must have the same length! Please check the selected input format."
                       break
                     end
                   end

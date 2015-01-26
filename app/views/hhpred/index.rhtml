@@ -1,3 +1,4 @@
+<script src="/javascripts/combinedselects.js" type="text/javascript"></script>
 <div class="row">
 <font size="2" color="#FF0000">Open-source HH-suite 2.0 available with better performance and new functionality! Download <a href="ftp://toolkit.genzentrum.lmu.de/pub/HH-suite/">here</a></font> 
 </div>
@@ -73,9 +74,9 @@
     <table cellspacing="0">
     <tr align="center"><td><b>Standard</b></td><td width="30px;"></td><td><b>Proteomes</b></td></tr>
     <tr><td>
-    <%= form_select_multiple("hhpred_dbs", @dbvalues, @dblabels, @default_db, 5, false) %>	
+    <%= form_select_multiple("hhpred_dbs", @dbvalues, @dblabels, @default_db, 5, false, "", 'onSimpleClick(event, "genomes_hhpred_dbs")') %>	
     </td><td></td><td>
-    <%= form_select_multiple("genomes_hhpred_dbs", @genome_dbvalues, @genome_dblabels, "", 5, false, "javascript:select_genomes();") %>	
+    <%= form_select_multiple("genomes_hhpred_dbs", @genome_dbvalues, @genome_dblabels, "", 5, false, "", 'onSimpleClick(event, "hhpred_dbs")') %>	
     </td></tr>
     </table>
     <%= form_hidden_field("genomes_first", "true") %>
