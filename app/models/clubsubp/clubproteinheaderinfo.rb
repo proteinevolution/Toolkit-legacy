@@ -5,5 +5,6 @@ class Clubproteinheaderinfo < ActiveRecord::Base
     has_and_belongs_to_many :clubarchclstpredictions
     has_and_belongs_to_many :clubarchgipredictions
 
+    include ProtectedSql
 end
 
