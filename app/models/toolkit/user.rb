@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 
   attr_accessor :new_password
 
+  include ProtectedSql
+
   def logger
     # max log file size: 10MB. Keep 6 of them.
     @logger ||= Logger.new("#{RAILS_ROOT}/log/#{self.class.name.to_us}.log", 6, 10485760)
@@ -16,7 +18,7 @@ class User < ActiveRecord::Base
     begin
       super
     rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L14 user.rb Job.save!: Got statement invalid #{e.message} ... trying again")
+      logger.debug("L21 User.initialize: Got statement invalid #{e.message} ... trying again")
       ActiveRecord::Base.verify_active_connections!
       super
     end
@@ -25,8 +27,8 @@ class User < ActiveRecord::Base
 
   def self.authenticate(login, pass)
     begin
-      u = find(:first, :conditions => ["login = ? AND verified = 1 AND deleted = 0", login])    
-      return find(:first, :conditions => ["login = ? AND salted_password = ? AND verified = 1", login, salted_password(u.salt, hashed(pass))])
+      u = protected_find(:first, :conditions => ["login = ? AND verified = 1 AND deleted = 0", login])    
+      return protected_find(:first, :conditions => ["login = ? AND salted_password = ? AND verified = 1", login, salted_password(u.salt, hashed(pass))])
     rescue
       return nil
     end
@@ -35,7 +37,7 @@ class User < ActiveRecord::Base
   def self.authenticate_by_token(id, token)
     # Allow logins for deleted accounts, but only via this method (and
     # not the regular authenticate call)
-    u = find(:first, :conditions => ["id = ? AND security_token = ?", id, token])
+    u = protected_find(:first, :conditions => ["id = ? AND security_token = ?", id, token])
     return nil if u.nil? or u.token_expired?
     return nil if false == u.update_expiry
     u
@@ -49,7 +51,7 @@ class User < ActiveRecord::Base
     write_attribute('token_expiry', [self.token_expiry, Time.at(Time.now.to_i + 600 * 1000)].min)
     write_attribute('authenticated_by_token', true)
     write_attribute("verified", 1)
-    update_without_callbacks
+    protected_update_without_callbacks
   end
 
   def generate_security_token(hours = nil)
@@ -76,6 +78,17 @@ class User < ActiveRecord::Base
     self.password_confirmation = confirm.nil? ? pass : confirm
     @new_password = true
   end
+
+  def save
+    begin
+      super
+    rescue ActiveRecord::StatementInvalid => e
+      logger.debug("L136 User.save: Got statement invalid #{e.message} ... trying again")
+      ActiveRecord::Base.verify_active_connections!
+      super
+    end
+  end
+
     
   protected
 
@@ -101,7 +114,7 @@ class User < ActiveRecord::Base
   def new_security_token(hours = nil)
     write_attribute('security_token', self.class.hashed(self.salted_password + Time.now.to_i.to_s + rand.to_s))
     write_attribute('token_expiry', Time.at(Time.now.to_i + token_lifetime(hours)))
-    update_without_callbacks
+    protected_update_without_callbacks
     return self.security_token
   end
 
@@ -116,6 +129,17 @@ class User < ActiveRecord::Base
   def self.salted_password(salt, hashed_password)
     hashed(salt + hashed_password)
   end
+
+  def protected_update_without_callbacks
+    begin
+      update_without_callbacks
+    rescue ActiveRecord::StatementInvalid => e
+      logger.debug("L126 User.protected_update_without_callbacks: Got statement invalid #{e.message} ... trying again")
+      ActiveRecord::Base.verify_active_connections!
+      update_without_callbacks
+    end
+  end
+
 
   validates_presence_of :login, :on => :create
   validates_length_of :login, :within => 3..80, :on => :create
