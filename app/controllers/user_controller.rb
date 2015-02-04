@@ -70,7 +70,7 @@ class UserController < ApplicationController
     return if generate_filled_in
     if session['user'].nil?
       @key = params['key']
-      @user = User.find(params['user']['id']) 
+      @user = User.protected_find(params['user']['id']) 
       if @user.security_token != @key
         flash.now['message'] = l(:user_change_password_key_error)
         return
@@ -205,7 +205,7 @@ class UserController < ApplicationController
   def confirm
     @meta_section = "confirm"
     @key = params['key']
-    @user = User.find(params['user']['id']) 
+    @user = User.protected_find(params['user']['id']) 
     if @user.security_token == @key
       @user.verified = 1
       @user.save
