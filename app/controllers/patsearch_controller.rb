@@ -1,16 +1,21 @@
 class PatsearchController < ToolController
 
 	def index
-		@grammar_values = ["pro", "reg"]
-		@grammar_labels = ["Prosite grammar", "Regular expression"]
-    @std_dbs_paths = Dir.glob(File.join(DATABASES, 'standard', '*.pal')).map() {|p| p.gsub(/\.pal/ ,'')}
+          @grammar_values = ["pro", "reg"]
+          @grammar_labels = ["Prosite grammar", "Regular expression"]
+          @std_dbs_paths = []
+          Dir.glob(File.join(DATABASES, 'standard', '*.pal')).each do |p|
+            p.gsub!(/\.pal/ ,'') 
+            @std_dbs_paths << p if File.exist? p
+          end
+          # @std_dbs_paths = Dir.glob(File.join(DATABASES, 'standard', '*.pal')).map() {|p| p.gsub(/\.pal/ ,'')}
 
-		@std_dbs_paths.uniq!
-		@std_dbs_paths.sort!
-    		## Order up Standard databases that shall be displayed on top
-    		@std_dbs_paths = order_std_dbs(@std_dbs_paths)
-		@std_dbs_labels = @std_dbs_paths.map() {|p| File.basename(p)}
-    
+          @std_dbs_paths.uniq!
+          @std_dbs_paths.sort!
+          ## Order up Standard databases that shall be displayed on top
+          @std_dbs_paths = order_std_dbs(@std_dbs_paths)
+          @std_dbs_labels = @std_dbs_paths.map() {|p| File.basename(p)}
+
 	end
 	
 	def results

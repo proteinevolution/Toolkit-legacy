@@ -1,4 +1,7 @@
 class Dbstat < ActiveRecord::Base
+
+   include ProtectedSql
+
    def Dbstat.normalizeDBName(dbname)
      # remove path and date, i.e.
      # /ebio/abt1/kfaidt/toolkit/databases/hhpred/new_dbs/pdb70_9Jan14 to

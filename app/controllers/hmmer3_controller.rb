@@ -1,18 +1,18 @@
 class Hmmer3Controller < ToolController
 
 	def index
-		@informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
-		@informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
-		@std_dbs_paths = []
-		Dir.glob(File.join(DATABASES, 'standard', '*.pal')).each do |p|
-   			p.gsub!(/\.pal/ ,'') 
-   			@std_dbs_paths << p
-   	end    
-    	@std_dbs_paths.uniq!
-    	@std_dbs_paths.sort!
-      ## Order up Standard databases that shall be displayed on top
-      @std_dbs_paths = order_std_dbs(@std_dbs_paths)
-    	@std_dbs_labels = @std_dbs_paths.map() {|p| File.basename(p)}
+          @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
+          @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
+          @std_dbs_paths = []
+          Dir.glob(File.join(DATABASES, 'standard', '*.pal')).each do |p|
+            p.gsub!(/\.pal/ ,'') 
+            @std_dbs_paths << p if File.exist? p
+          end    
+          @std_dbs_paths.uniq!
+          @std_dbs_paths.sort!
+          ## Order up Standard databases that shall be displayed on top
+          @std_dbs_paths = order_std_dbs(@std_dbs_paths)
+          @std_dbs_labels = @std_dbs_paths.map() {|p| File.basename(p)}
 	end
 	
 	def results
