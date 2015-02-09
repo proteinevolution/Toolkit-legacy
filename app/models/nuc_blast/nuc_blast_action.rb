@@ -22,7 +22,7 @@ class NucBlastAction < Action
   
   validates_email(:mail)
   
-  validates_db(:std_dbs, {:personal_dbs => :user_dbs, :genomes_dbs => :taxids, :on => :create})
+  validates_db(:std_dbs, {:personal_dbs => :user_dbs, :genomes_dbs => 'taxids', :on => :create})
   
   validates_format_of(:evalue, {:with => /^\d*(e|e-|\.)?\d+$/, :on => :create})
   

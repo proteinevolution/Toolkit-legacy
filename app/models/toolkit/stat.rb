@@ -1,4 +1,7 @@
 class Stat < ActiveRecord::Base
+
+  include ProtectedSql
+
   def addJob(jobTime)
     Stat.transaction do
       self.jobs_time += jobTime

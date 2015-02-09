@@ -17,7 +17,7 @@ class FastHmmerAction < Action
   
 	validates_email(:mail)
   
-	validates_db(:std_dbs, {:personal_dbs => :user_dbs, :genomes_dbs => :taxids, :on => :create})
+	validates_db(:std_dbs, {:personal_dbs => :user_dbs, :genomes_dbs => 'taxids', :on => :create})
   
 	validates_shell_params(:jobid, :mail, :hmmbuildopt, :hmmalignopt, :hmmcalibrateopt, :hmmsearchopt, 
 	                       :extracteval, {:on => :create})
