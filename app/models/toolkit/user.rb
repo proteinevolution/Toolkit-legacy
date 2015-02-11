@@ -1,13 +1,14 @@
 require 'digest/sha1'
+require "protected_sql.rb"
 
 # this model expects a certain database layout and its based on the name/login pattern. 
 class User < ActiveRecord::Base
+  include ProtectedSql
+
   has_many :jobs, :dependent => :destroy, :order =>"created_on "
   has_many :userdbs, :dependent => :destroy
 
   attr_accessor :new_password
-
-  include ProtectedSql
 
   def logger
     # max log file size: 10MB. Keep 6 of them.

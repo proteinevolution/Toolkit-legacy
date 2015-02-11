@@ -1,3 +1,5 @@
+require "protected_sql.rb"
+
 class Clubproteinheaderinfo < ActiveRecord::Base
     establish_connection "clubsubp"
     has_and_belongs_to_many :clubclstpredictions
