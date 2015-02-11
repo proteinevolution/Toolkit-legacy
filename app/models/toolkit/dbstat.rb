@@ -1,3 +1,5 @@
+require "protected_sql.rb"
+
 class Dbstat < ActiveRecord::Base
 
    include ProtectedSql
