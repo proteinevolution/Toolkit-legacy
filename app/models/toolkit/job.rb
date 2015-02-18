@@ -236,10 +236,20 @@
       self.save!
     end
 
+    def getToolProtected
+      begin
+        tool
+      rescue ActiveRecord::StatementInvalid, ActiveRecord::MethodMissing => e
+        logger.debug("L243 Job.getToolProtected: #{e.message} ... trying again")
+        ActiveRecord::Base.verify_active_connections!
+        tool
+      end
+    end
+
     def config
       #    	RAILS_DEFAULT_LOGGER.debug "### L240: " + self.class.to_s.to_us
       #logger.debug " L241 Loading YAMLDATA for #{tool.to_us} "
-      (YAML.load_file(File.join(TOOLKIT_ROOT, 'config', tool.to_us + '_jobs.yml')))[self.class.to_s.to_us]
+      (YAML.load_file(File.join(TOOLKIT_ROOT, 'config', getToolProtected.to_us + '_jobs.yml')))[self.class.to_s.to_us]
     end
 
     def url_for_job_dir
@@ -320,7 +330,7 @@
             end
             if (File.exists?(statuslog_path))
                 File.open(statuslog_path, "a") do |file|
-                  file.puts "#{tool} job completed (#{mytime}s cpu time)."
+                  file.puts "#{getToolProtected} job completed (#{mytime}s cpu time)."
                 end
             end
           end
