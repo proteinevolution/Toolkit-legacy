@@ -440,6 +440,7 @@ class SgeWorker < AbstractWorker
                 when "ProtBlastAction" then 50 # uses blastpgp
                 when "PcoilsAction" then 6
                 when "PsiBlastAction" then 50 # uses blastpgp
+                when "PsiBlastpAction" then 18
                 when "PatsearchAction" then 5
                 when "PsiBlastForwardAction" then 5
                 when "PatsearchForwardAction" then 5

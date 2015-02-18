@@ -59,6 +59,15 @@
   - member
   - internal
   - external
+- name: psi_blastp
+  title: PSI-BLASTP
+  title_long: PSI-BLASTP
+  section: search
+  updated: February, 2015
+  version: Blast 2.2.23
+  active: 
+  - member
+  - internal
 - name: reformat
   title: Reformat
   title_long: Reformat
