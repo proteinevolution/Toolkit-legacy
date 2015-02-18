@@ -220,7 +220,9 @@ class PsiBlastAction < Action
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
-    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
+    # the result of parse_jalview here seems to be overwritten immediatedly
+    # and, additionally, relating to the wrong input file.
+    # @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
     @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
 
     
