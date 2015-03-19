@@ -50,7 +50,7 @@ my %three2one=(
     "LCG"=>"G","LCA"=>"A","5CM"=>"C","6OG"=>"G","GHP"=>"G","3MY"=>"Y","OMY"=>"Y","2JG"=>"S",
     "GPL"=>"K","SOS"=>"N","MLY"=>"K","2SO"=>"H","CAF"=>"C","CAS"=>"C","PFF"=>"F",
     "DI"=>"I","56A"=>"H","U2X"=>"Y","0G"=>"G","0C"=>"C","0U"=>"U","C1S"=>"C","MHO"=>"M",
-    "MLZ"=>"K","PF5"=>"F",
+    "MLZ"=>"K","PF5"=>"F","N7P"=>"P","GAU"=>"E","0AF"=>"W",
 
     # mappings of multiple structure components (mapping to a sequence of one-letter codes)
     "CR8"=>"HYG",
@@ -87,6 +87,15 @@ my %three2one=(
     "MPT"=>"X",
     "UNK"=>"X",
     "AME"=>"X",
+    "ASJ"=>"X",
+    "POL"=>"X",
+    "DCL"=>"X",
+    "VOL"=>"X",
+    "2A1"=>"X",
+    "IL0"=>"X",
+    "TYE"=>"X",
+    "AZI"=>"X",
+    "05W"=>"X",
 
     # obsoleted codes not superceded by an other compound (keeping previous mapping)
     "ACL"=>"R","ALM"=>"A","ASK"=>"D","CLE"=>"L","CGL"=>"E","LYM"=>"K",
@@ -96,7 +105,7 @@ my %three2one=(
     # biologically better to replace unknown codes by "X" instead of
     # simply omitting them (mapping them to "")
     "6FC"=>"X", "6FU"=>"X", "---"=>"X", "YAC"=>"X", "QAC"=>"X", "0A"=>"X", "0U1"=>"X",
-    "MF7"=>"X"
+    "MF7"=>"X","PDF"=>"X"
       );
 
 # Function substitution2one
