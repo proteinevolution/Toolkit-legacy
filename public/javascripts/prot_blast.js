@@ -60,6 +60,6 @@ function test(){
 function pasteExample()
 {
   $('sequence_input').value = ">gi|21229011|ref|NP_634933.1| hypothetical protein MM_2909 [Methanosarcina mazei Go1]\nMTLVIAFIGKNGAVMAGDMREITFEGEKPDREKLEKELYSGSIVTDEEMQKKAEEFGVKITVADCKEKVS\nERNGVLVGEVSSAEGGVVKKRRLYASAGNFAIAELINTEMTLTSQGKGSNFIAFGNEFTKQVANKCFKDN\nWTKKSNLQDAVKILILCMETVARKTASVSKQFMIVQTASNADVLKVVEKDRNC";
-  $('std_dbs').options.selectedIndex = 2;  
-  onSimpleClick(null, "user_dbs");
+  // $('std_dbs').options.selectedIndex = 2;  
+  // onSimpleClick(null, "user_dbs");
 }

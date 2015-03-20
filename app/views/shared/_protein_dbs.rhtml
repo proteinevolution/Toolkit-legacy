@@ -11,7 +11,7 @@
     		<div class="formw">
     			<div class="db">
 					<h6>Standard</h6>
-    				<%= form_select_multiple("std_dbs", @std_dbs_paths, @std_dbs_labels, @std_dbs_paths[@std_dbs_labels.index('nr')],5,false,"",'onSimpleClick(event, "user_dbs")') %>
+    				<%= form_select_multiple("std_dbs", @std_dbs_paths, @std_dbs_labels, @std_dbs_paths[0],5,false,"",'onSimpleClick(event, "user_dbs")') %>
     			</div>
     			
     			<%# User-DBs %>

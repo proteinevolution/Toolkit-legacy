@@ -21,7 +21,8 @@ class CsBlastController < ToolController
     @std_dbs_paths.uniq!
     # sort list asc
     @std_dbs_paths.sort!
-    @std_dbs_paths = order_std_dbs(@std_dbs_paths)
+    # ordering changed, to make smaller databases preselected in the bioinformatics course:
+    @std_dbs_paths = order_std_dbs(@std_dbs_paths, ["uniprot", "nr", "nr90", "nr70"])
     # generate lables
     @std_dbs_labels = @std_dbs_paths.map() {|p| (File.basename(p))}
     # gather all blossum matrices from folder blast/data/
