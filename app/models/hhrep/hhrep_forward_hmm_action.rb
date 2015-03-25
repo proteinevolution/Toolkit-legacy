@@ -46,9 +46,18 @@ logger.debug "In forward params"
       res.gsub!(/>ss_pred.*?\n(.*\n)*?>/, '>')
       res.gsub!(/>ss_conf.*?\n(.*\n)*?>/, '>')      
       hash = { 'sequence_input' => res, 'maxpsiblastit' => '0' }
-    else
+    elsif job.params_main_action['sequence_file']
       res = IO.readlines(job.params_main_action['sequence_file']).join("\n")
       hash = { 'sequence_input' => res, 'informat' => job.params_main_action['informat'] }
+    else
+      # make it work for HhrepMergealiJob instances, which don't have
+      # an own sequence_file param.
+      parentjob = job.parent
+      while (parentjob.parent && !parentjob.params_main_action['sequence_file'])
+        parentjob = parentjob.parent
+      end
+      res = IO.readlines(parentjob.params_main_action['sequence_file']).join("\n")
+      hash = { 'sequence_input' => res, 'informat' => parentjob.params_main_action['informat'] }
     end
 return hash
   end
