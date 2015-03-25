@@ -415,7 +415,7 @@ class SgeWorker < AbstractWorker
                 when "HhfragAction" then 18
                 when "HhalignAction" then 18
                 when "HhrepidAction" then 18
-                when "HhrepAction" then 18
+                when "HhrepAction" then 28
                 when "HhrepMergealiAction" then 18
                 when "HhclusterAction" then 50 # uses blastpgp
                 when "HhblitsForwardAction" then 18

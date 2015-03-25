@@ -126,7 +126,7 @@ class HhrepMergealiJob < Job
 		for i in 1...@res.size
 			if (@res[i] =~ /^Done!/) 
 				break
-			elsif (@res[i] =~ /^\s*$/) 
+			elsif (@res[i] =~ /^\s*$/ || @res[i].nil?) 
 				next
 			elsif (@res[i] =~ /^\s*No\s+Hit/)
 				# Format title line from summary hit list
