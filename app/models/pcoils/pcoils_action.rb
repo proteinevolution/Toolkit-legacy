@@ -74,7 +74,7 @@ class PcoilsAction < Action
       @commands << "export #{COILSDIR}"
 
       ['14', '21', '28'].each do |size|
-        @commands << "#{PCOILS}/#{@program_for_matrix[@matrix.to_i]} -win #{size} < #{@buffer} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
+        @commands << "#{PCOILS}/#{@program_for_matrix[@matrix.to_i]} #{@weight} -win #{size} < #{@buffer} > #{@coils.sub(/^.*\/(.*)$/, '\1')}_n#{size}"
       end
       @commands << "#{PCOILSPERL}/prepare_coils_gnuplot.pl #{@basename} #{@coils}_n14 #{@coils}_n21 #{@coils}_n28"
 
