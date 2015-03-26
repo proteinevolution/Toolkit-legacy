@@ -1278,7 +1278,7 @@ def add_structure_database_logos(*params)
   line[i-1] =line[i-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_MMDB.jpg\" alt=\"MMDB\" title=\"MMDB/NCBI\" #{logo_attr} height=\"20\"><\/a>"
 
   # Link to EBI MSD
-  href="http:\/\/www.ebi.ac.uk/msd-srv/atlas?id=#{pdbcode}"
+  href="http:\/\/www.ebi.ac.uk/pdbe-srv/view/entry/#{pdbcode}"
   line[i-1] =line[i-1]+ "<a href=\"#{href}\" target=\"_blank\" #{link_attr} ><img src=\"#{DOC_ROOTURL}/images/hhpred/logo_MSD.jpg\" alt=\"MSD\" title=\"MSD/EBI\" #{logo_attr} height=\"25\"><\/a>"
 
   line[i-1] =line[i-1]+ "\n"
@@ -1290,7 +1290,7 @@ end
 def add_inter_pro_link_logo(*params)
 
   i = params[0]
-  href = "http:\/\/www.ebi.ac.uk/interpro/IEntry?ac="
+  href = "http:\/\/www.ebi.ac.uk/interpro/entry/"
   line = params[1]
   link_attr = params[2]
   logo_attr = params[3]

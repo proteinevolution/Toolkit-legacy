@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 class SimshiftJob < Job
   
   #attr_accessor :outformat 
@@ -116,7 +117,7 @@ class SimshiftJob < Job
         tstructhref =""
         imoltalkhref =""
         mmdbhref ="http://www.ncbi.nlm.nih.gov/sites/entrez?SUBMIT=y&db=structure&orig_db=structure&term=#{pdbcode}"
-        msdhref ="http://www.ebi.ac.uk/msd-srv/oca/oca-bin/ocaids?id=#{pdbcode}"
+        msdhref ="http://www.ebi.ac.uk/pdbe-srv/view/entry/#{pdbcode}"
         
 
         pdblink = "<a href=\http://www.rcsb.org/pdb/explore/explore.do?structureId=#{pdbcode}>#{template}<\/a>"
