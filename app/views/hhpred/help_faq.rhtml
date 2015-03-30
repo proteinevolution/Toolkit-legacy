@@ -3,6 +3,7 @@
 	<li><a href="#search nr">Can I search the nr?</a></li>
 	<li><a href="#correct match">Correct match?</a></li>
 	<li><a href="#duplicated domain">Duplicated domain?</a></li>
+	<li><a href="#sections of the same protein">Protein sections</a></li>
 
 	<li><a href="#misaligned">Results page misaligned</a></li>
 	<li><a href="#truncated page">Truncated results page</a></li>
@@ -13,17 +14,19 @@
 	<li><a href="#javatrash">Applets don't work</a></li>
 
 	<li><a href="#input parameters">Input parameters</a></li>
-	<li><a href="#maxnumres">Maximum sequence length</a></li>
+	<li><a href="#maxresnum">Maximum sequence length</a></li>
 	<li><a href="#multi-domain">Multi-domain sequences</a></li>
 	<li><a href="#db updates">DB updates</a></li>
 	<li><a href="#pfam twice">Pfam twice</a></li>
 	<li><a href="#Search several DBs">Search several DBs</a></li>
+	<li><a href="#Changing results">Changing results</a></li>
 	<li><a href="#multiple_sequences">Multiple queries</a></li>
 
 	<li><a href="#results">Help on results</a></li>
-	<li><a href="#evalues">E-values not ordered</a></li>
 	<li><a href="#HEC">What is H, E, C?</a></li>
+	<li><a href="#evalues">E-values not ordered</a></li>
 	<li><a href="#SS influence">E-values depend on SS scoring</a></li>
+	<li><a href="#correlation evalue rank">Identity and E-value</a></li>
 
 </ul>
 
@@ -47,7 +50,7 @@ analogous relationships.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
-<a name="homology"></a><br>
+<a name="search nr"></a><br>
 <b>Why can't I search sequence databases like the NR or SwissProt with HHpred?</b><br>
 <div class="row">
 HHpred is based on HMM-HMM comparison and to build an HMM you need a multiple alignment. Therefore
@@ -157,6 +160,29 @@ In this way, the corruption of the alignment should be practically suppressed. S
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
+<a name="sections of the same protein"></a><br>
+<b>Why does submitting different parts of the same protein give
+different results? Does this have something to do with how HHblits
+builds an HHM based on the input sequence?</b><br>
+For example, if I submit the entire protein
+sequence for K4MJZ5 (uniprot) to HHpred, it finds homology to 3G2B at
+the C-terminus with probability ~70%.  However, if I resubmit the
+C-terminal half (i.e. residues 301-660), then the probability drops to
+~20% for 3G2B, but resubmitting residues 420-660 gives a probability
+of ~95% for 3G2B.</br>
+<div class="row">
+Yes. You are seeing the results of pairwise comparisons of MSAs with each
+other. Which sequences are included in these MSAs can depend a lot on
+exactly what fragment you submit and this in turn can change results a
+lot. I recommend to first search with the full-length protein and then
+submit only the segments that correspond to putative domains. If you
+cannot judge from the MSA and the local hits where the domains are,
+you could submit parts around the interesting local hits, adding +50
+residues on either side of the locally aligned region to allow for
+extensions of the alignment.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
 
 <a name="misaligned"></a><br>
 <b>The results page looks all misaligned and scrambled up. How can I get an orderly output?</b>
@@ -241,7 +267,8 @@ work, try other browsers.
 <a name="javatrash"></a><br>
 <b>Why don't the "PDB-Viewer" applet and the JalView alignment editor work?</b>
 <div class="row">
-See the answer to the previous question.
+If your browser crashes, see the answer to the <a href="#javacrash">previous question</a>.
+Otherwise, your browser may require an explicit confirmation to run the applet or it probably doesn't support applets at all.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
@@ -315,6 +342,14 @@ and in the window that opens, press 'Restart HHpred with this alignment'.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
+<a name="Changing results"></a><br>
+<b>Why can identical submitted sequences give different results some time later?</b>
+<div class="row">
+Our pdb70 entries are recomputed periodically, even if the structure itself hasn't changed.
+The databases used for doing that are growing, leading to new associations and hopefully better results.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
 <a name="multiple_sequences"></a><br>
 <b>Can I do a multiple search with many sequences at once?</b>
 <div class="row">
@@ -332,15 +367,6 @@ for help on HHpred results.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
-<a name="evalues"></a><br>
-<b>Why are the E-values not correctly ordered in my search results?</b>
-<div class="row">
-The results are not ordered by the E-value, but by the probability for the template to be
-(at least locally) homologous to the query sequence. In contrast to the E-value,
-this probability also takes account of the secondary structure similarity between
-query and template.
-</div>
-<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 <a name="HEC"></a><br>
 <b>What do H, E, and C stand for in the alignments on the results page?</b>
@@ -355,7 +381,18 @@ by the program DSSP. H, E, and C are the same as above. S is a bend, B a beta br
 T a turn, and G a 3_10 helix residue.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
-<BR>
+
+
+<a name="evalues"></a><br>
+<b>Why are the E-values not correctly ordered in my search results?</b>
+<div class="row">
+The results are not ordered by the E-value, but by the probability for the template to be
+(at least locally) homologous to the query sequence. In contrast to the E-value,
+this probability also takes account of the secondary structure similarity between
+query and template.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
 
 <a name="SS influence"></a><br>
 <b>Shouldn't the scores and E-values be the same with and without secondary structure scoring?</b>
@@ -365,6 +402,15 @@ Only approximately. It is true that the raw scores, the E-values and P-values do
 depend on the secondary structure score. But the secondary structure score influences the alignments.
 Since the calibration will therefore also be slightly different with and without secondary structure
 scoring, the raw scores, E- and P-values differ with and without secondary structure even when the alignment does not change.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="correlation evalue rank"></a><br>
+<b>Even though it takes into account secondary structure, shouldn't sequence identity correlate with the E-value and rank of a structure output?</b>
+<div class="row">
+Sequence identity and E-value and Probability are usually quite strongly correlated, but not always.
+<br>
+First, the identities are based on the master sequences of the query MSA and the matched database MSA, whereas probabilities and Evalues refer to the similarities of the MSAs. Second, probability and E-value get more significant with growing length, whereas seqid does not.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
