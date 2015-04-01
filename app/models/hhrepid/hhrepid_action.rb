@@ -61,19 +61,20 @@ class HhrepidAction < Action
    # Optional:
   # Put action initialization code that should be executed on forward here
   def before_perform_on_forward
-    logger.debug "L 59 Running before_on_perform "
+    logger.debug "L 64 Running before_perform_on_forward with @mode=#{@mode}"
     case @mode
-    when 'queryhmm'
-      logger.debug "L62 Running in Mode Queryhmm"
+    when 'querymsa'
+      logger.debug "L67 Running in Mode querymsa"
       pjob = job.parent
-      @informat = 'a3m'
       files = Dir.entries("#{pjob.job_dir}")
       a3m_file = files.include?("#{pjob.jobid}.a3m") ? "#{pjob.jobid}.a3m" : files.detect {|f| f.match /#{pjob.jobid}.*\.a3m/}
-      hhm_file = files.include?("#{pjob.jobid}.hhm") ? "#{pjob.jobid}.hhm" : files.detect {|f| f.match /#{pjob.jobid}.*\.hhm/}
+      # Policy: Only copy the a3m file. The receiving tool is responsible for
+      # creating the hhm file itself, if it needs it.
+      #hhm_file = files.include?("#{pjob.jobid}.hhm") ? "#{pjob.jobid}.hhm" : files.detect {|f| f.match /#{pjob.jobid}.*\.hhm/}
       FileUtils.copy_file("#{pjob.job_dir}/#{a3m_file}", "#{@basename}.a3m")
-      FileUtils.copy_file("#{pjob.job_dir}/#{hhm_file}", "#{@basename}.hhm")
+      #FileUtils.copy_file("#{pjob.job_dir}/#{hhm_file}", "#{@basename}.hhm")
       
-      logger.debug "L70 Copy  #{pjob.job_dir}/#{pjob.jobid}.hhm/a3m  to #{@basename}.hhm/a3m "
+      logger.debug "L77 Copy  #{pjob.job_dir}/#{pjob.jobid}.a3m  to #{@basename}.a3m "
     end
     
   end
@@ -86,12 +87,12 @@ class HhrepidAction < Action
 
     cpus = 1
     # Setting new Prefilter 
-    if @mode != 'queryhmm'
+    if @mode != 'querymsa'
               @commands << "#{HH}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
                 if(@prefilter=='psiblast')
                    cpus = 2
                    @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
-                   @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &> #{job.statuslog_path}"
+                   @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &>> #{job.statuslog_path}"
                 else
                     if @maxhhblitsit == '0'
                         @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
@@ -103,7 +104,7 @@ class HhrepidAction < Action
                     end
                 end
     else
-        @commands <<"echo 'Using previously generated HMMs as Input Model' >> #{job.statuslog_path}  "
+        @commands <<"echo 'Using previously generated a3m MSA as Input Model' >> #{job.statuslog_path}  "
     end
     
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)

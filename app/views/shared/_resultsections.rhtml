@@ -22,10 +22,10 @@
  	   <% end %>
  	   
  	  <!-- addition -->
- 	  <% if !@cur_section.nil? then sections = @cur_section['forwardhhmsections'] end %>
+ 	  <% if !@cur_section.nil? then sections = @cur_section['forwardmsasections'] end %>
  	  <% if !sections.nil? %>
  	    <% sections.each do |section| %>
- 	      <li><a href="javascript:appearForwardHHM('<%= section['name'] %>');" onmouseover="return overlib('<%= section['title_long']%>');" onmouseout="return nd();"><%= section['title'] %></a></li>
+ 	      <li><a href="javascript:appearForwardMSA('<%= section['name'] %>');" onmouseover="return overlib('<%= section['title_long']%>');" onmouseout="return nd();"><%= section['title'] %></a></li>
  	    <% end %>
  	  <% end %>
  	  <!-- addition end-->

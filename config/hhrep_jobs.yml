@@ -7,10 +7,10 @@ hhrep_job:
       title: Results
       title_long: Show result
       forwardsections:
-        forwardhhmsections:
-      - name: forwardhhm
-        title: Forward HMM
-        title_long: Forward query HMM
+        forwardmsasections:
+      - name: forwardmsa
+        title: Forward MSA
+        title_long: Forward query MSA
     - name: results_histogram
       title: Histogram
       title_long: Show results in profile histogram view
@@ -34,10 +34,10 @@ hhrep_mergeali_job:
       title: Results
       title_long: Show result
       forwardsections:
-        forwardhhmsections:
-      - name: forwardhhm
-        title: Forward HMM
-        title_long: Forward query HMM
+        forwardmsasections:
+      - name: forwardmsa
+        title: Forward MSA
+        title_long: Forward query MSA
     - name: results_histogram
       title: Histogram
       title_long: Show results in profile histogram view

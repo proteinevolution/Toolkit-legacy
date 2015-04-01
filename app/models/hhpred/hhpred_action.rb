@@ -1,4 +1,4 @@
-# -*- coding: undecided -*-
+# -*- coding: utf-8 -*-
 class HhpredAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
   HHBLITS = File.join(BIOPROGS, 'hhblits')
@@ -192,15 +192,16 @@ class HhpredAction < Action
 
   # Tool can forward to HHpred in different modes, the following modes are possible:
   # 1. :queryhmm  :
-  # 2. :hhsenser  :
-  # 3. :realign   :
-  # 4. nil        :
+  # 2. :querymsa  :
+  # 3. :hhsenser  :
+  # 4. :realign   :
+  # 5. nil        :
   def before_perform_on_forward
     pjob = job.parent
     @mode = pjob.params['mode']
+    logger.debug("L202 Running before_perform_on_forward with @mode=#{@mode}")
     case @mode
     when 'queryhmm'
-      @informat = 'a3m'
 #      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
 #      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.hhm", "#{@basename}.hhm")
       files = Dir.entries("#{pjob.job_dir}")
@@ -208,8 +209,11 @@ class HhpredAction < Action
       hhm_file = files.include?("#{pjob.jobid}.hhm") ? "#{pjob.jobid}.hhm" : files.detect {|f| f.match /#{pjob.jobid}.*\.hhm/}
       FileUtils.copy_file("#{pjob.job_dir}/#{a3m_file}", "#{@basename}.a3m")
       FileUtils.copy_file("#{pjob.job_dir}/#{hhm_file}", "#{@basename}.hhm")
+    when 'querymsa'
+      files = Dir.entries("#{pjob.job_dir}")
+      a3m_file = files.include?("#{pjob.jobid}.a3m") ? "#{pjob.jobid}.a3m" : files.detect {|f| f.match /#{pjob.jobid}.*\.a3m/}
+      FileUtils.copy_file("#{pjob.job_dir}/#{a3m_file}", "#{@basename}.a3m")
     when 'hhsenser'
-      @informat = 'a3m'
       FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
     when 'realign'
       FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
@@ -226,17 +230,17 @@ class HhpredAction < Action
   def perform
     params_dump
     cpus = 1
-    a2mBase = "#{@basename}.resub_domain"
-    a2mFile = "#{a2mBase}.a2m"
     a3mFile = "#{@basename}.a3m"
-    msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
     # Export variable needed for HHSuite
     @commands << "export  HHLIB=#{HHLIB} "
     @commands << "export  PATH=$PATH:#{HHSUITE} "
      # Create a fasta File later on used for the domain resubmission of the results
-    @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a2m #{@seqfile} #{a2mFile}#{msa_factor}"
 
     if job.parent.nil? || @mode.nil?
+      msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
+      a2mBase = "#{@basename}.resub_domain"
+      a2mFile = "#{a2mBase}.a2m"
+      @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a2m #{@seqfile} #{a2mFile}#{msa_factor}"
       # Create alignment
 
       if(@prefilter=='psiblast')
@@ -259,7 +263,8 @@ class HhpredAction < Action
           end
       end
       @commands << "#{HHSUITELIB}/addss.pl #{a3mFile}"
-
+    end
+    if job.parent.nil? || @mode.nil? || @mode == "querymsa"
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
       @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
@@ -270,7 +275,7 @@ class HhpredAction < Action
         cpus = 4
       end
       # Trim alignment
-      @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n 0 -maxres 300 -diff 1000 -#{@informat} #{a3mFile} &>> #{job.statuslog_path}"
+      @commands << "#{HHPERL}/buildali.pl -nodssp -cpu 4 -v #{@v} -n 0 -maxres 300 -diff 1000 -a3m #{a3mFile} &>> #{job.statuslog_path}"
       # Start HHsenser
       @commands << "#{HHPERL}/buildinter.pl -v #{@v} -cpu 4 -Emax 0.1 -e 0.001 -Ey 0.01 -E 0.001 -Ymax 100 -accmax 10 -rejmax 10 -idmax 0 -extnd 20  #{a3mFile} &>> #{job.statuslog_path}"
 

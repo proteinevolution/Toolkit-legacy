@@ -1,4 +1,4 @@
-class HhblitsForwardHmmAction < Action
+class HhrepidForwardMsaAction < Action
   HH=File.join(BIOPROGS, "hhpred")
 
   def do_fork?
@@ -8,6 +8,7 @@ class HhblitsForwardHmmAction < Action
   attr_accessor :hits, :includehits, :result_textbox_to_file
 
   def perform
+
     if !params['fw_mode'].nil?  # default forward
 
       @forwardfile = File.join(job.job_dir, job.jobid + ".forward")
@@ -21,7 +22,7 @@ class HhblitsForwardHmmAction < Action
         @command += " -m #{params['hits']}"
       end
 
-      logger.debug "Command: #{@command}"
+      logger.debug "L25 Command: #{@command}"
       system(@command)
 
     end
@@ -32,11 +33,10 @@ class HhblitsForwardHmmAction < Action
   end
 
   def forward_params
-  
-    logger.debug "In forward params"
-    logger.debug "#{job.job_dir}"
+
+    logger.debug "L37 Start forward_params. job_dir=#{job.job_dir}, mode=#{params['mode']}."
     hash = {}
-    if params['mode'].nil?
+    if params['mode'].nil? 
       filename = File.join(job.job_dir, 'result_textbox_to_file')
       res = ""    
       if (File.exists?(filename))     
@@ -47,9 +47,8 @@ class HhblitsForwardHmmAction < Action
       hash = { 'sequence_input' => res, 'maxpsiblastit' => '0' }
     else
       res = IO.readlines(job.params_main_action['sequence_file']).join("\n")
-      hash = { 'sequence_input' => res, 'informat' => job.params_main_action['informat']}
+      hash = { 'sequence_input' => res, 'informat' => job.params_main_action['informat'] }
     end
-    return hash
-
+return hash
   end
 end

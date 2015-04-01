@@ -42,6 +42,8 @@
   <% if @parent_job.params['mode'] == 'queryhmm' %>
 
   <strong>Using query HHM from job <%= @parent_job.jobid %> as input!</strong>
+  <% elsif @parent_job.params['mode'] == 'querymsa' %>
+  <strong>Using query a3m MSA from job <%= @parent_job.jobid %> as input!</strong>
   <% elsif @parent_job.params['mode'] == 'realign' -%>
   <strong>Realign hits from job <%= @parent_job.jobid %>!</strong>
   <% elsif @parent_job.params['mode'] == 'hhsenser' -%>
@@ -177,7 +179,7 @@
   </div>
 
   <!--  WORKAROUND -->
-  <% if @parent_job.nil? || @parent_job.params['mode'].nil? || @parent_job.params['mode'] == 'queryhmm' || @parent_job.params['mode'] == 'hhsenser' -%>
+  <% if @parent_job.nil? || @parent_job.params['mode'].nil? || @parent_job.params['mode'] == 'queryhmm' || @parent_job.params['mode'] == 'querymsa' || @parent_job.params['mode'] == 'hhsenser' -%>
   <div class="row">
     <%= form_label("Min. probability in hitlist", "minprobab") %>
     <%= form_text_field("Pmin", '20', '%') %>	

@@ -17,8 +17,8 @@ hamppred_job:
         title: Forward to PCoils
         title_long: Forward results to PCoils
       - name: forward
-        title: Forward HMM
-        title_long: Forward query HMM
+        title: Forward MSA
+        title_long: Forward query MSA
     - name: histograms
       title: Histogram
       title_long: Show results in profile histogram view

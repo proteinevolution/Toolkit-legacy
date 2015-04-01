@@ -23,7 +23,7 @@ class ToolController < ApplicationController
       @page_title = $1 + " <span style=\"font-size: 15px; font-weight: bold;\"> - " + $2 + "</span>"
     end
     if params[:jobid].kind_of?(String)
-      if params[:action] == 'forward' || params[:action] == 'forward_hmm'
+      if params[:action] == 'forward' || params[:action] == 'forward_hmm' || params[:action] == 'forward_msa'
         #              changed here  -^
         @parent_job = Job.find(:first, :conditions => [ "jobid = ?", params[:jobid]])
       else
@@ -41,7 +41,15 @@ class ToolController < ApplicationController
     if action =~ /^results/
       @job.before_results(params)
     else
-      if @job.respond_to?("before_#{action}") then @job.send("before_#{action}") end
+      before_exists = nil
+      begin
+        before_exists = @job.respond_to?("before_#{action}")
+      rescue ActiveRecord::StatementInvalid => e
+        logger.debug("L48 ToolController.run_callbacks: Got statement invalid #{e.message} ... trying again")
+        ActiveRecord::Base.verify_active_connections!
+        before_exists = @job.respond_to?("before_#{action}")
+      end
+      if before_exists then @job.send("before_#{action}") end
     end
   end
   
@@ -51,11 +59,11 @@ class ToolController < ApplicationController
   def run
     # Allgemeines param-Feld setzen (für resubmit, usw...)
     params['reviewing'] = true
-    logger.debug  "L54 -> Running current Application"
+    logger.debug  "L62 -> Running current Application"
     # KFT: Observation: The jobid is indeed found in params[:job], not in params[:jobid] when forwarding!!?!
     job = Job.find(:first, :conditions => [ "jobid = ?", params[:job]])
     if (job.nil?)
-      logger.debug "L58 Job for #{params[:job]} has not yet been initialized (id is #{params[:jobid] || 'nil'}), creating new id"
+      logger.debug "L66 Job for #{params[:job]} has not yet been initialized (id is #{params[:jobid] || 'nil'}), creating new id"
       job = Object.const_get(params[:job].to_cc+"Job").make(params, @user)
       
       # write tool statistics
@@ -85,10 +93,10 @@ class ToolController < ApplicationController
         end
       end
       job.firstSave!
-      logger.debug "L88 Created new Job .... "
+      logger.debug "L96 Created new Job .... "
       if (job.config['hidden'] == false && @jobs_cart.index(job.jobid).nil?)
       	@jobs_cart.push(job.jobid) 
-        logger.debug "L91 Pushing Job into Job Cart : "+job.jobid.to_s
+        logger.debug "L99 Pushing Job into Job Cart : "+job.jobid.to_s
       end
 
     end
@@ -98,7 +106,7 @@ class ToolController < ApplicationController
     # jobs. If that's only desired for new jobs, move the code in front of
     # the previous end statement.
     dbnames = Dbstat.checkDatabasesForUsage(params)
-    logger.debug "L101 dbnames are #{dbnames || 'empty'} for job #{params[:job]} (#{params[:jobid]})"
+    logger.debug "L109 dbnames are #{dbnames || 'empty'} for job #{params[:job]} (#{params[:jobid]})"
     if (dbnames)
       dbnames.each do |dbname|
         day = sprintf("%04d-%02d-%02d", DateTime.now.year, DateTime.now.month, DateTime.now.day)
@@ -181,9 +189,9 @@ class ToolController < ApplicationController
     tool = @job.tool
     
     if ((@job.jobid !~ /^tu_/ && @job.jobid !~ /^HH_/) || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin')) ) 
-      logger.debug "L184 Delete job #{@job.jobid} in jobs_cart"
+      logger.debug "L192 Delete job #{@job.jobid} in jobs_cart"
       if @jobs_cart.delete(@job.jobid).nil?
-        logger.debug "L186 Could not delete #{@job.jobid} from cart" # Probably because it was cleared from cart by user before.
+        logger.debug "L194 Could not delete #{@job.jobid} from cart" # Probably because it was cleared from cart by user before.
       end
       @job.remove
     end
@@ -191,10 +199,10 @@ class ToolController < ApplicationController
   end
 
   def forward
-    logger.debug "L194 Forward!"
-    logger.debug "L195 Toolkit Job: #{params['controller']}"
-    logger.debug "L196 Parent Job: #{@parent_job}"
-    logger.debug "L197 Parent Toolkit Job: #{@parent_job.tool}"
+    logger.debug "L202 Forward!"
+    logger.debug "L203 Toolkit Job: #{params['controller']}"
+    logger.debug "L204 Parent Job: #{@parent_job}"
+    logger.debug "L205 Parent Toolkit Job: #{@parent_job.tool}"
 
     if (params['controller']==@parent_job.tool)
       job_params = @parent_job.actions.first.params
@@ -209,7 +217,7 @@ class ToolController < ApplicationController
       end
     end
     fw_params = @parent_job.forward_params
-    logger.debug "L212 forward_params: #{fw_params.inspect}"
+    logger.debug "L220 forward_params: #{fw_params.inspect}"
     fw_params.each_key do |key|
       params[key] = fw_params[key]
     end
@@ -219,9 +227,9 @@ class ToolController < ApplicationController
   end
   
   def forward_hmm
-    logger.debug "L222 Forward HMM!"
-    logger.debug "L223 Toolkit Job: #{params['controller']}"
-    logger.debug "L224 Parent Toolkit Job: #{@parent_job.tool}"
+    logger.debug "L230 Start forward_hmm"
+    logger.debug "L231 Toolkit Job: #{params['controller']}"
+    logger.debug "L232 Parent Toolkit Job: #{@parent_job.tool}"
 
     if (params['controller']==@parent_job.tool)
       job_params = @parent_job.actions.first.params
@@ -236,7 +244,7 @@ class ToolController < ApplicationController
       end
     end
     fw_params = @parent_job.forward_params
-#    logger.debug "L239 forward_params: #{fw_params.inspect}"
+#    logger.debug "L247 forward_params: #{fw_params.inspect}"
     fw_params.each_key do |key|
       params[key] = fw_params[key]
     end
@@ -244,11 +252,16 @@ class ToolController < ApplicationController
     index
     render(:action => 'index')
   end
+
+  def forward_msa
+    logger.debug "L257 Start forward_msa"
+    forward_hmm
+  end
   
   
   def resubmit
       @tmp_sequence ='XX'
-      logger.debug "L251 Rendering Resubmit!"
+      logger.debug "L264 Rendering Resubmit!"
       job_params = @job.actions.first.params
       #tmp_params = job_params.keys
       #tmp_params.sort! # kft- sort! does not work, because some of the keys are strings, other are keys which cannot be compared to strings.
@@ -263,7 +276,7 @@ class ToolController < ApplicationController
         else
           params[key] = job_params[key]
           if (key=~ /sequence_input/)
-                logger.debug "L266 Processing Param sequence_input "
+                logger.debug "L279 Processing Param sequence_input "
                 params['sequence_input'] = @tmp_sequence
           end
         end
@@ -377,6 +390,9 @@ protected
     url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward_hmm', :jobid => @job, :forward_action => "forward_hmm", :forward_controller => to)
   end
   #end
+  def fw_msa_to_tool_url(from,to)
+    url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward_msa', :jobid => @job, :forward_action => "forward_msa", :forward_controller => to)
+  end
   
   #######################################################################################
   # Calculate forwarding list according to the given acceptance, emmision Values
@@ -398,7 +414,7 @@ protected
     # Convert the emission Value to string (binary) and then to int  e.g. 4 -> "100" -> 100 to be able to use & operator
     #@emission = @emission.to_s(2).to_i
     datatype = emission_forward['format']
-    logger.debug "L401 Emitting: #{@emission} of data type #{datatype} "
+    logger.debug "L417 Emitting: #{@emission} of data type #{datatype} "
 
     
 
@@ -465,9 +481,9 @@ protected
     def add_parameters_to_selected_forwardings(parameter, modes)
       @tool_mode_list.each_with_index {|accept_mode, i| 
          modes.each{ |mode|
-            #logger.debug "L468 #{@tool_name_list[i]} - Accept #{accept_mode} : Mode #{mode} "
+            #logger.debug "L484 #{@tool_name_list[i]} - Accept #{accept_mode} : Mode #{mode} "
             if accept_mode == mode
-              #logger.debug "L470   MATCH  "
+              #logger.debug "L486   MATCH  "
               @tool_list[i] = @tool_list[i]+parameter
             end
         }

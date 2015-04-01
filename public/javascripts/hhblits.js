@@ -51,7 +51,7 @@ function change_db(dbhhm, dba3m)
     
 }
 
-function appearForwardHHM(val)
+function appearForwardMSA(val)
 { 
 	var coloring = 'color_button';
 	var image = 'hitlist_img';
@@ -82,14 +82,14 @@ function appearForward(val)
     var coloring = 'color_button';
     var image = 'hitlist_img';
     var forward = 'forward';
-    var forwardhhm = 'forwardhhm';
+    var forwardmsa = 'forwardmsa';
     
     if (Element.getStyle(val, 'display') == "none") {
 		if ($(coloring) != null) {
 		    new Effect.Fade(coloring);
 		}
-		if (Element.getStyle(forwardhhm, 'display') != "none"){
-			new Effect.Fade(forwardhhm);
+		if (Element.getStyle(forwardmsa, 'display') != "none"){
+			new Effect.Fade(forwardmsa);
 		}
 		new Effect.Fade(forward);
 		new Effect.Fade(image);

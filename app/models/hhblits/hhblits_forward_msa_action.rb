@@ -1,4 +1,4 @@
-class HhrepForwardHmmAction < Action
+class HhblitsForwardMsaAction < Action
   HH=File.join(BIOPROGS, "hhpred")
 
   def do_fork?
@@ -8,7 +8,6 @@ class HhrepForwardHmmAction < Action
   attr_accessor :hits, :includehits, :result_textbox_to_file
 
   def perform
-
     if !params['fw_mode'].nil?  # default forward
 
       @forwardfile = File.join(job.job_dir, job.jobid + ".forward")
@@ -33,11 +32,11 @@ class HhrepForwardHmmAction < Action
   end
 
   def forward_params
-
-logger.debug "In forward params"
+  
+    logger.debug "In forward params"
     logger.debug "#{job.job_dir}"
     hash = {}
-    if params['mode'].nil? 
+    if params['mode'].nil?
       filename = File.join(job.job_dir, 'result_textbox_to_file')
       res = ""    
       if (File.exists?(filename))     
@@ -46,19 +45,11 @@ logger.debug "In forward params"
       res.gsub!(/>ss_pred.*?\n(.*\n)*?>/, '>')
       res.gsub!(/>ss_conf.*?\n(.*\n)*?>/, '>')      
       hash = { 'sequence_input' => res, 'maxpsiblastit' => '0' }
-    elsif job.params_main_action['sequence_file']
-      res = IO.readlines(job.params_main_action['sequence_file']).join("\n")
-      hash = { 'sequence_input' => res, 'informat' => job.params_main_action['informat'] }
     else
-      # make it work for HhrepMergealiJob instances, which don't have
-      # an own sequence_file param.
-      parentjob = job.parent
-      while (parentjob.parent && !parentjob.params_main_action['sequence_file'])
-        parentjob = parentjob.parent
-      end
-      res = IO.readlines(parentjob.params_main_action['sequence_file']).join("\n")
-      hash = { 'sequence_input' => res, 'informat' => parentjob.params_main_action['informat'] }
+      res = IO.readlines(job.params_main_action['sequence_file']).join("\n")
+      hash = { 'sequence_input' => res, 'informat' => job.params_main_action['informat']}
     end
-return hash
+    return hash
+
   end
 end

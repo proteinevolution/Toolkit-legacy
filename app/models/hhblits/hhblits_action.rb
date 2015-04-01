@@ -79,6 +79,19 @@ class HhblitsAction < Action
 
   end
 
+  def before_perform_on_forward
+    pjob = job.parent
+    @mode = pjob.params['mode']
+    logger.debug "L83 Running before_perform_on_forward with @mode=#{@mode}"
+    case @mode
+    when 'querymsa'
+      files = Dir.entries("#{pjob.job_dir}")
+      a3m_file = files.include?("#{pjob.jobid}.a3m") ? "#{pjob.jobid}.a3m" : files.detect {|f| f.match /#{pjob.jobid}.*\.a3m/}
+      FileUtils.copy_file("#{pjob.job_dir}/#{a3m_file}", "#{@infile}")
+      logger.debug "L93 Copy  #{pjob.job_dir}/#{pjob.jobid}.a3m to #{@infile}"
+    end
+  end
+
   # Prepare FASTA files for 'Show Query Alignemt', HHviz bar graph, and HMM histograms 
   def prepare_fasta_hhviz_histograms_etc
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
@@ -110,7 +123,11 @@ class HhblitsAction < Action
   
   def perform
     params_dump
-    msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
+    if (@mode == 'querymsa')
+      msa_factor = ''
+    else
+      msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
+    end
     @commands << "export  PATH=$PATH:#{HHSUITE} "
     @commands << "export  HHLIB=#{HHLIB} "
     

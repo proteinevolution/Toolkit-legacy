@@ -56,26 +56,17 @@ class HhrepAction < Action
   # Optional:
   # Put action initialization code that should be executed on forward here
   def before_perform_on_forward
-    logger.debug "L 64 Running before_on_perform "
+    logger.debug "L 59 Running before_perform_on_forward with @mode=#{@mode}"
     case @mode
-    when 'queryhmm'
-      logger.debug "L66 Running in Mode Queryhmm"
+    when 'querymsa'
+      logger.debug "L62 Running in Mode querymsa"
       pjob = job.parent
-      @informat = 'a3m'
-#      FileUtils.copy_file(/#{pjob.job_dir}\/#{pjob.jobid}(.*)?\.a3m/, "#{@basename}.a3m")
       files = Dir.entries("#{pjob.job_dir}")
       a3m_file = files.include?("#{pjob.jobid}.a3m") ? "#{pjob.jobid}.a3m" : files.detect {|f| f.match /#{pjob.jobid}.*\.a3m/}
-      hhm_file = files.include?("#{pjob.jobid}.hhm") ? "#{pjob.jobid}.hhm" : files.detect {|f| f.match /#{pjob.jobid}.*\.hhm/}
       FileUtils.copy_file("#{pjob.job_dir}/#{a3m_file}", "#{@basename}.a3m")
-      FileUtils.copy_file("#{pjob.job_dir}/#{hhm_file}", "#{@basename}.hhm")
-#      begin 
-#        FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.a3m", "#{@basename}.a3m")
-#      rescue 
-#        FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}_out.a3m", "#{@basename}.a3m") 
-#      end
-#      FileUtils.copy_file("#{pjob.job_dir}/#{pjob.jobid}.hhm", "#{@basename}.hhm")
       
-      logger.debug "L70 Copy  #{pjob.job_dir}/#{pjob.jobid}.hhm/a3m  to #{@basename}.hhm/a3m "
+      logger.debug "L68 Copy  #{pjob.job_dir}/#{pjob.jobid}.a3m  to #{@basename}.a3m "
+
     end
     
   end
@@ -84,20 +75,20 @@ class HhrepAction < Action
   # Put action code in here
   def perform
     
-    logger.debug "L79 Mode set to #{@mode} !"
+    logger.debug "L78 Mode set to #{@mode} !"
     cpus = 1
     
-    if @mode != 'queryhmm'
+    if @mode != 'querymsa'
       @commands << "#{HH}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
     end
-    if @maxpsiblastit.to_i > 0 || @mode != 'queryhmm'
+    if @maxpsiblastit.to_i > 0 || @mode != 'querymsa'
              #cpus = 2
              #@commands << "#{HH}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n #{@maxpsiblastit} #{@basename}.a3m  1>>#{job.statuslog_path} 2>&1"
     end
     
     
     # Settin new Prefilter 
-    if @mode != 'queryhmm'
+    if @mode != 'querymsa'
               if(@prefilter=='psiblast')
                    cpus = 2
                    @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
@@ -116,7 +107,7 @@ class HhrepAction < Action
                     end
                 end
     else
-        @commands <<"echo 'Using previously generated HMMs as Input Model' >> #{job.statuslog_path}  "
+        @commands <<"echo 'Using previously generated a3m MSA as Input Model' >> #{job.statuslog_path}  "
     end
     
     @hash = {}
@@ -127,7 +118,7 @@ class HhrepAction < Action
     self.flash = @hash
     self.save!
     
-    logger.debug "Commands:\n"+@commands.join("\n")
+    logger.debug "L121 Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'makemodel'
     q.save!
@@ -156,7 +147,7 @@ class HhrepAction < Action
       # Prepare FASTA files for 'Show Query Alignemt', and HMM histograms
       prepare_fasta_hhviz_histograms_etc("#{@basename}.#{qid}", "#{job.jobid}.#{qid}")
       
-      logger.debug "Commands:\n"+@commands.join("\n")
+      logger.debug "L150 Commands:\n"+@commands.join("\n")
       q = queue
       if qid == '0'
         q.on_done = 'create_links'
@@ -188,7 +179,7 @@ class HhrepAction < Action
     # create png-file with factor 3
     @commands << "#{HH}/hhalign -aliw #{@aliwidth} -local -alt 1 -dsca 3 -i #{@basename}.0.hhm -png #{@basename}_factor3.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
     
-    logger.debug "Commands:\n"+@commands.join("\n")
+    logger.debug "L182 Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
     
   end

@@ -8,6 +8,7 @@
 <%= form_tag({:action => :run, :job => 'hhblits'}, {:multipart => true, :id => 'parms', :onreset => "return resetDisplayValues('#{params['informat'] || @informat_values[0]}');" })%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 
+<% if @parent_job.nil? || @parent_job.params['mode'].nil?  -%>
 <div class="row">
   <%= form_label("Paste protein sequence or multiple alignment", "input") %>
   <%= form_text_area("sequence_input") %>
@@ -41,6 +42,19 @@
 <div class="spacer">&nbsp;</div>
 <div class="row">
   <%= form_submit_buttons %>
+
+<%else%>
+<%= form_hidden_field("sequence_input") %>
+<%= form_hidden_field("sequence_file", "") %>
+<%= form_hidden_field("informat") %>
+
+<div class="row">
+    <strong>Using query a3m MSA from job <%= @parent_job.jobid %> as input!</strong>
+    <%= form_hidden_field("mode", "querymsa") %>
+    <%= form_submit_buttons %>
+
+
+<%end%>
 </div>
 
 <h3 class="<%= @section["name"] %>">Search Options</h3>

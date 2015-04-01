@@ -129,11 +129,12 @@ class HhblitsController < ToolController
                   
                   
                   
-    @fw_values_hhms = [fw_hmm_to_tool_url('hhblits', 'hhpred')+ "&mode=queryhmm",
-                       fw_hmm_to_tool_url('hhblits', 'hhrep')+ "&mode=queryhmm",
-                       fw_hmm_to_tool_url('hhblits', 'hhrepid')+ "&mode=queryhmm"]
+    @fw_values_msa = [fw_msa_to_tool_url('hhblits', 'hhblits')+ "&mode=querymsa",
+                      fw_msa_to_tool_url('hhblits', 'hhpred')+ "&mode=querymsa",
+                      fw_msa_to_tool_url('hhblits', 'hhrep')+ "&mode=querymsa",
+                      fw_msa_to_tool_url('hhblits', 'hhrepid')+ "&mode=querymsa"]
                        
-    @fw_labels_hhms = [tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid')]
+    @fw_labels_msa = [tool_title('hhblits'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid')]
   end
   
   def histograms

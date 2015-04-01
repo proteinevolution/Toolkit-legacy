@@ -10,10 +10,10 @@ hhblits_job:
       - name: forward
         title: Forward
         title_long: Forward results
-      forwardhhmsections:
-      - name: forwardhhm
-        title: Forward HMM
-        title_long: Forward query HMM
+      forwardmsasections:
+      - name: forwardmsa
+        title: Forward MSA
+        title_long: Forward query MSA
     - name: histograms
       title: Histogram
       title_long: Show results in profile histogram view

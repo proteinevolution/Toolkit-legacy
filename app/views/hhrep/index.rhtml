@@ -39,10 +39,10 @@
 <%= form_hidden_field("sequence_input") %>
 <%= form_hidden_field("sequence_file", "") %>
 <%= form_hidden_field("informat") %>
+<%= form_hidden_field("mode", "querymsa") %>
 
 <div class="row">
-	<strong>Using query HHM from job <%= @parent_job.jobid %> as input!</strong>
-	<%= form_hidden_field("mode", "queryhmm") %>
+    <strong>Using query a3m MSA from job <%= @parent_job.jobid %> as input!</strong>
     <%= form_submit_buttons %>
 
 

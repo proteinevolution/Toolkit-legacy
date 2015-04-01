@@ -17,11 +17,13 @@ class HhrepController < ToolController
 		@widescreen = true
 		
 		#added by Hippolyt
-		@fw_values_hhms = [fw_hmm_to_tool_url('hhrep', 'hhpred')+ "&mode=queryhmm",
-                       fw_hmm_to_tool_url('hhrep', 'hhrep')+ "&mode=queryhmm",
-                       fw_hmm_to_tool_url('hhrep', 'hhrepid')+ "&mode=queryhmm"]
+		@fw_values_msa = [
+                       fw_msa_to_tool_url('hhrep', 'hhblits')+ "&mode=querymsa",
+                       fw_msa_to_tool_url('hhrep', 'hhpred')+ "&mode=querymsa",
+                       fw_msa_to_tool_url('hhrep', 'hhrep')+ "&mode=querymsa",
+                       fw_msa_to_tool_url('hhrep', 'hhrepid')+ "&mode=querymsa"]
                        
-    @fw_labels_hhms = [tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid')]
+          @fw_labels_msa = [tool_title('hhblits'), tool_title('hhpred'), tool_title('hhrep'), tool_title('hhrepid')]
 	end
   
 	def results_histogram

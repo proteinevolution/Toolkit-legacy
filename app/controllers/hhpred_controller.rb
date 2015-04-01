@@ -82,10 +82,12 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     end
     
     # Forwarding Values for other HH Tools
-    @fw_values = [fw_to_tool_url('hhpred', 'hhpred')+ "&mode=queryhmm", 
-                  fw_to_tool_url('hhpred', 'hhrep')+ "&mode=queryhmm",  
-                  fw_to_tool_url('hhpred', 'hhrepid')+ "&mode=queryhmm"] 
-    @fw_labels = [tool_title('hhpred'),
+    @fw_values = [fw_to_tool_url('hhpred', 'hhblits')+ "&mode=querymsa", 
+                  fw_to_tool_url('hhpred', 'hhpred')+ "&mode=querymsa", 
+                  fw_to_tool_url('hhpred', 'hhrep')+ "&mode=querymsa",  
+                  fw_to_tool_url('hhpred', 'hhrepid')+ "&mode=querymsa"] 
+    @fw_labels = [tool_title('hhblits'), 
+                  tool_title('hhpred'),
                   tool_title('hhrep'),
                   tool_title('hhrepid')]
     
