@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class HhblitsJob < Job
   
   @@export_ext = ".hhr"
@@ -187,14 +188,14 @@ class HhblitsJob < Job
       @results.push("<div id=\"slider_bar\" class=\"bar\" style=\"width: #{slider_width}px;\">\n")
       @results.push("<div id=\"slider_bar_handle_left\" class=\"handle\"><img src=\"/images/arrow_right.png\" alt=\"\"/></div>\n")
       @results.push("<div id=\"slider_bar_handle_right\" class=\"handle\"><img src=\"/images/arrow_left.png\" alt=\"\"/></div>\n")
-      @results.push("<div id=\"slider_bar_span\" class=\"span\"</div>\n")
+      @results.push("<div id=\"slider_bar_span\" class=\"span\"></div>\n")
       @results.push("</div>\n")
       @results.push("</div>\n")
       @results.push("<div class=\"row\" style=\"position:absolute;margin:2px; top:45px; width:795px;\">\n")
       @results.push("<form action=\"/hhblits/resubmit_domain/#{jobid}\" method=\"post\">\n")
       @results.push("<input type=\"hidden\" id=\"domain_start\" name=\"domain_start\"/>\n")
       @results.push("<input type=\"hidden\" id=\"domain_end\" name=\"domain_end\"/>\n")
-      @results.push("<input type=\"submit\" class=\"feedbutton\" style=\"border-width:2px;\" value=\"Resubmit\"/>\n")
+      @results.push("<input type=\"submit\" class=\"feedbutton\" style=\"border-width:2px;\" value=\"Resubmit section\"/>\n")
       @results.push("</form>\n")
       @results.push("</div>\n") 
       @results.push("</div>\n")
