@@ -239,7 +239,7 @@
     def getToolProtected
       begin
         tool
-      rescue ActiveRecord::StatementInvalid, ActiveRecord::MethodMissing => e
+      rescue ActiveRecord::StatementInvalid => e
         logger.debug("L243 Job.getToolProtected: #{e.message} ... trying again")
         ActiveRecord::Base.verify_active_connections!
         tool
