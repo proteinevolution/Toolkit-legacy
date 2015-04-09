@@ -333,4 +333,13 @@ module ApplicationHelper
     res
   end
 
+  # remove first id link from content string
+  # keeps number of displayed characters to be useful in pre tag
+  # id       name of anchor
+  # content  string possibly including a link reference to the anchor.
+  #          Restriction: No '<' allowed in linked text.
+  def remove_idlink(id, content)
+    content.sub(/<a href\s*=\s*##{id}>([^<]+)<\/a>/, '\1')
+  end
+
 end

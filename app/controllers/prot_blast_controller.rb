@@ -110,6 +110,11 @@ class ProtBlastController < ToolController
 
   end
 
+  def default_forwarding_value
+    # default_forwarding('ali2d')
+    @fw_values[0]
+  end
+
   def results_alignment
     # mode aignment: use alignment of alignhits.pl
     @fw_values = [fw_to_tool_url('prot_blast', 'blastclust'),

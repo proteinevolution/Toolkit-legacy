@@ -8,7 +8,7 @@ class PsiBlastJob < Job
   #E_THRESH   = 0.01
   @@MAX_DBS    = 5
   
-  attr_reader :header, :hits_better, :hits_prev, :hits_worse, :alignments, :footer, :searching, :num_checkboxes, :evalue_thr
+  attr_reader :header, :hits_better, :hits_prev, :hits_worse, :alignments, :footer, :searching, :num_checkboxes, :evalue_threshold
 
   def set_export_ext(val)
     @@export_ext = val  
@@ -33,9 +33,9 @@ class PsiBlastJob < Job
     @footer      = []
     @searching   = []
     @ids         = Hash.new    	
-    @evalue_thr  = params_main_action['evalfirstit'].to_f
-    @no_hits        = false
-    i               = 0
+    @evalue_threshold  = params_main_action['evalfirstit'].to_f
+    @no_hits     = false
+    i            = 0
     
     resfile         = File.join(job_dir, jobid+".psiblast")
     raise("ERROR with resultfile!") if !File.readable?(resfile) || !File.exists?(resfile) || File.zero?(resfile)
@@ -132,7 +132,7 @@ class PsiBlastJob < Job
           line =~ /#(\S+)>\s*\S+<\/a>\s+(\S+)\s*$/
           id = $1
           evalue = $2
-          if(evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= evalue_thr
+          if(evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= evalue_threshold
             @hits_better << { :id => id, :content => line }
             @ids[id]=1
           else
@@ -140,6 +140,7 @@ class PsiBlastJob < Job
           end
        else
           @searching << line
+          # KFT: no use of @searching found!
        end	
      end
   
@@ -149,16 +150,16 @@ class PsiBlastJob < Job
           extract = 1
         elsif( (extract==1) &&  ( (line=~/^\s*<\/PRE>\s*$/i) || (line=~/^\s*<PRE>\s*$/i) ) )
 	  in_get_hits_prev = false
-        elsif(extract==1)
-          line =~ /#(\S+)>\s*\S+<\/a>\s+(\S+)\s*$/
+        elsif ((extract==1) && (line =~ /#(\S+)>\s*\S+<\/a>\s+(\S+)\s*$/))
           id = $1
           evalue = $2
-          if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= evalue_thr
+          if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= evalue_threshold
             @hits_prev << { :id => id, :content => line }
             @ids[id]=1
           else
             @hits_worse << { :id => id, :content => line }
           end
+        # else line is ignored, because it's not a hit. Why not append it to @searching ?
         end
      end
 

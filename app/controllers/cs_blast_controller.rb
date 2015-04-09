@@ -111,6 +111,10 @@ class CsBlastController < ToolController
     @show_graphic_hitlist = true
     @show_references = false
   end
+
+  def default_forwarding_value
+    default_forwarding('cs_blast')
+  end
   
   # Initialzing and setting up of parameters for the result alignment page
   def results_alignment

@@ -5,7 +5,7 @@ class CsBlastJob < Job
 
   E_THRESH = 0.01
   
-  attr_reader :header, :hits_better, :hits_worse, :alignments, :footer, :num_checkboxes , :e_thres
+  attr_reader :header, :hits_better, :hits_worse, :alignments, :footer, :num_checkboxes , :evalue_threshold
 
   attr_accessor  :evalfirstit
 
@@ -20,18 +20,22 @@ class CsBlastJob < Job
   end
 
   # Parse out the main components of the BLAST output file in preparation for result display
+  def hits_prev
+    # see PsiBlastJob for comment
+  end
+
   def before_results(controller_params)
     
      
-     @e_thres = params['evalfirstit'].to_f
+     @evalue_threshold = params['evalfirstit'].to_f
      
-     if(@e_thres == 0.0)
-        @e_thres = E_THRESH
+     if(@evalue_threshold == 0.0)
+        @evalue_threshold = E_THRESH
       else
-        @e_thres = params['evalfirstit'].to_f
+        @evalue_threshold = params['evalfirstit'].to_f
      end
 
-    @header, @alignments, @footer = show_hits(jobid + ".csblast", @e_thres, "Expect", true)
+    @header, @alignments, @footer = show_hits(jobid + ".csblast", @evalue_threshold, "Expect", true)
     return true
   end
   

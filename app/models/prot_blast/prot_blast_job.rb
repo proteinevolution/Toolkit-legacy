@@ -15,6 +15,14 @@ class ProtBlastJob < Job
     @@export_ext
   end
 
+  def evalue_threshold
+    ProtBlastJob::E_THRESH
+  end
+
+  def hits_prev
+    # see PsiBlastJob for comment
+  end
+
   # Parse out the main components of the BLAST output file in preparation for result display
   def before_results(controller_params)
     @header, @alignments, @footer = show_hits(jobid + ".protblast", E_THRESH, "Expect", true)

@@ -1,3 +1,48 @@
+function deselectHitsAlignments()
+{
+  var number = parseInt($('CHECKBOXES').value, 10);
+  var checkboxes = hits_alignments_form.elements["hits[]"];
+  for(i = 0; i < (2*number); i++) {
+    checkboxes[i].checked = false;
+  }
+  calculate_forwarding();
+}
+
+function selectHitsAlignments()
+{ 
+  var number = parseInt($('CHECKBOXES').value, 10);
+  var checkboxes = hits_alignments_form.elements["hits[]"];
+  for(i = 0; i < (2*number); i++) {
+    checkboxes[i].checked = true;
+  }
+  calculate_forwarding();
+}
+
+function selectFirstHitsAlignments()
+{ 
+  var number = parseInt($('CHECKBOXES').value, 10);
+  var first = 10;
+  var checkboxes = hits_alignments_form.elements["hits[]"];
+  for(i = 0; i < (2*number); i++) {
+    if (i < first || (i >= number && i < (number+first))) {
+      checkboxes[i].checked = true;
+    } else {
+      checkboxes[i].checked = false;
+    }
+  }
+  calculate_forwarding();
+}
+
+function changeSelection(num, block)
+{
+  var number = parseInt($('CHECKBOXES').value, 10);
+  var checkboxes = hits_alignments_form.elements["hits[]"];
+  var mode = checkboxes[(block * number)+num].checked;
+  for (i = 0; i < 2; i++) {
+    checkboxes[(i * number)+num].checked = mode;
+  }
+}
+
 function appearForward(val)
 {
     if (Element.getStyle(val, 'display') == "none") {
