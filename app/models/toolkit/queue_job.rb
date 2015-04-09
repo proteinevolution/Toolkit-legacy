@@ -1,8 +1,11 @@
+require "protected_sql.rb"
+
 class QueueJob < ActiveRecord::Base
   belongs_to :action, :order => "created_on"
   has_many :workers, :class_name => "AbstractWorker", :foreign_key => "queue_job_id", :order => "created_on"
 
   include Dbhack
+  include ProtectedSql
   
   def logger
     # max log file size: 100MB. Keep 6 of them.
@@ -51,10 +54,6 @@ class QueueJob < ActiveRecord::Base
     # !!!local execution is currently not maintained!!! repair of this class is needed
     qw = nil
     
-    excep = nil
-    repeat = 0
-    while (repeat < 6)
-      begin    	
         if QUEUE_MODE == 'local'
           qw = LocalWorker.create(:queue_job => self, :commands => cmds, :options => options, :status => STATUS_INIT)
         elsif QUEUE_MODE == 'pbs'
@@ -64,15 +63,6 @@ class QueueJob < ActiveRecord::Base
         else
           # ERROR
         end
-        break
-      rescue Exception => e
-        excep = e
-        repeat += 1
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.remove_connection())
-      end
-    end
-    
-    if (repeat == 6) then raise excep end
     
 #    qw.queue_job = self
     qw.save!

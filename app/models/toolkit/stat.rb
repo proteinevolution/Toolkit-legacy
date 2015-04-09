@@ -12,16 +12,6 @@ class Stat < ActiveRecord::Base
     end
   end
 
-  def save!
-    begin
-      super
-    rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L14 stat.rb Stat.save!: Got statement invalid #{e.message} ... trying again")
-      ActiveRecord::Base.verify_active_connections!
-      super
-    end
-  end
-
   def self.time2string(time, count)
     return "" unless count > 0
     s = time / count

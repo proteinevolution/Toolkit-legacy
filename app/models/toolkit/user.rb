@@ -79,17 +79,6 @@ class User < ActiveRecord::Base
     self.password_confirmation = confirm.nil? ? pass : confirm
     @new_password = true
   end
-
-  def save
-    begin
-      super
-    rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L136 User.save: Got statement invalid #{e.message} ... trying again")
-      ActiveRecord::Base.verify_active_connections!
-      super
-    end
-  end
-
     
   protected
 

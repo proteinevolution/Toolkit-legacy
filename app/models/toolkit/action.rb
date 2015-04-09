@@ -1,3 +1,5 @@
+require "protected_sql.rb"
+
   class Action < ActiveRecord::Base
     acts_as_tree :order => "created_on"
     has_many :queue_jobs, :dependent => :destroy, :order => "created_on"
@@ -7,6 +9,7 @@
     serialize :flash
     
   include Dbhack
+  include ProtectedSql
     
     def do_fork?
     	return true
@@ -157,22 +160,11 @@
     end
 
     def queue(*args)
-		repeat = 0
-		excep = nil
-		while (repeat < 10)    	
-    		begin
       		qj = QueueJob.create(:action => self, :status => STATUS_INIT, *args)
 #      		qj.action = self
 #      		qj.status = STATUS_INIT
       		qj.save!
-      		return qj
-      	rescue Exception => e
-				excep = e      		
-      		repeat += 1
-      		ActiveRecord::Base.establish_connection(ActiveRecord::Base.remove_connection())
-      	end
-      end
-		raise excep         
+      qj
     end
 
     def update_status
@@ -230,25 +222,4 @@
       end
     end
     
-    def save
-      begin
-        super
-      rescue ActiveRecord::StatementInvalid => e
-        logger.debug("L237 action.rb Action.save: Got statement invalid #{e.message} ... trying again")
-        ActiveRecord::Base.verify_active_connections!
-        super
-      end
-    end
-
-    # save and save! don't call each other. save! i.e. is called in Job.run.
-    def save!
-      begin
-        super
-      rescue ActiveRecord::StatementInvalid => e
-        logger.debug("L248 action.rb Action.save!: Got statement invalid #{e.message} ... trying again")
-        ActiveRecord::Base.verify_active_connections!
-        super
-      end
-    end
-
   end

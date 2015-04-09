@@ -1,3 +1,5 @@
+require "protected_sql.rb"
+
   class Job < ActiveRecord::Base
     acts_as_tree :order => "created_on"
     has_many :actions, :order => "created_on"
@@ -11,6 +13,7 @@
  #       belongs_to :user
 
     include Dbhack
+    include ProtectedSql
     
     @@export_file_ext = 'export'
     @@export_basename = 'JOBID'
@@ -469,13 +472,4 @@
       end
     end
 
-  def save!
-    begin
-      super
-    rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L466 job.rb Job.save!: Got statement invalid #{e.message} ... trying again")
-      ActiveRecord::Base.verify_active_connections!
-      super
-    end
-  end
 end

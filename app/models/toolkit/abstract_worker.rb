@@ -1,6 +1,10 @@
+require "protected_sql.rb"
+
   class AbstractWorker < ActiveRecord::Base
     set_table_name "queue_workers"
     belongs_to :queue_job
+
+    include ProtectedSql
 
     def execute
       # Implement this method in derived classes
@@ -30,16 +34,6 @@
         queue_job.getToolShortcut
       else
         nil
-      end
-    end
-
-    def save!
-      begin
-        super
-      rescue ActiveRecord::StatementInvalid => e
-        logger.debug("L40 abstract_worker.rb AbstractWorker.save!: Got statement invalid #{e.message} ... trying again")
-        ActiveRecord::Base.verify_active_connections!
-        super
       end
     end
 
