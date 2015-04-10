@@ -60,6 +60,7 @@ class PsiBlastpAction < Action
     @rounds = params['rounds']
     @filter = params['filter'] ? 'yes' : 'no'
     @fastmode = params['fastmode'] ? 'T' : 'F'
+    @query = " -query " + @infile
     @alignment = ""
     @db_path = params['std_dbs'].nil? ? "" : params['std_dbs'].join(' ')
     @db_path = params['user_dbs'].nil? ? @db_path : @db_path + ' ' + params['user_dbs'].join(' ')
@@ -99,6 +100,7 @@ class PsiBlastpAction < Action
   end
 
   def process_alignment
+    @query = "" # parameters -query and -in_msa are incompatible
     @alignment = " -in_msa #{@basename}.aln"
     
     @content = IO.readlines(@infile).map {|line| line.chomp}
@@ -191,7 +193,7 @@ class PsiBlastpAction < Action
       #@commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@basename}.psiblastp_tmp -d #{DATABASES}/standard/nr70 #{@alignment} -I T -C #{@basename}.ksf #{@other_advanced}  >> #{job.statuslog_path}"
       # The following command gives the following warning:
       #  Warning: Composition-based score adjustment conditioned on sequence properties and unconditional composition-based score adjustment is not supported with PSSMs, resetting to default value of standard composition-based statistics
-      @commands << "#{BLASTP}/psiblast -db #{DATABASES}/standard/nr70 -query #{@infile} -matrix #{@mat_param} -num_iterations #{@rounds} -evalue #{@expect} -gapopen #{@gapopen} -gapextend #{@gapext} -num_threads 4 -inclusion_ethresh #{@e_thresh} -num_descriptions #{@descriptions} -num_alignments #{@descriptions} -out #{@basename}.psiblastp_tmp#{@alignment} -outfmt 0 -html -show_gis#{@smith_wat} -seg #{@filter} -out_pssm #{@basename}.ksf #{@other_advanced} >> #{job.statuslog_path}"
+      @commands << "#{BLASTP}/psiblast -db #{DATABASES}/standard/nr70@{@query} -matrix #{@mat_param} -num_iterations #{@rounds} -evalue #{@expect} -gapopen #{@gapopen} -gapextend #{@gapext} -num_threads 4 -inclusion_ethresh #{@e_thresh} -num_descriptions #{@descriptions} -num_alignments #{@descriptions} -out #{@basename}.psiblastp_tmp#{@alignment} -outfmt 0 -html -show_gis#{@smith_wat} -seg #{@filter} -out_pssm #{@basename}.ksf #{@other_advanced} >> #{job.statuslog_path}"
       #@commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j 1 -m 0          -v #{@descriptions} -b #{@descriptions} -T T -o #{@outfile} -d \"#{@db_path}\" -R #{@basename}.ksf #{@other_advanced} >> #{job.statuslog_path}"
       ## direct "translation" did not work:
       ## Error: Argument "query". Incompatible with argument:  `in_pssm'
@@ -202,9 +204,9 @@ class PsiBlastpAction < Action
     else
       @commands << "echo 'Starting BLAST+ search' &> #{job.statuslog_path}"
 #      @commands << "#{BLAST}/blastpgp -a 4 -i #{@infile} -F #{@filter} -h #{@e_thresh} -s #{@smith_wat} -e #{@expect} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} -j #{@rounds} -m 0 -v #{@descriptions} -b #{@descriptions} -T T -o #{@outfile} -d \"#{@db_path}\" #{@alignment} -I T #{@other_advanced} >> #{job.statuslog_path}"
-      @commands << "#{BLASTP}/psiblast -db \"#{@db_path}\" -query #{@infile} -matrix #{@mat_param} -num_iterations #{@rounds} -evalue #{@expect} -gapopen #{@gapopen} -gapextend #{@gapext} -num_threads 4 -inclusion_ethresh #{@e_thresh} -num_descriptions #{@descriptions} -num_alignments #{@descriptions} -out #{@outfile}#{@alignment} -outfmt 0 -html -show_gis#{@smith_wat} -seg #{@filter} #{@other_advanced} >> #{job.statuslog_path}"
-      # for testing a blastp call instead:
-      #@commands << "#{BLASTP}/blastp -db \"#{@db_path}\" -query #{@infile} -matrix #{@mat_param} -evalue #{@expect} -gapopen #{@gapopen} -gapextend #{@gapext} -num_threads 4 -num_descriptions #{@descriptions} -num_alignments #{@descriptions} -out #{@outfile}#{@alignment} -outfmt 0 -html -show_gis#{@smith_wat} -seg #{@filter} #{@other_advanced} >> #{job.statuslog_path}"
+      @commands << "#{BLASTP}/psiblast -db \"#{@db_path}\"#{@query} -matrix #{@mat_param} -num_iterations #{@rounds} -evalue #{@expect} -gapopen #{@gapopen} -gapextend #{@gapext} -num_threads 4 -inclusion_ethresh #{@e_thresh} -num_descriptions #{@descriptions} -num_alignments #{@descriptions} -out #{@outfile}#{@alignment} -outfmt 0 -html -show_gis#{@smith_wat} -seg #{@filter} #{@other_advanced} >> #{job.statuslog_path}"
+      # for testing a blastp call instead. Does not work with alignment (no -in_msa parameter)!
+      #@commands << "#{BLASTP}/blastp -db \"#{@db_path}\"#{@query} -matrix #{@mat_param} -evalue #{@expect} -gapopen #{@gapopen} -gapextend #{@gapext} -num_threads 4 -num_descriptions #{@descriptions} -num_alignments #{@descriptions} -out #{@outfile}#{@alignment} -outfmt 0 -html -show_gis#{@smith_wat} -seg #{@filter} #{@other_advanced} >> #{job.statuslog_path}"
     end
     
     ### KEEPING FORMER ROUNDS

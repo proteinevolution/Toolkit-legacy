@@ -121,6 +121,10 @@ class PsiBlastpController < ToolController
     @show_references = false
   end
 
+  def default_forwarding_value
+    default_forwarding('psi_blastp')
+  end
+
   def results_alignment
     # mode aignment: use alignment of alignhits.pl
     @fw_values = [fw_to_tool_url('psi_blastp', 'blastclust'),
