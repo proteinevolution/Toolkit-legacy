@@ -449,6 +449,9 @@ class SgeWorker < AbstractWorker
                   ### R ###
                 when "RepperAction" then 15
                 when "ReformatAction" then 4
+                when "RnasehpredAction" then 28
+                when "RnasehpredForwardAction" then 19
+                when "RnasehpredShowtemplalignAction" then 18
                   ### S ###
                 when "SimshiftAction" then 5
                 when "SixframeAction" then 10

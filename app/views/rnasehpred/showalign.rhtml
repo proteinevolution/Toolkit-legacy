@@ -1,0 +1,40 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => 'Show/Edit Query Alignment'}) %>
+
+<%= render(:partial => "shared/resultsections", :locals => {:export_to => 'queryalign'}) %>
+
+<%= form_tag({:action => :run, :jobaction => 'hhpred_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+
+<%= form_jalview_buttons("complete alignment with inserts",
+    			 "reduced alignment: 50 most distinct sequences without inserts",
+			 25, 0,
+			 ".fas", ".reduced.fas",
+			 "alignment", "hhpred") %>
+	<div class="row">
+                <br/>
+                <strong>You may edit the query alignment below and forward it to some tools&nbsp;&nbsp;</strong>
+                <br/>
+                <div id="forward">
+                  <div class="row">
+                    <%= form_label("Forward results to") %>
+                    <%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0], 1, "toggle_seqlen('destination');") %>
+                    <div class="formw">
+                      <input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+		    </div>
+		  </div>
+		</div>
+                <br/>
+		<div class="hr">&nbsp;</div>
+
+		<input name="submitform" type="submit" class="feedbutton" value="Restart HHpred with this alignment" />
+		<input name="resetform" type="reset" class="feedbutton" value="Undo all changes" />
+		<strong>You may edit the query alignment below and submit it to HHpred&nbsp;&nbsp;</strong>
+		<br/>
+	</div>
+
+	<div class="spacer">&nbsp;</div>
+
+	<div class="row">
+		<%= text_area_tag("result_textbox_to_file", @job.render_file(@job.jobid+".fas"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
+	</div>
+
+</form>

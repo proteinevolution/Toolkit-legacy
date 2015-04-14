@@ -524,4 +524,13 @@
   active: 
   - member
   - internal
+- name: rnasehpred
+  title: RNAseHpred
+  title_long: RNAseHpred - Description needed
+  section: classification
+  updated: April, 2015
+  version: n.a.
+  active: 
+  - member
+  - internal
 

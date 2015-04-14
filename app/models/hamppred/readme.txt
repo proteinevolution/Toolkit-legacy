@@ -3,9 +3,6 @@ hh3d_querytempl_action.rb
 hh3d_querytempl_job.rb
 hh3d_templ_action.rb
 hh3d_templ_job.rb
-hhmakemodel_action.rb
-hhmakemodel_forward_action.rb
-hhmakemodel_job.rb
 hhmergeali_action.rb
 hhmergeali_job.rb
 

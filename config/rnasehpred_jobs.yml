@@ -1,7 +1,7 @@
-hamppred_job: 
-  title: HAMPpred
+rnasehpred_job: 
+  title: RNAseHpred
   hidden: false
-  code: HAMP
+  code: RNH
   resultsections:  
     - name: results
       title: Results
@@ -26,7 +26,6 @@ hamppred_job:
       forwardsections:
 
 hhmergeali_job:
-  title: HAMPpred mergeali
+  title: RNAseHpred mergeali
   hidden: false
-  code: HPMA
- 
+  code: RNHMA

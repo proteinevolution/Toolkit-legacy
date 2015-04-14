@@ -1,6 +1,6 @@
 require 'fasta_reader.rb'
 
-class HamppredController < ToolController
+class RnasehpredController < ToolController
 REFORMAT = File.join(BIOPROGS, 'reformat')
 
   def index
@@ -21,12 +21,12 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     searchpat = File.join(DATABASES, 'hhpred', 'new_dbs', '*')
     dbvalues_pre = Dir.glob(searchpat)
     
-    logger.debug "L 24 HamppredController #{params['sequence_input']}"
+    logger.debug "L 24 RnasehpredController #{params['sequence_input']}"
 
     @dbvalues = Array.new
 
     # Sort list of directories according to order given in sortlist 
-    sortlist = Array["\/hamppred"]
+    sortlist = Array["\/rnasehpred"]
     # Allow non-standard libraries only on internal server:
     if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
     if (LOCATION == "Munich" && !@user.nil? && (@user.id == 119 || @user.groups.include?('admin'))) then sortlist.push("\/Proteasome") end
@@ -66,10 +66,10 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     end
     
     # Forwarding Values for other HH Tools
-    @fw_values = [fw_to_tool_url('hamppred', 'hhblits')+ "&mode=querymsa",
-                  fw_to_tool_url('hamppred', 'hhpred')+ "&mode=querymsa", 
-                  fw_to_tool_url('hamppred', 'hhrep')+ "&mode=querymsa",  
-                  fw_to_tool_url('hamppred', 'hhrepid')+ "&mode=querymsa"] 
+    @fw_values = [fw_to_tool_url('rnasehpred', 'hhblits')+ "&mode=querymsa",
+                  fw_to_tool_url('rnasehpred', 'hhpred')+ "&mode=querymsa", 
+                  fw_to_tool_url('rnasehpred', 'hhrep')+ "&mode=querymsa",  
+                  fw_to_tool_url('rnasehpred', 'hhrepid')+ "&mode=querymsa"] 
     @fw_labels = [tool_title('hhblits'),
                   tool_title('hhpred'),
                   tool_title('hhrep'),
@@ -180,7 +180,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
 
     basename = File.join(@job.job_dir, @job.jobid)
     @my_command = "#{BIOPROGS}/perl/alicutter.pl #{basename}.resub_domain.a2m #{basename}.in.cut #{params[:domain_start].to_i} #{params[:domain_end].to_i} "
-    logger.debug("Running Alicutter -hamppred- #{@my_command}")
+    logger.debug("Running Alicutter -rnasehpred- #{@my_command}")
     system(@my_command)   
     job_params = @job.actions.first.params
     job_params.sort

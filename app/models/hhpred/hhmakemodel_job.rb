@@ -274,7 +274,7 @@ class HhmakemodelJob  < Job
       if nseqs.to_i !=1 
         @results.push("s")
       end
-      @results.push("(at 90&#37 maximum pairwise sequence identity). You may be able to improve sensitivity vastly")
+      @results.push("(at 90&#37 maximum pairwise sequence identity). You may be able to improve sensitivity vastly ")
       @results.push("by using our intermediate HMM searching method 'HHsenser' to enlarge the query alignment: ")
       @results.push("Just press <b>\"Resubmit using HHsenser</b>\" above. ")
       @results.push("<br>Alternatively, you may try to build a bigger query alignment <i>by hand</i>: ")

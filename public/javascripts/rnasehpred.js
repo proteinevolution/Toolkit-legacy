@@ -26,7 +26,6 @@ function appearForward(val)
 	new Effect.Appear(val);
     } else {
 	new Effect.Fade(val);
-	new Effect.Fade('noPdb');
 
 	if ($(coloring) != null) {
 	    new Effect.Appear(coloring);
