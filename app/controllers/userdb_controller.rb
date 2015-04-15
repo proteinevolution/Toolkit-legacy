@@ -95,7 +95,7 @@ class UserdbController < ApplicationController
     updatedb_commmand = File.join(TOOLKIT_ROOT,"script","update_userdb.rb")+" #{db_id};"
 
     command_file = path + ".sh"
-    path.sub!(/^(.*)\/.+?$/, '\1')
+    path = path.sub(/^(.*)\/.+?$/, '\1')
 
     queue = QUEUES[:immediate]
     usequeue = queue && queue != "" && queue[0] != "-"[0]
