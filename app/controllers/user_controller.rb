@@ -15,6 +15,7 @@ class UserController < ApplicationController
     if session['user'] = User.authenticate(params['user']['login'], params['user']['password'])
       flash['notice'] = l(:user_login_succeeded)
       @user = session['user']
+      begin
       @user.jobs.each do |job|
         if (!@jobs_cart.include?(job.jobid))
           if (job.config.nil?)
@@ -23,6 +24,9 @@ class UserController < ApplicationController
             @jobs_cart.push(job.jobid)
           end
         end
+      end
+      rescue ActiveRecord::SubclassNotFound
+        # enable login even if some job class does not exist in the current system.
       end
       redirect_to :host => DOC_ROOTHOST, :action => 'welcome'
     else
@@ -55,11 +59,15 @@ class UserController < ApplicationController
   end  
   
   def logout
-    @meta_section = "logout"  
+    @meta_section = "logout"
+    begin
     @user.jobs.each do |job|
 	   if @jobs_cart.include?(job.jobid)
 	     @jobs_cart.delete(job.jobid)
 	   end
+    end
+    rescue ActiveRecord::SubclassNotFound
+        # enable logout even if some job class doesn't exist on this toolkit installation.
     end
     session['user'] = nil
     redirect_to :host => DOC_ROOTHOST, :action => 'login'

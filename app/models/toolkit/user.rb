@@ -50,7 +50,8 @@ class User < ActiveRecord::Base
 
   def update_expiry
     write_attribute('token_expiry', [self.token_expiry, Time.at(Time.now.to_i + 600 * 1000)].min)
-    write_attribute('authenticated_by_token', true)
+    # authenticated_by_token does not exist in the database and isn't used.
+    # write_attribute('authenticated_by_token', true)
     write_attribute("verified", 1)
     protected_update_without_callbacks
   end

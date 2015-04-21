@@ -70,7 +70,12 @@
 		<tbody>
       <% num_checkboxes = 0 %>
       <% @jobs_cart.reverse_each do |jobid| 
+      begin
       job = Job.find(:first, :conditions => [ "jobid = ?", jobid])
+      rescue ActiveRecord::SubclassNotFound
+         # don't get into error state only if a job class is missing in that toolkit installation.
+	 job = nil
+      end
       next if (job.nil?)
       title = job.config['title']
       tool = job.tool
