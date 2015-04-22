@@ -41,59 +41,60 @@ module ProtectedSql
         find(*args)
       end
     end
+  end
 
-    # protected classes' save methods always are overloaded here,
-    # because saving is an essential operation.
+  # protected classes' save methods always are overloaded here,
+  # because saving is an essential operation.
 
-    # save and save! don't call each other. save! i.e. is called in Job.run.
+  # save and save! don't call each other. save! i.e. is called in Job.run.
 
-    def save!
-      begin
+  def save!
+    begin
+      super
+    rescue ActiveRecord::StatementInvalid => e
+      if (successfulInsert?(e.message))
+        # object already reloaded by successfulInsert?
+        self
+      else
+        logger.debug("L58 protected_sql.rb #{self.class.name}.save!: Got statement invalid #{e.message} ... trying again")
+        ActiveRecord::Base.verify_active_connections!
         super
-      rescue ActiveRecord::StatementInvalid => e
-        if (successfulInsert?(e.message))
-          # object already reloaded by successfulInsert?
-          self
-        else
-          logger.debug("L58 protected_sql.rb #{self.class.name}.save!: Got statement invalid #{e.message} ... trying again")
-          ActiveRecord::Base.verify_active_connections!
-          super
-        end
       end
-    end
-
-    # save method also overloaded, because it also throws the
-    # ActiveRecord::StatementInvalid exception
-    def save
-      begin
-        super
-      rescue ActiveRecord::StatementInvalid => e
-        if (successfulInsert?(e.message))
-          # object already reloaded by successfulInsert?
-          self
-        else
-          logger.debug("L75 protected_sql.rb #{self.class.name}.save: Got statement invalid #{e.message} ... trying again")
-          ActiveRecord::Base.verify_active_connections!
-          super
-        end
-      end
-    end
-
-    private
-
-    def successfulInsert?(message)
-      if message.include? INSERT_MARKER
-        begin
-          reload
-          # reload successful
-          logger.debug("L89 protected_sql.rb #{self.class.name}.successfulInsert? is true despite getting statement invalid #{message} ... not trying again!")
-          return true
-        rescue Exception => e
-          # remove logging, after specializing Exception
-          logger.debug("L93 protected_sql.rb #{self.class.name}.successfulInsert? Exception should indicate that object wasn't inserted into database: #{e.message}")
-        end
-      end
-      false
     end
   end
+
+  # save method also overloaded, because it also throws the
+  # ActiveRecord::StatementInvalid exception
+  def save
+    begin
+      super
+    rescue ActiveRecord::StatementInvalid => e
+      if (successfulInsert?(e.message))
+        # object already reloaded by successfulInsert?
+        self
+      else
+        logger.debug("L76 protected_sql.rb #{self.class.name}.save: Got statement invalid #{e.message} ... trying again")
+        ActiveRecord::Base.verify_active_connections!
+        super
+      end
+    end
+  end
+
+  private
+
+  def successfulInsert?(message)
+    if message.include? INSERT_MARKER
+      begin
+        reload
+        # reload successful
+        logger.debug("L90 protected_sql.rb #{self.class.name}.successfulInsert? is true despite getting statement invalid #{message} ... not trying again!")
+        return true
+      rescue Exception => e
+        # remove logging, after specializing Exception
+        logger.debug("L94 protected_sql.rb #{self.class.name}.successfulInsert? Exception should indicate that object wasn't inserted into database: #{e.message}")
+      end
+    end
+    false
+  end
+
 end

@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
     begin
       super
     rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L21 User.initialize: Got statement invalid #{e.message} ... trying again")
+      logger.debug("L22 User.initialize: Got statement invalid #{e.message} ... trying again")
       ActiveRecord::Base.verify_active_connections!
       super
     end
@@ -125,12 +125,31 @@ class User < ActiveRecord::Base
     begin
       update_without_callbacks
     rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L126 User.protected_update_without_callbacks: Got statement invalid #{e.message} ... trying again")
+      logger.debug("L128 User.protected_update_without_callbacks: Got statement invalid #{e.message} ... trying again")
       ActiveRecord::Base.verify_active_connections!
       update_without_callbacks
     end
   end
 
+  def self.protected_find_by_id(id)
+    begin
+      User.find_by_id(id)
+    rescue ActiveRecord::StatementInvalid => e
+      logger.debug("L138 User.protected_find_by_id: Got statement invalid #{e.message} ... trying again")
+      ActiveRecord::Base.verify_active_connections!
+      User.find_by_id(id)
+    end
+  end
+
+  def self.protected_find_by_login(login)
+    begin
+      User.find_by_login(login)
+    rescue ActiveRecord::StatementInvalid => e
+      logger.debug("L148 User.protected_find_by_login: Got statement invalid #{e.message} ... trying again")
+      ActiveRecord::Base.verify_active_connections!
+      User.find_by_login(login)
+    end
+  end
 
   validates_presence_of :login, :on => :create
   validates_length_of :login, :within => 3..80, :on => :create

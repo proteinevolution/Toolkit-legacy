@@ -25,9 +25,9 @@ class ToolController < ApplicationController
     if params[:jobid].kind_of?(String)
       if params[:action] == 'forward' || params[:action] == 'forward_hmm' || params[:action] == 'forward_msa'
         #              changed here  -^
-        @parent_job = Job.find(:first, :conditions => [ "jobid = ?", params[:jobid]])
+        @parent_job = Job.protected_find(:first, :conditions => [ "jobid = ?", params[:jobid]])
       else
-        @job = Job.find(:first, :conditions => [ "jobid = ?", params[:jobid]])
+        @job = Job.protected_find(:first, :conditions => [ "jobid = ?", params[:jobid]])
       end      
     end
   end
@@ -61,7 +61,7 @@ class ToolController < ApplicationController
     params['reviewing'] = true
     logger.debug  "L62 -> Running current Application"
     # KFT: Observation: The jobid is indeed found in params[:job], not in params[:jobid] when forwarding!!?!
-    job = Job.find(:first, :conditions => [ "jobid = ?", params[:job]])
+    job = Job.protected_find(:first, :conditions => [ "jobid = ?", params[:job]])
     if (job.nil?)
       logger.debug "L66 Job for #{params[:job]} has not yet been initialized (id is #{params[:jobid] || 'nil'}), creating new id"
       job = Object.const_get(params[:job].to_cc+"Job").make(params, @user)
@@ -70,7 +70,7 @@ class ToolController < ApplicationController
       if (job.tool.camelize == job.class.to_s.gsub(/Job/, '').camelize)
         toolname = job.tool.camelize
         day = sprintf("%04d-%02d-%02d", DateTime.now.year, DateTime.now.month, DateTime.now.day)
-        stats = Stat.find(:first, :conditions => [ "toolname=? AND day=?", toolname, day ])
+        stats = Stat.protected_find(:first, :conditions => [ "toolname=? AND day=?", toolname, day ])
         if stats.nil?
           stats = Stat.new(:toolname => toolname, :day => day)
         end
@@ -110,7 +110,7 @@ class ToolController < ApplicationController
     if (dbnames)
       dbnames.each do |dbname|
         day = sprintf("%04d-%02d-%02d", DateTime.now.year, DateTime.now.month, DateTime.now.day)
-        dbstats = Dbstat.find(:first, :conditions => [ "dbname=? AND day=?", dbname, day ])
+        dbstats = Dbstat.protected_find(:first, :conditions => [ "dbname=? AND day=?", dbname, day ])
         if dbstats.nil?
           dbstats = Dbstat.new(:dbname => dbname, :day => day)
         end
@@ -148,7 +148,7 @@ class ToolController < ApplicationController
       end
       a = job.actions
       if (a.length == 0)
-        j = Job.find(:all, :conditions => [ "jobid = ?", job.jobid])
+        j = Job.protected_find(:all, :conditions => [ "jobid = ?", job.jobid])
         if (j.length == 1)
           @jobs_cart.delete(job.jobid)
         end
@@ -178,14 +178,14 @@ class ToolController < ApplicationController
   end
 
   def waiting
-    @job = Job.find(:first, :conditions => [ "jobid = ?", params[:jobid]])
+    @job = Job.protected_find(:first, :conditions => [ "jobid = ?", params[:jobid]])
     @nextcheck = [(Time.now-@job.run_on).to_i, 30].min
     checkurl = url_for :host => DOC_ROOTHOST, :action => 'check', :jobid => @job 
     @meta = "<meta http-equiv=\"refresh\" content=\"#{@nextcheck}; URL='#{checkurl}'\">";
   end
 
   def destroy
-    @job = Job.find(:first, :conditions => [ "jobid = ?", params[:jobid]])
+    @job = Job.protected_find(:first, :conditions => [ "jobid = ?", params[:jobid]])
     tool = @job.tool
     
     if ((@job.jobid !~ /^tu_/ && @job.jobid !~ /^HH_/) || (!@job.user_id.nil? && !@user.nil? && @user.id == @job.user_id) || (!@user.nil? && @user.groups.include?('admin')) ) 

@@ -15,19 +15,7 @@ class UserController < ApplicationController
     if session['user'] = User.authenticate(params['user']['login'], params['user']['password'])
       flash['notice'] = l(:user_login_succeeded)
       @user = session['user']
-      begin
-      @user.jobs.each do |job|
-        if (!@jobs_cart.include?(job.jobid))
-          if (job.config.nil?)
-            logger.debug("L21 Missing config of #{job.type}:#{job.jobid} in #{job.tool.to_us}_jobs.yml")
-          elsif (job.config['hidden'] == false)
-            @jobs_cart.push(job.jobid)
-          end
-        end
-      end
-      rescue ActiveRecord::SubclassNotFound
-        # enable login even if some job class does not exist in the current system.
-      end
+      protected_fill_jobs_cart
       redirect_to :host => DOC_ROOTHOST, :action => 'welcome'
     else
       @login = params['user']['login']
@@ -60,15 +48,7 @@ class UserController < ApplicationController
   
   def logout
     @meta_section = "logout"
-    begin
-    @user.jobs.each do |job|
-	   if @jobs_cart.include?(job.jobid)
-	     @jobs_cart.delete(job.jobid)
-	   end
-    end
-    rescue ActiveRecord::SubclassNotFound
-        # enable logout even if some job class doesn't exist on this toolkit installation.
-    end
+    protected_clear_jobs_cart
     session['user'] = nil
     redirect_to :host => DOC_ROOTHOST, :action => 'login'
   end
@@ -88,14 +68,14 @@ class UserController < ApplicationController
     params['user'].delete('form')
     begin
       User.transaction do
-        # logger.debug "L83 User #{@user}" # don't log because of privacy
+        # logger.debug "L71 User #{@user}" # don't log because of privacy
         @user.change_password(params['user']['password'], params['user']['password_confirmation'])
-        logger.debug "L85 Password changed"
+        logger.debug "L73 Password changed"
         if @user.save
           UserNotify.deliver_change_password(@user, params['user']['password'])
           flash.now['notice'] = l(:user_updated_password, "#{@user.login}")
         end
-        logger.debug "L90 User saved"
+        logger.debug "L78 User saved"
       end
     rescue
       flash.now['message'] = l(:user_change_password_email_error)
@@ -117,7 +97,7 @@ class UserController < ApplicationController
     # Handle the :post
     if params['user']['login'].nil?
       flash.now['message'] = l(:user_enter_valid_email_address)
-    elsif (user = User.find_by_login(params['user']['login'])).nil?
+    elsif (user = User.protected_find_by_login(params['user']['login'])).nil?
       flash.now['message'] = l(:user_email_address_not_found, "#{params['user']['login']}")
     else
       begin
@@ -186,7 +166,7 @@ class UserController < ApplicationController
 
   def restore_deleted
     @meta_section = "restore_delete" 
-    @user = User.find_by_id(params['user']['id'])
+    @user = User.protected_find_by_id(params['user']['id'])
     if(@user) 
       @user.deleted = 0
       if @user.token_expired? or params['key'] != @user.security_token or not @user.save
@@ -220,8 +200,56 @@ class UserController < ApplicationController
     end
     session['user'] = @user               
   end
+
+  def protected_fill_jobs_cart
+    begin
+      fill_jobs_cart
+    rescue ActiveRecord::StatementInvalid => e
+      logger.debug("L208 User.protected_fill_jobs_cart: Got statement invalid #{e.message} ... trying again")
+      ActiveRecord::Base.verify_active_connections!
+      fill_jobs_cart
+    end
+  end
+
+  def protected_clear_jobs_cart
+    begin
+      clear_jobs_cart
+    rescue ActiveRecord::StatementInvalid => e
+      logger.debug("L218 User.protected_clear_jobs_cart: Got statement invalid #{e.message} ... trying again")
+      ActiveRecord::Base.verify_active_connections!
+      clear_jobs_cart
+    end
+  end
   
   protected
+
+  def fill_jobs_cart
+    begin
+      @user.jobs.each do |job|
+        if (!@jobs_cart.include?(job.jobid))
+          if (job.config.nil?)
+            logger.debug("L231 Missing config of #{job.type}:#{job.jobid} in #{job.tool.to_us}_jobs.yml")
+          elsif (job.config['hidden'] == false)
+            @jobs_cart.push(job.jobid)
+          end
+        end
+      end
+    rescue ActiveRecord::SubclassNotFound
+      # enable login even if some job class does not exist in the current system.
+    end
+  end
+
+  def clear_jobs_cart
+    begin
+      @user.jobs.each do |job|
+        if @jobs_cart.include?(job.jobid)
+          @jobs_cart.delete(job.jobid)
+        end
+      end
+    rescue ActiveRecord::SubclassNotFound
+      # enable logout even if some job class doesn't exist on this toolkit installation.
+    end
+  end
 
   def destroy(user)
     UserNotify.deliver_delete(user)
