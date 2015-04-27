@@ -13,9 +13,9 @@ class BfitController < ToolController
     logger.debug "Hihihihihi #{function_name}"
     if self.respond_to?(function_name) then send(function_name) end
     ret = render_to_string(:action => function_name, :layout => false)
-    logger.debug " Hallo #{ret}"
-    filename = "#{@job.jobid}_1_fit.pdb"
-#    if (!File.exists?(File.join(@job.job_dir, @job.jobid + "_2_fit.pdb")))
+    logger.debug " Hallo"
+    filename = "#{@job.jobid}_1.pdb"
+#    if (!File.exists?(File.join(@job.job_dir, @job.jobid + "_2.pdb")))
 #      filename = "#{@job.jobid}_1_all.pdb"
 #    end
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#{filename}"
@@ -27,9 +27,8 @@ class BfitController < ToolController
     logger.debug "Hihihihi #{function_name}"
     if self.respond_to?(function_name) then send(function_name) end
     ret = render_to_string(:action => function_name, :layout => false)
-    logger.debug "Hallo #{ret}"
     @job.class.export_file_ext
-    filename = "#{@job.jobid}_2_fit.pdb"
+    filename = "#{@job.jobid}_2.pdb"
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>#{filename}"
     send_data(ret, :filename => filename, :type => @job.class.export_type)
   end
@@ -39,7 +38,6 @@ class BfitController < ToolController
     logger.debug "Hihihihi #{function_name}"
     if self.respond_to?(function_name) then send(function_name) end
     ret = render_to_string(:action => function_name, :layout => false)
-    logger.debug "Hallo #{ret}"
     @job.class.export_file_ext
     filename = "#{@job.jobid}_1_all.pdb"
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>#{filename}"

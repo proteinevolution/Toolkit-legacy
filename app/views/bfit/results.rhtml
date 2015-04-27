@@ -5,20 +5,6 @@
 <!-- <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %> --> 
 <%= render(:partial => "shared/resultsections") %>
 
-<div id="jobsection" class="<%= @section["name"] %>">
-    <ul>
-      <% sections = @job.config['resultsections'] %>
-                <% @cur_section = nil %>
-      <% sections.each do |section| %>
-      <% if (section['name'] == params[:action]) then @cur_section = section end %>
-      <li <%= section['name'] == params[:action] ? 'class="current"' : '' %>>
-                        <%= link_to(section['title'], {:action => section['name'], :jobid => @job.jobid}, {:onmouseover => "return overlib('#{section['title_long']}');", :onmouseout => "return nd();"}) %>
-      </li>
-      <% end %>
-    </ul>
-</div>
-
-
 <% if (File.exists?(File.join(@job.job_dir, @job.jobid + "_2_fit.pdb")))%>
   <div id="resultactions" class="<%= @section["name"] %>">
     <ul>
@@ -30,14 +16,14 @@
 <%else%>
   <div id="resultactions" class="<%= @section["name"] %>">
     <ul>
-      <li><a href="<%= url_for({:action => :export_ensemble_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Save first pdb file');" onmouseout="return nd();">Save PDB</a></li>
+      <li><a href="<%= url_for({:action => :export_pdb1_to_file, :jobid => @job.jobid}) %>" onmouseover="return overlib('Save pdb file');" onmouseout="return nd();">Save PDB</a></li>
     </ul>
   </div>
 
 
 <%end%>
 
-<h3 class="<%= @section["name"] %>" style="padding-left: 150;">Superposition</h3>
+<h3 class="<%= @section["name"] %>">Superposition</h3>
 
 
 <div class="row">
@@ -54,7 +40,7 @@ var script7 = "select all;color grey;wireframe off;cartoon;select ligand;color m
 <INPUT TYPE="button" VALUE="FRcons-cat" onClick="jmolScript(script7)"> 
 <INPUT TYPE="button" VALUE="FRtrace" onClick="jmolScript(script2)"> 
 <INPUT TYPE="button" VALUE="FRsubtype" onClick="jmolScript(script5)"> -->
- <applet name="jmolApplet0" code="JmolApplet" class="row" archive="JmolApplet.jar" codebase="/applets/jmol_neu/jsmol/java/" width="100%" height="60%" mayscript="true" style="padding-left:0;"> 
+ <applet name="jmolApplet0" code="JmolApplet" class="row" archive="JmolApplet.jar" codebase="/applets/jmol" width="100%" height="80%" mayscript="true"> 
  <param name="progressbar"   value="true" /> 
  <param name="load" value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_1_all.pdb">
  <param name="bgcolor" value="#808080"> 
@@ -103,14 +89,14 @@ var script7 = "select all;color grey;wireframe off;cartoon;select ligand;color m
 
 <br/>
 
-<h3 class="<%= @section["name"] %>" style="padding-left: 150;">Local Scales</h3>
+<h3 class="<%= @section["name"] %>">Local Scales</h3>
 
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
   
 <div class="row">
 	<%@pic = "scales.png"%>
-	<p><img src="<%= @job.url_for_job_dir %>/<%=@pic%>" width="650px" style="padding-left: 0;"></img></p><br/>
+	<p><img src="<%= @job.url_for_job_dir %>/<%=@pic%>" width="650px"></img></p><br/>
         <!--<%@pic = "scales.png"%>
 	 <%= image_tag (@pic) %>-->
 </div>

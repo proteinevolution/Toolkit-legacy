@@ -14,7 +14,8 @@ module Toolkit
           configuration = { :on => :create,
             :include => nil,
             :alternative => nil,
-            :message => "Please insert a file in PDB Format!" }
+            :message => "Please insert a file in PDB Format!",
+            :input_field_exists => true }
 
           configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
 
@@ -61,7 +62,7 @@ module Toolkit
 
 
             if (!error.nil?)
-              if (attr.to_s.include?('_file'))
+              if (configuration[:input_field_exists] && attr.to_s.include?('_file'))
                 attr = attr.to_s.sub!('_file', '_input').to_sym
                 record.params[attr.to_s] = value
               end
