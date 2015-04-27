@@ -32,7 +32,7 @@ module Toolkit
               end
             else
               file = record.send(file)
-              if (value.nil? || (value.strip).empty?)
+              if (value.nil? || !value.respond_to?("strip") || value.strip.empty?)
                 if file.instance_of?(ActionController::UploadedStringIO) || file.instance_of?(Tempfile) || file.instance_of?(ActionController::UploadedTempfile)
                   file.rewind
                   value = file.read

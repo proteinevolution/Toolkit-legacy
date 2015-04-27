@@ -6,7 +6,8 @@ class BfitAction < Action
 
   attr_accessor :mail, :jobid, :pdb_file1, :pdb_file2
 
-  validates_input(:pdb_file1, :pdb_file2, {:informat => 'pdb', :on => :create})
+  validates_input_fields(:pdb_file1, {:input_file => :pdb_file1})
+  validates_pdb(:pdb_file1, :pdb_file2, {:input_field_exists => false})
 
   validates_jobid(:jobid)
 
