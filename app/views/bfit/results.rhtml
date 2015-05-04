@@ -1,3 +1,4 @@
+<%= javascript_include_tag "jsmol/JSmol.min.js", "jsmol/JSmoljQuery.js", "jsmol/JSmolCore.js", "jsmol/JSmolApplet.js", "jsmol/JSmolApi.js", "jsmol/j2s/j2sjmol.js", "jsmol/JSmol.js", "jsmol/JSmolThree.js", "jsmol/JSmolGLmol.js", "jsmol/j2s/core/package.js"%>
 <a href="#" onClick="openHelpWindow('/bfit/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 20px;"></a>
 
 <%= render(:partial => "bfitjobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
@@ -40,65 +41,83 @@
 <h3 class="<%= @section["name"] %>" style="padding-left: 150;">Superposition</h3>
 
 
-<div class="row">
-<!--	<script type="text/javascript">
-var script1 = "select all;color grey;wireframe off;cartoon;select ligand;color magenta;spacefill;select solvent;spacefill off;define cat9 ;define cat8 ;define cat7 ;define cat6 ;define cat5 ;define cat4 ;define cat3 ;define cat2 ;define cat1 ;define match cat9 or cat8 or cat7 or cat6 or cat5 or cat4 or cat3 or cat2 or cat1;select cat7, cat8, cat9;wireframe 250;select match;";
-var script2 = "select all;color grey;wireframe off;cartoon;select ligand;color magenta;spacefill;select solvent;spacefill off;define cat9 ;define cat8 ;define cat7 ;define cat6 ;define cat5 ;define cat4 ;define cat3 ;define cat2 ;define cat1 ;define match cat9 or cat8 or cat7 or cat6 or cat5 or cat4 or cat3 or cat2 or cat1;select cat7, cat8, cat9;wireframe 250;select match;";
-var script5 = "select all;color grey;wireframe off;cartoon;select ligand;color magenta;spacefill;select solvent;spacefill off;define cat9 ;define cat8 ;define cat7 ;define cat6 ;define cat5 ;define cat4 ;define cat3 ;define cat2 ;define cat1 ;define match cat9 or cat8 or cat7 or cat6 or cat5 or cat4 or cat3 or cat2 or cat1;select cat7, cat8, cat9;wireframe 250;select match;";
-var script6 = "select all;color grey;wireframe off;cartoon;select ligand;color magenta;spacefill;select solvent;spacefill off;define cat9 ;define cat8 ;define cat7 ;define cat6 ;define cat5 ;define cat4 ;define cat3 ;define cat2 ;define cat1 ;define match cat9 or cat8 or cat7 or cat6 or cat5 or cat4 or cat3 or cat2 or cat1;select cat7, cat8, cat9;wireframe 250;select match;";
-var script7 = "select all;color grey;wireframe off;cartoon;select ligand;color magenta;spacefill;select solvent;spacefill off;define cat9 ;define cat8 ;define cat7 ;define cat6 ;define cat5 ;define cat4 ;define cat3 ;define cat2 ;define cat1 ;define match cat9 or cat8 or cat7 or cat6 or cat5 or cat4 or cat3 or cat2 or cat1;select cat7, cat8, cat9;wireframe 250;select match;";
- </script>
+<script type="text/javascript"> 
 
- <script src="/javascripts/Jmol.js"></script><INPUT TYPE="button" VALUE="Reset" onClick="jmolScript('select all; color grey; spacefill off; cpk off; ribbons off; wireframe on; ')"> 
-<INPUT TYPE="button" VALUE="FRcons-lig" onClick="jmolScript(script1)"> 
-<INPUT TYPE="button" VALUE="FRcons-cat" onClick="jmolScript(script7)"> 
-<INPUT TYPE="button" VALUE="FRtrace" onClick="jmolScript(script2)"> 
-<INPUT TYPE="button" VALUE="FRsubtype" onClick="jmolScript(script5)"> -->
- <applet name="jmolApplet0" code="JmolApplet" class="row" archive="JmolApplet.jar" codebase="/applets/jmol_neu/jsmol/java/" width="100%" height="60%" mayscript="true" style="padding-left:0;"> 
- <param name="progressbar"   value="true" /> 
- <param name="load" value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_1_all.pdb">
- <param name="bgcolor" value="#808080"> 
- <param name="style" value="shaded"> 
- <param name="perspectiveDepth" value="true"> 
- <param name="script" value="select all;color darkorange; wireframe off; cartoon; spacefill off; model 0;">
-</applet>
 
-</div>
+var jmolApplet0; // set up in HTML table, below
+var Info;
 
-<!--<P style="margin-top: 10px;" ALIGN="Center">
-<TABLE BORDER=0 ALIGN="center">
-<TR>
-        <TD>
-        <APPLET codebase="/applets/Chemis3D/" ARCHIVE="Chemis3D.jar" CODE="Chemis3D.class" NAME="C3D" WIDTH="550" HEIGHT="550" ALT='Problem! Check your Security Options. There is a Java applet here. To use it, you need a Java aware browser with Java enabled.'>
-                <PARAM NAME="model" VALUE="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_1_fit.pdb">
-                <PARAM NAME="model" VALUE="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_2_fit.pdb">
-		<PARAM NAME="format" VALUE="x-pdb">
-                <PARAM NAME="display" VALUE="backbone">
-                <PARAM NAME="color" VALUE="group">
-        </APPLET><BR>
-        </TD>
-</TR>
-<TR>
-<TD VALIGN="top"  ALIGN="center">
-        <FORM NAME="manipulateform">&nbsp; &nbsp;
+// note that the variable name MUST match the first parameter in quotes
 
-        <INPUT TYPE=radio NAME="manipulate" VALUE="Rotate" CHECKED Onclick="javascript:document.C3D.setMouse(this.value)"> <b>Rotate</b> &nbsp; &nbsp; &nbsp;
-                   &nbsp; &nbsp;
-        <INPUT TYPE=radio NAME="manipulate" VALUE="Zoom" Onclick="javascript:document.C3D.setMouse(this.value)"><b>Scale</b> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 
-        <INPUT TYPe=radio NAME="manipulate" VALUE="Translate" Onclick="javascript:document.C3D.setMouse(this.value)"><b>Translate</b> &nbsp; &nbsp; &nbsp;
-        </FORM>
-</TD>
-</TR>
-</TABLE>
-</P>
+;(function() {
 
-<p><br><b>
-<ul>
-<li>Click the right mouse key to change the style (wireframe, stick, ball,...), coloring (CPK, group, temperature,...) and more.<br><br>
-<li>For documentation on the Chemis3D Java applet please go to <a target="_blank" href="http://www.mol3d.com">http://www.mol3d.com</a><br>
-</ul>
-</b>-->
+// ?_USE=JAVA   ?_USE=SIGNED   ?_USE=HTML5
+
+
+// Developers: The _debugCode flag is checked in j2s/java/core.z.js, 
+// and, if TRUE, skips loading the core methods, forcing those
+// to be read from their individual directories. Set this
+// true if you want to do some code debugging by inserting
+// System.out.println, document.title, or alert commands
+// anywhere in the Java or Jmol code.
+
+var s = document.location.search;
+Jmol._debugCode = (s.indexOf("debugcode") >= 0);
+
+
+jmol_isReady = function(applet) {
+    //document.title = (applet._id + " is ready")
+    Jmol._getElement(applet, "appletdiv").style.border="1px solid blue"
+ 
+}       
+
+
+Info = {
+    width: 600,
+    height: 600,
+    debug: false,
+    color: "#808080",
+    addSelectionOptions: false,
+    serverURL: "/javascripts/jsmol/php/jsmol.php",
+    use: "HTML5",
+  coverImage: "/javascripts/jsmol/data/minerva.jpg",        // initial image instead of applet
+  coverScript: "",  // special script for click of cover image (otherwise equal to script)
+  deferApplet: true,                  // wait to load applet until click
+  deferUncover: true,                 // wait to uncover applet until script completed
+  jarPath: "java",
+    j2sPath: "/javascripts/jsmol/j2s",
+    jarFile: "/javascripts/jsmol/JmolApplet.jar",
+    isSigned: false,
+    //disableJ2SLoadMonitor: true,
+    //disableInitialConsole: true,
+    readyFunction: jmol_isReady,
+    //defaultModel: "$dopamine",
+    script: "load <%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_1_fit.pdb;"+
+            "load <%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_2_fit.pdb;"+
+            "select all;color group;spacefill 0; wireframe 0; select all; cartoon on;"+
+            "select all; backbone on;"
+            
+
+}
+
+})();
+
+$(document).ready(function(){
+  
+  Info.deferApplet = false;
+  Info.deferUncover = true;
+  $("#appletplace1").html(Jmol.getAppletHtml("jmol1", Info));
+  Info.deferApplet = true;
+  Info.deferUncover = true;
+  $("#appletplace2").html(Jmol.getAppletHtml("jmol2", Info));
+});
+
+</script>
+
+
+<div id="appletplace1" align="center"></div>
+
 
 
 <br/>
