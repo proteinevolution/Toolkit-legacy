@@ -17,7 +17,7 @@ class BfitAction < Action
   # Put action initialisation code in here
   def before_perform
     init
-
+    
     @pdb_file1 = @basename+"_1.pdb"
     @pdb_file2 = @basename+"_2.pdb"
 
@@ -56,7 +56,9 @@ class BfitAction < Action
   
   # Put action code in here
   def perform
+
     @commands << "export PYTHONPATH=#{SAMCC}"
+
     if @ensemble == 'T'
       #@commands << "#{PYTHON} #{BFIT}/bFit.py -e #{@pdb_file1} -l #{@model} -g #{@optimization} -w -p -o #{@outpath}"
       @commands << "#{PYTHON} #{BFIT}/bFit.py -e #{@pdb_file1} -l #{@model} -g #{@optimization} -w -p -o #{@outpath}"
