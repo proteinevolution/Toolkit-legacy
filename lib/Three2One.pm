@@ -50,7 +50,7 @@ my %three2one=(
     "LCG"=>"G","LCA"=>"A","5CM"=>"C","6OG"=>"G","GHP"=>"G","3MY"=>"Y","OMY"=>"Y","2JG"=>"S",
     "GPL"=>"K","SOS"=>"N","MLY"=>"K","2SO"=>"H","CAF"=>"C","CAS"=>"C","PFF"=>"F",
     "DI"=>"I","56A"=>"H","U2X"=>"Y","0G"=>"G","0C"=>"C","0U"=>"U","C1S"=>"C","MHO"=>"M",
-    "MLZ"=>"K","PF5"=>"F","N7P"=>"P","GAU"=>"E","0AF"=>"W","2DT"=>"T",
+    "MLZ"=>"K","PF5"=>"F","N7P"=>"P","GAU"=>"E","0AF"=>"W","2DT"=>"T", "CSL"=>"C",
 
     # mappings of multiple structure components (mapping to a sequence of one-letter codes)
     "CR8"=>"HYG",
@@ -96,6 +96,7 @@ my %three2one=(
     "TYE"=>"X",
     "AZI"=>"X",
     "05W"=>"X",
+    "ORP"=>"X",
 
     # obsoleted codes not superceded by an other compound (keeping previous mapping)
     "ACL"=>"R","ALM"=>"A","ASK"=>"D","CLE"=>"L","CGL"=>"E","LYM"=>"K",
