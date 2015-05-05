@@ -14,6 +14,8 @@ class ProtBlastAction < Action
      HHPERL = File.join(BIOPROGS, 'hhpred')
   end
 
+  # number of threads to use with blastpgp/blastall
+  NTHREADS_DEFAULT = 2
 
   include GenomesModule
    
@@ -96,6 +98,13 @@ class ProtBlastAction < Action
       @gapext = 2
     end    
     
+    @nthreads = NTHREADS_DEFAULT
+    if (@other_advanced =~ /-a\s*=\s*\d+/ || @other_advanced =~ /-num_threads\s*=\s*\d+/)
+      @other_advanced = "#{$`}#{$'}"
+      sthreads = $&
+      sthreads =~ /\d+/
+      @nthreads = Integer($&)
+    end
   end
 
 def check_GI
@@ -146,7 +155,7 @@ def check_GI
     # TEST if this reformats our wrecked input 
     @commands << "#{UTILS}/reformat_protblast.pl -f=#{@infile} -a=#{@infile} -i=fas -o=fas &> #{@infile}.reform_log " 
     @commands << "echo 'Starting BLAST search!' &> #{job.statuslog_path}"
-    @commands << "#{BLAST}/#{@program} -i #{@infile} -e #{@expect} -F #{@filter} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} #{@ungapped_alignment} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} >>#{job.statuslog_path}"
+    @commands << "#{BLAST}/#{@program} -i #{@infile} -e #{@expect} -F #{@filter} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} #{@ungapped_alignment} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a #{@nthreads} #{@other_advanced} >>#{job.statuslog_path}"
     @commands << "echo 'Finished BLAST search!' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/fix_blast_errors.pl -i #{@outfile} &>#{@basename}.log_fix_errors"
     @commands << "echo 'Visualizing Blast Output... ' >> #{job.statuslog_path}"
@@ -166,7 +175,7 @@ def check_GI
 
 
     logger.debug "Commands:\n"+@commands.join("\n")
-    queue.submit(@commands)
+    queue.submit(@commands, true, { 'cpus' => "#{@nthreads}" })
 
   end  
 end
