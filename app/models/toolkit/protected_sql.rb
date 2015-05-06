@@ -23,15 +23,15 @@
 #               an exception.
 module ProtectedSql
 
+  # Assumption: insert successful despite of StatementInvalid exception
+  # only happens if error message contains string "INSERT INTO "
+  INSERT_MARKER = "INSERT INTO "
+
   def self.included base
     base.extend ClassMethods
   end
 
   module ClassMethods
-    # Assumption: insert successful despite of StatementInvalid exception
-    # only happens if error message contains string "INSERT INTO "
-    INSERT_MARKER = "INSERT INTO "
-
     def protected_find(*args)
       begin
         find(*args)
