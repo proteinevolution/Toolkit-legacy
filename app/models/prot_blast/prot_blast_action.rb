@@ -99,7 +99,7 @@ class ProtBlastAction < Action
     end    
     
     @nthreads = NTHREADS_DEFAULT
-    if (@other_advanced =~ /-a\s*=\s*\d+/ || @other_advanced =~ /-num_threads\s*=\s*\d+/)
+    if (@other_advanced =~ /-a\s*\d+/ || @other_advanced =~ /-num_threads\s*\d+/)
       @other_advanced = "#{$`}#{$'}"
       sthreads = $&
       sthreads =~ /\d+/
