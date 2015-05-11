@@ -19,6 +19,16 @@
   - member
   - internal
   - external
+- name: prot_blastp
+  title: ProtBLASTP
+  title_long: Protein BLASTP
+  section: search
+  updated: December, 2010
+  version: Blast 2.2.23
+  active: 
+  - member
+  - internal
+  - external
 - name: modeller
   title: Modeller
   title_long: Modeller

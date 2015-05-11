@@ -1,0 +1,30 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool}) %>
+
+<%= render(:partial => "shared/resultsections", :locals => {:export_to => "alignment"}) %>
+
+<%= form_tag({}, {:id => @job.tool+"_form"}) %>
+
+<div id="forward" style="display: none;">
+	<div class="row">
+		<%= form_label("Forward results to") %>
+		<%= form_select_single("destination", @fw_values, @fw_labels, @fw_values[0]) %>
+		<div class="formw">
+			<input name="submitform" type="submit" class="feedbutton" onClick="setFwAction('<%= @job.tool %>_form', 'destination');" value="Forward hits" />
+		</div>
+	</div>
+    
+	<div class="hr">&nbsp;</div>
+</div>
+<%= form_jalview_buttons("complete alignment with inserts",
+    			 "reduced alignment: 50 most distinct sequences without inserts",
+			 20, 29,
+			 ".align", ".ralign",
+			 "alignment", "prot_blastp",
+			 2) %>
+
+	<div class="row">
+		<%= text_area_tag("alignment", @job.render_file(@job.jobid+".align"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
+	</div>	
+	
+
+</form>
