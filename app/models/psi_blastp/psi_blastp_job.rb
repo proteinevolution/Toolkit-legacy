@@ -8,7 +8,7 @@ class PsiBlastpJob < Job
   #E_THRESH   = 0.01
   @@MAX_DBS    = 5
   
-  attr_reader :header, :hits_better, :hits_prev, :hits_worse, :alignments, :footer, :searching, :num_checkboxes, :evalue_thr
+  attr_reader :header, :hits_better, :hits_prev, :hits_worse, :alignments, :footer, :searching, :num_checkboxes, :evalue_threshold
 
   def set_export_ext(val)
     @@export_ext = val  
@@ -32,8 +32,8 @@ class PsiBlastpJob < Job
     @header      = []
     @footer      = []
     @searching   = []
-    @ids         = Hash.new    	
-    @evalue_thr  = params_main_action['evalfirstit'].to_f
+    ids         = Hash.new
+    @evalue_threshold  = params_main_action['evalfirstit'].to_f
     @no_hits        = false
     i               = 0
     
@@ -112,9 +112,9 @@ class PsiBlastpJob < Job
         elsif(extract==2 && (line =~ /#(\S+)>\s*\S+<\/a>\s+(\S+)\s*$/))
           id = $1
           evalue = $2
-          if(evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= evalue_thr
+          if(evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= evalue_threshold
             @hits_better << { :id => id, :content => line }
-            @ids[id]=1
+            ids[id]=1
           else
             @hits_worse << { :id => id, :content => line }
           end
@@ -135,9 +135,9 @@ class PsiBlastpJob < Job
         elsif (line =~ /#(\S+)>\s*\S+<\/a>\s+(\S+)\s*$/)
           id = $1
           evalue = $2
-          if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= evalue_thr
+          if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= evalue_threshold
             @hits_prev << { :id => id, :content => line }
-            @ids[id]=1
+            ids[id]=1
           else
             @hits_worse << { :id => id, :content => line }
           end
@@ -161,7 +161,7 @@ class PsiBlastpJob < Job
         section = { :id => id, :check => false, :content => [line] }
       elsif( line=~/Expect\s*=\s*(\S+)/ )
         evalue = $1
-        if( @ids.has_key?(section[:id]) )
+        if( ids.has_key?(section[:id]) )
           section[:check] = true
         end
         section[:content] << line
