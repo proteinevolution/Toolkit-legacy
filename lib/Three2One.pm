@@ -53,7 +53,7 @@ my %three2one=(
     "MLZ"=>"K","PF5"=>"F","N7P"=>"P","GAU"=>"E","0AF"=>"W","2DT"=>"T", "CSL"=>"C",
 
     # mappings of multiple structure components (mapping to a sequence of one-letter codes)
-    "CR8"=>"HYG", "CR2"=>"GYG"
+    "CR8"=>"HYG", "CR2"=>"GYG",
 
     # obsoleted three letter codes, using the mapping of the component which superceded it
     "5HP"=>"E","ASQ"=>"D","CEA"=>"C","CYM"=>"C","DSP"=>"D","HAC"=>"A","LTR"=>"W","NEM"=>"H",
