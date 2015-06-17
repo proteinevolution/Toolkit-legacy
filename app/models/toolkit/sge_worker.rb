@@ -500,6 +500,8 @@ private
       else
         qupdate_call = "ssh ws01 \"" + qupdate_call + "\""
       end
+    else
+      qupdate_call = "source " + qupdate_call
     end
     qupdate_call += "\n"
     file.write qupdate_call;
