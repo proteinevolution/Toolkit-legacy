@@ -56,13 +56,12 @@ close IN;
 
 $i = 0;
 check_hits();
-my $lr = find_last_run();
 
 my %linknum;
 
 # Identify the region before the link block, stops at first hit !
 # Only Links that shall be set are ncbi Uniprot and Ensembl Links 
-while ( ($res[$i] !~ /<a href = \#\d+/o) && ($res[$i] !~ /(^sp|^tr)\|\w\d+/) && ($res[$i] !~ /(ENS)/)  && ($res[$i] !~ /(FBpp)/) && $i<scalar(@res)) {
+while ($i < scalar(@res) && ($res[$i] !~ /<a href = \#\d+/o) && ($res[$i] !~ /(^sp|^tr)\|\w\d+/) && ($res[$i] !~ /(ENS)/)  && ($res[$i] !~ /(FBpp)/)) {
 	$i++;
 	
 }
@@ -71,7 +70,7 @@ $beg_hitlist = $i;
 
 # Traverse through all lines that show the following behavior 
 
-while (($res[$i] =~ /<a href = \#(\d+)/o || $res[$i] !~ /<*PRE>/o ||$res[$i]=~ /(^sp|^tr)\|\w\d+/ ) && $i<scalar(@res)) {
+while ($i < scalar(@res) && ($res[$i] =~ /<a href = \#(\d+)/o || $res[$i] !~ /^>/ ||$res[$i]=~ /(^sp|^tr)\|\w\d+/ )) {
 
 	
 	if($fix_uniprot){
@@ -95,13 +94,16 @@ $end_hitlist = $i;
 #print "end hitlist  ".$end_hitlist."\n";
 
 # start processing the lower sequence block after the heatmap 
-while ( $res[$i] !~ /Database:/ && $i<scalar(@res)) {
+while ($i < scalar(@res) && $res[$i] !~ /Database:/) {
 	# Identify the sequence headers 
 	if($res[$i]=~ /^>/){
 		if($fix_uniprot){
 			$res[$i] = fix_uniprot_links_body($res[$i]);
 		}
 	}
+
+	# kft 11 Feb 2015: These blast errors weren't encountered by me yet with blastpgp version 2.2.26 from 2011.
+	# Keeping the fixes, in case they still occur.
 	if ( $res[$i] =~ /<a name = 0>/ ) {
 		$res[$i] =~ /gi\|(\d+)\|/;
 		$gi = $1;
@@ -140,8 +142,13 @@ $i = 0;
 while ($res[$i] !~ /<PRE>/i && $i < scalar(@res)) {
     $i++;
 }
+my $endi = scalar(@res) - 1;
+while ($endi >=0 && ($res[$endi] =~ m'</HTML>' || $res[$endi] =~ m'</BODY>' || $res[$endi] !~ /\S/)) {
+    --$endi;
+}
+
 open( OUT, ">$file" ) or die("Cannot open!");
-while ($i < scalar(@res)) {
+while ($i <= $endi) {
     print OUT $res[$i];
     $i++;
 }
@@ -205,19 +212,30 @@ sub fix_flybase_links{
 ####
 sub fix_uniprot_links_body{
     my $uniprot_link ='<a href="http://www.uniprot.org/uniprot/';
-	my $inputline = shift(@_);
-	
-	######
+    my $inputline = shift(@_);
+    
+    if($inputline=~ /(\>(<a name = (.*)>)<\/a>(((sp|tr).*\|.*)<\/a>(.*)))/ ){
+	###### blastpgp output
 	# $inputline eg.: ><a name = A8JV00></a>tr|A8JV00|A8JV00_DROME</a> CG34417, isoform H OS=Drosophila melanogaster GN=CG34417 PE=4 SV=1
 	# $2 = Uniprot ID Tag    : <a name = A8JV00>
 	# $3 = Uniprot ID        : A8JV00
 	# $5 = Name without Tags : tr|A8JV00|A8JV00_DROME
 	# $7 = Description       : CG34417, isoform H OS=Drosophila melanogaster GN=CG34417 PE=4 SV=1
 	#######
-	if($inputline=~ /(\>(<a name = (.*)>)<\/a>(((sp|tr).*\|.*)<\/a>(.*)))/ ){
-	   $inputline = ">".$2."</a>".$uniprot_link.$3."\">".$5."</a>".$7;
-	}
-	return $inputline;
+	$inputline = ">".$2."</a>".$uniprot_link.$3."\">".$5."</a>".$7;
+    } elsif ($inputline =~ m'^>((sp|tr).*\|.*)(<a name=(.*)>)</a>(.*)') {
+	###### psiblast output
+	# $inputline eg.: >tr|A0A067DLQ2|A0A067DLQ2_CITSI<a name=A0A067DLQ2></a> Uncharacterized protein OS=Citrus sinensis GN=CISIN_1g046461mg
+	# $1 = Name without Tags : tr|A0A067DLQ2|A0A067DLQ2_CITSI
+	# $3 = Uniprot ID Tag    : <a name=A0A67DLQ2>
+	# $4 = Uniprot ID        : A0A067DLQ2
+	# $5 = Description       : Uncharacterized protein OS=Citrus sinensis GN=CISIN_1g046461mg
+        ######
+	# $inputline = ">".$3."</a>".$uniprot_link.$4."\">".$1."</a>".$5;
+	## trying to keep most of psiblast output formatting (i.e. Sequence and trailing newline)
+	$inputline = ">".$uniprot_link.$4."\">".$1."</a>".$3."</a>".$5."\n";
+    }
+    return $inputline;
 }
 
 
@@ -228,21 +246,6 @@ sub error {
 	print("-i blast-file\n\n");
 	print("Optional:\n\n");
 	print("\n");
-}
-
-sub find_last_run {
-
-	# finds number of search rounds performed
-	my $j   = 0;
-	my $ret = 0;
-
-	foreach (@res) {
-		if ( $_ =~ /Results\s+from\s+round\s+(\d+)/ ) {
-			$ret = $j;
-		}
-		$j++;
-	}
-	return $ret;
 }
 
 sub check_hits {

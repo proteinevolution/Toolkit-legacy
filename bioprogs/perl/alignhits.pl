@@ -339,7 +339,7 @@ open(INFILE,"<$infile") or die ("Error: cannot open $infile: $!\n");
 $line_number++;
 while ($line=<INFILE>)
 {
-    if ($line =~ /^\s*\((\d+)\s+letters\)/) {$query_length = $1; last;}
+    if ($line =~ /^\s*\((\d+)\s+letters\)/ || $line =~ /^Length=(\d+)/ ) {$query_length = $1; last;}
     $line_number++;
 }
 if ($v>=3) {print("Query length = $query_length\n");}

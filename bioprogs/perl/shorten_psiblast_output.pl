@@ -12,7 +12,7 @@ my $infile;
 my $outfile;
 my $lr;
 my $lines;
-use constant ROUND_START_PATTERN => qr/Results\s+from\s+round\s+\d+/;
+use constant ROUND_START_PATTERN => qr/Results from round\s+\d+/;
 
 # check arguments
 if ( scalar(@ARGV) != 2) {
