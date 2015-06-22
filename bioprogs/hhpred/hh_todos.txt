@@ -1,0 +1,28 @@
+To Dos HHsearch / HHpred
+
+* Add alignment editor Java applet to HHpred (show query alignment)
+
+* Select more that one database in HHsearch (-d db1 -d db2) and HHpred
+
+* Realign and maximize score by using varying qid / pca values
+
+* Read HMMer format (add less aa and transition) pseudocounts 
+  => optimize with hhopt.pl ?
+
+* Add InterPro database => predict Gene Ontologies! (file interpro2go)
+  => participate in CAFASP and ISMB automatic function prediction benchmarks
+
+* Include Contact scores -> HHpred3
+
+* Struct all-against-all comparison of templates, UPGMA tree of HMMs
+
+* SVM regression for MaxSub
+
+* HHpred Domain composition image
+
+* HHpred HMM logos / pics / histograms
+
+
+
+
+

@@ -1,0 +1,52 @@
+#!/bin/bash
+cd /cluster/soeding/scop20.3/hhcs
+# ~/hh/hhallbinali.pl -ms -dens "*.scores" scop20_den1.dat
+# ~/hh/hhallbinali.pl -av -dens "*.scores" scop20_den4.dat
+# ~/hh/hhallbinali.pl -s3d -dens "*.scores" scop20_den3.dat
+# ~/hh/hhallbinali.pl -comb -dens "*.scores" scop20_den2.dat
+cd /cluster/soeding/scop20.3/hhcp
+# ~/hh/hhallbinali.pl -ms -dens "*.scores" scop20_den1.dat
+# ~/hh/hhallbinali.pl -av -dens "*.scores" scop20_den4.dat
+# ~/hh/hhallbinali.pl -s3d -dens "*.scores" scop20_den3.dat
+ ~/hh/hhallbinali.pl -comb -dens "*.scores" scop20_den2.dat
+cd /cluster/soeding/scop20.3/hhc
+# ~/hh/hhallbinali.pl -ms -dens "*.scores" scop20_den1.dat
+# ~/hh/hhallbinali.pl -av -dens "*.scores" scop20_den4.dat
+# ~/hh/hhallbinali.pl -s3d -dens "*.scores" scop20_den3.dat
+ ~/hh/hhallbinali.pl -comb -dens "*.scores" scop20_den2.dat
+cd /cluster/soeding/scop20.3/hh
+# ~/hh/hhallbinali.pl -ms -dens "*.scores" scop20_den1.dat
+# ~/hh/hhallbinali.pl -av -dens "*.scores" scop20_den4.dat
+# ~/hh/hhallbinali.pl -s3d -dens "*.scores" scop20_den3.dat
+# ~/hh/hhallbinali.pl -comb -dens "*.scores" scop20_den2.dat
+cd /cluster/soeding/scop20.3/pp
+# ~/hh/hhallbinali.pl -ms -dens "*.scores" scop20_den1.dat
+# ~/hh/hhallbinali.pl -av -dens "*.scores" scop20_den4.dat
+# ~/hh/hhallbinali.pl -s3d -dens "*.scores" scop20_den3.dat
+ ~/hh/hhallbinali.pl -comb -dens "*.scores" scop20_den2.dat
+cd /cluster/soeding/scop20.3/compass
+# ~/hh/hhallbinali.pl -ms -dens "*.scores" scop20_den1.dat
+# ~/hh/hhallbinali.pl -av -dens "*.scores" scop20_den4.dat
+# ~/hh/hhallbinali.pl -s3d -dens "*.scores" scop20_den3.dat
+ ~/hh/hhallbinali.pl -comb -dens "*.scores" scop20_den2.dat
+cd /cluster/soeding/scop20.3/profsim
+# ~/hh/hhallbinali.pl -ms -dens "*.scores" scop20_den1.dat
+# ~/hh/hhallbinali.pl -av -dens "*.scores" scop20_den4.dat
+# ~/hh/hhallbinali.pl -s3d -dens "*.scores" scop20_den3.dat
+ ~/hh/hhallbinali.pl -comb -dens "*.scores" scop20_den2.dat
+cd /home/soeding/scop20.3/hmmer
+# ~/hh/hhallbinali.pl -ms -dens "*.scores" scop20_den1.dat
+# ~/hh/hhallbinali.pl -av -dens "*.scores" scop20_den4.dat
+# ~/hh/hhallbinali.pl -s3d -dens "*.scores" scop20_den3.dat
+ ~/hh/hhallbinali.pl -comb -dens "*.scores" scop20_den2.dat
+cd /cluster/soeding/scop20.3/psiblast
+# ~/hh/hhallbinali.pl -ms -dens "*.scores" scop20_den1.dat
+# ~/hh/hhallbinali.pl -av -dens "*.scores" scop20_den4.dat
+# ~/hh/hhallbinali.pl -s3d -dens "*.scores" scop20_den3.dat
+ ~/hh/hhallbinali.pl -comb -dens "*.scores" scop20_den2.dat
+cd /cluster/soeding/scop20.3/blast
+# ~/hh/hhallbinali.pl -ms -dens "*.scores" scop20_den1.dat
+# ~/hh/hhallbinali.pl -av -dens "*.scores" scop20_den4.dat
+# ~/hh/hhallbinali.pl -s3d -dens "*.scores" scop20_den3.dat
+ ~/hh/hhallbinali.pl -comb -dens "*.scores" scop20_den2.dat
+

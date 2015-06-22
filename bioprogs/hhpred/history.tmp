@@ -1,0 +1,500 @@
+   77  cd databases/
+   78  ls
+   79  cd pfam
+   80  ls
+   81  ls *.log
+   82  ls -l
+   83  cd pfamA_28.0/
+   84  ls
+   85  ls *.log
+   86  cat error.log
+   87  cat formatdb.log
+   88  ps ux | cat
+   89  cd ..
+   90  ls
+   91  ls -l
+   92  du -hs *
+   93  ls -l
+   94  qstat
+   95  qstat 3995440
+   96  qstat -j 3995440
+   97  cd pfamA_28.0
+   98  ls
+   99  ls *.seq
+  100  ls *.log
+  101  cat *.log
+  102  cat *.seq
+  103  cd ..
+  104  du pfamA_27.0
+  105  ls pfamA_27.0 | wc -l
+  106  ps ux | cat
+  107  qstat
+  108  cd
+  109  /ebio/abt1_share/toolkit_dev/update_scripts/make_links_and_pals.sh > /ebio/abt1_share/toolkit_dev_data/log/db_update/blast_links_and_pals.log 2>&1
+  110  /ebio/abt1_share/toolkit_dev/update_scripts/clean_databases.sh > /ebio/abt1_share/toolkit_dev_data/log/db_update/blast_clean.log 2>&1
+  111  /ebio/abt1_share/toolkit_dev/update_scripts/blast_update_call.sh > /ebio/abt1_share/toolkit_dev_data/log/db_update/blast_update.log 2>&1 &
+  112  ps ux | cat
+  113  /ebio/abt1_share/toolkit_dev/update_scripts/blast_update_call.sh > /ebio/abt1_share/toolkit_dev_data/log/db_update/blast_update.log 2>&1 &
+  114  cdtest
+  115  cd update_scripts/
+  116  git status
+  117  git checkout -f blast_update_call.sh
+  118  qstat
+  119  ps ux
+  120  ps ux | cat
+  121  qstat
+  122  ps ux | cat
+  123  ps ux | cat
+  124  qstat
+  125  qstat -u "*"
+  126  qstat
+  127  qstat -j 3995443
+  128  ssh node445
+  129  qstat -j 3995443
+  130  ls -lhat
+  131  cd
+  132  cd toolkit
+  133  cd lib
+  134  git diff Three2One.pm
+  135  qstat
+  136  git status
+  137  git checkout maint
+  138  git status
+  139  git add Three2One.pm
+  140  git commit
+  141  git push sky
+  142  git branch
+  143  git checkout rvm
+  144  cdtest
+  145  git status
+  146  cat Andre
+  147  ls -l Andre
+  148  ls -l
+  149  rm --
+  150  rm '--'
+  151  man rm
+  152  rm -- --
+  153  ls -l
+  154  ls toolkit2
+  155  ls -l toolkit2
+  156  git status
+  157  git checkout maint
+  158  cat .git/config
+  159  git fetch origin
+  160  git branch -av
+  161  git merge origin/maint
+  162  git checkout next
+  163  git merge maint
+  164  qstat
+  165  cdtestdb
+  166  cd hhpred
+  167  ls
+  168  cd new_dbs
+  169  ls
+  170  cd pdb_on_hold_8May15
+  171  ls
+  172  ls *.a3m | wc -l
+  173  ls db
+  174  ls old
+  175  ls
+  176  ls *.a3m | wc -l
+  177  ls -l old/*.a3m | wc -l
+  178  ls -lhat | head -n 30
+  179  ls -lhat | tail -n 30
+  180  cdtest
+  181  cd update_scripts
+  182  ls
+  183  cd hhpred
+  184  git status
+  185  cd ..
+  186  git diff other_db_update.sh
+  187  git status
+  188  cd hhpred
+  189  git diff hhpred_update_pdb_on_hold.pl
+  190  emacs hhpred_update_pdb_on_hold.pl
+  191  git diff hhpred_update_pdb_on_hold.pl
+  192  emacs hhpred_update_pdb_on_hold.pl
+  193  git diff hhpred_update_pdb_on_hold.pl
+  194  git log hhpred_update_pdb_on_hold.pl
+  195  git status
+  196  git add hhpred_update_pdb_on_hold.pl
+  197  git commit
+  198  git branch -av
+  199  cd ..
+  200  cat .git/config
+  201  git push origin next:/refs/remotes/kfaidt/next
+  202  git push origin next:refs/remotes/kfaidt/next
+  203  qstat
+  204  qstat
+  205  qstat
+  206  cdtestdb
+  207  cd genomes
+  208  ls
+  209  ls -l
+  210  ls 2015_05_02__22_00_02 | wc -l
+  211  cd 2015_05_02__22_00_02/
+  212  ls
+  213  ls -l
+  214  cd ..
+  215  ls -lh 2015_03_02__22_00_01/
+  216  ls -lh 2015_05_02__22_00_02/
+  217  ls -l 2015_06_18__09_07_38/
+  218  qstat
+  219  ls -l
+  220  ls -l 2015_06_18__09_07_38/
+  221  qstat
+  222  cd 2015_06_18__09_07_38
+  223  ls -l
+  224  ls data | wc -l
+  225  ls distfiles | wc -l
+  226  ls log
+  227  cd log
+  228  ls -l
+  229  emacs 2015_06_18__10_37_04_java.log
+  230  ls -lh
+  231  cd ..
+  232  ls
+  233  cd ..
+  234  ls
+  235  cd 2015_05_02__22_00_02/
+  236  cd log
+  237  ls -l
+  238  cd /ebio/abt1_toolkit/
+  239  df -h .
+  240  cd /ebio/abt1_share/toolkit_dev_data/databases/genomes/2015_06_18__09_07_38/log
+  241  ls -lh
+  242  tail *java.log
+  243  tail *java.log
+  244  qstat
+  245  cdtestdb
+  246  cd standard
+  247  ls
+  248  cd db_update-2015-06-18
+  249  ls
+  250  cd ..
+  251  cd ..
+  252  cd db_update/databases/
+  253  ls
+  254  cd
+  255  . /ebio/abt1_share/toolkit_dev/update_scripts/hhpred/hhpred_setenv.sh;$HHSCRIPTDIR/hhpred_update_pdb_call.sh hhpred_update_pdb_new > $LOGDIR/hhpred_update_pdb_new.log 2>&1 &
+  256  qstat
+  257  qstat
+  258  qstat
+  259  qstat
+  260  ssh node510
+  261  qstat
+  262  qstat -j 3995440
+  263  qstat
+  264  cdtestdb
+  265  cd genomes/
+  266  ls
+  267  cd 2015_06_18__09_07_38/
+  268  ls
+  269  cd log
+  270  ls
+  271  ls -l
+  272  tail *java.log
+  273  qstat
+  274  qstat
+  275  qstat
+  276  qstat
+  277  cdtestdb
+  278  cd hhpred/
+  279  cd new_dbs/
+  280  ls
+  281  ls in*
+  282  ls ../old_dbs
+  283  man find
+  284  ls -l interpro
+  285  cd .
+  286  cd ..
+  287  cd ../interpro
+  288  ls ..
+  289  cd new_dbs
+  290  ls
+  291  cdtestdb
+  292  cd standard
+  293  ls
+  294  qstat
+  295  cd db_update-2015-06-18/
+  296  ls
+  297  ls -l *kclust*
+  298  emacs *kclust*
+  299  ls -lhat *kclust*
+  300  qstat
+  301  cd
+  302  crontab -l
+  303  cdtest
+  304  cd script/
+  305  ls
+  306  cat crontab.toolkitmgr
+  307  . /ebio/abt1_share/toolkit_dev/update_scripts/hhpred/hhpred_setenv.sh;$HHSCRIPTDIR/hhpred_update_pdb_call.sh hhpred_update_pdb_old > $LOGDIR/hhpred_update_pdb_old.log 2>&1 &
+  308  . /ebio/abt1_share/toolkit_dev/update_scripts/hhpred/hhpred_setenv.sh;$HHSCRIPTDIR/hhpred_update_cdd.pl 0 > $LOGDIR/hhpred_update_cdd.log 2>&1 &
+  309  qstat
+  310  cdtest
+  311  cdtestdb
+  312  cd standard
+  313  ls
+  314  cd db_update-2015-06-18
+  315  emacs *kclust*
+  316  ls -lhat *kclust*
+  317  qstat
+  318  qstat -j 3995518
+  319  qstat
+  320  cdtestdb
+  321  cd db_update/download/
+  322  ls -l
+  323  qstat
+  324  qstat
+  325  qstat
+  326  qstat
+  327  cd
+  328  cd toolkit
+  329  cd bioprogs
+  330  find -type f -name "hhsuitedbp.l" -print
+  331  find -type f -name "hhsuitedb.pl" -print
+  332  ps aux
+  333  ps ux
+  334  qstat
+  335  qstat -u "*"
+  336  qstat
+  337  qstat
+  338  qstat
+  339  ssh -X -f kfaidt@olt.eb.local xterm
+  340  cd toolkit
+  341  cd bioprogs
+  342  cd hhsuite-2.10
+  343  cd hhsuite-2.1*
+  344  ls
+  345  cd build
+  346  ls -la
+  347  rm -r src
+  348  rm CM*
+  349  rm -r CM*
+  350  ls
+  351  ls -a
+  352  cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=${INSTALL_BASE_DIR} ..
+  353  ls
+  354  rm -r *
+  355  ls
+  356  ls -l
+  357  ls -la
+  358  ls ~
+  359  pushd ~
+  360  find -type f -name cmake -print
+  361  pwd
+  362  cd toolkit
+  363  cd bioprogs
+  364  cd hhsuite-2.1.0
+  365  cd build
+  366  ~/projects/cmaked/cmake-3.2.2/bin/cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=${INSTALL_BASE_DIR} ..
+  367  make
+  368  ls /usr/lib
+  369  ls /usr/lib/openmpi
+  370  ls /usr/lib/openmpi/lib
+  371  ls -l /usr/lib/openmpi/lib
+  372  cd /lib
+  373  find -type f -name "libmpi.so" -print
+  374  cd ../usr
+  375  find -type f -name "libmpi.so" -print
+  376  cd lib
+  377  ls
+  378  cd openmpi
+  379  dpkg -S /usr/lib/libmpi.so
+  380  apt-cache showpkg libopenmpi
+  381  apt-cache showpkg openmpi
+  382  ldconfig -v | grep libmpi
+  383  dpkg -S /usr/lib/libmpich.so.10
+  384  qstat
+  385  cdlog
+  386  ls -lhat
+  387  emacs hhpred_update_pfam.log hhpred_update_cdd.log hhpred_update_pdb_old.log &
+  388  fg
+  389  cdtestdb
+  390  cd hhpred
+  391  ls
+  392  cd old_dbs
+  393  ls
+  394  cd pfamA_27.0
+  395  ls -ld pfamA_28.0
+  396  mv pfamA_28.0 ../new_dbs
+  397  cd ../new_dbs
+  398  ls
+  399  cd pfamA_28
+  400  cd pfamA_28.0
+  401  ls ../old_dbs
+  402  cd ..
+  403  ls
+  404  mv new_dbs ../new_dbs/pfamA_28.0
+  405  cd ../new_dbs
+  406  ls
+  407  qstat
+  408  cd ..
+  409  cd ..
+  410  cd standard
+  411  ls
+  412  cd db_update-2015-06-18
+  413  ls
+  414  ls -lhat *kclust*
+  415  emacs *kclust*
+  416  cdtest
+  417  cd update_scripts/
+  418  cd hhpred
+  419  git log hhpred_update_pfam.pl 
+  420  git status
+  421  git diff hhpred_update_pfam.pl
+  422  git add hhpred_update_pfam.pl 
+  423  git commit
+  424  git push origin next:refs/remotes/kfaidt/next
+  425  emacs hhpred_update_pfam.pl
+  426  git log hhpred_update_pfam.pl
+  427  emacs hhpred_update_pfam.pl
+  428  git diff hhpred_update_pfam.pl
+  429  git diff hhpred_update_pfam.pl | cat
+  430  git add hhpred_update_pfam.pl
+  431  git commit
+  432  git push origin next:refs/remotes/kfaidt/next
+  433  cd /usr/lib
+  434  ls
+  435  ls -l libmpi*
+  436  cd /etc/alternatives
+  437  ls
+  438  ls -l libmpi.so
+  439  cd /usr/lib/x86_64-linux-gnu/libmpich.so
+  440  ls -l
+  441  ls -l libmpi*
+  442  cd /usr/lib/x86_64-linux-gnu
+  443  ls -l libmpi*
+  444  ls /usr/lib/openmpi
+  445  cd ..
+  446  ls
+  447  cd
+  448  cd bioprogs
+  449  cd toolkit
+  450  cd bioprogs
+  451  ls
+  452  cd hhsuite-2.1.0
+  453  ls
+  454  cd build
+  455  cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=${INSTALL_BASE_DIR} ..
+  456  cd ..
+  457  ls
+  458  ls ..
+  459  cd build
+  460  make
+  461  ls
+  462  cd ..
+  463  ls
+  464  rm -r *
+  465  ls -a
+  466  rm -ra *
+  467  rm -r .cproject .git* .project .py* .settings
+  468  rm -rf .cproject .git* .project .py* .settings
+  469  ls -y
+  470  ls -a
+  471  ls
+  472  ls
+  473  cd ..
+  474  ls
+  475  cd hhsuite-2.1.0
+  476  ls
+  477  mkdir build
+  478  cd build
+  479  cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=${INSTALL_BASE_DIR} ..
+  480  qhost
+  481  cd node336
+  482  ssh node336
+  483  ssh node448
+  484  ls /lib
+  485  ls /usr/lib/openmpi
+  486  ls /usr/lib/mpi
+  487  ls /usr/lib/libmpi
+  488  ls -l /usr/lib/libmpi*
+  489  ls -l /etc/alternatives/libmpi.so
+  490  ls -l /usr/lib/x86_64-linux-gnu/libmpich.so
+  491  ls
+  492  ls ../bin
+  493  cd ../bin
+  494  ls -l
+  495  ./hhblits
+  496  cd ..
+  497  cd build
+  498  ls
+  499  ls -l
+  500  ls src
+  501  cd toolkit
+  502  cd bioprogs
+  503  ls
+  504  cd hhsuite-2.1.0
+  505  sl
+  506  ls
+  507  rm -rf *
+  508  ls -a
+  509  rm -rf .cproject .git .gitattributes .gitignore .gitmodules .project .pydevproject .settings
+  510  ls -a
+  511  ls
+  512  mkdir build
+  513  cd build
+  514  ssh node448
+  515  fg
+  516  cd ..
+  517  cd ..
+  518  git status
+  519  popd
+  520  pushd .
+  521  cdtest
+  522  cd bioprogs
+  523  find -d -name ".git" -print
+  524  cd hhpred
+  525  git branch
+  526  git status
+  527  git log
+  528  cp tenrep.rb ~/toolkit/bioprogs/hhpred/
+  529  popd
+  530  emacs .gitignore
+  531  git status
+  532  cd hhpred
+  533  ls
+  534  pushd .
+  535  popd
+  536  cdtest
+  537  cd bioprogs/hhpred
+  538  git status
+  539  mv tenrep.rb tenrep_neu.rb
+  540  git checkout -f tenrep.rb
+  541  diff tenrep.rb tenrep_neu.rb
+  542  cp tenrep.rb ~/toolkit/bioprogs/hhpred/tenrep.rb
+  543  popd
+  544  ls
+  545  ls originals
+  546  ls *0*
+  547  ls *0
+  548  mv *0 originals
+  549  ls
+  550  ls *tar
+  551  mv *tar originals
+  552  ls -l
+  553  ls -l hhsearch*
+  554  ls
+  555  mv *tar* originals
+  556  ls
+  557  ls
+  558  ls *michael*
+  559  mv *michael* originals
+  560  mv *.tgz originals
+  561  ls
+  562  ls *.sxc
+  563  cat *.sxc
+  564  ls -l
+  565  ls
+  566  mv tenrep_neu.rb originals
+  567  git status
+  568  cd ..
+  569  git status
+  570  popd
+  571  cd
+  572  cd bioprogs
+  573  cd toolkit
+  574  cd bioprogs
+  575  cd hhpred
+  576  history > history.tmp

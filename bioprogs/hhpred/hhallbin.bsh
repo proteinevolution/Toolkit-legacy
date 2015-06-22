@@ -1,0 +1,40 @@
+echo "cd /raid/users/soeding/scop20.3/pp/"
+cd /raid/users/soeding/scop20.3/pp/
+~/hh/hhallbin.pl "*.scores" scop20_bin61.dat
+
+echo "cd /raid/users/soeding/scop20.3/hh/"
+cd /raid/users/soeding/scop20.3/hh/
+~/hh/hhallbin.pl "*.scores" scop20_bin61.dat
+
+echo "cd /raid/users/soeding/scop20.3/hhc/"
+cd /raid/users/soeding/scop20.3/hhc/
+~/hh/hhallbin.pl "*.scores" scop20_bin61.dat
+
+echo "cd /raid/users/soeding/scop20.3/hhcp/"
+cd /raid/users/soeding/scop20.3/hhcp/
+~/hh/hhallbin.pl "*.scores" scop20_bin61.dat
+
+echo "cd /raid/users/soeding/scop20.3/hhcs/"
+cd /raid/users/soeding/scop20.3/hhcs/
+~/hh/hhallbin.pl "*.scores" scop20_bin61.dat
+
+echo "cd /raid/users/soeding/scop20.3/profsim/"
+cd /raid/users/soeding/scop20.3/profsim/
+~/hh/hhallbin.pl "*.scores" scop20_bin61.dat
+
+echo "cd /raid/users/soeding/scop20.3/compass/"
+cd /raid/users/soeding/scop20.3/compass/
+~/hh/hhallbin.pl "*.scores" scop20_bin61.dat
+
+echo "cd /home/soeding/scop20.3/blast"
+cd /home/soeding/scop20.3/blast
+~/hh/hhallbin.pl "*.scores" scop20_bin61.dat
+
+echo "cd /home/soeding/scop20.3/psiblast"
+cd /home/soeding/scop20.3/psiblast
+~/hh/hhallbin.pl "*.scores" scop20_bin61.dat
+
+echo "cd /home/soeding/scop20.3/hmmer"
+cd /home/soeding/scop20.3/hmmer
+~/hh/hhallbin.pl "*.scores" scop20_bin61.dat
+

@@ -1,0 +1,39 @@
+!read test/score_dist\2 xbin xcount
+read test/score_dist\2 i s
+scalar\dummy j
+
+y = s*(i=0)
+t=sum(y[j],j,[1:len(y)])
+y1= (i=0)
+t1=sum(y1[j],j,[1:len(y1)])
+
+x = s+(i=0)*1000 - 1000
+binmax=20
+binmin=-10
+d=1
+
+xbin = [binmin:binmax:d]
+bin\discard x xbin xcount
+w=1/sqrt(xcount+1)
+
+clear
+set lintyp 0
+gra xbin xcount
+
+scalar\dummy j
+c=sum(xcount[j],j,[1:len(xcount)])
+scalar\vary a b
+a=1
+b=1
+fit\weights w xcount = d*b*c*exp(-(exp(-b*(xbin-a))) - b*(xbin-a))
+fcount = d*b*c*exp(-(exp(-b*(xbin-a))) - b*(xbin-a))
+
+
+!fit\update fcount
+!w = 1/(fcount+1)
+!fit\weights w xcount = d*b*c*exp(-(exp(-b*(xbin-a))) - b*(xbin-a))
+!fit\update fcount
+
+
+set lintyp 3
+gra\noaxes xbin fcount

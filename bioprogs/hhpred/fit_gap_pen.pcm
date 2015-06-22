@@ -1,0 +1,40 @@
+MAXN=201
+n=[1:MAXN:1]
+p=1.027E-2*exp(-n/0.96)+3.031E-3*exp(-n/3.13)+6.141E-4*exp(-n/14.3)+2.09E-5*exp(-n/81.7)
+
+logp=log(p)/log(2)
+logp1=logp[2:#]
+logp=logp[1:MAXN-1]
+n=n[1:MAXN-1]
+
+dlogp=logp1-logp
+dlogp=dlogp
+clear
+set pchar -16
+set lintyp 0
+gra n dlogp
+
+scalar\vary a b c
+a= 1.55
+b= 0.008
+c= 1.4
+fit dlogp=-(a+b*n/c)/(1+n/c)
+fit\update f
+set lintyp 3
+set pchar 0
+gra\noaxes n f
+
+a=1.2
+b=0.004
+c=1.6
+fit\update f
+set lintyp 7
+gra\noaxes n f
+
+a=1
+b=0.007
+c=1.6
+fit\update f
+set lintyp 9
+gra\noaxes n f
+

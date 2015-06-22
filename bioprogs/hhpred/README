@@ -1,0 +1,590 @@
+HHsearch suite for homology search by HMM-HMM comparison
+Version 1.2.0 (January 2006)
+(C) Johannes Soeding (see LICENSE file)
+
+For changes to the new release, see CHANGES file
+
+For bug reports, questions, or comments please contact johannes@soeding.com
+
+_______________________________________________________________________________________
+
+0. Obtaining HHsearch and the databases
+
+At ftp://ftp.tuebingen.mpg.de/pub/protevo/HHsearch/ binaries can be downloaded for 
+* Linux x86 (32bit)
+* Linux AMD64
+* Apple PPC OS X
+* SUN Solaris
+* Alpha-DEC OSF1 (alpha)
+
+In the subdirectory 'databases/' many databases can be downloaded:
+ 1* pdb70    ( (c) J. Soeding, based on PDB, updated weekly )
+ 2* scop70   ( (c) J. Soeding, based on SCOP, updated with SCOP )
+ 3* PfamA    ( http://www.sanger.ac.uk/Software/Pfam/ )
+ 4* SMART    ( http://smart.embl-heidelberg.de/, downloaded from NCBI site)
+ 5* PfamB    ( based on ProDom, downloaded from Pfam site)
+ 6* COG      ( http://www.ncbi.nlm.nih.gov/COG/new/ )
+ 7* KOG	     ( http://www.ncbi.nlm.nih.gov/COG/new/ )
+ 8* CD/NCBI  ( http://www.ncbi.nlm.nih.gov/Structure/cdd/cdd.shtml )  	
+ 9  Panther  ( http://www.pantherdb.org/, from InterPro )
+10  TIGRFAMs ( http://tigrblast.tigr.org/web-hmm/, from InterPro )
+11  PIRSF    ( http://pir.georgetown.edu/pirsf/, from InterPro )
+12  Superfamily ( http://supfam.mrc-lmb.cam.ac.uk/SUPERFAMILY/, from InterPro )
+13  CATH/GeneeD ( http://cathwww.biochem.ucl.ac.uk/latest/, from InterPro )
+
+For databases not marked by an asterisc, you can download the HMM models in HMMER 
+format as *.hmm.tar files. The *.hmm.tar files untar into a single concatenated HMMer 
+file. For theses databases, unfortunately no alignments are publicly available (info 
+to the contrary is wellcome.) 
+For the other eight databases you can download the HMM models in HHsearch format 
+(*.hhm.tar files) and the alignments in A3M format (*.a3m.tar files). The *.hhm.tar 
+and *.a3m.tar files untar into thousands of separate files, so before unnzipping and 
+untarring, first create a directory for the database. Note that you can transform all 
+A3M files to FASTA by using the reformat.pl script supplied with HHsearch:
+  reformat.pl '*.a3m' .fas
+
+_______________________________________________________________________________________
+
+1. Getting started
+
+Overview of programs:
+  hhmake         Build an HMM from an input alignment in A2M, A3M, or FASTA format 
+  hhsearch       Search a database of HMMs with a query alignment or query HMM
+  hhfilter       filter alignment by maximum sequence identity, coverage, etc.  
+  reformat.pl    reformat one or many alignments
+  alignblast.pl  extract an alignment from a BLAST/PSI-BLAST output
+  addpsipred.pl  add predicted secondary structure information to an alignment or HMM
+
+Call a program without arguments to get a more detailed description of its syntax.
+
+To start using HHsearch, untar the database first, e.g.
+  mkdir scop70_1.69
+  cd scop70_1.69
+  tar -xzvf scop70_1.69.hhm.tar.gz
+
+The name scop70_1.69 stands for 'SCOP domain database version 1.69 filtered to 70% 
+maximum sequence identity'.
+
+Then generate a database file by concatenating all *.hhm files type (under LINUX)
+  cat *.hhm > scop70_1.69.hhm
+
+Test whether hhsearch works by typing
+  ./hhsearch -i d1hxn__.hhm -d scop70_1.69.hhm
+
+You should see a dot printed for every twenty HMMs processed until at the end 
+hhsearch prints out a list with the best hits from the database. The complete 
+search results including the pairwise query-template alignments, are written to the 
+default output file, d1hxn__.hhr. The format (HHsearch results format, HHR) was 
+designed to be easily parsable.
+
+Instead of using the hmm file you can also take the a3m file for the scan. It is 
+automatically converted to an HMM by hhsearch before starting the scan:
+  ./hhsearch -i d1hxn__.a3m -d scop70_1.69.hhm
+
+Now take the the sequence of your favorite protein in FASTA and generate a 
+multiple alignment with PSI-BLAST for it:
+  blastpgp -i query.seq -d nr -j 5 -h 0.001 -o query.bla
+
+It is advisable to open the alignment with an alignment editor (try, e.g. ALNEDITOR 
+from the MPI webpage, ftp://ftp.tuebingen.mpg.de/pub/protevo/alndeit), to see if
+PSI-BLAST has included non-homologous sequences or pieces of sequences into the 
+alignment and purge the alignment if necessary.) Parse out the multiple alignment
+with the provided BLAST parser:
+  ./alignblast.pl query.bla query.a2m
+
+The output file will be in A2M format by default (see explications above).
+Then add the PSIPRED secondary structure prediction to your query alignment 
+(optional) with addpsipred.pl. For addpsipred.pl to work, you have to define
+the paths to your PSIPRED and BLAST  directories at the top of the script. Then type
+  ./addpsipred.pl query.a2m 
+
+This includes two pseudo-sequences into your alignment, one containing the predicted
+secondary structure states and the other containing the confidence values (0-9) for 
+each match state. The output format is A3M, which looks misaligned but it is not. 
+(To reconvert to FASTA, use 'reformat.pl file.a3m file.fas'.)
+
+Now you can generate a hidden Markov model (HMM) from this alignment:
+  ./hhmake -i query.a3m
+
+This will generate a file query.hhm in HHsearch's HHM format. With this 
+you can search SCOP: 
+  ./hhsearch -i query.hhm -d scop70_1.69.hhm
+
+When you want to search a database other than SCOP, you need to *calibrate* your query
+HMM before to get meaningful E-values from your search. During the calibration
+hhsearch determines the score distribution of false negatives and writes the lamda and
+my parameters of the EVD into the hhm file. For calibration, either SCOP or the file 
+cal.hhma can be used. cal.hhm is a minimal version of SCOP containing only one HMM 
+per fold. To calibrate your HMM, type
+  ./hhsearch -cal -i query.hhm -d cal.hhm
+
+As an example for searching a database other then SCOP, download the Pfam database, 
+untar and concatenate: 
+  mkdir pfamA_17.0
+  cd pfamA_17.0
+  tar -xzvf pfamA_17.0
+  cat *.hhm > pfamA.hhm
+
+If you have already calibrated your query, you can now search Pfam with it:
+  cd ..
+  ./hhsearch -i query.hhm -d pfamA_17.0/pfamA.hhm 
+
+Take care: if you change alignment paramters, such as chosing -global or -ssm 0 
+instead of the default -local and -ssm 2, you have to RECALIBRATE your HHM file. 
+Otherwise the mu and lambda parameters will refer to the score distribution obtained
+with the old parameters, hence E-values and probabilities can be completely wrong.
+
+
+_______________________________________________________________________________________
+
+2. Input alignment formats
+
+If you want to search the database with your own alignment or if you want to generate 
+your own database, you need to have alignments in A2M, A3M, or aligned FASTA format. 
+(Check the -M option for using different input format). You can transform alignments 
+from Clustal or Stockholm format to A3M or aligned FASTA with the reformat.pl utility 
+supplied together with hhsearch. 
+
+To reformat from Clustal fromat to A3M:
+  ./reformat.pl test.aln test.a3m
+or explicitely, if the formats can not be recognized from the extensions:
+  ./reformat.pl clu a3m test.clustal test.a3m
+To reformat from Stockholm to aligned FASTA:
+  ./reformat.pl test.sto test.fas
+
+
+Example for aligned FASTA format:
+
+>d1a1x__ b.63.1.1 (-) p13-MTCP1 {Human (Homo sapiens)}
+PPDHLWVHQEGIYRDEYQRTWVAVVEE--E--T--SF---------LR----------ARVQQIQVPLG-------DAARPSHLLTS-----QLPLMWQLYPEERYMDNNSR
+>gi|6678257|ref|NP_033363.1|:(7-103) T-cell lymphoma breakpoint 1 [Mus musculus]
+HPNRLWIWEKHVYLDEFRRSWLPVVIK--S--N--EK---------FQ----------VILRQEDVTLG-------EAMSPSQLVPY-----ELPLMWQLYPKDRYRSCDSM
+>gi|7305557|ref|NP_038800.1|:(8-103) T-cell leukemia/lymphoma 1B, 3 [Mus musculus]
+PPRFLVCTRDDIYEDENGRQWVVAKVE--T--S--RSpygsrietcIT----------VHLQHMTTIPQ-------EPTPQQPINNN-----SLPTMWRLESMNTYTGTDGT
+>gi|11415028|ref|NP_068801.1|:(2-106) T-cell lymphoma-1; T-cell lymphoma-1A [Homo sapiens]
+HPDRLWAWEKFVYLDEKQHAWLPLTIEikD--R--LQ---------LR----------VLLRREDVVLG-------RPMTPTQIGPS-----LLPIMWQLYPDGRYRSSDSS
+>gi|7305561|ref|NP_038804.1|:(7-103) T-cell leukemia/lymphoma 1B, 5 [Mus musculus]
+----------GIYEDEHHRVWIAVNVE--T--S--HS---------SHgnrietcvt-VHLQHMTTLPQ-------EPTPQQPINNN-----SLPTMWRLESRNTYTGTDGT
+>gi|7305553|ref|NP_038801.1|:(5-103) T-cell leukemia/lymphoma 1B, 1 [Mus musculus]
+LPVYLVSVRLGIYEDEHHRVWIVANVE--TshS--SH---------GN----------RRRTHVTVHLW-------KLIPQQVIPFNplnydFLPTTWKLESRNIYWATDGT
+>gi|27668591|ref|XP_234504.1|:(7-103) similar to Chain A, Crystal Structure Of Murine Tcl1 At 2.5 Resolution
+-PDRLWLWEKHVYLDEFRRSWLPIVIK--S--N--GK---------FQ----------VIMRQKDVILG-------DSMTPSQLVPY-----ELPLMWQLYPEERYRSSNSE
+>gi|27668589|ref|XP_234503.1|:(9-91) similar to T-cell leukemia/lymphoma 1B, 5;
+-PHILTLRTHGIYEDEHHRLWVVLDLQ--A--ShlSF---------SN----------RLLIYLTVYLQqgvafplESTPPSPMNLN-----GLPRRWTLRTMGTYEGTDNT
+>gi|7305559|ref|NP_038802.1|:(8-102) T-cell leukemia/lymphoma 1B, 4 [Mus musculus] 
+PPCFLVCTRDDIYEDEHGRQWVAAKVE--T--S--SH---------SPycskietcvtVHLWQMTTLFQ-------EPSPDSLKTFN-----FLPRTWRLESRNTYRGADAM
+>gi|7305555|ref|NP_038803.1|:(9-102) T-cell leukemia/lymphoma 1B, 2 [Mus musculus]
+---------PGFYEDEHHRLWMVAKLE--T--C--SH---------SPycnkietcvtVHLWQMTRYPQ-------EPAPYNPMNYN-----FLPMTWRLASMNTYRGTDAM
+
+The sequence name and its description must be contained in a single name line beginning 
+with the > symbol and followed directly by the sequence name. The residue data is 
+contained in one or more lines of arbitrary length following the name line. No empty 
+lines should be used. In aligned FASTA the gaps are written with '-' and the n'th 
+letter of each sequence (except newlines) is understood to build the n'th column of the 
+multiple alignment. 
+
+
+The same alignment in A2M format looks like this:
+
+>d1a1x__ b.63.1.1 (-) p13-MTCP1 {Human (Homo sapiens)}
+PPDHLWVHQEGIYRDEYQRTWVAVVEE..E..T..SF.........LR..........ARVQQIQVPLG.......DAARPSHLLTS.....QLPLMWQLYPEERYMDNNSR
+>gi|6678257|ref|NP_033363.1|:(7-103) T-cell lymphoma breakpoint 1 [Mus musculus]
+HPNRLWIWEKHVYLDEFRRSWLPVVIK..S..N..EK.........FQ..........VILRQEDVTLG.......EAMSPSQLVPY.....ELPLMWQLYPKDRYRSCDSM
+>gi|7305557|ref|NP_038800.1|:(8-103) T-cell leukemia/lymphoma 1B, 3 [Mus musculus]
+PPRFLVCTRDDIYEDENGRQWVVAKVE..T..S..RSpygsrietcIT..........VHLQHMTTIPQ.......EPTPQQPINNN.....SLPTMWRLESMNTYTGTDGT
+>gi|11415028|ref|NP_068801.1|:(2-106) T-cell lymphoma-1; T-cell lymphoma-1A [Homo sapiens]
+HPDRLWAWEKFVYLDEKQHAWLPLTIEikD..R..LQ.........LR..........VLLRREDVVLG.......RPMTPTQIGPS.....LLPIMWQLYPDGRYRSSDSS
+>gi|7305561|ref|NP_038804.1|:(7-103) T-cell leukemia/lymphoma 1B, 5 [Mus musculus]
+----------GIYEDEHHRVWIAVNVE..T..S..HS.........SHgnrietcvt.VHLQHMTTLPQ.......EPTPQQPINNN.....SLPTMWRLESRNTYTGTDGT
+>gi|7305553|ref|NP_038801.1|:(5-103) T-cell leukemia/lymphoma 1B, 1 [Mus musculus]
+LPVYLVSVRLGIYEDEHHRVWIVANVE..TshS..SH.........GN..........RRRTHVTVHLW.......KLIPQQVIPFNplnydFLPTTWKLESRNIYWATDGT
+>gi|27668591|ref|XP_234504.1|:(7-103) similar to Chain A, Crystal Structure Of Murine Tcl1 At 2.5 Resolution 
+-PDRLWLWEKHVYLDEFRRSWLPIVIK..S..N..GK.........FQ..........VIMRQKDVILG.......DSMTPSQLVPY.....ELPLMWQLYPEERYRSSNSE
+>gi|27668589|ref|XP_234503.1|:(9-91) similar to T-cell leukemia/lymphoma 1B, 5;
+-PHILTLRTHGIYEDEHHRLWVVLDLQ..A..ShlSF.........SN..........RLLIYLTVYLQqgvafplESTPPSPMNLN.....GLPRRWTLRTMGTYEGTDNT
+>gi|7305559|ref|NP_038802.1|:(8-102) T-cell leukemia/lymphoma 1B, 4 [Mus musculus] 
+PPCFLVCTRDDIYEDEHGRQWVAAKVE..T..S..SH.........SPycskietcvtVHLWQMTTLFQ.......EPSPDSLKTFN.....FLPRTWRLESRNTYRGADAM
+>gi|7305555|ref|NP_038803.1|:(9-102) T-cell leukemia/lymphoma 1B, 2 [Mus musculus]
+---------PGFYEDEHHRLWMVAKLE..T..C..SH.........SPycnkietcvtVHLWQMTRYPQ.......EPAPYNPMNYN.....FLPMTWRLASMNTYRGTDAM
+
+A2M format is derived from aligned FASTA format. It looks very similar, but it 
+distinguishes between match/delete columns and insert columns. This information is 
+important to uniquely specify how an alignment is transformed into an HMM. The 
+match/delete columns use upper case letters for residues and the '-' symbol for 
+deletions (gaps). The insert columns use lower case letters for the inserted residues. 
+Gaps aligned to inserted residues are written as '.'
+
+
+The same alignment in A3M:
+
+>d1a1x__ b.63.1.1 (-) p13-MTCP1 {Human (Homo sapiens)}
+PPDHLWVHQEGIYRDEYQRTWVAVVEEETSFLRARVQQIQVPLGDAARPSHLLTSQLPLMWQLYPEERYMDNNSR
+>gi|6678257|ref|NP_033363.1|:(7-103) T-cell lymphoma breakpoint 1 [Mus musculus]
+HPNRLWIWEKHVYLDEFRRSWLPVVIKSNEKFQVILRQEDVTLGEAMSPSQLVPYELPLMWQLYPKDRYRSCDSM
+>gi|7305557|ref|NP_038800.1|:(8-103) T-cell leukemia/lymphoma 1B, 3 [Mus musculus]
+PPRFLVCTRDDIYEDENGRQWVVAKVETSRSpygsrietcITVHLQHMTTIPQEPTPQQPINNNSLPTMWRLESMNTYTGTDGT
+>gi|11415028|ref|NP_068801.1|:(2-106) T-cell lymphoma-1; T-cell lymphoma-1A [Homo sapiens]
+HPDRLWAWEKFVYLDEKQHAWLPLTIEikDRLQLRVLLRREDVVLGRPMTPTQIGPSLLPIMWQLYPDGRYRSSDSS
+>gi|7305561|ref|NP_038804.1|:(7-103) T-cell leukemia/lymphoma 1B, 5 [Mus musculus]
+----------GIYEDEHHRVWIAVNVETSHSSHgnrietcvtVHLQHMTTLPQEPTPQQPINNNSLPTMWRLESRNTYTGTDGT
+>gi|7305553|ref|NP_038801.1|:(5-103) T-cell leukemia/lymphoma 1B, 1 [Mus musculus]
+LPVYLVSVRLGIYEDEHHRVWIVANVETshSSHGNRRRTHVTVHLWKLIPQQVIPFNplnydFLPTTWKLESRNIYWATDGT
+>gi|27668591|ref|XP_234504.1|:(7-103) similar to Chain A, Crystal Structure Of Murine Tcl1 At 2.5 Resolution
+-PDRLWLWEKHVYLDEFRRSWLPIVIKSNGKFQVIMRQKDVILGDSMTPSQLVPYELPLMWQLYPEERYRSSNSE
+>gi|27668589|ref|XP_234503.1|:(9-91) similar to T-cell leukemia/lymphoma 1B, 5;
+-PHILTLRTHGIYEDEHHRLWVVLDLQAShlSFSNRLLIYLTVYLQqgvafplESTPPSPMNLNGLPRRWTLRTMGTYEGTDNT
+>gi|7305559|ref|NP_038802.1|:(8-102) T-cell leukemia/lymphoma 1B, 4 [Mus musculus] 
+PPCFLVCTRDDIYEDEHGRQWVAAKVETSSHSPycskietcvtVHLWQMTTLFQEPSPDSLKTFNFLPRTWRLESRNTYRGADAM
+>gi|7305555|ref|NP_038803.1|:(9-102) T-cell leukemia/lymphoma 1B, 2 [Mus musculus]
+---------PGFYEDEHHRLWMVAKLETCSHSPycnkietcvtVHLWQMTRYPQEPAPYNPMNYNFLPMTWRLASMNTYRGTDAM
+
+The A3M format is a condensed version of A2M format. It is obtained by omitting all '.' 
+symbols from A2M format. Hence residues emitted by Match states of the HMM are in upper 
+case, residues emitted by Insert states are in lower case and deletions are written '-'.
+A3M-formatted alignments can be reformatted to other formats like FASTA or A2M with 
+the reformat.pl utility:
+  ./reformat.pl test.a3m test.a2m
+A3M is not an official format. Likewise the name A3M is our personal invention for this 
+very practical and space-efficient format. 
+
+
+Secondary structure information in A3M/A2M or FASTA alignments for hhsearch:
+
+The alignments read in by hhsearch or hhmake can also contain secondary structure 
+information. This information can be included in sequences with special names, 
+like in this A3M file:
+
+>ss_dssp
+CCSEEEEEETTEEEETTSCEEEEEEEECSSCEEEEEECCCCCCCSCCCHHHHTTCSSCSEEEEETTTEEEETTSC
+>aa_dssp
+PPDHLWVHQEGIYRDEYQRTWVAVVEEETSFLRARVQQIQVPLGDAARPSHLLTSQLPLMWQLYPEERYMDNNSR
+>aa_pred 
+PPDHLWVHQEGIYRDEYQRTWVAVVEEETSFLRARVQQIQVPLGDAARPSHLLTSQLPLMWQLYPEERYMDNNSR
+>ss_pred 
+CCCEEEEECCCEECCCCCEEEEEEEEECCCCCCEEEEEEECCCCCCCCCCCCCCCCCCCEEEECCCCCEECCCCC
+>ss_conf 
+987689961870104587078999970578640132153103788788777774424614787217702035631
+>d1a1x__ b.63.1.1 (-) p13-MTCP1 {Human (Homo sapiens)}
+PPDHLWVHQEGIYRDEYQRTWVAVVEEETSFLRARVQQIQVPLGDAARPSHLLTSQLPLMWQLYPEERYMDNNSR
+>gi|6678257|ref|NP_033363.1|:(7-103) T-cell lymphoma breakpoint 1 [Mus musculus]
+HPNRLWIWEKHVYLDEFRRSWLPVVIKSNEKFQVILRQEDVTLGEAMSPSQLVPYELPLMWQLYPKDRYRSCDSM
+>gi|7305557|ref|NP_038800.1|:(8-103) T-cell leukemia/lymphoma 1B, 3 [Mus musculus]
+PPRFLVCTRDDIYEDENGRQWVVAKVETSRSpygsrietcITVHLQHMTTIPQEPTPQQPINNNSLPTMWRLESMNTYTGTDGT
+>gi|11415028|ref|NP_068801.1|:(2-106) T-cell lymphoma-1; T-cell lymphoma-1A [Homo sapiens]
+HPDRLWAWEKFVYLDEKQHAWLPLTIEikDRLQLRVLLRREDVVLGRPMTPTQIGPSLLPIMWQLYPDGRYRSSDSS
+
+The sequence with name >ss_dssp contains the 8-state DSSP-determined secondary
+structure. >aa_dssp and >aa_pred contain the same residues as the query sequence 
+(>d1a1x__ in this case). They are optional and used merely to check whether the 
+secondary structure states have correctly been assigned to the alignment. >ss_pred 
+contains the 3-state secondary structure predicted by PSIPRED, and >ss_conf conains 
+the corresponding confidence values. The query sequence is the first sequence that 
+does not start with a special name. It is not marked explicitely.
+
+
+Name lines in alignments 
+
+If you would like to create HMMs from alignments with a specified name which differ 
+from the name of the first sequence, you can do so by adding name lines to 
+your FASTA, A2M, or A3M alignment:
+
+#PF02043 Bac_chlorC:  Bacteriochlorophyll C binding protein
+>ss_pred
+CCCCHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHCCCCCCCCCCCCCCCCCCCCCCCCCCCCHHHHHHHCC
+>ss_conf
+9863234658887677777750019999999998878886403445886666775655576678777660667633039
+>CSMA_CHLAU/1-79
+ATRGWFSESSAQVAQIGDIMFQGHWQWVSNALQATAAAVDNINRNAYPGVSRSGSGEGAFSSSPSNGFRPKRIRSRFNR
+>CSMA_CHLPH/2-51
+NGGGVFTDILAASGRIFEVMVEGHWATVGYLFDSLGKGVSRINQNAYGNM-----------------------------
+...
+
+When creating an HMM from an A3M file with hhmake, the first word of the name line is 
+used as the name and file name of the HMM (PF02043 in this case). The following is an 
+optional description. The descriptions will appear in the alignment section of the 
+search results. The name lines can be arbitrarily long and there can be any number of 
+name/description lines included, marked by a '#' as the first character in the line. 
+Note that name lines are read by hhmake but are not a part of the standard definition
+of the FASTA or A2M format.
+ 
+
+_______________________________________________________________________________________
+
+3. Summary hit list and HMM-HMM alignments
+
+Summary hit list 
+
+Do a search with the N-terminal domain of DNA polymerase beta against the SCOP domains:
+
+[soeding@odin test]$ hhsearch -v -i /cluster/usr/soeding/scop50.2/d1bpya1.hhm -d /cluster/usr/soeding/scop50.2/db/scop50.hhm
+Search results will be written to /cluster/usr/soeding/scop50.2/d1bpya1.hhr
+Read in HMM d1bpya1 with 82 match states and effective number of sequences = 4.8
+.................................................. 1000 HMMs searched
+.................................................. 2000 HMMs searched
+.................................................. 3000 HMMs searched
+.................................................. 4000 HMMs searched
+.................................................. 5000 HMMs searched
+.................................................. 6000 HMMs searched
+......................
+Fitting scores with EVD (first round) ...
+Fitting scores with EVD (second round) ...
+ 
+Query         d1bpya1 a.60.6.1 (A:10-91) DNA polymerase beta, N-terminal (8 kD)-domain {Human (Homo sapiens)}
+Match columns 82
+Neff          4.8
+Date          Wed Nov 24 13:42:35 2004
+Command       hhsearch -v -i d1bpya1.hhm -d scop50v1.63.hhm
+ 
+ No Hit                             Prob E-value P-value  Score    SS Cols Query HMM  Template HMM
+  1 d1bpya1 a.60.6.1 (A:10-91) DNA  99.9   2E-30   3E-34  178.4  12.3   82    1-82      1-82  (82)
+  2 d1jmsa1 a.60.6.1 (A:148-242) T  99.9 1.6E-26 2.5E-30  157.9  11.2   80    1-81     16-95  (95)
+  3 d1mun__ a.96.1.2 (-) Catalytic  74.9    0.22 3.4E-05   26.0   8.5   55   11-67     70-128 (225)
+  4 d1orna_ a.96.1.1 (A:) Endonucl  70.8     0.4 6.2E-05   24.7   8.4   55   10-67     70-129 (214)
+  5 d1ngna_ a.96.1.2 (A:) Mismatch  68.7    0.17 2.7E-05   26.6   5.9   50   10-67     60-112 (144)
+  6 d1ixra1 a.60.2.1 (A:63-135) DN  68.4    0.11 1.7E-05   27.6   4.8   34   31-64     21-61  (73)
+  7 d1cuk_2 a.60.2.1 (65-142) DNA   66.9    0.14 2.1E-05   27.1   4.9   34   31-64     20-60  (78)
+  8 d1keaa_ a.96.1.2 (A:) Thymine-  66.5    0.54 8.3E-05   24.0   7.8   55   10-67     73-132 (217)
+  9 d1kfta_ a.60.2.3 (A:) Excinucl  65.9   0.083 1.3E-05   28.3   3.5   24   46-69     32-55  (56)
+ 10 d1dgsa1 a.60.2.2 (A:401-581) N  65.8     0.5 7.8E-05   24.2   7.4   40   31-70    117-161 (181)
+ 11 d2abk__ a.96.1.1 (-) Endonucle  65.8    0.99 0.00015   22.6   8.9   64    1-67     60-128 (211)
+ 12 d1mpga1 a.96.1.3 (A:100-282) 3  65.4     1.2 0.00019   22.2   9.3   57   11-67     60-127 (183)
+ 13 d1ko9a1 a.96.1.3 (A:136-323) 8  55.9     3.7 0.00058   19.6   9.4   54   13-67     57-122 (188)
+ 14 d1xo1a1 a.60.7.1 (A:186-290) T  34.8     2.1 0.00033   20.9   3.5   23   52-76     23-45  (105)
+ 15 d1im4a_ e.8.1.5 (A:) DinB homo  34.1     7.2  0.0011   18.1   6.1   52    2-67    151-202 (209)
+ 16 d1jx4a_ e.8.1.5 (A:) DinB homo  31.7     8.3  0.0013   17.8   5.8   52    2-67    146-197 (341)
+ 17 d1a77_1 a.60.7.1 (209-316) Fla  31.5       3 0.00046   20.1   3.5   25   52-78     21-45  (108)
+ 18 d1b43a1 a.60.7.1 (A:220-339) F  31.5     3.2 0.00049   20.0   3.7   23   52-76     21-43  (120)
+ 19 d1doqa_ a.60.3.1 (A:) C-termin  28.1      20  0.0032   15.7   7.0   38   32-69     18-61  (69)
+ 20 d1eg3a1 a.39.1.7 (A:85-209) Dy  27.8     1.7 0.00027   21.4   1.4   24    4-33      2-25  (125)
+ 21 d1go3f_ a.60.8.2 (F:) RNA poly  26.2      17  0.0026   16.2   6.1   61    2-67     13-75  (107)
+ 22 d1g8ma1 c.24.1.3 (A:4-200) IMP  25.0     8.5  0.0013   17.7   4.3   44   10-56     15-58  (197)
+ 23 d1e79d1 a.69.1.1 (D:358-475) F  23.4 3.1E+02   0.048    9.5  11.9   66    4-69     18-89  (118)
+ 24 d1lb2b_ a.60.3.1 (B:) C-termin  22.9      32   0.005   14.7   6.8   38   32-69     16-59  (72)
+ 25 d1b22a_ a.60.4.1 (A:) DNA repa  20.7     7.3  0.0011   18.1   2.8   22   45-66     40-61  (70)
+ 26 d1hz4a_ a.118.8.2 (A:) Transcr  20.6      87   0.013   12.4   8.3   70    4-80    288-357 (366)
+ 
+ 
+The summary hit list that is written to the screen shows the best hits from the 
+database, ordered by the probability of being a true positive (column 4: 'Probab'). 
+
+The meaning of the columns is the following:
+
+Column 1 'No':      Index of hit
+
+Column 2 'Hit':     First 30 characters of domain description (from nameline of query sequence)
+
+Column 3 'Prob':    Probability of target to be a true positive
+For the probability of being a true positive, the secondary structure score 
+in column 7 is taken into account, together with the raw score in column 6 ('Score'). 
+True positives are defined to be either globally homologous or they are at least 
+locally similar in structure. More precisely, the latter criterion demands that 
+the MAXSUB score between query and hit is at least 0.1. In almost all cases the 
+structural similarity will we be due to a global OR LOCAL homology between query 
+and target. 
+
+Column 4 'E-value': Expect-value
+E-value and P-value are calculated without taking the secondary structure into account!
+The E-value gives the average number of false positives ('wrong hits') with a score 
+better than the one for the target when scanning the datbase. It is a measure of 
+reliability: E-values near to 0 signify a very reliable hit, an E-value of 10 means 
+about 10 wrong hits are expected to be found in the database with a score at least 
+this good.
+
+Column 5 'P-value': P-value
+The P-value is just the E-value divided by the number of sequences in the database.
+It is the probability that in a PAIRWISE comparison a wrong hit will score at least 
+this good.
+
+Column 6 'Score':   Raw score, does not include the secondary structure score
+
+Column 7 'SS':      Secondary structure score
+This score tells how well the PSIPRED-predicted (3-state) or actual DSSP-determined 
+(8-state) secondary structure sequences agree with each other. PSIPRED confidence 
+values are used in the scoring, low confidences getting less statistical weight.
+
+Column 8 'Cols':    The number of aligned Match columns in the HMM-HMM alignment.
+
+Columns 9,10:       Range of aligned match states from query HMM
+
+Columns 11,12:      Range of aligned match states from target HMM
+Column 14:          Number of match states in target HMM
+
+
+
+HMM-HMM alignments
+
+The output file d1bpya1.hhr contains the same hit list plus the pairwise HMM alignments. 
+One example is give here:
+
+No 3
+>d1mun__ a.96.1.2 (-) Catalytic domain of MutY {Escherichia coli}
+Probab=86.91   E-value=0.049  Score=30.44  Aligned_columns=56
+                                                                                                    
+Q ss_dssp             HHHHHHHHHTTCCHHHHHHHHHHHHHH.HHCCSCCC.CHHHHHTSSSCCHHHHHHHHHH
+Q ss_pred             HHHHHHHHHCCCCCCCHHHHHHHHHHH.HHCCCCHH.HHHHHHCCCCCCHHHHHHHHHH
+Q ss_conf             999999986189851026899999999.62799713.4788846899765899999999
+Q d1bpya1          11 TELANFEKNVSQAIHKYNAYRKAASVI.AKYPHKIK.SGAEAKKLPGVGTKIAEKIDEF   67 (82)
+Q Consensus        11 ~eiA~~~e~~gen~~k~~AY~rAA~~L.k~l~~~i~.~~~dl~~lPgIG~~i~~~I~E~   67 (82)
+                      +++..+..-.|=. .|.+...++|+.+ +...-.+. +.++|..|||||..+++.|--+
+T Consensus        71 ~~l~~~i~~~G~~.~ka~~l~~~a~~~~~~~~~~~p~~~~~L~~LpGIG~~TA~~il~~  128 (225)
+T d1mun__          71 DEVLHLWTGLGYY.ARARNLHKAAQQVATLHGGKFPETFEEVAALPGVGRSTAGAILSL  128 (225)
+T ss_dssp             HHHHHHHTTSCCT.HHHHHHHHHHHHHHHHSTTSCCCSHHHHHTSTTCCHHHHHHHHHH
+T ss_pred             HHHHHHHHHCCCH.HHHHHHHHHHHHHHHHCCCCCCHHHHHHHHCCCCCHHHHHHHHHH
+T ss_conf             9999999715734.899999999999998539997312788973699888999999998
+                                                                                
+
+This is a typical example of local homology, detectable at both the sequence and the
+structural level, which is embedded in globally non-homologous structures with 
+different overall folds. This sequence- and structure-similar motif, called 
+'helix'hairpin-helix' (HhH), makes unspecific contacts with DNA and is described 
+in [Doherty, Serpell, Ponting, NAR 1996]. 
+
+The alignment consists of one or more blocks with the following lines:
+
+Q ss_dssp:      the query secondary structure as determined by DSSP (when available)
+Q ss_pred:      the query secondary structure as predicted by PSIPRED (when available)
+Q ss_conf:      the PSIPRED confidence values (0-9) (when available)
+Q scop-id:      the query sequence
+Q Consensus:    the query alignment consensus sequence
+
+The consensus sequence uses capital letters for well conserved columns and
+lower case for partially conserved columns. Unconserved columns are marked by 
+a tilde '~'. Roughly speaking, amino acids that occur with >=60% probability 
+(before adding pseudocounts) are written as capital letters and amino acids that have 
+>=40% probability are written as lower case letters, where gaps are included
+in the fraction counts. 
+More precisely, when the gap-corrected amino acid fraction
+  p_i(a)*N_eff(i)/(N_eff+1)
+is above 0.6 (0.4) an upper (lower) case letter is used for amino acid a.
+Here, p_i(a) is the emission probability for a in column i, N_eff is the effective 
+number of sequences in the entire alignment (between 1 and 20) and N_eff(i) is 
+the effective number of sequences in the subalignment consisting of those sequences
+that do not have a gap in column i. These percentages increase
+approximately inversely proportionally with the fraction of gaps in the column, 
+hence a column with only cysteins and 50% gaps gets a lower case letter.
+
+
+              
+The line in the middle shows the column score between the query and target 
+amino acid distributions. It gives a valuable indication for the alignment quality.
+  = : column score below -1.5
+  - : column score between -1.5 and -0.5
+  . : column score between -0.5 and +0.5
+  + : column score between +0.5 and +1.5
+  | : column score above   +1.5
+(A unit of column score corresponds approximately to 0.6 bits.)
+From the column score line the excellent alignment around the highly conserved 
+'LPGIG' motif in the turn between two helices is evident. The alignment around the 
+first helix by contrast scores only slightly better than zero per residue and is
+therefore not very reliable.
+
+T Consensus:    the target alignment consensus sequence
+T scop-id:      the target domain sequence
+T ss_dssp:      the target secondary structure as determined by DSSP (when available)
+T ss_pred:      the target secondary structure as predicted by PSIPRED (when available)
+T ss_conf:      the PSIPRED confidence values (0-9) (when available)
+
+
+
+_______________________________________________________________________________________
+
+4. Building customized databases
+
+If you want to build your own database from a set of alignments, first convert your 
+alignments to A3M or FASTA format with the reformat.pl utility as described above.
+Then generate an hmm file for each alignment by typing
+  ls | grep "\.fas$" | xargs hhmake -i 
+if your alignments have extension a3m. You can then concatenate your individual HMMs
+into your database:
+  cat *.hhm > yourDB.hhm
+(or, if maximum buffer size is exceeded,
+  ls | grep "\.hhm$" | xargs -i cat {} >> yourDB.hhm)
+
+By default, the option -M first will be used. This means that exactly those columns of 
+the alignments which contain a residue in the query sequence will be assigned to Match /
+Delete states, the others will be assigned to Insert states. (The query sequence is the 
+first sequence not containing secondary structure information.) Alternatively, you may 
+want to apply the 50%-gap rule by typing -M 50, which assigns only those columns to 
+Insert states which contain more than 50 gaps. The -M first option makes sense your 
+alignment can best be viewed as a seed sequence plus aligned homolos to reinforce it 
+with evolutionary information. This is the case in the SCOP and PDB versions of our HMM 
+databases, since here alignments are built around a single seed sequence (the one with
+known structure). On the contrary, when your alignment represents an entire family
+of homologs and not any sequence in particular it is best to use the 50% gap rule. 
+This is the case for Pfam or SMART alignments, for instance. Despite its simplicity,
+the 50% gap rule has been shown to perform very well in practice.
+
+When calling hhmake, you may also apply several filters, such as maximum pairwise 
+sequence identity (-id <int>), minium sequence identity with query seuqence 
+(-qid <int>), or miniumum coverage with query (-cov <int>). 
+
+
+_______________________________________________________________________________________
+
+5. Miscellaneous
+
+
+* As of version 1.2.0, HHsearch supports HMMER format. However, sensitivity at constant
+error rate is approximately 6% lower when HMMER-formatted files are used instead of
+HHsearch's own format. Therefore, it is recommended to use HHsearch-formatted models 
+generated with hhmake whenever possible. 
+
+
+* When you have only a HMMER model but no alignment, you may still use secondary 
+structure scoring. This will increase your sensitivity for detecting remote homologs
+significantly. In order to do this, you must add predicted secondary structure to your
+HMMER model. This can be done with addpsipred.pl in a similar way as for alignments:
+
+  perl addpsipred.pl model.hmm model_SS.hmm -hmm
+
+The script will add records SSPRD and SSCON into the file which can (only) be read by 
+hhsearch.
+
+
+* On the help pages of our HHpred web server
+
+   http://protevo.eb.tuebingen.mpg.de/hhpred/
+
+you can find more detailed explanations about (some of) the input parameters 
+('Paramters' section) and about how to interpret the hhsearch output ('Results' 
+section). The FAQ section contains valuable practical hints on topics such as how to 
+validate marginally significant database matches or how to avoid high-scoring false 
+positives.
+
+
+
+_______________________________________________________________________________________
+
+
+6. New limits since version 1.2
+
+Maximum number of sequences in input alignments = 32 766
+Maximum length of sequences in input alignments = 32 766
+Maximum number of match states in input alignments MAXRES = 15 000
+Maximum number of respresentative sequences in output alignments = 10 238
+Maximum number of HMMs in database = inf
+
+
+_______________________________________________________________________________________
+
+
+7. References
+
+Johannes Soding (2005) 
+Protein homology detection by HMM-HMM comparison.
+Bioinformatics 21, 951-960. 
+doi:10.1093/bioinformatics/bti125.
+http://bioinformatics.oupjournals.org/cgi/content/abstract/bti125?ijkey=38Cp1qeK4zozg&keytype=ref
+
+J. Soding, A. Biegert, and A.N. Lupas (2005)
+The HHpred interactive server for protein homology detection and structure prediction.
+Nucleic Acids Research 33, W244--W248 (Web Server issue). 
+doi:10.1093/nar/gki40.
+http://nar.oxfordjournals.org/cgi/reprint/33/suppl_2/W244?ijkey=FuurmQ3jgumZ6AU&keytype=ref
+
+_______________________________________________________________________________________
+
+Good luck with your work!
+
+johannes@soeding.com
+

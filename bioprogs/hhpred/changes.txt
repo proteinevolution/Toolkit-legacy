@@ -1,0 +1,16 @@
+hhalign.C, 
+line   47: Hit hit;                     // Ceate new hit object pointed at by hit
+
+hhcorr.C, 
+line   46: Hit hit;                     // Ceate new hit object pointed at by hit
+line  640: //       Hit hit1, hit2;
+
+hhhitlist.C, 
+line  582:   Hit hit;
+line  640:   Hit hit;
+line  685:   Hit hit;
+line  740:   Hit hit;
+line  936:   Hit hit; 
+line 1140:   Hit hit; 
+line 1224:   Hit hit; 
+

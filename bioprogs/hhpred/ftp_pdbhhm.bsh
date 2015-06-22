@@ -1,0 +1,13 @@
+#!/bin/bash
+echo $1
+echo $2
+echo $3
+
+ftp -n $1 <<END_SCRIPT
+quote USER protevo
+quote PASS fzeS8Y
+put $2
+put $3
+quit
+END_SCRIPT
+exit 0
