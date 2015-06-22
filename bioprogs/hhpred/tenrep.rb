@@ -170,13 +170,15 @@ class Tenrep
 
     #removes the gaps in the query and the associated residues in the template
     0.upto(query.length-1){ |i|
-      0.upto(query[i].length-1){ |j|
-        if(query[i][j..j]=="-") then
+      j = 0
+      while (j < query[i].length)
+        if (query[i][j..j]=="-") then
           template[i][j..j]=""
           query[i][j..j]=""
-          retry
+        else
+          j = j + 1
         end
-      }
+      end
     }
 
     #inserts additional gaps
