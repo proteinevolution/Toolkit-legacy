@@ -1,0 +1,246 @@
+Local changes to bioprogs
+=========================
+
+removing pfiltered databases
+----------------------------
+
+replaced nr90f by nr90, nr70f by nr70, nrf by nr, nre90f by nre90, nre70f by nre70, nr_euk90f by nr_euk90, nr_euk70f by nr_euk70
+because *f databases are not supported any more
+
+affected files:
+nrf: <still incomplete>
+ruby/disopred.rb
+nr70f:
+hhomp/alignhits.pl
+nr90f:
+hhpred/querydb.pl
+perl/runpsipred.pl
+pcoils/runpsipred.pl
+nrf, nr70f and nr90f:
+hhpred/MyPaths.pm
+nre70f and nre90f
+hhpred/buildali_hmm.pl
+hhpred/buildali_hmmalign.pl
+nr_euk70f and nr_euk90f
+hhomp/buildali.pl
+hhpred/buildali.pl
+frpred/perl/myBuildali.pl
+
+
+(additional) bashisms
+---------------------
+>&:
+gcview/Bio/PDB/NACCESS.py
+hhpred/pfam.pl
+hmmer3/easel/testsuite/coverage_report.pl
+hmmer3/easel/testsuite/driver_report.pl
+hmmer3/easel/testsuite/valgrind_report.pl
+modeller-9.11/modlib/modeller/parallel/myspawn.py
+python2.6/Misc/build.sh
+python2.6/Modules/Bio/PDB/NACCESS.py
+samcc/Bio/PDB/NACCESS.py
+&>:
+frpred/perl/myBuildali.pl
+frpred/perl/runPsipred.pl
+hhpred/alignhits.pl
+hhpred/buildali_hmm.pl
+hhpred/buildali_hmmalign.pl
+hhpred/builddb.pl
+hhpred/buildinter.pl
+hhpred/dali.pl
+hhpred/dssp.pl
+hhpred/hh_internal.pl
+hhpred/hhcal.pl
+hhpred/hhfilter.pl
+hhpred/hhmake.pl
+hhpred/hhmakeall.pl
+hhpred/hhpred_bench.cgi
+hhpred/hhpred_bench.pl
+hhpred/hhpred_update_casp_pdb.pl
+hhpred/hhpred_update_cdd.pl
+hhpred/hhpred_update_ipro.pl
+hhpred/hhpred_update_pdb.pl
+hhpred/hhpred/update_pfam.pl
+hhpred/hhsearchall.pl
+hhpred/querydb.pl
+hhpred/selectTemplates.pl
+hhpred/smart.pl
+hhpred/test.pl
+perl/alignhits.pl
+
+Absolute pathnames
+------------------
+ProfRost files not adjusted on test sytem, because Ubuntu version is used.
+Attention: .com-files still contain absolute paths which must be adjusted!
+ProfRost/prof/embl/para/Para-exp152x-mar94.com
+ProfRost/prof/embl/para/Para-exp252-apr94.com
+ProfRost/prof/embl/para/Para-exp317-apr94.com
+ProfRost/prof/embl/para/Para-exp450-oct94.com
+ProfRost/prof/embl/para/Para-htm69-aug94.com
+ProfRost/prof/embl/para/Para-magma.com
+ProfRost/prof/embl/para/Para-sec317-may94.com
+ProfRost/prof/embl/phd.pl
+ProfRost/prof/embl/scr/conv_phd2ascii.pl
+ProfRost/prof/embl/scr/conv_phd2casp2.pl
+ProfRost/prof/embl/scr/conv_phd2html.pl
+ProfRost/prof/embl/scr/conv_rdb2pred.pl
+ProfRost/prof/embl/scr/hssp_filter.pl
+ProfRost/prof/embl/scr/lib/br.pl
+ProfRost/prof/embl/scr/lib/formats.pl
+ProfRost/prof/embl/scr/lib/molbio.pl
+ProfRost/prof/embl/scr/lib/scr.pl
+ProfRost/prof/embl/scr/lib/sys.pl
+ProfRost/prof/embl/scr/lib-col.pl
+ProfRost/prof/embl/scr/phd-mergeRdbSecAcc.pl
+ProfRost/prof/embl/scr/rdb_tokg.pl
+ProfRost/prof/embl/scr/test-install.pl
+ProfRost/prof/prof
+ProfRost/prof/pub/blast/versions/00_10_blastpgp.pl
+ProfRost/prof/scr/blastpgp.pm
+ProfRost/prof/scr/conv_prof.pl
+ProfRost/prof/scr/hack-blastpgp-fasta2hssp.pl
+ProfRost/prof/scr/hssp_filter.pl
+ProfRost/prof/scr/lib/lib-col.pl
+ProfRost/prof/scr/pack/blastpgp.pm
+ProfRost/prof/scr/pack/copf.pm
+ProfRost/prof/scr/pack/hssp_filter.pm
+ProfRost/prof/scr/pack/tlprof_htmref.pm
+ProfRost/prof/scr/pack/tlprof_htmtop.pm
+ProfRost/prof/scr/prof.pl
+ProfRost/prof/scr/test-install.pl
+ProfRost/prof/scr/tlprof_jury.pl
+frpred/perl/FRpred_jnet.pl
+frpred/perl/runPsipred.pl
+genomes/config.txt
+hhfrag/hhfrag.sh
+phylip/execNeighbor.pl
+predisi/predisi_q2d.sh
+predisi/predisi.sh
+sable2/run.sable
+tprpred/tprpred_wrapper.pl
+perl/seq_retrieve.pl
+aln2plot/aln2plot.pl
+hhpred/checkTemplates.pl
+modeller_scripts/changeIndices.pl
+blammer/blammer.conf (not portable, has to be adjusted individually on every system)
+hhblits/.hhdefaults (not portable, has to be adjusted individually on every system)
+
+Repair of Tool FRpred
+---------------------
+
+frpred/formatIO/MissingDataException.java (new file)
+frpred/formatIO/SableFile.java (don't forget to call javac)
+sable2/sable.pl
+
+Compatibility with MSAProbs
+---------------------------
+
+reformat/reformat.pl
+
+Perl change: Replacement of not correctly interpreted $_
+--------------------------------------------------------
+
+gi2promotors/getpromotors.pl
+
+ProfRost - local installation of the "old" libraries
+--------
+
+ProfRost/prof/bin/ld-linux.so.2
+ProfRost/prof/bin/libc.so.6
+ProfRost/prof/bin/libm.so.6
+ProfRost/prof/bin/phd1994.LINUX.orig
+ProfRost/prof/bin/phd1994.LINUX
+
+Permission denied in cluster for /dev/stdout (and bashism)
+--------------------------------------------
+
+memsat-svm/run_memsat-svm.pl
+
+Array index out of range
+------------------------
+
+predisi/JSP.java
+
+HHSuite 2.0.16
+--------------
+
+hhsuite-2.0.16/lib/hh/scripts/Align.pm
+hhsuite-2.0.16/lib/hh/scripts/HHPaths.pm
+hhsuite-2.0.16/lib/hh/scripts/addss.pl
+hhsuite-2.0.16/scripts/addss.pl
+
+Using ProfRost from Ubuntu package instead of from bioprogs folder
+------------------------------------------------------------------
+
+ruby/profRost.rb
+
+secondary structure in hhsuite (update from Munich)
+---------------------------------------------------
+
+hhsuite-2.0.15/lib/hh/scripts/addss.pl
+
+GCView KeyError and Depecration warnings
+----------------------------------------
+
+gcview/tool.py
+
+rsub calls
+----------
+
+hhpred/MyPaths.pm
+
+Removed HHbin, because it needs to be in PATH
+-------------
+
+hhsuite-2.0.16/scripts/HHPaths.pm
+hhsuite-2.0.16/lib/hh/scripts/HHPaths.pm
+
+match state assignments
+-----------------------
+hhpred/buildali.pl (_orig-file contains previous state)
+
+endless loop, extended format of pdb files
+------------------------------------------
+hhpred/pdb2fasta.pl
+hhsuite-2.0.16/scripts/pdb2fasta.pl
+
+Three2OneLetter
+---------------
+hhpred/hhmakemodel.pl (only comment)
+hhsuite-2.0.16/scripts/hhmakemodel.pl (only comment)
+hhsuite-2.0.16/lib/hh/scripts/hhmakemodel.pl (only comment)
+
+Ancescon tree file parameter
+----------------------------
+perl/treenormalizer.pl
+
+GCView: Python now gives an error message if adding a number to a string
+------------------------------------------------------------------------
+gcview/psiblast_parser.py
+
+SCOPe databases (in addition to scop databases)
+---------------
+hhpred/selectTemplates.pl
+
+Modeller
+--------
+modeller_scripts/pir_converter.pl (local changes for error detection, only for development system)
+
+avoid useless /d modifier in translitaration operator
+-----------------------------------------------------
+perl/alignhits_html.pl
+perl/alignhits.pl
+hhpred/alignhits.pl
+
+Perl warnings about unused variable
+-----------------------------------
+dataa/main.cgi
+
+incorrect html
+--------------
+dataa/BADlib.pm
+dataa/foo.html
+
+Python 2.7
+----------
+bfit/bFit.py (_orig.py-file contains previous state)
