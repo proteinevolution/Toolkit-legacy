@@ -244,3 +244,7 @@ dataa/foo.html
 Python 2.7
 ----------
 bfit/bFit.py (_orig.py-file contains previous state)
+
+Compatibility Ruby 1.8.7/Ruby 1.9.3
+-----------------------------------
+marcoil_mod/create_numerical_marcoil.rb (don't require environment.rb!)

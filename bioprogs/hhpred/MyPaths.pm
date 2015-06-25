@@ -58,6 +58,13 @@ our $ftp_protevo ="ftp.tuebingen.mpg.de/pub/protevo";
 # Environment variables for SGE and rsub
 our $env_vars=":";#". /usr/local/sge/default/common/settings.sh; export RUBYLIB=/cluster/user/toolkitmgr/lib; export GEM_HOME=/cluster/user/toolkitmgr/gems";
 our $qsub="$env_vars; qsub";        # qsub command to submit one single job
-our $rsub="$env_vars; export GEM_PATH=/ebio/abt1_share/toolkit_dev/lib/gems:/var/lib/gems/1.8; $rootdir/script/rsub"; # rsub command to submit various jobs
+our $rsub; # rsub command to submit various jobs
+if (-e "$rootdir/lib/gems") {
+    $rsub="$env_vars; export GEM_PATH=$rootdir/lib/gems:/var/lib/gems/1.8; $rootdir/script/rsub";
+} elsif (-e "$rootdir/../lib/gems") {
+    $rsub="$env_vars; export GEM_PATH=$rootdir/../lib/gems:/var/lib/gems/1.8; $rootdir/script/rsub";
+} else {
+    $rsub="$env_vars; $rootdir/script/rsub";
+}
 
 return 1;
