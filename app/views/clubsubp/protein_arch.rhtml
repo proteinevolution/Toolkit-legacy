@@ -7,7 +7,7 @@
 <%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
 
 
-<%Clubproteinheaderinfo.find(:all, :conditions => ["gi=?", @gi]).each do |protein|%>
+<%Clubproteinheaderinfo.protected_find(:all, :conditions => ["gi=?", @gi]).each do |protein|%>
   <BR>
   <TABLE name='protein_datails' width='50%'>
     <TR>
@@ -27,12 +27,12 @@
     </TR>
     <TR>
       <TD><B>Protein subcellular localization (SCL)</B></TD>
-      <TD><B><%subloc=Clubarchgiprediction.find(:first, :conditions => ["gi=?", protein.gi])%><%=subloc.subloc%></B></TD>
+      <TD><B><%subloc=Clubarchgiprediction.protected_find(:first, :conditions => ["gi=?", protein.gi])%><%=subloc.subloc%></B></TD>
     </TR>
   </TABLE><BR>
 
   
-  <%Clubtaxtree.find(:all, :conditions => ["accession=?", protein.accession]).each do |tax_tree|%>
+  <%Clubtaxtree.protected_find(:all, :conditions => ["accession=?", protein.accession]).each do |tax_tree|%>
     <P>
     <TABLE name='gi_details' align='center' width='100%'>
       <TR>
@@ -53,7 +53,7 @@
       <TR>
         <TH bgcolor='#A68B94' width='80px'><B><BR>Reason</B></TH>
         <TD bgcolor='#E8E8E8'>
-          <BR><%gi_comment=Clubarchresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%><%=gi_comment.reasons%>
+          <BR><%gi_comment=Clubarchresultsgicomment.protected_find(:first, :conditions => ["gi=?", protein.gi])%><%=gi_comment.reasons%>
         </TD>
       </TR>
 
@@ -62,7 +62,7 @@
         <TD bgcolor='#E8E8E8'>
           <BR><%=gi_comment.spfound%><BR/><%=gi_comment.spcleaved%><BR><BR>
           
-          <%spprediction=Clubarchresultsgicomment.find(:first, :conditions => ["gi=?", protein.gi])%>
+          <%spprediction=Clubarchresultsgicomment.protected_find(:first, :conditions => ["gi=?", protein.gi])%>
           <TABLE style='text-align:center;' BORDer=0 width='100%'>
             <TR bgcolor='#736F6E'>
               <TD><FONT COLOR='white'>Lipoprotein signal peptide</TD>
@@ -95,7 +95,7 @@
 -->
             <a href="#" onClick="openHelpWindow('/clubsubp/help_ov#sp');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><BR>
 
-            <%metascl=Clubarchmetascl.find(:first, :conditions => ["gi=?", protein.gi])%>
+            <%metascl=Clubarchmetascl.protected_find(:first, :conditions => ["gi=?", protein.gi])%>
             <TABLE style='text-align:center;' BORDER=0 bgcolor='white'>
               <TR>
                 <TD bgcolor='#A68B94' rowspan='3' width='60px'><B>Lipoprotein SP</B></TD>

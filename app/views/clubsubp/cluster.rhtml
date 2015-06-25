@@ -6,7 +6,7 @@
 
 <%= form_tag({:action => :run, :job => 'clubsubp'}, {:multipart => true})%>
 
-<%Clubclstprediction.find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
+<%Clubclstprediction.protected_find(:all, :conditions => ["cluster=?", @name]).each do |cluster_name|%>
 
   <H5>Gram Negative cluster <%=cluster_name.cluster%></H5>
 
@@ -93,17 +93,17 @@
    
     <%$tag='Gram-negative'%>
     <%@gis=Array.new%>
-    <%Clubproteinheaderinfo.find(:all, :conditions => ["cluster=? AND tag=?", @name, $tag]).each do |cluster_name|%>
+    <%Clubproteinheaderinfo.protected_find(:all, :conditions => ["cluster=? AND tag=?", @name, $tag]).each do |cluster_name|%>
     <%@gis.push(cluster_name.gi)%>
     <%end%>
 
     <%@gis.each do |gi_pred|%>
-      <%protein=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", gi_pred])%>
+      <%protein=Clubproteinheaderinfo.protected_find(:first, :conditions => ["gi=?", gi_pred])%>
         <TR bgcolor='#E8E8E8'>
         <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi_pred%>'><%=gi_pred%></A></TD>
         <TD><%=protein.header%></TD>
         <TD><%=protein.organism%></TD>
-	<%clst=Clubresultsgicomment.find(:first, :conditions => ["gi=?", gi_pred])%>
+	<%clst=Clubresultsgicomment.protected_find(:first, :conditions => ["gi=?", gi_pred])%>
 	<TD><%=clst.subloc%></TD>
       </TR>
     <%end%>

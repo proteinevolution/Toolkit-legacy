@@ -21,19 +21,19 @@
     
     <%@gis=Array.new%>
 
-    <%Clubproteinheaderinfo.find(:all, :conditions => ["accession=?", @accession]).each do |accession|%>
+    <%Clubproteinheaderinfo.protected_find(:all, :conditions => ["accession=?", @accession]).each do |accession|%>
       <%@gis.push(accession.gi)%>
     <%end%>
 
 
     <%@gis.each do |gi_subloc|%>
      
-      <%giinfo=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", gi_subloc])%>
+      <%giinfo=Clubproteinheaderinfo.protected_find(:first, :conditions => ["gi=?", gi_subloc])%>
       <TR bgcolor='#E8E8E8'>
         <%if (giinfo.tag =~/Archaea/)%>
-          <%subloc_arch=Clubarchgiprediction.find(:first, :conditions => ["gi=?", gi_subloc])%>    
+          <%subloc_arch=Clubarchgiprediction.protected_find(:first, :conditions => ["gi=?", gi_subloc])%>    
           <%if subloc_arch%>
-            <%clst=Clubarchclstprediction.find(:first, :conditions => ["cluster=?", subloc_arch.cluster])%>
+            <%clst=Clubarchclstprediction.protected_find(:first, :conditions => ["cluster=?", subloc_arch.cluster])%>
             <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster_arch?name=<%=clst.cluster%>'><%=clst.cluster%></A></TD>
             <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein_arch?gi=<%=gi_subloc%>'><%=gi_subloc%></A></TD>
             <TD><%=giinfo.header%> </TD>
@@ -49,10 +49,10 @@
         <%end%>
         
         <%if (giinfo.tag =~/Gram-negative/)%>
-          <%subloc=Clubresultsgicomment.find(:first, :conditions => ["gi=?", gi_subloc])%>
+          <%subloc=Clubresultsgicomment.protected_find(:first, :conditions => ["gi=?", gi_subloc])%>
           <%if subloc%>
-            <%cluster_name=Clubproteinheaderinfo.find(:first, :conditions => ["gi=?", subloc.gi])%>
-            <%clst=Clubclstprediction.find(:first, :conditions => ["cluster=?", cluster_name.cluster])%>
+            <%cluster_name=Clubproteinheaderinfo.protected_find(:first, :conditions => ["gi=?", subloc.gi])%>
+            <%clst=Clubclstprediction.protected_find(:first, :conditions => ["cluster=?", cluster_name.cluster])%>
             <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/cluster?name=<%=clst.cluster%>'><%=clst.cluster%></A></TD>
             <TD><A HREF='<%= DOC_ROOTURL %>/clubsubp/protein?gi=<%=gi_subloc%>'><%=gi_subloc%></A></TD>
             <TD><%=giinfo.header%> </TD>
