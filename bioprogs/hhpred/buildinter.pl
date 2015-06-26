@@ -350,7 +350,11 @@ foreach $file (@files)
     }
     if ($tmax) {
 	my $time=($tmax-time())/60;
-	printf("Maximum time left before premature termination: %i days, %i hours, %i minutes\n",int($time/60/24),int($time/60)%24,$time%60);
+	if (time >= 0) {
+	    printf("Maximum time left before premature termination: %i days, %i hours, %i minutes\n",int($time/60/24),int($time/60)%24,$time%60);
+	} else {
+	    printf("Time limit exceeded by %i minutes\n", -$time);
+	}
     }    
 
     # Initialize 
@@ -495,7 +499,11 @@ foreach $file (@files)
 
 	if ($tmax) {
 	    my $time=int(($tmax+59-time())/60);
-	    printf("\nMaximum time left until premature termination: %i days, %i hours, %i minutes\n",int($time/60/24),int($time/60)%24,$time%60);
+	    if ($time >= 0) {
+		printf("\nMaximum time left until premature termination: %i days, %i hours, %i minutes\n",int($time/60/24),int($time/60)%24,$time%60);
+	    } else {
+		printf("\nTime limit exceeded by %i minutes\n", -$time);
+	    }
 	    if ($time<=0) {
 		printf(" Maximum time until premature termination exceeded. Terminating search ...\n"); 
 		last;
