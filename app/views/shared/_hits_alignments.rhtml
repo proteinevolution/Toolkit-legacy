@@ -97,7 +97,11 @@
 		<tr>
 			<td></td>
 			<td style="text-align:right">No</td>
+            <% if defined? @job.blastplus_output? && @job.blastplus_output? %>
+			<td><pre>Hits                                                                   Score  E-Value</pre></td>
+	    <% else %>
 			<td><pre>Hits                                                             Score  E-Value</pre></td>
+	    <% end %>
 		</tr>
 		<% num = 0 %>
 		<% @job.hits_better.each do |hit| %>
@@ -158,7 +162,7 @@
 
 	</table>
 	<% end %>
-	<br/><br/>
+	<br/>
 	<pre><%= @job.footer.join("\n") %></pre>
 	      
 </div>
