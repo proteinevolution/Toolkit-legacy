@@ -14,7 +14,7 @@ class PsiBlastpForwardAction < Action
   validates_checkboxes(:hits, {:on => :create, :include => :includehits, :alternative => :alignment})
 
   def run
-    forward_hits(".psiblastp", true, logger, job, params, queue)
+    forward_hits(".psiblastp", true, false, logger, job, params, queue)
   end
 
   def forward_params

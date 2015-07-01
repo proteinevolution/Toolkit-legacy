@@ -4,20 +4,20 @@ module ForwardHits
 
   UTILS = File.join(BIOPROGS, 'perl')
   BLAST = File.join(BIOPROGS, 'blast')
+  BLASTP = File.join(BIOPROGS, 'blastplus/bin')
 
-  HITLIST_LINE_PATTERN = /<a href\s*=\s*\#\d+>\s*\d+<\/a>/
+  HITLIST_LINE_PATTERN = /<a href\s*=\s*\#\w+>\s*\d+<\/a>/
 
   # support the run method of forwarding actions
   # Parameters:
   # resultFileType   ending of results file (including dot)
   # handleGenomes    handle genomes
+  # use_legacy_blast true if legacy blast commands should be used for forwarding
   # logger, job, params, queue
-  # Variables to be defined by including module:
-  # instance variables created here
-  # @basename, @outfile, @commands, @seqlen, @seqlen_start, @seqlen_end, @hits, @res,
-  # @hits_start, @hits_end
-  def forward_hits(resultsFileType, handleGenomes, logger, job, params, queue)
-    logger.debug "L20 ForwardAction!"
+  # Instance variables created here (please don't rely on them)
+  # @basename, @outfile, @commands, @seqlen, @seqlen_start, @seqlen_end, @hits, @res, @hits_start, @hits_end
+  def forward_hits(resultsFileType, handleGenomes, use_legacy_blast, logger, job, params, queue)
+    logger.debug "L18 ForwardAction!"
     @basename = File.join(job.job_dir, job.jobid)
     @outfile = @basename + ".forward"
     @commands = []
@@ -36,13 +36,13 @@ module ForwardHits
     @hits = params['hits']
 
     # from result_alignment?
-    if (@hits.nil? && !alginmnent.nil?)
-      logger.debug "L40 result_alignment page!"
+    if (@hits.nil? && !alignment.nil?)
+      logger.debug "L38 result_alignment page!"
       File.open(@outfile, "w") do |file|
         file.write(alignment)
       end
     else
-      logger.debug "L45result page!"
+      logger.debug "L43 result page!"
       infile = @basename + resultsFileType
       @res = IO.readlines(infile).map {|line| line.chomp}
       @hits_start = 1
@@ -63,13 +63,13 @@ module ForwardHits
 
       # get hits to be forwarded
       if (includehits == "byevalue")
-        logger.debug "L66 byevalue!"
+        logger.debug "L64 byevalue!"
         if (hitsevalue =~ /^e.*$/)
           hitsevalue = "1" + hitsevalue
         end
         @hits = []
         hit_lines.each do |hit_line|
-          hit_line.scan(/<a href\s*=\s*\#(\d+)>\s*\d+<\/a>\s+(\S+.*)$/) do |name, eval|
+          hit_line.scan(/<a href\s*=\s*\#(\w+)>\s*\d+<\/a>\s+(\S+.*)$/) do |name, eval|
             if (eval =~ /^e.*$/)
               eval = "1" + eval
             end
@@ -86,7 +86,7 @@ module ForwardHits
       if (mode.nil? || mode == "alignment")
         make_blast_output(job)
       else
-        make_seqs_output(job, handleGenomes)
+        make_seqs_output(job, handleGenomes, use_legacy_blast)
       end
 
       if (!mode.nil? && mode == "alignment")
@@ -96,13 +96,13 @@ module ForwardHits
     end
 
     if (@commands.empty?)
-      logger.debug "L99 commands empty!"
+      logger.debug "L97 commands empty!"
       self.status = STATUS_DONE
       self.save!
       # reload
       job.update_status
     else
-      logger.debug "L105 Commands:\n" + @commands.join("\n")
+      logger.debug "L103 Commands:\n" + @commands.join("\n")
       queue.submit(@commands, true, {'queue' => QUEUES[:immediate]})
     end
 
@@ -153,43 +153,47 @@ module ForwardHits
     out.close
   end
   
-  def make_seqs_output(job, handleGenomes)
-    i = @hits_end
+  def make_seqs_output(job, handleGenomes, use_legacy_blast)
+    i = @hits_end + 1
+    # loop over alignments section
     while (i < @res.size)
-      if (@res[i] =~ /^\s*Database:/) then break end
+      line = @res[i]
+      if ((line=~/^\s*Database:/) || (line=~/^Lambda/)) then break end
       #><a name = 82736116><
-      #if (@res[i] =~ /^\s*><a name = (\S+?)>/)
-      if (@res[i] =~ /^\s*><a name =\s*(\w[\w|\d]+)>/)
+      if (line =~ /^><a name =\s*(\w+)>/ || line=~/^>.*<a name=(\w+)>/)
         if @hits.include?($1)
           if (!@seqlen.nil? && @seqlen == "complete")
-            logger.debug "L165 "+$1
-           if (@res[i] =~ /(\w\w\|\w[\w|\d]+\|)/)
-              logger.debug "L167 "+$1
+            logger.debug "L164 "+$1
+            if (line =~ /(\w\w\|\w+\|)/)
+              logger.debug "L166 "+$1
               ret = $1
-              ret.gsub!(/<.*?>/, '')
               File.open(@basename + ".fw_gis", "a") do |file|
                 file.write(ret + "\n")
               end
             end
           else
-            name = @res[i]
-           #name.sub!(/<a name = \d+><\/a>/, '')
-            name.sub!(/<a name = \w[\w|\d]+><\/a>/, '')
-            if name=~ /<a href="http:\/\/www.uniprot.org\/uniprot\/(.*)"/
-              name.sub!(/<a href=.*>/, "#{$1}")
+            name = line
+            name.sub!(/<a name\s*=\s*\w+><\/a>/, '')
+            if name=~ /<a.*href="http:\/\/www.uniprot.org\/uniprot\/(.*)"/
+              name.sub!(/<a.*href=.*>/, "#{$1}")
             else
-              name.sub!(/<a href=\S+" >/, '')
+              # this removes the complete HREF Tag from the ProtBlast run
+              name.sub!(/<a.*href=.*>/, '')
             end
-             # this removes the complete HREF Tag from the ProtBlast run
-            name.sub!(/<a href=.*>/, '')
             name.sub!(/<\/a>/, '')
 
             seq_data = ""
 	    first_res = nil;
 	    last_res = nil;
+            i = i + 1
 	    while (i < @res.size)
-	      if (@res[i] =~ /^<\/PRE>$/) then break end
-	      if (@res[i] =~ /^(\w+):\s*(\d+)\s+(\S+)\s+(\d+)\s*$/) 
+              line = @res[i]
+              if (line =~ /^>/)
+                i = i - 1
+                break
+              end
+              if ((line=~/^\s*Database:/) || (line=~/^Lambda/)) then break end
+	      if (line =~ /^(\w+):?\s*(\d+)\s+(\S+)\s+(\d+)\s*$/) 
 		if ($1 == "Query")
 	   	  if (first_res.nil?) then first_res = $2.to_i end
 		  last_res = $4.to_i
@@ -226,8 +230,8 @@ module ForwardHits
     if (!@seqlen.nil? && @seqlen == "complete")
 
       # Get path of databases
-      @db_path = job.params_main_action['std_dbs'].nil? ? "" : job.params_main_action['std_dbs'].join(' ')
-      @db_path = job.params_main_action['user_dbs'].nil? ? @db_path : @db_path + ' ' + job.params_main_action['user_dbs'].join(' ')
+      db_path = job.params_main_action['std_dbs'].nil? ? "" : job.params_main_action['std_dbs'].join(' ')
+      db_path = job.params_main_action['user_dbs'].nil? ? db_path : db_path + ' ' + job.params_main_action['user_dbs'].join(' ')
       # get Genomes Databases
       if( handleGenomes && job.params_main_action['taxids'] )
         ret = []
@@ -240,12 +244,16 @@ module ForwardHits
         if( exit_status!=0 ) then
           raise("ERROR in execution of #{cmd}\nERROR_EXIT_CODE: #{exit_status}\nERROR_MESSAGE: #{ret}\nPARAMS: #{data_type}");    
         end
-        @db_path += ' ' + ret.join(' ')
+        db_path += ' ' + ret.join(' ')
       end
 
-      logger.debug "L246 Database path: #{@db_path}\n"
+      logger.debug "L248 Database path: #{db_path}\n"
 
-      @commands << "#{UTILS}/seq_retrieve.pl -i #{@basename}.fw_gis -o #{@outfile} -b #{BLAST} -unique -d '#{@db_path}'"
+      if (use_legacy_blast)
+        @commands << "#{UTILS}/seq_retrieve.pl -i #{@basename}.fw_gis -o #{@outfile} -b #{BLAST} -unique -d '#{db_path}'"
+      else
+        @commands << "#{UTILS}/seq_retrieve.pl -use_blastplus -i #{@basename}.fw_gis -o #{@outfile} -b #{BLASTP} -unique -d '#{db_path}'"
+      end
     end
   
   end

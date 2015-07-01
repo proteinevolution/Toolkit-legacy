@@ -140,7 +140,8 @@ def check_GI
       gi2seq_out = File.join(@basename+"_#{descriptions}.in")
 
       logger.debug("#{UTILS}/seq_retrieve.pl -use_blastplus -i #{inputfile} -o #{@infile} -b #{BLASTP} -d \"#{@database}\" -unique >> #{@mainlog} 2>> #{@mainlog}")
-      @commands << "#{UTILS}/seq_retrieve.pl -i #{inputfile} -o #{@infile} -b #{BLAST} -d \"#{@database}\" -unique >> #{@mainlog} 2>> #{@mainlog}"
+      #@commands << "#{UTILS}/seq_retrieve.pl -i #{inputfile} -o #{@infile} -b #{BLAST} -d \"#{@database}\" -unique >> #{@mainlog} 2>> #{@mainlog}"
+      @commands << "#{UTILS}/seq_retrieve.pl -use_blastplus -i #{inputfile} -o #{@infile} -b #{BLASTP} -d \"#{@database}\" -unique >> #{@mainlog} 2>> #{@mainlog}"
       parameter = job.jobid.to_s+"_"+descriptions.to_s
       @inputSequences.push(parameter)
       @inputTags.push(line)

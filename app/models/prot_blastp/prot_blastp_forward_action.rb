@@ -8,7 +8,7 @@ class ProtBlastpForwardAction < Action
   validates_checkboxes(:hits, {:on => :create, :include => :includehits, :alternative => :alignment})
 
   def run
-    forward_hits(".protblastp", false, logger, job, params, queue)
+    forward_hits(".protblastp", false, false, logger, job, params, queue)
   end
 
   def forward_params
