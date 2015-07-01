@@ -111,7 +111,8 @@ class QueueJob < ActiveRecord::Base
   end
 
   def getTime
-    workers.sum(:exec_time)
+    # rails 2.0.2 still returns nil if there is no column.
+    workers.sum(:exec_time) or 0
   end
 
   def getToolShortcut
