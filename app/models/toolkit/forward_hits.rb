@@ -162,25 +162,22 @@ module ForwardHits
       #><a name = 82736116><
       if (line =~ /^><a name =\s*(\w+)>/ || line=~/^>.*<a name=(\w+)>/)
         if @hits.include?($1)
+          # @hits.delete($1) # this was in cs_blast_forward_action.rb only
           if (!@seqlen.nil? && @seqlen == "complete")
             logger.debug "L164 "+$1
             if (line =~ /(\w\w\|\w+\|)/)
-              logger.debug "L166 "+$1
+              logger.debug "L166 Trembl Hit "+$1
               ret = $1
               File.open(@basename + ".fw_gis", "a") do |file|
                 file.write(ret + "\n")
               end
             end
           else
-            name = line
-            name.sub!(/<a name\s*=\s*\w+><\/a>/, '')
-            if name=~ /<a.*href="http:\/\/www.uniprot.org\/uniprot\/(.*)"/
-              name.sub!(/<a.*href=.*>/, "#{$1}")
-            else
-              # this removes the complete HREF Tag from the ProtBlast run
-              name.sub!(/<a.*href=.*>/, '')
-            end
+            name = line.sub(/<a name\s*=\s*\w+><\/a>/, '')
+            name.sub!(/<a.*href=[^>]*>/, '')
             name.sub!(/<\/a>/, '')
+            name.sub!(/Length\s*=\s*\d+\s*$/, '')
+            name.strip!
 
             seq_data = ""
 	    first_res = nil;
@@ -249,10 +246,17 @@ module ForwardHits
 
       logger.debug "L248 Database path: #{db_path}\n"
 
-      if (use_legacy_blast)
-        @commands << "#{UTILS}/seq_retrieve.pl -i #{@basename}.fw_gis -o #{@outfile} -b #{BLAST} -unique -d '#{db_path}'"
+      db_path.strip!
+      if db_path.empty?
+        db_option = ""
       else
-        @commands << "#{UTILS}/seq_retrieve.pl -use_blastplus -i #{@basename}.fw_gis -o #{@outfile} -b #{BLASTP} -unique -d '#{db_path}'"
+        db_option = " -d '#{db_path}'"
+      end
+
+      if (use_legacy_blast)
+        @commands << "#{UTILS}/seq_retrieve.pl -i #{@basename}.fw_gis -o #{@outfile} -b #{BLAST} -unique#{db_option}"
+      else
+        @commands << "#{UTILS}/seq_retrieve.pl -use_blastplus -i #{@basename}.fw_gis -o #{@outfile} -b #{BLASTP} -unique#{db_option}"
       end
     end
   
