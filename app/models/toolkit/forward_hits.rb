@@ -17,7 +17,7 @@ module ForwardHits
   # Instance variables created here (please don't rely on them)
   # @basename, @outfile, @commands, @seqlen, @seqlen_start, @seqlen_end, @hits, @res, @hits_start, @hits_end
   def forward_hits(resultsFileType, handleGenomes, use_legacy_blast, logger, job, params, queue)
-    logger.debug "L18 ForwardAction!"
+    logger.debug "L20 ForwardAction!"
     @basename = File.join(job.job_dir, job.jobid)
     @outfile = @basename + ".forward"
     @commands = []
@@ -37,12 +37,12 @@ module ForwardHits
 
     # from result_alignment?
     if (@hits.nil? && !alignment.nil?)
-      logger.debug "L38 result_alignment page!"
+      logger.debug "L40 result_alignment page!"
       File.open(@outfile, "w") do |file|
         file.write(alignment)
       end
     else
-      logger.debug "L43 result page!"
+      logger.debug "L45 result page!"
       infile = @basename + resultsFileType
       @res = IO.readlines(infile).map {|line| line.chomp}
       @hits_start = 1
@@ -63,7 +63,7 @@ module ForwardHits
 
       # get hits to be forwarded
       if (includehits == "byevalue")
-        logger.debug "L64 byevalue!"
+        logger.debug "L66 byevalue!"
         if (hitsevalue =~ /^e.*$/)
           hitsevalue = "1" + hitsevalue
         end
@@ -96,13 +96,13 @@ module ForwardHits
     end
 
     if (@commands.empty?)
-      logger.debug "L97 commands empty!"
+      logger.debug "L99 commands empty!"
       self.status = STATUS_DONE
       self.save!
       # reload
       job.update_status
     else
-      logger.debug "L103 Commands:\n" + @commands.join("\n")
+      logger.debug "L105 Commands:\n" + @commands.join("\n")
       queue.submit(@commands, true, {'queue' => QUEUES[:immediate]})
     end
 
@@ -114,18 +114,19 @@ module ForwardHits
     job.before_results nil
 
     res = job.header
-    res << job.searching
+    res << job.searching if job.searching
     job.hits_better.each do |h|
       if ( hits.include?(h[:id]) )
         res << h[:content]
       end
     end
-    if ( job.hits_prev.length > 0 )
+    if ( job.hits_prev && job.hits_prev.length > 0 )
       res << "Sequences not found previously or not previously below threshold:\n"
-    end
-    job.hits_prev.each do |h|
-      if ( hits.include?(h[:id]) )
-        res << h[:content]
+
+      job.hits_prev.each do |h|
+        if ( hits.include?(h[:id]) )
+          res << h[:content]
+        end
       end
     end
     job.hits_worse.each do |h|
@@ -164,9 +165,9 @@ module ForwardHits
         if @hits.include?($1)
           # @hits.delete($1) # this was in cs_blast_forward_action.rb only
           if (!@seqlen.nil? && @seqlen == "complete")
-            logger.debug "L164 "+$1
+            logger.debug "L168 "+$1
             if (line =~ /(\w\w\|\w+\|)/)
-              logger.debug "L166 Trembl Hit "+$1
+              logger.debug "L170 Trembl Hit "+$1
               ret = $1
               File.open(@basename + ".fw_gis", "a") do |file|
                 file.write(ret + "\n")
