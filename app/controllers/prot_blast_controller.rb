@@ -99,8 +99,10 @@ class ProtBlastController < ToolController
 
 # Test if current Protblast Job is a uniprot Job and remove Blammer tool from @fw_values and @fw_label
    if(@job.is_uniprot == 1)
-     @fw_values.delete(fw_to_tool_url('prot_blast', 'blammer'))
-     @fw_labels.delete(tool_title('blammer'))
+     tool_index = @fw_labels.index(tool_title('blammer'))
+     @fw_values.delete_at(tool_index)
+     @fw_labels.delete_at(tool_index)
+     get_tool_mode_list.delete_at(tool_index)
    end                 
 
 
