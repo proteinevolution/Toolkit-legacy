@@ -1,0 +1,14 @@
+log
+tmp
+originals
+*.jar
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+\#*\#
+
+.project
+.idea
+.secret
+/nbproject/private/
