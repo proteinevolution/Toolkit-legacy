@@ -236,6 +236,7 @@ class ApplicationController < ActionController::Base
       else
         res = 0
       end
+      res = (job1.created_on <=> job2.created_on) if 0 == res
       res * factor
     end
     redirect_to(:back)
@@ -266,7 +267,9 @@ class ApplicationController < ActionController::Base
       else
         tool1 = job1.tool
         tool2 = job2.tool
-        factor * (tool1 <=> tool2)
+        res = (tool1 <=> tool2)
+        res = (job1.created_on <=> job2.created_on) if 0 == res
+        factor * res
       end
     end
     redirect_to(:back)

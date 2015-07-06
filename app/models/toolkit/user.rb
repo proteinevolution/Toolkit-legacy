@@ -5,7 +5,7 @@ require "protected_sql.rb"
 class User < ActiveRecord::Base
   include ProtectedSql
 
-  has_many :jobs, :dependent => :destroy, :order =>"created_on "
+  has_many :jobs, :dependent => :destroy, :order =>"created_on"
   has_many :userdbs, :dependent => :destroy
 
   attr_accessor :new_password
