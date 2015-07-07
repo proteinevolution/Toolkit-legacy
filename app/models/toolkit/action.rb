@@ -24,7 +24,7 @@ require "protected_sql.rb"
         id = toolparam.first['id']
       end
       if !id.nil?
-        logger.debug "id: #{id}"
+        logger.debug "L27: id: #{id}"
         ToolParam.delete(id)
       end
       ToolParam.create(:glob => params, :user_id => user_id, :tool => tool)
@@ -75,14 +75,14 @@ require "protected_sql.rb"
           perform
         rescue Exception => e
           # lets do minimal error handling
-          logger.error("Exception: " + e.message);
+          logger.error("L78 Exception: " + e.message);
           logger.error("   Stack backtrace " + e.backtrace.join("\n     "));
           self.status = STATUS_ERROR
           self.save
           job.update_status
         end
       end
-      logger.debug "Fork: #{do_fork?}"
+      logger.debug "L85 Fork: #{do_fork?}"
       if do_fork?
         Process.detach(p)
       else
@@ -97,7 +97,7 @@ require "protected_sql.rb"
 
     def params_dump
       params.keys.each do |key|
-        # logger.debug "#{key}: #{params[key].inspect}"
+        # logger.debug "L100 #{key}: #{params[key].inspect}"
       end
     end
 
@@ -110,7 +110,7 @@ require "protected_sql.rb"
 
       
       keys.each do |key|
-       #logger.debug "#{key}: #{params[key].inspect}"
+       #logger.debug "L113 #{key}: #{params[key].inspect}"
         if params[key]
           if params[key].instance_of?(ActionController::UploadedStringIO)
             params[key].rewind
