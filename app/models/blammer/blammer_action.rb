@@ -29,11 +29,15 @@ class BlammerAction < Action
       blastjob = Job.find(:first, :conditions => [ "jobid = ?", @blastid])
      	blast_file = File.join(blastjob.job_dir, blastjob.jobid)
      	if (blastjob.tool == "psi_blast")
-     	  blast_file += ".psiblast"  
+     	  blast_file += ".psiblast"
      	elsif (blastjob.tool == "prot_blast")
      	  blast_file += ".protblast"
 	elsif (blastjob.tool == "cs_blast")
 	  blast_file += ".csblast"
+        elsif (blastjob.tool == "psi_blastp")
+          blast_file += ".psiblastp"
+        elsif (blastjob.tool == "prot_blastp")
+          blast_file += ".protblastp"
      	else
      	  blast_file += ".nucblast"     	
      	end
