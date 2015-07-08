@@ -227,13 +227,13 @@ class ProtBlastForwardAction < Action
 
     controller = params['forward_controller']
     if (controller == "patsearch")
-      logger.debug "patsearch"
+      logger.debug "L24 patsearch"
       {'db_input' => res.join, 'std_dbs' => ""}
     elsif (controller == "pcoils")
-      logger.debug "pcoils"
+      logger.debug "L27 pcoils"
       {'sequence_input' => res.join, 'inputmode' => '2'}
     else
-      logger.debug "forwarding to: #{params['forward_controller']}"
+      logger.debug "L30 forwarding to: #{params['forward_controller']}"
       {'sequence_input' => res.join, 'inputmode' => inputmode, 'informat' => informat}
     end
   end

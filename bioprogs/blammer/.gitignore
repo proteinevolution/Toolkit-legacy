@@ -2,6 +2,7 @@ blammer.conf
 log
 tmp
 originals
+*.class
 *.jar
 ## generic files to ignore
 *~
