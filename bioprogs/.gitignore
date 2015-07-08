@@ -54,6 +54,9 @@ jnet
 kalign
 kClust
 mafft
+mafft-5.732
+mafft-7.221-with-extensions
+mafft-7.221-with-extensions-src.tgz
 marcoil_mod
 memsat2
 memsat3
@@ -63,12 +66,13 @@ mmseqs0.1
 modeller
 modeller-9.11
 modeller-9.11.tar.gz
-modeller_new
+modeller-9.15
+modeller-9.15.tar.gz
 modeller_scripts
 model-quality
 MSAProbs
 MSAProbs-0.9.7.tar.gz
-muscle
+muscle-3.51
 MUSTANG_v.3
 ncbi-blast-2.2.30+
 pattern_search
@@ -101,6 +105,7 @@ stamp_4_2
 TCoffee
 TCoffee_4.45
 TCoffee_8.14
+TCoffee_11.00
 test
 TMalign
 Toolbox
