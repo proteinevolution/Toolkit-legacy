@@ -1,5 +1,5 @@
 class MuscleAction < Action
-  MUSCLE = File.join(BIOPROGS, 'muscle')
+  MUSCLE = 'muscle'
 
   attr_accessor :sequence_input, :sequence_file, :otheradvanced, :maxrounds
  
@@ -46,7 +46,7 @@ class MuscleAction < Action
     params_dump
 
    
-    @commands << "#{MUSCLE}/muscle -in #{@infile} -out #{@outfile} -maxiters #{@maxrounds} -#{@outorder} #{@outformat} #{@otheradvanced} &> #{job.statuslog_path}"
+    @commands << "#{MUSCLE} -in #{@infile} -out #{@outfile} -maxiters #{@maxrounds} -#{@outorder} #{@outformat} #{@otheradvanced} &> #{job.statuslog_path}"
  
 
     logger.debug "Commands:\n"+@commands.join("\n")
