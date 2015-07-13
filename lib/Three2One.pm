@@ -115,7 +115,7 @@ my %three2one=(
     # according to a mail from Johannes Soeding from 14 Jul 2014 it may be
     # biologically better to replace unknown codes by "X" instead of
     # simply omitting them (mapping them to "")
-    "---"=>"X","MF7"=>"X","4L8"=>"X"
+    "---"=>"X","MF7"=>"X","4L8"=>"X","4AK"=>"X"
       );
 
 # Function substitution2one
