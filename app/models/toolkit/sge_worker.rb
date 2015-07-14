@@ -403,8 +403,8 @@ class SgeWorker < AbstractWorker
                 when "HamppredForwardAction" then 19
                 when "HamppredShowtemplalignAction" then 18
                 when "HhpredForwardAction" then 19
-                when "HhpredAction" then 28
-                when "HhblitsAction" then 28
+                when "HhpredAction" then 36
+                when "HhblitsAction" then 36
                 when "HhblitsForwardAction" then 18
                 when "HhblitsShowtemplalignAction" then 18
                 when "HhpredShowtemplalignAction" then 18
@@ -414,8 +414,8 @@ class SgeWorker < AbstractWorker
                 when "HhsenserForwardAction" then 18
                 when "HhfragAction" then 18
                 when "HhalignAction" then 18
-                when "HhrepidAction" then 28
-                when "HhrepAction" then 28
+                when "HhrepidAction" then 36
+                when "HhrepAction" then 36
                 when "HhrepMergealiAction" then 18
                 when "HhclusterAction" then 50 # uses blastpgp
                 when "HhblitsForwardAction" then 18
