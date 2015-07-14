@@ -47,11 +47,11 @@ class HhblitsController < ToolController
     # listed first. The labels can be changed using a *.name.* file.
 
     # Allow non-standard libraries only on internal server:
-    if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
+    if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\\w+") end
     sortlist.each do |el|
-      dbvalues_pre.each do |val|
+      dbvalues_pre.dup.each do |val|
         if (!val.index(/#{el}/).nil?)
-          #dbvalues_pre.delete(val) led to missing entries. Now sortlist must be unique.
+          dbvalues_pre.delete(val)
           base = File.basename(val, suffix)
           dir = File.dirname(val)
           @dbvalues.push(File.join(dir, base))

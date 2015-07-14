@@ -40,11 +40,11 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     # probably SCOPe* directories should be renamed do scop*
     sortlist = Array["\/pdb70", "\/pdb_on_hold","\/SCOPe95","\/SCOPe70", "\/scop95", "\/scop70", "\/scop25", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test", "\/Pfalciparum" ]
     # Allow non-standard libraries only on internal server:
-    if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\w+") end
+    if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\\w+") end
     if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
     if (LOCATION == "Munich" && !@user.nil? && (@user.id == 119 || @user.groups.include?('admin'))) then sortlist.push("\/Proteasome") end
     sortlist.each do |el|
-      dbvalues_pre.each do |val|
+      dbvalues_pre.dup.each do |val|
         if (!val.index(/#{el}/).nil?)
           @dbvalues.push(val)
           dbvalues_pre.delete(val)
