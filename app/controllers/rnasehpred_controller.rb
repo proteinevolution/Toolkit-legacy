@@ -31,7 +31,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
     if (LOCATION == "Munich" && !@user.nil? && (@user.id == 119 || @user.groups.include?('admin'))) then sortlist.push("\/Proteasome") end
     sortlist.each do |el|
-      dbvalues_pre.each do |val|
+      dbvalues_pre.dup.each do |val|
         if (!val.index(/#{el}/).nil?)
           @dbvalues.push(val)
           dbvalues_pre.delete(val)

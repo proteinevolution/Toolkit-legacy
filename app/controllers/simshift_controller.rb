@@ -13,7 +13,7 @@ class SimshiftController < ToolController
     
     sortlist = Array["\/scop"]
     sortlist.each do |el|
-      dbvalues_pre.each do |val|
+      dbvalues_pre.dup.each do |val|
         if (!val.index(/#{el}/).nil?  && !(val=~/\.fas/))
           @dbvalues.push(val)
           dbvalues_pre.delete(val)
