@@ -193,6 +193,8 @@ class UserController < ApplicationController
   def confirm
     @meta_section = "confirm"
     @key = params['key']
+    # params['user'] sometimes is nil.
+    # Propably no session information? Remind user to allow cookies?
     @user = User.protected_find(params['user']['id']) 
     if @user.security_token == @key
       @user.verified = 1

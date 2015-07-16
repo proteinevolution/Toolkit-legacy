@@ -366,8 +366,8 @@ class HhpredJob  < Job
     # profile_logos
 
     if (program.eql?("histograms") || program.eql?("histograms_makemodel")) && !File.exists?("#{basename}_1.png")
-      system("tar -xzf #{basename}.tar.gz -C #{jobDir} &> /dev/null")
-      logger.debug("tar -xzf #{basename}.tar.gz -C #{jobDir} &> /dev/null")
+      system("tar -xzf #{basename}.tar.gz -C #{jobDir} > /dev/null 2>&1")
+      logger.debug("tar -xzf #{basename}.tar.gz -C #{jobDir} > /dev/null 2>&1")
     elsif program.eql?( "results")
       ###################################################################################################
       # Display links for prediction of coiled coils, TM alpha-helical domains, or TM beta barrels?

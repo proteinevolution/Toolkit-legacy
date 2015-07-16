@@ -72,7 +72,7 @@ class Hh3dQuerytemplAction < Action
 		end
 		
 		# Superpose the template with the query structure and write the result into basename.templ.pdb
-		command = "#{HH}/superpose3d -v 2 -col -rms #{@rms} #{@basename}.index #{@templpdb} #{@querypdb} #{@basename}.templ.pdb &> #{@basename}.sup3d_out"
+		command = "#{HH}/superpose3d -v 2 -col -rms #{@rms} #{@basename}.index #{@templpdb} #{@querypdb} #{@basename}.templ.pdb > #{@basename}.sup3d_out 2>&1"
 		logger.debug "Command: #{command} "
 		system(command)
 			

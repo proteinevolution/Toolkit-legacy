@@ -77,7 +77,7 @@ class HhrepMergealiJob < Job
 		########################
 		#open histogram tar file
 	   if (@mode == "histogram") 
-	   	command = "tar -xzf " + File.join(job_dir, jobid+".tar.gz") + " -C #{job_dir} &> /dev/null"
+	   	command = "tar -xzf " + File.join(job_dir, jobid+".tar.gz") + " -C #{job_dir} > /dev/null 2>&1"
 	   	logger.debug "Command: #{command}"
 			system(command);
 		end

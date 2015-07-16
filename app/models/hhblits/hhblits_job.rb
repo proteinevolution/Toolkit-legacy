@@ -226,8 +226,8 @@ end
    # profile_logos
     
     if program.eql?("histograms") && !File.exists?("#{basename}_1.png")
-      system("tar -xzf #{basename}.tar.gz -C #{job_dir} &> /dev/null")
-      logger.debug("tar -xzf #{basename}.tar.gz -C #{job_dir} &> /dev/null")
+      system("tar -xzf #{basename}.tar.gz -C #{job_dir} > /dev/null 2>&1")
+      logger.debug("tar -xzf #{basename}.tar.gz -C #{job_dir} > /dev/null 2>&1")
     end
     
     @results.push("<pre>#{queryline} \n#{paramline} \n\n")

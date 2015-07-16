@@ -155,7 +155,7 @@ class HhclusterController < ToolController
     hhpred_action.save!
     
     # Generate graphical display of hits
-    command = "#{HH}/hhviz.pl #{hhpred_job.jobid} #{hhpred_job.job_dir} #{hhpred_job.url_for_job_dir} &> #{hhpred_job.statuslog_path}"
+    command = "#{HH}/hhviz.pl #{hhpred_job.jobid} #{hhpred_job.job_dir} #{hhpred_job.url_for_job_dir} > #{hhpred_job.statuslog_path} 2>&1"
     logger.debug "###### Command: #{command}"
     system(command)
     
