@@ -27,7 +27,7 @@ class HhompJob < Job
 		@basename = File.join(job_dir, jobid)		
 		
 		if (@program == "results_histograms" && !File.exists?(@basename + "_1.png"))
-			command = "tar -xzf #{@basename}.tar.gz -C #{job_dir} &> /dev/null"
+			command = "tar -xzf #{@basename}.tar.gz -C #{job_dir} > /dev/null 2>&1"
 			logger.debug("Command: #{command}")
 			system(command)
 		end		
