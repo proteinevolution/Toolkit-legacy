@@ -27,6 +27,8 @@ user_delete_email_error: The delete instructions were not sent. Please try again
 user_delete_finished: The account for %s was successfully deleted.
 user_restore_deleted_error: The account for %s was not restored. Please try the link again.
 user_account_verified: Account verified!
+user_confirm_error: Confirmation of your account failed. Please ensure, session information is not blocked and cookies are enabled. Please retry registering while keeping your browser session until your account is confirmed.
+user_session_error: Could not handle user information. Please ensure, that cookies are enabled and session information is not blocked.
 
 # Views
 # Welcome
@@ -77,6 +79,9 @@ user_delete_account_button: Delete account
 # Confirm
 user_confirm_head: Confirmation successful
 
+# No session
+user_nosession_head: Missing session information
+user_nosession_try_again_link: Try again to login
 
 # own settings
 user_institute_form: Institute

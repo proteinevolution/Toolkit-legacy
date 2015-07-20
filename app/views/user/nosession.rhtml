@@ -1,0 +1,10 @@
+<div title="<%= title_helper %>" class="memo">
+  <%= head_helper :notice => false, :message => false %>
+  <p>Login unsuccessful. </p>
+     User or session related tasks only
+     are possible, if cookies are enabled and session information is not
+     blocked.
+  <br/>
+      
+  <%= link_helper 'nosession_try_again', :action => 'login' %>
+</div>
