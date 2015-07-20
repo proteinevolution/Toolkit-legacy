@@ -422,7 +422,7 @@ class SgeWorker < AbstractWorker
                 when "HhompAction" then 50 # uses blastpgp
                 when "HhfilterAction" then 18
                 when "HhblitsForwardHmmAction" then 18
-                when "Hmmer3Action" then 10
+                when "Hmmer3Action" then 12
                 when "HhrepForwardHmmAction" then 18
                 when "Hh3dQuerytemplAction" then 18
                 when "HhmergealiAction" then 18
