@@ -148,7 +148,7 @@ module ApplicationHelper
     end
   end
 
-  def form_radio_buttons(name, values, labels, default="", sep="<br/>", onchange="", id_value=0)
+  def form_radio_buttons(name, values, labels, default="", sep="<br/>", onchange="", id_value=0, disable=false)
     checkval = params[name] ? params[name] : default.to_s
     checkval = @error_params[name] ? @error_params[name] : checkval
     content = ""
@@ -156,9 +156,9 @@ module ApplicationHelper
       value = values[i].to_s
       label = labels[i].to_s
       if( id_value==1 )
-       	content = content << radio_button_tag(name, value, checkval.eql?(value), :onchange => onchange, :id=>value) << "&nbsp;" << label
+       	content = content << radio_button_tag(name, value, checkval.eql?(value), :onchange => onchange, :disabled => disable, :id=>value) << "&nbsp;" << label
       else
-      	content = content << radio_button_tag(name, value, checkval.eql?(value), :onchange => onchange) << "&nbsp;" << label
+      	content = content << radio_button_tag(name, value, checkval.eql?(value), :onchange => onchange, :disabled => disable) << "&nbsp;" << label
       end      
       if i < values.length
         content = content << sep 

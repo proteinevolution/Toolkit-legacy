@@ -29,6 +29,10 @@ class MuscleAction < Action
 
     @outformat = params['outformat']
     @outorder = params['outorder']
+    if !@outorder.nil?
+      @outorder = " -#{@outorder}"
+    end
+
     @maxrounds = params['maxrounds'] ? params['maxrounds'].to_i : 1
     @otheradvanced = params['otheradvanced'] ? params['otheradvanced'] : ""
 
@@ -46,7 +50,7 @@ class MuscleAction < Action
     params_dump
 
    
-    @commands << "#{MUSCLE} -in #{@infile} -out #{@outfile} -maxiters #{@maxrounds} -#{@outorder} #{@outformat} #{@otheradvanced} &> #{job.statuslog_path}"
+    @commands << "#{MUSCLE} -in #{@infile} -out #{@outfile} -maxiters #{@maxrounds}#{@outorder} #{@outformat} #{@otheradvanced} &> #{job.statuslog_path}"
  
 
     logger.debug "Commands:\n"+@commands.join("\n")
