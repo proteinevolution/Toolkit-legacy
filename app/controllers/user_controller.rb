@@ -2,6 +2,11 @@ class UserController < ApplicationController
 #  before_filter :login_required, :only => [:welcome,:change_password]
 #  layout  'scaffold'
 
+  # most flash notices and messages are not displayed because
+  # it's turned off in the view (head_helper).
+  # Because flash is stored in the session, execpt of flash.now it only works
+  # if cookies are enabled.
+
   def logger
     # Be careful of what to log because of protection of data privacy.
     # max log file size: 10M. Keep 2 of them.
@@ -68,14 +73,14 @@ class UserController < ApplicationController
     params['user'].delete('form')
     begin
       User.transaction do
-        # logger.debug "L71 User #{@user}" # don't log because of privacy
+        # logger.debug "L76 User #{@user}" # don't log because of privacy
         @user.change_password(params['user']['password'], params['user']['password_confirmation'])
-        logger.debug "L73 Password changed"
+        logger.debug "L78 Password changed"
         if @user.save
           UserNotify.deliver_change_password(@user, params['user']['password'])
           flash.now['notice'] = l(:user_updated_password, "#{@user.login}")
         end
-        logger.debug "L78 User saved"
+        logger.debug "L83 User saved"
       end
     rescue
       flash.now['message'] = l(:user_change_password_email_error)
@@ -170,20 +175,30 @@ class UserController < ApplicationController
     if(@user) 
       @user.deleted = 0
       if @user.token_expired? or params['key'] != @user.security_token or not @user.save
-        flash.now['notice'] = l(:user_restore_deleted_error, "#{@user['login']}")
+        flash['notice'] = l(:user_restore_deleted_error, "#{@user['login']}")
         redirect_to :host => DOC_ROOTHOST, :action => 'login'
       else
         session['user'] = @user
         redirect_to :host => DOC_ROOTHOST, :action => 'welcome'
       end
     else
-      flash.now['notice'] = l(:user_restore_deleted_error, "")
+      flash['notice'] = l(:user_restore_deleted_error, "")
       redirect_to :host => DOC_ROOTHOST, :action => 'login'      
     end
   end
 
   def welcome
     @meta_section = "welcome"
+    if @user.nil?
+      logger.debug("L193 welcome with undefined user")
+      # with session errors, flash does not work.
+      flash['message'] = l(:user_session_error)
+      redirect_to :host => DOC_ROOTHOST, :action => 'nosession'
+    end
+  end
+
+  def nosession
+    @meta_section = "nosession"
   end
   
   def confirm_note
@@ -191,23 +206,30 @@ class UserController < ApplicationController
   end
 
   def confirm
-    @meta_section = "confirm"
-    @key = params['key']
     # params['user'] sometimes is nil.
     # Propably no session information? Remind user to allow cookies?
+    if (params.nil? || params['user'].nil?)
+      logger.debug("L212 No user parameter in session")
+      # with session errors, flash does not work.
+      flash['message'] = l(:user_confirm_error)
+      redirect_to :host => DOC_ROOTHOST, :action => 'nosession'
+      return;
+    end
+    @meta_section = "confirm"
+    @key = params['key']
     @user = User.protected_find(params['user']['id']) 
     if @user.security_token == @key
       @user.verified = 1
       @user.save
     end
-    session['user'] = @user               
+    session['user'] = @user
   end
 
   def protected_fill_jobs_cart
     begin
       fill_jobs_cart
     rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L208 User.protected_fill_jobs_cart: Got statement invalid #{e.message} ... trying again")
+      logger.debug("L232 User.protected_fill_jobs_cart: Got statement invalid #{e.message} ... trying again")
       ActiveRecord::Base.verify_active_connections!
       fill_jobs_cart
     end
@@ -217,7 +239,7 @@ class UserController < ApplicationController
     begin
       clear_jobs_cart
     rescue ActiveRecord::StatementInvalid => e
-      logger.debug("L218 User.protected_clear_jobs_cart: Got statement invalid #{e.message} ... trying again")
+      logger.debug("L242 User.protected_clear_jobs_cart: Got statement invalid #{e.message} ... trying again")
       ActiveRecord::Base.verify_active_connections!
       clear_jobs_cart
     end
@@ -230,7 +252,7 @@ class UserController < ApplicationController
       @user.jobs.each do |job|
         if (!@jobs_cart.include?(job.jobid))
           if (job.config.nil?)
-            logger.debug("L231 Missing config of #{job.type}:#{job.jobid} in #{job.tool.to_us}_jobs.yml")
+            logger.debug("L255 Missing config of #{job.type}:#{job.jobid} in #{job.tool.to_us}_jobs.yml")
           elsif (job.config['hidden'] == false)
             @jobs_cart.push(job.jobid)
           end
@@ -242,6 +264,10 @@ class UserController < ApplicationController
   end
 
   def clear_jobs_cart
+    if @user.nil?
+      logger.debug("L268 Cannot remove user's jobs from jobs cart, because there is no user information. Probably cookies/session information disabled.")
+      return
+    end
     begin
       @user.jobs.each do |job|
         if @jobs_cart.include?(job.jobid)
