@@ -51,7 +51,7 @@ my %three2one=(
     "GPL"=>"K","SOS"=>"N","MLY"=>"K","2SO"=>"H","CAF"=>"C","CAS"=>"C","PFF"=>"F",
     "DI"=>"I","56A"=>"H","U2X"=>"Y","0G"=>"G","0C"=>"C","0U"=>"U","C1S"=>"C","MHO"=>"M",
     "MLZ"=>"K","PF5"=>"F","N7P"=>"P","GAU"=>"E","0AF"=>"W","2DT"=>"T", "CSL"=>"C",
-    "ORN"=>"A",
+    "ORN"=>"A","LYR"=>"K","4AK"=>"K",
 
     # mappings of multiple structure components (mapping to a sequence of one-letter codes)
     "CR8"=>"HYG", "CR2"=>"GYG",
@@ -115,7 +115,7 @@ my %three2one=(
     # according to a mail from Johannes Soeding from 14 Jul 2014 it may be
     # biologically better to replace unknown codes by "X" instead of
     # simply omitting them (mapping them to "")
-    "---"=>"X","MF7"=>"X","4L8"=>"X","4AK"=>"X"
+    "---"=>"X","MF7"=>"X","4L8"=>"X"
       );
 
 # Function substitution2one
