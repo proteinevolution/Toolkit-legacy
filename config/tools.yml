@@ -28,7 +28,6 @@
   active: 
   - member
   - internal
-  - external
 - name: modeller
   title: Modeller
   title_long: Modeller
