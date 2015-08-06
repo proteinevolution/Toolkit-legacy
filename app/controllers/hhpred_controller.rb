@@ -3,6 +3,11 @@ require 'fasta_reader.rb'
 class HhpredController < ToolController
 REFORMAT = File.join(BIOPROGS, 'reformat')
 
+  #def logger
+  #  # max log file size: 10M. Keep 2 of them.
+  #  @logger ||= Logger.new("#{RAILS_ROOT}/log/hhpred_controller.log", 2, 10485670)
+  #end
+
   def index
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
     @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
@@ -139,6 +144,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @widescreen = true
     @resfile = @job.jobid+".full.fas"
     @mode = params['mode'] ? params['mode'] : "a3m"
+    logger.debug("L147: @mode=#{@mode}")
     if (@mode == "a3m")
       @resfile = @job.jobid+".a3m"
     end
@@ -203,6 +209,56 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @job.set_export_ext(".template.fas")
     export_to_file
   end
+
+  def export_full_align_fas_to_browser
+    @job.set_export_ext(".full.fas")
+    export_to_browser
+  end
+
+  def export_full_align_a3m_to_browser
+    @job.set_export_ext(".a3m")
+    export_to_browser
+  end
+
+  def export_results_to_browser
+    @job.set_export_ext(".hhr")
+    export_to_browser
+  end
+
+  def export_results_to_file
+    @job.set_export_ext(".hhr")
+    export_to_file
+  end
+
+  def export_representative_align_to_browser
+    @job.set_export_ext(".fas")
+    export_to_browser
+  end
+
+  def export_reduced_align_to_browser
+    @job.set_export_ext(".reduced.fas")
+    export_to_browser
+  end
+
+  def export_full_align_fas_to_file
+    @job.set_export_ext(".full.fas")
+    export_to_file
+  end
+
+  def export_full_align_a3m_to_file
+    @job.set_export_ext(".a3m")
+    export_to_file
+  end
+
+  def export_representative_align_to_file
+    @job.set_export_ext(".repseq.fas")
+    export_to_file
+  end
+
+  def export_reduced_align_to_file
+    @job.set_export_ext(".reduced.fas")
+    export_to_file
+  end
   
    def download_qt
     data = params[:path]
@@ -231,7 +287,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     extension = ".resub_domain.a2m"
 
     @my_command = "#{BIOPROGS}/perl/alicutter.pl #{basename}#{extension} #{basename}.in.cut #{params[:domain_start]} #{params[:domain_end]} "
-    logger.debug("Running Alicutter -hhpred- #{@my_command}")
+    logger.debug("L287 Running Alicutter -hhpred- #{@my_command}")
     system(@my_command)   
     job_params = @job.actions.first.params
     job_params.sort
