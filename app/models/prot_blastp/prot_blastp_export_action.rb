@@ -1,4 +1,6 @@
 class ProtBlastpExportAction < Action
+
+  HITLIST_LINE_PATTERN = /<a href\s*=\s*\#[^>]+>\s*[\deE\.+-]+<\/a>/
     
   attr_accessor :hits
 	
@@ -11,16 +13,29 @@ class ProtBlastpExportAction < Action
     # Remove redundant hits
     hits.uniq!
     
-    infile = @basename + ".protblast"
+    infile = @basename + ".protblastp"
     outfile = @basename + ".export"
     
     error if !File.readable?(infile) || !File.exists?(infile) || File.zero?(infile)
     res = IO.readlines(infile).map {|line| line.chomp}    
-    i = res.index('Sequences producing significant alignments:                      (bits) Value')
+    hits_start = 1
+    hits_end = 0
+    res.each_index { |index|
+      if (res[index]=~HITLIST_LINE_PATTERN)
+        if (0 == hits_end)
+          hits_start = index
+        end
+        hits_end = index
+      elsif res[index]=~/^>/
+        break
+      elsif (hits_end > 0)
+        break
+      end
+    }
+    i = hits_start
     
-    while (i < res.size)
-      if (res[i] =~ /<\/PRE>/i) then break end
-      if (res[i] =~ /#(\d+)>\s*\S+<\/a>\s+\S+\s*$/)
+    while (i < hits_end)
+      if (res[i] =~ /#([^>]+)>\s*\S+?<\/a>\s+\S+\s*$/)
         if hits.include?($1)
           i += 1
         else
@@ -33,9 +48,10 @@ class ProtBlastpExportAction < Action
 
     check = true
     while (i < res.size)
-      if (res[i] =~ /^\s*Database:/) then break end
+      line = res[i]
+      if ((line=~/^\s*Database:/) || (line=~/^Lambda/)) then break end
       #><a name = 82736116><
-      if (res[i] =~ /^\s*><a name = (\d+)>/)
+      if (line =~ /^><a name =\s*([^>]+)>/ || line=~/^>.*?<a name=([^>]+)>/)
         if hits.include?($1)
           check = true
           i += 1

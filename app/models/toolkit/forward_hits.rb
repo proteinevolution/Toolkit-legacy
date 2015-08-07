@@ -6,7 +6,7 @@ module ForwardHits
   BLAST = File.join(BIOPROGS, 'blast')
   BLASTP = File.join(BIOPROGS, 'blastplus/bin')
 
-  HITLIST_LINE_PATTERN = /<a href\s*=\s*\#\w+>\s*\d+<\/a>/
+  HITLIST_LINE_PATTERN = /<a href\s*=\s*\#[^>]+>\s*[\deE\.+-]+<\/a>/
 
   # support the run method of forwarding actions
   # Parameters:
@@ -69,7 +69,7 @@ module ForwardHits
         end
         @hits = []
         hit_lines.each do |hit_line|
-          hit_line.scan(/<a href\s*=\s*\#(\w+)>\s*\d+<\/a>\s+(\S+.*)$/) do |name, eval|
+          hit_line.scan(/<a href\s*=\s*\#([^>]+)>\s*[\deE\.+-]+<\/a>\s+(\S+.*)$/) do |name, eval|
             if (eval =~ /^e.*$/)
               eval = "1" + eval
             end
@@ -161,7 +161,7 @@ module ForwardHits
       line = @res[i]
       if ((line=~/^\s*Database:/) || (line=~/^Lambda/)) then break end
       #><a name = 82736116><
-      if (line =~ /^><a name =\s*(\w+)>/ || line=~/^>.*<a name=(\w+)>/)
+      if (line =~ /^><a name =\s*([^>\s]+)>/ || line=~/^>.*<a name=([^>]+)>/)
         if @hits.include?($1)
           # @hits.delete($1) # this was in cs_blast_forward_action.rb only
           if (!@seqlen.nil? && @seqlen == "complete")
@@ -174,7 +174,7 @@ module ForwardHits
               end
             end
           else
-            name = line.sub(/<a name\s*=\s*\w+><\/a>/, '')
+            name = line.sub(/<a name\s*=\s*[^>]+><\/a>/, '')
             name.sub!(/<a.*href=[^>]*>/, '')
             name.sub!(/<\/a>/, '')
             name.sub!(/Length\s*=\s*\d+\s*$/, '')

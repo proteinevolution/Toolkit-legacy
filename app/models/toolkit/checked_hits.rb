@@ -98,7 +98,7 @@ private
         elsif( (extract==1) &&  line=~/^\s*$/)
           extract = 2
           next
-        elsif(extract==2 && (line =~ /#(\S+)>\s*\S+<\/a>\s+(\S+)\s*$/))
+        elsif(extract==2 && (line =~ /#([^>]+)>\s*[\deE\.+-]+<\/a>\s+(\S+)\s*$/))
           id = $1
           evalue = $2
           if(evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= evalueThreshold
@@ -121,7 +121,7 @@ private
         # extract hitlist of "previous" sequences
         if( (line=~/^\s*<\/PRE>\s*$/) || (line=~/^\s*<PRE>\s*$/) )
 	  next
-        elsif (line =~ /#(\S+)>\s*\S+<\/a>\s+(\S+)\s*$/)
+        elsif (line =~ /#([^>]+)>\s*[\deE\.+-]+<\/a>\s+(\S+)\s*$/)
           id = $1
           evalue = $2
           if  (evalue =~ /^e/ ? '1'+evalue : evalue).to_f <= evalueThreshold
@@ -144,7 +144,7 @@ private
         alignments << section if !section.nil?
 	in_get_algn = false
         in_footer = true
-      elsif( line=~/^><a name =\s*(\S+?)>/ || line=~/^>.*?<a name=(\S+?)>/ )
+      elsif( line=~/^><a name =\s*([^>\s]+)>/ || line=~/^>.*?<a name=([^>]+)>/ )
         id = $1
         alignments << section if !section.nil?
         section = { :id => id, :check => false, :content => [line] }
