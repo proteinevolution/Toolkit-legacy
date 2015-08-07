@@ -50,8 +50,8 @@ my %three2one=(
     "LCG"=>"G","LCA"=>"A","5CM"=>"C","6OG"=>"G","GHP"=>"G","3MY"=>"Y","OMY"=>"Y","2JG"=>"S",
     "GPL"=>"K","SOS"=>"N","MLY"=>"K","2SO"=>"H","CAF"=>"C","CAS"=>"C","PFF"=>"F",
     "DI"=>"I","56A"=>"H","U2X"=>"Y","0G"=>"G","0C"=>"C","0U"=>"U","C1S"=>"C","MHO"=>"M",
-    "MLZ"=>"K","PF5"=>"F","N7P"=>"P","GAU"=>"E","0AF"=>"W","2DT"=>"T","CSL"=>"C",
-    "ORN"=>"A","LYR"=>"K","4AK"=>"K","DPP"=>"A","0A1"=>"Y","5HC"=>"C",
+    "MLZ"=>"K","PF5"=>"F","N7P"=>"P","GAU"=>"E","0AF"=>"W","2DT"=>"T", "CSL"=>"C",
+    "ORN"=>"A","LYR"=>"K","4AK"=>"K",
 
     # mappings of multiple structure components (mapping to a sequence of one-letter codes)
     "CR8"=>"HYG", "CR2"=>"GYG",
@@ -69,7 +69,6 @@ my %three2one=(
     "DU"=>"U", # previously "DU"=>""
     "BRU"=>"U", # previously "BRU"=>""
     "TLN"=>"U",
-    "UMS"=>"U",
 
     # one-letter code "X" is used by www.ebi.ac.uk/pdbe-srv/pdbechem with non-standard components,
     # if no one-letter code exists
@@ -77,11 +76,37 @@ my %three2one=(
     "CHG"=>"X", # previously "CHG"=>"A"
     "PRR"=>"X", # previously "PRR"=>"A"
     "PDI"=>"X", # previously "PDI"=>""
-    "QBT"=>"X","2JF"=>"X","3FG"=>"X","ACE"=>"X","NH2"=>"X","IVA"=>"X","STA"=>"X","MYR"=>"X",
-    "0QE"=>"X","MPT"=>"X","UNK"=>"X","AME"=>"X","ASJ"=>"X","POL"=>"X","DCL"=>"X","VOL"=>"X",
-    "2A1"=>"X","IL0"=>"X","TYE"=>"X","AZI"=>"X","05W"=>"X","ORP"=>"X","6FC"=>"X","6FU"=>"X",
-    "YAC"=>"X","QAC"=>"X","0A"=>"X","0U1"=>"X","PDF"=>"X","2X0"=>"X","HEM"=>"X","00E"=>"X",
-    "ACY"=>"X","02N"=>"X","04B"=>"X",
+    "QBT"=>"X",
+    "2JF"=>"X",
+    "3FG"=>"X",
+    "ACE"=>"X",
+    "NH2"=>"X",
+    "IVA"=>"X",
+    "STA"=>"X",
+    "MYR"=>"X",
+    "0QE"=>"X",
+    "MPT"=>"X",
+    "UNK"=>"X",
+    "AME"=>"X",
+    "ASJ"=>"X",
+    "POL"=>"X",
+    "DCL"=>"X",
+    "VOL"=>"X",
+    "2A1"=>"X",
+    "IL0"=>"X",
+    "TYE"=>"X",
+    "AZI"=>"X",
+    "05W"=>"X",
+    "ORP"=>"X",
+    "6FC"=>"X",
+    "6FU"=>"X",
+    "YAC"=>"X",
+    "QAC"=>"X",
+    "0A"=>"X",
+    "0U1"=>"X",
+    "PDF"=>"X",
+    "2X0"=>"X",
+    "HEM"=>"X",
 
     # obsoleted codes not superceded by an other compound (keeping previous mapping)
     "ACL"=>"R","ALM"=>"A","ASK"=>"D","CLE"=>"L","CGL"=>"E","LYM"=>"K",
@@ -90,7 +115,7 @@ my %three2one=(
     # according to a mail from Johannes Soeding from 14 Jul 2014 it may be
     # biologically better to replace unknown codes by "X" instead of
     # simply omitting them (mapping them to "")
-    "---"=>"X","MF7"=>"X","4L8"=>"X"
+    "---"=>"X","MF7"=>"X","4L8"=>"X","54L"=>"X"
       );
 
 # Function substitution2one
