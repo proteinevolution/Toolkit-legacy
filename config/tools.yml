@@ -23,8 +23,8 @@
   title: ProtBLASTP
   title_long: Protein BLASTP
   section: search
-  updated: December, 2010
-  version: Blast 2.2.23
+  updated: August, 2015
+  version: Blast 2.2.30+
   active: 
   - member
   - internal
@@ -72,8 +72,8 @@
   title: PSI-BLASTP
   title_long: PSI-BLASTP
   section: search
-  updated: February, 2015
-  version: Blast 2.2.23
+  updated: August, 2015
+  version: Blast 2.2.30+
   active: 
   - member
   - internal
