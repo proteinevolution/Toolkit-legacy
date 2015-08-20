@@ -183,8 +183,8 @@
   title: HMMER3
   title_long: HMMER3
   section: search
-  updated: August, 2011
-  version: 3.0
+  updated: August, 2015
+  version: 3.1b2
   active:
   - member
   - internal
