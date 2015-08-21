@@ -49,9 +49,9 @@ my %three2one=(
     # new mappings (previously not substituted)
     "LCG"=>"G","LCA"=>"A","5CM"=>"C","6OG"=>"G","GHP"=>"G","3MY"=>"Y","OMY"=>"Y","2JG"=>"S",
     "GPL"=>"K","SOS"=>"N","MLY"=>"K","2SO"=>"H","CAF"=>"C","CAS"=>"C","PFF"=>"F",
-    "DI"=>"I","56A"=>"H","U2X"=>"Y","0G"=>"G","0C"=>"C","0U"=>"U","C1S"=>"C","MHO"=>"M",
+    "DI"=>"I","56A"=>"H","U2X"=>"Y","0G"=>"G","0C"=>"C","C1S"=>"C","MHO"=>"M",
     "MLZ"=>"K","PF5"=>"F","N7P"=>"P","GAU"=>"E","0AF"=>"W","2DT"=>"T", "CSL"=>"C",
-    "ORN"=>"A","LYR"=>"K","4AK"=>"K",
+    "ORN"=>"A","LYR"=>"K","4AK"=>"K","DPP"=>"A","0A1"=>"Y","5HC"=>"C",
 
     # mappings of multiple structure components (mapping to a sequence of one-letter codes)
     "CR8"=>"HYG", "CR2"=>"GYG",
@@ -69,6 +69,8 @@ my %three2one=(
     "DU"=>"U", # previously "DU"=>""
     "BRU"=>"U", # previously "BRU"=>""
     "TLN"=>"U",
+    "0U"=>"U",
+    "UMS"=>"U",
 
     # one-letter code "X" is used by www.ebi.ac.uk/pdbe-srv/pdbechem with non-standard components,
     # if no one-letter code exists
@@ -107,6 +109,10 @@ my %three2one=(
     "PDF"=>"X",
     "2X0"=>"X",
     "HEM"=>"X",
+    "00E"=>"X",
+    "ACY"=>"X",
+    "02N"=>"X",
+    "04B"=>"X",
 
     # obsoleted codes not superceded by an other compound (keeping previous mapping)
     "ACL"=>"R","ALM"=>"A","ASK"=>"D","CLE"=>"L","CGL"=>"E","LYM"=>"K",
