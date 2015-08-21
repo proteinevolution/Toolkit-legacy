@@ -24,7 +24,9 @@ function appearForward(val)
 	}
 	new Effect.Fade(merge);
 	new Effect.Fade(image);
-	new Effect.Fade('forward');
+	if ($('forward') != null) {
+	    new Effect.Fade('forward');
+	}
 
 	// Special Case Createmodel, active checkbox
 	if (val == create) {
