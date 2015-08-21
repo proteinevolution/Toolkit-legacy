@@ -1,7 +1,7 @@
 prot_blastp_job:
-  title: Protein BLASTP
+  title: Protein BLAST+
   hidden: false
-  code: PROBP
+  code: PROB+
   resultsections:
     - name: results
       title: Results

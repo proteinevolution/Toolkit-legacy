@@ -20,14 +20,15 @@
   - internal
   - external
 - name: prot_blastp
-  title: ProtBLASTP
-  title_long: Protein BLASTP
+  title: ProtBLAST+
+  title_long: Protein BLAST+
   section: search
   updated: August, 2015
   version: Blast 2.2.30+
   active: 
   - member
   - internal
+  - external
 - name: modeller
   title: Modeller
   title_long: Modeller
@@ -69,14 +70,15 @@
   - internal
   - external
 - name: psi_blastp
-  title: PSI-BLASTP
-  title_long: PSI-BLASTP
+  title: PSI-BLAST+
+  title_long: PSI-BLAST+
   section: search
   updated: August, 2015
   version: Blast 2.2.30+
   active: 
   - member
   - internal
+  - external
 - name: reformat
   title: Reformat
   title_long: Reformat

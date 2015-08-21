@@ -1,7 +1,7 @@
 psi_blastp_job:
-  title: PSI-BLASTP
+  title: PSI-BLAST+
   hidden: false
-  code: PSIBP
+  code: PSIB+
   resultsections:
     - name: results
       title: Results

@@ -20,12 +20,13 @@ memcache_options = {
 memcache_servers = [ '127.0.0.1:11211' ]
 
 #global settings
-TOOLKIT_RELEASE = '2.18.3'
+TOOLKIT_RELEASE = '2.18.4'
 # 2.18.0: Port to Ubuntu Precise
 # 2.18.1: Using SCOPe 2.04 databases instead of scop 1.75 databases (tools
-#         using still older databases were not updated).
-# 2.18.2: Switching to JSmol, the java script version of Jmol.
+#         using still older databases were not updated)
+# 2.18.2: Switching to JSmol, the java script version of Jmol
 # 2.18.3: Updating Bioprogs/Tools MAFFT, TCoffee, Muscle, Modeller and Phylip-Neighbor
+# 2.18.4: Updating Bioprog HMMER3, release of tools PSI-BLAST+ and ProtBLAST+
 if (LOCATION == "Munich")
   TOOLKIT_COPYRIGHT = '&#169; 2008-2015'
 else

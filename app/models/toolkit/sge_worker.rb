@@ -509,8 +509,8 @@ private
   end
 
   def makeSGEname(name)
-    # prerequisite (not checked): name is alphanumeric.
+    # prerequisite (not checked): name is alphanumeric ('+' sign also allowed).
     # SGE requires, that name does not start with a digit.
-    name.sub(/\A(\d)/, 't\1')
+    name.sub(/\A([\d\+])/, 't\1')
   end
 end
