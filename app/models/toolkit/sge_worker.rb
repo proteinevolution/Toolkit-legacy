@@ -406,7 +406,7 @@ class SgeWorker < AbstractWorker
                 when "HhpredAction" then 36
                 when "HhblitsAction" then 36
                 when "HhblitsForwardAction" then 18
-                when "HhblitsShowtemplalignAction" then 18
+                when "HhblitsShowtemplalignAction" then 30
                 when "HhpredShowtemplalignAction" then 18
                 when "Hh3dTemplAction" then 18
                 when "HhmakemodelAction" then 18

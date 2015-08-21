@@ -10,7 +10,6 @@ BEGIN {
    if (defined $ENV{TK_ROOT}) {$rootdir=$ENV{TK_ROOT};} else {$rootdir="/cluster";}
 };
 use lib "$rootdir/bioprogs/hhpred";
-use lib "/cluster/lib"; 
 
 use MyPaths;
 use warnings;
@@ -18,6 +17,7 @@ use GD;
 use POSIX;
 use strict;
 
+my $hhsuite_bin="$rootdir/bioprogs/hhsuite/bin";
 my $v=3;     # verbose mode
 my $resfile;
 my @hits;
@@ -304,13 +304,13 @@ while($line=<RESFILE>){
 		$template = $1;
 		$db = "$tmpdir";
 		if ($hhblits_db ne "") {
-		    system("$rootdir/bioprogs/hhblits/ffindex_get $hhblits_db"."_hhm_db $hhblits_db"."_hhm_db.index $template.hhm > $tmpdir/$template.hhm");
+		    system("$hhsuite_bin/ffindex_get $hhblits_db"."_hhm_db $hhblits_db"."_hhm_db.index $template.hhm > $tmpdir/$template.hhm");
 		}
 		open (IN, "$tmpdir/$template.hhm");
 		my $tmp = <IN>;
 		close IN;
 		if ($tmp !~ /^HH/ && $hhblits_db ne "") {
-		    system("$rootdir/bioprogs/hhblits/ffindex_get $hhblits_db"."_a3m_db $hhblits_db"."_a3m_db.index $template.a3m > $tmpdir/$template.a3m");
+		    system("$hhsuite_bin/ffindex_get $hhblits_db"."_a3m_db $hhblits_db"."_a3m_db.index $template.a3m > $tmpdir/$template.a3m");
 		    system("$hh/hhmake -i $tmpdir/$template.a3m -o $tmpdir/$template.hhm");
 		}
 		$tmp{'tag'}=$template;

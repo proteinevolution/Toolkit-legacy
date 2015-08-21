@@ -1,6 +1,6 @@
 class HhblitsShowtemplalignAction < Action
-  HH = File.join(BIOPROGS, 'hhblits')
-  
+  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
+
   def do_fork?
     return false
   end
@@ -40,24 +40,28 @@ class HhblitsShowtemplalignAction < Action
   
   def perform
     params_dump
-    
+    hhlibUsed = false
+
     # Extract database A3M-file
     if (!File.exist?(@basename + "." + @seq_name + ".a3m"))
-      @commands << "#{HH}/ffindex_get #{@dba3m} #{@dba3m}.index #{@seq_name}.a3m > #{@basename}.#{@seq_name}.a3m"
+      # hhlibUsed = true not required for ffindex_get
+      @commands << "#{HHSUITE}/ffindex_get #{@dba3m} #{@dba3m}.index #{@seq_name}.a3m > #{@basename}.#{@seq_name}.a3m"
     end
 
     # Generate FASTA formatted file for JALVIEW?
     if (@oldhit.nil? || !File.exist?(@basename + ".template.fas"))
       # Filter out 100 most different sequences
-      @commands << "#{HH}/hhfilter -i #{@basename}.#{@seq_name}.a3m -o #{@local_dir}/#{job.jobid}.template.reduced.a3m -diff 100"
-      @commands << "#{HH}/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.template.reduced.a3m #{@basename}.template.fas"
+      hhlibUsed = true
+      @commands << "#{HHSUITE}/hhfilter -i #{@basename}.#{@seq_name}.a3m -o #{@local_dir}/#{job.jobid}.template.reduced.a3m -diff 100"
+      @commands << "#{HHLIB}/scripts/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.template.reduced.a3m #{@basename}.template.fas"
     end
     
     # Generate FASTA formatted file for JALVIEW (reduced alignment)		    		
     if (@oldhit.nil? || !File.exist?(@basename + ".template.reduced.fas"))
       # Filter out 50 most different sequences
-      @commands << "#{HH}/hhfilter -i #{@basename}.#{@seq_name}.a3m -o #{@local_dir}/#{job.jobid}.template.reduced.a3m -diff 50"
-      @commands << "#{HH}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.template.reduced.a3m #{@basename}.template.reduced.fas"
+      hhlibUsed = true
+      @commands << "#{HHSUITE}/hhfilter -i #{@basename}.#{@seq_name}.a3m -o #{@local_dir}/#{job.jobid}.template.reduced.a3m -diff 50"
+      @commands << "#{HHLIB}/scripts/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.template.reduced.a3m #{@basename}.template.reduced.fas"
       @commands << "rm #{@local_dir}/#{job.jobid}.template.reduced.a3m"
     end
 
@@ -65,9 +69,14 @@ class HhblitsShowtemplalignAction < Action
     when 'fasta'
       @commands << "cp #{@basename}.template.fas #{@basename}.alnout"
     when 'clustal'
-      @commands << "#{HH}/reformat.pl a3m clu #{@basename}.#{@seq_name}.a3m #{@basename}.alnout"
+      hhlibUsed = true
+      @commands << "#{HHLIB}/scripts/reformat.pl a3m clu #{@basename}.#{@seq_name}.a3m #{@basename}.alnout"
     else
       @commands << "cp #{@basename}.#{@seq_name}.a3m #{@basename}.alnout"
+    end
+
+    if hhlibUsed
+      @commands.insert(0, "export HHLIB=\"#{HHLIB}\"")
     end
     
     logger.debug "Commands:\n"+@commands.join("\n")
