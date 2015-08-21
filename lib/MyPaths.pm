@@ -7,7 +7,7 @@ use Exporter;
 our $VERSION=1.00;
 our @ISA          = qw(Exporter);
 #our @EXPORT       = qw($nr $nre $nrf $nr90 $nr70 $nr90f $nr70f $dummydb $perl $hh $dsspdir $dssp $pdbdir $ncbidir $execdir $datadir $blastpgp $calhhm $hmmerdir $newdbs $olddbs $PBS $database_dir $bioprogs_dir $pdb_dir $tmp_dir);
-our @EXPORT       = qw($nr $nre $nr90 $nr70 $dummydb $perl $hh $dsspdir $dssp $pdbdir $ncbidir $execdir $datadir $blastpgp $calhhm $hmmerdir $newdbs $olddbs $PBS $database_dir $bioprogs_dir $pdb_dir $tmp_dir);
+our @EXPORT       = qw($nr $nre $nr90 $nr70 $dummydb $perl $hh $dsspdir $dssp $pdbdir $ncbidir $ncbipdir $execdir $datadir $blastpgp $calhhm $hmmerdir $newdbs $olddbs $PBS $database_dir $bioprogs_dir $pdb_dir $tmp_dir);
 
 # Set directory paths and file locations
 # filtered databases are replaced by unfiltered databases in Tuebingen
@@ -25,7 +25,8 @@ our $calhhm;                       # newest scop database for hhsearch
 our $dsspdir;                      # where are the dssp files?
 our $dssp;                         # where is the dssp executable? 
 our $pdbdir;                       # where are the pdb files?
-our $ncbidir;                      # Where the NCBI programs have been installed
+our $ncbidir;                      # Where the NCBI legacy programs have been installed
+our $ncbipdir;                     # Where the NCBI Blast+ programs have been installed
 our $execdir;                      # Where the PSIPRED V2 programs have been installed
 our $datadir;                      # Where the PSIPRED V2 data files have been installed
 our $blastpgp;                     # blastpgp executable
@@ -138,7 +139,8 @@ if (defined $ENV{TK_ROOT}) {
 
 
 
-$ncbidir = "$bioprogs_dir/blast";             # Where the NCBI programs have been installed 
+$ncbidir = "$bioprogs_dir/blast";             # Where the NCBI legacy programs have been installed 
+$ncbipdir= "$bioprogs_dir/blastplus/bin";     # Where the NCBI Blast+ programs have been installed
 $execdir = "$bioprogs_dir/psipred/bin";       # Where the PSIPRED V2 programs have been installed
 $datadir = "$bioprogs_dir/psipred/data";      # Where the PSIPRED V2 data files have been installed    
 $blastpgp= "$ncbidir/blastpgp";

@@ -1,0 +1,139 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input</a></li>
+	<li><a href="#input_format">Input format</a></li>
+	<li><a href="#database">Database</a></li>
+	<li><a href="#matrix">Matrix</a></li>
+	<li><a href="#numberiterations">Number of iterations</a></li>
+	<li><a href="#evalue">E-value</a></li>
+	<li><a href="#evaluefirst">E-value for inclusion in first iteration</a></li>
+	<li><a href="#filter">Filter (low complexity)</a></li>
+	<li><a href="#smithwaterman">Compute Smith-Waterman alignment</a></li>
+	<li><a href="#usenr70">Use nr70 for all but last iteration</a></li><!-- nr70f replaced by nr70 in Tuebingen -->
+	<li><a href="#alignments">Alignments and descriptions</a></li>
+	<li><a href="#otheradvanced">Other Advanced Options</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input</h3> 
+<div class="row">
+Enter single protein sequence or protein sequence alignment and choose its format from the dropdown menu.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="input_format"></a>
+<h3 class="<%= @section["name"] %>">Input format</h3>
+<div class="row">
+	<p>
+	Accepted formats are listed in the dropdown menu. 
+	FASTA input format accepts a single raw sequence without headers as well.
+	Format descriptions can be found <a href="/reformat/help_params#formats">here</a>.	
+	</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="database"></a>
+<h3 class="<%= @section["name"] %>">Database</h3> 
+<div class="row">
+The selected databases are used by BLAST to perform the search. You may press CTRL to select multiple databases.
+<ul>
+<li> <b>nr</b>: the non-redundant sequence database at the NCBI, updated weekly. (See <a target="_blank" href="http://www.ncbi.nlm.nih.gov/Education/BLASTinfo/query_tutorial.html">NCBI's BLAST tutorial</a>).
+<li> <b>env</b>: NCBI's env database with environnmental sequences, usually from unknown organisms.
+<li> <b>nre</b>: nr+env database. Updated weekly.
+<li> nr<b>90</b>, nr<b>70</b>, env<b>90</b> etc.: representative sequences, filtered for a maximum pairwise sequence identity of ~90% or 70% with <a target="_blank" href="http://www.biomedcentral.com/1471-2105/14/248/abstract">kClust</a>. Updated bimonthly.
+<!-- <li> nr<b>f</b>, nr90<b>f</b> etc.: databases filtered with David Jones' <a target="_blank" href="http://bioinf.cs.ucl.ac.uk/downloads/psipred/">PFILT</a> program (with default parameters) to suppress low-complexity regions, coiled coils, and transmembrane regions in protein sequences. Using a filtered database provides some limited protection against corruption of profiles during automated, multi-iteration PSI-BLAST searches. When doing the searches manually, we rather recommend inspecting alignments of extracted hits in a sequence viewer. Click "Alignment" and then Jalview with "reduced alignment" of representative sequences. Updated bimonthly. -->
+<li> <b>nr_euk</b>, <b>nr_bac</b>, <b>nr_arc</b>, <b>nr_pro</b>, <b>nr_vir</b>: eukaryotic, bacterial, archaeal, prokaryotic, and viral sequences from the non-redundant database nr. Updated weekly.
+<li> <b>uniprot_sprot</b>:  <a target="_blank" href="http://www.expasy.org/sprot/">http://www.expasy.org/sprot/</a> Updated weekly.
+<li> <b>uniprot_trembl</b>: <a target="_blank" href="http://www.ebi.ac.uk/swissprot/">http://www.ebi.ac.uk/swissprot/</a> Updated weekly.
+<li> <b>pdb_nr</b>: Sequences from proteins whose structures have been deposited in the <a target="_blank" href="http://www.rcsb.org/pdb/Welcome.do">Protein Data Bank PDB</a>. This database uses the more complete SEQRES records of the PDB files (not the ATOM records that contain the atomic coordinates). This is the database used to construct the HHpred PDB alignment database. Updated weekly from the PDB.
+</ul> 
+<h5>Proteomes</h5>
+Here you can select proteome databases for various organisms. The proteomes are sorted according to their kingdoms and their names subsequently. 
+You may select multiple databases. (Due to memory constraints the limit of selectable Proteoms is 900). 
+ 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="matrix"></a>
+<h3 class="<%= @section["name"] %>">Matrix</h3> 
+<div class="row">
+Specify an alternate scoring matrix for PSIBLAST. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="numberiterations"></a>
+<h3 class="<%= @section["name"] %>">Number of iterations</h3> 
+<div class="row">
+Specify the maximum number of rounds of search.
+After each successive round the search alignment is updated.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="evalue"></a>
+<h3 class="<%= @section["name"] %>">E-value</h3> 
+<div class="row">
+The statistical significance threshold for reporting matches against database sequences; the default value is 10, meaning that 10 
+matches are expected to be found merely by chance, according to the stochastic model of Karlin and Altschul (1990). If the statistical 
+significance ascribed to a match is greater than the e-value threshold, the match will not be reported. Lower e-value thresholds are 
+more stringent, leading to fewer chance matches being reported. Increasing the threshold shows less stringent matches. Fractional 
+values are acceptable.  
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="evaluefirst"></a>
+<h3 class="<%= @section["name"] %>">E-value inclusion threshold</h3> 
+<div class="row">
+The statistical significance threshold for including a sequence in the model used by PSI-BLAST to create the PSSM on the next iteration. 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="filter"></a>
+<h3 class="<%= @section["name"] %>">Filter (low complexity)</h3> 
+<div class="row">
+<p>
+Mask off segments of the query sequence that have low compositional complexity, as determined by the SEG program of Wootton & Federhen 
+(Computers and Chemistry, 1993) or, for BLASTN, by the DUST program of Tatusov and Lipman (in preparation). Filtering can eliminate 
+statistically significant but biologically uninteresting reports from the blast output (e.g., hits against common acidic-, basic- or 
+proline-rich regions), leaving the more biologically interesting regions of the query sequence available for specific matching against 
+database sequences. <br/>
+Filtering is only applied to the query sequence (or its translation products), not to database sequences. Default filtering is DUST 
+for BLASTN, SEG for other programs. <br/> 
+It is not unusual for nothing at all to be masked by SEG, when applied to sequences in  SWISS-PROT, so filtering should not be expected 
+to always yield an effect. Furthermore, in some cases, sequences are masked in their entirety, indicating that the statistical 
+significance of any matches reported against the unfiltered query sequence should be suspect.
+</p>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="smithwaterman"></a>
+<h3 class="<%= @section["name"] %>">Compute Smith-Waterman alignment</h3> 
+<div class="row">
+Compute locally optimal Smith-Waterman alignments.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="usenr70"></a><!-- replaced nr70f by nr70 in Tuebingen -->
+<h3 class="<%= @section["name"] %>">Use nr70 for all but last iteration</h3> 
+<div class="row">
+If this option is selected the programm will use the nr70-database for all but last round. In the last
+round, the database you selected in the database section will be used.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="alignments"></a>
+<h3 class="<%= @section["name"] %>">Alignments and descriptions</h3> 
+<div class="row">
+Restricts the number of short descriptions of matching sequences reported to the number specified; default limit is 100 descriptions.
+Restricts also database sequences to the number specified for which high-scoring segment pairs (HSPs) are reported.
+If more database sequences than this happen to satisfy the statistical significance threshold for reporting, only the matches ascribed 
+the greatest statistical significance are reported.
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="otheradvanced"></a>
+<h3 class="<%= @section["name"] %>">Other Advanced Options</h3> 
+<div class="row">
+Use this textfield to specify advanced options via commandline, e.g. "-E 1". 
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

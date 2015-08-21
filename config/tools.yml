@@ -19,6 +19,16 @@
   - member
   - internal
   - external
+- name: prot_blastp
+  title: ProtBLAST+
+  title_long: Protein BLAST+
+  section: search
+  updated: August, 2015
+  version: Blast 2.2.30+
+  active: 
+  - member
+  - internal
+  - external
 - name: modeller
   title: Modeller
   title_long: Modeller
@@ -55,6 +65,16 @@
   section: search
   updated: December, 2010
   version: Blast 2.2.26
+  active: 
+  - member
+  - internal
+  - external
+- name: psi_blastp
+  title: PSI-BLAST+
+  title_long: PSI-BLAST+
+  section: search
+  updated: August, 2015
+  version: Blast 2.2.30+
   active: 
   - member
   - internal
@@ -183,8 +203,8 @@
   title: HMMER3
   title_long: HMMER3
   section: search
-  updated: August, 2011
-  version: 3.0
+  updated: August, 2015
+  version: 3.1b2
   active:
   - member
   - internal

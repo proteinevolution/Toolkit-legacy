@@ -422,7 +422,7 @@ class SgeWorker < AbstractWorker
                 when "HhompAction" then 50 # uses blastpgp
                 when "HhfilterAction" then 18
                 when "HhblitsForwardHmmAction" then 18
-                when "Hmmer3Action" then 12
+                when "Hmmer3Action" then 18
                 when "HhrepForwardHmmAction" then 18
                 when "Hh3dQuerytemplAction" then 18
                 when "HhmergealiAction" then 18
@@ -440,6 +440,7 @@ class SgeWorker < AbstractWorker
                 when "ProtBlastAction" then 50 # uses blastpgp
                 when "PcoilsAction" then 6
                 when "PsiBlastAction" then 50 # uses blastpgp
+                when "PsiBlastpAction" then 18
                 when "PatsearchAction" then 5
                 when "PsiBlastForwardAction" then 5
                 when "PatsearchForwardAction" then 5
@@ -508,8 +509,8 @@ private
   end
 
   def makeSGEname(name)
-    # prerequisite (not checked): name is alphanumeric.
+    # prerequisite (not checked): name is alphanumeric ('+' sign also allowed).
     # SGE requires, that name does not start with a digit.
-    name.sub(/\A(\d)/, 't\1')
+    name.sub(/\A([\d\+])/, 't\1')
   end
 end

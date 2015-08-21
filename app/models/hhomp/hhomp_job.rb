@@ -2,7 +2,8 @@ class HhompJob < Job
   require 'Biolinks.rb'
   require 'checked_hits'
   include CheckedHits
-  
+
+  @@MAX_DBS = 5  
   @@export_ext = ".export"
   def set_export_ext(val)
     @@export_ext = val  
@@ -270,7 +271,7 @@ class HhompJob < Job
 	attr_reader :blast_header, :hits_better, :hits_worse, :blast_alignments, :footer, :num_checkboxes	
 	
 	def before_blast_results()
-          @blast_header, @blast_alignments, @footer = show_hits(jobid + ".blast", E_THRESH, "E-value", false)
+          @blast_header, @blast_alignments, @footer = show_hits(jobid + ".blast", E_THRESH, "E-value", false, @@MAX_DBS)
     	  return true
 	end	
 

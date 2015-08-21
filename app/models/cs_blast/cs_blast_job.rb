@@ -4,8 +4,9 @@ class CsBlastJob < Job
   include CheckedHits
 
   E_THRESH = 0.01
+  @@MAX_DBS = 5
   
-  attr_reader :header, :hits_better, :hits_worse, :alignments, :footer, :num_checkboxes , :evalue_threshold
+  attr_reader :header, :hits_better, :hits_worse, :alignments, :footer, :num_checkboxes , :evalue_threshold, :searching
 
   attr_accessor  :evalfirstit
 
@@ -35,7 +36,8 @@ class CsBlastJob < Job
         @evalue_threshold = params['evalfirstit'].to_f
      end
 
-    @header, @alignments, @footer = show_hits(jobid + ".csblast", @evalue_threshold, "Expect", true)
+    @header, @alignments, @footer, @searching =
+      show_hits(jobid + ".csblast", @evalue_threshold, "Expect", true, @@MAX_DBS)
     return true
   end
   

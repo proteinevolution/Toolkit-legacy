@@ -257,9 +257,12 @@ class HhpredJob  < Job
     elsif  query =~/^(\d[a-z0-9]{3})([A-Za-z0-9])?_\d+$/ || query =~ /^(\d[A-Za-z0-9]{3})()$/  || query =~/^(\d[A-Za-z0-9]{3})_([A-Za-z0-9])$/
       # Query isDALI or PDB sequence
       pdbid =  $1.downcase
-      chain = $2.upcase
+      chain = $2
+      if chain.nil?
+        chain = ""
+      end
       if chain  != ""
-        chain = "_"+chain
+        chain = "_"+chain.upcase
       end
       dirs=  Dir.glob(DATABASES+"/hhpred/new_dbs/pdb70*")
       querypdb = basename+".pdb"

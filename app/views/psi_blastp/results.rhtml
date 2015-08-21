@@ -1,0 +1,7 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool, :title_extra => 'Results'}) %>
+<%= render(:partial => "shared/resultsections", :locals => {:export_action => 'psi_blastp_export'}) %>
+<%= render(:partial => "shared/hits_alignments") %>
+
+<script type="text/javascript">
+	window.onload = calculate_forwarding();
+</script>

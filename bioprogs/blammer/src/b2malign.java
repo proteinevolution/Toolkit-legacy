@@ -15,6 +15,8 @@ public class b2malign {
     
     //convert the blast file to a multiple alignment
     //this is for the html version of blast files
+
+    final boolean DEBUG = false;
     
     /** Creates new b2malign */
     public b2malign() {
@@ -42,6 +44,7 @@ public class b2malign {
         int qs; //query start
         int qe; //query end
         String currname="";
+	Vector<String> currvec = new Vector<String>(); // lines of current sequences
         String currseq="";
         String currquery="";
         String tmpstr="";
@@ -62,12 +65,15 @@ public class b2malign {
         try{
             while (((str=inread.readLine())!=null)&&(stopread==false)){
                 linecount+=1;
+		if (DEBUG) System.out.println("L68: +++++ Line " + String.valueOf(linecount) + ": " + str);
                 if(querydone==false){//if I have not yet read in a query, skip everything (headers, etc.) that is not the query
+		    if (DEBUG) System.out.println("L70: +++++ querydone is false");
                     if(str.indexOf("<b>Query=</b>")>-1){
                         readquery=true;
+			if (DEBUG) System.out.println("L73: +++++ readquery = true");
                     }
                     int endql;
-                    if((endql=str.indexOf("letters)"))>-1){
+                    if((endql=str.indexOf("letters)"))>-1){ // legacy blast
                         //queryname goes from <b>Query=</b> to last "(" before "letters)"
                         //here i also get the query length from the last line read.
                         int startql;
@@ -76,24 +82,50 @@ public class b2malign {
                                 tmpstr=(str.substring(startql+1,endql)).trim();
                                 tmpstr=tmpstr.replaceAll("\\D","");
                                 querylength=Integer.parseInt(tmpstr);
+				if (DEBUG) System.out.println("L85: +++++ query length is " + String.valueOf(querylength));
                             }catch (NumberFormatException e){
                                 System.err.println("error in parsing query length:"+tmpstr);
                             }
                         }// end if startql
                         querydone=true;
                         queryname=extractqueryname(queryname);
+			if (DEBUG) System.out.println("L92: +++++ query done. queryname is " + queryname);
                         continue;
-                    }//end if endql
+                    } else {
+			int startql=str.indexOf("Length=");
+			if (startql > -1) { // blast+
+			    startql += 7;
+			    tmpstr=str.substring(startql);
+			    tmpstr=tmpstr.replaceAll("\\D","");
+			    try {
+				querylength=Integer.parseInt(tmpstr);
+				if (DEBUG) System.out.println("L102: +++++ query length is " + String.valueOf(querylength));
+			    } catch (NumberFormatException e) {
+				System.err.println("error in parsing query length:"+tmpstr);
+			    }
+			    querydone = true;
+			    queryname=extractqueryname(queryname);
+			    if (DEBUG) System.out.println("L108: +++++ query done. queryname is " + queryname);
+			    continue;
+			}
+		    }
                     if(readquery){
                         queryname=queryname+str;
+			if (DEBUG) System.out.println("L114: +++++ adding " + str + " to queryname");
                         continue;
                     }
                 }// end if querydone==false
-                if((str.indexOf("><a name = ")> -1)||(str.indexOf("<pre>&gt;<a name=")>-1)){//if this substring exists; first for blast, second for psyblast
+                if((str.indexOf("><a name = ")> -1) // for legacy blast
+		   ||(str.indexOf("<pre>&gt;<a name=")>-1) // for pyblast
+		   ||(str.indexOf(">")==0 && str.indexOf("<a name=")> -1) // for blast+
+		   ){
+		    //if this substring exists
                     readname=true;
+		    if (DEBUG) System.out.println("L124: +++++ readname = true");
                     if(tmpvec.size()>0){
                         blastpair[] testpair=collapsetmpvec(tmpvec);
                         for(int i=java.lang.reflect.Array.getLength(testpair)-1;i>=0;i--){
+			    if (DEBUG) System.out.println("L128: +++++ testpair["+String.valueOf(i)+"].coverage = " + String.valueOf(testpair[i].coverage) + ">=" + String.valueOf(coverage) + ".");
                             if(testpair[i].coverage>=coverage){
                                 vec.addElement(testpair[i]);
                             }
@@ -102,28 +134,33 @@ public class b2malign {
                     }
                     tmpvec.clear();
                     currname="";
+		    currvec.clear();
                     currseq="";
                     currquery="";
                     myident=0;
                 }//end if ><a name =
                 if(readname==true){
                     int strs;
-                    if((strs=str.indexOf("Length ="))>-1){
-                        String lengthstring=(str.substring(strs+8)).trim();
+                    if(((strs=str.indexOf("Length ="))>-1)
+		       || (strs = str.indexOf("Length=")) > -1){
+                        currname=extractname(currvec);
+			if (DEBUG) System.out.println("L147: +++++ Found Length. currname is " + currname +".");
+			int lenIndex = (str.charAt(strs + 7) == '=') ? 8 : 7;
+                        String lengthstring=(str.substring(strs+lenIndex)).trim();
                         try{
                             //blast has the disturbing tendency to add a comma in numbers above 1000. remove that before parsing
                             lengthstring=lengthstring.replaceAll("\\D","");
                             subjectlength=Integer.parseInt(lengthstring);
                         }catch (NumberFormatException e){
-                            System.err.println("unable to parse int from "+subjectlength+" for "+currname);
+                            System.out.println("unable to parse int from "+subjectlength+" for "+currname);
                             subjectlength=1;
                         }
                         readname=false;
-                        currname=extractname(currname);
                         continue;
                     }
                     //if this currstr has no "Length =" just add it to the current namestr.
-                    currname=currname+str;
+		    currvec.add(str);
+		    if (DEBUG) System.out.println("L163: +++++ Adding " + str + " to currvec");
                     continue;
                 }
                 int strs;
@@ -139,15 +176,17 @@ public class b2malign {
                         }
                     }
                 }// end if Score
-                if(str.indexOf("Expect =")>-1){
-                    String[] tmparr=str.split("\\s",0);
-                    if(tmparr[java.lang.reflect.Array.getLength(tmparr)-1].charAt(0)=='e'){
-                        tmparr[java.lang.reflect.Array.getLength(tmparr)-1]="1"+tmparr[java.lang.reflect.Array.getLength(tmparr)-1];
+                if((strs=str.indexOf("Expect ="))>-1){
+		    strs += 8;
+		    int endstrs = str.indexOf(",", strs);
+		    tmpstr = str.substring(strs, endstrs).trim();
+                    if(tmpstr.charAt(0)=='e'){
+                        tmpstr="1"+tmpstr;
                     }
                     try{
-                        evalue=Double.parseDouble(tmparr[java.lang.reflect.Array.getLength(tmparr)-1]);
+                        evalue=Double.parseDouble(tmpstr);
                     }catch (NumberFormatException e){
-                        System.err.println("Error parsing E-value "+tmparr[java.lang.reflect.Array.getLength(tmparr)-1]+" for "+currname);
+                        System.err.println("Error parsing E-value "+tmpstr+" for "+currname);
                         evalue=edef;
                     }
                 }// end if expect
@@ -176,11 +215,11 @@ public class b2malign {
                     continue;
                 }
                 if(readseq){
-                    if(str.indexOf("Query:")>-1){
+                    if(str.indexOf("Query")>-1){
                         currquery=currquery+str;
                         continue;
                     }
-                    if(str.indexOf("Sbjct:")>-1){
+                    if(str.indexOf("Sbjct")>-1){
                         currseq=currseq+str;
                         continue;
                     }
@@ -212,11 +251,13 @@ public class b2malign {
         if(tmpvec.size()>0){//if I have one or more hsp in tmpvec
             blastpair[] testpair=collapsetmpvec(tmpvec);//collapse them to one or more sequences
             for(int i=java.lang.reflect.Array.getLength(testpair)-1;i>=0;i--){
+		if (DEBUG) System.out.println("L254: +++++ testpair["+String.valueOf(i)+"].coverage = " + String.valueOf(testpair[i].coverage) + ">=" + String.valueOf(coverage) + ".");
                 if(testpair[i].coverage>=coverage){
                     vec.addElement(testpair[i]);
                 }
             }
         }// end if tmpvec.size==0
+	if (DEBUG) System.out.println("L260: +++++ vec.size is " + String.valueOf(vec.size()));
         vec=removeidenticals(vec);
         //now put the name that contains queryname to position 0 in the vector
         int vecsize=vec.size();
@@ -229,6 +270,7 @@ public class b2malign {
             }
         }//end for i
         String[] outarr=convertmainvec(vec);
+	if (DEBUG) System.out.println("L273: +++++ outarr.length is " + outarr.length);
         return outarr;
     }// end malign
     
@@ -257,37 +299,59 @@ public class b2malign {
     
     //------------------------------------------------------------------------------------------------------
     
-    String extractname(String instr){
-        //get the sequence description from instr (one or multiple ones)
+    String extractname(Vector<String> currvec){
+	//get the sequence description from currvec (one or multiple sequence description lines)
+
         Vector tmpvec=new Vector();
         String outstr=new String("");
         //look for the formatting text from blast/psyblast
         //should be: (>)<a name=xxx></a><a href="xxx">ACTUAL NAME</a>CORRESPONDING TEXT
         //can also be (>)<a name=xxx></a> NAME
-        //System.out.println("inname="+instr);
-        String[] singlenames=instr.split("<a\\s*name\\s*=.*?>\\s*",0);
-        for(int i=java.lang.reflect.Array.getLength(singlenames)-1;i>=0;i--){
-            //System.out.println("doing for singlename "+singlenames[i]);
-            //now see if the names have the href format
-            if(singlenames[i].matches(".*<a\\s*href=\".*?\"\\s*>.*")){
-                String[] tmparr=singlenames[i].split("a\\s*href=\".*?\"\\s*>",2);//split at first occurrance, set [0] to "<"
+	// blast+: Also
+	// (>)<a title=xxx href=zzz> NAME</a><a name=yyy></a>CORRESPONDING TEXT
+	for (String singlename : currvec) {
+	    if (DEBUG) System.out.println("L313: +++++ singlename=" + singlename);
+	    if (singlename.matches(".*<a .*href=\".*?\"\\s*>.*")) {
+		if (DEBUG) System.out.println("L315: +++++ singlename matches");
+		String[] tmparr=singlename.split("a .*href=\".*?\"\\s*>",2);//split at first occurrance, set [0] to "<"
                 if(java.lang.reflect.Array.getLength(tmparr)>1){
+		    if (DEBUG) System.out.println("L318: +++++ examining element " + tmparr[1]);
                     tmparr=tmparr[1].split("</a>",2);
                     //if(java.lang.reflect.Array.getLength(tmparr)>1){
-                    tmpvec.addElement(tmparr[0]);
-                    //System.out.println("adding in href "+tmparr[0]);
+                    tmpvec.addElement(tmparr[0].trim());
+                    if (DEBUG) System.out.println("L322: +++++ adding in href "+tmparr[0]);
                     //}
                 }
-            }else{//if the name has no href=
+	    } else {//if the name has no href=
                 //look for the </a> at the beginning of the name  and read from there to the first space char
-                if(singlenames[i].length()>4){
-                    singlenames[i]=singlenames[i].substring(4).trim();//get rid of the </a> and spaces
-                    String[] tmparr=singlenames[i].split("\\s+",2);
-                    tmpvec.addElement(tmparr[0]);
-                    //System.out.println("adding outside href "+tmparr[0]);
+		String[] tmparr=singlename.split("<a\\s*name\\s*=.*?>\\s*</a>");
+                if(java.lang.reflect.Array.getLength(tmparr)>1){
+		    // blast+: Id is in front of a tag, legacy blast: Id follows a tag.
+		    singlename=tmparr[0].trim();
+		    if (singlename.length() <= 1) { // id obviously is not in front of a tag
+			singlename=tmparr[1].trim();
+
+			tmparr=singlename.split("\\s+",2);
+			singlename=tmparr[0];
+			tmparr=singlename.split("</a>",2); // the input html may be invalid and contain extra </a> tags.
+			if (tmparr.length > 1) {
+			    singlename=tmparr[0];
+			}
+		    } else { // id in front of a tag
+			if (singlename.charAt(0) == '>') {
+			    singlename = singlename.substring(1);
+			}
+		    }
+                    tmpvec.addElement(singlename);
+                    if (DEBUG) System.out.println("L346: +++++ adding outside href "+singlename);
                 }
+		// otherwise singlename probably is a continuation of the structure description on additional lines.
             }
-        }// end for i
+        }
+	// For some reason or not, the original version of this file iterated on the reversed input.
+	// To keep the semantics, tmpvec is reversed here.
+	Collections.reverse(tmpvec);
+
         for(int i=0;i<tmpvec.size();i++){
             //now see if any of this sequences names correspond to the queryname
             if((((String)tmpvec.elementAt(i)).indexOf(queryname))>-1){//if this name contains the query
@@ -298,8 +362,8 @@ public class b2malign {
             }
         }
         if(tmpvec.size()<1){
-            System.err.println("ERROR extractname: unable to get names from "+instr);
-            return instr;
+            System.err.println("ERROR extractname: unable to get names from input strings");
+            return null;
         }
         return ((String)tmpvec.elementAt(0));
     }// end extractname
@@ -319,7 +383,7 @@ public class b2malign {
         querygaps=0;
         char c;
         while(foundnext){
-            if(((startquery=instr.indexOf("Query:",currpos-1))>-1)&&((endthis=instr.indexOf("Query:",(startquery+1)))>-1)){
+            if(((startquery=instr.indexOf("Query",currpos-1))>-1)&&((endthis=instr.indexOf("Query",(startquery+1)))>-1)){
                 forloop:
                     for(currpos=startquery+6;currpos<endthis;currpos+=1){
                         c=instr.charAt(currpos);
@@ -359,7 +423,7 @@ public class b2malign {
             foundnext=false;
         }// end while
         //int tmpval=currpos;
-        int tmpval=instr.indexOf("Query:",currpos-1);
+        int tmpval=instr.indexOf("Query",currpos-1);
         for(currpos=tmpval+6;currpos<instr.length();currpos+=1){
             c=instr.charAt(currpos);
             if(Character.isWhitespace(c)){
@@ -421,7 +485,7 @@ public class b2malign {
         int gapcounter=0;
         char c;
         while(foundnext){
-            if(((startquery=instr.indexOf("Sbjct:",currpos-1))>-1)&&((endthis=instr.indexOf("Sbjct:",(startquery+1)))>-1)){
+            if(((startquery=instr.indexOf("Sbjct",currpos-1))>-1)&&((endthis=instr.indexOf("Sbjct",(startquery+1)))>-1)){
                 forloop:
                     for(currpos=startquery+6;currpos<endthis;currpos+=1){
                         c=instr.charAt(currpos);
@@ -461,7 +525,7 @@ public class b2malign {
             foundnext=false;
         }// end while
         //int tmpval=currpos;
-        int tmpval=instr.indexOf("Sbjct:",currpos-1);
+        int tmpval=instr.indexOf("Sbjct",currpos-1);
         for(currpos=tmpval+6;currpos<instr.length();currpos+=1){
             c=instr.charAt(currpos);
             if(Character.isWhitespace(c)){

@@ -13,6 +13,8 @@ use strict;
 use lib "/home/soeding/perl";  
 use lib $rootdir."/lib";             # for chimaera webserver: ConfigServer.pm
 use MyPaths; 
+use constant ROUND_START_PATTERN => qr/Results from round\s+(\d+)/;
+use constant END_OF_HEADER => qr/(No hits found)|(^Sequences)/;
 
 # Default options
 my $E_max      = 1E-4;
@@ -27,6 +29,7 @@ my $bg = 50; # below this number of end gaps the loose HSP pruning score is used
 my $outformat  = "psi";
 my $append     = 0;
 my $query_file = "";
+my $useblastplus = 0; # set to 1 if blastplus should be used internally
 my $infile;
 my $outfile;
 my $v = 2;
@@ -70,6 +73,7 @@ sub fexit() {
 	print("                  to be used with option -b (only in conjunction with -q or -Q options)\n");
 	print("  -qs  start    : query residue defining the start of the HSP region to be used\n");
 	print("  -qe  end      : query residue defining the end of the HSP region to be used\n");
+	print("  -blastplus    : use blastplus family of programs instead of legacy blast\n");
 	print("\n");
 	print("Examples: \n");
 	print("alignhits.pl 1enh.out 1enh.psi\n");
@@ -410,6 +414,8 @@ if ( $options =~ s/-Q\s+(\S+)//g ) { $query_file = $1; $capitalize = 1; }
 if ( $options =~ s/-P\s+(\S+)//g ) { $pfile = $1; }
 if ( $options =~ s/-B\s+(\S+)//g ) { $bfile = $1; }
 
+if ( $options =~ s/-blastplus//g )  { $useblastplus  = 1; }
+
 # Read infile and outfile
 if ( !$infile  && $options =~ s/^\s*([^- ]\S+)\s*// ) { $infile  = $1; }
 if ( !$outfile && $options =~ s/^\s*([^- ]\S+)\s*// ) { $outfile = $1; }
@@ -475,6 +481,7 @@ if ($query_file) {
 
 	# Prepare name line of hit
 	if ( $outformat eq "psi" ) {
+		print("Warning: output format $outformat not supported with blastplus program family yet by alignhits_html.pl\n");
 		foreach my $qname(@query_name){
 			$qname =~
 			/^(\S{1,20})\S*\s*(.*)/;    # delete everything after first block
@@ -525,62 +532,63 @@ my $blast_format = "prot";
 # Scan Blast output file for query length (needed for coverage)
 open INFILE, "<$infile" or die("cannot open $infile: $!\n");
 #print "LINE 527 ".$infile."\n";
+# $line_number is the number of the next line to read. The first line has number 1.
 $line_number++;
 #########################################################################################
-# Scan the Input File until the line "(NNN letters)" is reached 
-while ( $line = <INFILE> ) {
+# Scan the Input File for query size: "(NNN letters)" or "Length=NNN"
+# and (not needed) database size
+my $rounds = 0;
+while ( $line = <INFILE>) {
 	if($v==4){print "LINE 532 ".$line.""};
 	if ( $line =~ /BLASTN/ ) {    # check for nuc-Blast output
 		$blast_format = "nuc";
+		print("Warning: $blast_format format not supported with blastplus program family yet by alignhits_html.pl\n");
 	}
-	if ( $line =~ /^\s*\((\d+)\s+letters\)/ ) { $query_length = $1; last; }
+	if ( $line =~ /^\s*\((\d+)\s+letters\)/ || $line =~ /^Length=(\d+)/ ) {
+	    $query_length = $1;
+	} elsif ( $line =~ /^.*\s(\S+) total letters/ ) {
+	    $db_size = $1;
+	} elsif ( $line =~ ROUND_START_PATTERN ) {
+	    $rounds = $1;
+	} elsif ( $line =~ END_OF_HEADER ) {
+	    $line_number++;
+	    last;
+	}
 	$line_number++;
 }
-if ( $v >= 3 ) { print("Query length = $query_length\n"); }
-#########################################################################################
-# Scan Blast output file for database size (not needed) block till "Searching ....... Done"
-while ( $line = <INFILE> ) {
-	if($v==4){print "LINE 543 ".$line.""};
-	if ( $line =~ /^.*\s(\S+) total letters/ ) { $db_size = $1; last; }
-	$line_number++;
-}
+
 $db_size =~ tr/,//d;
-if ( $v >= 3 ) { print("Database length = $db_size residues\n"); }
+if ( $v >= 3 ) {
+    print("Query length = $query_length\n");
+    print("Database length = $db_size residues\n");
+}
 $db_size =
   0.6 * scalar($db_size)
   ;    # EFFECTIVE data base length (same factor used by BLAST)
 
 # Search for "Results from round"
 # If found, we are looking at PsiBlast output and have to search for the beginning of the last round
-$line_number++;
+if (1 < $rounds) {
+    # if 1 < $rounds, the output already have been shortened to the last round, i.e. by calling shorten_psiblast_output.pl.
+    # Therefore, this should not occur.
 
-# Gap 9 lines
-for ( $i = 1 ; $i <= 9 ; $i++ ) {
-	$line = <INFILE>;
-	if($v==4){print "LINE 560 ".$line};
-	if ( !$line ) {
-		die("Error in alignhits.pl: blast output file $infile truncated: $!\n");
-	}
+    # PsiBlast output! Search for line number with last occurence of "Results from round"
+    #if ( $v >= 3 ) {
+    if ( $v >= 1 ) {
+	print("PsiBlast output with possibly several rounds detected. Searching for last round...\n");
+    }
+    my $last_line = $line_number;
+    while ( $line = <INFILE> )    #scan through PsiBlast-output line by line
+    {
+	if ( $line =~ ROUND_START_PATTERN ) { $last_line = $line_number; }
 	$line_number++;
-	if ( $line =~ /^Results from round/ ) {
+    }
 
-		# PsiBlast output! Search for line number with last occurence of "Results from round"
-		if ( $v >= 3 ) {
-			print("PsiBlast output with several rounds detected. Searching for last round...\n");
-		}
-		my $last_line = $line_number;
-		while ( $line = <INFILE> )    #scan through PsiBlast-output line by line
-		{
-			if ( $line =~ /^Results from round/ ) { $last_line = $line_number; }
-			$line_number++;
-		}
-		# Advance to line with last occurence of "Results from round"
-		close INFILE;
+    # Advance to line with last occurence of "Results from round"
+    close INFILE;
 		
-		open INFILE, "<$infile" || die("cannot open $infile: $!");
-		for ( $j = 1 ; $j <= $last_line ; $j++ ) { <INFILE>; }
-		last;
-	}
+    open INFILE, "<$infile" || die("cannot open $infile: $!");
+    for ( $j = 1; $j <= $last_line ; $j++ ) { <INFILE>; }
 }
 
 ########################################################################################
@@ -606,7 +614,7 @@ while ( $line = <INFILE> )    #scan through PsiBlast-output line by line
 #			chomp($line);
 #			$nameline .= $line;
 #		}
-		$nameline =~ s/<a name = [\w\d]+><\/a>//g;    # test for html output!!!
+		$nameline =~ s/<a name\s*=\s*[\w\d]+><\/a>//g;    # test for html output!!!
 		$nameline =~ s/\s+/ /g;
 		$nameline =~ s/\s+gi\|/   gi\|/g;
 		
@@ -647,7 +655,7 @@ while ( $line = <INFILE> )    #scan through PsiBlast-output line by line
 		my $wrong_format = 0;
 
 		if ( $blast_format eq "nuc" ) {
-
+		    # not adapted to blastplus family yet. Don't use!
 			# Skip three lines and read following line
 			$line = <INFILE>;
 			$line = <INFILE>;
@@ -689,20 +697,20 @@ while ( $line = <INFILE> )    #scan through PsiBlast-output line by line
 			# Read pairwise alignment
 			$query_res  = "";
 			$target_res = "";
-			if ( $line !~ /^Query:\s*(\d+)\s+\S+/ ) {
+			if ( $line !~ /^Query:?\s*(\d+)\s+\S+/ ) {
 				print("WARNING: wrong format of blast output in $infile: $!  ---> Skipping HSP!\n");
 				next;
 			}
-			$line =~ /^Query:\s*(\d+)\s+\S+/;
+			$line =~ /^Query:?\s*(\d+)\s+\S+/;
 			if($v==4){print "LINE 697 ".$line."\n"};
 			$first_res = $1;
-			while ( $line =~ /Query:\s*\d+\s+(\S+)\s+(\d+)/)    # Cycle in this loop until no new "Query:" lines are found
+			while ( $line =~ /Query:?\s*\d+\s+(\S+)\s+(\d+)/)    # Cycle in this loop until no new "Query:" lines are found
 			{
 				$query_res .= $1;
 				$last_res = $2;
 				$line     = <INFILE>;
 				$line     = <INFILE>;
-				if ( $line !~ /^Sbjct:\s*\d+\s+(\S+)/ ) {
+				if ( $line !~ /^Sbjct:?\s*\d+\s+(\S+)/ ) {
 					print("WARNING: wrong format of blast output in $infile: $!  ---> Skipping HSP!\n");
 					$wrong_format = 1;
 					last;
@@ -1042,7 +1050,7 @@ if ( $outformat eq "psi" ) {
 	for ( $k = 0 ; $k < $nhit ; $k++ ) {
 		$hitseqs[$k] =~ tr/./-/;
 		if ($no_link) {
-		    $hitnames[$k] =~ s/<a href\S+\s*>//g;
+		    $hitnames[$k] =~ s/<a .*?>//g;
 		    $hitnames[$k] =~ s/<\/a>//g;
 		    if($v==5){print "LINE 1047 ".$hitnames[$k]."\n"};
 		}
@@ -1054,7 +1062,7 @@ else {
 	for ( $k = 0 ; $k < $nhit ; $k++ ) {
 		if ($no_link) {
 			# ><a href="http://www.uniprot.org/uniprot/B4QXC8">
-		    $hitnames[$k] =~ s/<a href=.*?>//g;
+		    $hitnames[$k] =~ s/<a .*?>//g;
 		    $hitnames[$k] =~ s/<\/a>//g;
 		    if($v==5){print "LINE 1058 ".$hitnames[$k]."\n"};
 		}
@@ -1365,11 +1373,16 @@ sub MakePSSM() {
 	my $q       = $_[1];
 	my $basename;
 	my $rootname;
+	my $pssmfile;
 
 	# Create dummy database?
 	if ( !-e "$dummydb.phr" ) {
 		system("cp $query_file $dummydb");
-		system("$ncbidir/formatdb -i $dummydb");
+		if ($useblastplus) {
+		    system("$ncbipdir/makeblastdb -in $dummydb");
+		} else {
+		    system("$ncbidir/formatdb -i $dummydb");
+		}
 	}
 	if ( $alifile =~ /(.*)\..*/ ) { $basename = $1; }
 	else { $basename = $alifile; }
@@ -1377,27 +1390,44 @@ sub MakePSSM() {
 	else { $rootname = $basename; }
 
 	# Make ASCII PSSM matrix from binary checkpoint file
-	&System(
-"$ncbidir/blastpgp -b 0 -j 1 -h 0.01 -d $dummydb -i $query_file -B $alifile -C $basename.chk 1> $basename.blalog 2> $basename.blalog"
-	);
-	if ( !-e "$basename.chk" ) {
-		die(
-"Error: Could not generate checkpoint file in '$ncbidir/blastpgp -b 0 -j 1 -h 0.01 -d $dummydb -i $query_file -B $alifile -C $basename.chk 1> $basename.blalog 2> $basename.blalog'\n"
-		);
-	}
+	if ($useblastplus) {
+	    $pssmfile="$basename.mtx";
+	    &System(
+"$ncbipdir/psiblast -db $dummydb -query $query_file -num_iterations 1 -inclusion_ethresh 0.01 -num_alignments 0 -in_msa $alifile -out_ascii_pssm $pssmfile 1> $basename.blalog 2> $basename.blalog"
 
-	system("cp -f $query_file $basename.fasta");
-	system("echo $rootname.chk > $basename.pn\n");
-	system("echo $rootname.fasta > $basename.sn\n");
-	system("$ncbidir/makemat -P $basename");
+# makemat below is not supported any more. use option -out_ascii_pssm ? is this the same as the .mtx file used below?
+		);
+	    if ( !-e "$pssmfile" ) {
+		die(
+"Error: Could not generate checkpoint file in '$ncbipdir/psiblast -db $dummydb -query $query_file -num_iterations 1 -inclusion_ethresh 0.01 -num_alignments 0 -in_msa $alifile -out_ascii_pssm $pssmfile 1> $basename.blalog 2> $basename.blalog'\n"
+		    );
+	    }
+	} else {
+	    $pssmfile="$basename.chk";
+	    &System(
+"$ncbidir/blastpgp -b 0 -j 1 -h 0.01 -d $dummydb -i $query_file -B $alifile -C $pssmfile 1> $basename.blalog 2> $basename.blalog"
+		);
+	    if ( !-e $pssmfile ) {
+		die(
+"Error: Could not generate checkpoint file in '$ncbidir/blastpgp -b 0 -j 1 -h 0.01 -d $dummydb -i $query_file -B $alifile -C $pssmfile 1> $basename.blalog 2> $basename.blalog'\n"
+		    );
+	    }
+	}
+# makemat doesn't exist with blast+. Probably the .mtx can directly created by psiblast.
+	if (!$useblastplus) {
+	    system("cp -f $query_file $basename.fasta");
+	    system("echo $rootname.chk > $basename.pn\n");
+	    system("echo $rootname.fasta > $basename.sn\n");
+	    system("$ncbidir/makemat -P $basename");
+	}
 
 # Read in PSSM
 # The PSSM file *.mtx contains one line for each column, beginning with line 15.
 # The columns of these lines give the log-odds 100*log(p(i,a)/f(a)) in the following order:
 # ? A ? C D E F G H I K L M N P Q R S T V W X Y ? ? ?
 
-	open( PSIMTX, "<$basename.mtx" )
-	  || die("Error: cannot open $basename.mtx: $!\n");
+	open( PSIMTX, "<$pssmfile" )
+	  || die("Error: cannot open $pssmfile: $!\n");
 	for ( $i = 1 ; $i <= 14 ; $i++ ) { $line = <PSIMTX>; }
 	my @in;
 	my $a;

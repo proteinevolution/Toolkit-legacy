@@ -1,0 +1,7 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool}) %>
+
+<%= render(:partial => "shared/resultsections", :locals => {:export => false, :forward => false}) %>
+
+<img src="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_histo.png">
+
+</form>

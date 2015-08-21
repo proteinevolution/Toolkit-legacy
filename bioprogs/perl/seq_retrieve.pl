@@ -18,6 +18,7 @@ my %id;
 my $num_fast = 1500;
 my $max_seqs = 100000;
 my $counter = 0;
+my $use_legacy_blast = 1; # compatibility
 
 my $num_ident = 0;
 my $num_ident_unique = 0;
@@ -64,8 +65,11 @@ for ( my $j = 0 ; $j < @ARGV ; $j++ ) {
 	$db = $ARGV[$j];
     } elsif ( $ARGV[$j] eq "-unique") {
 	$unique = "T";
-    } 
-    else {
+    } elsif ($ARGV[$j] eq "-use_legacy_blast") {
+	$use_legacy_blast=1;
+    } elsif ($ARGV[$j] eq "-use_blastplus") {
+	$use_legacy_blast=0;
+    } else {
 	print("\nERROR: Don't know this Argument: $ARGV[$j] \n\n");
 	error();
 	
@@ -121,11 +125,14 @@ while ($line = <IN>) {
 	    $num_ident_unique++;
 	}
 	# This selects the database we want to search ? nr or sprot
-	my $dbselection = "$blast_dir/fastacmd -d '$db' -s '$ident'";
+	my $dbselection; # = "$blast_dir/fastacmd -d '$db' -s '$ident'";
 
+	if ($use_legacy_blast) {
 		$dbselection = " $blast_dir/fastacmd -d ' $db $uniprot_trembl $uniprot_sprot' -s '  $ident'";
+	} else {
+	    $dbselection = "$blast_dir/blastdbcmd -db '$db $uniprot_trembl $uniprot_sprot' -entry '$ident'";
+	}
 
-	#my $command = "$blast_dir/fastacmd -d '$db' -s '$ident'";
 	my $command = $dbselection;
 	print "Command: $command\n";
 	my $ret = `$command`;
@@ -200,11 +207,13 @@ sub error {
 	print("Options:\n\n");
 	print("-i ident-file:\t file with identifier \n");
 	print("-o output-file:\t output-file \n");
-	print("-b blast-dir:\t blast-directory with fastacmd [default: /cluster/bioprogs_stable/blast]\n");
-	print("-d db:\t database [default: /cluster/databases]\n");
-	print("-d max-seqs:\t max. number of retrievable sequences [default: 100.000]\n");
+	print("-b blast-dir:\t blast-directory with fastacmd/blastdbcmd [default: $blast_dir]\n");
+	print("-d db:\t database [default: $db]\n");
+	print("-m max-seqs:\t max. number of retrievable sequences [default: $max_seqs]\n");
 	print("-unique:\t retrieve identical sequences only once \n\n");
-	print("Optional:\n\n");
+	print("-use_legacy_blast:\t use fastacmd from the legacy blast package (default)\n");
+	print("-use_blastplus:\t use blastdbcmd from the blast+ package\n");
+
 	print("\n");
 }
 
@@ -246,7 +255,12 @@ sub fast {
 
     # cannot place more than one database in the parameter list to fastacmd!
     # my $command = "$blast_dir/fastacmd -d '$db_dir/nre $db_dir/nt' -i $infile.prepare > $outfile.prepare 2> $outfile.errlog";
-    my $command = "$blast_dir/fastacmd -d $db -i $infile.prepare > $outfile.prepare 2> $outfile.errlog";
+    my $command;
+    if ($use_legacy_blast) {
+	$command = "$blast_dir/fastacmd -d $db -i $infile.prepare > $outfile.prepare 2> $outfile.errlog";
+    } else {
+	$command = "$blast_dir/bastdbcmd -db $db -entry_batch $infile.prepare > $outfile.prepare 2> $outfile.errlog";
+    }
     system($command);
 	
     open (OUT, ">$outfile" ) or die("Cannot open!");
