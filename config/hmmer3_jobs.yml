@@ -22,6 +22,10 @@ hmmer3_job:
       title: Domain table
       title_long: Show Domain table
       forwardsections:
+    - name: results_logo
+      title: HMM Logo
+      title_long: Show Model Logo
+      forwardsections:      
   forwarding_emission:
       type: 5
       format: CLUSTAL

@@ -15,6 +15,7 @@ class Hmmer3ExportAction < Action
 		
 		infile = @basename + ".out"
 		outfile = @basename + ".export"
+		logofile = @basename + ".logo"
     
 		error if !File.readable?(infile) || !File.exists?(infile) || File.zero?(infile)
 		res = IO.readlines(infile)

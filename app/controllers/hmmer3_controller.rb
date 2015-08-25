@@ -67,6 +67,17 @@ class Hmmer3Controller < ToolController
 		@job.set_export_ext(".out")
 		export_to_file
 	end
+
+
+	def export_logo_to_browser
+		@job.set_export_ext(".logo")
+		export_to_browser
+	end
+  
+	def export_logo_to_file
+		@job.set_export_ext(".logo")
+		export_to_file
+	end
         
         def export_domain_to_browser
                 @job.set_export_ext(".dom")

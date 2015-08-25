@@ -39,6 +39,7 @@ class Hmmer3Action < Action
 		@outfile_domtbl = @basename+".dom"
                 @outfile    = @basename+".out"
 		@outfile_sto    = @basename+".sto"
+		@outfile_logo   = @basename+".logo"
                 @outfile_fas    = @basename+".fas"
                 @outfile_multi_sto = @basename+".mal.sto"
 		params_to_file(@infile, 'sequence_input', 'sequence_file')
@@ -72,13 +73,13 @@ class Hmmer3Action < Action
           params_dump
           # Generate hmm from a given input Alignment
           cpus = 8
-
+        
           @commands << "#{PERL}/reformat.pl -i=fas -o=sto -f=#{@infile} -a=#{@infile_sto}"
           @commands << "#{HMMER3}/binaries/hmmbuild --cpu #{cpus} #{@infile_hmm} #{@infile_sto}"
           @commands << "#{HMMER3}/binaries/hmmsearch --cpu #{cpus} #{@hmmsearchopt} --tblout #{@outfile_tbl} --domtblout #{@outfile_domtbl}  -o #{@outfile} -A #{@outfile_multi_sto}   #{@infile_hmm} #{@db_path}  "
           #@commands << "#{PERL}/reformat.pl -i=sto -o=fas -f=#{@outfile_multi_sto} -a=#{@outfile_fas}"
           @commands << "if [[ -s #{@outfile_multi_sto} ]] ; then #{PERL}/reformat.pl -i=sto -o=fas -f=#{@outfile_multi_sto} -a=#{@outfile_fas}; else echo \"Empty File\" >> #{@outfile_fas} ; fi"
-
+          @commands << "#{HMMER3}/binaries/hmmlogo #{@infile_hmm} >>  #{@outfile_logo}"
           #@commands << "#{HMMER3}/binaries/hmmalign #{@infile_hmm} #{@db_path}  >>  #{@outfile_sto}  "
           logger.debug "Commands:\n"+@commands.join("\n")
           queue.submit(@commands, true, {'cpus' => cpus.to_s()})
