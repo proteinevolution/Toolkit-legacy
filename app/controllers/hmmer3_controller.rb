@@ -59,12 +59,12 @@ class Hmmer3Controller < ToolController
 	end
 	
 	def export_stockholm_to_browser
-		@job.set_export_ext(".out")
+		@job.set_export_ext(".sto")
 		export_to_browser
 	end
   
 	def export_stockholm_to_file
-		@job.set_export_ext(".out")
+		@job.set_export_ext(".sto")
 		export_to_file
 	end
 
