@@ -62,7 +62,8 @@ user_logout_login_link: '&#171; login'
 user_change_password_head: Change Password
 user_change_message: Enter your new password in the fields below and click 'Change Password' to change your password. A notification will be sent to your email inbox.
 user_change_password_button: Change password
-user_change_cancel_welcome_link: Cancel
+#user_change_cancel_welcome_link: Cancel
+user_change_cancel_login_link: Login
 
 # Forgotten password
 user_forgot_password_head: Forgotten Password
