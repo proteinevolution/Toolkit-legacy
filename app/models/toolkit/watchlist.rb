@@ -1,8 +1,11 @@
+require "protected_sql.rb"
+
 class Watchlist < ActiveRecord::Base
 
   MAX_SEQS=1000
 
   include Dbhack
+  include ProtectedSql
   belongs_to :user, :dependent => false
   serialize :params
 
@@ -17,6 +20,10 @@ class Watchlist < ActiveRecord::Base
   validates_format_of(:width, :Pmin, :maxlines, {:with => /^\d+$/, :on => :create, :message => 'Invalid value! Only integer values are allowed!'})
   
   validates_presence_of(:db_name, {:on => :create})
+
+  def self.max_seqs
+    MAX_SEQS
+  end
   
   def validate_on_create
     logger.info "USERID:#{informat} #{db_name} #{userid} #{width} #{maxlines}"
