@@ -66,13 +66,12 @@
 <% end %>
 </table>
 <input name="submitform" type="submit" class="toolbutton" value="Delete selected sequences" />
-<p style="margin: 10px 0px 0px 5px;">The total number of your sequences may not exceed <span style="color: red; font-weight: bold;">100</span>.</p>
+<p style="margin: 10px 0px 0px 5px;">The total number of your sequences may not exceed <span style="color: red; font-weight: bold;"><%=Watchlist.max_seqs%></span>.</p>
 
 </form>
 <% end %>
 
 <div class="hr">&nbsp;</div>
 <div class="row">
-  Please send feedback to: soeding AT lmb.uni-muenchen.de
+  Please send feedback to: soeding AT mpibpc.mpg.de
 </div>
-
