@@ -1,7 +1,6 @@
 log
 tmp
 databases
-bioprogs
 bioprogs_13_10_07.tar.gz
 bioprogs_wye
 config/database.yml
