@@ -1,10 +1,7 @@
 <h2><%= @tool['title'] %> Overview</h2>
 <div class="row">
-Sequence-based protein function and structure prediction depends crucially on sequence-search sensitivity and accuracy 
-of the resulting sequence alignments. We present an open-source, general-purpose tool that represents both query and database 
-sequences by profile hidden Markov models (HMMs): 'HMM-HMM-based lightning-fast iterative sequence search' 
-(HHblits; http://toolkit.genzentrum.lmu.de/hhblits/). 
-Compared to the sequence-search tool PSI-BLAST, HHblits is faster owing to its discretized-profile prefilter, 
-has 50-100% higher sensitivity and generates more accurate alignments</div>
+<p style="font-size:10pt; text-align:justify">
+For an accurate sequence-based prediction of protein structure and function, a highly sensitive sequence-search method is crucial. Today, profile-profile and HMM-HMM alignment methods are custom when it comes to identification and alignment of templates for 3D-homology modeling. As these methods are generally too slow for iteratively searching through large databases, we offer <b>HHblits</b> as a 'lightning-fast' HMM-HMM-based iterative sequence search tool. The profile-profile alignment prefilter of HHblits reduces the number of full HMM-HMM alignments from many millions to a few thousand, making it faster than PSI-BLAST but still as sensitive as HHsearch. Prefiltering is essential for speed and sensitivity. Compared to PSI-BLAST, HHblits is faster, up to twice as sensitive and produces more accurate alignments.</br></br>
+The HHblits software is part of the open source package HHsuite.</div>
 
 <%= render(:partial => "hhblits/references_and_contact") %>

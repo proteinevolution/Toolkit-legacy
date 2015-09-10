@@ -1,19 +1,19 @@
 <ul id="helpindex" class="<%= @section['theme'] %>">
-	<li><a href="#input">Paste sequence or multiple alignment</a></li>
-	<li><a href="#format">Select input format</a></li>
-	<li><a href="#match_mode">Match state assignment</a></li>
-	<li><a href="#databases">Select databases</a></li>
-	<li><a href="#maxit">Max. number of iterations</a></li>
-	<li><a href="#alignmode">Alignment mode</a></li>
+	<li><a href="#input">Paste Sequence or MSA</a></li>
+	<li><a href="#format">Select Input Format</a></li>
+	<li><a href="#match_mode">Match State Assignment</a></li>
+	<li><a href="#databases">Select Databases</a></li>
+	<li><a href="#maxit">Max. Number of Iterations</a></li>
+	<li><a href="#alignmode">Alignment Mode</a></li>
 	<li><a href="#realign">Realign with MAC</a></li>
-	<li><a href="#mact">MAC realignment threshold</a></li>
-	<li><a href="#no_filter">Disable most filters</a></li>
-	<li><a href="#E_hhblits">E-value inclusion threshold</a></li>
-	<li><a href="#cov_min">Min. coverage of hits</a></li>
-	<li><a href="#maxseq">Show representative sequences per HMM</a></li>
-	<li><a href="#width">Width of alignments</a></li>
-	<li><a href="#minprobab">Minimum probability in hit list</a></li>
-	<li><a href="#maxlines">Maximum number of hits in hit list</a></li>
+	<li><a href="#mact">MAC Realignment Threshold</a></li>
+	<li><a href="#no_filter">Disable Most Filters</a></li>
+	<li><a href="#E_hhblits">E-value Inclusion Threshold</a></li>
+	<li><a href="#cov_min">Min. Coverage of Hits</a></li>
+	<li><a href="#maxseq">Show Representative Sequences per HMM</a></li>
+	<li><a href="#width">Width of Alignments</a></li>
+	<li><a href="#minprobab">Minimum Probability in Hit List</a></li>
+	<li><a href="#maxlines">Maximum Number of Hits in Hit List</a></li>
 	<li><a href=""></a></li>
 	<li><a href="#coloring">Coloring query-template multiple alignments in results</a></li>
 </ul>
@@ -21,20 +21,15 @@
 <h2><%= @tool['title'] %> Parameters</h2>
 
 <a name="input"></a>
-<h3 class="<%= @section["name"] %>">Paste single sequence or multiple alignment</h3>
+<h3 class="<%= @section["name"] %>">Paste Sequence or MSA</h3>
 <div class="row">
-Paste the query <i>sequence</i> with which you want to do the search either as raw sequence 
-(e.g. 'ELRLRYCAPAGFALLKCN...') or as FASTA sequence (i.e. with a single line '>sequence_name optional description' 
-preceding the raw sequence, see next subsection). <br>
-You may also paste a query <i>multiple alignment</i> (for allowed formats see below). 
-An expert-built or expert-edited alignment or one that contains homologs not yet contained in the sequence 
-database may significantly increase the sensitivity and reliability of the search. 
-Note: if you paste a multiple alignment please don't forget to select the appropriate input format below. 
+<p style="font-size:10pt; text-align:justify">
+You have the option to paste either a single protein sequence or a Multiple Sequence Alignment (MSA). HHblits builds high-quality MSAs starting from single sequences or from MSAs. It transforms these into a query HMM and iteratively searches through the selected databases. If you choose to paste a MSA as input, please select the appropriate input format below.</p> 
 <br/><br/>
 </div><div class="spacer">&nbsp;</div>
 
 <a name="format"></a>
-<h3 class="<%= @section["name"] %>">Select input format</h3>
+<h3 class="<%= @section["name"] %>">Select Input Format</h3>
 <div class="row">
 <h5>Entering a single query sequence</h5>
 <br>
