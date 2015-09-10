@@ -392,7 +392,7 @@ class SgeWorker < AbstractWorker
                 when "DataaAction" then 15
                 when "Dataa2Action" then 3
                   ### F ###
-                when "FrpredAction" then 15
+                when "FrpredAction" then 50 # uses blastpgp
                   ### G ###
                 when "GcviewAction" then 50 # uses blastpgp
                 when "Gi2seqExportAction" then 3  

@@ -13,7 +13,7 @@
 <div class="row">
 Paste the query <i>sequence(s)</i> with which you want to do the search
 as FASTA sequence (i.e. with a single line '>sequence_name optional description'
-preceding the raw sequence, see next subsection). You may enter upto 100 independent
+preceding the raw sequence, see next subsection). You may enter upto <%=Watchlist.max_seqs%> independent
 sequences simultaneously, keeping one after the other. HHpred will use PSI-BLAST searches
 against the non-redundant sequence database from NCBI to build a multiple alignment from it. This
 alignment will then be used to construct a concise statistical representation (a hidden Markov
@@ -35,7 +35,7 @@ Whenever possible, users should upload sequences of single protein domains, sinc
 <div class="row">
 <h5>Entering independent query sequence(s)</h5>
 <br>
-You can enter a single or upto 100 independent query sequence in FASTA format (with name line). HHsearch/HHpred will build a multiple alignment of homologs from it with PsiBlast. The query sequence(s) in FASTA can look like this:
+You can enter a single or upto <%=Watchlist.max_seqs%> independent query sequence in FASTA format (with name line). HHsearch/HHpred will build a multiple alignment of homologs from it with PsiBlast. The query sequence(s) in FASTA can look like this:
 <br><br>
 <PRE>
 >gi|532319|pir|TVFV2E|TVFV2E envelope protein

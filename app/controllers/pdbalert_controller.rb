@@ -46,7 +46,7 @@ class PdbalertController < ApplicationController
     else
       @upload_on = false;
     end
-    @userdbs = Watchlist.find(:all, :conditions => ["user_id = ?",@user.id], :order => "created_on DESC") 
+    @userdbs = Watchlist.protected_find(:all, :conditions => ["user_id = ?",@user.id], :order => "created_on DESC")
     @userdbs.each do |userdb|
       userdb.warning_key = 0
       userdb.save!
