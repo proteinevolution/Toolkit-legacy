@@ -51,7 +51,7 @@ my %three2one=(
     "GPL"=>"K","SOS"=>"N","MLY"=>"K","2SO"=>"H","CAF"=>"C","CAS"=>"C","PFF"=>"F",
     "DI"=>"I","56A"=>"H","U2X"=>"Y","0G"=>"G","0C"=>"C","C1S"=>"C","MHO"=>"M",
     "MLZ"=>"K","PF5"=>"F","N7P"=>"P","GAU"=>"E","0AF"=>"W","2DT"=>"T", "CSL"=>"C",
-    "ORN"=>"A","LYR"=>"K","4AK"=>"K","DPP"=>"A","0A1"=>"Y","5HC"=>"C",
+    "ORN"=>"A","LYR"=>"K","4AK"=>"K","DPP"=>"A","0A1"=>"Y","5HC"=>"C","GTP"=>"G",
 
     # mappings of multiple structure components (mapping to a sequence of one-letter codes)
     "CR8"=>"HYG", "CR2"=>"GYG",
