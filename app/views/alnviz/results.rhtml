@@ -30,7 +30,7 @@
 <!-- <div class="alignres"><%= @job.results.join("\n") %></div> -->
 
 
-<h3><a href="http://msa.biojs.net" target="_blank">BioJS MSA Viewer</a></h3>
+<h3><a href="http://msa.biojs.net" target="_blank">BioJS MSA Viewer (Clustal Format)</a></h3>
 
 <div id="menuDiv"></div>
 <div id="yourDiv">Loading ... </div>
@@ -39,7 +39,7 @@
         // this is a way how you use a bundled file parser
         msa = require("msa");
 
-        var opts = {colorscheme: {"scheme": "clustal2"}};
+        var opts = {colorscheme: {"scheme": "clustal"}};
 
         // set your custom properties
         // @see: https://github.com/greenify/biojs-vis-msa/tree/master/src/g 
@@ -65,7 +65,7 @@
         }
 
              
-        var defaultURL = "<%= @job.url_for_job_dir %>/<%= @job.jobid %>.align";
+        var defaultURL = "<%= @job.url_for_job_dir %>/<%= @job.jobid %>.out";
         var url = getURLParameter('seq') || defaultURL;
 
         m.u.file.importURL(url, renderMSA);
