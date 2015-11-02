@@ -7,5 +7,17 @@ alnviz_job:
       title: Results
       title_long: Show result
       forwardsections:
+    - name: reducedfasta
+      title: Reduced Fasta
+      title_long: Show result
+      forwardsections:
+    - name: fasta
+      title: Fasta
+      title_long: Show result
+      forwardsections:
+    - name: a3m
+      title: A3M
+      title_long: Show result
+      forwardsections:    
   forwarding_acceptances:
       type: 4
