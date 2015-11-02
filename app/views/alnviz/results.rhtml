@@ -42,7 +42,7 @@
 
 
                 var jobid = '<%= @job.url_for_job_dir %>/<%= @job.jobid %>';
-                var w = window.open('/alnviz/clustal_popup', 'popup', 'width=1200,height=825,scrollbars=0');
+                var w = window.open('/alnviz/clustal_popup', 'popup', 'resizable=0,width=1200,height=825,scrollbars=0');
                 w.myVar = jobid;
 
 
@@ -58,6 +58,17 @@
 
 <div id="menuDiv"></div>
 <div id="yourDiv">Loading ... </div>
+
+<style>
+
+.biojs_msa_labels
+{
+    font-family: Droid Sans Mono;
+    font-size: 10px;
+}
+
+</style>
+
 
 <script>
         // this is a way how you use a bundled file parser
