@@ -329,6 +329,10 @@ class ToolController < ApplicationController
     render(:layout => "help")
   end
 
+  def clustal_popup
+    render(:layout => "biojsmsa")
+  end
+
   # compute the default value of forwarding selection
   # Example: default_forwarding('psi_blast')
   # returns a suitable selection if tool psi_blast should be default.
