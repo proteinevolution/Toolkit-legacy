@@ -32,6 +32,30 @@
 
 <h3><a href="http://msa.biojs.net" target="_blank">BioJS MSA Viewer</a> (Clustal Format)</h3>
 
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+
+<script type="text/javascript" language="javascript">
+
+             function OpenWindow_JobID() {
+
+
+                var jobid = '<%= @job.url_for_job_dir %>/<%= @job.jobid %>';
+                var w = window.open('/alnviz/clustal_popup', 'popup', 'width=1200,height=825,scrollbars=0');
+                w.myVar = jobid;
+
+
+             }
+
+</script>
+
+
+
+<a href="#" onClick="OpenWindow_JobID();" onmouseover="return overlib('Enlarge');" onmouseout="return nd();"><i class="fa fa-expand" style="float: right; padding-top: 2px;"></i></a>
+
+<br><br>
+
 <div id="menuDiv"></div>
 <div id="yourDiv">Loading ... </div>
 
@@ -85,4 +109,3 @@
     </script>
 
 
-</form>
