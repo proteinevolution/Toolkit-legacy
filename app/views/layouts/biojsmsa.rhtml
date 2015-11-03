@@ -14,6 +14,7 @@
 
 
   <%= javascript_include_tag "msa_mpi.min.gz.js" %>
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Sans+Mono" />
 
 <!-- the following code overrides the biojsmsa css because of a strange bug which made the descriptions unreadable -->
 
@@ -21,13 +22,33 @@
 .smenubar .smenubar_alink {
   color: magenta;
 }
+
+#metanav {
+
+  display: block;
+  position: absolute left;
+  
+  top: 0px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font-family: Droid Sans Mono;
+  font-size: 12px;
+  background-color: #E6F2F2;
+
+  
+}
+
 </style>
 	
-
+<ul id="metanav"><li>Alignment Viewer</li></ul>
 
 </head>
 <br><br>
 <body bgcolor="#fff">
+
+
+
 
     <div id="menuDiv"></div>
     <div id="yourDiv">Loading ... </div>
