@@ -13,30 +13,49 @@
 
 
 
+
   <%= javascript_include_tag "msa_mpi.min.gz.js" %>
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Sans+Mono" />
+  <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
 <!-- the following code overrides the biojsmsa css because of a strange bug which made the descriptions unreadable -->
 
 <style>
 .smenubar .smenubar_alink {
-  color: magenta;
+  color: #005FA9;
 }
 
 #metanav {
 
   display: block;
-  position: absolute left;
+  position: top;
   
   top: 0px;
   padding: 0;
   margin: 0;
   width: 100%;
-  font-family: Droid Sans Mono;
-  font-size: 12px;
+  font-family: Lato;
+  font-size: 14px;
+  color: #000;
   background-color: #E6F2F2;
 
   
+}
+
+#footer {
+
+position: static;
+bottom: 0px;
+margin-left: 0px;
+padding-bottom: 10px;
+border-top: 0px solid #CCC;
+
+color: #666;
+width: 1200px;
+clear: both;
+font-family: Lato;
+font-size: 12px;
+
 }
 
 </style>
@@ -44,7 +63,7 @@
 <ul id="metanav"><li>Alignment Viewer</li></ul>
 
 </head>
-<br><br>
+<br>
 <body bgcolor="#fff">
 
 
@@ -52,8 +71,12 @@
 
     <div id="menuDiv"></div>
     <div id="yourDiv">Loading ... </div>
-  
     <div><%= @content_for_layout %></div>
+  
+
+
+
                 
-</body>
+</body><center>
+    <tr top-border="1px" valign="bottom"><td valign="bottom"><div id="footer"><%= TOOLKIT_COPYRIGHT %>, <a href="http://www.eb.tuebingen.mpg.de/departments/1-protein-evolution" target="_blank">Dept. of Protein Evolution at the Max Planck Institute for Developmental Biology</a>, T&#252;bingen<br>Release-<%= TOOLKIT_RELEASE %></div></td></tr></center>
 </html>
