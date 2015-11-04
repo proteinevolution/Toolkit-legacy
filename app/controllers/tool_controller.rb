@@ -329,7 +329,15 @@ class ToolController < ApplicationController
     render(:layout => "help")
   end
 
-  def clustal_popup
+  def clustal_popup_alnviz
+    render(:layout => "biojsmsa")
+  end
+
+  def ralign_popup_alnviz
+    render(:layout => "biojsmsa")
+  end
+
+  def fasta_popup_alnviz
     render(:layout => "biojsmsa")
   end
 
