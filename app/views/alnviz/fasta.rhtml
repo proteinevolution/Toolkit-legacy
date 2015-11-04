@@ -1,4 +1,4 @@
-<%= javascript_include_tag "msa_mpi.min.gz.js" %>
+<%= javascript_include_tag "msa_mpi_content.min.gz.js" %>
 
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
   
@@ -51,8 +51,35 @@
 
 <br><br>
 
+
+
 <div id="menuDiv"></div>
 <div id="yourDiv">Loading ... </div>
+
+<style>
+
+.biojs_msa_labels
+{
+    font-family: Droid Sans Mono;
+    font-size: 10px;
+}
+
+
+#content {
+  margin: 0px 0px 0px 170px;
+  padding: 0px 10px 70px 0px;
+  width: 720px;
+  position: relative;
+}
+
+
+div[style] {
+
+  top: 275px !important;
+  
+}
+
+</style>
 
 <script>
         // this is a way how you use a bundled file parser
