@@ -8,11 +8,7 @@ alnviz_job:
       title_long: Show result
       forwardsections:
     - name: reducedfasta
-      title: Reduced Fasta
-      title_long: Show result
-      forwardsections:
-    - name: fasta
-      title: Fasta
+      title: Reduced Alignment
       title_long: Show result
       forwardsections:
   forwarding_acceptances:
