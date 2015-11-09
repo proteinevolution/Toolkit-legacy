@@ -44,15 +44,14 @@
 }
 
 #footer {
-
-position: static;
-bottom: 0px;
-margin-left: 0px;
+margin: auto;
+position: absolute;
+bottom: 20px;
+text-align: center;
 padding-bottom: 0px;
 border-top: 1px solid #CCC;
 color: #666;
-width: 1200px;
-clear: both;
+width: 100%;
 font-family: Lato;
 font-size: 12px;
 
@@ -77,6 +76,6 @@ font-size: 12px;
 
 
                 
-</body><center>
-    <tr top-border="1px" valign="bottom"><td valign="bottom"><div id="footer"><%= TOOLKIT_COPYRIGHT %>, <a href="http://www.eb.tuebingen.mpg.de/departments/1-protein-evolution" target="_blank">Dept. of Protein Evolution at the Max Planck Institute for Developmental Biology</a>, T&#252;bingen<br>Release-<%= TOOLKIT_RELEASE %></div></td></tr></center>
+</body>
+    <div id="footer"><%= TOOLKIT_COPYRIGHT %>, <a href="http://www.eb.tuebingen.mpg.de/departments/1-protein-evolution" target="_blank">Dept. of Protein Evolution at the Max Planck Institute for Developmental Biology</a>, T&#252;bingen<br>Release-<%= TOOLKIT_RELEASE %></div>
 </html>
