@@ -11,7 +11,7 @@
 }
 
 html {
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
 }
 
@@ -37,7 +37,7 @@ html {
             dropImport: true
         };
         opts.zoomer = {
-           alignmentHeight: 680, alignmentWidth: "auto", labelNameLength: 50, labelWidth: 130,labelFontsize: "10px",labelIdLength: 80,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 15px 0px 15px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
+           alignmentHeight: "825", alignmentWidth: "auto", labelNameLength: 50, labelWidth: 130,labelFontsize: "10px",labelIdLength: 80,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 15px 0px 15px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
         };
 
         // init msa
@@ -68,10 +68,10 @@ html {
             // Author: Seung-Zin Nam
             // bugfix: here we shift the sequence ids back to their correct value via the backbone.js api !!!
 
-            for (var i=0; i<m.seqs.length; i++) {
-            var sequenceId = m.seqs.at(i).get("id");  
-            m.seqs.at(i).set("id", sequenceId-1);
-            }
+            //for (var i=0; i<m.seqs.length; i++) {
+            //var sequenceId = m.seqs.at(i).get("id");  
+            //m.seqs.at(i).set("id", sequenceId-1);
+            //}
 
             // call render at the end to display the whole MSA
             m.render();
