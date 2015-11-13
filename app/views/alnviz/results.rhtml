@@ -47,6 +47,7 @@
                params += ', height='+screen.height;
                params += ', top=0, left=0'
                params += ', fullscreen=yes';
+               params += ', scrollbars=yes';
 
 
                 var jobid = '<%= @job.url_for_job_dir %>/<%= @job.jobid %>';
@@ -108,7 +109,7 @@ div[style] {
             seqlogo: false,
 
             labels: true,
-            labelName: false,
+            labelName: true,
             labelId: true,
             labelPartition: false,
             labelCheckbox: false
@@ -117,7 +118,7 @@ div[style] {
             dropImport: true
         };
         opts.zoomer = {
-           alignmentHeight: 825, alignmentWidth: "auto", labelNameLength: 155, labelWidth: 130,labelFontsize: "13px",labelIdLength: 150,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 10px 0px 0px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
+           alignmentHeight: 825, alignmentWidth: "auto", labelNameLength: 90, labelWidth: 130,labelFontsize: "13px",labelIdLength: 80,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 10px 0px 0px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
         };
 
         // init msa
@@ -146,20 +147,11 @@ div[style] {
             // Author: Seung-Zin Nam
             // bugfix: here we shift the sequence ids back to their correct value via the backbone.js api !!!
 
-          
-
-
+            var sequenceId = new Array(m.seqs.length);
             for (var i=0; i<m.seqs.length; i++) {
-
-            var sequenceId = m.seqs.at(i).get("id");
-
-            if(!isNaN(sequenceId)){
-          
-            m.seqs.at(i).set("id", sequenceId-1);
-
-            }
-
-            }
+            sequenceId[i] = m.seqs.at(i).get("id");
+            if(!isNaN(sequenceId[i])){
+            m.seqs.at(i).set("id", sequenceId[i]-1);}}
             
 
             // call render at the end to display the whole MSA
