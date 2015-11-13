@@ -18,36 +18,33 @@ class AlnvizAction < Action
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)    
     @outfile = @basename+".out"
-
-   
+    
   
     params_to_file(@outfile, 'sequence_input', 'sequence_file')
 
-
-
-
+  
     #Author: Seung-Zin Nam
     #this code is a hack to provide fake gi numbers for biojs msa to handle custom ids
     #TODO: another hack to do the renumbering which happens in the backbone.js interface on the server!
-    res = IO.readlines(sequence_file)
     
     out = File.new(@outfile, "w+")
     delim = '>'
     
     File.readlines(sequence_file).each do |line|
-      if ((line.include? '>') && !(line.include? '>gi|'))
+
+      if ((line.include? '>') && !(line.include? '>gi|') && !(line.include? '>db|') && !(line.include? '>sp|') && !(line.include? '>tr|'))
         then
         out.write(line.split(delim).join(delim + 'gi|'))
+        
       else
         out.write(line)
+        
       end
+    
     end
     out.close
 
-
-
-
-
+   
 
     @informat = params['informat'] ? params['informat'] : 'fas'
     reformat(@informat, "clu", @outfile)
@@ -60,7 +57,6 @@ class AlnvizAction < Action
 
   def perform
     params_dump
-
 
 
     @commands << "cp sequence_file #{@basename}.in"
