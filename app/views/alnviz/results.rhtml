@@ -1,3 +1,6 @@
+<!--<%= javascript_include_tag "msa.min.js" %>
+<%= stylesheet_link_tag "msa.min", :media => 'all' %> -->
+
 <%= javascript_include_tag "msa_mpi_content.min.gz.js" %>
 
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
@@ -105,7 +108,7 @@ div[style] {
             seqlogo: false,
 
             labels: true,
-            labelName: true,
+            labelName: false,
             labelId: true,
             labelPartition: false,
             labelCheckbox: false
@@ -114,7 +117,7 @@ div[style] {
             dropImport: true
         };
         opts.zoomer = {
-           alignmentHeight: 825, alignmentWidth: "auto", labelNameLength: 55, labelWidth: 130,labelFontsize: "13px",labelIdLength: 70,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 10px 0px 0px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
+           alignmentHeight: 825, alignmentWidth: "auto", labelNameLength: 155, labelWidth: 130,labelFontsize: "13px",labelIdLength: 150,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 10px 0px 0px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
         };
 
         // init msa
@@ -126,7 +129,7 @@ div[style] {
         }
 
              
-        var defaultURL = "<%= @job.url_for_job_dir %>/<%= @job.jobid %>.out";
+        var defaultURL = "<%= @job.url_for_job_dir %>/<%= @job.jobid %>.align";
         var url = getURLParameter('seq') || defaultURL;
 
         m.u.file.importURL(url, renderMSA);
@@ -143,9 +146,19 @@ div[style] {
             // Author: Seung-Zin Nam
             // bugfix: here we shift the sequence ids back to their correct value via the backbone.js api !!!
 
+          
+
+
             for (var i=0; i<m.seqs.length; i++) {
-            var sequenceId = m.seqs.at(i).get("id");  
+
+            var sequenceId = m.seqs.at(i).get("id");
+
+            if(!isNaN(sequenceId)){
+          
             m.seqs.at(i).set("id", sequenceId-1);
+
+            }
+
             }
             
 
