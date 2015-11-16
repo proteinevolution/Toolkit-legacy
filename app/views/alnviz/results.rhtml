@@ -118,7 +118,7 @@ div[style] {
             dropImport: true
         };
         opts.zoomer = {
-           alignmentHeight: 825, alignmentWidth: "auto", labelNameLength: 90, labelWidth: 130,labelFontsize: "13px",labelIdLength: 80,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 10px 0px 0px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
+           alignmentHeight: 825, alignmentWidth: "auto", labelNameLength: 75, labelWidth: 85,labelFontsize: "13px",labelIdLength: 75,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 10px 0px 0px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
         };
 
         // init msa
@@ -130,7 +130,7 @@ div[style] {
         }
 
              
-        var defaultURL = "<%= @job.url_for_job_dir %>/<%= @job.jobid %>.align";
+        var defaultURL = "<%= @job.url_for_job_dir %>/<%= @job.jobid %>.out";
         var url = getURLParameter('seq') || defaultURL;
 
         m.u.file.importURL(url, renderMSA);
@@ -146,12 +146,13 @@ div[style] {
 
             // Author: Seung-Zin Nam
             // bugfix: here we shift the sequence ids back to their correct value via the backbone.js api !!!
+            // TODO: We need to speed up this process or find a workaround
 
-            var sequenceId = new Array(m.seqs.length);
-            for (var i=0; i<m.seqs.length; i++) {
-            sequenceId[i] = m.seqs.at(i).get("id");
-            if(!isNaN(sequenceId[i])){
-            m.seqs.at(i).set("id", sequenceId[i]-1);}}
+            //var sequenceId = new Array(m.seqs.length);
+            //for (var i=0; i<sequenceId.length; i++) {
+            //sequenceId[i] = m.seqs.at(i).get("id");
+            //if(!isNaN(sequenceId[i])){
+            //m.seqs.at(i).set("id", sequenceId[i]-1);}}
             
 
             // call render at the end to display the whole MSA
