@@ -25,24 +25,18 @@ class AlnvizAction < Action
   
     #Author: Seung-Zin Nam
     #this code is a hack to provide fake gi numbers for biojs msa to handle custom ids
-    #TODO: another hack to do the renumbering which happens in the backbone.js interface on the server!
     
     out = File.new(@outfile, "w+")
-    delim = '>'
-    
+    delim = '>'    
     File.readlines(sequence_file).each do |line|
-
       if ((line.include? '>') && !(line.include? '>gi|') && !(line.include? '>db|') && !(line.include? '>sp|') && !(line.include? '>tr|'))
-        then
-        out.write(line.split(delim).join(delim + 'gi|'))
-        
+      then
+        out.write(line.split(delim).join(delim + 'gi|'))  
       else
         out.write(line)
-        
       end
-    
     end
-    out.close
+      out.close
 
    
 
@@ -58,8 +52,6 @@ class AlnvizAction < Action
   def perform
     params_dump
 
-
-    @commands << "cp sequence_file #{@basename}.in"
     @commands << "#{HH}/reformat.pl clu fas #{@basename}.out #{@basename}.align"
     @commands << "#{HH}/reformat.pl clu a3m #{@basename}.out #{@basename}.a3m"
     @commands << "#{HH}/reformat.pl clu fas #{@basename}.out #{@basename}.ralign -M first -r"
