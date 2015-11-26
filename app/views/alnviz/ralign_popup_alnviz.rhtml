@@ -31,13 +31,18 @@ html {
         opts.vis = {
             conserv: false,
             overviewbox: false,
-            seqlogo: false
+            seqlogo: false,
+            labels: true,
+            labelName: true,
+            labelId: false,
+            labelPartition: false,
+            labelCheckbox: false
         };
         opts.conf = {
             dropImport: true
         };
         opts.zoomer = {
-           alignmentHeight: 680, alignmentWidth: "auto", labelNameLength: 50, labelWidth: 130,labelFontsize: "10px",labelIdLength: 80,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 15px 0px 15px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
+           alignmentHeight: 680, alignmentWidth: "auto", labelNameLength: 150, labelWidth: 130,labelFontsize: "10px",labelIdLength: 80,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 15px 0px 15px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
         };
 
         // init msa
