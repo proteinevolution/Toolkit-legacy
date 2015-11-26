@@ -1,5 +1,6 @@
-<!--<%= javascript_include_tag "msa.min.js" %>
-<%= stylesheet_link_tag "msa.min", :media => 'all' %> -->
+<!-- the js file is only for debugging -->
+<!-- <%= javascript_include_tag "msa.js" %> -->
+<!--<%= stylesheet_link_tag "msa.min", :media => 'all' %>-->
 
 <%= javascript_include_tag "msa_mpi_content.min.gz.js" %>
 
@@ -110,7 +111,7 @@ div[style] {
 
             labels: true,
             labelName: true,
-            labelId: true,
+            labelId: false,
             labelPartition: false,
             labelCheckbox: false
         };
@@ -118,7 +119,7 @@ div[style] {
             dropImport: true
         };
         opts.zoomer = {
-           alignmentHeight: 825, alignmentWidth: "auto", labelNameLength: 75, labelWidth: 85,labelFontsize: "13px",labelIdLength: 75,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 10px 0px 0px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
+           alignmentHeight: 825, alignmentWidth: "auto", labelNameLength: 145, labelWidth: 85,labelFontsize: "13px",labelIdLength: 75,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 10px 0px 0px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
         };
 
         // init msa
