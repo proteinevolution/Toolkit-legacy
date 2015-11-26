@@ -26,17 +26,17 @@ class AlnvizAction < Action
     #Author: Seung-Zin Nam
     #this code is a hack to provide fake gi numbers for biojs msa to handle custom ids
     
-    out = File.new(@outfile, "w+")
-    delim = '>'    
-    File.readlines(sequence_file).each do |line|
-      if ((line.include? '>') && !(line.include? '>gi|') && !(line.include? '>db|') && !(line.include? '>sp|') && !(line.include? '>tr|'))
-      then
-        out.write(line.split(delim).join(delim + 'gi|'))  
-      else
-        out.write(line)
-      end
-    end
-      out.close
+    #out = File.new(@outfile, "w+")
+    #delim = '>'    
+    #File.readlines(sequence_file).each do |line|
+      #if ((line.include? '>') && !(line.include? '>gi|') && !(line.include? '>db|') && !(line.include? '>sp|') && !(line.include? '>tr|'))
+      #then
+        #out.write(line.split(delim).join(delim + 'gi|'))  
+      #else
+        #out.write(line)
+      #end
+    #end
+      #out.close
 
    
 
