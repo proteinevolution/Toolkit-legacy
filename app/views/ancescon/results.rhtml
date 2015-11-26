@@ -1,12 +1,25 @@
+<!-- <%= javascript_include_tag "exelixis" %> -->
+<%= javascript_include_tag "raphael-min" %>
+<%= javascript_include_tag "jsphylosvg-min" %>
+<%= javascript_include_tag "jquery1.4.2.js" %>
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
   
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'results'}) %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+
+<styles>
+     <markgroupA fill="#000" stroke="#000" opacity="0.7" label="PEETS" labelStyle="sectorHighlightText" />
+
+	 <markgroupB fill="#000" stroke="#000" opacity="0.7" label="STARBUCKS" labelStyle="sectorHighlightText" />
+
+	 <sectorHighlightText font-family="Verdana" font-size="10" font-weight="bold" fill="#FFFFFF" rotate="90" />
+
+</styles>    
   
 <div class="row">
 
-<pre>
+<!--<pre>
 	  
 		<applet codebase="/applets/ATV/" archive="archaeopteryx_applets.jar"
 		            code="org.forester.archaeopteryx.ArchaeopteryxE.class"
@@ -19,9 +32,165 @@
 
 Archaeopteryx TreeViewer: Han M.V. and Zmasek C.M. (2009). phyloXML: XML for evolutionary biology and comparative genomics. BMC Bioinformatics, 10:356.
 
-</pre>
+</pre> -->
+
+
+
+
+
+<div id="yourDiv"></div>
+
+<!--<script>
+
+
+var exe = require("exelixis");
+var treefile = '';
+//xtreefile =  readTextFile("<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre2");
+var treefile2 = '';
+var createTree = exe.createTree;
+//treefile =  readTextFile("<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre2");
+//treefile2 = treefile.replace(/(\r\n|\n|\r)/gm," ");
+updateTree = exe.updateTree;
+
+//jQuery.get('<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre2', function(data) {
+//var myvar = data;
+//});
+
+
+
+
+/* Try to change the opts in your console */
+
+opts = {
+
+		el : document.getElementById("yourDiv"),
+		tree : {
+			data : "((gi|29366706|ref|NP_813751#8:0.481447,1a0i241-349:0.144977):0.040754,((gi|68299729|ref|YP_249578#6:0.321536,((gi|114796395|emb|CAK25951#9:0.338584,gi|33300828|ref|NP_877456#7:0.303039):0.649756,gi|114796457|emb|CAK24995#5:0.630392):0.786219):0.412745,(gi|17570796|ref|NP_523305#4:0.051137,gi|119637753|ref|YP_91898#2:0.280045):0.075455):0.068039,gi|77118174|ref|YP_338096#3:0.397795);",	
+			width : 800,
+			height : 120,
+			scale : false,
+			layoutInput : "radial",
+		},
+		label : {
+			fontsize : 12,
+			usePics : false, 
+			pics : {
+				pictureWidth : 30,
+				pictureHeight : 40,
+			},
+		},
+		nodes : {
+			toggle : true, //allows onClickEvent
+			select: true, //allows selections
+			size : 3,
+			fill : "red",
+			stroke : "red",
+			selectedFill : "steelblue",
+			selectedSize : 4,
+		},
+};
+
+tree = createTree(opts);
+
+//updateTree(tree,opts);
+</script> -->
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		$.get("<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre2", function(data) {
+			var dataObject = {
+				newick: data,
+				fileSource: true
+			};
+			Smits.PhyloCanvas.Render.Style = {
+
+	    /* Default Styles */   
+	 //    Rectangular : {
+  // 			'bufferX'         : 200,          // Reduces the available canvas space for tree branches, allowing
+	 //                                    // for more space for the textual/charting components
+	 //    	'bufferY'         : 40,
+	 //    	'bufferInnerLabels' : 10,         // Pixels
+	 //    	'bufferOuterLabels' : 5,          // Pixels
+	 //    	'minHeightBetweenLeaves' : 10,    // Should probably set pretty low, as clipping may occur if it needs to be implemented     
+  //    		'alignPadding'    : 0,            // Pixels to push the labels out by - this extension should be
+	 //    	'alignRight'     : true        // compensated by an increase in bufferX too  
+
+		// },
+
+	    line: {
+
+	        "stroke":       'rgb(0,0,0)',
+
+	        "stroke-width": 1
+
+	    },
+
+	    text: {
+
+	        "font-family":  'Droid Sans Mono',
+	        "font-size":    12,
+	        "text-anchor":  'start'
+
+	    },
+
+	    path: {
+
+	        "stroke":       'rgb(0,0,0)',
+	        "stroke-width": 1  
+
+	    },
+	    connectedDash : {
+
+	        "stroke":           'rgb(200,200,200)',
+	        "stroke-dasharray": ". "
+
+	    },
+
+	    textSecantBg : {
+
+	        "fill":     '#EEE',
+	        "stroke":   '#DDD'
+
+	    },
+
+	    highlightedEdgeCircle : {
+
+	        "fill":     'red'
+
+	    },
+
+	    barChart : {
+
+	        fill:       '#003300',
+	        stroke:     '#DDD'
+
+	    }
+
+	}           
+			//Smits.PhyloCanvas.Render.Style.text["font-size"] = 10;
+
+			phylocanvas = new Smits.PhyloCanvas(
+				dataObject,
+				'svgCanvas', 
+				1200, 1200,
+				"circular"
+				
+			);
+		});
+	});
+	</script>
+
+<div id="svgCanvas"> </div>
+
 
 
 </div>
-
+<br><br><br><br><br>
+<p>Archaeopteryx TreeViewer: Han M.V. and Zmasek C.M. (2009). phyloXML: XML for evolutionary biology and comparative genomics. BMC Bioinformatics, 10:356.</p>
 </form>
+
+
+
+
+
