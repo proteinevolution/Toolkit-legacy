@@ -93,13 +93,18 @@ div[style] {
         opts.vis = {
             conserv: false,
             overviewbox: false,
-            seqlogo: false
+            seqlogo: false,
+            labels: true,
+            labelName: true,
+            labelId: false,
+            labelPartition: false,
+            labelCheckbox: false
         };
         opts.conf = {
             dropImport: true
         };
         opts.zoomer = {
-           alignmentHeight: 225, alignmentWidth: "auto", labelNameLength: 55, labelWidth: 130,labelFontsize: "13px",labelIdLength: 70,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 10px 0px 0px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
+           alignmentHeight: 225, alignmentWidth: "auto", labelNameLength: 145, labelWidth: 130,labelFontsize: "13px",labelIdLength: 70,   menuFontsize: "12px",menuMarginLeft: "2px", menuPadding: "0px 10px 0px 0px", menuItemFontsize: "14px", menuItemLineHeight: "14px", autoResize: true
         };
 
         // init msa
