@@ -43,7 +43,11 @@
 
 <script type="text/javascript" language="javascript">
 
+            var w = false; 
+
              function OpenWindow_JobID() {
+
+              if (!w || w.closed){
 
                params  = 'width='+screen.width;
                params += ', height='+screen.height;
@@ -53,11 +57,18 @@
 
 
                 var jobid = '<%= @job.url_for_job_dir %>/<%= @job.jobid %>';
-                var w = window.open('/alnviz/clustal_popup_alnviz', 'clustal_popup_alnviz', params);
+
+                w = window.open('/alnviz/clustal_popup_alnviz', 'clustal_popup_alnviz', params);
                 w.myVar = jobid;
 
+                } else {
+
+                w.focus();
+
+              }
 
              }
+
 
 </script>
 
