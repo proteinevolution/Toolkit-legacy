@@ -384,7 +384,7 @@ class SgeWorker < AbstractWorker
                 when "BacktransAction" then 3
                   ### C ###
                 when "ClansAction"    then 50 # uses blastpgp
-                when "CsBlastAction"  then 50 # uses blastpgp
+                when "CsBlastAction"  then 64 # uses blastpgp
                 when "ClustalwAction" then 10
                 when "ClustalwForwardAction" then 10
                 when "ClustalwExportAction" then 5
@@ -410,7 +410,7 @@ class SgeWorker < AbstractWorker
                 when "HhpredShowtemplalignAction" then 18
                 when "Hh3dTemplAction" then 18
                 when "HhmakemodelAction" then 18
-                when "HhsenserAction" then 20
+                when "HhsenserAction" then 36
                 when "HhsenserForwardAction" then 18
                 when "HhfragAction" then 18
                 when "HhalignAction" then 18
