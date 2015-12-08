@@ -203,9 +203,9 @@
 		
 		} else {
 			// Implied consent disclosure
-			html += scriptsDisclosure + ' <b>To help us with a letter of support to further develop the services in the Toolkit</b><a style="color:'+ settings.linkColor + ';';
-			html += 'font-weight:bold;font-family:' + settings.fontFamily + ';font-size:' + settings.fontSize + ';" href="'+ settings.privacyPolicyUri + '">, <u>please click here</u></a>.';
-			html += '<div style="margin-top:5px;"><input type="submit" name="impliedsubmit" id="impliedsubmit" value="Do not show this message again"/></div></div>';	
+			html += scriptsDisclosure + ' <b>If you disagree</b><a style="color:'+ settings.linkColor + ';';
+			html += 'font-weight:bold;font-family:' + settings.fontFamily + ';font-size:' + settings.fontSize + ';" href="'+ settings.privacyPolicyUri + '" target="_blank">, please <u>click here</u> to help us with a message or letter of support</a>.';
+			html += '<div style="margin-top:5px;"><input type="submit" name="impliedsubmit" id="impliedsubmit" value="Do not show this again"/></div></div>';	
 		}		
 		html += '</div></div>';
 		$('body').append(html);
