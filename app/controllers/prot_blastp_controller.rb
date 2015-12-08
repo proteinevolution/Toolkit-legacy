@@ -148,14 +148,14 @@ class ProtBlastpController < ToolController
     export_to_file
   end
   
-  def prot_blast_export_browser
+  def prot_blastp_export_browser
     if @job.actions.last.type.to_s.include?("Export")
       @job.actions.last.active = false
       @job.actions.last.save!
     end
   end
   
-  def prot_blast_export_file
+  def prot_blastp_export_file
     if @job.actions.last.type.to_s.include?("Export")
       @job.actions.last.active = false
       @job.actions.last.save!
