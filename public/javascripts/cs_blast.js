@@ -1,5 +1,6 @@
 function toggle_seqlen(list)
 {
+	$.noConflict();
 	var dest = $(list).options[$(list).selectedIndex].value;
 	if (dest.indexOf('blastclust') != -1 || dest.indexOf('clans') != -1 || dest.indexOf('clustal') != -1 || 
 	    dest.indexOf('kalign') != -1 || dest.indexOf('mafft') != -1 || dest.indexOf('muscle') != -1 ||
@@ -17,6 +18,7 @@ function toggle_seqlen(list)
 
 function pasteExample()
 {
+  $.noConflict();
   $('sequence_input').value = ">gi|4557853|ref|NP_000337.1| transcription factor SOX-9 [Homo sapiens]\nMNLLDPFMKMTDEQEKGLSGAPSPTMSEDSAGSPCPSGSGSDTENTRPQENTFPKGEPDLKKESEEDKFP\nVCIREAVSQVLKGYDWTLVPMPVRVNGSSKNKPHVKRPMNAFMVWAQAARRKLADQYPHLHNAELSKTLG\nKLWRLLNESEKRPFVEEAERLRVQHKKDHPDYKYQPRRRKSVKNGQAEAEEATEQTHISPNAIFKALQAD\nSPHSSSGMSEVHSPGEHSGQSQGPPTPPTTPKTDVQPGKADLKREGRPLPEGGRQPPIDFRDVDIGELSS\nDVISNIETFDVNEFDQYLPPNGHPGVPATHGQVTYTGSYGISSTAATPASAGHVWMSKQQAPPPPPQQPP\nQAPPAPQAPPQPQAAPPQQPAAPPQQPQAHTLTTLSSEPGQSQRTHIKTEQLSPSHYSEQQQHSPQQIAY\nSPFNLPHYSPSYPPITRSQYDYTDHQNSSSYYSHAAGQGTGLYSTFTYMNPAQRPMYTPIADTSGVPSIP\nQTHSPQHWEQPVYTQLTRP";
   // $('std_dbs').options.selectedIndex = 2;
   // onSimpleClick(null, "user_dbs");
