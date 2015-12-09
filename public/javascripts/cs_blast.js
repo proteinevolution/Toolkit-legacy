@@ -1,6 +1,5 @@
 function toggle_seqlen(list)
 {
-	$.noConflict();
 	var dest = $(list).options[$(list).selectedIndex].value;
 	if (dest.indexOf('blastclust') != -1 || dest.indexOf('clans') != -1 || dest.indexOf('clustal') != -1 || 
 	    dest.indexOf('kalign') != -1 || dest.indexOf('mafft') != -1 || dest.indexOf('muscle') != -1 ||
