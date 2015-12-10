@@ -263,8 +263,8 @@
   title: AlignmentViewer
   title_long: AlignmentViewer
   section: alignment
-  updated: August, 2011
-  version: Jalview 3.7
+  updated: December, 2015
+  version: BioJS MSA (forked)
   active: 
   - member
   - internal
