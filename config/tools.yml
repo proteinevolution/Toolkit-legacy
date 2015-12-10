@@ -261,7 +261,7 @@
   - external
 - name: alnviz
   title: AlignmentViewer
-  title_long: Alignment Viewer
+  title_long: AlignmentViewer
   section: alignment
   updated: August, 2011
   version: Jalview 3.7
