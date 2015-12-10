@@ -1,5 +1,5 @@
 alnviz_job: 
-  title: Alignment Viewer
+  title: AlignmentViewer
   hidden: false
   code: ALVI
   resultsections:  
