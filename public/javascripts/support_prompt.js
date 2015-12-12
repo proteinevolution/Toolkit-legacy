@@ -248,6 +248,16 @@
 				// Implied consent, just a button to close it
 				$('#impliedsubmit').click(function() {
 					// Set a cookie to prevent this being displayed again
+					setCookie('cookiesDirective',1,0);	
+					// Close the overlay
+					$('#cookiesdirective').animate(opts.out,1000,function() { 
+						// Remove the elements from the DOM and reload page
+						$('#cookiesdirective').remove();
+					});
+				});
+
+				$('#hide').click(function() {
+					// Set a cookie to prevent this being displayed again
 					//setCookie('cookiesDirective',1,365);	
 					// Close the overlay
 					$('#cookiesdirective').animate(opts.out,1000,function() { 
