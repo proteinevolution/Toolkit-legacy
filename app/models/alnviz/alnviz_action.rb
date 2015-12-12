@@ -16,11 +16,34 @@ class AlnvizAction < Action
   validates_shell_params(:jobid, :mail, {:on => :create})
 
   def before_perform
-    @basename = File.join(job.job_dir, job.jobid)
+    @basename = File.join(job.job_dir, job.jobid)    
     @outfile = @basename+".out"
+    
+  
     params_to_file(@outfile, 'sequence_input', 'sequence_file')
+
+  
+    #Author: Seung-Zin Nam
+    #this code is a hack to provide fake gi numbers for biojs msa to handle custom ids
+    
+    #out = File.new(@outfile, "w+")
+    #delim = '>'    
+    #File.readlines(sequence_file).each do |line|
+      #if ((line.include? '>') && !(line.include? '>gi|') && !(line.include? '>db|') && !(line.include? '>sp|') && !(line.include? '>tr|'))
+      #then
+        #out.write(line.split(delim).join(delim + 'gi|'))  
+      #else
+        #out.write(line)
+      #end
+    #end
+      #out.close
+
+   
+
     @informat = params['informat'] ? params['informat'] : 'fas'
     reformat(@informat, "clu", @outfile)
+
+   
 
     @commands = []
  
@@ -28,7 +51,7 @@ class AlnvizAction < Action
 
   def perform
     params_dump
-    
+
     @commands << "#{HH}/reformat.pl clu fas #{@basename}.out #{@basename}.align"
     @commands << "#{HH}/reformat.pl clu a3m #{@basename}.out #{@basename}.a3m"
     @commands << "#{HH}/reformat.pl clu fas #{@basename}.out #{@basename}.ralign -M first -r"
