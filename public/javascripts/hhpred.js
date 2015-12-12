@@ -22,8 +22,8 @@ function appearForward(val)
 	    new Effect.Fade(create);
 	    new Effect.Fade('noPdb');
 	}
-	new Effect.Fade(merge);
-	new Effect.Fade(image);
+	//new Effect.Fade(merge); WTF?? This line stems from Klaus F. (git blame) but I don't get it.
+	//new Effect.Fade(image); Same with this line as above. This code should be revisited soon... 
 	if ($('forward') == null) {
 	    new Effect.Fade('forward');
 	}
