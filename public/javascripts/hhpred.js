@@ -24,7 +24,7 @@ function appearForward(val)
 	}
 	new Effect.Fade(merge);
 	new Effect.Fade(image);
-	if ($('forward') != null) {
+	if ($('forward') == null) {
 	    new Effect.Fade('forward');
 	}
 
