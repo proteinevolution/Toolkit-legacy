@@ -205,7 +205,7 @@
 			// Implied consent disclosure
 			html += scriptsDisclosure + ' <b>If you disagree</b><a style="color:'+ settings.linkColor + ';';
 			html += 'font-weight:bold;font-family:' + settings.fontFamily + ';font-size:' + settings.fontSize + ';" href="'+ settings.privacyPolicyUri + '" target="_blank">, please <u>click here</u> to help us with a message or letter of support</a>.';
-			html += '<div style="margin-top:5px;"><input type="submit" name="hide" id="hide" value="Hide this"/> <input type="submit" name="impliedsubmit" id="impliedsubmit" value="Don\'t show again"/></div></div>';	
+			html += '<div style="margin-top:5px;"><input type="submit" name="impliedsubmit" id="impliedsubmit" value="Hide this"/></div></div>';	
 		}		
 		html += '</div></div>';
 		$('body').append(html);
@@ -248,7 +248,7 @@
 				// Implied consent, just a button to close it
 				$('#impliedsubmit').click(function() {
 					// Set a cookie to prevent this being displayed again
-					setCookie('cookiesDirective',1,365);	
+					setCookie('cookiesDirective',1,0);	
 					// Close the overlay
 					$('#cookiesdirective').animate(opts.out,1000,function() { 
 						// Remove the elements from the DOM and reload page
