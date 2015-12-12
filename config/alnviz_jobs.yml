@@ -1,10 +1,14 @@
 alnviz_job: 
-  title: Alignment Viewer
+  title: AlignmentViewer
   hidden: false
   code: ALVI
   resultsections:  
     - name: results
       title: Results
+      title_long: Show result
+      forwardsections:
+    - name: reducedfasta
+      title: Reduced Alignment
       title_long: Show result
       forwardsections:
   forwarding_acceptances:
