@@ -54,11 +54,6 @@ html {
             return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
         }
 
-        
-
-        var strout = "out";
-        //var sb = new StringBuffer();
-        //var defaultURL = sb.append(myVar).append("out");
         var defaultURL = opener.popupTransfer()+".out";
         var url = getURLParameter('seq') || defaultURL;
 
