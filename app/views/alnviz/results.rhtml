@@ -41,24 +41,23 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 
+
 <script type="text/javascript" language="javascript">
 
             var w = false; 
 
-             function OpenWindow_JobID() {
+            function OpenWindow_JobID() {
 
               if (!w || w.closed){
 
                params  = 'width='+screen.width;
-               params += ', height='+screen.height;
-               params += ', top=0, left=0'
-               params += ', fullscreen=yes';
-               params += ', scrollbars=yes';
+               params += ',height='+screen.height;
+               params += ',top=0,left=0'
+               params += ',fullscreen=yes';
+               params += ',scrollbars=yes';
+                            
 
-
-                var jobid = '<%= @job.url_for_job_dir %>/<%= @job.jobid %>';
-
-                w = window.open('/alnviz/clustal_popup_alnviz', 'clustal_popup_alnviz', params);
+                w = window.open('/alnviz/clustal_popup_alnviz','clustal_popup_alnviz',params);
                 w.myVar = jobid;
 
                 } else {
@@ -68,6 +67,13 @@
               }
 
              }
+
+            function popupTransfer() {
+              var jobid = '<%= @job.url_for_job_dir %>/<%= @job.jobid %>';
+              return jobid;
+
+
+            }
 
 
 </script>
@@ -171,6 +177,7 @@
             // call render at the end to display the whole MSA
             m.render();
         }
+
     </script>
 
 
