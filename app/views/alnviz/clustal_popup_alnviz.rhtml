@@ -56,8 +56,10 @@ html {
 
         
 
-             
-        var defaultURL = myVar+".out";
+        var strout = "out";
+        //var sb = new StringBuffer();
+        //var defaultURL = sb.append(myVar).append("out");
+        var defaultURL = opener.popupTransfer()+".out";
         var url = getURLParameter('seq') || defaultURL;
 
         m.u.file.importURL(url, renderMSA);
