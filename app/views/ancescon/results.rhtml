@@ -1,7 +1,7 @@
-<!-- <%= javascript_include_tag "exelixis" %> -->
-<%= javascript_include_tag "raphael-min" %>
+<%= javascript_include_tag "exelixis" %>
+<!--<%= javascript_include_tag "raphael-min" %>
 <%= javascript_include_tag "jsphylosvg-min" %>
-<%= javascript_include_tag "jquery1.4.2.js" %>
+<%= javascript_include_tag "jquery1.4.2.js" %>-->
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
   
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'results'}) %>
@@ -40,32 +40,35 @@ Archaeopteryx TreeViewer: Han M.V. and Zmasek C.M. (2009). phyloXML: XML for evo
 
 <div id="yourDiv"></div>
 
-<!--<script>
+<script>
 
 
 var exe = require("exelixis");
-var treefile = '';
-//xtreefile =  readTextFile("<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre2");
-var treefile2 = '';
+
 var createTree = exe.createTree;
-//treefile =  readTextFile("<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre2");
-//treefile2 = treefile.replace(/(\r\n|\n|\r)/gm," ");
+
 updateTree = exe.updateTree;
 
-//jQuery.get('<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre2', function(data) {
-//var myvar = data;
-//});
+
+// synchronous jquery get request
+
+
+jQuery.ajaxSetup({async: false});
+var newickData;
+jQuery.get( "<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre", function(data){ newickData = data; });    
+console.log(newickData);
+jQuery.ajaxSetup({async: true});
 
 
 
-
+document.write(newickData);
 /* Try to change the opts in your console */
 
 opts = {
 
 		el : document.getElementById("yourDiv"),
 		tree : {
-			data : "((gi|29366706|ref|NP_813751#8:0.481447,1a0i241-349:0.144977):0.040754,((gi|68299729|ref|YP_249578#6:0.321536,((gi|114796395|emb|CAK25951#9:0.338584,gi|33300828|ref|NP_877456#7:0.303039):0.649756,gi|114796457|emb|CAK24995#5:0.630392):0.786219):0.412745,(gi|17570796|ref|NP_523305#4:0.051137,gi|119637753|ref|YP_91898#2:0.280045):0.075455):0.068039,gi|77118174|ref|YP_338096#3:0.397795);",	
+			data : newickData,	
 			width : 800,
 			height : 120,
 			scale : false,
@@ -93,12 +96,12 @@ opts = {
 tree = createTree(opts);
 
 //updateTree(tree,opts);
-</script> -->
-
+</script> 
+<!--
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		$.get("<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre2", function(data) {
+		$.get("<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre", function(data) {
 			var dataObject = {
 				newick: data,
 				fileSource: true
@@ -106,7 +109,7 @@ tree = createTree(opts);
 			Smits.PhyloCanvas.Render.Style = {
 
 	    /* Default Styles */   
-	 //    Rectangular : {
+	 // \   Rectangular : {
   // 			'bufferX'         : 200,          // Reduces the available canvas space for tree branches, allowing
 	 //                                    // for more space for the textual/charting components
 	 //    	'bufferY'         : 40,
@@ -181,13 +184,14 @@ tree = createTree(opts);
 	});
 	</script>
 
-<div id="svgCanvas"> </div>
+<div id="svgCanvas"> </div> -->
 
 
 
 </div>
 <br><br><br><br><br>
-<p>Archaeopteryx TreeViewer: Han M.V. and Zmasek C.M. (2009). phyloXML: XML for evolutionary biology and comparative genomics. BMC Bioinformatics, 10:356.</p>
+<!--<p>Archaeopteryx TreeViewer: Han M.V. and Zmasek C.M. (2009). phyloXML: XML for evolutionary biology and comparative genomics. BMC Bioinformatics, 10:356.</p>-->
+<p>David Dao, Miguel Pignatelli, Fabian Schreiber: BioJS Tree Viewer (Google Summer of Code Project 2014)</p>
 </form>
 
 
