@@ -117,7 +117,10 @@ sub replace_names(){
 	}
 	
 	open(OUTFILE,">$treefile") || die "Cannot write to $treefile\n";
+		
+		$treedata =~ s/[\n\r\s]+//g;
 		print OUTFILE $treedata;
+
 	close(OUTFILE);
 }
 
