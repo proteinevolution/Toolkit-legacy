@@ -8,16 +8,19 @@
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
 
-<styles>
+<style>
      <markgroupA fill="#000" stroke="#000" opacity="0.7" label="PEETS" labelStyle="sectorHighlightText" />
 
 	 <markgroupB fill="#000" stroke="#000" opacity="0.7" label="STARBUCKS" labelStyle="sectorHighlightText" />
 
 	 <sectorHighlightText font-family="Verdana" font-size="10" font-weight="bold" fill="#FFFFFF" rotate="90" />
 
-</styles>    
-  
+
+
+
+</style>    
 <div class="row">
+
 
 <!--<pre>
 	  
@@ -34,13 +37,58 @@ Archaeopteryx TreeViewer: Han M.V. and Zmasek C.M. (2009). phyloXML: XML for evo
 
 </pre> -->
 
+<form>
+<select onchange="updateStyle(this)" id="mymenu" size="1" >
+<option value="1" selected>Set Tree Layout...</option>
+<option value="2">Radial Style</option>
+<option value="3">Vertical Style</option>
+
+</select>
+</form>
+<p><br><br></p>
 
 
-
-
-<div id="yourDiv"></div>
+</div>
+<div id="yourDiv" style="margin-left:30px;"></div>
 
 <script>
+
+var styleVar = "radial";
+var scaleVar = false;
+
+
+function updateStyle(obj){
+
+  var option = obj.options[obj.selectedIndex].value;
+
+  if (option == "2"){
+	  localStorage.setItem("styleVar","radial");
+   	  location.reload();
+   	  
+  }
+
+  if (option == "3"){
+
+  	  localStorage.setItem("styleVar","vertical");
+  	  location.reload();
+  	  
+  }
+
+}
+
+
+
+
+if (localStorage.getItem("styleVar") != null){
+
+styleVar = localStorage.getItem("styleVar");}
+
+else{
+
+styleVar = "radial";
+
+}
+//scaleVar = localStorage.getItem("scaleVar");
 
 
 var exe = require("exelixis");
@@ -66,25 +114,25 @@ opts = {
 		el : document.getElementById("yourDiv"),
 		tree : {
 			data : newickData,	
-			width : 800,
+			width : 700,
 			height : 120,
-			scale : false,
-			layoutInput : "radial",
+			scale : scaleVar,
+			layoutInput : styleVar,
 		},
 		label : {
-			fontsize : 12,
+			fontsize : 10,
 			usePics : false, 
 			pics : {
-				pictureWidth : 30,
-				pictureHeight : 40,
+				pictureWidth : 50,
+				pictureHeight : 50,
 			},
 		},
 		nodes : {
 			toggle : true, //allows onClickEvent
 			select: true, //allows selections
 			size : 3,
-			fill : "red",
-			stroke : "red",
+			fill : "blue",
+			stroke : "grey",
 			selectedFill : "steelblue",
 			selectedSize : 4,
 		},
@@ -185,7 +233,6 @@ tree = createTree(opts);
 
 
 
-</div>
 <br><br><br><br><br>
 <!--<p>Archaeopteryx TreeViewer: Han M.V. and Zmasek C.M. (2009). phyloXML: XML for evolutionary biology and comparative genomics. BMC Bioinformatics, 10:356.</p>-->
 <p>David Dao: BioJS Tree Viewer (<a href="https://github.com/emepyc/biojs-vis-tree" target="_blank">https://github.com/emepyc/biojs-vis-tree</a>)</p>
