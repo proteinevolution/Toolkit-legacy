@@ -1,7 +1,4 @@
 <%= javascript_include_tag "exelixis" %>
-<!--<%= javascript_include_tag "raphael-min" %>
-<%= javascript_include_tag "jsphylosvg-min" %>
-<%= javascript_include_tag "jquery1.4.2.js" %>-->
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
   
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'results'}) %>
@@ -116,99 +113,8 @@ tree = createTree(opts);
 
 //updateTree(tree,opts);
 </script> 
-<!--
-<script type="text/javascript">
-
-	$(document).ready(function(){
-		$.get("<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre", function(data) {
-			var dataObject = {
-				newick: data,
-				fileSource: true
-			};
-			Smits.PhyloCanvas.Render.Style = {
-
-	    /* Default Styles */   
-	 // \   Rectangular : {
-  // 			'bufferX'         : 200,          // Reduces the available canvas space for tree branches, allowing
-	 //                                    // for more space for the textual/charting components
-	 //    	'bufferY'         : 40,
-	 //    	'bufferInnerLabels' : 10,         // Pixels
-	 //    	'bufferOuterLabels' : 5,          // Pixels
-	 //    	'minHeightBetweenLeaves' : 10,    // Should probably set pretty low, as clipping may occur if it needs to be implemented     
-  //    		'alignPadding'    : 0,            // Pixels to push the labels out by - this extension should be
-	 //    	'alignRight'     : true        // compensated by an increase in bufferX too  
-
-		// },
-
-	    line: {
-
-	        "stroke":       'rgb(0,0,0)',
-
-	        "stroke-width": 1
-
-	    },
-
-	    text: {
-
-	        "font-family":  'Droid Sans Mono',
-	        "font-size":    12,
-	        "text-anchor":  'start'
-
-	    },
-
-	    path: {
-
-	        "stroke":       'rgb(0,0,0)',
-	        "stroke-width": 1  
-
-	    },
-	    connectedDash : {
-
-	        "stroke":           'rgb(200,200,200)',
-	        "stroke-dasharray": ". "
-
-	    },
-
-	    textSecantBg : {
-
-	        "fill":     '#EEE',
-	        "stroke":   '#DDD'
-
-	    },
-
-	    highlightedEdgeCircle : {
-
-	        "fill":     'red'
-
-	    },
-
-	    barChart : {
-
-	        fill:       '#003300',
-	        stroke:     '#DDD'
-
-	    }
-
-	}           
-			//Smits.PhyloCanvas.Render.Style.text["font-size"] = 10;
-
-			phylocanvas = new Smits.PhyloCanvas(
-				dataObject,
-				'svgCanvas', 
-				1200, 1200,
-				"circular"
-				
-			);
-		});
-	});
-	</script>
-
-<div id="svgCanvas"> </div> -->
-
-
 
 <br><br><br><br><br><br>
-<!--<p>Archaeopteryx TreeViewer: Han M.V. and Zmasek C.M. (2009). phyloXML: XML for evolutionary biology and comparative genomics. BMC Bioinformatics, 10:356.</p>-->
 <p>BioJS Tree Viewer (David Dao: <a href="https://github.com/emepyc/biojs-vis-tree" target="_blank">https://github.com/emepyc/biojs-vis-tree</a>)</p>
 </form>
 
