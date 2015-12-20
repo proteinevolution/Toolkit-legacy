@@ -1,27 +1,124 @@
+<%= javascript_include_tag "exelixis" %>
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
   
 <%= render(:partial => "shared/resultsections", :locals => {:export_to => 'results'}) %>
 
 <%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
-  
+
+
 <div class="row">
 
-<pre>
-	  
-		<applet codebase="/applets/ATV/" archive="archaeopteryx_applets.jar"
-		            code="org.forester.archaeopteryx.ArchaeopteryxE.class"
-		            width="800"
-		            height="600"
-		            alt="ArchaeopteryxE is not working on your system (requires at least Sun Java 1.5)!">
-		            <param name="url_of_tree_to_load" value="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre">
-		            
-		 </applet>
+<form>
+<select onchange="updateStyle(this)" id="mymenu" size="1" >
+<option value="1" selected>Set Tree Layout...</option>
+<option value="2">Radial Style</option>
+<option value="3">Vertical Style</option>
 
-Archaeopteryx TreeViewer: Han M.V. and Zmasek C.M. (2009). phyloXML: XML for evolutionary biology and comparative genomics. BMC Bioinformatics, 10:356.
-
-</pre>
+</select>
+</form>
+<p><br><br></p>
 
 
 </div>
+<div id="yourDiv" style="margin-left:0px;"></div>
 
+<script>
+
+var styleVar = "radial";
+var scaleVar = false;
+
+
+function updateStyle(obj){
+
+  var option = obj.options[obj.selectedIndex].value;
+
+  if (option == "2"){
+	  localStorage.setItem("styleVar","radial");
+   	  location.reload();
+   	  
+  }
+
+  if (option == "3"){
+
+  	  localStorage.setItem("styleVar","vertical");
+  	  location.reload();
+  	  
+  }
+
+}
+
+
+
+
+if (localStorage.getItem("styleVar") != null){
+
+styleVar = localStorage.getItem("styleVar");}
+
+else{
+
+styleVar = "radial";
+
+}
+//scaleVar = localStorage.getItem("scaleVar");
+
+
+var exe = require("exelixis");
+
+var createTree = exe.createTree;
+
+updateTree = exe.updateTree;
+
+
+// synchronous jquery get request
+
+
+jQuery.ajaxSetup({async: false});
+var newickData;
+jQuery.get( "<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre", function(data){ newickData = data; });    
+console.log(newickData);
+jQuery.ajaxSetup({async: true});
+
+/* Try to change the opts in your console */
+
+opts = {
+
+		el : document.getElementById("yourDiv"),
+		tree : {
+			data : newickData,	
+			width : 700,
+			height : 120,
+			scale : scaleVar,
+			layoutInput : styleVar,
+		},
+		label : {
+			fontsize : 10,
+			usePics : false, 
+			pics : {
+				pictureWidth : 50,
+				pictureHeight : 50,
+			},
+		},
+		nodes : {
+			toggle : true, //allows onClickEvent
+			select: true, //allows selections
+			size : 3,
+			fill : "blue",
+			stroke : "grey",
+			selectedFill : "steelblue",
+			selectedSize : 4,
+		},
+};
+
+tree = createTree(opts);
+
+//updateTree(tree,opts);
+</script> 
+
+<br><br><br><br><br><br>
+<p>BioJS Tree Viewer (David Dao: <a href="https://github.com/emepyc/biojs-vis-tree" target="_blank">https://github.com/emepyc/biojs-vis-tree</a>)</p>
 </form>
+
+
+
+
+

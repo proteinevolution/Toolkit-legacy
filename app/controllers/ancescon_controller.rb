@@ -6,12 +6,16 @@ class AncesconController < ToolController
 	end
 	
 	def results
-		@fullscreen = true
+		@fullscreen = false
 	end
 	
 	def results_tree
 		@fullscreen = true
 	end
+        
+    def results_data
+        @fullscreen = true
+    end
 	
 	def export_results_to_browser
 		@job.export_results
