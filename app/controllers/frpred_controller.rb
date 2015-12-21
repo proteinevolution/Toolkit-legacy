@@ -15,9 +15,9 @@ class FrpredController < ToolController
 		@fullscreen = true
 	end
   
-        def results_mpicons_cat
-                @fullscreen = true
-        end
+    def results_mpicons_cat
+        @fullscreen = true
+    end
 
 	def results_mpicons_lig
 		@fullscreen = true
