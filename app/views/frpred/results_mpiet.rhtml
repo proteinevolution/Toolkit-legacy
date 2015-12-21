@@ -1,3 +1,4 @@
+<%= javascript_include_tag "exelixis" %>
 <%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'FRtrace', :toolname => @job.tool}) %>
   
 <%= render(:partial => "shared/resultsections", :locals => {:export => false}) %>
@@ -29,3 +30,113 @@
 </div>
 
 </form>
+
+<div class="row">
+
+<h3 class="seqanal">UPGMA Tree</h3>
+<form>
+<select onchange="updateStyle(this)" id="mymenu" size="1" >
+<option value="1" selected>Set Tree Layout...</option>
+<option value="2">Radial Style</option>
+<option value="3">Vertical Style</option>
+
+</select>
+</form>
+<p><br><br></p>
+
+
+</div>
+<div id="yourDiv" style="margin-left:30px;"></div>
+
+<script>
+
+var styleVar = "radial";
+var scaleVar = false;
+
+
+function updateStyle(obj){
+
+  var option = obj.options[obj.selectedIndex].value;
+
+  if (option == "2"){
+	  localStorage.setItem("styleVar","radial");
+   	  location.reload();
+   	  
+  }
+
+  if (option == "3"){
+
+  	  localStorage.setItem("styleVar","vertical");
+  	  location.reload();
+  	  
+  }
+
+}
+
+
+
+
+if (localStorage.getItem("styleVar") != null){
+
+styleVar = localStorage.getItem("styleVar");}
+
+else{
+
+styleVar = "radial";
+
+}
+//scaleVar = localStorage.getItem("scaleVar");
+
+
+var exe = require("exelixis");
+
+var createTree = exe.createTree;
+
+updateTree = exe.updateTree;
+
+
+// synchronous jquery get request
+
+
+jQuery.ajaxSetup({async: false});
+var newickData;
+jQuery.get( "<%= @job.url_for_job_dir_abs %>/tree.newick", function(data){ newickData = data; });    
+console.log(newickData);
+jQuery.ajaxSetup({async: true});
+
+/* Try to change the opts in your console */
+
+opts = {
+
+		el : document.getElementById("yourDiv"),
+		tree : {
+			data : newickData,	
+			width : 700,
+			height : 120,
+			scale : scaleVar,
+			layoutInput : styleVar,
+		},
+		label : {
+			fontsize : 10,
+			usePics : false, 
+			pics : {
+				pictureWidth : 50,
+				pictureHeight : 50,
+			},
+		},
+		nodes : {
+			toggle : true, //allows onClickEvent
+			select: true, //allows selections
+			size : 3,
+			fill : "blue",
+			stroke : "grey",
+			selectedFill : "steelblue",
+			selectedSize : 4,
+		},
+};
+
+tree = createTree(opts);
+
+//updateTree(tree,opts);
+</script> 
+</div>
