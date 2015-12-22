@@ -106,7 +106,51 @@
 
 <input name="hits" id="hits" type="hidden" value=""/>
 <div id="color_button" class="row">
-<%= form_jalview_button("View alignment", 0, ".tenrep_file", nil, "jalview", "hhpred") %>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+
+
+<script type="text/javascript" language="javascript">
+
+            var w = false; 
+
+            function OpenWindow_JobID() {
+
+              if (!w || w.closed){
+
+               params  = 'width='+screen.width;
+               params += ',height='+screen.height;
+               params += ',top=0,left=0'
+               params += ',fullscreen=yes';
+               params += ',scrollbars=yes';
+                            
+
+                w = window.open('/hhpred/popup_results','hhpred_popup_results',params);
+                w.myVar = jobid;
+
+                } else {
+
+                w.focus();
+
+              }
+
+             }
+
+            function popupTransfer() {
+              var jobid = '<%= @job.url_for_job_dir %>/<%= @job.jobid %>';
+              return jobid;
+
+
+            }
+
+
+</script>
+
+
+<div align="right">
+<input name="submitform" type="submit" class="feedbutton" onClick="OpenWindow_JobID();" value="View Alignment"/>
+</div>
 
   <div class="labelj">
     <a href="#" onclick="openHelpWindow('/hhpred/help_params#coloring');">Color alignments</a>
