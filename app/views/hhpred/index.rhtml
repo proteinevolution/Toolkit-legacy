@@ -34,13 +34,16 @@
   <%= form_label("Paste protein sequence or MSA", "input") %>
   <%= form_text_area("sequence_input") %>
 </div>
+
 <div class="row">
   <div class="formw">
     <span style="color: #008C50;">
-    Search with pancreatitis induced protein PIP49. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
-    </span>
+    Search with pancreatitis induced protein<a href="#" onClick="javascript:pasteExample();" style="color:#008C50"> PIP49.</a>
+     </span>
   </div>
 </div>
+
+
 <div class="row">
   <%= form_label("or upload a local file") %>
   <%= form_file("sequence_file") %>
