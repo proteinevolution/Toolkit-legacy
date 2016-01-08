@@ -281,20 +281,15 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     render(:layout => "help")
   end
 
-  def resubmit_domain
-
+ def resubmit_domain
     basename = File.join(@job.job_dir, @job.jobid)
-    extension = ".resub_domain.a2m"
+    system(sprintf('%s/perl/alicutter.pl %s.in %s.in.cut %d %d', BIOPROGS, basename, basename, params[:domain_start].to_i, params[:domain_end].to_i));
 
-    @my_command = "#{BIOPROGS}/perl/alicutter.pl #{basename}#{extension} #{basename}.in.cut #{params[:domain_start]} #{params[:domain_end]} "
-    logger.debug("L287 Running Alicutter -hhpred- #{@my_command}")
-    system(@my_command)   
     job_params = @job.actions.first.params
-    job_params.sort
     job_params.each_key do |key|
       # If we stumble over sequence_input, after input has already been set from the in.cut file, it is overwritten by an empty job_params[sequence_input]
       if(key=~ /^(\S+)_input$/)
-      else
+      else  
           if (key =~ /^(\S+)_file$/) 
             if !job_params[key].nil? && File.exists?(job_params[key]) && File.readable?(job_params[key]) && !File.zero?(job_params[key])
               params[$1+'_input'] = File.readlines(basename+'.in.cut')
@@ -302,10 +297,10 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
           else
             params[key] = job_params[key]
         end
-      end
+     end   
     end
 
-	#File.delete(basename+'.in.cut')
+  File.delete(basename+'.in.cut')
     params[:jobid] = ''
     index
     render(:action => 'index')
