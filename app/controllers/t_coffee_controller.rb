@@ -59,14 +59,14 @@ class TCoffeeController < ToolController
                   
 	end
 
-	def tcoffee_export_browser
+	def t_coffee_export_browser
 		if @job.actions.last.type.to_s.include?("Export")
 			@job.actions.last.active = false
 			@job.actions.last.save!
 		end
 	end
 
-	def tcoffee_export_file
+	def t_coffee_export_file
 		if @job.actions.last.type.to_s.include?("Export")
 			@job.actions.last.active = false
 			@job.actions.last.save!
