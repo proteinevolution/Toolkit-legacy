@@ -29,7 +29,7 @@ class PatsearchJob < Job
 				@pattern = $1.strip
 			elsif (line =~ /^>/)
 				line.gsub!(/\001.*$/, '')
-				line.gsub!('>', "\n>")
+				line.gsub!('>', "\n\n>")
 				line.gsub!(';', "\n")		
 				@num_seqs += 1
 				@headers << line
