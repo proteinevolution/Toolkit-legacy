@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 class PatsearchJob < Job
   
-  @@export_ext = ".export"
+  @@export_ext = ".html"
   def set_export_ext(val)
     @@export_ext = val  
   end
