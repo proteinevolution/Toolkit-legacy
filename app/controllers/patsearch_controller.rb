@@ -22,6 +22,8 @@ class PatsearchController < ToolController
     calculate_forwardings(@tool)
     @fw_values = get_tool_list
     @fw_labels = get_tool_name_list
+    @fullscreen = true
+
 	end
 	
 	def patsearch_export_browser
