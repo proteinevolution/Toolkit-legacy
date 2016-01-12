@@ -32,7 +32,9 @@ class PatsearchJob < Job
 				line.gsub!('>', "\n\n>")
 				line.gsub!(']', "]\n\n")
 				line.gsub!('SV=1', "SV=1\n\n")
-				line.gsub!(';', ";\n")		
+				line.gsub!('SV=2', "SV=2\n\n")
+                                line.gsub!('SV=3', "SV=3\n\n")
+                                line.gsub!(';', ";\n")		
 				@num_seqs += 1
 				@headers << line
 			else
