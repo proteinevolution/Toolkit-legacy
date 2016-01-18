@@ -153,9 +153,19 @@
   title: ProbCons
   title_long: ProbCons
   section: alignment
-  updated: Feburary, 2011
+  updated: February, 2011
   version: 1.12
   active: 
+  - member
+  - internal
+  - external
+- name: glprobs
+  title: GLProbs
+  title_long: GLProbs
+  section: alignment
+  updated: February, 2015
+  version: 0.1
+  active:
   - member
   - internal
   - external
