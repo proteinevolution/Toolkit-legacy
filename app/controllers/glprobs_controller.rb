@@ -15,14 +15,14 @@ class GlprobsController < ToolController
 
 	end
 
-	def msaprobs_export_browser
+	def glprobs_export_browser
 		if @job.actions.last.type.to_s.include?("Export")
 			@job.actions.last.active = false
 			@job.actions.last.save!
 		end
 	end
 
-	def msaprobs_export_file
+	def glprobs_export_file
 		if @job.actions.last.type.to_s.include?("Export")
 			@job.actions.last.active = false
 			@job.actions.last.save!
