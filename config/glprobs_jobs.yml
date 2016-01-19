@@ -10,9 +10,6 @@ glprobs_job:
       - name: forward
         title: Forward
         title_long: Forward results
-    - name: results_color
-      title: Colored
-      title_long: Show colored TCoffee results
   forwarding_emission:
       type: 4
       format: clu
