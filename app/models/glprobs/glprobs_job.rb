@@ -14,21 +14,23 @@ class GlprobsJob < Job
   end
   
   
-  
   # add your own data accessors for the result templates here! For example:
   attr_reader :num_seqs, :aln_blocks, :header
   
   
-  # Overwrite before_results to fill you job object with result data before result display
+  # Overwrite before_results to fill your job object with result data before result display
   def before_results(controller_params)
     @num_seqs = 0
     
     resfile = File.join(job_dir, jobid+".aln")
     raise("ERROR with resultfile!") if !File.readable?(resfile) || !File.exists?(resfile) || File.zero?(resfile)
     res = IO.readlines(resfile).map {|line| line.chomp}
-    
+
     # get the header
     @header = res.shift
+    
+    #removing the second line which has two slashes
+    res.shift
     
     #get the alignment blocks
     @aln_blocks = []
