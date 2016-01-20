@@ -5,7 +5,7 @@ glprobs_job:
   resultsections:  
     - name: results
       title: Results
-      title_long: Show HTML results
+      title_long: Show results
       forwardsections:
       - name: forward
         title: Forward

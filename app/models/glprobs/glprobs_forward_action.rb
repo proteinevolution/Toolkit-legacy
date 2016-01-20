@@ -20,9 +20,11 @@ class GlprobsForwardAction < Action
     res = IO.readlines(infile)
     out = File.new(outfile, "w+")
     res.delete_at(1)
+    
     res.each do |line|
-      if (line =~ /^MSAPROBS/ || line =~ /^\s*$/)
+      if (line =~ /^GLProbs/ || line =~ /^\s*$/)
         num = 0
+        line.gsub!('GLProbs','CLUSTAL fmt GLprobs')
         out.write(line)
       elsif (line =~ /^\s+/)
         next
