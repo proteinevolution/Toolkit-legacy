@@ -20,7 +20,7 @@ class GlprobsExportAction < Action
 		error if !File.readable?(infile) || !File.exists?(infile) || File.zero?(infile)
 		res = IO.readlines(infile)
 		out = File.new(outfile, "w+")
-		    
+		res.delete_at(1)
 		res.each do |line|
       	if (line =~ /^CLUSTAL/ || line =~ /^\s*$/)
       		num = 0
