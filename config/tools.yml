@@ -360,8 +360,8 @@
   - internal
   - external
 - name: blastclust
-  title: BLASTclust
-  title_long: BLASTclust
+  title: BLASTClust
+  title_long: BLASTClust
   section: classification
   updated: December, 2010
   version: Blast 2.2.26
