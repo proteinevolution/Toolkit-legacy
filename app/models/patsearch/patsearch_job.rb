@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 class PatsearchJob < Job
   
-  @@export_ext = ".export"
+  @@export_ext = ".html"
   def set_export_ext(val)
     @@export_ext = val  
   end
@@ -10,7 +11,45 @@ class PatsearchJob < Job
   
   # export results
   def export
-    ret = IO.readlines(File.join(job_dir, jobid + @@export_ext)).join
+
+  	resfile = File.join(job_dir, jobid+".out")
+		raise("ERROR with resultfile!") if !File.readable?(resfile) || !File.exists?(resfile) || File.zero?(resfile)
+		ret = IO.readlines(resfile).map {|line| line.chomp}
+        
+		@num_seqs = 0
+		@seqs = []
+		@headers = []
+		@pattern = ""
+		@orig_pattern = ""
+		
+		ret.each do |line|
+			if (line =~ /^Input Pattern:/) 
+				@orig_pattern = line
+			elsif (line =~ /^Pattern regular expression: (.+)$/)
+				@pattern = $1.strip
+			elsif (line =~ /^>/)
+				line.gsub!(/\001.*$/, '')
+				line.gsub!('>', "\n\n>")
+				line.gsub!(']', "]\n\n")
+				line.gsub!('SV=1', "SV=1\n\n")
+				line.gsub!('SV=2', "SV=2\n\n")
+                                line.gsub!('SV=3', "SV=3\n\n")
+                                line.gsub!(';', ";\n")		
+				@num_seqs += 1
+				@headers << line
+			else
+					
+				line.gsub!(/(#{@pattern})/) {|s| s.downcase}
+				line.gsub!(/(.{70})/, '\1'+"\n")
+				#line.gsub!(';', "\n")
+				line.gsub!(/([A-Z]*)([a-z]+)/) {|s| $1 + "<span style=\"color: red; background-color: yellow; font-weight: bold;\">" + $2.upcase! + "</span>"}
+				
+				@seqs << line			
+				
+
+			end
+		end
+
   end
   
   
@@ -19,10 +58,11 @@ class PatsearchJob < Job
   
   
 	def before_results(controller_params)
+       
 		resfile = File.join(job_dir, jobid+".out")
 		raise("ERROR with resultfile!") if !File.readable?(resfile) || !File.exists?(resfile) || File.zero?(resfile)
 		res = IO.readlines(resfile).map {|line| line.chomp}
-		
+        
 		@num_seqs = 0
 		@seqs = []
 		@headers = []
@@ -79,8 +119,16 @@ class PatsearchJob < Job
 #					i += 80
 #				end
 #				@seqs << seq
+                 
+
+				#@basename = File.join(job.job_dir, job.jobid)
+
+
+
 			end
 		end
+
+
 		
 	end
   

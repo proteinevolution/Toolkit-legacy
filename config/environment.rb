@@ -1,5 +1,5 @@
 # Be sure to restart your web server when you modify this file.
-
+require 'date'
 #include local environment settings
 local_environment_path = File.join(File.dirname(__FILE__), 'local_environment.rb')
 eval(IO.read(local_environment_path), binding, local_environment_path)
@@ -20,17 +20,18 @@ memcache_options = {
 memcache_servers = [ '127.0.0.1:11211' ]
 
 #global settings
-TOOLKIT_RELEASE = '2.18.4'
+TOOLKIT_RELEASE = '2.18.5'
 # 2.18.0: Port to Ubuntu Precise
 # 2.18.1: Using SCOPe 2.04 databases instead of scop 1.75 databases (tools
 #         using still older databases were not updated)
 # 2.18.2: Switching to JSmol, the java script version of Jmol
 # 2.18.3: Updating Bioprogs/Tools MAFFT, TCoffee, Muscle, Modeller and Phylip-Neighbor
 # 2.18.4: Updating Bioprog HMMER3, release of tools PSI-BLAST+ and ProtBLAST+
+# 2.18.5: BioJS, Many bugfixes, new Blast+ version 2.2.31
 if (LOCATION == "Munich")
-  TOOLKIT_COPYRIGHT = '&#169; 2008-2015'
+  TOOLKIT_COPYRIGHT = '&#169; 2008-'+Time.now.year.to_s
 else
-  TOOLKIT_COPYRIGHT = '&#169; 2008-2015'
+  TOOLKIT_COPYRIGHT = '&#169; 2008-'+Time.now.year.to_s
 end
 DOC_ROOTURL     = 'http://' + DOC_ROOTHOST
 BIOPROGS        = TOOLKIT_ROOT+'/bioprogs'
@@ -86,7 +87,7 @@ Rails::Initializer.run do |config|
   # config.action_controller.session_store = :active_record_store
   config.action_controller.session_store = :mem_cache_store
   config.action_controller.fragment_cache_store = :mem_cache_store, memcache_servers, memcache_options
-
+  #config.action_controller.session = { :session_key => "_myapp_session", :secret => "559563fbbf1cf6bc08e121d6ea4fef5b" }
   # Enable page/fragment caching by setting a file-based store
   # (remember to create the caching directory and make it readable to the application)
   # config.action_controller.fragment_cache_store = :file_store, "#{RAILS_ROOT}/cache"
