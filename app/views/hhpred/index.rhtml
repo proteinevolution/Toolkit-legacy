@@ -1,8 +1,27 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<style>
+
+.icon::before {
+    display: inline-block;
+    margin-right: .5em;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+</style>
+
 <script src="/javascripts/combinedselects.js" type="text/javascript"></script>
+
 <div class="row">
-<font size="2" color="#FF0000">Open-source HH-suite 2.0 available with better performance and new functionality! Download <a href="http://wwwuser.gwdg.de/~compbiol/data/">here</a></font> 
+  <p style="color: #C33; text-align: center; font-size:9pt;">New beta HHsuite 3.0 available with better performance and new functionality! <a style="font-size:9pt;" href="https://github.com/soedinglab/hh-suite.git" target="_blank">Download</a></p>
 </div>
-<a href="#" onClick="openHelpWindow('/hhpred/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>  
+
+<a href="#" onClick="openHelpWindow('/hhblits/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+
+
 <h2><%= @page_title %></h2>
 
 <%= form_tag({:action => :run, :job => 'hhpred', :parent => @parent_job}, {:multipart => true, :onreset => "return resetDisplayValues('#{@show_more_options ? 'true' : 'false'}', '#{params['informat'] || @informat_values[0]}');" })%>
@@ -12,16 +31,19 @@
 <% if @parent_job.nil? || @parent_job.params['mode'].nil?  -%>
 
 <div class="row">
-  <%= form_label("Paste protein sequence or multiple alignment", "input") %>
+  <%= form_label("Paste protein sequence or MSA", "input") %>
   <%= form_text_area("sequence_input") %>
 </div>
+
 <div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Search with pancreatitis induced protein PIP49. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
-    </span>
+    <span style="color: #008C50;">
+    Search with pancreatitis induced protein<a href="#" onClick="javascript:pasteExample();" style="color:#008C50"> PIP49.</a>
+     </span>
   </div>
 </div>
+
+
 <div class="row">
   <%= form_label("or upload a local file") %>
   <%= form_file("sequence_file") %>
@@ -132,11 +154,11 @@
 <%= hidden_field_tag("more_options_on", (@show_more_options ? "true" : "false") ) %>
 <div style="display:<%= @show_more_options ? 'block' : 'none' %>;" id="more_options">    
 
-  <!--  WORKAROUND -->
+ <!--  WORKAROUND -->
   <% if @parent_job.nil? || @parent_job.params['mode'].nil? -%>
   <div class="row">
-    <%= form_label_id("E-value threshold for MSA Generation", "E_hhblits_label", "E_hhblits") %>
-    <%= form_select_single("Ehhblitsval", @ehhblitsval, @ehhblitsval, '1E-3') %>	
+    <%= form_label_id("E-value inclusion threshold", "E_hhblits_label", "E_hhblits") %>
+    <%= form_select_single("Ehhblitsval", @ehhblitsval, @ehhblitsval, '1E-3') %>
   </div>
   
   <% else %>
@@ -144,11 +166,11 @@
   <% end -%>
   <% if @parent_job.nil? || @parent_job.params['mode'].nil? || @parent_job.params['mode'] == 'realign' || @parent_job.params['mode'] == 'hhsenser'-%>
   <div class="row">
-    <%= form_label("Min. coverage of MSA hits", "cov_min") %>
+    <%= form_label("Min. coverage of hits", "cov_min") %>
     <%= form_select_single("cov_min", @cov_minval, @cov_minval, '20') %>	
   </div>
   <div class="row">
-    <%= form_label("Min. sequence identity of MSA hits with query", "qid_min") %>
+    <%= form_label("Min. sequence identity<br><small>(of MSA hits with query)</small>", "qid_min") %>
     <%= form_select_single("qid_min", @cov_minval, @cov_minval, '0') %>	
   </div>
   <% else %>
@@ -159,7 +181,7 @@
   <div class="hr">&nbsp;</div>
 
   <div class="row">
-    <%= form_label("MAC realignment threshold (0.0:global, >=0.1:local)", "mact") %>
+    <%= form_label("MAC realignment threshold<br><small>(0.0:global, >=0.1:local)</small>", "mact") %>
     <%= form_select_single("mact", @mactval, @mactval, '0.3') %>	
   </div>
   <div class="row">
@@ -221,16 +243,18 @@
 
 
 <div class="hr">&nbsp;</div>
-<ul class="arrow-marker">
-  <li><a href="#" title="About HHpred" onclick="openHelpWindow('/hhpred/help_ov');">About HHpred</a></li>
-  <li><a target="_blank" href="http://predictioncenter.org/casp9/groups_analysis.cgi?type=server&tbm=on&submit=Filter"><font color="red">Official server results for CASP9 structure prediction benchmark</font></a></li> 
-  <li><a target="_blank" href="http://wwwuser.gwdg.de/~compbiol/pdf/Proteins-2009-Hildebrand-HHpred-in-CASP8.pdf">HHpred results in CASP8: Hildebrand et al, Proteins 2009</a></li>
-  <li><a target="_blank" href="http://wwwuser.gwdg.de/~compbiol/data/hhsuite/" title="Download HHsuite"><B>Download HHsuite</B></a></li>
-  <li><a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/HHsearch/databases/">Download HHpred databases (alternative server)</a></li>
-  <li><a target="_self" href="pdbalert">PDBalert automatic remote homology tracking and structure prediction</a></li>
-  <li><a target="_blank" href="http://www.lmb.uni-muenchen.de/soeding/index.htm">S&ouml;ding group at Max Planck Institute for Biophysical Chemistry in G&ouml;ttingen</a></li>
+<ul class="fa-ul">
+  <li><a href="#" class="icon fa-angle-double-right" title="About HHpred" onclick="openHelpWindow('/hhpred/help_ov');">About HHpred</a></li>
+  <li><a target="_blank" class="icon fa-angle-double-right" href="https://github.com/soedinglab/hh-suite.git" title="Download HHsuite">Download HHsuite</a></li>
+  <li><a target="_blank" class="icon fa-angle-double-right" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/HHsearch/databases/">Download HHpred databases (alternative server)</a></li>
+  <li><a target="_blank" class="icon fa-angle-double-right" href="pdbalert">PDBalert automatic remote homology tracking and structure prediction</a></li>
+  <li><a target="_blank" class="icon fa-angle-double-right" href="http://www.mpibpc.mpg.de/de/soeding">S&ouml;ding group at Max Planck Institute for Biophysical Chemistry in G&ouml;ttingen</a></li>
+  <br>
+  <li><a target="_blank" class="icon fa-angle-double-right" href="http://predictioncenter.org/casp9/groups_analysis.cgi?type=server&tbm=on&submit=Filter">Official server results for CASP9 structure prediction benchmark</a></li>
+  <li><a target="_blank" class="icon fa-angle-double-right" href="http://wwwuser.gwdg.de/~compbiol/pdf/Proteins-2009-Hildebrand-HHpred-in-CASP8.pdf">HHpred results in CASP8: Hildebrand et al, Proteins 2009</a></li>
 </ul>
 <div class="hr">&nbsp;</div>
-<!--<div class="row">
-  Please send feedback to: soeding AT mpibpc.mpg.de
-</div>-->
+<div class="row">
+  In case of further requests please contact the <a href="&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#104;&#104;&#064;&#109;&#112;&#105;&#098;&#112;&#099;&#046;&#109;&#112;&#103;&#046;&#100;&#101;">HHsuite manager</a>!
+</div>
+
