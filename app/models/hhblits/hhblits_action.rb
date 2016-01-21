@@ -131,7 +131,7 @@ class HhblitsAction < Action
     @commands << "export  PATH=$PATH:#{HHSUITE} "
     @commands << "export  HHLIB=#{HHLIB} "
     
-    @commands << "#{HHSUITE}/hhblits -cpu 8 -v #{@v} -i #{@infile} -d #{@db} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile}#{msa_factor} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
+    @commands << "#{HHSUITE}/hhblits -cpu 8 -v #{@v} -i #{@infile} -d #{@db} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile}#{msa_factor} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -z 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
 
     @commands << "#{HHSUITELIB}/addss.pl #{@a3m_outfile}"
 
