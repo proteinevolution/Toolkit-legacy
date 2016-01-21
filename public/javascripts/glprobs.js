@@ -3,7 +3,7 @@ function deselect()
   var number = parseInt($('CHECKBOXES').value, 10);
   var blocks = parseInt($('BLOCKS').value, 10);
   for(i = 0; i < (blocks*number); i++) {
-    $(msaprobs_form).elements["hits[]"][i].checked = false;
+    $(glprobs_form).elements["hits[]"][i].checked = false;
   }
   calculate_forwarding();
 }
@@ -12,7 +12,7 @@ function select()
   var number = parseInt($('CHECKBOXES').value, 10);
   var blocks = parseInt($('BLOCKS').value, 10);
   for(i = 0; i < (blocks*number); i++) {
-    $(msaprobs_form).elements["hits[]"][i].checked = true;
+    $(glprobs_form).elements["hits[]"][i].checked = true;
   }
   calculate_forwarding();
 }
@@ -24,9 +24,9 @@ function select_first()
   for(b = 0; b < blocks; b++) {
     for (i = 0; i < number; i++) {
       if (i < first) {
-        $(msaprobs_form).elements["hits[]"][(b*number+i)].checked = true;
+        $(glprobs_form).elements["hits[]"][(b*number+i)].checked = true;
       } else {
-        $(msaprobs_form).elements["hits[]"][(b*number+i)].checked = false;      
+        $(glprobs_form).elements["hits[]"][(b*number+i)].checked = false;      
       }
     }  
   }
@@ -37,9 +37,9 @@ function change(num, block)
 {
   var number = parseInt($('CHECKBOXES').value, 10);
   var blocks = parseInt($('BLOCKS').value, 10);
-  var mode = $(msaprobs_form).elements["hits[]"][(block * number)+num].checked;
+  var mode = $(glprobs_form).elements["hits[]"][(block * number)+num].checked;
   for (b = 0; b < (blocks); b++) {
-    $(msaprobs_form).elements["hits[]"][(b * number)+num].checked = mode;
+    $(glprobs_form).elements["hits[]"][(b * number)+num].checked = mode;
   }
 }
 
