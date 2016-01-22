@@ -168,7 +168,6 @@
   active:
   - member
   - internal
-  - external
 - name: mafft
   title: MAFFT
   title_long: MAFFT
