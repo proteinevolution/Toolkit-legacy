@@ -537,7 +537,7 @@
   - external
 - name: hhfrag
   title: HHfrag
-  title_long: HHfrag -- Dynamic fragment libraries and prediction of torsion angles
+  title_long: HHfrag - Dynamic fragment libraries and prediction of torsion angles
   section: tertstruct
   updated: September, 2009
   version: n.a.
