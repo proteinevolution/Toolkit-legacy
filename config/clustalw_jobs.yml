@@ -1,7 +1,7 @@
 clustalw_job: 
   title: Clustal Omega
   hidden: false
-  code: CLUO
+  code: CLUS
   resultsections:  
     - name: results
       title: Results
