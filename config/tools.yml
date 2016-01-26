@@ -129,7 +129,7 @@
   - member
   - internal
   - external
-- name: clustalo
+- name: clustalw
   title: Clustal Omega
   title_long: Clustal Omega
   section: alignment
