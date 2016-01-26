@@ -1,0 +1,79 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+	<li><a href="#input">Input format</a></li>
+	<li><a href="#otheradvanced">Other advanced options</a></li>
+</ul>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Input Format</h3> 
+<div class="row">
+<p>
+Enter multiple sequences in fasta format.
+A sequence in FASTA format begins with a single-line description, followed by lines of sequence data. The description line is distinguished from the sequence data by a greater-than (">") symbol in the first column. It is recommended that all lines of text be shorter than 80 characters in length. An example sequence in FASTA
+format is:
+</p>
+<pre>
+
+>gi|532319|pir|TVFV2E|TVFV2E envelope protein
+ELRLRYCAPAGFALLKCNDADYDGFKTNCSNVSVVHCTNLMNTTVTTGLLLNGSYSENRT
+QIWQKHRTSNDSALILLNKHYNLTVTCKRPGNKTVLPVTIMAGLVFHSQKYNLRLRQAWC
+HFPSNWKGAWKEVKEEIVNLPKERYRGTNDPKRIFFQRQWGDPETANLWFNCHGEFFYCK
+MDWFLNYLNNLTVDADHNECKNTSGTKSGNKRAPGPCVQRTYVACHIRSVIIWLETISKK
+TYAPPREGHLECTSTVTGMTVELNYIPKNRTNVTLSPQIESIWAAELDRYKLVEITPIGF
+APTEVRRYTGGHERQKRVPFVXXXXXXXXXXXXXXXXXXXXXXVQSQHLLAGILQQQKNL
+LAAVEAQQQMLKLTIWGVK
+
+</pre>
+<p>
+Sequences are expected to be represented in the standard IUB/IUPAC amino acid and nucleic acid codes, with these exceptions: lower-case letters are accepted and are mapped into upper-case; a single hyphen or dash can be used to represent a gap of indeterminate length; and in amino acid sequences, U and * are acceptable letters (see below). Before submitting a request, any numerical digits in the query sequence should either be removed or replaced by appropriate letter codes (e.g., N for unknown nucleic acid residue or X for unknown amino acid residue).
+<br/>
+The nucleic acid codes supported are:
+</p>
+<pre>
+
+   A --> adenosine           M --> A C (amino)
+   C --> cytidine            S --> G C (strong)
+   G --> guanine             W --> A T (weak)
+   T --> thymidine           B --> G T C
+   U --> uridine             D --> G A T
+   R --> G A (purine)        H --> A C T
+   Y --> T C (pyrimidine)    V --> G C A
+   K --> G T (keto)          N --> A G C T (any)
+                             -  gap of indeterminate length
+</pre>
+<p>
+The accepted amino acid codes are:
+</p>
+<pre>
+
+    A  alanine                         P  proline
+    B  aspartate or asparagine         Q  glutamine
+    C  cystine                         R  arginine
+    D  aspartate                       S  serine
+    E  glutamate                       T  threonine
+    F  phenylalanine                   U  selenocysteine
+    G  glycine                         V  valine
+    H  histidine                       W  tryptophan
+    I  isoleucine                      Y  tyrosine
+    K  lysine                          Z  glutamate or glutamine
+    L  leucine                         X  any
+    M  methionine                      *  translation stop
+    N  asparagine                      -  gap of indeterminate length
+
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
+
+<a name="otheradvanced"></a>
+<h3 class="<%= @section["name"] %>">Other advanced options</h3>
+<div class="row">
+The Advanced Options are not yet supported.
+<br/>
+<br/>
+<pre style="font-size: 11px;">
+
+
+</pre>
+</div>
+<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>

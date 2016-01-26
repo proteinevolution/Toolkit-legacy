@@ -1,0 +1,17 @@
+glprobs_job: 
+  title: GLProbs
+  hidden: false
+  code: GLPR
+  resultsections:  
+    - name: results
+      title: Results
+      title_long: Show results
+      forwardsections:
+      - name: forward
+        title: Forward
+        title_long: Forward results
+  forwarding_emission:
+      type: 4
+      format: clu
+  forwarding_acceptances:
+      type: 2

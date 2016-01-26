@@ -23,8 +23,8 @@
   title: ProtBLAST+
   title_long: Protein BLAST+
   section: search
-  updated: December, 2015
-  version: Blast 2.2.31+
+  updated: January, 2016
+  version: Blast 2.3.0+
   active: 
   - member
   - internal
@@ -33,8 +33,8 @@
   title: Modeller
   title_long: Modeller
   section: tertstruct
-  updated: July, 2015
-  version: 9.15
+  updated: January, 2016
+  version: 9.16
   active: 
   - member
   - internal
@@ -73,8 +73,8 @@
   title: PSI-BLAST+
   title_long: PSI-BLAST+
   section: search
-  updated: December, 2015
-  version: Blast 2.2.31+
+  updated: January, 2016
+  version: Blast 2.3.0+
   active: 
   - member
   - internal
@@ -133,8 +133,8 @@
   title: Clustal Omega
   title_long: Clustal Omega
   section: alignment
-  updated: March, 2013
-  version: 2.1, Omega 0.2.0
+  updated: January, 2016
+  version: Omega 1.2.1
   active: 
   - member
   - internal
@@ -153,9 +153,19 @@
   title: ProbCons
   title_long: ProbCons
   section: alignment
-  updated: Feburary, 2011
+  updated: February, 2011
   version: 1.12
   active: 
+  - member
+  - internal
+  - external
+- name: glprobs
+  title: GLProbs
+  title_long: GLProbs
+  section: alignment
+  updated: January, 2016
+  version: 1.0
+  active:
   - member
   - internal
   - external
@@ -527,7 +537,7 @@
   - external
 - name: hhfrag
   title: HHfrag
-  title_long: HHfrag -- Dynamic fragment libraries and prediction of torsion angles
+  title_long: HHfrag - Dynamic fragment libraries and prediction of torsion angles
   section: tertstruct
   updated: September, 2009
   version: n.a.

@@ -1,6 +1,6 @@
-<a href="#" onClick="openHelpWindow('/clustalw/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+<a href="#" onClick="openHelpWindow('/glprobs/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
 
-<%= form_tag({:action => :run, :job => 'clustalw'}, {:multipart => true})%> 
+<%= form_tag({:action => :run, :job => 'glprobs'}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
 	<%= form_label("Enter sequences in FASTA format", "input") %>
@@ -21,10 +21,6 @@
 <div class="spacer">&nbsp;</div>
 
 <h3 class="<%= @section["name"] %>">Options</h3>
-<!--<div class="row">
-   <%= form_label("Version","version") %>
-   <%= form_radio_buttons("version",@clustal_version_values,@clustal_version_labels,@clustal_version_values[0], "&nbsp;&nbsp;") %>
-</div>-->
 
 <div class="row">
 	<%= form_label("Other advanced options", "otheradvanced") %>
@@ -36,7 +32,7 @@
 <%= render(:partial => "shared/joboptions") %>
 
 <div class="row">
-	<%= form_submit_snail_buttons("Runtime ~12 min for N=600 sequences of length L=200. Scales as N² * L².") %>
+	<%= form_submit_buttons() %>
 </div>
 
 </form>
@@ -44,5 +40,5 @@
 
 <div class="hr">&nbsp;</div>
 <div class="row">
-Thompson, J., Higgiin, D., and Gibson, T. (1994) CLUSTALW: improving the sensitivity of progressive multiple sequence alignment through sequence weighting, position specific gap penalties and weight matrix choice. Nuc. Acids Res., 22, 4673-4680.
+Ye, Y. ; Cheung, D.W. ; Wang, Y. ; Yiu, S. ; Zhan, Q. ; Lam, T. ; Ting, H.: GLProbs: Aligning Multiple Sequences Adaptively. IEEE/ACM Transactions on Computational Biology and Bioinformatics, VOL. 12, NO. 1, January/February 2015: 67-78.
 </div>
