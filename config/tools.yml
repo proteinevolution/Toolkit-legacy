@@ -129,12 +129,12 @@
   - member
   - internal
   - external
-- name: clustalw
+- name: clustalo
   title: Clustal Omega
   title_long: Clustal Omega
   section: alignment
-  updated: March, 2013
-  version: 2.1, Omega 0.2.0
+  updated: January, 2016
+  version: Omega 1.2.1
   active: 
   - member
   - internal
