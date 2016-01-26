@@ -36,7 +36,7 @@ class ClustalwAction < Action
   def perform
     params_dump
 
-    if (@version == '-o')
+    if (@version != '-o')
         cpus = "4-126"
         # How these limits were computed:
         # be em a sufficient memory limit of the tool explored by experience (here 10G).
