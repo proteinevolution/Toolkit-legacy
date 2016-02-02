@@ -57,7 +57,7 @@
                params += ',scrollbars=yes';
                             
 
-                w = window.open('/alnviz/clustal_popup_alnviz','clustal_popup_alnviz',params);
+                w = window.open('/alnviz/clustal_popup_alnviz','<%= @job.url_for_job_dir %>/<%= @job.jobid %>',params);
                 w.myVar = jobid;
 
                 } else {
