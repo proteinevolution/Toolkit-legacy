@@ -1,0 +1,68 @@
+<html>
+<head>
+	<title>
+		<%= @layout_page_title || "Bioinformatics Toolkit" %>
+	</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta content="no-cache" http-equiv="no-cache" />
+	<meta http-equiv="Expires" content="-1" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta name="author" content="Seung-Zin Nam">
+
+
+
+
+  <%= javascript_include_tag "msa_mpi2.min.js" %>
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Sans+Mono" />
+  <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+<!-- the following code overrides the biojsmsa css because of a strange bug which made the descriptions unreadable -->
+
+<style>
+.smenubar .smenubar_alink {
+  color: #005FA9;
+  font-weight: bold;
+}
+
+#metanav {
+
+  display: block;
+  position: static;
+  
+  top: 0px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font-family: Lato;
+  font-size: 14px;
+  color: #000;
+  background-color: #E6F2F2;
+
+  
+}
+
+
+</style>
+<!-- <img src="../images/minerva_logo.gif"><br><br> -->
+<ul id="metanav"><li>AlignmentViewer</li></ul>
+
+</head>
+<br>
+<body bgcolor="white">
+
+
+
+
+    <div id="menuDiv"></div>
+    <div id="yourDiv">Loading ... </div>
+    <div><%= @content_for_layout %></div>
+  
+
+
+
+                
+</body>
+    <!-- <div id="footer"><%= TOOLKIT_COPYRIGHT %>, <a href="http://www.eb.tuebingen.mpg.de/departments/1-protein-evolution" target="_blank">Dept. of Protein Evolution at the Max Planck Institute for Developmental Biology</a>, T&#252;bingen<br>Release-<%= TOOLKIT_RELEASE %></div> -->
+</html>
