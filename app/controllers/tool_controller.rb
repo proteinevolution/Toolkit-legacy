@@ -342,15 +342,15 @@ class ToolController < ApplicationController
   end
 
   def popup_full
-    render(:layout => "biojsmsa")
+    render(:layout => "biojsmsa2")
   end
 
   def popup_results
-    render(:layout => "biojsmsa")
+    render(:layout => "biojsmsa2")
   end
 
   def popup_reduced
-    render(:layout => "biojsmsa")
+    render(:layout => "biojsmsa2")
   end
 
 
