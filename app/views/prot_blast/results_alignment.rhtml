@@ -4,6 +4,8 @@
 
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==" crossorigin="anonymous">
+
 
 
 
@@ -84,14 +86,9 @@
 </div>
 
 
+ <table class="table"> <tr> <th><input name="submitform" class="btn btn-info btn-xs" onClick="OpenWindow_JobID();" value="View Full Alignment"/></th> <th><input name="submitform" class="btn btn-info btn-xs" onClick="OpenWindow_JobID2();" value="View Reduced Alignment" align="right"/>
+</th> </tr> <tr> <td>reduced alignment: 50 most <br>distinct sequences without inserts</td> <td>complete alignment with inserts</td> </tr> </table>
 
-<input name="submitform" class="feedbutton" onClick="OpenWindow_JobID();" value="View Full Alignment"/>
-<div class="help_jal" style="width:20em;padding-top:0px; padding-right:10px;">complete alignment with inserts</div>
-
-<input name="submitform" class="feedbutton" onClick="OpenWindow_JobID2();" value="View Reduced Alignment"/>
-<div class="help_jal" style="width:20em;padding-top:0px; padding-right:10px;">reduced alignment: 50 most distinct sequences without inserts</div>
-
-<div class="hr">&nbsp;</div>
 	<div class="row">
 		<%= text_area_tag("alignment", @job.render_file(@job.jobid+".align"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
 	</div>	
