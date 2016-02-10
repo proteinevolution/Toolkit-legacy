@@ -46,7 +46,6 @@
     <%= javascript_include_tag "toolkit", "browser_sniffer", "overlib", "overlib_cssstyle" %>
     <%= javascript_include_tag :defaults %>    
     <%= javascript_include_tag "scriptaculous.js" %>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/mithril/0.2.2-rc.1/mithril.min.js"></script>
 
     <%= if @tool then javascript_include_tag(@tool['name']) end -%>
     <% if @include_js && !@include_js.empty? -%>
