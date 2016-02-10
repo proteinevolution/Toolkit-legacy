@@ -1,6 +1,75 @@
 <%= render(:partial => "shared/jobspecs", :locals => {:toolname => @job.tool}) %>
 
-<%= render(:partial => "shared/resultsections", :locals => {:export_to => "alignment", :forward => false}) %>
+<%= render(:partial => "shared/resultsections", :locals => {:export_to => "alignment"}) %>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+
+
+
+
+<script type="text/javascript" language="javascript">
+
+            var w = false; 
+            var w2 = false; 
+
+            function OpenWindow_JobID() {
+
+              if (!w || w.closed){
+
+               params  = 'width='+screen.width;
+               params += ',height='+screen.height;
+               params += ',top=0,left=0'
+               params += ',fullscreen=yes';
+               params += ',scrollbars=yes';
+                            
+
+                w = window.open('/psi_blast/popup_full','<%= @job.url_for_job_dir %>/<%= @job.jobid %>',params);
+                w.myVar = jobid;
+
+                } else {
+
+                w.focus();
+
+              }
+
+             }
+
+
+             function OpenWindow_JobID2() {
+
+              if (!w2 || w2.closed){
+
+               params  = 'width='+screen.width;
+               params += ',height='+screen.height;
+               params += ',top=0,left=0'
+               params += ',fullscreen=yes';
+               params += ',scrollbars=yes';
+                            
+
+                w2 = window.open('/psi_blast/popup_reduced','<%= @job.url_for_job_dir %>/<%= @job.jobid %>'+'2',params);
+                w2.myVar = jobid;
+
+                } else {
+
+                w2.focus();
+
+              }
+
+             }
+
+            function popupTransfer() {
+              var jobid = '<%= @job.url_for_job_dir %>/<%= @job.jobid %>';
+              return jobid;
+
+
+            }
+
+
+</script>
+
+
 
 <%= form_tag({}, {:id => @job.tool+"_form"}) %>
 
@@ -15,13 +84,10 @@
     
 	<div class="hr">&nbsp;</div>
 </div>
-<%= form_jalview_buttons("complete alignment with inserts",
-    			 "reduced alignment: 50 most distinct sequences without inserts",
-			 20, 29,
-			 ".j.align", ".ralign",
-			 "alignment", "psi_blast",
-			 2) %>
 
+ <table cellpadding="0" cellspacing="0" border="0" width="700" align="center"> <tr> <th align="left">complete alignment with inserts <input name="submitform" class="checkbutton" type="button" onClick="OpenWindow_JobID();" value="View Full Alignment"/></th> <th align="right">reduced alignment: 50 most distinct seqs without inserts </th><th align="right"><input name="submitform" class="checkbutton" type="button" onClick="OpenWindow_JobID2();" value="View Reduced Alignment" align="right"/>
+</th> </tr> </table>
+<div class="hr">&nbsp;</div>
 	<div class="row">
 		<%= text_area_tag("alignment", @job.render_file(@job.jobid+".align"), {:style => "height: 450px; width: 100%;", :wrap => "off"}) %>
 	</div>	
