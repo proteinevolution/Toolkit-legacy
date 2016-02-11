@@ -13,7 +13,6 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta name="author" content="Michael Remmert">
     <%= @meta %>
-    
     <% if LOCATION == "Munich" %>
       <%= stylesheet_link_tag "styles_munich", "navisection_munich", :media => 'all' %>
       <% if @widescreen %>
@@ -111,7 +110,7 @@
 	  <% if is_internal?(request.remote_ip) %>
 	    <li <% if @meta_section == "stats" -%> class="current"<% end -%> ><%= link_to "Tool Statistics", :controller => "/common", :action => "stats" -%></li>
 	    <li <% if @meta_section == "db_stats" -%> class="current"<%end -%> ><%= link_to "DB Statistics", :controller => "/common", :action => "db_stats" -%></li>
-	    <li <% if @meta_section == "user_stats" -%> class="current"<% end -%> ><%= link_to "User Statistics", :controller => "/common", :action => "user_stats" -%></li>				 
+	    <li <% if @meta_section == "user_stats" -%> class="current"<% end -%> ><%= link_to "User Statistics", :controller => "/common", :action => "user_stats" -%></li>				
 	  <% end %>
 	  <li <% if @meta_section == "contact" -%> class="current"<% end -%> ><%= link_to "Contact", :controller => "/common", :action => "contact" -%></li> 
 	  <li <% if @meta_section == "admin_userdbs" -%> class="current"<% end -%> ><%= link_to "Personal Databases", :controller => "/userdb", :action => "admin_userdbs" -%></li> 
