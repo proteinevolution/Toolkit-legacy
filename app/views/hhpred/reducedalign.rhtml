@@ -49,7 +49,7 @@
                params += ',scrollbars=yes';
                             
 
-                w = window.open('/hhpred/popup_reduced','hhpred_popup_reduced',params);
+                w = window.open('/hhpred/popup_reduced','<%= @job.url_for_job_dir %>/<%= @job.jobid %>',params);
                 w.myVar = jobid;
 
                 } else {
@@ -70,10 +70,8 @@
 
 </script>
 
-<div align="right">
-<%= form_jalview_button("Reduced alignment: 50 most distinct sequences without inserts in Fasta format",
-                          0, ".reduced.fas", nil, "alignment", "hhpred") %>
-<!--<input name="submitform" type="submit" class="feedbutton" onClick="OpenWindow_JobID();" value="View Alignment"/>-->
+<div>
+<b>50 most distinct sequences without inserts in Fasta format</b><input name="submitform" type="button" class="feedbutton" onClick="OpenWindow_JobID();" value="View Alignment"/>
 </div>
 
 
