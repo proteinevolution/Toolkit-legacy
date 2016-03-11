@@ -240,10 +240,9 @@
 <%= render(:partial => "shared/joboptions") %>
 
 </form>
+<br><br><br>
 
-
-
-<div class="hr">&nbsp;</div>
+<h3 class="<%= @section["name"] %>">Links</h3>
 <ul class="fa-ul">
   <li><a href="#" class="icon fa-angle-double-right" title="About HHpred" onclick="openHelpWindow('/hhpred/help_ov');">About HHpred</a></li>
   <li><a target="_blank" class="icon fa-angle-double-right" href="https://github.com/soedinglab/hh-suite.git" title="Download HHsuite">Download HHsuite</a></li>
@@ -264,9 +263,9 @@
 <div class="spacer">&nbsp;</div>
 <h3 class="<%= @section["name"] %>">Please cite one of the following articles:</h3>
 
-    <b>Remmert M, Biegert A, Hauser A, S&ouml;ding J (2012) HHblits: lightning-fast iterative protein sequence searching by HMM-HMM alignment. Nature Methods 9 (2), 173-175.</b>
-    <BR><BR><B><font face='verdana,arial,helvetica,sans-serif'>Meier A, S&ouml;ding J. (2015) Automatic Prediction of Protein 3D Structures by Probabilistic Multi-template Homology Modeling. PLoS Comput Biol 11 (10), e1004343.</font></B>
-    <BR><BR><B><font face='verdana,arial,helvetica,sans-serif'>Hildebrand A, Remmert A, Biegert A, S&ouml;ding J (2009) Fast and accurate automatic structure prediction with HHpred. Proteins 77 (S9), 128-132.</font></B>
-    <BR><BR><B><font face='verdana,arial,helvetica,sans-serif'> S&ouml;ding J, Biegert A., Lupas AN. (2005) The HHpred interactive server for protein homology detection and structure prediction. Nucleic Acids Res 33 (suppl 2), W244-W248.</font></B>
-    <BR><BR><B><font face='verdana,arial,helvetica,sans-serif'> S&ouml;ding J (2005) Protein homology detection by HMM-HMM comparison. Bioinformatics 21: 951-960.</font></B>
-    <BR><BR><B><font face='verdana,arial,helvetica,sans-serif'> Biegert A, Mayer C, Remmert M, S&ouml;ding J, Lupas AN (2006) The MPI Bioinformatics Toolkit for protein sequence analysis. Nucleic Acids Res 34 (suppl 2), W335-W339.</font></B>
+    Remmert M, Biegert A, Hauser A, S&ouml;ding J (2012) HHblits: lightning-fast iterative protein sequence searching by HMM-HMM alignment. Nature Methods 9 (2), 173-175.
+    <BR><BR><font face='verdana,arial,helvetica,sans-serif'>Meier A, S&ouml;ding J. (2015) Automatic Prediction of Protein 3D Structures by Probabilistic Multi-template Homology Modeling. PLoS Comput Biol 11 (10), e1004343.</font>
+    <BR><BR><font face='verdana,arial,helvetica,sans-serif'>Hildebrand A, Remmert A, Biegert A, S&ouml;ding J (2009) Fast and accurate automatic structure prediction with HHpred. Proteins 77 (S9), 128-132.</font>
+    <BR><BR><font face='verdana,arial,helvetica,sans-serif'> S&ouml;ding J, Biegert A., Lupas AN. (2005) The HHpred interactive server for protein homology detection and structure prediction. Nucleic Acids Res 33 (suppl 2), W244-W248.</font>
+    <BR><BR><font face='verdana,arial,helvetica,sans-serif'> S&ouml;ding J (2005) Protein homology detection by HMM-HMM comparison. Bioinformatics 21: 951-960.</font>
+    <BR><BR><font face='verdana,arial,helvetica,sans-serif'> Biegert A, Mayer C, Remmert M, S&ouml;ding J, Lupas AN (2006) The MPI Bioinformatics Toolkit for protein sequence analysis. Nucleic Acids Res 34 (suppl 2), W335-W339.</font>
