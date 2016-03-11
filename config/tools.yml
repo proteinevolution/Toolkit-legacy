@@ -173,8 +173,8 @@
   title: MAFFT
   title_long: MAFFT
   section: alignment
-  updated: July, 2015
-  version: 7.221
+  updated: February, 2016
+  version: 7.271
   active: 
   - member
   - internal
