@@ -4,6 +4,42 @@
 
 <%= form_tag({:action => :run, :jobaction => 'hhblits_forward', :jobid => @job, :forward_action => "forward", :forward_controller => "hhpred"}, :name => "forward_alignment") %>
 
+<script type="text/javascript" language="javascript">
+
+            var w = false; 
+
+            function OpenWindow_JobID() {
+
+              if (!w || w.closed){
+
+               params  = 'width='+screen.width;
+               params += ',height='+screen.height;
+               params += ',top=0,left=0'
+               params += ',fullscreen=yes';
+               params += ',scrollbars=yes';
+                            
+
+                w = window.open('/hhblits/popup_full','<%= @job.url_for_job_dir %>/<%= @job.jobid %>',params);
+                w.myVar = jobid;
+
+                } else {
+
+                w.focus();
+
+              }
+
+             }
+
+            function popupTransfer() {
+              var jobid = '<%= @job.url_for_job_dir %>/<%= @job.jobid %>';
+              return jobid;
+
+
+            }
+
+
+</script>
+
 <div class="row">
 
   <%= form_label("Alignment format", "") %>
@@ -12,7 +48,9 @@
 </div>
 
 <div class="row">
-  <%= form_jalview_button("complete alignment with inserts", 0, ".full.fas", nil, "alignment", "hhblits") %>
+<div align="right">
+<input name="submitform" type="button" class="feedbutton" onClick="OpenWindow_JobID();" value="View Alignment"/>
+</div>
   <div class="hr">&nbsp;</div>
 </div>
 <div>
