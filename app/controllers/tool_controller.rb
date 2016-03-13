@@ -357,6 +357,10 @@ class ToolController < ApplicationController
     render(:layout => "biojsmsa2")
   end
 
+  def popup_hhblits
+    render(:layout => "biojsmsahhblits")
+  end
+
 
   # compute the default value of forwarding selection
   # Example: default_forwarding('psi_blast')
