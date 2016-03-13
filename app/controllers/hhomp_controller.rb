@@ -257,7 +257,7 @@ class HhompController < ToolController
   end
   
   def showalign
-    @fullscreen = true
+    @fullscreen = false
   end
   
   def results_export

@@ -16,7 +16,7 @@
 <script src="/javascripts/combinedselects.js" type="text/javascript"></script>
 
 <div class="row">
-  <p style="color: #C33; text-align: center; font-size:9pt;">New beta HHsuite 3.0 available with better performance and new functionality! <a style="font-size:9pt;" href="https://github.com/soedinglab/hh-suite.git" target="_blank">Download</a></p>
+  <p style="color: #C33; text-align: left; font-size:9pt;">New beta HHsuite 3.0 available with better performance and new functionality! <a style="font-size:9pt;" href="https://github.com/soedinglab/hh-suite.git" target="_blank">Download</a></p>
 </div>
 
 <a href="#" onClick="openHelpWindow('/hhpred/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
@@ -98,13 +98,13 @@
     <table cellspacing="0">
     <tr align="center"><td><b>Standard</b></td><td width="30px;"></td><td><b>Proteomes</b></td></tr>
     <tr><td>
-    <%= form_select_multiple("hhpred_dbs", @dbvalues, @dblabels, @default_db, 5, false, "", 'onSimpleClick(event, "genomes_hhpred_dbs")') %>	
+    <%= form_select_multiple("hhpred_dbs", @dbvalues, @dblabels, @default_db, 5, false, "", 'onSimpleClick(event, "genomes_hhpred_dbs")') %>  
     </td><td></td><td>
-    <%= form_select_multiple("genomes_hhpred_dbs", @genome_dbvalues, @genome_dblabels, "", 5, false, "", 'onSimpleClick(event, "hhpred_dbs")') %>	
+    <%= form_select_multiple("genomes_hhpred_dbs", @genome_dbvalues, @genome_dblabels, "", 5, false, "", 'onSimpleClick(event, "hhpred_dbs")') %> 
     </td></tr>
     </table>
     <%= form_hidden_field("genomes_first", "true") %>
-  </div>	
+  </div>  
 </div>
 <% else %>
 <%= form_hidden_field("hhpred_dbs", @parent_job.params_main_action['hhpred_dbs'].join(' ')) %>
@@ -120,7 +120,7 @@
 
 <div class="row">
   <%= form_label_id("Max. MSA Generation iterations", "maxhhblitsit_label", "maxhhblitsit") %>
-  <%= form_select_single("maxhhblitsit", @maxhhblitsit, @maxhhblitsit, '3') %>	
+  <%= form_select_single("maxhhblitsit", @maxhhblitsit, @maxhhblitsit, '3') %>  
 </div>
 <% else %>
 <%= form_hidden_field("maxhhblitsit", @parent_job.params_main_action['maxhhblitsit']) %>
@@ -128,15 +128,15 @@
 
 <div class="row">
   <%= form_label("Score secondary structure", "ss_scoring") %>
-  <%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, "2", "&nbsp;") %>	
+  <%= form_radio_buttons("ss_scoring", @ss_scoring_values, @ss_scoring_labels, "2", "&nbsp;") %>  
 </div>
 <div class="row">
   <%= form_label("Alignment mode", "alignmode") %>
-  <%= form_radio_buttons("alignmode", ['local', 'global'], ['local', 'global'], "local", "&nbsp;") %>	
+  <%= form_radio_buttons("alignmode", ['local', 'global'], ['local', 'global'], "local", "&nbsp;") %> 
 </div>
 <div class="row">
   <%= form_label("Realign with MAC", "realign") %>
-  <%= form_checkbox("realign", '1', false) %>	
+  <%= form_checkbox("realign", '1', false) %> 
 </div>
 
 <div class="spacer">&nbsp;</div>
@@ -167,11 +167,11 @@
   <% if @parent_job.nil? || @parent_job.params['mode'].nil? || @parent_job.params['mode'] == 'realign' || @parent_job.params['mode'] == 'hhsenser'-%>
   <div class="row">
     <%= form_label("Min. coverage of hits", "cov_min") %>
-    <%= form_select_single("cov_min", @cov_minval, @cov_minval, '20') %>	
+    <%= form_select_single("cov_min", @cov_minval, @cov_minval, '20') %>  
   </div>
   <div class="row">
     <%= form_label("Min. sequence identity<br><small>(of MSA hits with query)</small>", "qid_min") %>
-    <%= form_select_single("qid_min", @cov_minval, @cov_minval, '0') %>	
+    <%= form_select_single("qid_min", @cov_minval, @cov_minval, '0') %> 
   </div>
   <% else %>
   <%= form_hidden_field("cov_min", @parent_job.params_main_action['cov_min']) %>
@@ -182,33 +182,33 @@
 
   <div class="row">
     <%= form_label("MAC realignment threshold<br><small>(0.0:global, >=0.1:local)</small>", "mact") %>
-    <%= form_select_single("mact", @mactval, @mactval, '0.3') %>	
+    <%= form_select_single("mact", @mactval, @mactval, '0.3') %>  
   </div>
   <div class="row">
     <%= form_label("Compositional bias correction", "compbiascorr") %>
-    <%= form_radio_buttons("compbiascorr", @compbiascorr_values, @compbiascorr_labels, "1", "&nbsp;") %>	
+    <%= form_radio_buttons("compbiascorr", @compbiascorr_values, @compbiascorr_labels, "1", "&nbsp;") %>  
   </div>
 
   <div class="hr">&nbsp;</div>
 
   <div class="row">
     <%= form_label("Show sequences per HMM", "maxseq") %>
-    <%= form_select_single("maxseq", @maxseqval, @maxseqval, '1') %>	
+    <%= form_select_single("maxseq", @maxseqval, @maxseqval, '1') %>  
   </div>
   <div class="row">
     <%= form_label("Width of alignments", "width") %>
-    <%= form_text_field("width", '80', 'columns') %>	
+    <%= form_text_field("width", '80', 'columns') %>  
   </div>
 
   <!--  WORKAROUND -->
   <% if @parent_job.nil? || @parent_job.params['mode'].nil? || @parent_job.params['mode'] == 'queryhmm' || @parent_job.params['mode'] == 'querymsa' || @parent_job.params['mode'] == 'hhsenser' -%>
   <div class="row">
     <%= form_label("Min. probability in hitlist", "minprobab") %>
-    <%= form_text_field("Pmin", '20', '%') %>	
+    <%= form_text_field("Pmin", '20', '%') %> 
   </div>
   <div class="row">
     <%= form_label("Max. number of hits in hitlist", "maxlines") %>
-    <%= form_text_field("maxlines", '100') %>	
+    <%= form_text_field("maxlines", '100') %> 
   </div>
   <% else %>
   <%= form_hidden_field("Pmin", @parent_job.params_main_action['Pmin']) %>
@@ -224,8 +224,8 @@
       <%= form_label("Match state assignment", "match_mode") %>
       <div class="formw">
         <%= form_select_single("match_mode", @match_mode_values, @match_mode_labels, @match_mode_values[0]) %>
-      	<!--<%= form_radio_buttons("match_mode", @match_mode_values, @match_mode_labels, @match_mode_values[0]) %>-->
-	(For A2M/A3M format the match assignment of the input is used.)
+        <!--<%= form_radio_buttons("match_mode", @match_mode_values, @match_mode_labels, @match_mode_values[0]) %>-->
+  (For A2M/A3M format the match assignment of the input is used.)
       </div>
     </div>
   </div>
@@ -240,9 +240,10 @@
 <%= render(:partial => "shared/joboptions") %>
 
 </form>
+<br><br><br>
 
 
-<div class="hr">&nbsp;</div>
+<h3 class="<%= @section["name"] %>">Links</h3>
 <ul class="fa-ul">
   <li><a href="#" class="icon fa-angle-double-right" title="About HHpred" onclick="openHelpWindow('/hhpred/help_ov');">About HHpred</a></li>
   <li><a target="_blank" class="icon fa-angle-double-right" href="https://github.com/soedinglab/hh-suite.git" title="Download HHsuite">Download HHsuite</a></li>
@@ -255,6 +256,17 @@
 </ul>
 <div class="hr">&nbsp;</div>
 <div class="row">
-  In case of further requests please contact the <a href="&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#104;&#104;&#064;&#109;&#112;&#105;&#098;&#112;&#099;&#046;&#109;&#112;&#103;&#046;&#100;&#101;">HHsuite manager</a>!
+  <a href="&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#104;&#104;&#064;&#109;&#112;&#105;&#098;&#112;&#099;&#046;&#109;&#112;&#103;&#046;&#100;&#101;">Support for HH-suite software</a>
 </div>
+<div class="hr">&nbsp;</div>
+<div class="spacer">&nbsp;</div>
+<div class="spacer">&nbsp;</div>
+<div class="spacer">&nbsp;</div>
+<h3 class="<%= @section["name"] %>">Please cite one of the following articles:</h3>
 
+    <font face='verdana,arial,helvetica,sans-serif'> S&ouml;ding J, Biegert A, Lupas AN (2005) The HHpred interactive server for protein homology detection and structure prediction. Nucleic Acids Res 33 (suppl 2), W244-W248.</font>
+    <BR><BR><font face='verdana,arial,helvetica,sans-serif'> S&ouml;ding J (2005) Protein homology detection by HMM-HMM comparison. Bioinformatics 21: 951-960.</font>
+    <BR><BR><font face='verdana,arial,helvetica,sans-serif'> Biegert A, Mayer C, Remmert M, S&ouml;ding J, Lupas AN (2006) The MPI Bioinformatics Toolkit for protein sequence analysis. Nucleic Acids Res 34 (suppl 2), W335-W339.</font>
+    <BR><BR><font face='verdana,arial,helvetica,sans-serif'>Hildebrand A, Remmert A, Biegert A, S&ouml;ding J (2009) Fast and accurate automatic structure prediction with HHpred. Proteins 77 (S9), 128-132.</font>
+    <BR><BR><font face='verdana,arial,helvetica,sans-serif'>Meier A, S&ouml;ding J (2015) Automatic Prediction of Protein 3D Structures by Probabilistic Multi-template Homology Modeling. PLoS Comput Biol 11 (10), e1004343.</font>
+<BR><BR><font face='verdana,arial,helvetica,sans-serif'> Remmert M, Biegert A, Hauser A, S&ouml;ding J (2012) HHblits: lightning-fast iterative protein sequence searching by HMM-HMM alignment. Nature Methods 9 (2), 173-175.</font>
