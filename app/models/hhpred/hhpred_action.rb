@@ -351,13 +351,13 @@ class HhpredAction < Action
 
     # minimum memory set in worker classes
     if sequence_length > 1000
-      memory = 29
+      memory = 64
     end
     if sequence_length > 2000
-      memory = 34
+      memory = 96
     end
     if sequence_length > 2500
-      memory = 36
+      memory = 128
     end
 
     logger.debug "L357 Memory Allocation - HHpred - : #{memory}"
