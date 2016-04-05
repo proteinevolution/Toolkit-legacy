@@ -350,7 +350,8 @@ class HhpredAction < Action
     f.close
 
     # minimum memory set in worker classes
-    if sequence_length > 1000
+
+    if sequence_length > 800
       memory = 64
     end
     if sequence_length > 2000
