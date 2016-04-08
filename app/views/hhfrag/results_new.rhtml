@@ -1,0 +1,30 @@
+<%= render(:partial => "shared/jobspecs", :locals => {:title_extra => 'Results', :toolname => @job.tool}) %>
+  
+<%= render(:partial => "shared/resultsections", :locals => {:export => true})%>
+
+<%= form_tag( "", {:id => @job.tool+"_form", :name => @job.tool+"_form"}) %>
+  
+    
+<div class="alignres">
+        <pre><%=@job.render_file("status.log") %></pre>
+</div>
+
+<div class="row">
+<h3>Download Area</h3>	
+</div>
+<% if File.exist?(@job.job_dir+"/query.centroids.tsv" ) %>
+<div class="row">
+<a href="<%= @job.url_for_job_dir_abs %>/query.centroids.tsv">query.centroids.tsv</a>	
+</div>
+<div class="row">
+<a href="<%= @job.url_for_job_dir_abs %>/query.filtered.09">query.filtered.09</a>
+</div>
+<% end %>
+
+
+<div class="row">
+<a href="<%= @job.url_for_job_dir_abs %>/query.hhfrags.09">query.hhfrags.09</a>
+        
+</div>
+
+</form>
