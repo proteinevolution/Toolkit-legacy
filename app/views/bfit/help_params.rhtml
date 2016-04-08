@@ -7,20 +7,20 @@
 <h2><%= @tool['title'] %> Parameters</h2>
 
 <a name="input"></a>
-<h3>Input Format</h3>
+<h3 class="tertstruct">Input Format</h3>
 <div class="row">
 </br>PDB files</br> 
 One PDB file or two PDB files of equal length. If only one PDB file is given, the algorithm will try to superimpose all models contained in that file. Only the fist chains are superimposed.
 </div>
 <br/>
 <a name="bfit_model"></a>
-<h3>Heavy tailed model</h3>
+<h3 class="tertstruct">Heavy tailed model</h3>
 <div class="row">
 Two different heavy tailed distributions are available to model non-rigid displacements in protein structures. Both should return similiar superpositions.
 </div>
 <br/>
 <a name="opti"></a>
-<h3>Optimization algorithm</h3>
+<h3 class="tertstruct">Optimization algorithm</h3>
 <div class="row">
 Two iterative procedures, an Expectation Maximization(EM) algorithm and a Gibbs sampler, are available to estimate the local weights, the optimal superposition, and the parameters of the heavy-tailed distribution. The main diﬀerence is that EM is a deterministic algorithm that calculates a single point
 estimate, whereas Gibbs sampling is a stochastic method that generates a posterior sample.
