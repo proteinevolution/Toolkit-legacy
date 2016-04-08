@@ -35,6 +35,10 @@
 <div class="element-item <%= tool['section']%>-iso " data-category="<%= tool['section']%>-iso">
  
      <div class="name" id="<%= tool['name'] %>"><%= link_to_tool tool -%></div>
+     <% if tool['name'] != "sixframe" %>
+     <div class="first" style="display: none; text-transform: capitalize;"><%= tool['name'] -%></div>
+     <% end %>
+     <div class="first" style="display: none; text-transform: capitalize;">6frame</div>
      <p class="symbol" hidden><%= tool['section']%>-iso</p>
 
     <span class="tooltiptext"><%= render(:partial => tool['name']+"/tooltip") %></span>
@@ -46,6 +50,7 @@
 <div class="element-item tertstruct-iso" data-category="tertstruct-iso">
 
      <div class="name"><a href="/hhpred">HHpred</a></div>
+     <div class="first" style="display: none; text-transform: capitalize;">hhpred</div>
      <p class="symbol" hidden>tertstruct-iso</p>
     <span class="tooltiptext"><%= render(:partial => "hhpred/tooltip") %> </span>
   </div>
@@ -53,6 +58,7 @@
 <div class="element-item tertstruct-iso" data-category="tertstruct-iso">
 
      <div class="name"><a href="/pdbalert">PDBalert</a></div>
+     <div class="first" style="display: none; text-transform: capitalize;">pdbalert</div>
      <p class="symbol" hidden>tertstruct-iso</p>
      <span class="tooltiptext"><%= render(:partial => "pdbalert/tooltip") %></span>
   </div>
@@ -78,7 +84,7 @@ $( document ).ready( function() {
     itemSelector: '.element-item',
     layoutMode: 'fitRows',
     getSortData: {
-      name: '.name',
+      name: '.first',
       symbol: '.symbol',
       number: '.number parseInt',
       category: '[data-category]',
@@ -100,8 +106,13 @@ $( document ).ready( function() {
     ium: function() {
       var name = $(this).find('.name').text();
       return name.match( /ium$/ );
-    }
+    },
+    first : function( $elem ) {
+          return $elem.find('.first').text();
+        }
   };
+
+
 
   // bind filter button click
   $('#filters').on( 'click', 'button', function() {
