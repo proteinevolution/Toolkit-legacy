@@ -36,9 +36,9 @@
 
      <div class="name"><%= link_to_tool tool -%></div>
      <p class="symbol" hidden><%= tool['section']%>-iso</p>
-     <% if tool['name'] != "sixframe" %>
+     
     <span class="tooltiptext"><%= render(:partial => tool['name']+"/tooltip") %></span>
-    <% end %>
+    
   </div>
 <% end %>
 <% end %>
