@@ -33,10 +33,10 @@
  <% if tool['name'] != "dataa2" and tool['name'] != "hamppred" and tool['name'] != "rnasehpred" and tool['name'] != "peaks" and tool['name'] != "ancient_dict" %>
 
 <div class="element-item <%= tool['section']%>-iso " data-category="<%= tool['section']%>-iso">
-
-     <div class="name"><%= link_to_tool tool -%></div>
+ 
+     <div class="name" id="<%= tool['name'] %>"><%= link_to_tool tool -%></div>
      <p class="symbol" hidden><%= tool['section']%>-iso</p>
-     
+
     <span class="tooltiptext"><%= render(:partial => tool['name']+"/tooltip") %></span>
     
   </div>
@@ -130,6 +130,8 @@ $( document ).ready( function() {
   $( "[data-sort-by='symbol']" ).trigger("click");
 
 });
+
+
 </script>
 
 
