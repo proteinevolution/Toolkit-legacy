@@ -157,6 +157,7 @@ button.is-checked {
 
 .element-item {
   
+  border-radius: 0px;
   position: relative;
   width: 100px;
   height: 30px;
