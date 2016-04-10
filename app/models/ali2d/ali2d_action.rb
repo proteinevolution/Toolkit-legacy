@@ -110,7 +110,7 @@ class Ali2dAction < Action
 
     init
 
-    @commands << "#{JAVA_1_5_EXEC} -Xmx2000m -jar #{ALI2D}/buildParams.jar #{@infile} #{@mainlog} &> #{@outfile} "
+    @commands << "#{JAVA_1_5_EXEC} -Xmx8000m -jar #{ALI2D}/buildParams.jar #{@infile} #{@mainlog} &> #{@outfile} "
 
     #logger.debug "Commands:\n"+@commands.join("\n")
     #queue.submit(@commands)
