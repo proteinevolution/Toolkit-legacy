@@ -179,7 +179,7 @@ button.is-checked {
   top: 10px;
   color: #000;
   letter-spacing: 0;
-  font-size: 5px;
+  font-size: 9px;
 }
 
 .element-item #phylip {
@@ -188,6 +188,13 @@ button.is-checked {
   color: #000;
   letter-spacing: 0;
   font-size: 5px;
+}
+
+.element-item #sixframe {
+  position: absolute;
+  color: #000;
+  letter-spacing: 0;
+  font-size: 8px;
 }
 
 
