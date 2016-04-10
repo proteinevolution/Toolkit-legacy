@@ -30,7 +30,7 @@
 <% @tools.each do |tool| %>
 
 
- <% if tool['name'] != "dataa2" and tool['name'] != "phylip" and tool['name'] != "hamppred" and tool['name'] != "rnasehpred" and tool['name'] != "peaks" and tool['name'] != "ancient_dict" %>
+ <% if tool['name'] != "dataa2" and tool['name'] != "phylip" and tool['name'] != "seq2gi" and tool['name'] != "hamppred" and tool['name'] != "rnasehpred" and tool['name'] != "peaks" and tool['name'] != "ancient_dict" %>
 <a href="/<%= tool['name'] -%>">
 <div class="element-item <%= tool['section']%>-iso " data-category="<%= tool['section']%>-iso">
  
@@ -46,6 +46,16 @@
   </div></a>
 <% end %>
 <% end %>
+
+
+
+<a href="/seq2gi"><div class="element-item utils-iso" data-category="utils-iso">
+
+     <div class="name" style="font-size: 8px; font-weight: bold;">ExtractGIs</div>
+     <div class="first" style="display: none; text-transform: capitalize;">extractgis</div>
+     <p class="symbol" hidden>utils-iso</p>
+    <span class="tooltiptext"><%= render(:partial => "seq2gi/tooltip") %> </span>
+  </div></a>
 
 
 <a href="/phylip"><div class="element-item classification-iso" data-category="classification-iso">
