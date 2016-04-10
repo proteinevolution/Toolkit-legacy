@@ -31,10 +31,10 @@
 
 
  <% if tool['name'] != "dataa2" and tool['name'] != "hamppred" and tool['name'] != "rnasehpred" and tool['name'] != "peaks" and tool['name'] != "ancient_dict" %>
-
+<a href="/<%= tool['name'] -%>">
 <div class="element-item <%= tool['section']%>-iso " data-category="<%= tool['section']%>-iso">
  
-     <div class="name" id="<%= tool['name'] %>"><%= link_to_tool tool -%></div>
+     <div class="name" id="<%= tool['name'] %>" style="font-size: 9px; font-weight: bold;"><%= tool["title"] -%></div>
      <% if tool['name'] != "sixframe" %>
      <div class="first" style="display: none; text-transform: capitalize;"><%= tool['name'] -%></div>
      <% end %>
@@ -43,25 +43,25 @@
 
     <span class="tooltiptext"><%= render(:partial => tool['name']+"/tooltip") %></span>
     
-  </div>
+  </div></a>
 <% end %>
 <% end %>
 
-<div class="element-item tertstruct-iso" data-category="tertstruct-iso">
+<a href="/hhpred"><div class="element-item tertstruct-iso" data-category="tertstruct-iso">
 
-     <div class="name"><a href="/hhpred">HHpred</a></div>
+     <div class="name" style="font-size: 9px; font-weight: bold;">HHpred</div>
      <div class="first" style="display: none; text-transform: capitalize;">hhpred</div>
      <p class="symbol" hidden>tertstruct-iso</p>
     <span class="tooltiptext"><%= render(:partial => "hhpred/tooltip") %> </span>
-  </div>
+  </div></a>
 
-<div class="element-item tertstruct-iso" data-category="tertstruct-iso">
+<a href="/pdbalert"><div class="element-item tertstruct-iso" data-category="tertstruct-iso">
 
-     <div class="name"><a href="/pdbalert">PDBalert</a></div>
+     <div class="name" style="font-size: 9px; font-weight: bold;">PDBalert</div>
      <div class="first" style="display: none; text-transform: capitalize;">pdbalert</div>
      <p class="symbol" hidden>tertstruct-iso</p>
      <span class="tooltiptext"><%= render(:partial => "pdbalert/tooltip") %></span>
-  </div>
+  </div></a>
 
 
 
