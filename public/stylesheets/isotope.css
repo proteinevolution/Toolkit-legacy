@@ -1,7 +1,7 @@
 * { box-sizing: border-box; }
 
 body {
-  font-family: sans-serif;
+  font-family:  sans-serif;
 }
 
 /* ---- Tooltip --- */
@@ -158,7 +158,7 @@ button.is-checked {
 .element-item {
   
   position: relative;
-  width: 104px;
+  width: 100px;
   height: 30px;
   margin: 0px;
   padding: 10px;
