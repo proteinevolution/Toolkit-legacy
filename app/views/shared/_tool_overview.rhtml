@@ -30,7 +30,7 @@
 <% @tools.each do |tool| %>
 
 
- <% if tool['name'] != "dataa2" and tool['name'] != "hamppred" and tool['name'] != "rnasehpred" and tool['name'] != "peaks" and tool['name'] != "ancient_dict" %>
+ <% if tool['name'] != "dataa2" and tool['name'] != "phylip" and tool['name'] != "hamppred" and tool['name'] != "rnasehpred" and tool['name'] != "peaks" and tool['name'] != "ancient_dict" %>
 <a href="/<%= tool['name'] -%>">
 <div class="element-item <%= tool['section']%>-iso " data-category="<%= tool['section']%>-iso">
  
@@ -46,6 +46,16 @@
   </div></a>
 <% end %>
 <% end %>
+
+
+<a href="/phylip"><div class="element-item classification-iso" data-category="classification-iso">
+
+     <div class="name" style="font-size: 8px; font-weight: bold;">PHYLIP-NEIGHBOR</div>
+     <div class="first" style="display: none; text-transform: capitalize;">phylip</div>
+     <p class="symbol" hidden>classification-iso</p>
+    <span class="tooltiptext"><%= render(:partial => "phylip/tooltip") %> </span>
+  </div></a>
+
 
 <a href="/hhpred"><div class="element-item tertstruct-iso" data-category="tertstruct-iso">
 
