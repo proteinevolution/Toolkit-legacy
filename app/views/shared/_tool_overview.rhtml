@@ -93,14 +93,20 @@
 <%= javascript_include_tag "jquery.js" %>
 <%= javascript_include_tag "isotope.pkgd.min.js" %>
 
+<!-- Required because of conflicting jQuery versions within the toolkit -->
+<script>
+$.noConflict();
+</script>
+
+
 
 <script type="text/javascript">
 // external js: isotope.pkgd.js
 
-$( document ).ready( function() {
+jQuery( document ).ready( function() {
 
   // init Isotope
-  var $container = $('.isotope').isotope({
+  var $container = jQuery('.isotope').isotope({
     itemSelector: '.element-item',
     layoutMode: 'fitRows',
     getSortData: {
@@ -109,7 +115,7 @@ $( document ).ready( function() {
       number: '.number parseInt',
       category: '[data-category]',
       weight: function( itemElem ) {
-        var weight = $( itemElem ).find('.weight').text();
+        var weight = jQuery( itemElem ).find('.weight').text();
         return parseFloat( weight.replace( /[\(\)]/g, '') );
       }
     }
@@ -132,30 +138,30 @@ $( document ).ready( function() {
 
 
   // bind filter button click
-  $('#filters').on( 'click', 'button', function() {
-    var filterValue = $( this ).attr('data-filter');
+  jQuery('#filters').on( 'click', 'button', function() {
+    var filterValue = jQuery( this ).attr('data-filter');
     // use filterFn if matches value
     filterValue = filterFns[ filterValue ] || filterValue;
     $container.isotope({ filter: filterValue });
   });
 
   // bind sort button click
-  $('#sorts').on( 'click', 'button', function() {
-    var sortByValue = $(this).attr('data-sort-by');
+  jQuery('#sorts').on( 'click', 'button', function() {
+    var sortByValue = jQuery(this).attr('data-sort-by');
     $container.isotope({ sortBy: sortByValue });
   });
 
   // change is-checked class on buttons
-  $('.button-group').each( function( i, buttonGroup ) {
-    var $buttonGroup = $( buttonGroup );
+  jQuery('.button-group').each( function( i, buttonGroup ) {
+    var $buttonGroup = jQuery( buttonGroup );
     $buttonGroup.on( 'click', 'button', function() {
       $buttonGroup.find('.is-checked').removeClass('is-checked');
-      $( this ).addClass('is-checked');
+      jQuery( this ).addClass('is-checked');
     });
   });
   
   
-  $( "[data-sort-by='symbol']" ).trigger("click");
+  jQuery( "[data-sort-by='symbol']" ).trigger("click");
 
 });
 
