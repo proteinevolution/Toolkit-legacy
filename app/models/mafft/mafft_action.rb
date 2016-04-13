@@ -30,11 +30,11 @@ class MafftAction < Action
     @clustalw = params['clustalw'] ? "--clustalout" : ""
     @alnorder = params['alnorder'] ? "--reorder" : ""
     @gapopen = params['gapopen'] ? params['gapopen'].to_f : 1.53
-    @offset = params['offset'] ? params['offset'].to_f : 0.123
+    @offset = params['offset'] ? params['offset'].to_f : 0.00
     @otheradvanced = params['otheradvanced'] ? params['otheradvanced'] : ""
 
     if (@gapopen < 0) then @gapopen = 1.53 end
-    if (@offset < 0) then @offset = 0.123 end
+    if (@offset < 0) then @offset = 0.00 end
   end
 
   def perform
