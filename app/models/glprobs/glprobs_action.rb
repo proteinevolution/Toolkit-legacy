@@ -45,7 +45,7 @@ class GlprobsAction < Action
     #  memory = 36
     #end
 
-    @commands << "#{GLPROBS}/glprobs #{@infile} -o #{@outfile} -clustalw -num_threads 1 &> #{job.statuslog_path}"	
+    @commands << "#{GLPROBS}/glprobs #{@infile} -o #{@outfile} -clustalw -num_threads $#{shellvar} &> #{job.statuslog_path}"	
 
 
     logger.debug "Commands:\n"+@commands.join("\n")
