@@ -1,6 +1,8 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
 <ul id="helpindex" class="<%= @section['theme'] %>">
-<li><a href="#general">General remarks</a></li>
-<li><a href="#alignments">Query-template alignments</a></li>
+<li><a href="#general">General Remarks</a></li>
+<li><a href="#alignments">Histogram View of<br> HMM-HMM Alignments</a></li>
 <li><a href="#references">References</a></li>
 <li><a href="#contact">Contact</a></li>
 </ul>
@@ -10,66 +12,100 @@
 
 <div class="row">
 <a name="General"></a>
-<h3 class="<%= @section["name"] %>">General remarks</h3>
-Except for the query-template alignments, the histogram view is the same as the alignment view. The histogram view consists of 
-1. A <i>bar graph</i> summarizing the positions and color-coded significances of the 
-database matches with more than 40% probability.  2. A tabular <i>hit list</i> with probabilities, E-values, scores, and match 
-regions in query and templates.  3. The pairwise <i>query-templates alignments</i> of the profile HMMs,
-depicted as histograms over the amino acid distributions in the columns of the underlying multiple 
-alignments.  The first two sections are described in detail on the 
+<h3 class="<%= @section["name"] %>">General Remarks</h3>
+<p>The histogram view consists of three sections: 
+<ol>
+  <li>A <b>Bar Diagram</b>, summarizing the positions and color-coded significances of the
+database matches with more than 40% probability.</li>
+  <li>A tabular <b>Hit List</b> with probabilities, E-values, scores, and match
+regions in query and templates.</li>
+  <li>The pairwise <b>HMM-HMM Alignments</b>, depicted as histograms over the amino acid distributions 
+in the columns of the underlying multiple alignments. </li>
+</ol>
+The first two sections are described in detail on the
 <a href="#" title="HHpred help on results" onclick="openHelpWindow('help_results');">Results</a> page of this help.
-</div>
-<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
-
+</p><br>
 
 <div class="row">
 <a name="alignments"></a>
-<h3 class="<%= @section["name"] %>">Histogram view of aligned query and template profiles</h3>
-
-A typical histogram view of two aligned profiles looks like this:
+<h3 class="<%= @section["name"] %>">Histogram View of HMM-HMM Alignments</h3>
+<br>
+<p>A typical histogram view of two aligned profiles looks like this:</p>
 <p><br>
 
 <pre>
-<a name = 8>No 8</a>  <a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_alignments.jpg" alt="Alignments" title="show query-template alignments" border="0" align="middle" height="30"></a><a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_template_ali.png" title="Show template alignment" border="0" align="middle" /></a><a href="#" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_T_struct.png" title="Show template 3D structure" border="0" align="middle" /></a><a href="http://scop.berkeley.edu/sid=d1jgka_" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_SCOP.jpg" alt="SCOP" title="SCOP" border="0" align="middle" height="25"></a><a href="http://pdbbeta.rcsb.org/pdb/explore.do?structureId=1JGK" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_PDB.jpg" alt="PDB" title="PDB" border="0" align="middle" height="20"></a><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&db=structure&orig_db=structure&term=1JGK" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_MMDB.jpg" alt="MMDB" title="MMDB/NCBI" border="0" align="middle" height="20"></a><a href="http://www.ebi.ac.uk/pdbe-srv/view/entry/1jgk" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_MSD.jpg" alt="MSD" title="MSD/EBI" border="0" align="middle" height="25"></a></a><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?CMD=search&db=pubmed&term=1JGK" target="_blank" style="margin: 5px 10px 10px 10px;" ><img src="/images/hhpred/logo_pubmed.jpg" alt="PubMed" title="PubMed" border="0" align="middle" height="20"></a>
-<a href="http://pdbbeta.rcsb.org/pdb/explore.do?structureId=1JGK" target="_blank">d1jgka_</a> <a href="http://scop.berkeley.edu/sid=d1jgka_" target="_blank">g.7.1.1</a> (A:) Candoxin {Malayan krait (Bungarus candidus)}
-Probab=80.13   E-value=0.036  Score=33.67  Aligned_columns=60  Identities=23%
-
-<map name="71961_8">
-<area shape="rect" coords="50,95,850,140" href="#" onmouseover="imgOn('hitimage8','/images/hhpred/hhpred_help_hist_8_tt.png');" onmouseout="imgOff('hitimage8','/images/hhpred/hhpred_help_hist_8.png');" >
-</map>
-<img name="hitimage8" src="/images/hhpred/hhpred_help_hist_8.png" border="0" alt="hhpred profile 8" usemap="#71961_8" />
-
+<a name="1">No 1</a>  <a href="http://toolkit.tuebingen.mpg.de/hhpred/results/9230961#1" style="margin: 5px 10px 10px 10px;"><img src="http://toolkit.tuebingen.mpg.de/images/hhpred/logo_alignments.jpg" alt="Alignments" title="show query-template alignments" border="0" align="middle" height="30"></a><a href="http://toolkit.tuebingen.mpg.de/hhpred/run/9230961?jobaction=hhpred_showtemplalign&amp;forward_controller=hhpred&amp;forward_action=results_showtemplalign&amp;alformat=fasta&amp;hits=1" style="margin: 5px 10px 10px 10px;"><img src="http://toolkit.tuebingen.mpg.de/images/hhpred/logo_template_ali.png" title="Show template alignment" border="0" align="middle"></a><a href="#" onclick="var win = window.open('http://toolkit.tuebingen.mpg.de/hhpred/run/hh3d_templ?parent=9230961&amp;hit=1&amp;templpdb=/cluster/toolkit/production/databases/hhpred/new_dbs/pdb70_17Oct15/1ufg_A.pdb&amp;forward_controller=hhpred&amp;forward_action=results_hh3d_templ','_blank','width=850,height=850,left=0,top=0,scrollbars=yes,resizable=no'); win.focus();" style="margin: 5px 10px 10px 10px;"><img src="http://toolkit.tuebingen.mpg.de/images/hhpred/logo_T_struct.png" title="Show template 3D structure" border="0" align="middle"></a><a href="http://scop.berkeley.edu/pdb/code=1ufg" target="_blank" style="margin: 5px 10px 10px 10px;"><img src="http://scop.berkeley.edu//images/scope_logo_tiny.png" alt="SCOP" title="SCOP" border="0" align="middle" height="20"></a><a href="http://pdb.rcsb.org/pdb/explore.do?structureId=1UFG" target="_blank" style="margin: 5px 10px 10px 10px;"><img src="http://toolkit.tuebingen.mpg.de/images/hhpred/logo_PDB.jpg" alt="PDB" title="PDB" border="0" align="middle" height="20"></a><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&amp;db=structure&amp;orig_db=structure&amp;term=1UFG" target="_blank" style="margin: 5px 10px 10px 10px;"><img src="http://toolkit.tuebingen.mpg.de/images/hhpred/logo_MMDB.jpg" alt="MMDB" title="MMDB/NCBI" border="0" align="middle" height="20"></a><a href="http://www.ebi.ac.uk/pdbe-srv/view/entry/1ufg" target="_blank" style="margin: 5px 10px 10px 10px;"><img src="http://toolkit.tuebingen.mpg.de/images/hhpred/logo_MSD.jpg" alt="MSD" title="MSD/EBI" border="0" align="middle" height="25"></a><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?CMD=search&amp;db=pubmed&amp;term=1UFG" target="_blank" style="margin: 5px 10px 10px 10px;"><img src="http://toolkit.tuebingen.mpg.de/images/hhpred/logo_pubmed.jpg" alt="PubMed" title="PubMed" border="0" align="middle" height="20"></a>
+<input style="margin: 0px 5px; padding: 0px;" id="hit_checkbox100" value="1" onclick="document.getElementById('hit_checkbox0').checked = this.checked" type="checkbox">&gt;<a href="http://pdb.rcsb.org/pdb/explore.do?structureId=1UFG" target="_blank">1ufg_A</a> Lamin A, nuclear lamin; immunoglobulin like fold, structural genomics, riken structural
+  genomics/proteomics initiative, RSGI, structural protein; NMR {Mus musculus} SCOP: <a href="http://scop.berkeley.edu/sccs=b.1.16.1" target="_blank">b.1.16.1</a>
+  Probab=100.00  E-value=3e-35  Score=259.43  Aligned_cols=149  Identities=44%  Similarity=0.799  Sum_probs=0.0
+  <map name="92309611">
+  <area shape="rect" coords="50,95,770,140" href="#" onmouseover="imgOn('hitimage1','/images/92309611tt.png');" onmouseout="imgOff('hitimage1','/images/92309611.png');">
+  <area shape="rect" coords="50,315,770,360" href="#" onmouseover="imgOn('hitimage1','/images/92309611tt.png');" onmouseout="imgOff('hitimage1','/images/92309611.png');">
+  <area shape="rect" coords="50,535,770,580" href="#" onmouseover="imgOn('hitimage1','/images/92309611tt.png');" onmouseout="imgOff('hitimage1','/images/92309611.png');">
+  </map>
+  <img name="hitimage1" src="/images/92309611.png" alt="hhpred profile 1" usemap="#92309611" border="0">
 </pre>
+<div class="top"><a href="#" class="fa fa-arrow-up" border="0" style="float: right;"></a></div>
+
+<br>
+<p>The black bar between the query and the template alignment shows the column score with
+<b>|</b>, <b>+</b>, <b>.</b>, <b>-</b>, <b>=</b>
+indicating scores from '<i>very good</i>' to '<i>very bad</i>'.
+<aside style="font-size:8pt;">(Please see the <a href="#" style="font-size:8pt" title="HHpred help on results" onclick="openHelpWindow('help_results');">Results</a> page for a more detailed explanation).</aside>
 
 <br><br>
-The black bar in the middle shows the column score between the query and template 
-amino acid distributions with <b>|</b>, <b>+</b>, <b>.</b>, <b>-</b>, <b>=</b> 
-indicating scores from 'very good' to 'very bad'.
-(See the <a href="#" title="HHpred help on results" onclick="openHelpWindow('help_results');">Results</a>
-page for a more detailed explanations).
-Gaps in either the query or target are marked by a blank field in this middle line.
+<div style="float:left; width: 500px">
+<p>The colored histogram bars show the proportion of the most abundant amino acids in the corresponding
+column of the underlying MSA. One has to keep in mind that HHpred relies on HMM-HMM comparison and that 
+both query and template HMMs are derived from an alignment of homologs.<br> 
+As an example, the first column from the query alignment contains approximately 40% serine (S) and 20% alanine (A). 
+Residues that are less frequent, i.e. below 10% each, are not shown. 
+That is why badly conserved columns, which contain a lot of residues, with proportions
+of less than 10%, have a low total height, whereas well conserved columns assume the maximum height. 
+The residues are colored according to their general physico-chemical properties.</p></div><br>
+<div style="float:right; width:200px; margin-left:20px; margin-top: -25px;">
+<table>
+<tr>
+        <th><b>Color Scheme</b></th>
+    </tr>
+    <tr>
+        <td style="background-color: #20FF20;">Aliphatic hydrophobics (V, L, I, M)</td>
+    </tr>
+    <tr>
+        <td style="background-color: #FFFF00;">Cysteines (C)</td>
+    </tr>
+    <tr>
+        <td style="background-color: #5C80FF;">Negatively charged (D, E)</td>
+    </tr>
+     <tr>
+        <td style="background-color: #FF0000;">Positively charged (K, L)</td>
+    </tr>
+    <tr>
+        <td style="background-color: #F0F0F0;">Small (G, A, S, T)</td>
+    </tr>
+    <tr>
+       <td style="background-color: #009600;">Aromatic (Y, F, W)</td>
+    </tr>
+    <tr>
+       <td style="background-color: #E080FF;">Polar (N, Q)</td>
+    </tr>
+    <tr>
+       <td style="background-color: #FF8000;">Histidines (H)</td>
+    </tr>
+    <tr>
+       <td style="background-color: #909090;">Prolines (P)</td>
+    </tr>
+</table></div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-<br><br>
-The colored histogram bars report direcly the proportion of the most abundant amino acids in the corresponding column of the 
-underlying multiple alignment. (Remember that HHpred relies on HMM-HMM comparison and that both query and templates HMM 
-are derived from an alignment of homologs.) As an example, the first column shown from the query alignment contains 
-approximately 20% leucine (L), and 15% each of isolucine (I), cysteine (C), threonine (T), and glutamate (E). The other
-residues, which together make up about 20%, are below 10% each and are not shown. Therefore, badly conserved columns which
-contain a lot of residues with proportions of less than 10% have a low total height whereas well conserved columns assume 
-the maximum height. The residues are colored according to their general physico-chemical properties: 
-cysteines in yellow, aliphatic hydrophobics (V, L, I, M) in green, aromatic amino acids (Y, F, W) in dark green, 
-small amino acids (G, A, S, T) in light grey, negatively charged (D, E) in blue, polar (N, Q) in magenta, histidines in orange, 
-positively charged (K, L) in red, prolines in grey. 
-These groups are displayed in the order given above, from the center out. The order within groups is by their abundance. 
+<p>The histogram view is beneficial in that it allows to grasp the character of similarity between two profile HMMs that HHpred
+has detected. In a single glance, one can often tell apart false positives, which occur due to a similar amino
+acid composition, from real homologs with their conserved motifs. Functional motifs or structurally important
+amino acids can be quickly spotted and high conservation of the involved residues is expected.
+</p>
 
-<br><br>
-The histogram view is very useful to grasp the character of similarity between two profile HMMs that HHpred has detected.
-In a single glance, one can often tell apart false positives that are due to merely similar amino acid composition from 
-real homologs with their conserved motifs. Functional motifs or structurally important amino acids can often be quickly 
-spotted due to the expected high conservation of the involved residues. In this context, note the aligned, highly conserved 
-cysteines at the end of the alignment which participate in disulphide bridges in the template.
-</div>
+<div class="top"><a href="#" class="fa fa-arrow-up" border="0" style="float: right;"></a></div>
 
-<div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
 <%= render(:partial => "hhpred/references_and_contact") %>
+<div class="top"><a href="#" class="fa fa-arrow-up" border="0" style="float: right;"></a></div>
