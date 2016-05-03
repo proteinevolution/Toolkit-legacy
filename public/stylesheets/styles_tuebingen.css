@@ -104,6 +104,8 @@ p {
   margin: 0;
   padding: 0;
   line-height: 1.7;
+  font-size: 1.2em;
+  text-align: justify;
 }
 
 p.tooldescr {
@@ -151,7 +153,6 @@ p.classification {
 p.utils {
   background-color: #F3CFCF;
 }
-
 
 h1 {
   font-weight: bold;
