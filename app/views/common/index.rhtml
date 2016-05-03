@@ -13,12 +13,10 @@
   public tools are offered with extended functionality.  
 
 </p>
-
-
-<p><%= render(:partial => "shared/updates") %></p>
-<br />
+<br>
 <p><%= render(:partial => "shared/tool_overview") %></p>
-<p>&nbsp;</p>
+<p><%= render(:partial => "shared/updates") %></p>
+<br>
 
 <p class="message" align="justify">
 
@@ -26,7 +24,7 @@
 </p>
 <p class="message" align="justify">
 <b><a href=hhpred>HHpred</a></b> Sensitive protein homology detection and structure prediction by HMM-HMM-comparison. Starting from a query sequence, HHpred builds a multiple sequence alignment
- using HHblits and turns it into a profile HMM. This is then compared it with a database of HMMs representing proteins with known structure (e.g. PDB, SCOP) or annotated protein
+ using HHblits and turns it into a profile HMM. This is then compared with a database of HMMs representing proteins with known structure (e.g. PDB, SCOP) or annotated protein
   families (e.g. PFAM, SMART, CDD, COGs, KOGs). The output is a list of closest homologs with alignments. 
   HHpred can also build 3D homology models using the identified templates in the PDB database. It can optimize template picking and query-template alignments for 
   homology modeling. 
