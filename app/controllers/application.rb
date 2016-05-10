@@ -19,8 +19,7 @@ class ApplicationController < ActionController::Base
 
 
   def handle_not_found
-  # either 
-  
+ 
   redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
   end
     
