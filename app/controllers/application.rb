@@ -4,6 +4,7 @@ require 'user_system'
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
+  rescue_from NoMethodError, :with => :handle_not_found
   include Localization
   include UserSystem
 
@@ -15,6 +16,13 @@ class ApplicationController < ActionController::Base
 #  model  :user
 
   before_filter :setup
+
+
+  def handle_not_found
+  # either 
+  
+  redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
+  end
     
   def save_params
     params[:action] = "index"
@@ -155,8 +163,10 @@ class ApplicationController < ActionController::Base
         end
       end
     end
-    redirect_to(:host => DOC_ROOTHOST, :controller => 'common')
-  end
+
+      redirect_to(:back, :controller => 'common')    
+    
+    end
 
   # sorts jobs by comparing their ids lexicographically 
   # use factor -1 to reverse result 
