@@ -129,7 +129,7 @@ databases of protein family alignments, such as
 <a target="_blank" href="http://www.tigr.org/TIGRFAMs/index.shtml">TIGRFAMs</a>,
 <a target="_blank" href="http://pir.georgetown.edu/iproclass/">PIRSF</a>, or
 <a target="_blank" href="http://www.ncbi.nlm.nih.gov/COG/">COG/KOG</a>
-can be searched through our webserver. Two composite databases in HHpred that include most of these
+can be searched through on our webserver. Two composite databases in HHpred that include most of these
 original databases are
 <a target="_blank" href="http://www.ebi.ac.uk/interpro/">InterPro</a>
 from the EBI and the conserved domain database
@@ -141,7 +141,7 @@ We build two of those databases ourselves, one using full-length sequences from 
 <a target="_blank" href="http://www.rcsb.org/pdb/">Protein Data Bank (PDB)</a>
 as seeds and one that uses PDB sequences cut into structural and evolutionary domains, as defined by the
 <a target="_blank" href="http://scop.mrc-lmb.cam.ac.uk/scop/index.html">SCOP</a>
-database, 70% identity-clustered. We refer to these databases as pdb70 and scop70 in HHpred.<br>
+database, 70% identity-clustered. We refer to these databases as pdb70 and scop70.<br>
 An alignment database very much like our scop70 is
 <a target="_blank" href="http://supfam.cs.bris.ac.uk/SUPERFAMILY/">SUPERFAMILY</a>, whereas
 <a target="_blank" href="http://www.cathdb.info">CATH/Gene3D</a> is based on
@@ -188,7 +188,7 @@ usually indicates statistical significance.
 <br>
 To derive e-values, a representative database, composed of one HMM
 per SCOP fold, is searched with the query HMM before the actual database
-search. The score distibution is recorded and a Gumbel extreme value
+search. The score distribution is recorded and a Gumbel extreme value
 distribution (EVD) is fit to it. From this distribution, one could, in principle,
 calculate for each score <code>S</code> the P-value as the area under the EVD
 to the right of S, i.e. <code>P-value = Prob(score > S)</code>. Then the e-value could
@@ -207,8 +207,8 @@ are determined by maximum likelihood. In local alignment mode, we use
 a simple log length correction.<br>
 
 When we add secondary structure scores, we find that the score disctribution
-of negatives does not strictly follow an EVD anymore.
-(<i>e-values in HHpred therefore do not include secondary structure scores</i>!)
+of negatives does not strictly follow an EVD anymore
+(<i>e-values in HHpred therefore do not include secondary structure scores</i>!).
 As an alternative to e-values, HHpred reports <b>probabilities</b> for a
 homologous relationship. This probability is based on the real-world score
 distribution for negative and homologous domain pairs in an all-against-all
