@@ -37,7 +37,7 @@
 <a name="homology"></a><br>
 <b>What is the Meaning of Homology and Why is it Important for Strucuture and Function Prediction?</b>
 <div class="row">
-<p>We call two protein sequences <i>homologs</i> if they descend from a 
+<p>We call two protein sequences <i>homologous</i> if they descend from a 
 common ancestor. In general, homologous proteins (or protein fragments) contain a similar 
 structure, as structures diverge much more slowly than their respective sequences (see, e.g. 
 <a target="_blank" href="http://www.ncbi.nlm.nih.gov/pubmed/3709526">Chothia and Lesk, 1986</a>). Depending on their 
@@ -45,7 +45,7 @@ degree of divergence, those proteins might also have similar cellular functions,
 protein interaction partners, or enzymatic mechanisms (See, e.g. <a target="_blank" href="http://www.ncbi.nlm.nih.gov/pubmed/11286560">Todd <i>et al.</i>, 2001</a>). 
 In contrast, proteins with a similar structure by convergence (i.e. by chance) are said to be analogous. They don't generally
 share similar functions or biochemical mechanisms and are therefore not taken into consideration when drawing  
-inferences. HHpred is is a tool for homology, not analogy, detection.
+inferences. HHpred is a tool for homology, not analogy, detection.
 </div>
 <br>
 
@@ -66,7 +66,7 @@ methods, like HMMer. In addition there would be a considerable decrease in speed
 the twilight zone, i.e. below 20% sequence identity. For this reason sequence identity is not an appropriate 
 measure of relatedness. The estimated <i>probability</i> of the template to be (at least partly) 
 homologous to your query sequence is the most important criterion to decide whether 
-a template HMM is actually homologous or just a high-scoring hit by chance. A probability larger than,
+a template HMM is actually homologous or just a high-scoring hit by a chance. A probability larger than,
 for example, 95%, points to an almost certain homology. 
 As a general rule one might give a hit serious consideration when,</p> 
 <ul>
@@ -182,16 +182,16 @@ Building an HHM Based on the Input Sequence?</b><br>
 <div class="row">
 <p>For example, if one submits the entire protein
 sequence for K4MJZ5 (uniprot) to HHpred, the server finds homology to 3G2B at
-the C-terminus with a probability ~70%.  However, if one resubmits the
-C-terminal half (i.e. residues 301-660), then the probability drops to
+the C-terminus with the probability of ~70%.  However, if one resubmits the
+C-terminal part (i.e. residues 301-660), then the probability drops to
 ~20% for 3G2B. In contrast resubmitting residues 420-660 gives a probability
 of ~95% for 3G2B.<br>
 One will see the results of pairwise comparisons of MSAs with each
-other. The type of sequences, which are included in these MSAs, depends a lot on
-the type of fragment one submits and this, in turn, can change the results significantly. 
+other. The type of sequences, which are included in these MSAs, depend a lot on
+the type of a fragment one submits and this, in turn, can change the results significantly. 
 It is recommended to search with the full-length protein first and afterwards to
 submit only the segments that correspond to putative domains. If one is unable to judge, based on the MSA and 
-the local hits, where the domains are, one can submit the parts around the interesting local hits, adding +50
+the local hits, where the domains are, one can submit the parts neighboring interesting local hits, adding +50
 residues on either side of the locally aligned region, to allow for extensions of the alignment.</p>
 </div>
 <div class="top"><a href="#" class="fa fa-arrow-up" border="0" style="float: right;"></a></div>
