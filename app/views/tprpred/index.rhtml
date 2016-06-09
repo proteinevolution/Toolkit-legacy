@@ -69,7 +69,7 @@ end %>
 		<%= form_text_field("maxrows", '100') %>	
 	</div>
 </div>
-
+<div class="spacer">&nbsp;</div>
 
 <% if (display == 'none')
 		display = 'true'
@@ -79,15 +79,17 @@ end %>
         basic   = 'true'
 	end %>
 <br>
+
 <div id="advanced_link" style="display: <%= display %>;">
-	<div class="row">
-		<h3><a href="#" onclick="Effect.Appear('advanced'); Effect.Fade('basic');Effect.Appear('basic_link'); Effect.Fade('advanced_link'); setValue('advanced_options', 'true');">Show advanced options</a></h3>
-	</div>
+
+	
+	<h3 class="<%= @section["name"] %>"><a href="#" onclick="Effect.Appear('advanced'); Effect.Fade('basic');Effect.Appear('basic_link'); Effect.Fade('advanced_link'); setValue('advanced_options', 'true');">Show advanced options</a></h3>
+	
 </div>
 <div id="basic_link" style="display: <%= basic %>;  ">
-    <div class="row">
-        <h3><a href="#" onclick="Effect.Fade('advanced'); Effect.Appear('basic'); Effect.Fade('basic_link');Effect.Appear('advanced_link'); setValue('advanced_options', 'false');">Hide advanced options</a></h3>
-    </div>
+    
+    <h3 class="<%= @section["name"] %>"><a href="#" onclick="Effect.Fade('advanced'); Effect.Appear('basic'); Effect.Fade('basic_link');Effect.Appear('advanced_link'); setValue('advanced_options', 'false');">Hide advanced options</a></h3>
+    
 	</div>
 
 
