@@ -50,11 +50,11 @@
 <% if @parent_job.nil? || @parent_job.params['mode'].nil? -%>	
 	<div class="row">
   <%= form_label("MSA Generation Method", "prefilter") %>
-  <%= form_radio_buttons("prefilter", @prefilter_values, @prefilter_labels, "psiblast", "&nbsp;","change_label('maxhhblitsit_label','Max. MSA Generation iterations','Max. MSA Generation iterations');                                                                                           change_label('E_hhblits_label','E-value threshold for MSA Generation','E-value threshold for MSA ');") %>  
+  <%= form_radio_buttons("prefilter", @prefilter_values, @prefilter_labels, "hhblits", "&nbsp;","change_label('maxhhblitsit_label','Max. MSA Generation iterations','Max. MSA Generation iterations');                                                                                           change_label('E_hhblits_label','E-value threshold for MSA Generation','E-value threshold for MSA ');") %>  
 </div>
     <div class="row">
         <%= form_label_id("Max. MSA Generation iterations", "maxhhblitsit_label", "maxhhblitsit") %>
-        <%= form_select_single("maxhhblitsit", @maxhhblitsit, @maxhhblitsit, '8') %>  
+        <%= form_select_single("maxhhblitsit", @maxhhblitsit, @maxhhblitsit, '3') %>  
     </div>
 <%end %>
 
