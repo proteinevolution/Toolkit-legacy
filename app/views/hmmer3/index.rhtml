@@ -1,20 +1,19 @@
+
 <a href="#" onClick="openHelpWindow('/hmmer3/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
 <h2><%= @page_title %></h2>
-
-
 
 
 <%= form_tag({:action => :run, :job => 'hmmer3'}, {:multipart => true, :id => 'hmmer3', :name => 'hmmer3'})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 
   <div class="row">
-	<%= form_label("Enter alignment", "input") %>
+	<%= form_label("Paste protein sequence alignment", "input") %>
 		<%= form_text_area("sequence_input") %>
 	</div>
 	<div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Run HMMER3 with viral DNA ligases. <a href="#" onClick="javascript:pasteExample();">Paste example alignment.</a>
+    <span style="color: #008C50;">
+      Run HMMER3 with <a href="#" style="color: #008C50; font-size:8pt;" onClick="javascript:pasteExample();">viral DNA ligases</a>.
     </span>
   </div>
 </div>
@@ -48,22 +47,22 @@
   </div>
   
   <div class="row">
-    <%= form_label("Extract sequences up to evalue", "extractsequences") %>
+    <%= form_label("Extract sequences up to E-value", "extractsequences") %>
     <%= form_text_field("extracteval", '100') %>	
   </div>
   
   <div class="row">
-    <%= form_label("HMM Build Options", "hmmbuild") %>
+    <%= form_label("HMM build options", "hmmbuild") %>
     <%= form_text_field("hmmbuildopt", '', '', 30) %>	
   </div>
   
   <div class="row">
-    <%= form_label("HMM Search Options", "hmmsearch") %>
+    <%= form_label("HMM search options", "hmmsearch") %>
     <%= form_text_field("hmmsearchopt", '-E 1e-1', '', 30) %>	
   </div>
   
   <div class="row">
-    <%= form_label("HMM Align Options", "hmmalign") %>
+    <%= form_label("HMM align options", "hmmalign") %>
     <%= form_text_field("hmmalignopt", '', '', 30) %>	
   </div>
   
@@ -75,8 +74,6 @@
     <%= form_submit_buttons %>
   </div>
   </form>
-
-<div class="hr">&nbsp;</div>
-<div class="row">
-	Eddy, S. (1998) Profile hidden Markov models. <em>Bioinformatics</em>, <strong>14</strong>(9), 755-763.
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
 </div>
