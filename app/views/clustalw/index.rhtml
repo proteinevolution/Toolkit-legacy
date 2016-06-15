@@ -7,15 +7,15 @@
 	<%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
-	<%= form_label("or upload a local file") %>
-	<%= form_file("sequence_file") %>
-</div>
-<div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Create alignment of viral DNA ligases. <a href="#" onClick="javascript:pasteExample();">Paste example sequences.</a>
+    <span style="color: #008C50;">
+      Create alignment of <a href="#" onClick="javascript:pasteExample();" style="color: #008C50;">viral DNA ligases.</a>
     </span>
   </div>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
 </div>
 
 <div class="spacer">&nbsp;</div>
@@ -41,8 +41,6 @@
 
 </form>
 
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
 
-<div class="hr">&nbsp;</div>
-<div class="row">
-Thompson, J., Higgiin, D., and Gibson, T. (1994) CLUSTALW: improving the sensitivity of progressive multiple sequence alignment through sequence weighting, position specific gap penalties and weight matrix choice. Nuc. Acids Res., 22, 4673-4680.
-</div>
