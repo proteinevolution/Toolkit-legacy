@@ -1,12 +1,22 @@
+<script src="https://use.fontawesome.com/084cb96765.js"></script>
+
 <a href="#" onClick="openHelpWindow('/hhsenser/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
 
 <%= form_tag({:action => :run, :job => 'hhsenser'}, {:multipart => true, :onreset => "return resetDisplayValues('#{params['informat'] || @informat_values[0]}');" })%>
 <h3 class="<%= @section["name"] %>">Input</h3>
 
 <div class="row">
-	<%= form_label("Paste protein sequence or multiple alignment (up to 500 residues)", "input") %>
-	<%= form_text_area("sequence_input") %>
+        <%= form_label("Paste protein sequence or MSA<br><small>(up to 500 residues)</small>", "input") %>
+        <%= form_text_area("sequence_input") %>
 </div>
+
+<div class="row">
+   <div class="formw">
+<span style="color: #008C50;">Search with transition state regulatory protein <a href="#" style="color: #008C50; font-size: 8pt" onClick="javascript:pasteAbrB();">AbrB</a> or phage lysis protein 
+<a href="#" style="color: #008C50; font-size: 8pt"  onClick="javascript:pasteP5();">P5</a>.</span>
+   </div>
+</div>
+
 <div class="row">
 	<%= form_label("or upload a local file") %>
 	<%= form_file("sequence_file") %>
@@ -15,15 +25,6 @@
 	<%= form_label("Select input format", "input") %>
 	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0], 1, "adjustMatchModeValues();") %>
 </div><div class="spacer">&nbsp;</div>
-
-<div class="row">
-	<%= form_label("Examples") %>
-	<div class="formw">
-		<strong>AbrB</strong> <a href="#" onClick="javascript:pasteAbrB();">paste</a>/<a target="_blank" href="/hhsenser/results/tu_AbrB">results</a>&nbsp;&nbsp;
-		<strong>P5/Phi-6</strong> <a href="#" onClick="javascript:pasteP5();">paste</a>/<a target="_blank" href="/hhsenser/results/tu_p5phi6">results</a>&nbsp;&nbsp;
-		<%= render(:partial => "shared/example_results") %>
-	</div>
-</div>
 
 
 <div class="spacer">&nbsp;</div>
@@ -36,11 +37,11 @@
 </div>
 
 <div class="row">
-	<%= form_label("Number of residues by which seeds are extended on either side", "extnd") %>
+	<%= form_label("No. of residues for seed extension<br><small>(either side)</small>", "extnd") %>
 	<%= form_select_single("extnd", @extnd, @extnd, '20') %>
 </div>
 <div class="row">
-	<%= form_label("PSI-BLAST Evalue threshold", "psiblast_eval") %>
+	<%= form_label("PSI-BLAST E-value threshold", "psiblast_eval") %>
 	<%= form_select_single("psiblast_eval", @psiblast_eval, @psiblast_eval, '1e-3') %>
 </div>
   <div class="row">
@@ -48,15 +49,15 @@
     <%= form_select_single("cov_min", @cov_minval, @cov_minval, '50') %>
   </div>
 <div class="row">
-	<%= form_label("Use clustered database (recommended)", "clustered") %>
+	<%= form_label("Use clustered database<br><small>(recommended!)</small>", "clustered") %>
 	<%= form_checkbox("include_repr_seqs", '1', true) %>
 </div>
 <div class="row">
-	<%= form_label("Terminate search when this many sequences found", "ymax") %>
+	<%= form_label("No. of sequences until termination", "ymax") %>
 	<%= form_select_single("ymax", @ymax, @ymax, '5000') %>
 </div>
 <div class="row">
-	<%= form_label("Prescreen sequence for structural domains", "prescreen") %>
+	<%= form_label("Pre-screen sequence for structural domains", "prescreen") %>
 	<%= form_checkbox("screen", '1', true) %>
 </div>
 
@@ -80,20 +81,8 @@
 </form>
 
 <div class="hr">&nbsp;</div>
-<div class="row">
-	Reference:
-	S&ouml;ding J, Remmert M, Biegert A, and Lupas A. HHsenser: exhaustive transitive profile search using
-	HMM-HMM comparison. <em>Nucleic Acids Res.</em>
-<strong>34</strong>, W374-378.
-	<a target="_blank" href="http://nar.oxfordjournals.org/cgi/reprint/34/suppl_2/W374?ijkey=oSURWnqVPW68vRv&keytype=ref">
-	(download pdf)</a>
-</div>
-
-<div class="hr">&nbsp;</div>
 <ul class="arrow-marker">
   <li><a target="_blank" href="http://www.mpibpc.mpg.de/soeding">S&ouml;ding group at Max Planck Institute for Biophysical Chemistry in G&ouml;ttingen</a></li>
 </ul>
-<div class="hr">&nbsp;</div>
-<div class="row">
-  Please send feedback to: soeding AT mpibpc.mpg.de
+<%= render(:partial => "references_and_contact") %>
 </div>
