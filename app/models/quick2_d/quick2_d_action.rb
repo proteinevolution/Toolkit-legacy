@@ -31,6 +31,7 @@ if LOCATION == "Munich" && LINUX == 'SL6'
     MEMSATSVM   = "perl "+File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
 else
     REFORMAT    = File.join(BIOPROGS, 'perl', 'reformat.pl')
+    REFORMAT2   = File.join(BIOPROGS, 'hhpred', 'reformat.pl') # Not set in 'Munich'
     BUILDALI    = File.join(BIOPROGS, 'hhpred', 'buildali.pl')
     PHOBIUS     = File.join(BIOPROGS,'phobius','phobius.pl')
     MEMSATSVM = File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
@@ -163,8 +164,9 @@ end
         commands << "echo 'There are more than 200 sequences!' >> #{flash['logfile']}"
         commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
         if !File.exist?(flash['a3mfile'])
-          commands << "#{REFORMAT} -i=fas -o=a3m -f=#{flash['fasfile']} -a=#{flash['a3mfile']} -M first"
-
+	  #  reformat.pl fas sto '*.fasta' .stockholm
+ 	  commands << "#{REFORMAT2} fas a3m #{flash['fasfile']} #{flash['a3mfile']} -M first"
+          #commands << "#{REFORMAT} -i=fas -o=a3m -f=#{flash['fasfile']} -a=#{flash['a3mfile']} -M first"
         end
         commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
         commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['fasfile']}"
