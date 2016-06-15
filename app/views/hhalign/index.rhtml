@@ -7,6 +7,13 @@
 	<%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
+  <div class="formw">
+    <span style="color: #008C50;">
+      Paste alignment of <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">viral DNA ligases.</a>
+    </span>
+  </div>
+</div>
+<div class="row">
 	<%= form_label("or upload a local file") %>
 	<%= form_file("sequence_file") %>
 </div>
@@ -14,13 +21,8 @@
 	<%= form_label("Select input format", "input") %>
 	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
 </div>
-<div class="row">
-  <div class="formw">
-    <span style="color: green;">
-      View alignment of viral DNA ligases. <a href="#" onClick="javascript:pasteExample();">Paste example alignment.</a>
-    </span>
-  </div>
-</div>
+
+
 
 <div class="spacer">&nbsp;</div>
 
@@ -35,7 +37,7 @@
 	<%= form_file("target_file") %>
 </div>
 <div class="row">
-	<%= form_label("Select input format of target alignment", "input") %>
+	<%= form_label("Select target format", "input") %>
 	<%= form_select_single("target_informat", @informat_values, @informat_labels, @informat_values[0]) %>	
 </div><div class="spacer">&nbsp;</div>
 
@@ -50,12 +52,12 @@
 </div>
 
 <div class="row">
-	<%= form_label("Half-length of averaging window for dotplot", "dwin") %>
+	<%= form_label("Half-length of avg. window for dotplot", "dwin") %>
 	<%= form_text_field("dwin", "10") %>
 </div>
 
 <div class="row">
-	<%= form_label("score threshold for dotplot", "dthr") %>
+	<%= form_label("Score threshold for dotplot", "dthr") %>
 	<%= form_text_field("dthr", "0.5") %>
 </div>
 
@@ -78,3 +80,6 @@
 </div>
 
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
+
