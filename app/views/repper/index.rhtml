@@ -3,28 +3,18 @@
 
 <div class="spacer">&nbsp;</div>
 
-<div class="row">
-It finds PERiodicities by Fourier Transform
-(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#ftwin');" onmouseover="return overlib('Help');" onmouseout="return nd();">FTwin</a>) and internal homology analysis
-(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#repwin');" onmouseover="return overlib('Help');" onmouseout="return nd();">REPwin</a>). The exact locations of the
-periodic patterns are traced by a sliding window. The output is complemented by coiled coil prediction
-(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#coils');" onmouseover="return overlib('Help');" onmouseout="return nd();">COILS</a>) and optionally by secondary
-structure prediction according to Jones
-(<a href="#" onClick="openHelpWindow('<%= url_for(:action => 'help_ov') %>#psipred');" onmouseover="return overlib('Help');" onmouseout="return nd();">PSIPRED</a>).
-</div>
-
-<div class="spacer">&nbsp;</div>
 
 <%= form_tag({:action => :run, :job => 'repper'}, {:multipart => true, :id => "repper_form", :name => "repper_form"})%>
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Enter sequence or sequence alignment", "input") %>
+	<%= form_label("Paste protein sequence or MSA", "input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
+
 <div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Run Analysis with an Adhesin yadA precursor. <a href="#" onclick="setSequence();">Paste example sequence.</a>
+    <span style="color: #008C50;">
+      Run Analysis with an <a href="#" style="font-size: 8pt; color: #008C50;" onclick="setSequence();">Adhesin yadA precursor.</a>
     </span>
   </div>
 </div>
@@ -157,7 +147,7 @@ structure prediction according to Jones
 </div>
 
 <div class="row">
-	<%= form_label("Run PSIPRED") %>
+	<%= form_label("Run PSIPRED", "psipred") %>
 	<%= form_checkbox("psipred", 1, false) %>
 </div>
 
@@ -171,15 +161,5 @@ structure prediction according to Jones
 
 </form>
 
-<div class="hr">&nbsp;</div>
-	<ul class="arrow-marker">
-		<li><a href="#" title="About REPPER" onClick="openHelpWindow('/repper/help_ov');">About REPPER</a></li>
-		<li><a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/">Downloads</a></li>
-		<li><a target="_blank" href="/common/contact">Send feedback</a></li>
-	</ul>
-</form>
-<div class="hr">&nbsp;</div>
-<div class="row">
-	M.Gruber, J.S&ouml;ding, and A.N.Lupas (2005) REPPER - repeats and their periodicities in fibrous proteins <em>Nucl. Acids Res.</em>, <strong>33</strong>(2), W239-43
-	<a target="_blank" href="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W239">FREE PDF</a>
-</div>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
