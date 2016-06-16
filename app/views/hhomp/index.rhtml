@@ -1,5 +1,18 @@
-<a href="#" onClick="openHelpWindow('/hhomp/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+<script src="https://use.fontawesome.com/084cb96765.js"></script>
 
+<a href="#" onClick="openHelpWindow('/hhomp/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+<style>
+.icon::before {
+    display: inline-block;
+    margin-right: .5em;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+</style>
 <h2><%= @page_title %></h2>
 
 <%= render(:partial => "links") %>
@@ -9,7 +22,7 @@
   <h3 class="<%= @section["name"] %>">Input</h3>
   
 	<div class="row">
-		<%= form_label("Paste protein sequence or multiple alignment", "input") %>
+		<%= form_label("Paste protein sequence or MSA", "input") %>
 		<%= form_text_area("sequence_input") %>
 	</div>
 	<div class="row">
@@ -88,13 +101,11 @@
   </form>
     
 <div class="hr">&nbsp;</div>
-<ul class="arrow-marker">
-  <li><a href="#" title="About HHomp" onclick="openHelpWindow('/hhomp/help_ov');">About HHomp</a></li>
-  <li><a target="_blank" href="http://wwwuser.gwdg.de/~compbiol/data/hhomp/" title="Download HHomp"><B>Download HHomp</B></a>
-  <li><a target="_blank" href="http://wwwuser.gwdg.de/~compbiol/data/hhomp/db" title="Download HHompDB"><B>Download HHomp database</B></a>
-  <li><a target="_blank" href="http://www.mpibpc.mpg.de/soeding">S&ouml;ding group at Max Planck Institute for Biophysical Chemistry in G&ouml;ttingen</a></li>
+<ul class="fa-ul">
+  <li><a target="_blank" class="icon fa-angle-double-right" href="http://wwwuser.gwdg.de/~compbiol/data/hhomp/" title="Download HHomp"><B>Download HHomp</B></a>
+  <li><a target="_blank" class="icon fa-angle-double-right" href="http://wwwuser.gwdg.de/~compbiol/data/hhomp/db" title="Download HHompDB"><B>Download HHomp Database</B></a>
+  <li><a target="_blank" class="icon fa-angle-double-right" href="http://www.mpibpc.mpg.de/soeding">S&ouml;ding group at Max Planck Institute for Biophysical Chemistry in G&ouml;ttingen</a></li>
 </ul>
-<div class="hr">&nbsp;</div>
-<div class="row">
-  Please send feedback to: soeding AT mpibpc.mpg.de
-</div>
+
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
