@@ -11,8 +11,15 @@ MARCOIL is a Hidden Markov Model-based program that predicts existence and locat
 <%= form_tag({:action => :run, :job => 'marcoil'}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Enter sequence","input") %>
+	<%= form_label("Enter sequence in FASTA format","input") %>
 	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+  <div class="formw">
+    <span style="color: #008C50;">
+      Predict coiled-coil regions in <a href="#" style="color: #008C50; font-size:8pt;" onClick="javascript:pasteExample();"> Bacillus subtilis flagellin</a>
+    </span>
+  </div>
 </div>
 
 <div class="row">
@@ -20,13 +27,6 @@ MARCOIL is a Hidden Markov Model-based program that predicts existence and locat
 	<%= form_file("sequence_file") %>
 </div>
 
-<div class="row">
-  <div class="formw">
-    <span style="color: green;">
-      Predict coiled-coil regions in Bacillus subtilis flagellin. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
-    </span>
-  </div>
-</div>
 
 <div class="spacer">&nbsp;</div>
 
@@ -37,11 +37,11 @@ MARCOIL is a Hidden Markov Model-based program that predicts existence and locat
 	<%= form_select_single("matrix", @matrix_values, @matrix_labels, @matrix_values[0]) %>	
 </div>
 <div class="row">
-       <%= form_label("TransProb", "transprob") %>
+       <%= form_label("Transition probability", "transprob") %>
        <%= form_radio_buttons("transprob", @transprob_values, @transprob_labels, @transprob_values[0], "&nbsp;&nbsp;") %>
 </div>
 <div class="row"> 
-    <%= form_label("User-defined TransProb", "user_defined") %>
+    <%= form_label("User-defined transition probability", "user_defined") %>
     <%= form_checkbox("is_userdefined",1,false,false,"") %>
 </div>
 <div class="row">
@@ -68,15 +68,7 @@ MARCOIL is a Hidden Markov Model-based program that predicts existence and locat
 
 </form>
 
-<div class="hr">&nbsp;</div>
 
-<div class="row">
-	<ul class="arrow-marker">
-		<li><a target="_blank" href="http://toolkit.tuebingen.mpg.de/common/contact">Send feedback</a></li>
-	</ul>
-</div>
-	
-<div class="hr">&nbsp;</div>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>	
 
-<div class="row">
-</div>
