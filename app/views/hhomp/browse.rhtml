@@ -1,3 +1,21 @@
+<script src="https://use.fontawesome.com/084cb96765.js"></script>
+
+<a href="#" onClick="openHelpWindow('/hhomp/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
+<style>
+.icon::before {
+    display: inline-block;
+    margin-right: .5em;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+</style>
+
+
+
 <% if @id == '' %>
 
 <h2><%= @page_title %></h2>
@@ -262,12 +280,13 @@
 <% end %>
 
 <div class="hr">&nbsp;</div>
-
-<ul class="arrow-marker">
-  <li><a href="#" title="About HHomp" onclick="openHelpWindow('/hhomp/help_ov');">About HHomp</a></li>
-  <li><a target="_blank" href="http://wwwuser.gwdg.de/~compbiol/data/hhomp" title="Download HHomp"><B>Download HHomp</B></a>
-  <li><a target="_blank" href="http://wwwuser.gwdg.de/~compbiol/data/hhomp/db" title="Download HHompDB"><B>Download HHomp database</B></a>
-  <li><a target="_blank" href="http://www.lmb.uni-muenchen.de/soeding/index.htm">S&ouml;ding group at Gene Center in Munich</a></li>
+<div class="row">&nbsp;</div>
+<ul class="fa-ul">
+  <li><a target="_blank" class="icon fa-angle-double-right" href="http://wwwuser.gwdg.de/~compbiol/data/hhomp/" title="Download HHomp"><B>Download HHomp</B></a>
+  <li><a target="_blank" class="icon fa-angle-double-right" href="http://wwwuser.gwdg.de/~compbiol/data/hhomp/db" title="Download HHompDB"><B>Download HHomp Database</B></a>
+  <li><a target="_blank" class="icon fa-angle-double-right" href="http://www.mpibpc.mpg.de/soeding">S&ouml;ding group at Max Planck Institute for Biophysical Chemistry in G&ouml;ttingen</a></li>
 </ul>
 
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
 </div>
