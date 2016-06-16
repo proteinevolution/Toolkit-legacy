@@ -13,7 +13,7 @@
 <%= form_tag({:action => :run, :job => 'hhfrag'}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Enter sequence","input") %>
+	<%= form_label("Paste protein sequence","input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
 
@@ -49,17 +49,5 @@
 </form>
 
 	
-<div class="hr">&nbsp;</div>
-
-<div class="row">
-Kalev I, Habeck M. (2011) HHfrag: HMM-based fragment detection using HHpred. Bioinformatics.
-</div>
-
-
-<div class="hr">&nbsp;</div>
-
-<div class="row">
-    <ul class="arrow-marker">
-        <li><a target="_blank" href="http://toolkit.tuebingen.mpg.de/common/contact">Send feedback</a></li>
-    </ul>
-</div>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
