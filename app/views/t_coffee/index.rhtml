@@ -7,16 +7,17 @@
 	<%= form_label("Enter sequences in FASTA format", "sequence_input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
+
+<div class="row">
+  <div class="formw">
+    <span style="color: #008C50;">
+      Create alignment of <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">viral DNA ligases.</a>
+    </span>
+  </div>
+</div>
 <div class="row">
 	<%= form_label("or upload a local file") %>
 	<%= form_file("sequence_file") %>
-</div>
-<div class="row">
-  <div class="formw">
-    <span style="color: green;">
-      Create alignment of viral DNA ligases. <a href="#" onClick="javascript:pasteExample();">Paste example sequences.</a>
-    </span>
-  </div>
 </div>
 
 <div class="spacer">&nbsp;</div>
@@ -29,7 +30,7 @@
 			<tr><td align="left" valign="top"><%= form_checkbox("mlalign_id_pair", '1', true, true) %></td><td>Mlalign_id_pair</td></tr>
 			<tr><td align="left" valign="top"><%= form_checkbox("mfast_pair", '1', false, true) %></td><td>Mfast_pair</td></tr>
 			<tr><td align="left" valign="top"><%= form_checkbox("mslow_pair", '1', true, true) %></td><td>Mslow_pair</td></tr>
-		<!--	<tr><td align="left" valign="top"><%= form_checkbox("mclustalw_pair", '1', false, true) %></td><td>Mclustalw_pair</td></tr>-->
+		
 		</table>
 	</div>
 	
@@ -44,7 +45,7 @@
 <div class="row">
 <%= form_label("Character transformation", "case") %>
 <%= form_select_single("case", ["upper"], ["upper case"]) %>
-<!--<%= form_select_single("case", ["upper", "lower"], ["upper case", "lower case"]) %>-->
+
 </div>
 <div class="row">
 <%= form_label("Residue number", "residue_number") %>
@@ -63,3 +64,5 @@
 </div>
 
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
