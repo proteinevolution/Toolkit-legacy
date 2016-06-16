@@ -1,3 +1,5 @@
+<script src="https://use.fontawesome.com/084cb96765.js"></script>
+
 <a href="#" onClick="openHelpWindow('/hhrepid/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a>
 
 <h2><%= @page_title %></h2>
@@ -6,7 +8,7 @@
 <h3 class="<%= @section["name"] %>">Input</h3>
 <% if @parent_job.nil? || @parent_job.params['mode'].nil?  -%>
 <div class="row">
-  <%= form_label("Paste protein sequence or multiple alignment", "input") %>
+  <%= form_label("Paste protein sequence or MSA", "input") %>
   <%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
@@ -67,7 +69,7 @@
   <%= form_select_single("ptot", @ptot, @ptot, '1e-2') %>	
 </div>
 <div class="row">
-  <%= form_label("Self-Alignment P-value threshold", "pself") %>
+  <%= form_label("Self-alignment P-value threshold", "pself") %>
   <%= form_select_single("pself", @pself, @pself, '1e-1') %>	
 </div>
 <div class="row">
@@ -91,17 +93,5 @@
 
 </form>
 
-<div class="hr">&nbsp;</div>
-<ul class="arrow-marker">
-	<li><a href="#" title="About HHrepID" onclick="openHelpWindow('/hhrepid/help_ov');">About HHrepID</a></li>
-	<li><a target="_blank" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/HHrepID" title="Download HHrepID"><B>Download HHrepID</B></a>
-	<li><a target="_blank" href="http://www.mpibpc.mpg.de/soeding">Send feedback</a></li>
-</ul>
-<div class="hr">&nbsp;</div>
-
-<div class="row">
-	Reference: Biegert A, S&ouml;ding J: HHrepID: de novo protein repeat identification by probabilistic consistency
-	<em>Bioinformatics 2008</em>
-	<strong>24(6)</strong>, 807-814.
-	<a target="_blank" href="http://bioinformatics.oxfordjournals.org/cgi/reprint/24/6/807.pdf">(download pdf)</a>
-</div>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
