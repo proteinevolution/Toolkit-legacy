@@ -13,16 +13,17 @@
 <% end %>
 
 <div class="row">
-  <%= form_label("Paste multiple alignment", "input") %>
+  <%= form_label("Paste multiple sequence alignment<br><small>[Target sequence + template(s)]</small>", "input") %>
   <%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
   <div class="formw">
-    <span style="color: green;">
-      The first sequence in the multiple alignment must be the query sequence,  the other sequences are used as templates. In each template the first word in the header has to be the PDB- or SCOP-identifier. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
+    <span style="color: #008C50;">
+      The first sequence must be the target, the other sequences serve as templates. Sequence templates have to be preceeded by a PDB- or SCOP-identifier. <a href="#" style="color:#008C50;" onClick="javascript:pasteExample();">Paste example sequence.</a>
     </span>
   </div>
 </div>
+
 <div class="row">
   <%= form_label("or upload a local file") %>
   <%= form_file("sequence_file") %>
@@ -171,8 +172,5 @@
 
 </form>
 
-<div class="hr">&nbsp;</div>
-<div class="row">
-	Sali, A., Potterton, L., Yuan, F., van Vlijmen, H., and Karplus, M. (1995) Evaluation of comparative protein modelling 
-	by MODELLER. <em>Proteins</em>, <strong>23</strong>, 318-326.
-</div>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
