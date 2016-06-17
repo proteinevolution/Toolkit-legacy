@@ -415,16 +415,16 @@ protected
   end
   
   def fw_to_tool_url(from, to)
-    url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward', :jobid => @job, :forward_action => "forward", :forward_controller => to)
+    url_for(:protocol => "https", :host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward', :jobid => @job, :forward_action => "forward", :forward_controller => to)
   end
   
   # added by Hippolyt
   def fw_hmm_to_tool_url(from,to)
-    url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward_hmm', :jobid => @job, :forward_action => "forward_hmm", :forward_controller => to)
+    url_for(:protocol => "https", :host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward_hmm', :jobid => @job, :forward_action => "forward_hmm", :forward_controller => to)
   end
   #end
   def fw_msa_to_tool_url(from,to)
-    url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward_msa', :jobid => @job, :forward_action => "forward_msa", :forward_controller => to)
+    url_for(:protocol => "https", :host => DOC_ROOTHOST, :action => :run, :jobaction => from+'_forward_msa', :jobid => @job, :forward_action => "forward_msa", :forward_controller => to)
   end
   
   #######################################################################################
