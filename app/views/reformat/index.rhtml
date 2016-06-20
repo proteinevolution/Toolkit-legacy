@@ -3,7 +3,7 @@
 <%= form_tag({:action => :run, :job => 'reformat'}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Enter sequence(s) or alignment", "input") %>
+	<%= form_label("Enter protein sequence or MSA", "input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
@@ -50,3 +50,5 @@
 	<%= form_submit_buttons %>
 </div>
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
