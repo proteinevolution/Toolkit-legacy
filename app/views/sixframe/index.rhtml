@@ -3,13 +3,13 @@
 <%= form_tag({:action => :run, :job => 'sixframe'}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Enter sequence in FASTA format", "input") %>
+	<%= form_label("Paste nucleotide sequence in FASTA format", "input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Nucleotide sample. <a href="#" onClick="javascript:pasteExample();">Paste example alignment.</a>
+    <span style="color: #008C50;">
+     <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">Paste nucleotide sample.</a>
     </span>
   </div>
 </div>
@@ -46,3 +46,5 @@
 </div>
 
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
