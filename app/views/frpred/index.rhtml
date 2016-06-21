@@ -3,8 +3,15 @@
 <%= form_tag({:action => :run, :job => 'frpred'}, {:multipart => true, :id => "frpred_form", :name => "frpred_form"})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Paste input sequence/alignment", "input") %>
+	<%= form_label("Paste protein sequence or MSA", "input") %>
 	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+  <div class="formw">
+    <span style="color: #008C50;">
+      Predict functional regions for <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">viral DNA-ligase alignment.</a>
+    </span>
+  </div>
 </div>
 <div class="row">
 	<%= form_label("or upload a local file") %>
@@ -54,18 +61,6 @@
 	
 </div>
 
-<!--<div class="row">
-	<%= form_label("Predict solvent accessibility (slow)", "solvent_acc") %>
-	<%= form_checkbox("solv_acc", '') %>	
-</div>-->
-
-<div class="row">
-  <div class="formw">
-    <span style="color: green;">
-      Predict functional regions for viral DNA-ligase alignment. <a href="#" onClick="javascript:pasteExample();">Paste example alignment.</a>
-    </span>
-  </div>
-</div>
 
 <div class="spacer">&nbsp;</div>
 
@@ -106,7 +101,7 @@
 
 
 <div class="row">
-	<%= form_label("Sequence-centered analysis <br>(default: off = family-centered)", "seqCentered") %>
+	<%= form_label("Sequence-centered analysis <br><small>(default: off = family-centered)</small>", "seqCentered") %>
 	<%= form_checkbox("seqCentered", '1', true) %>	
 </div>
 
@@ -120,37 +115,6 @@
 
 </form>
 
-<div class="hr">&nbsp;</div>
-<div class="row">
-	<strong>
-	Fischer JD, Mayer CE, S&ouml;ding J. (2008)
-	Prediction of protein functional residues from sequence by probability density estimation.
- 	<em>Bioinformatics</em> 24:613-620.
-	</strong>.
-</div>
-<div class="row">
-	Mihalek, I., Res, I., and Lichtarge, O. (2004)
-	A Family of Evolution-Entropy Hybrid Methods for Ranking Protein Residues by Importance. <em>J. Mol. Biol.</em>, 
-	<strong>336</strong>:1265-1282.
-</div>
-<div class="row">
-	Hannenhalli, S.S., and Russel, R.B. (2000)
-	Analysis and Prediction of Functional Sub-types from Protein Sequence Alignments. <em>J. Mol. Biol.</em>,
-        <strong303</strong>:61-76.
-</div>
-<div class="row">
-        Altschul, S., Madden, T., Schaffer, A., Zhang, J., Zhang, Z., Miller, W., and Lipman, D. (1997)
-        Gapped BLAST and PSI-BLAST: a new generation of protein database search programs. <em>Nucl.
-        Acids Res.</em>, <strong>25</strong>:3389-3402.
-</div>
-<div class="row">
-        Kabsch, W., and Sander C. (1983)
-        Dictionary of protein secondary structure: Pattern recognition of hydrogen-bonded and geometrical features. <em>Biopolymers.</em>,
-	<strong>22</strong>:2577-2637.
-</div>
-<div class="row">
-        Adamczak R., Porollo A., Meller J. (2004)
-        Accurate prediction of solvent accessibility using neural networks-based
-	regression. <em>Proteins.</em>, 
-	<strong>56</strong>:753-767.
-</div>
+
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>

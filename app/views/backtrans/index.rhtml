@@ -3,13 +3,13 @@
 <%= form_tag({:action => :run, :job => 'backtrans'}, {:multipart => true, :id => "backtrans_form", :name => "backtrans_form"})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Paste sequence in FASTA format", "input") %>
+	<%= form_label("Paste protein in FASTA format", "input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Protein sample. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
+    <span style="color: #008C50;">
+      <a href="#" style="color:#008C50;" onClick="javascript:pasteExample();">Paste protein sample.</a>
     </span>
   </div>
 </div>
@@ -77,3 +77,5 @@
 </div>
 
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>

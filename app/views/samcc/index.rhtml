@@ -5,11 +5,6 @@
 <%= form_tag({:action => :run, :job => 'samcc'}, {:multipart => true})%>
 <h3 class="<%= @section["name"] %>">Input</h3>
 
-<!--<div class="row">
-  <%= form_text_field("sequence_input","") %>
-  <%= form_hidden_field("sequence_input","") %>
-</div>-->
-
 <div class="row">
 	<%= form_label("Paste pdb input", "input") %>
 	<%= form_text_area("sequence_input") %>
@@ -101,7 +96,7 @@ with the larger residue number before the smaller one.<br/><br/>
 
 <div class="spacer">&nbsp;</div>
 
-<!--<h3 class="<%= @section["name"] %>">Options</h3>-->
+
 
 <div class="spacer">&nbsp;</div>
 
@@ -114,11 +109,6 @@ with the larger residue number before the smaller one.<br/><br/>
 </form>
 
 
-<div class="hr">&nbsp;</div>
-<div class="row">
-        <strong>
-        Dunin-Horkawicz S, Lupas AN. (2010)
-        Measuring the conformational space of square four-helical bundles with the program samCC.
-        <em>Journal of Structural Biology.</em>
-        </strong>
-</div>
+
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>

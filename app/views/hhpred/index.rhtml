@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<style>
+<script src="https://use.fontawesome.com/084cb96765.js"></script>
 
+<style>
 .icon::before {
     display: inline-block;
     margin-right: .5em;
@@ -242,13 +242,11 @@
 </form>
 <br><br><br>
 
-
 <h3 class="<%= @section["name"] %>">Links</h3>
 <ul class="fa-ul">
   <li><a href="#" class="icon fa-angle-double-right" title="About HHpred" onclick="openHelpWindow('/hhpred/help_ov');">About HHpred</a></li>
   <li><a target="_blank" class="icon fa-angle-double-right" href="https://github.com/soedinglab/hh-suite" title="Download HH-suite at github">Download HH-suite at github</a></li>
   <li><a target="_blank" class="icon fa-angle-double-right" href="http://wwwuser.gwdg.de/~compbiol/data/hhsuite/databases/hhsuite_dbs/" title="Download HH-suite databases (uniprot20, pdb70, pfamA)">Download HH-suite databases (uniprot20, pdb70, pfamA)  </a></li>
-
   <li><a target="_blank" class="icon fa-angle-double-right" href="ftp://ftp.tuebingen.mpg.de/pub/protevo/HHsearch/databases/" title="Download HHsearch/HHpred databases (old-style)">Download HHsearch/HHpred databases (old-style) </a></li>
   <li><a target="_blank" class="icon fa-angle-double-right" href="pdbalert">PDBalert automatic remote homology tracking and structure prediction</a></li>
   <li><a target="_blank" class="icon fa-angle-double-right" href="http://predictioncenter.org/casp9/groups_analysis.cgi?type=server&tbm=on&submit=Filter">Official server results for CASP9 structure prediction benchmark</a></li>
@@ -256,19 +254,4 @@
   <li><a target="_blank" class="icon fa-angle-double-right" href="http://www.mpibpc.mpg.de/de/soeding">S&ouml;ding group at Max Planck Institute for Biophysical Chemistry in G&ouml;ttingen</a></li>
 
 </ul>
-<div class="hr">&nbsp;</div>
-<div class="row">
-  <a href="&#109;&#097;&#105;&#108;&#116;&#111;&#058;&#104;&#104;&#064;&#109;&#112;&#105;&#098;&#112;&#099;&#046;&#109;&#112;&#103;&#046;&#100;&#101;">Support for HH-suite software</a>
-</div>
-<div class="hr">&nbsp;</div>
-<div class="spacer">&nbsp;</div>
-<div class="spacer">&nbsp;</div>
-<div class="spacer">&nbsp;</div>
-<h3 class="<%= @section["name"] %>">Please cite one of the following articles:</h3>
-
-    <font face='verdana,arial,helvetica,sans-serif'> S&ouml;ding J, Biegert A, Lupas AN (2005) The HHpred interactive server for protein homology detection and structure prediction. Nucleic Acids Res 33 (suppl 2), W244-W248.</font>
-    <BR><BR><font face='verdana,arial,helvetica,sans-serif'> S&ouml;ding J (2005) Protein homology detection by HMM-HMM comparison. Bioinformatics 21: 951-960.</font>
-    <BR><BR><font face='verdana,arial,helvetica,sans-serif'> Biegert A, Mayer C, Remmert M, S&ouml;ding J, Lupas AN (2006) The MPI Bioinformatics Toolkit for protein sequence analysis. Nucleic Acids Res 34 (suppl 2), W335-W339.</font>
-    <BR><BR><font face='verdana,arial,helvetica,sans-serif'>Hildebrand A, Remmert A, Biegert A, S&ouml;ding J (2009) Fast and accurate automatic structure prediction with HHpred. Proteins 77 (S9), 128-132.</font>
-    <BR><BR><font face='verdana,arial,helvetica,sans-serif'>Meier A, S&ouml;ding J (2015) Automatic Prediction of Protein 3D Structures by Probabilistic Multi-template Homology Modeling. PLoS Comput Biol 11 (10), e1004343.</font>
-<BR><BR><font face='verdana,arial,helvetica,sans-serif'> Remmert M, Biegert A, Hauser A, S&ouml;ding J (2012) HHblits: lightning-fast iterative protein sequence searching by HMM-HMM alignment. Nature Methods 9 (2), 173-175.</font>
+<%= render(:partial => "references_and_contact") %>

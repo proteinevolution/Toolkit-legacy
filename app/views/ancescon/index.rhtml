@@ -3,9 +3,17 @@
 <%= form_tag({:action => :run, :job => 'ancescon'}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Enter alignment", "input") %>
+	<%= form_label("Paste multiple sequence alignment", "input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
+<div class="row">
+  <div class="formw">
+    <span style="color: #008C50;">
+      Create plot for alignment of <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">viral DNA ligases.</a>
+    </span>
+  </div>
+</div>
+
 <div class="row">
 	<%= form_label("or upload a local file") %>
 	<%= form_file("sequence_file") %>
@@ -13,13 +21,6 @@
 <div class="row">
 	<%= form_label("Select input format", "format") %>
 	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
-</div>
-<div class="row">
-  <div class="formw">
-    <span style="color: green;">
-      Create plot for alignment of viral DNA ligases. <a href="#" onClick="javascript:pasteExample();">Paste example alignment.</a>
-    </span>
-  </div>
 </div>
 
 <div class="spacer">&nbsp;</div>
@@ -52,11 +53,6 @@
 	<%= form_submit_buttons %>
 </div>
 
-<br/>
-<br/>
-<br/>
-<br/>
-
-Wei Cai, Jimin Pei, and Nick V Grishin, Reconstruction of ancestral protein sequences and its applications, BMC Evol Biol. 2004; 4: 33. doi: 10.1186/1471-2148-4-33.
-
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>

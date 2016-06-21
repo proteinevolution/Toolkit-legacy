@@ -7,16 +7,18 @@
 	<%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
-	<%= form_label("or upload a local file") %>
-	<%= form_file("sequence_file") %>
-</div>
-<div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Create alignment of viral DNA ligases. <a href="#" onClick="javascript:pasteExample();">Paste example sequences.</a>
+    <span style="color: #008C50;">
+      Create alignment of <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">viral DNA ligases.</a>
     </span>
   </div>
 </div>
+
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>
+
 
 <div class="spacer">&nbsp;</div>
 
@@ -38,7 +40,7 @@
 </div>
 
 <div class="row">
-	<%= form_label("Passes of iterative-refinement", "itrefine") %>
+	<%= form_label("Passes of iterative refinement", "itrefine") %>
 	<%= form_text_field("itrefine", "100") %>
 </div>
 
@@ -62,8 +64,6 @@
 
 </form>
 
-<div class="hr">&nbsp;</div>
-<div class="row">
-	Do, C. B., Mahabhashyam, M. S., Brudno, M., and Batzoglou, S. (2005) ProbCons: Probabilistic consistency-based multiple 
-	sequence alignment.  <em>Genome Res.</em>, <strong>15</strong>(2), 330-340.
-</div>
+
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>

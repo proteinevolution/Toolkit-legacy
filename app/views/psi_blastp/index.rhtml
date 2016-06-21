@@ -4,13 +4,13 @@
 <h3 class="<%= @section["name"] %>">Input</h3>
 
 <div class="row">
-	<%= form_label("Paste input sequence/alignment", "input") %>
+	<%= form_label("Paste protein sequence or MSA", "input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Search with transcription factor SOX-9. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
+    <span style="color: #008C50;">
+      Search with transcription factor <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">SOX-9.</a>
     </span>
   </div>
 </div>
@@ -65,11 +65,11 @@
 	<%= form_checkbox("smithwat", '1', false) %>	
 </div>
 <div class="row">
-	<%= form_label("Use nr70 for all but last iteration", "usenr70") %><!-- nr70f replaced by nr70 in Tuebingen -->
+	<%= form_label("Use nr70<br><small>(except for the last iteration)</small>", "usenr70") %>
 	<%= form_checkbox("fastmode", '1', false) %>	
 </div>
 <div class="row">
-	<%= form_label("Alignments and descriptions", "alignments") %>
+	<%= form_label("Descriptions", "alignments") %>
 	<%= form_text_field("alignments", '500') %>	
 </div>
 <div class="row">
@@ -87,9 +87,6 @@
 
 </form>
 
-<div class="hr">&nbsp;</div>
-<div class="row">
-	Altschul, S., Madden, T., Schaffer, A., Zhang, J., Zhang, Z., Miller, W., and Lipman, D. (1997) 
-	Gapped BLAST and PSI-BLAST: a new generation of protein database search programs. <em>Nucl. 
-	Acids Res.</em>, <strong>25</strong> (17), 3389-3402.
-</div>
+
+<div class="row">&nbsp;</div>
+<%= render(:partial => "psi_blast/references_and_contact") %>

@@ -9,20 +9,20 @@
 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Enter ONE sequence in fasta format", "input") %>
+	<%= form_label("Paste 1 protein sequence in FASTA format", "input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
-	<%= form_label("or upload a local file") %>
-	<%= form_file("sequence_file") %>
+  <div class="formw">
+    <span style="color: #008C50;">
+      Annotate domains of <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">trimeric autotransporter adhesins.</a>
+    </span>
+  </div>
 </div>
 
 <div class="row">
-  <div class="formw">
-    <span style="color: green;">
-      Annotate domains of trimeric autotransporter adhesins. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
-    </span>
-  </div>
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
 </div>
 
 <div class="spacer">&nbsp;</div>
@@ -42,3 +42,5 @@
 </div>
 
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>

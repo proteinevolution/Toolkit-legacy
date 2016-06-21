@@ -14,8 +14,8 @@
   </div>
     <div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Search with transcription factor SOX-9. <a href="#" onClick="javascript:pasteExample();">Paste example sequence.</a>
+    <span style="color: #008C50;">
+      Search with <a href="#" style="color: #008C50" onClick="javascript:pasteExample();">transcription factor SOX-9.</a>
     </span>
   </div>
 </div>
@@ -39,7 +39,7 @@
   </div>
 
   <div class="row">
-    <%= form_label("E-Value", "evalue") %>
+    <%= form_label("E-value", "evalue") %>
     <%= form_text_field("evalue", '10') %>	
   </div>
   <div class="row">
@@ -71,8 +71,6 @@
   </div>
   </form>
 
-<div class="hr">&nbsp;</div>
-<div class="row">
-	Altschul, S., Gish, W., Miller, W., Meyers, E., and Lipman, D. (1990) Basic Local Alignment 
-  </form>	Search Tool. <em>Journal of Molecular Biology</em>, <strong>215</strong>(3), 403-410.
-</div>
+
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>

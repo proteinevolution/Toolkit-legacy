@@ -9,11 +9,12 @@
 
 <div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Forward from PSI-BLAST example input. <a href="#" onClick="javascript:pasteExample();">Paste example BLAST output.</a>
+    <span style="color: #008C50;">
+      Paste output from PSI-BLAST <a href="#" onClick="javascript:pasteExample();" style="color: #008C50;">example input.</a>
     </span>
   </div>
 </div>
+
 
 <div class="row">
 	<%= form_label("or upload a local file") %>
@@ -36,7 +37,7 @@
 
 
 <div class="row">
-	<%= form_label("Maximum e-value", "maxevalue") %>
+	<%= form_label("Maximum E-value", "maxevalue") %>
 	<%= form_text_field("maxevalue", "1e-5") %>
 </div>
 
@@ -79,3 +80,5 @@
 </div>
 
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>

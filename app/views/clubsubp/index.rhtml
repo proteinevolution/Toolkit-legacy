@@ -22,13 +22,13 @@
         	<%= form_select_single("database", %w(Archaea Gram-negative-607), %w(Archaea Gram-negative-607), 'Gram-negative-607') %>
         </div>
 	<div class="row">
-		<%= form_label("Input protein sequence(s) <BR> (max. 200 sequences)", "input") %>
+		<%= form_label("Paste protein sequence or MSA<br><small>(max. 200 sequences)</small>", "input") %>
 		<%= form_text_area("sequence_input") %>
 	</div>
 <div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Create alignment of viral DNA ligases. <a href="#" onClick="javascript:pasteExample();">Paste example sequences.</a>
+    <span style="color: #008C50;">
+      Create alignment of <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">viral DNA ligases.</a>
     </span>
   </div>
 </div>
@@ -43,15 +43,15 @@
 
 <h3 class="<%= @section["name"] %>">Options for BLAST search</h3>
 	<div class="row">
-        	<%= form_label("min. query sequence length to be covered", "quseqleng") %>
+        	<%= form_label("Min. query sequence length to be covered", "quseqleng") %>
 	        <%= form_text_field("qlvalue", '75','%') %>
 	</div>
 	<div class="row">
-	        <%= form_label("min. hit sequence length to be covered", "Hitseqleng") %>
+	        <%= form_label("Min. hit sequence length to be covered", "Hitseqleng") %>
         	<%= form_text_field("hlvalue", '75', '%') %>
 	</div>
 	<div class="row">
-	   <%= form_label("min. sequence identity threshold","pitsdt")%>
+	   <%= form_label("Min. sequence identity threshold","pitsdt")%>
 	   <%= form_text_field("pvalue", '40', '%') %>
 	</div>
 
@@ -65,3 +65,5 @@
 </div>
 
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>

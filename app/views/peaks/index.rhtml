@@ -5,13 +5,13 @@
 <%= form_tag({:action => :run, :job => 'peaks'}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Paste input sequence", "input") %>
+	<%= form_label("Paste protein sequence or MSA", "input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
   <div class="formw">
-    <span style="color: green;">
-      Create alignment of viral DNA ligases. <a href="#" onClick="javascript:pasteExample();">Paste example sequences.</a>
+    <span style="color: #008C50;">
+      Create alignment of <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">viral DNA ligases.</a>
     </span>
   </div>
 </div>
@@ -25,11 +25,11 @@
 
 <h3 class="<%= @section["name"] %>">Options</h3>
 <div class="row">
-         <%=  form_label("Window size") %>
+         <%=  form_label("Window size", "window") %>
 	 <%= form_text_field("size", '10', '',3) %>
 </div>
 <div class="row">
-        <%= form_label("Search String") %>
+        <%= form_label("Search string", "string") %>
 	<%= form_text_field("string", '', '(eg. AE for aminoacids A and E)',15) %>
 </div>
 
@@ -43,3 +43,5 @@
 </div>
 
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>

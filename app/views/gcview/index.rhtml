@@ -9,7 +9,7 @@
   <h3 class="<%= @section["name"] %>">Input</h3>
 
   <div class="row">
-	<%= form_label("Paste input sequences or identifiers", "input") %>
+	<%= form_label("Paste protein sequences or identifiers", "input") %>
 	<%= form_text_area("sequence_input") %>
     <div class="formw">Demo Data: <a href=javascript:; onClick=javascript:gcv_demo_data()> Lac Operon</a></div>
   </div>
@@ -75,29 +75,11 @@
     <%@seq_entry += gi_num +"\n"%>
   <%end%>
 
-  <!--<%@id_array=@oldjob.split('_') %>-->
-
-  <!--<%if (@id_array[@id_array.length-1].to_i > 0 && @id_array[@id_array.length-1].to_i<100)%>-->
-    <!--<%@id_ending = @id_array[@id_array.length-1].to_i+1%>-->
-    <!--<%@id_suffix = @id_ending.to_s%>-->
-    <!--<%if @id_array.length==2%>-->
-      <!--<%@jobid = @id_array[0]+'_'+@id_suffix%>-->
-    <!--<%else%>-->
-      <!--<%@id_prefix=''%>-->
-      <!--<%for i in 0..@id_array.length-2%>-->
-        <!--<%@id_prefix+=@id_array[i]+'_'%>-->
-      <!--<%end%>-->
-      <!--<%@jobid = @id_prefix + @id_suffix%>-->
-    <!--<%end%>-->
-  <!--<%else%>-->
-    <!--<%@id_suffix = '_1'%>-->
-    <!--<%@jobid = @oldjob+@id_suffix%>-->
-  <!--<%end%>-->
 
   <h3 class="<%= @section["name"] %>">Input</h3>
 
   <div class="row">
-        <%= form_label("Paste input sequence", "input") %>
+        <%= form_label("Paste protein sequence", "input") %>
         <%= form_text_area("sequence_input", @seq_entry) %>
   </div>
   <div class="row">
@@ -135,7 +117,7 @@
         <%= form_text_field("jobid", @jobid, '(leave empty for automatic creation)', 10) %> 
   </div>
   <div class="row">
-        <%= form_label("Send notification to (optional)") %>
+        <%= form_label("Send notification to:<br>(optional)") %>
         <%= form_text_field("mail", '', '', 50) %>
   </div>
 
@@ -147,3 +129,5 @@
 </div>
 
 </form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
