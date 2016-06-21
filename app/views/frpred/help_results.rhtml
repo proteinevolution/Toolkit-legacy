@@ -1,0 +1,36 @@
+<ul id="helpindex" class="<%= @section['theme'] %>">
+        <li><a href="#input">Results</a></li>
+        <li><a href="#input_format">Select Alignment Format</a></li>
+        <li><a href="#pdbInput">Upload a PDB File</a></li>
+        <li><a href="#maxPsiBlastIt">Max. Number of<br> <%= @tools_hash['psi_blast']['title'] %> Iterations</a></li>
+        <li><a href="#ePsiBlast"><%= @tools_hash['psi_blast']['title'] %> E-value<br> Inclusion Threshold</a></li>
+        <li><a href="#minCoverage">Minimum Coverage</a></li>
+        <li><a href="#minIdentity">Minimum Identity</a></li>
+        <li><a href="#emphCatalytics">Catalytic Residues</a></li>
+        <li><a href="#seqCentered">Sequence-Centered Analysis</a></li>
+        <li><a href="#references">References</a></li>
+        <li><a href="#contact">Contact</a></li>
+</ul>
+
+<style>
+ul {
+  list-style-type: disc;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+ul li {
+  padding-left: 5px;
+}
+</style>
+
+<h2><%= @tool['title'] %> Parameters</h2>
+
+<a name="input"></a>
+<h3 class="<%= @section["name"] %>">Paste Protein Sequence or MSA</h3>
+<div class="row">
+<p>FRpred takes a single protein sequence in FASTA format or a Multiple Sequence Alignment (MSA). If a single
+sequences is entered, FRpred will build an MSA with PSI-BLAST. Below the input field the mode of the input
+can be manually selected. FRpred automatically detects if a single protein sequence or MSA is entered.</p>
+</div>
+<div class="row">&nbsp;</div>
