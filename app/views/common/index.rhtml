@@ -35,14 +35,11 @@ target="_blank" style="font-size: 9px"> <i class="fa fa-external-link aria-hidde
  using HHblits and turns it into a profile HMM. This is then compared with a database of HMMs representing proteins with known structure (e.g. PDB, SCOP) or annotated protein
   families (e.g. PFAM, SMART, CDD, COGs, KOGs). The output is a list of closest homologs with alignments. 
   HHpred can also build 3D homology models using the identified templates in the PDB database. It can optimize template picking and query-template alignments for 
-  homology modeling. 
-<br>The HHblits software is part of the open source package <a href="http://wwwuser.gwdg.de/~compbiol/data/" target="_self">HHsuite</a>.<br>
+  homology modeling. The HHpred software is part of the open source package <a href="http://wwwuser.gwdg.de/~compbiol/data/" target="_self">HHsuite</a>.<br>
 <br>
 <b><a href=hhblits>HHblits</a></b> Remote homology detection method based on iterative HMM-HMM comparison. HHblits can build high-quality MSAs starting from single sequences or from MSAs. 
 It transforms these into a query HMM and iteratively searches through uniprot20 or nr20 databases by adding significantly similar sequences from the previous 
-search to the updated query HMM for the next search iteration. Compared to PSI-BLAST, HHblits is faster, up to twice as sensitive and produces more accurate alignments.
-<br>
-The HHblits software is part of the open source package <a href="http://wwwuser.gwdg.de/~compbiol/data/" target="_self">HHsuite</a>.
+search to the updated query HMM for the next search iteration. Compared to PSI-BLAST, HHblits is faster, up to twice as sensitive and produces more accurate alignments. The HHblits software is part of the open source package <a href="http://wwwuser.gwdg.de/~compbiol/data/" target="_self">HHsuite</a>.
 <br>
 <br>
 <b><a href=quick2_d>Quick2d</a></b> Quick2D gives you an overview of secondary structure features like alpha-helices, extended beta-sheets, 
