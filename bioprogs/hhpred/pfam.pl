@@ -34,8 +34,14 @@ Example: pfam.pl -Neff 2.0 Pfam-A.full
 
 # Set directory paths
 my $dbname=$nr90;                 # The name of the BLAST data bank
-my @iprodirs=glob("$newdbs/interpro_*");
-my $iprodir= $iprodirs[$#iprodirs];
+
+
+#my @iprodirs=glob("$newdbs/interpro_*");
+#my $iprodir= $iprodirs[$#iprodirs];
+
+#path of interpro.xml file
+my $iprodir="/cluster/toolkit/production/databases/db_update/databases/ipro";
+
 
 my $line;
 my $infile;
@@ -83,6 +89,7 @@ if ($options=~s/ -i\s+(\S+) / /) {$infile=$1;}
 
 # Warn if unknown options found
 if ($options!~/^\s*$/) {$options=~s/^\s*(.*?)\s*$/$1/g; print("WARNING: unknown options '$options'\n");}
+
 
 if (!-e "$iprodir/interpro.xml") {
     print($usage); 
