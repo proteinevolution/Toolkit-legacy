@@ -394,7 +394,7 @@ class SgeWorker < AbstractWorker
                   ### F ###
                 when "FrpredAction" then 64 # uses blastpgp, 3 iterations
                   ### G ###
-                when "GcviewAction" then 50 # uses blastpgp
+                when "GcviewAction" then 64 # uses blastpgp
                 when "Gi2seqExportAction" then 3  
                 when "Gi2seqAction" then 3  
                 when "Gi2seqForwardAction" then 3
@@ -446,7 +446,7 @@ class SgeWorker < AbstractWorker
                 when "PatsearchForwardAction" then 5
                 when "ProtBlastForwardAction" then 5
                   ### Q ###
-                when "Quick2DAction" then 50 # disopred2 needed more than 22, uses blastpgp
+                when "Quick2DAction" then 64 # disopred2 needed more than 22, uses blastpgp
                   ### R ###
                 when "RepperAction" then 15
                 when "ReformatAction" then 4
