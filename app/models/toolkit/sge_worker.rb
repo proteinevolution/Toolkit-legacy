@@ -446,7 +446,7 @@ class SgeWorker < AbstractWorker
                 when "PatsearchForwardAction" then 5
                 when "ProtBlastForwardAction" then 5
                   ### Q ###
-                when "Quick2DAction" then 50 # disopred2 needed more than 22, uses blastpgp
+                when "Quick2DAction" then 64 # disopred2 needed more than 22, uses blastpgp
                   ### R ###
                 when "RepperAction" then 15
                 when "ReformatAction" then 4
