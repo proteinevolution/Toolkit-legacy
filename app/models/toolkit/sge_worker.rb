@@ -394,7 +394,7 @@ class SgeWorker < AbstractWorker
                   ### F ###
                 when "FrpredAction" then 64 # uses blastpgp, 3 iterations
                   ### G ###
-                when "GcviewAction" then 64 # uses blastpgp
+                when "GcviewAction" then 72 # uses blastpgp
                 when "Gi2seqExportAction" then 3  
                 when "Gi2seqAction" then 3  
                 when "Gi2seqForwardAction" then 3
