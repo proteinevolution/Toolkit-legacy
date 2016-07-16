@@ -186,7 +186,7 @@
 				settings.message += 'use are essential for parts of the site to operate and have already been set.';
 			} else {
 				// Implied consent message
-				settings.message = '<b>Our scientific advisory board has questioned the value of the MPI Bioinformatics Toolkit and recommended winding it down.</b>';
+				settings.message = '<b>Due to a network problem, our cluster system is out of order presently and jobs are not being scheduled for execution. All incomplete jobs will have to be resubmitted. We are sorry for the inconvenience.</b>';
 			}		
 		}	
 		html += settings.message;
@@ -194,18 +194,18 @@
 		// Build the rest of the disclosure for implied and explicit consent
 		if(settings.explicitConsent) {
 			// Explicit consent disclosure
-			html += scriptsDisclosure + 'You may delete and block all cookies from this site, but parts of the site will not work.';
-			html += 'To find out more about cookies on this website, see our <a style="color:'+ settings.linkColor + ';font-weight:bold;';
-			html += 'font-family:' + settings.fontFamily + ';font-size:' + settings.fontSize + ';" href="'+ settings.privacyPolicyUri + '">, please click here.</a>.<br/>';
-			html += '<div id="epdnotick" style="color:#ca0000;display:none;margin:2px;"><span style="background:#cecece;padding:2px;">You must tick the "I accept cookies from this site" box to accept</span></div>';
-			html += '<div style="margin-top:5px;">I accept cookies from this site <input type="checkbox" name="epdagree" id="epdagree" />&nbsp;';
-			html += '<input type="submit" name="explicitsubmit" id="explicitsubmit" value="Continue"/><br/></div></div>';
+			//html += scriptsDisclosure + 'You may delete and block all cookies from this site, but parts of the site will not work.';
+			//html += 'To find out more about cookies on this website, see our <a style="color:'+ settings.linkColor + ';font-weight:bold;';
+			//html += 'font-family:' + settings.fontFamily + ';font-size:' + settings.fontSize + ';" href="'+ settings.privacyPolicyUri + '">, please click here.</a>.<br/>';
+			//html += '<div id="epdnotick" style="color:#ca0000;display:none;margin:2px;"><span style="background:#cecece;padding:2px;">You must tick the "I accept cookies from this site" box to accept</span></div>';
+			//html += '<div style="margin-top:5px;">I accept cookies from this site <input type="checkbox" name="epdagree" id="epdagree" />&nbsp;';
+			//html += '<input type="submit" name="explicitsubmit" id="explicitsubmit" value="Continue"/><br/></div></div>';
 		
 		} else {
 			// Implied consent disclosure
-			html += scriptsDisclosure + ' <b>If you disagree</b><a style="color:'+ settings.linkColor + ';';
-			html += 'font-weight:bold;font-family:' + settings.fontFamily + ';font-size:' + settings.fontSize + ';" href="'+ settings.privacyPolicyUri + '" target="_blank">, please <u>click here</u> to help us with a message or letter of support</a>.';
-			html += '<div style="margin-top:5px;"><input type="submit" name="impliedsubmit" id="impliedsubmit" value="Hide this"/></div></div>';	
+			//html += scriptsDisclosure + ' <b>If you disagree</b><a style="color:'+ settings.linkColor + ';';
+			//html += 'font-weight:bold;font-family:' + settings.fontFamily + ';font-size:' + settings.fontSize + ';" href="'+ settings.privacyPolicyUri + '" target="_blank">, please <u>click here</u> to help us with a message or letter of support</a>.';
+			//html += '<div style="margin-top:5px;"><input type="submit" name="impliedsubmit" id="impliedsubmit" value="Hide this"/></div></div>';	
 		}		
 		html += '</div></div>';
 		$('body').append(html);
