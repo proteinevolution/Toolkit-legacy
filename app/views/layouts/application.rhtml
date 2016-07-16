@@ -1,4 +1,4 @@
-<html>
+B0;95;0c<html>
   <head>
     <title>
       <%= @layout_page_title || "Bioinformatics Toolkit" %>
@@ -73,6 +73,42 @@
     <% end -%>
     
   </head>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<%= javascript_include_tag "support_prompt.js" %>
+
+
+  <script type="text/javascript">
+  jQuery.noConflict();
+  (function( $ ) {
+  $(document).ready(function(){
+
+    var cookieScripts = function () {
+      $.cookiesDirective.loadScript({
+        uri:'google.js',
+        appendTo: 'head'
+      });
+    }
+  
+    $.cookiesDirective({
+      privacyPolicyUri: '/common/support_prompt',
+      position: 'top',
+      explicitConsent: false,
+      duration: 600,
+      limit: 0,
+
+      //position : 'bottom',
+      scriptWrapper: cookieScripts, 
+      //cookieScripts: 'Google Analytics', 
+      fontColor: '#FFFF00',
+      fontSize: '13',
+      backgroundColor: '#006F62',
+      linkColor: '#FFFF00'
+    });
+
+  });
+  })( jQuery );
+</script>
 
 
   <% js_onload = @js_onload ? @js_onload : "" %>
