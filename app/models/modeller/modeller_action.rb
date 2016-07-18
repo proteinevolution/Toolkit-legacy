@@ -93,8 +93,8 @@ class ModellerAction < Action
           i = lines.index(line)
         end
 	# do not change sequence name; let modeller decide what database to pick
-        line.sub!(/>P1;(\S\S\S\S)_\S/, '>P1;\1')
-        line.sub!(/structureX:\s*(\S\S\S\S)_\S:/, 'structureX:\1:')
+       #line.sub!(/>P1;(\S\S\S\S)_\S/, '>P1;\1')
+       #line.sub!(/structureX:\s*(\S\S\S\S)_\S:/, 'structureX:\1:')
       end
       if i.nil? then raise "ERROR! Wrong format!" end
 
@@ -113,8 +113,8 @@ class ModellerAction < Action
 
       # remove chain identifiers
       # do not change sequence name; let modeller decide what database to pick
-       input.gsub!(/>P1;(\S+)_\S\s*$/, '>P1;\1')
-       input.gsub!(/structureX:\s*(\S+)_\S:/, 'structureX:\1:')
+       #input.gsub!(/>P1;(\S+)_\S\s*$/, '>P1;\1')
+       #input.gsub!(/structureX:\s*(\S+)_\S:/, 'structureX:\1:')
       # change sequence name
       input.sub!(/^[^\n]*/, ">P1;#{@seq_name}")
 

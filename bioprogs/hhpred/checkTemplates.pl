@@ -40,7 +40,7 @@ my $outname;		# name
 my $outformat;		# pir
 my $hits;
 my @hits;
-
+my $pdbcode;
 #################################
 # Processing command line input #
 #################################
@@ -239,7 +239,39 @@ if ($doubles>0){
       for (my $i=0; $i<@lines; $i++) {    
 	  if ($lines[$i]=~/^structureX:/) {
 	      $lines[$i-1]=~/>P1;(\S+)/;
-	      my $pdbid = $1;
+
+       my $name = $1;
+       my $pdbid;
+
+      # Extract PDB ID from line and translate it back to the PDBID (could be SCOP ID) (lkszmn)
+      if ($name=~/^[defgh](\d[a-z0-9]{3})([a-z0-9_.])[a-z0-9_]$/) {
+	  $pdbid=$1;
+	  if ($2 eq "_") {$pdbid .= "_A";} else { $pdbid .= "_"; $pdbid .= uc($2);}
+      } 
+    
+      # PDB ID? (8fab, 1a0i)
+      elsif ($name=~/^(\d[a-z0-9]{3})$/) {
+	  $pdbid=$1;
+      $pdbid .= "_A";
+      }
+
+    # PDB ID? (8fab_A)
+    elsif ($name=~/^(\d[a-z0-9]{3})_(\S)$/) {
+	$pdbid=$1;
+	$pdbid .= "_$2";
+    }
+    
+    # PDB ID? (1u1z_ABC)
+    elsif ($name=~/^(\d[a-z0-9]{3})_(\S\S+)$/) {
+	$pdbid=$1;
+	$pdbid .= "_$2";
+    }
+    
+    # DALI ID? (8fabA_0,1a0i_2)
+    elsif ($name=~/^(\d[a-z0-9]{3})([A-Za-z0-9]?)_\d+$/) {
+	$pdbcode=$1;
+    $pdbcode .= "_$2";
+    }          
 	      for (my $j=0; $j<@pdbs; $j++) { 
 		  if (($pdbs[$j] =~ /$outdir\/$pdbid\_\d+\.pdb/)&&($checkedPDBs !~ /$pdbid/)) {$checkedPDBs.="$pdbid ";last;}
 		  elsif (($pdbs[$j] =~ /$outdir\/$pdbid\_\d+\.pdb/)){

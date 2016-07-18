@@ -3,7 +3,8 @@
 # Generate a model from an output alignment of hhsearch. 
 # Usage: hhmakemodel.pl -i file.out (-ts file.pdb|-al file.al) [-m int|-m name|-m auto] [-pdb pdbdir] 
 
-# IF YOU ARE NOT SOEDING YOU SHOULD DELETE THE FOLLOWING BLOCK OF LINES
+
+
 my $rootdir;
 BEGIN {
     if (defined $ENV{TK_ROOT}) {$rootdir=$ENV{TK_ROOT};} else {$rootdir="/cluster";}
@@ -108,6 +109,7 @@ my $qnameline=""; # nameline of query
 my $tnameline;   # nameline of template
 my $pdbfile;     # name of pdbfile to read
 my $pdbcode;     # four-letter pdb code in lower case and _A if chain A (e.g. 1h7w_A)
+my $struccode;   # The general structure code, might be PDB or the old SCOP ID (author: lkszmn)
 my $aaq;         # query amino acids from hhsearch output
 my @aaq;         # query amino acids from hhsearch output
 my @qname;       # query names in present alignment as returned from ReadAlignment()
@@ -842,19 +844,24 @@ sub FormatSequences()
 	    # Write hitname in PIR format into @hitnames
 	    my $descr;
 	    my $organism;
-	    my $struc=$pdbcode;
+
+        # Will use the general structure code ($stuccode) instead of the pdbcode, as it was used before (lkszmn)
+	    my $struc = $struccode;
+        # $struc.="_$chain"; # Comment in if reverting back to PDB ID, because chainID will otherwise not be present
+
 	    if ($tnameline=~/^(\S+)\s+(.*)/) {$descr=$2; $descr=~tr/://d;} else {$descr=" ";}
 	    if ($tnameline=~/^(\S+)\s+.*\s+\{(.*)\}/) {$organism=$2;} else {$organism=" ";}
 	    if (length($chain)>1 || $chain eq ".") { # MODELLER's special symbol for 'chain unspecified'
 		$chain="."; 
 	    } elsif ($addchain && $chain ne " ") {
-		$struc.="_$chain";
+		
 	    } 
 #	    push (@{$p_hitnames}, sprintf(">P1;%s\nstructureX:%4s:%4i:%1s:%4i:%1s:%s:%s:%-.2f:%-.2f\n",$struc,$struc,$nres[$lmin-1],$chain,$nres[$lmax-1],$chain,$descr,$organism,$resolution,$rvalue) );
 	    
 	    my $descrtmp=$descr;
 	    $descrtmp=~tr/:/;/;
 	    $organism=~tr/://d;
+        
 	    push (@{$p_hitnames}, sprintf(">P1;%s\nstructureX:%4s: :%1s: :%1s:%s:%s:%-.2f:%-.2f\n",$struc,$struc,$chain,$chain,$descrtmp,$organism,$resolution,$rvalue) );
 	    push (@{$p_hitdiag}, $tfirst-$qfirst);
 	} else {
@@ -1143,6 +1150,8 @@ sub ExtractPdbcodeAndChain()
     my $name=$_[0];
     $name=~/^(\S+)/;
     $name=$1;
+    
+    $struccode = $name;
 
     # SCOP ID? (d3lkfa_,d3grs_3,d3pmga1,g1m26.1)
     if ($name=~/^[defgh](\d[a-z0-9]{3})([a-z0-9_.])[a-z0-9_]$/) {
