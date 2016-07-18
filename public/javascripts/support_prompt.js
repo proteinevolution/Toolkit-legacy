@@ -186,7 +186,8 @@
 				settings.message += 'use are essential for parts of the site to operate and have already been set.';
 			} else {
 				// Implied consent message
-				settings.message = '<b>Due to a network problem, our cluster system is out of order presently and jobs are not being scheduled for execution. All incomplete jobs will have to be resubmitted. We are sorry for the inconvenience.</b>';
+				settings.message = '<b>The network problem has been resolved now and the Toolkit is working normally again. We are sorry for any inconvenience this may have caused.</b>';
+				 //settings.message = '<b> Due to a network problem, our cluster system is out of order presently and jobs are not being scheduled for execution. All incomplete jobs will have to be resubmitted. We are sorry for the inconvenience.</b>';
 			}		
 		}	
 		html += settings.message;
