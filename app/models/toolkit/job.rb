@@ -260,7 +260,7 @@ require "protected_sql.rb"
     end
 
     def url_for_job_dir_abs
-      DOC_ROOTURL + TMP_REL + "/#{self.id}"
+      'https://' + DOC_ROOTHOST + TMP_REL + "/#{self.id}"
     end
 
     def job_dir
