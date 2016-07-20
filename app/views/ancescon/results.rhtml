@@ -19,6 +19,8 @@
 <p><br><br></p>
 
 
+
+
 </div>
 <div id="yourDiv" style="margin-left:0px;"></div>
 
@@ -71,12 +73,15 @@ updateTree = exe.updateTree;
 
 // synchronous jquery get request
 
-
+/*
 jQuery.ajaxSetup({async: false});
 var newickData;
 jQuery.get( "<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.aln.tre", function(data){ newickData = data; });    
 console.log(newickData);
 jQuery.ajaxSetup({async: true});
+*/
+
+var newickData = "<%= @job.newick %>";
 
 /* Try to change the opts in your console */
 

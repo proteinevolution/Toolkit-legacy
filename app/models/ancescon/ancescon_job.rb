@@ -14,11 +14,11 @@ class AncesconJob < Job
   end
     
   
-  attr_reader :lines
+  attr_reader :lines, :newick
   
   def before_results(controller_params)
     @lines = []
-
+    @newick = IO.readlines(File.join(job_dir, jobid + ".aln.tre"))
     res = IO.readlines(File.join(job_dir, jobid + ".out"))
     
     i = 0
@@ -28,8 +28,10 @@ class AncesconJob < Job
     end
     
     @lines = res.slice(i..-1)
-  
+
   end
+
+  
   
   def export_results
     @basename = File.join(job_dir, jobid)
