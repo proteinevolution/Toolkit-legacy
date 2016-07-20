@@ -3,14 +3,14 @@
 <%= form_tag({:action => :run, :job => 'blastclust'}, {:multipart => true})%> 
 <h3 class="<%= @section["name"] %>">Input</h3>
 <div class="row">
-	<%= form_label("Paste multiple sequence alignment", "input") %>
+	<%= form_label("Enter sequences (up to 10000)", "input") %>
 	<%= form_text_area("sequence_input") %>
 </div>
 
 <div class="row">
   <div class="formw">
     <span style="color: #008C50;">
-      Create alignment of <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">viral DNA ligases.</a>
+      Paste <a href="#" style="color: #008C50;" onClick="javascript:pasteExample();">viral DNA ligases</a>
     </span>
   </div>
 </div>
@@ -47,7 +47,7 @@
 	
 <div class="row">
    <%= form_label("Percent identity threshold","pitsdt")%>
-   <%= form_text_field("pvalue", '', '%', 5, !disable) %>
+   <%= form_text_field("pvalue", '70', '%', 5, !disable) %>
 </div>
 <div class="row">
    <%= form_label("Score density threshold","pitsdt")%>
