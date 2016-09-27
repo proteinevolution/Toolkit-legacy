@@ -23,8 +23,8 @@
   title: ProtBLAST+
   title_long: Protein BLAST+
   section: search
-  updated: June, 2016
-  version: Blast 2.4.0+
+  updated: September, 2016
+  version: Blast 2.5.0+
   active: 
   - member
   - internal
@@ -73,8 +73,8 @@
   title: PSI-BLAST+
   title_long: PSI-BLAST+
   section: search
-  updated: June, 2016
-  version: Blast 2.4.0+
+  updated: September, 2016
+  version: Blast 2.5.0+
   active: 
   - member
   - internal
