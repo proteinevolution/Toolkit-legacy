@@ -95,8 +95,8 @@ class HhrepidAction < Action
                    @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &>> #{job.statuslog_path}"
                 else
                     if @maxhhblitsit == '0'
-                        @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
-                        @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+                        @commands << "echo 'No MSA Generation Step... ...' >> #{job.statuslog_path}"
+                        #@commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
                     else
                         cpus = 8
                         @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
