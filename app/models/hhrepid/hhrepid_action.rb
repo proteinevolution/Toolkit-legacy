@@ -22,8 +22,8 @@ class HhrepidAction < Action
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :mode,:prefilter
   
   validates_input(:sequence_input, :sequence_file, {
-                    :informat_field => :informat, 
-                    :informat => 'fas', 
+                    #:informat_field => :informat, 
+                    :informat => 'hhrepid', 
                     :inputmode => 'alignment',
                     :max_seqs => 10000,
                     :on => :create 

@@ -8,14 +8,14 @@
 <h3 class="<%= @section["name"] %>">Input</h3>
 <% if @parent_job.nil? || @parent_job.params['mode'].nil?  -%>
 <div class="row">
-  <%= form_label("Paste protein sequence or MSA", "input") %>
+  <%= form_label("Paste protein sequence or MSA in FASTA format", "input") %>
   <%= form_text_area("sequence_input") %>
 </div>
 <div class="row">
   <%= form_label("or upload a local file") %>
   <%= form_file("sequence_file") %>
 </div>
-<div class="row">
+<div class="row" style="display: none;">
   <%= form_label("Select input format", "input_format") %>
   <%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
 </div>
