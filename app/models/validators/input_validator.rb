@@ -71,6 +71,19 @@ module Toolkit
               else
                 validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :max_length => configuration[:max_length],:header_length => configuration[:header_length], :ss_allow => configuration[:ss_allow]})						
               end
+            
+           when "hhrepid"
+              logger.debug "##### HHREPID FASTA!"
+              if configuration[:max_seqs].nil?
+                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :white_list => "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopq\
+rstuvwyz/,+&\\-", :message => "HHrepID does not allow unidentified amino acids", :max_length => configuration[:max_length], :header_length => configuration[:header_length], :ss_allow => configuration[:ss_allow]})
+              else
+                validates_fasta(attr_names, {:min_seqs => configuration[:min_seqs], :on => :create, :inputmode => configuration[:inputmode], :max_seqs => configuration[:max_seqs], :white_list => "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopq\
+rstuvwyz/,+&\\-", :message => "HHrepID does not allow unidentified amino acids", :max_length => configuration[:max_length] ,:header_length => configuration[:header_length], :ss_allow => configuration[:ss_allow]})                     
+
+              end
+
+              
             when "nucfas"
               logger.debug "##### Nucleotide FASTA!"
               if configuration[:max_seqs].nil?
