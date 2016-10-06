@@ -1,4 +1,4 @@
---- 
+B0;95;0c--- 
 - name: hhpred
   title: HHpred
   title_long: HHpred - Homology detection & structure prediction by HMM-HMM comparison
@@ -33,7 +33,7 @@
   title: Modeller
   title_long: Modeller
   section: tertstruct
-  updated: July, 2017
+  updated: July, 2016
   version: 9.17
   active: 
   - member
