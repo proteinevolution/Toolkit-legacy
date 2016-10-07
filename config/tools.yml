@@ -18,7 +18,6 @@
   active: 
   - member
   - internal
-  - external
 - name: prot_blastp
   title: ProtBLAST+
   title_long: Protein BLAST+
@@ -68,7 +67,6 @@
   active: 
   - member
   - internal
-  - external
 - name: psi_blastp
   title: PSI-BLAST+
   title_long: PSI-BLAST+
