@@ -30,7 +30,7 @@
 <% @tools.each do |tool| %>
 
 
- <% if tool['name'] != "dataa2" and tool['name'] != "phylip" and tool['name'] != "seq2gi" and tool['name'] != "hamppred" and tool['name'] != "rnasehpred" and tool['name'] != "peaks" and tool['name'] != "ancient_dict" %>
+ <% if tool['name'] != "prot_blast" and tool['name'] != "psi_blast" and tool['name'] != "dataa2" and tool['name'] != "phylip" and tool['name'] != "seq2gi" and tool['name'] != "hamppred" and tool['name'] != "rnasehpred" and tool['name'] != "peaks" and tool['name'] != "ancient_dict" %>
 <a href="/<%= tool['name'] -%>">
 <div class="element-item <%= tool['section']%>-iso " data-category="<%= tool['section']%>-iso">
  
