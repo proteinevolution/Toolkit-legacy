@@ -56,7 +56,7 @@ if ($multipleGIsPerLine) {
 } else {
     while($inline=<FILEIN>) {
 	# the original condition required format gi|#|
-	if($inline=~/.*gi\|(\d+)/){
+	if($inline=~/^\>gi\|(\d+)/){
 	    $tmparr{$1}=1;
 	} elsif ($inline=~/^\>nr20\|.*\|(\d+)/i) {
 	    $tmparr{$1}=1;
