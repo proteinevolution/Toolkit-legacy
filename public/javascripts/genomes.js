@@ -1,7 +1,7 @@
 function genomessearch(t){
 	data = "genomes_expr="+($('genomes_expr').value)+"&data_type="+t;
 	new Ajax.Updater(	'genomes_ids_target',
-				'/prot_blast/send_ids', 	
+				'/prot_blastp/send_ids', 	
 				{asynchronous:true, evalScripts:true, 
 				parameters:data,
 				onLoading:function(request){ Element.toggle('gsearch_lnk','gsearching'); }, 
@@ -83,7 +83,7 @@ function loadtogglegenomes(t, level){
 	for( i=0; i<dblist.length; i++ ) dblist.options[i].selected = false;
 	data = "data_type="+t;
 	var x = new Ajax.Updater(	'gtree_target', 
-				'/prot_blast/send_gtree', 
+				'/prot_blastp/send_gtree', 
 				{asynchronous:true, evalScripts:true, 	
 				parameters:data,
 				onLoading:function(request){ Element.toggle('gshow_lnk','gloading_lnk'); }, 
