@@ -404,9 +404,9 @@ class SgeWorker < AbstractWorker
                 when "HamppredShowtemplalignAction" then 18
                 when "HhpredForwardAction" then 19
                 when "HhpredAction" then 48
-                when "HhblitsAction" then 48
-                when "HhblitsForwardAction" then 18
-                when "HhblitsShowtemplalignAction" then 30
+                when "HhblitsAction" then 72
+                when "HhblitsForwardAction" then 32
+                when "HhblitsShowtemplalignAction" then 48
                 when "HhpredShowtemplalignAction" then 18
                 when "Hh3dTemplAction" then 18
                 when "HhmakemodelAction" then 18
@@ -418,10 +418,10 @@ class SgeWorker < AbstractWorker
                 when "HhrepAction" then 36
                 when "HhrepMergealiAction" then 18
                 when "HhclusterAction" then 50 # uses blastpgp
-                when "HhblitsForwardAction" then 18
+                when "HhblitsForwardAction" then 32
                 when "HhompAction" then 50 # uses blastpgp
                 when "HhfilterAction" then 18
-                when "HhblitsForwardHmmAction" then 18
+                when "HhblitsForwardHmmAction" then 32
                 when "Hmmer3Action" then 18
                 when "HhrepForwardHmmAction" then 18
                 when "Hh3dQuerytemplAction" then 18
