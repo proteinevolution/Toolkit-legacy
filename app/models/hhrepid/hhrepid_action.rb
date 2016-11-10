@@ -85,14 +85,16 @@ class HhrepidAction < Action
   # Put action code in here
   def perform
 
+    @commands << "source #{SETENV}"
+
     cpus = 1
     # Setting new Prefilter 
     if @mode != 'querymsa'
-              @commands << "#{HH}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
+              @commands << "reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
                 if(@prefilter=='psiblast')
                    cpus = 2
                    @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
-                   @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &>> #{job.statuslog_path}"
+                   @commands << "buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &>> #{job.statuslog_path}"
                 else
                     if @maxhhblitsit == '0'
                         @commands << "echo 'No MSA Generation Step... ...' >> #{job.statuslog_path}"
@@ -100,7 +102,7 @@ class HhrepidAction < Action
                     else
                         cpus = 8
                         @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
-                        @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+                        @commands << "hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
                     end
                 end
     else
@@ -108,13 +110,14 @@ class HhrepidAction < Action
     end
     
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
-    @commands << "#{HH}/hhfilter -i #{@basename}.a3m -o #{job.job_dir}/#{id}.reduced.a3m -diff 100"
-    @commands << "#{HHPERL}/reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description     
+    @commands << "hhfilter -i #{@basename}.a3m -o #{job.job_dir}/#{id}.reduced.a3m -diff 100"
+    @commands << "reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description     
     # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
-    @commands << "#{HH}/hhfilter -i #{@basename}.a3m -o #{job.job_dir}/#{id}.reduced.a3m -diff 50"
-    @commands << "#{HHPERL}/reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.reduced.fas -r"
+    @commands << "hhfilter -i #{@basename}.a3m -o #{job.job_dir}/#{id}.reduced.a3m -diff 50"
+    @commands << "reformat.pl a3m fas #{job.job_dir}/#{id}.reduced.a3m #{@basename}.reduced.fas -r"
     @commands << "rm #{job.job_dir}/#{id}.reduced.a3m"
 
+    @commands << "source #{UNSETENV}"
 
     # save input params for later use in run_hhrepid
     @hash = {}
