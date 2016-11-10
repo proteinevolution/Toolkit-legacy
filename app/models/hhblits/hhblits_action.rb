@@ -1,17 +1,17 @@
 class HhblitsAction < Action
-  
-  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
-  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
+
+  #HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
+  #HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   
   if LOCATION == "Munich" && LINUX == 'SL6'
     PERL = "perl "+File.join(BIOPROGS, 'perl')
-    HH   = "perl "+File.join(BIOPROGS, 'hhpred')
+   # HH   = "perl "+File.join(BIOPROGS, 'hhpred')
   else
      PERL = File.join(BIOPROGS, 'perl')
-     HH = File.join(BIOPROGS, 'hhpred')
+   #  HH = File.join(BIOPROGS, 'hhpred')
   end
-  PSIPRED = File.join(BIOPROGS, 'psipred')  
+  #PSIPRED = File.join(BIOPROGS, 'psipred')  
 
   
   attr_accessor :jobid, :hhblits_dbs, :informat, :inputmode, :maxit, :alignmode, :realign, :mact, :maxseq, :width, :Pmin, :maxlines,
@@ -41,7 +41,7 @@ class HhblitsAction < Action
     @basename = File.join(job.job_dir, job.jobid)
     @infile = @basename+".in"    
     @outfile = @basename+".hhr"
-    @qhhmfile = @basename+".hhm"
+    #@qhhmfile = @basename+".hhm"  # The -qhhm parameter does no longer exist in the current hhblits version
     @a3m_outfile = @basename+"_out.a3m"
     params_to_file(@infile, 'sequence_input', 'sequence_file')
     @informat = params['informat'] ? params['informat'] : 'fas'
@@ -95,12 +95,12 @@ class HhblitsAction < Action
   # Prepare FASTA files for 'Show Query Alignemt', HHviz bar graph, and HMM histograms 
   def prepare_fasta_hhviz_histograms_etc
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
-    @commands << "#{HHSUITE}/hhfilter -i #{@a3m_outfile} -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 100"
-    @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description 
+    @commands << "hhfilter -i #{@a3m_outfile} -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 100"
+    @commands << "reformat.pl a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.fas -d 160"  # max. 160 chars in description 
     
     # Reformat query into fasta format (reduced alignment)  
-    @commands << "#{HHSUITE}/hhfilter -i #{@a3m_outfile} -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 50"
-    @commands << "#{HHSUITELIB}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas"
+    @commands << "hhfilter -i #{@a3m_outfile} -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 50"
+    @commands << "reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas"
     
     # Reformat query into the consensus Alignemnt in Fasta Format Parameter -r 
     #@commands << "#{HH}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.ms.fas  -r"
@@ -108,17 +108,16 @@ class HhblitsAction < Action
     @commands << "rm #{@local_dir}/#{job.jobid}.reduced.a3m"
     
     # Generate graphical display of hits
-    @commands << "#{HH}/hhviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
+    @commands << "hhviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
     
     # Generate profile histograms
-    @commands << "#{HH}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db}_hhm_db > /dev/null"
+    @commands << "profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} #{@db}_hhm_db > /dev/null"
     
     # Reformat the query Data (needed for Multiple Alignemnts)
-    @commands << "#{HHSUITELIB}/reformat.pl -r a3m fas #{@basename}.in #{@basename}.ms.fas "
+    @commands << "reformat.pl -r a3m fas #{@basename}.in #{@basename}.ms.fas "
     
     # Generate jalview MS Alignment
     @commands << "#{PERL}/masterslave_alignment.pl -q #{@basename}.ms.fas  -hhr #{@basename}.hhr -o #{@basename}.ms.out  &> /dev/null"
-   
   end  
   
   def perform
@@ -128,21 +127,23 @@ class HhblitsAction < Action
     else
       msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
     end
-    @commands << "export  PATH=$PATH:#{HHSUITE} "
-    @commands << "export  HHLIB=#{HHLIB} "
-    
-    @commands << "#{HHSUITE}/hhblits -cpu 8 -v #{@v} -i #{@infile} -d #{@db} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@outfile} -oa3m #{@a3m_outfile} -qhhm #{@qhhmfile}#{msa_factor} -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
+    #@commands << "export  PATH=$PATH:#{HHSUITE} "
+     @commands << "source #{SETENV} "
+    #@commands << "export  HHLIB=#{HHLIB} "
+   
+    # -qhhm parameter was removed here 
+    @commands << "hhblits -cpu 8 -v #{@v} -i #{@infile} -d #{@db}  -o #{@outfile} -oa3m #{@a3m_outfile}  -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
 
-    @commands << "#{HHSUITELIB}/addss.pl #{@a3m_outfile}"
+    @commands << "addss.pl #{@a3m_outfile}"
 
     prepare_fasta_hhviz_histograms_etc    
     
     # Generate a full blown Fasta File for complete Jalview !
-    @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{@basename}_out.a3m #{@basename}.full.fas "
+    @commands << "reformat.pl a3m fas #{@basename}_out.a3m #{@basename}.full.fas "
     
-    @commands << "#{HHSUITELIB}/reformat.pl fas fas #{@basename}.reduced.fas #{@basename}.uc.fas -uc -r"
+    @commands << "reformat.pl fas fas #{@basename}.reduced.fas #{@basename}.uc.fas -uc -r"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.uc.fas -o #{@basename}.j.fas"
-    
+    @commands << "source #{UNSETENV}" 
     
 
     logger.debug "Commands:\n"+@commands.join("\n")
