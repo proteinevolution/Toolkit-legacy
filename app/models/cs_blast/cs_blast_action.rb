@@ -13,15 +13,11 @@ class CsBlastAction < Action
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   CSBLAST = File.join(BIOPROGS, 'csblast')
   CSDB = File.join(DATABASES, 'csblast')
-  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
-  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   
   if LOCATION == "Munich" && LINUX == 'SL6'
     UTILS = "perl " +File.join(BIOPROGS, 'perl')
-    HH = "perl " +File.join(BIOPROGS, 'hhpred')
   else
      UTILS = File.join(BIOPROGS, 'perl')
-     HH = File.join(BIOPROGS, 'hhpred')
   end
   
   include GenomesModule
@@ -238,14 +234,15 @@ class CsBlastAction < Action
   ### 
   def perform
     params_dump
-    
+
     ### KEEPING FORMER ROUNDS
     #@commands << "cp #{@outfile} #{@outfile}.former"  
     # Export variable needed for HHSuite
-    @commands << "export  HHLIB=#{HHLIB} "
-    @commands << "export  PATH=$PATH:#{HHSUITE}" 
+    #@commands << "export  HHLIB=#{HHLIB} "
+    #@commands << "export  PATH=$PATH:#{HHSUITE}" 
     
-    # cmd for blast run 
+    # cmd for blast run
+    @commands << "source #{SETENV}" 
     @commands << "echo 'Starting BLAST search' &> #{job.statuslog_path}"
     @commands << "#{CSBLAST}/bin/csblast -i #{@infile} -j #{@rounds} -h #{@e_thresh} -D #{CSBLAST}/data/K4000.crf #{@alignment} --blast-path #{BLAST}/bin -e #{@expect} -F #{@filter} -G #{@gapopen} -E #{@gapext} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} >>#{job.statuslog_path}"
      
@@ -264,18 +261,19 @@ class CsBlastAction < Action
     @commands << "echo 'Processing Alignments... ' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -fas -no_link -e #{@expect}"
     # run perl script to reformat alignment TODO: Find out what script does
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
+    @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     # TODO: Find out what script does
-    @commands << "if [ -s #{@basename}.ralign ]; then #{HHSUITE}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "if [ -s #{@basename}.ralign ]; then hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
     # TODO: Find out what script does
     @commands << "#{RUBY_UTILS}/parse_csiblast.rb -i #{@basename}.csblast -o #{@basename}.csblast"
     # Generate Jalview Output from alignment data
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align" 
     # TODO: Find out what script does
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
+    @commands << "reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
 
 
+    @commands << "source #{UNSETENV}" 
 
     logger.debug "Commands:\n"+@commands.join("\n")
     # Submit generated cmd list to queue

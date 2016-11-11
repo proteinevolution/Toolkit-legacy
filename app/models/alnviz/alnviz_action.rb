@@ -1,5 +1,4 @@
 class AlnvizAction < Action
-  #HH = File.join(BIOPROGS, 'hhpred')
   
   attr_accessor :sequence_input, :sequence_file, :informat, :mail, :jobid
 
@@ -18,10 +17,8 @@ class AlnvizAction < Action
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)    
     @outfile = @basename+".out"
-    
   
     params_to_file(@outfile, 'sequence_input', 'sequence_file')
-
   
     #Author: Seung-Zin Nam
     #this code is a hack to provide fake gi numbers for biojs msa to handle custom ids
@@ -38,15 +35,10 @@ class AlnvizAction < Action
     #end
       #out.close
 
-   
-
     @informat = params['informat'] ? params['informat'] : 'fas'
     reformat(@informat, "clu", @outfile)
 
-   
-
     @commands = []
- 
   end
 
   def perform
