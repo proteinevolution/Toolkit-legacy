@@ -112,7 +112,6 @@ class HhrepAction < Action
         @commands <<"echo 'Using previously generated a3m MSA as Input Model' >> #{job.statuslog_path}  "
     end
    
-    @commands << "source #{UNSETENV}"
 
     @hash = {}
     @hash['maxlines'] = @maxlines
@@ -125,6 +124,9 @@ class HhrepAction < Action
     logger.debug "L121 Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'makemodel'
+
+
+    @commands << "source #{UNSETENV}"
     q.save!
     q.submit(@commands, false, { 'cpus' => cpus.to_s() })
     
