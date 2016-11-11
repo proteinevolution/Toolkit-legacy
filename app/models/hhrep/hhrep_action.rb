@@ -111,7 +111,6 @@ class HhrepAction < Action
     else
         @commands <<"echo 'Using previously generated a3m MSA as Input Model' >> #{job.statuslog_path}  "
     end
-   
 
     @hash = {}
     @hash['maxlines'] = @maxlines
@@ -125,8 +124,8 @@ class HhrepAction < Action
     q = queue
     q.on_done = 'makemodel'
 
-
     @commands << "source #{UNSETENV}"
+
     q.save!
     q.submit(@commands, false, { 'cpus' => cpus.to_s() })
     
@@ -141,6 +140,7 @@ class HhrepAction < Action
     
     ['30', '40', '50', '0'].each do |qid|
       @commands = []
+      @commands << "source #{SETENV}"
       # Filter alignment
       @commands << "hhfilter -diff 500 -qid #{qid} -i #{@basename}.a3m -o #{@basename}.#{qid}.a3m 1>>#{job.statuslog_path} 2>&1"
       # Make HMM from alignment
@@ -159,6 +159,7 @@ class HhrepAction < Action
         q.on_done = 'create_links'
         q.save!
       end
+      @commands << "source #{UNSETENV}"
       q.submit(@commands, false, { 'cpus' => '2' })
       
     end
@@ -172,6 +173,7 @@ class HhrepAction < Action
     @maxlines = flash["maxlines"]
     @aliwidth = flash["width"]
     @commands = []
+    @commands << "source #{SETENV}"
     
     # Links to file
     @commands << "rm -f #{@basename}.a3m; ln -s #{@basename}.0.a3m #{@basename}.a3m"
@@ -184,8 +186,9 @@ class HhrepAction < Action
     @commands << "hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt #{@maxlines} -dsca 600 -v 1 -i #{@basename}.0.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -png #{@basename}.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
     # create png-file with factor 3
     @commands << "hhalign -aliw #{@aliwidth} -local -alt 1 -dsca 3 -i #{@basename}.0.hhm -png #{@basename}_factor3.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
-    
+
     logger.debug "L182 Commands:\n"+@commands.join("\n")
+    @commands << "source #{UNSETENV}"
     queue.submit(@commands)
     
   end
@@ -193,7 +196,6 @@ class HhrepAction < Action
   # Prepare FASTA files for 'Show Query Alignemt', HHviz bar graph, and HMM histograms 
   def prepare_fasta_hhviz_histograms_etc(basename, id)
     @local_dir = '/tmp'
-    
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
     @commands << "hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 100"
     @commands << "reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.fas -d 160"  # max. 160 chars in description 
