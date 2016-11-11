@@ -1,5 +1,5 @@
 class AlnvizAction < Action
-  HH = File.join(BIOPROGS, 'hhpred')
+  #HH = File.join(BIOPROGS, 'hhpred')
   
   attr_accessor :sequence_input, :sequence_file, :informat, :mail, :jobid
 
@@ -52,10 +52,12 @@ class AlnvizAction < Action
   def perform
     params_dump
 
-    @commands << "#{HH}/reformat.pl clu fas #{@basename}.out #{@basename}.align"
-    @commands << "#{HH}/reformat.pl clu a3m #{@basename}.out #{@basename}.a3m"
-    @commands << "#{HH}/reformat.pl clu fas #{@basename}.out #{@basename}.ralign -M first -r"
-    @commands << "#{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50"
+    @commands << "source #{SETENV}"
+    @commands << "reformat.pl clu fas #{@basename}.out #{@basename}.align"
+    @commands << "reformat.pl clu a3m #{@basename}.out #{@basename}.a3m"
+    @commands << "reformat.pl clu fas #{@basename}.out #{@basename}.ralign -M first -r"
+    @commands << "hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50"
+    @commands << "source #{UNSETENV}"
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
