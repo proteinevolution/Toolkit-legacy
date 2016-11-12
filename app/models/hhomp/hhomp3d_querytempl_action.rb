@@ -1,5 +1,4 @@
 class Hhomp3dQuerytemplAction < Action
-	HH = File.join(BIOPROGS, 'hhpred')
 	TMALIGN = File.join(BIOPROGS, 'TMalign')
 	FAST = File.join(BIOPROGS, 'fast')
 	
@@ -71,10 +70,12 @@ class Hhomp3dQuerytemplAction < Action
 		end
 		
 		# Superpose the template with the query structure and write the result into basename.templ.pdb
-		command = "#{HH}/superpose3d -v 2 -col -rms #{@rms} #{@basename}.index #{@templpdb} #{@querypdb} #{@basename}.templ.pdb > #{@basename}.sup3d_out 2>&1"
-		logger.debug "Command: #{command} "
-		system(command)
-		
+		command = "source #{SETENV} \n"
+        command += "superpose3d -v 2 -col -rms #{@rms} #{@basename}.index #{@templpdb} #{@querypdb} #{@basename}.templ.pdb > #{@basename}.sup3d_out 2>&1"
+		command += "\n source #{UNSETENV}"
+        logger.debug "Command: #{command} "
+		system(command)	
+    
 		self.status = STATUS_DONE
 		self.save!
 		job.update_status		
