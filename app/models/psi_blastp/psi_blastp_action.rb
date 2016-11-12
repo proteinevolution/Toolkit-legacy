@@ -3,9 +3,7 @@ require 'ftools'
 class PsiBlastpAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   BLASTP = File.join(BIOPROGS, 'blastplus/bin')
-  HH = File.join(BIOPROGS, 'hhpred')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
-  REFORMAT = File.join(BIOPROGS,'reformat')
   
   if LOCATION == "Munich" && LINUX == 'SL6'
     UTILS = "perl "+File.join(BIOPROGS, 'perl')
@@ -185,6 +183,7 @@ class PsiBlastpAction < Action
 
   def perform
     params_dump
+    @commands << "source #{SETENV}"
     # use nr70f for all but last round?
     # replaced nr70f by nr70 in Tuebingen
     if (@rounds.to_i > 1 && @fastmode == 'T')
@@ -226,20 +225,21 @@ class PsiBlastpAction < Action
     #create alignment
     if File.exist?("#{@basename}.aln") then
 	   @commands << "echo 'Processing Alignments... ' >> #{job.statuslog_path}"
-     @commands << "#{REFORMAT}/reformat.pl -i=phy -o=fas -f=#{@basename}.aln -a=#{@basename}.fas"
+     @commands << "reformat.pl phy fas #{@basename}.aln #{@basename}.fas"
 	   @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@basename}.fas -e #{@expect} -fas -no_link -blastplus"
     else
 	   @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@basename}.fasta -e #{@expect} -fas -no_link -blastplus"   
     end
 
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
-    @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
+    @commands << "if [ -s #{@basename}.ralign ]; then hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     # the result of parse_jalview here seems to be overwritten immediatedly
     # and, additionally, relating to the wrong input file.
     # @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
+    @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
 
+    @commands << "source #{UNSETENV}"
     
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'cpus' => '4'})
