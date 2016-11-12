@@ -110,7 +110,7 @@ class HhrepMergealiAction < Action
 			# Calibrate hhm file
 			#@commands << "#{HH}/hhsearch -cpu 2 -v 1 -i #{@basename}.#{qid}.hhm -d #{CAL_HHM} #{@ss_scoring} -cal 1>>#{job.statuslog_path} 2>&1"
 			# hhalign HMM with itself
-			@commands << "hhalign -aliw #{@aliwidth} -local -p 10 -alt #{@maxlines} -v 1 -i #{@basename}.#{qid}.hhm -o #{@basename}.#{qid}.hhr #{@ss_scoring} 1>>#{job.statuslog_path} 2>&1"
+			@commands << "hhalign -aliw #{@aliwidth} -local -p 10 -alt #{@maxlines} -v 1 -i #{@basename}.#{qid}.hhm -t #{@basename}.#{qid}.hhm -o #{@basename}.#{qid}.hhr #{@ss_scoring} 1>>#{job.statuslog_path} 2>&1"
 			# Prepare FASTA files for 'Show Query Alignemt', and HMM histograms
 			prepare_fasta_hhviz_histograms_etc("#{@basename}.#{qid}", "#{job.jobid}.#{qid}")
 			@commands << "source #{UNSETENV}"
@@ -142,9 +142,9 @@ class HhrepMergealiAction < Action
 		@commands << "rm -f #{@basename}.fas; ln -s #{@basename}.0.fas #{@basename}.fas"
 		@commands << "rm -f #{@basename}.reduced.fas; ln -s #{@basename}.0.reduced.fas #{@basename}.reduced.fas"
 		# hhalign HMM with itself
-		@commands << "hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt #{@maxlines} -dsca 600 -v 1 -i #{@basename}.0.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -png #{@basename}.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
+		@commands << "hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt #{@maxlines} -dsca 600 -v 1 -i #{@basename}.0.hhm -t #{@basename}.0.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -dali all 1>>#{job.statuslog_path} 2>&1"
 		# create png-file with factor 3
-		@commands << "hhalign -aliw #{@aliwidth} -local -alt 1 -dsca 3 -i #{@basename}.0.hhm -png #{@basename}_factor3.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
+		@commands << "hhalign -aliw #{@aliwidth} -local -alt 1 -dsca 3 -i #{@basename}.0.hhm -t #{@basename}.0.hhm  -dali all 1>>#{job.statuslog_path} 2>&1"
 		@commands << "source #{UNSETENV}"
 		logger.debug "Commands:\n"+@commands.join("\n")
 		queue.submit(@commands)

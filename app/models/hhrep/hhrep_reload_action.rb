@@ -53,9 +53,9 @@ class HhrepReloadAction < Action
     system("rm -f #{@basename}.reduced.fas; ln -s #{@basename}.#{@qid}.reduced.fas #{@basename}.reduced.fas")
     
     # hhalign HMM with itself
-    system("source #{SETENV} \n hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 600 -v 1 -i #{@basename}.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -png #{@basename}.png -dwin #{@dwin} -dthr #{@dthr} -dali #{@hits} \n 1>>#{job.statuslog_path} 2>&1")
+    system("source #{SETENV} \n hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 600 -v 1 -i #{@basename}.hhm -t #{@basename}.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap  -dali #{@hits} \n 1>>#{job.statuslog_path} 2>&1")
     # create png-file with factor 3
-    system("hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 3 -i #{@basename}.hhm -png #{@basename}_factor3.png -dwin #{@dwin} -dthr #{@dthr} -dali #{@hits} \n source #{UNSETENV} 1>>#{job.statuslog_path} 2>&1")
+    system("hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt 20 -dsca 3 -i #{@basename}.hhm -t #{@basename}.hhm  -dali #{@hits} \n source #{UNSETENV} 1>>#{job.statuslog_path} 2>&1")
     
     self.status = STATUS_DONE
     self.save!
