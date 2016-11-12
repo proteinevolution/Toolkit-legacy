@@ -40,7 +40,7 @@ class HhblitsController < ToolController
     @dbvalues = Array.new
     @dblabels = Array.new
 
-    sortlist = Array["uniprot", "nr"]
+    sortlist = Array["uniprot", "uniclust"]
     # First sort according to sortlist. Under the same sortlist element,
     # keep sorting of dbvalues_pre. The databases have to be named
     # accordingly, i.e. uniprot20_2013_03, when newer databases are to be
