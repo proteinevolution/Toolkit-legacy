@@ -2,7 +2,6 @@ class MarcoilAction < Action
   PCOILS = File.join(BIOPROGS, 'pcoils')
   MARCOIL = File.join(BIOPROGS, 'marcoil_mod')
   UTILS = File.join(BIOPROGS, 'perl')
-  HH = File.join(BIOPROGS, 'hhpred')
   COILSDIR = "COILSDIR=#{PCOILS}"
   attr_accessor :sequence_input, :sequence_file, :informat, :mail, :jobid
 
