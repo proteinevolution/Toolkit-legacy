@@ -4,15 +4,12 @@ class ProtBlastpAction < Action
 
   BLAST = File.join(BIOPROGS, 'blast')
   BLASTP = File.join(BIOPROGS, 'blastplus/bin')
-  HH = File.join(BIOPROGS, 'hhpred')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   
   if LOCATION == "Munich" && LINUX == 'SL6'
     UTILS = "perl " +File.join(BIOPROGS, 'perl')
-    HHPERL = "perl " +File.join(BIOPROGS, 'hhpred')
   else
      UTILS = File.join(BIOPROGS, 'perl')
-     HHPERL = File.join(BIOPROGS, 'hhpred')
   end
 
   # number of threads to use with psiblast/blastx
@@ -155,7 +152,8 @@ def check_GI
      #if (params['informat'] == 'gi')
         #check_GI
     #end
-    # TEST if this reformats our wrecked input 
+    # TEST if this reformats our wrecked input
+    @commands << "source #{SETENV}" 
     @commands << "#{UTILS}/reformat_protblast.pl -f=#{@infile} -a=#{@infile} -i=fas -o=fas &> #{@infile}.reform_log " 
     @commands << "echo 'Starting BLAST+ search!' &> #{job.statuslog_path}"
     #@commands << "#{BLAST}/#{@program} -i #{@infile} -e #{@expect} -F #{@filter} -M #{@mat_param} -G #{@gapopen} -E #{@gapext} #{@ungapped_alignment} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a #{@nthreads} #{@other_advanced} >>#{job.statuslog_path}"
@@ -171,12 +169,12 @@ def check_GI
     @commands << "echo 'Processing Alignments... ' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -fas -no_link -e #{@expect}"
     
-    @commands << "#{HHPERL}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
-    @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
+    @commands << "if [ -s #{@basename}.ralign ]; then hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
-    @commands << "#{HHPERL}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
-
+    @commands << "reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
+    @commands << "source #{UNSETENV}"
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, { 'cpus' => "#{@nthreads}" })
