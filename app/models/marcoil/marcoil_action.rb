@@ -85,7 +85,7 @@ class MarcoilAction < Action
 	
 	
 
-      @commands << "#{MARCOIL}/create_numerical_marcoil.rb #{@outdir}/ "
+      @commands << "ruby #{MARCOIL}/create_numerical_marcoil.rb #{@outdir}/ "
       # generate numerical output
       #@commands << "#{PCOILS}/create_numerical.rb -i #{@basename} -m #{@matrix.to_s} -s #{@infile.to_s} -w #{@weighting.to_i} "
 
