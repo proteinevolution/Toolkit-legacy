@@ -2,7 +2,6 @@ require 'ftools'
 
 class PsiBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
-  HH = File.join(BIOPROGS, 'hhpred')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   REFORMAT = File.join(BIOPROGS,'reformat')
   
@@ -184,6 +183,8 @@ class PsiBlastAction < Action
     params_dump
     # use nr70f for all but last round?
     # replaced nr70f by nr70 in Tuebingen
+    @commands << "source #{SETENV}"
+
     if (@rounds.to_i > 1 && @fastmode == 'T')
       # first run with nr70
       @commands << "echo 'Starting  BLAST search, Round 1 with nr70' &> #{job.statuslog_path}"
@@ -217,15 +218,16 @@ class PsiBlastAction < Action
 	   @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@basename}.fasta -e #{@expect} -fas -no_link"   
     end
 
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
-    @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
+    @commands << "if [ -s #{@basename}.ralign ]; then hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     # the result of parse_jalview here seems to be overwritten immediatedly
     # and, additionally, relating to the wrong input file.
     # @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
+    @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
 
-    
+   
+    @commands << "source #{UNSETENV}" 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'cpus' => '4'})
     

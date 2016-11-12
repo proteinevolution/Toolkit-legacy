@@ -2,7 +2,6 @@ require 'ftools'
 
 class NucBlastAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
-  HH = File.join(BIOPROGS, 'hhpred')
   UTILS = File.join(BIOPROGS, 'perl')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
 
@@ -59,6 +58,7 @@ class NucBlastAction < Action
 
   def perform
     params_dump
+    @commands << "source #{SETENV}"
     @commands << "echo 'Starting BLAST search' &> #{job.statuslog_path}"
     @commands << "#{BLAST}/blastall -p #{@program} -i #{@infile} -e #{@expect} -F #{@filter} -M #{@mat_param} -g #{@ungapped_alignment} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} >>#{job.statuslog_path}"
     @commands << "echo 'Finished BLAST search.' >> #{job.statuslog_path}"
@@ -72,13 +72,14 @@ class NucBlastAction < Action
     @commands << "echo 'Creating Alignments... ' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -fas -no_link -e #{@expect}"
     
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
-    @commands << "if [ -s #{@basename}.ralign ]; then #{HH}/hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"    
+    @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
+    @commands << "if [ -s #{@basename}.ralign ]; then hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"    
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
+    @commands << "reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
 
 
+    @commands << "source #{UNSETENV}"
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
 
