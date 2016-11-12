@@ -173,7 +173,7 @@ class HhrepAction < Action
     @commands << "rm -f #{@basename}.reduced.fas; ln -s #{@basename}.0.reduced.fas #{@basename}.reduced.fas"
 
     # hhalign HMM with itself
-    @commands << "hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt #{@maxlines} -dsca 600 -v 1 -i #{@basename}.0.hhm -t #{@basename}.0.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap  -dali all 1>>#{job.statuslog_path} 2>&1"
+    @commands << "hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt #{@maxlines} -dsca 600 -v 1 -i #{@basename}.0.hhm -t #{@basename}.0.hhm -o #{@basename}.hhr   -dali all 1>>#{job.statuslog_path} 2>&1"
     # create png-file with factor 3
     @commands << "hhalign -aliw #{@aliwidth} -local -alt 1 -dsca 3 -i #{@basename}.0.hhm -t #{@basename}.0.hhm -dali all 1>>#{job.statuslog_path} 2>&1"
 
