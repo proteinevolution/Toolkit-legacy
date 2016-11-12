@@ -1,16 +1,13 @@
 class PcoilsAction < Action
   PCOILS = File.join(BIOPROGS, 'pcoils')
-  HH = File.join(BIOPROGS, 'hhpred')
   COILSDIR = "COILSDIR=#{PCOILS}"
   
   if LOCATION == "Munich" && LINUX == 'SL6'
-      HHPERL     = "perl "+File.join(BIOPROGS, 'hhpred')
       PCOILSPERL = "perl "+File.join(BIOPROGS, 'pcoils')
       UTILS      = "perl "+File.join(BIOPROGS, 'perl')
   else
       UTILS = File.join(BIOPROGS, 'perl')
       PCOILSPERL = File.join(BIOPROGS, 'pcoils')
-      HHPERL = File.join(BIOPROGS, 'hhpred')
   end
   
   
@@ -63,12 +60,14 @@ class PcoilsAction < Action
 
   def perform
     params_dump
+    
+    @commands << "source #{SETENV}"
 
     # case run COILS (no Alignment)
     if (@inputmode == "0")
       @program_for_matrix = ['run_Coils_iterated', 'run_Coils_pdb', 'run_Coils', 'run_Coils_old']
 
-      @commands << "#{HHPERL}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
+      @commands << "reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
       @commands << "#{PCOILSPERL}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
 
       @commands << "export #{COILSDIR}"
@@ -86,7 +85,7 @@ class PcoilsAction < Action
       @program_for_matrix = ['run_PCoils_iterated', 'run_PCoils_pdb', 'run_PCoils', 'run_PCoils_old']
 
 
-      @commands << "#{HHPERL}/reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
+      @commands << "reformat.pl fas fas #{@infile} #{@infile} -uc -r -M first"
       @commands << "#{PCOILSPERL}/deal_with_sequence.pl #{@basename} #{@infile} #{@buffer}"
 
       # case run PSI-BLAST
@@ -94,16 +93,16 @@ class PcoilsAction < Action
 
         @commands << "#{PCOILSPERL}/runpsipred_coils.pl #{@buffer}"
         @commands << "#{UTILS}/alignhits.pl -psi -b 1.0 -e 1E-4 -q #{@infile} #{@psitmplog} #{@psi}"
-        @commands << "#{HHPERL}/reformat.pl -uc -num #{@psi} #{@a3m_unfiltered}"
-        @commands << "#{HH}/hhfilter -i #{@a3m_unfiltered} -qid 40 -cov 20 -o #{@a3m}"
-        @commands << "#{HHPERL}/reformat.pl -M first -r -uc -num a3m fas #{@a3m} #{@infile}"
-        @commands << "#{HHPERL}/reformat.pl -M first -r -uc -num a3m psi #{@a3m} #{@psi}"
+        @commands << "reformat.pl -uc -num #{@psi} #{@a3m_unfiltered}"
+        @commands << "hhfilter -i #{@a3m_unfiltered} -qid 40 -cov 20 -o #{@a3m}"
+        @commands << "reformat.pl -M first -r -uc -num a3m fas #{@a3m} #{@infile}"
+        @commands << "reformat.pl -M first -r -uc -num a3m psi #{@a3m} #{@psi}"
 
       end
 
       # calling psipred and ncoils
-      @commands << "#{HHPERL}/reformat.pl fas a3m #{@infile} #{@a3m} -uc -num -r -M first"
-      @commands << "#{HH}/hhmake -i #{@a3m} -o #{@hhmake_output} -pcm 2 -pca 0.5 -pcb 2.5 -cov 20" 
+      @commands << "reformat.pl fas a3m #{@infile} #{@a3m} -uc -num -r -M first"
+      @commands << "hhmake -i #{@a3m} -o #{@hhmake_output} -pcm 2 -pca 0.5 -pcb 2.5 -cov 20" 
       @commands << "#{PCOILSPERL}/deal_with_profile.pl #{@hhmake_output} #{@myhmmmake_output}"
 
       #@matrix=0: iterated
@@ -128,6 +127,7 @@ class PcoilsAction < Action
       #generate numerical output substitue parameter -a with -s and the complete sequences are parsed
       @commands << "#{PCOILS}/create_numerical.rb -i #{@basename} -w #{@weighting} -m #{@matrix} -a #{@infile}  "
     end
+    @commands << "source #{UNSETENV}"
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
