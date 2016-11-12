@@ -146,7 +146,7 @@ end
       commands << "buildali.pl -v 5 -diff 200 -noss -n #{@psiblastit} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
 
       commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
-      commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
+      commands << "ruby #{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
 
       commands << "echo 'Reformat a3m to aln fasta' >> #{flash['logfile']}"
       commands << "reformat.pl a3m fas #{flash['a3mfile']} #{flash['alnfasfile']}"
@@ -164,7 +164,7 @@ end
  	  commands << "reformat.pl fas a3m #{flash['fasfile']} #{flash['a3mfile']} -M first"
           #commands << "#{REFORMAT} -i=fas -o=a3m -f=#{flash['fasfile']} -a=#{flash['a3mfile']} -M first"
         end
-        commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
+        commands << "ruby #{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
         commands << "reformat.pl a3m fas #{flash['a3mfile']} #{flash['fasfile']}"
       end
       flash['alnfasfile'] = flash['fasfile']
@@ -173,7 +173,7 @@ end
     commands << "echo 'Reformat aln to clu' >> #{flash['logfile']}"
     commands << "reformat.pl fas clu #{flash['alnfasfile']} #{flash['clufile']}"
     commands << "echo 'Reformat aln to psi' >> #{flash['logfile']}"
-    commands << "reformat.opl fas psi #{flash['alnfasfile']} #{flash['psifile']}"
+    commands << "reformat.pl fas psi #{flash['alnfasfile']} #{flash['psifile']}"
     commands << "echo 'Create checkpoint-file and ASCII-matrix-file' >> #{flash['logfile']}"
     commands << "#{BLASTPGP} -b 0 -j 1 -h 0.001 -d #{DUMMYDB} -i #{flash['queryfile']} -B #{flash['psifile']} -C #{flash['chkfile']} -Q #{flash['matrixfile']} &> #{flash['psiblog']}"
     commands << "source #{UNSETENV}"
