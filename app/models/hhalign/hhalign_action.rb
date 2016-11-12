@@ -1,13 +1,6 @@
 class HhalignAction < Action
-  HH = File.join(BIOPROGS, 'hhpred')
-  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
-   if LOCATION == "Munich" && LINUX == 'SL6'
-    HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
-  else
-     HHPERL = File.join(BIOPROGS, 'hhpred')
-  end
   
-  attr_accessor :sequence_input, :sequence_file, :informat, :seqid, :qid, :dwin, :dthr
+  attr_accessor :sequence_input, :sequence_file, :informat, :seqid, :qid
   attr_accessor :target_input, :target_file, :target_informat
   attr_accessor :jobid, :mail, :otheradvanced
 
@@ -15,11 +8,9 @@ class HhalignAction < Action
 
   validates_input(:target_input, :target_file, {:informat_field => :target_informat, :on => :create, :allow_nil => true, :max_seqs => 5000, :inputmode => 'alignment'})
   
-  validates_shell_params(:jobid, :mail, :otheradvanced, :seqid, :qid, :dwin, :dthr, {:on => :create})
+  validates_shell_params(:jobid, :mail, :otheradvanced, :seqid, :qid, {:on => :create})
 
-  validates_format_of(:seqid, :qid, :dwin, {:with => /^\d+$/, :on => :create, :message => 'Invalid value! Only integer values are allowed!'}) 
-	
-  validates_format_of(:dthr, {:with => /^\d+\.?\d*$/, :on => :create, :message => 'Invalid value!'}) 
+  validates_format_of(:seqid, :qid, {:with => /^\d+$/, :on => :create, :message => 'Invalid value! Only integer values are allowed!'}) 
   
   validates_jobid(:jobid)
   
@@ -52,9 +43,6 @@ class HhalignAction < Action
     
     @seqid = params['seqid']
     @qid = params['qid']
-    @dwin = params['dwin']
-    @dthr = params['dthr']
-    @score2struct = params['score2struct'] ? "" : "-ssm 0"
     @otheradvanced = params['otheradvanced'] ? params['otheradvanced'] : ""
     
   end
@@ -62,31 +50,34 @@ class HhalignAction < Action
   def perform
     params_dump
     
-    @commands << "export  HHLIB=#{HHLIB} "
-    @commands << "export  PATH=$PATH:#{HHSUITE} "
+    @commands << "source #{SETENV}"
+    
     # Add secondary structure prediction
-    @commands << "#{HHPERL}/buildali.pl -v #{@v} -fas -n 0 #{@infile} &> #{job.statuslog_path}"
+    @commands << "buildali.pl -v #{@v} -fas -n 0 #{@infile} &> #{job.statuslog_path}"
     
     if (@target)
-      @target = "-t #{@targetbasename}.hhm"
       # Add secondary structure prediction
-      @commands << "#{HHPERL}/buildali.pl -v #{@v} -fas -n 0 #{@targetfile} 2>&1 1>> #{job.statuslog_path}"
+      @commands << "buildali.pl -v #{@v} -fas -n 0 #{@targetfile} 2>&1 1>> #{job.statuslog_path}"
+      @target = "#{@targetbasename}.a3m"
     else
-      @target = ""
+      @target = "#{@inbasename}.a3m"
     end
     
-    # build hmm for the query sequence
-    @commands << "#{HHSUITE}/hhmake -i #{@inbasename}.a3m -qid #{@qid} -id #{@seqid} -o #{@inbasename}.hhm 2>&1 1>> #{job.statuslog_path}"
+    # build hmm for the query sequence (Not necessary, hhalign can directly consume a3m/a2m/fasta )
+    # @commands << "hhmake -i #{@inbasename}.a3m -qid #{@qid} -id #{@seqid} -o #{@inbasename}.hhm 2>&1 1>> #{job.statuslog_path}"
     
     # if target-sequence exist, build hmm for the target sequence
-    if (!@target.empty?)
-      @commands << "#{HHSUITE}/hhmake -i #{@targetbasename}.a3m -qid #{@qid} -id #{@seqid} -o #{@targetbasename}.hhm 2>&1 1>> #{job.statuslog_path}"
-    end
+    #if (!@target.empty?)
+    #  @commands << "hhmake -i #{@targetbasename}.a3m -qid #{@qid} -id #{@seqid} -o #{@targetbasename}.hhm 2>&1 1>> #{job.statuslog_path}"
+    #end
     
-    @commands << "#{HHSUITE}/hhsearch -i #{@inbasename}.hhm -d #{DATABASES}/hhpred/cal.hhm -cal"
+    # No longer supported in hh-suite 3
+    #@commands << "#{HHSUITE}/hhsearch -i #{@inbasename}.hhm -d #{DATABASES}/hhpred/cal.hhm -cal"
     
-    @commands << "#{HHSUITE}/hhalign -v #{@v} -i #{@inbasename}.hhm #{@target} -o #{@outfile} -png #{@basename}.png -qid #{@qid} -id #{@seqid} -dwin #{@dwin} -dthr #{@dthr} #{@score2struct} #{@otheradvanced} 2>&1 1>> #{job.statuslog_path}"		
-    
+    @commands << "hhalign -v #{@v} -i  #{@inbasename}.a3m  -t #{@target} -o #{@outfile}  -qid #{@qid} -id #{@seqid}  #{@otheradvanced} 2>&1 1>> #{job.statuslog_path}"		
+   
+   @commands << "source #{UNSETENV}" 
+
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
     

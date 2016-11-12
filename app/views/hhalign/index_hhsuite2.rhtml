@@ -51,7 +51,20 @@
 	<%= form_text_field("qid", "0") %>
 </div>
 
+<div class="row">
+	<%= form_label("Half-length of avg. window for dotplot", "dwin") %>
+	<%= form_text_field("dwin", "10") %>
+</div>
 
+<div class="row">
+	<%= form_label("Score threshold for dotplot", "dthr") %>
+	<%= form_text_field("dthr", "0.5") %>
+</div>
+
+<div class="row">
+	<%= form_label("Score secondary structure", "score2struct") %>
+	<%= form_checkbox("score2struct", '1', true) %>	
+</div>
 
 <div class="row">
 	<%= form_label("Other advanced options", "otheradvanced") %>
