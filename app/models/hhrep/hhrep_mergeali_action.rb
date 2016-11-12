@@ -1,9 +1,9 @@
 class HhrepMergealiAction < Action
-	HH = File.join(BIOPROGS, 'hhpred')
+	#HH = File.join(BIOPROGS, 'hhpred')
   if LOCATION == "Munich" && LINUX == 'SL6'
-    HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
+    #HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
   else
-     HHPERL = File.join(BIOPROGS, 'hhpred')
+    # HHPERL = File.join(BIOPROGS, 'hhpred')
   end
 	CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
 	
@@ -61,28 +61,30 @@ class HhrepMergealiAction < Action
 
 		logger.debug "perform"
 
+        @commands << "source #{SETENV}"
 		# Make FASTA alignment from query and selected templates (from hhr file).
 		@commands << "echo 'Extracting alignment of repeats from previous HMM-HMM comparison' >> #{job.statuslog_path}"
-		@commands << "#{HHPERL}/hhmakemodel.pl -v #{@v} -N -m #{@hits} -i #{@parent_basename}.hhr -fas #{@basename}.qt.fas -q #{@parent_basename}.a3m -conj"
+		@commands << "hhmakemodel.pl -v #{@v} -N -m #{@hits} -i #{@parent_basename}.hhr -fas #{@basename}.qt.fas -q #{@parent_basename}.a3m -conj"
 
 		# Merge all alignments whose sequences are given in $basename.qt.fas
 		@commands << "echo 'Merging sequence alignments of repeats into super-alignment' 1>>#{job.statuslog_path} 2>&1"
-		@commands << "#{HHPERL}/mergeali.pl #{@basename}.qt.fas #{@basename}.a3m -d #{@parent_job_dir} -diff 100 -mark -first -v #{@v}"
+		@commands << "mergeali.pl #{@basename}.qt.fas #{@basename}.a3m -d #{@parent_job_dir} -diff 100 -mark -first -v #{@v}"
 		
 		# Do PSIPRED prediction?
 		if (@ss_scoring != "-ssm 0")
-			@commands << "#{HHPERL}/buildali.pl -v 0 -b 0 -maxres 800 -n 0 #{@basename}.a3m 1>>#{job.statuslog_path} 2>&1"
+			@commands << "buildali.pl -v 0 -b 0 -maxres 800 -n 0 #{@basename}.a3m 1>>#{job.statuslog_path} 2>&1"
 		end
-		
+		@commands << "source #{UNSETENV}"
+
 		@hash = {}
 		@hash['maxlines'] = @maxlines
 		@hash['width'] = @aliwidth
 		@hash['ss_scoring'] = @ss_scoring
 		@hash['hits'] = @hits
-
+        
 		self.flash = @hash
 		self.save!
-		
+	    	
 		logger.debug "Commands:\n"+@commands.join("\n")
 		q = queue
 		q.on_done = 'makemodel'
@@ -100,17 +102,18 @@ class HhrepMergealiAction < Action
 		
 		['30', '40', '50', '0'].each do |qid|
 			@commands = []
+            @commands << "source #{SETENV}"
 			# Filter alignment
-			@commands << "#{HH}/hhfilter -diff 500 -qid #{qid} -i #{@basename}.a3m -o #{@basename}.#{qid}.a3m 1>>#{job.statuslog_path} 2>&1"
+			@commands << "hhfilter -diff 500 -qid #{qid} -i #{@basename}.a3m -o #{@basename}.#{qid}.a3m 1>>#{job.statuslog_path} 2>&1"
 			# Make HMM from alignment
-			@commands << "#{HH}/hhmake -i #{@basename}.#{qid}.a3m -o #{@basename}.#{qid}.hhm 1>>#{job.statuslog_path} 2>&1"
+			@commands << "hhmake -i #{@basename}.#{qid}.a3m -o #{@basename}.#{qid}.hhm 1>>#{job.statuslog_path} 2>&1"
 			# Calibrate hhm file
-			@commands << "#{HH}/hhsearch -cpu 2 -v 1 -i #{@basename}.#{qid}.hhm -d #{CAL_HHM} #{@ss_scoring} -cal 1>>#{job.statuslog_path} 2>&1"
+			#@commands << "#{HH}/hhsearch -cpu 2 -v 1 -i #{@basename}.#{qid}.hhm -d #{CAL_HHM} #{@ss_scoring} -cal 1>>#{job.statuslog_path} 2>&1"
 			# hhalign HMM with itself
-			@commands << "#{HH}/hhalign -aliw #{@aliwidth} -local -p 10 -alt #{@maxlines} -v 1 -i #{@basename}.#{qid}.hhm -o #{@basename}.#{qid}.hhr #{@ss_scoring} 1>>#{job.statuslog_path} 2>&1"
+			@commands << "hhalign -aliw #{@aliwidth} -local -p 10 -alt #{@maxlines} -v 1 -i #{@basename}.#{qid}.hhm -o #{@basename}.#{qid}.hhr #{@ss_scoring} 1>>#{job.statuslog_path} 2>&1"
 			# Prepare FASTA files for 'Show Query Alignemt', and HMM histograms
 			prepare_fasta_hhviz_histograms_etc("#{@basename}.#{qid}", "#{job.jobid}.#{qid}")
-			
+			@commands << "source #{UNSETENV}"
 			logger.debug "Commands:\n"+@commands.join("\n")
 			q = queue
 			if qid == '0'
@@ -131,7 +134,7 @@ class HhrepMergealiAction < Action
 		@aliwidth = flash["width"]
 		@hits = flash['hits']
 		@commands = []
-		
+		@commands << "source #{SETENV}"
 		# Links to file
 		@commands << "rm -f #{@basename}.a3m; ln -s #{@basename}.0.a3m #{@basename}.a3m"
 		@commands << "rm -f #{@basename}.hhm; ln -s #{@basename}.0.hhm #{@basename}.hhm"
@@ -139,10 +142,10 @@ class HhrepMergealiAction < Action
 		@commands << "rm -f #{@basename}.fas; ln -s #{@basename}.0.fas #{@basename}.fas"
 		@commands << "rm -f #{@basename}.reduced.fas; ln -s #{@basename}.0.reduced.fas #{@basename}.reduced.fas"
 		# hhalign HMM with itself
-		@commands << "#{HH}/hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt #{@maxlines} -dsca 600 -v 1 -i #{@basename}.0.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -png #{@basename}.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
+		@commands << "hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt #{@maxlines} -dsca 600 -v 1 -i #{@basename}.0.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -png #{@basename}.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
 		# create png-file with factor 3
-		@commands << "#{HH}/hhalign -aliw #{@aliwidth} -local -alt 1 -dsca 3 -i #{@basename}.0.hhm -png #{@basename}_factor3.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
-		
+		@commands << "hhalign -aliw #{@aliwidth} -local -alt 1 -dsca 3 -i #{@basename}.0.hhm -png #{@basename}_factor3.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
+		@commands << "source #{UNSETENV}"
 		logger.debug "Commands:\n"+@commands.join("\n")
 		queue.submit(@commands)
 	
@@ -153,19 +156,19 @@ class HhrepMergealiAction < Action
     @local_dir = '/tmp'
   
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
-    @commands << "#{HH}/hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 100"
-    @commands << "#{HHPERL}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.fas -d 160"  # max. 160 chars in description 
+    @commands << "hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 100"
+    @commands << "reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.fas -d 160"  # max. 160 chars in description 
     
     # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
-    @commands << "#{HH}/hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 50"
-    @commands << "#{HHPERL}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.reduced.fas -r"
+    @commands << "hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 50"
+    @commands << "reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.reduced.fas -r"
     @commands << "rm #{@local_dir}/#{id}.reduced.a3m"
     
     # Generate graphical display of hits
-    @commands << "#{HHPERL}/hhviz.pl #{id} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
+    @commands << "hhviz.pl #{id} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
     
     # Generate profile histograms
-    @commands << "#{HHPERL}/profile_logos.pl #{id} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
+    @commands << "profile_logos.pl #{id} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
   end
 
 end

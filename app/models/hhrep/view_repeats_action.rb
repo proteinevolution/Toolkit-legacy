@@ -1,5 +1,4 @@
 class ViewRepeatsAction < Action
-	HH = File.join(BIOPROGS, 'hhpred')
 
 	attr_accessor :hits
 	
@@ -23,10 +22,12 @@ class ViewRepeatsAction < Action
 	# Put action code in here
 	def perform
 
-		@commands << "#{HH}/hhmakemodel.pl -v 2 -m #{@hits} -i #{@basename}.hhr -fas #{@basename}.qt.fas -q #{@basename}.a3m -conjs"
+        @commands << "source #{SETENV}"
+		@commands << "hhmakemodel.pl -v 2 -m #{@hits} -i #{@basename}.hhr -fas #{@basename}.qt.fas -q #{@basename}.a3m -conjs"
 
-		@commands << "#{HH}/reformat.pl -l 10000 fas clu #{@basename}.qt.fas #{@basename}.qt.clu"
+		@commands << "reformat.pl -l 10000 fas clu #{@basename}.qt.fas #{@basename}.qt.clu"
 
+        @commands << "source #{UNSETENV}"
 		logger.debug "Commands:\n"+@commands.join("\n")
 		queue.submit(@commands)
 

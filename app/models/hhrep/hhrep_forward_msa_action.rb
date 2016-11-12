@@ -1,5 +1,4 @@
 class HhrepForwardMsaAction < Action
-  HH=File.join(BIOPROGS, "hhpred")
 
   def do_fork?
     return false
@@ -15,12 +14,14 @@ class HhrepForwardMsaAction < Action
       @hhrfile = File.join(job.job_dir, job.jobid + ".hhr")
       @queryfile = File.join(job.job_dir, job.jobid + ".in")
 
-      @command = "#{HH}/hhmakemodel.pl -i #{@hhrfile} -a3m #{@forwardfile} -q #{@queryfile}"
+      @command = "source #{SETENV}\n"
+      @command += "hhmakemodel.pl -i #{@hhrfile} -a3m #{@forwardfile} -q #{@queryfile}"
       if (params['includehits'] == "byevalue")
         @command += " -e #{params['hitsevalue']}"
       else
         @command += " -m #{params['hits']}"
       end
+      @command += "\nsource #{UNSETENV}\n"
 
       logger.debug "Command: #{@command}"
       system(@command)

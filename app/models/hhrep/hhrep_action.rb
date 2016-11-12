@@ -1,16 +1,6 @@
 class HhrepAction < Action
-  HH = File.join(BIOPROGS, 'hhpred')
-  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
-  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')  
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
-  PSIPRED = File.join(BIOPROGS, 'psipred')  
-  
-  if LOCATION == "Munich" && LINUX == 'SL6'
-      HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
-  else
-      HHPERL = File.join(BIOPROGS, 'hhpred')
-  end
   
   
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :width, :prefilter, :mode
