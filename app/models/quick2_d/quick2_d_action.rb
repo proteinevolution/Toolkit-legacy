@@ -25,9 +25,14 @@ class Quick2DAction < Action
   DUMMYDB     = File.join(DATABASES, 'do_not_delete', 'do_not_delete')
   
 if LOCATION == "Munich" && LINUX == 'SL6'
+    REFORMAT    = "perl "+File.join(BIOPROGS, 'perl', 'reformat.pl')
+    BUILDALI    = "perl "+File.join(BIOPROGS, 'hhpred', 'buildali.pl')
     PHOBIUS     = "perl "+File.join(BIOPROGS,'phobius','phobius.pl')
     MEMSATSVM   = "perl "+File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
 else
+    REFORMAT    = File.join(BIOPROGS, 'perl', 'reformat.pl')
+    REFORMAT2   = File.join(BIOPROGS, 'hhpred', 'reformat.pl') # Not set in 'Munich'
+    BUILDALI    = File.join(BIOPROGS, 'hhpred', 'buildali.pl')
     PHOBIUS     = File.join(BIOPROGS,'phobius','phobius.pl')
     MEMSATSVM = File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
 end
@@ -143,13 +148,13 @@ end
     commands << "source #{SETENV}"
     if @psiblast
       commands << "echo 'Running PSI-BLAST [buildali] ' >> #{flash['logfile']}"
-      commands << "buildali.pl -v 5 -diff 200 -noss -n #{@psiblastit} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
+      commands << "#{BUILDALI} -v 5 -diff 200 -noss -n #{@psiblastit} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
 
       commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
-      commands << "ruby #{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
+      commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
 
       commands << "echo 'Reformat a3m to aln fasta' >> #{flash['logfile']}"
-      commands << "reformat.pl a3m fas #{flash['a3mfile']} #{flash['alnfasfile']}"
+      commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['alnfasfile']}"
     elsif flash['seqCount']==1
       system "echo 'Cloning input sequence' >> #{flash['logfile']}"
       replicateSeq(flash['queryfile'], flash['alnfasfile'])
@@ -161,19 +166,19 @@ end
         commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
         if !File.exist?(flash['a3mfile'])
 	  #  reformat.pl fas sto '*.fasta' .stockholm
- 	  commands << "reformat.pl fas a3m #{flash['fasfile']} #{flash['a3mfile']} -M first"
+ 	  commands << "#{REFORMAT2} fas a3m #{flash['fasfile']} #{flash['a3mfile']} -M first"
           #commands << "#{REFORMAT} -i=fas -o=a3m -f=#{flash['fasfile']} -a=#{flash['a3mfile']} -M first"
         end
-        commands << "ruby #{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
-        commands << "reformat.pl a3m fas #{flash['a3mfile']} #{flash['fasfile']}"
+        commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
+        commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['fasfile']}"
       end
       flash['alnfasfile'] = flash['fasfile']
     end
 
     commands << "echo 'Reformat aln to clu' >> #{flash['logfile']}"
-    commands << "reformat.pl fas clu #{flash['alnfasfile']} #{flash['clufile']}"
+    commands << "#{REFORMAT} -i=fas -o=clu -f=#{flash['alnfasfile']} -a=#{flash['clufile']}"
     commands << "echo 'Reformat aln to psi' >> #{flash['logfile']}"
-    commands << "reformat.pl fas psi #{flash['alnfasfile']} #{flash['psifile']}"
+    commands << "#{REFORMAT} -i=fas -o=psi -f=#{flash['alnfasfile']} -a=#{flash['psifile']}"
     commands << "echo 'Create checkpoint-file and ASCII-matrix-file' >> #{flash['logfile']}"
     commands << "#{BLASTPGP} -b 0 -j 1 -h 0.001 -d #{DUMMYDB} -i #{flash['queryfile']} -B #{flash['psifile']} -C #{flash['chkfile']} -Q #{flash['matrixfile']} &> #{flash['psiblog']}"
     commands << "source #{UNSETENV}"
@@ -188,8 +193,8 @@ end
     init_vars
     commands = []
     path = File.join(job.job_dir)
-    if( @psipred )  then commands << "echo 'Running PSIPRED' >> #{flash['logfile']}; #{PSIPRED} #{flash['queryfile']} #{flash['chkfile']} #{flash['psipredfile']}" end
-    if( @jnet )     then commands << "echo 'Running JNET' >> #{flash['logfile']}; #{JNET} #{flash['clufile']} #{flash['matrixfile']} #{flash['jnetfile']}" end
+    if( @psipred )  then commands << "echo 'Running PSIPRED' >> #{flash['logfile']}; source #{QUICK2DENV} ; #{PSIPRED} #{flash['queryfile']} #{flash['chkfile']} #{flash['psipredfile']}" end
+    if( @jnet )     then commands << "echo 'Running JNET' >> #{flash['logfile']};  source #{QUICK2DENV} ;  #{JNET} #{flash['clufile']} #{flash['matrixfile']} #{flash['jnetfile']}" end
  #   if( @memsat )   then commands << "echo 'Running MEMSAT' >> #{flash['logfile']}; #{MEMSAT} #{flash['queryfile']} #{flash['memsatfile']}" end
     if( @disopred ) then commands << "echo 'Running DISOPRED2' >> #{flash['logfile']}; #{DISOPRED} #{flash['queryfile']}" end
     if( @iupred ) then commands << "echo 'Running IUPRED' >> #{flash['logfile']}; #{IUPRED} #{flash['queryfile']} long #{IUPREDDIR} > #{flash['iupredfile']}" end

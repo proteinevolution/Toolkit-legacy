@@ -1,0 +1,5 @@
+export PATH="${TK_ROOT}/bioprogs/hh-suite/scripts:${TK_ROOT}/bioprogs/psipred/bin:${TK_ROOT}/bioprogs/jnet/parse_psi:${TK_ROOT}/bioprogs/hmmer/binaries:${TK_ROOT}/bioprogs/jnet/bin64:${TK_ROOT}/bioprogs/blast:${TK_ROOT}/disopred2/bin:${PATH}"
+export DISOPREDDATA="${TK_ROOT}/bioprogs/disopred2/data"
+export NR="${TK_ROOT}/databases/standard/nr"
+export PSIPREDDATA="${TK_ROOT}/bioprogs/psipred/data"
+export PERLREFORMAT="${TK_ROOT}/bioprogs/perl/reformat.pl"
