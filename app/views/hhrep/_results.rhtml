@@ -14,8 +14,19 @@
 		<br>=> Press <strong>View repeats</strong> below to view aligned repeats
 	<%end %>
 </div>
+	
+<center>
+<a href="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>_factor3.png?<%= rand %>" title="Show large dotplot in new window" target="_blank">Show large dotplot in new window</a>
+<br/>
 
-
+<div class="row">
+	<map name="dotplot">
+		<%= @job.map.join("\n\t\t") %>
+	</map>
+	<img id="graph" name="img1" border="0" src="<%= @job.url_for_job_dir_abs %>/<%= @job.jobid %>.png?<%= rand %>" border="0" usemap="#dotplot" />\
+	<br/>
+</div>
+</center>
 
 <div class="row">
 	<div class="label">

@@ -1,6 +1,16 @@
 class HhrepAction < Action
+  HH = File.join(BIOPROGS, 'hhpred')
+  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
+  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
   HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')  
   CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
+  PSIPRED = File.join(BIOPROGS, 'psipred')  
+  
+  if LOCATION == "Munich" && LINUX == 'SL6'
+      HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
+  else
+      HHPERL = File.join(BIOPROGS, 'hhpred')
+  end
   
   
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :width, :prefilter, :mode
@@ -68,10 +78,8 @@ class HhrepAction < Action
     logger.debug "L78 Mode set to #{@mode} !"
     cpus = 1
     
-    @commands << "source #{SETENV}"
-
     if @mode != 'querymsa'
-      @commands << "reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
+      @commands << "#{HH}/reformat.pl #{@informat} a3m #{@basename}.in #{@basename}.a3m > #{job.statuslog_path}"
     end
     if @maxpsiblastit.to_i > 0 || @mode != 'querymsa'
              #cpus = 2
@@ -84,24 +92,24 @@ class HhrepAction < Action
               if(@prefilter=='psiblast')
                    cpus = 2
                    @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
-                   @commands << "buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &> #{job.statuslog_path}"
+                   @commands << "#{HHPERL}/buildali.pl -cpu 2 -v #{@v} -bs 0.3 -maxres 800 -n  #{@maxhhblitsit}  #{@basename}.a3m &> #{job.statuslog_path}"
                 else
                     # Export variable needed for HHSuite
-                    #@commands << "export  HHLIB=#{HHLIB}"
+                    @commands << "export  HHLIB=#{HHLIB}"
 
                     if @maxhhblitsit == '0'
                         @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
-                        @commands << "reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+                        @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
                     else
                         cpus = 8
                         @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
-                        @commands << "hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB}  -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+                        @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -psipred #{PSIPRED}/bin -psipred_data #{PSIPRED}/data -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
                     end
                 end
     else
         @commands <<"echo 'Using previously generated a3m MSA as Input Model' >> #{job.statuslog_path}  "
     end
-
+    
     @hash = {}
     @hash['maxlines'] = @maxlines
     @hash['width'] = @aliwidth
@@ -113,9 +121,6 @@ class HhrepAction < Action
     logger.debug "L121 Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'makemodel'
-
-    @commands << "source #{UNSETENV}"
-
     q.save!
     q.submit(@commands, false, { 'cpus' => cpus.to_s() })
     
@@ -130,16 +135,15 @@ class HhrepAction < Action
     
     ['30', '40', '50', '0'].each do |qid|
       @commands = []
-      @commands << "source #{SETENV}"
       # Filter alignment
-      @commands << "hhfilter -diff 500 -qid #{qid} -i #{@basename}.a3m -o #{@basename}.#{qid}.a3m 1>>#{job.statuslog_path} 2>&1"
+      @commands << "#{HH}/hhfilter -diff 500 -qid #{qid} -i #{@basename}.a3m -o #{@basename}.#{qid}.a3m 1>>#{job.statuslog_path} 2>&1"
       # Make HMM from alignment
-      @commands << "hhmake -i #{@basename}.#{qid}.a3m -o #{@basename}.#{qid}.hhm 1>>#{job.statuslog_path} 2>&1"
-      # Calibrate hhm file (no longer supported in hh-suite 3)
-      # @commands << "hhsearch -cpu 2 -v 1 -i #{@basename}.#{qid}.hhm -d #{CAL_HHM} #{@ss_scoring} -cal 1>>#{job.statuslog_path} 2>&1"
+      @commands << "#{HH}/hhmake -i #{@basename}.#{qid}.a3m -o #{@basename}.#{qid}.hhm 1>>#{job.statuslog_path} 2>&1"
+      # Calibrate hhm file
+      @commands << "#{HH}/hhsearch -cpu 2 -v 1 -i #{@basename}.#{qid}.hhm -d #{CAL_HHM} #{@ss_scoring} -cal 1>>#{job.statuslog_path} 2>&1"
 
       # hhalign HMM with itself
-      @commands << "hhalign -aliw #{@aliwidth} -local -p 10 -alt #{@maxlines} -v 1 -i #{@basename}.#{qid}.hhm -t #{@basename}.#{qid}.hhm -o #{@basename}.#{qid}.hhr #{@ss_scoring} 1>>#{job.statuslog_path} 2>&1"
+      @commands << "#{HH}/hhalign -aliw #{@aliwidth} -local -p 10 -alt #{@maxlines} -v 1 -i #{@basename}.#{qid}.hhm -o #{@basename}.#{qid}.hhr #{@ss_scoring} 1>>#{job.statuslog_path} 2>&1"
       # Prepare FASTA files for 'Show Query Alignemt', and HMM histograms
       prepare_fasta_hhviz_histograms_etc("#{@basename}.#{qid}", "#{job.jobid}.#{qid}")
       
@@ -149,7 +153,6 @@ class HhrepAction < Action
         q.on_done = 'create_links'
         q.save!
       end
-      @commands << "source #{UNSETENV}"
       q.submit(@commands, false, { 'cpus' => '2' })
       
     end
@@ -163,7 +166,6 @@ class HhrepAction < Action
     @maxlines = flash["maxlines"]
     @aliwidth = flash["width"]
     @commands = []
-    @commands << "source #{SETENV}"
     
     # Links to file
     @commands << "rm -f #{@basename}.a3m; ln -s #{@basename}.0.a3m #{@basename}.a3m"
@@ -173,12 +175,11 @@ class HhrepAction < Action
     @commands << "rm -f #{@basename}.reduced.fas; ln -s #{@basename}.0.reduced.fas #{@basename}.reduced.fas"
 
     # hhalign HMM with itself
-    @commands << "hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt #{@maxlines} -dsca 600 -v 1 -i #{@basename}.0.hhm -t #{@basename}.0.hhm -o #{@basename}.hhr   -dali all 1>>#{job.statuslog_path} 2>&1"
+    @commands << "#{HH}/hhalign -aliw #{@aliwidth} -local #{@ss_scoring} -alt #{@maxlines} -dsca 600 -v 1 -i #{@basename}.0.hhm -o #{@basename}.hhr -dmap #{@basename}.dmap -png #{@basename}.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
     # create png-file with factor 3
-    @commands << "hhalign -aliw #{@aliwidth} -local -alt 1 -dsca 3 -i #{@basename}.0.hhm -t #{@basename}.0.hhm -dali all 1>>#{job.statuslog_path} 2>&1"
-
+    @commands << "#{HH}/hhalign -aliw #{@aliwidth} -local -alt 1 -dsca 3 -i #{@basename}.0.hhm -png #{@basename}_factor3.png -dwin 10 -dthr 0.4 -dali all 1>>#{job.statuslog_path} 2>&1"
+    
     logger.debug "L182 Commands:\n"+@commands.join("\n")
-    @commands << "source #{UNSETENV}"
     queue.submit(@commands)
     
   end
@@ -186,20 +187,21 @@ class HhrepAction < Action
   # Prepare FASTA files for 'Show Query Alignemt', HHviz bar graph, and HMM histograms 
   def prepare_fasta_hhviz_histograms_etc(basename, id)
     @local_dir = '/tmp'
+    
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
-    @commands << "hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 100"
-    @commands << "reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.fas -d 160"  # max. 160 chars in description 
+    @commands << "#{HH}/hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 100"
+    @commands << "#{HHPERL}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.fas -d 160"  # max. 160 chars in description 
     
     # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
-    @commands << "hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 50"
-    @commands << "reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.reduced.fas -r"
+    @commands << "#{HH}/hhfilter -i #{basename}.a3m -o #{@local_dir}/#{id}.reduced.a3m -diff 50"
+    @commands << "#{HHPERL}/reformat.pl a3m fas #{@local_dir}/#{id}.reduced.a3m #{basename}.reduced.fas -r"
     @commands << "rm #{@local_dir}/#{id}.reduced.a3m"
     
     # Generate graphical display of hits
-    @commands << "hhviz.pl #{id} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
+    @commands << "#{HHPERL}/hhviz.pl #{id} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
     
     # Generate profile histograms
-    @commands << "profile_logos.pl #{id} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
+    @commands << "#{HHPERL}/profile_logos.pl #{id} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
   end
 
 end
