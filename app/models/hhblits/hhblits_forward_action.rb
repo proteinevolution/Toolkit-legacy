@@ -16,14 +16,14 @@ class HhblitsForwardAction < Action
       @hhrfile = File.join(job.job_dir, job.jobid + ".hhr")
       @queryfile = File.join(job.job_dir, job.jobid + ".in")
 
-      @command = "source #{SETENV}\n"
+      @command = ". #{SETENV} ;"
       @command += "hhmakemodel.pl -i #{@hhrfile} -a3m #{@forwardfile} -q #{@queryfile}"
       if (params['includehits'] == "byevalue")
         @command += " -e #{params['hitsevalue']}"
       else
         @command += " -m #{params['hits']}"
       end
-      @command += "\n source #{UNSETENV}"
+      @command += ";. #{UNSETENV}"
       logger.debug "Command: #{@command}"
       system(@command)
 
