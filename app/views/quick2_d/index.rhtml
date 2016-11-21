@@ -30,25 +30,27 @@
 <div class="spacer">&nbsp;</div>
 
 <h3 class="<%= @section["name"] %>">Options</h3>
-<div class="row">
-	<%= form_label("Do PSI-BLAST Search", "psiblast_search") %>
-	<% active = true %>
-	<% if ((params['psiblast_check'] && params['psiblast_check'] == 0)) then active = false end %>
-	<div class="formw">
-		<input type = "checkbox" name = "psiblast_chk" value = "psiblast_chk" onChange = "psiblastChanged();" <%= if active then 'checked' end %> >
-	</div>
-	<!-- <%= form_checkbox("psiblast_chk", '1', active, onchange='psiblastChanged();') %> -->
-</div>
-<!-- copied from hhpred -->
-<% if active -%>
 
-<div class="row">
-  <%= form_label_id("Max. MSA Generation iterations", "maxpsiblastit_label", "maxpsiblastit") %>
-  <%= form_select_single("maxpsiblastit", @maxpsiblastit, @maxpsiblastit, '3') %>	
-</div>
-<% else %>
-<%= form_hidden_field("maxpsiblastit", @parent_job.params_main_action['maxhhblitsit']) %>
-<% end %>
+<div style="min-height: 80px;">
+    <div class="row">
+         <%= form_label("MSA Generation Method", "msa_generation_label") %>
+         <%= form_radio_buttons("msa_generation_method", @msa_gen_values, @msa_gen_labels, "input_only", "&nbsp;") %>
+    </div>
+    <div class="row" id="max_iter_row">
+         <%= form_label("Maximal number of Iterations", "max_iter_label") %>
+        <%= form_select_single("max_iter", @max_iter_allowed, @max_iter_allowed, @max_iter_allowed[0]) %>	
+     </div>
+    <div class="row" id="hhblitsdb_row">
+      <%= form_label("Select HMM database", "databases") %>
+        <table cellspacing="0">
+        <tr align="center"><td><b>Standard</b></td></tr>
+        <tr><td>
+        <%= form_select_single("hhblits_dbs", @dbvalues, @dblabels, @default_db, 5, "", false, true) %>
+        </td></tr>
+        </table>
+    </div>
+</div>     
+<!-- copied from hhpred -->
 <!-- copy end -->
 <div class="spacer">&nbsp;</div>
 
@@ -137,7 +139,8 @@
 <div class="spacer">&nbsp;</div>	
 	
 
-<div class="row">	<div class="label">
+<div class="row">
+	<div class="label">
 		<%= form_label("HMMTOP") %>
 	</div>
 	<div class="formw">			
@@ -206,7 +209,8 @@
 <div class="spacer">&nbsp;</div>
 
 			
-<div class="row">	<div class="label">
+<div class="row">
+	<div class="label">
 		<%= form_label("DISOPRED2") %>
 	</div>
 	<div class="formw">			
@@ -248,3 +252,40 @@
 </form>
 <div class="row">&nbsp;</div>
 <%= render(:partial => "references_and_contact") %>
+
+<script>
+
+(function() {
+
+  document.getElementById("max_iter_row").style.display = "none";
+  document.getElementById("hhblitsdb_row").style.display = "none";
+
+ var nodeList = document.getElementsByName("msa_generation_method");
+ for (var i = 0; i < nodeList.length; ++i) {
+    
+    nodeList[i].onchange = function() {
+    
+    if(this.value == "input_only") {
+
+        document.getElementById("max_iter_row").style.display = "none";    
+        document.getElementById("hhblitsdb_row").style.display = "none";
+
+    } else if(this.value == "psiblast") {
+
+         document.getElementById("max_iter_row").style.display = "block"; 
+        document.getElementById("hhblitsdb_row").style.display = "none";
+
+    } else if(this.value == "hhblits") {
+
+         document.getElementById("max_iter_row").style.display = "block"; 
+         document.getElementById("hhblitsdb_row").style.display = "block";
+
+    }
+    };    
+}
+})(); 
+</script>
+
+
+
+

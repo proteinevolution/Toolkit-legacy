@@ -61,10 +61,10 @@ end
   end
 
   def init_vars
-    @psiblast    = params['psiblast_chk']  ? true : false
-# added    
-    @psiblastit  = params['maxpsiblastit']
-# end
+    @msa_generation_method = params['msa_generation_method']
+    @max_iter = params['max_iter']
+    @db = params['hhblits_dbs']      
+
     @psipred     = params['psipred_chk']   ? true : false
     @jnet        = params['jnet_chk']      ? true : false
     @coils       = params['coils_chk']     ? true : false
@@ -151,15 +151,22 @@ end
 
     commands = []
     commands << "source #{SETENV}"
-    if @psiblast
+    if @msa_generation_method == "psiblast"
       commands << "echo 'Running PSI-BLAST [buildali] ' >> #{flash['logfile']}"
-      commands << "#{BUILDALI} -v 5 -diff 200 -noss -n #{@psiblastit} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
+      commands << "#{BUILDALI} -v 5 -diff 200 -noss -n #{@max_iter} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
 
       commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
       commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
 
       commands << "echo 'Reformat a3m to aln fasta' >> #{flash['logfile']}"
       commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['alnfasfile']}"
+    
+    elsif @msa_generation_method == "hhblits"
+         commands << "echo 'Running HHblits' >> #{flash['logfile']}"
+         commands << "hhblits -v 0 -cpu 8  -i #{flash['fasfile']} -d #{@db}  -o /dev/null -oa3m  #{flash['a3mfile']}  -e 1e-1 -n #{@max_iter}  1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
+         commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['alnfasfile']}"
+
+    
     elsif flash['seqCount']==1
       system "echo 'Cloning input sequence' >> #{flash['logfile']}"
       replicateSeq(flash['queryfile'], flash['alnfasfile'])
