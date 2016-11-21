@@ -378,7 +378,7 @@ class Quick2DJob < Job
       
       # Determine the color 
       rgb =  convert_to_rgb(0, 10, cons[j].to_i, [[0, 0, 255], [0, 255, 0], [255, 0, 0]])
-      data += "<span id=\"#{j}#{id_name} onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\" style=\"background-color: #{rgb_to_css(rgb)};\" >#{cons[j]}</span>"
+      data += "<span id=\"#{j}#{id_name}\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\" style=\"background-color: #{rgb_to_css(rgb)};\" >#{cons[j]}</span>"
     }
     data +="\n"
     data
