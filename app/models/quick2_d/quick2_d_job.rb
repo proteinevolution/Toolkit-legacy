@@ -54,6 +54,9 @@ class Quick2DJob < Job
   #  vsl2     = readVSL2
     coils    = readCoils
     predisi  = readPREDISI
+    
+    # Alignment Conservation, alco instead of al2co, don't now if numbers allowed in variable name
+    #alco = readAlco
 
     data     = ""
     len      = query['sequence'].length
@@ -268,6 +271,12 @@ class Quick2DJob < Job
     phobius_sp = readPhobius_sp
     predisi  = readPREDISI
     
+    # Alignment Conservation
+    
+    alcoent = readAlcomap('al2comapent')
+    alcovar = readAlcomap('al2comapvar')
+    alcossp = readAlcomap('al2comapssp')
+
     #logger.debug "L248 GetData HMMTOP  ->  #{hmmtop}"
     logger.debug "L248 GetData PREDISI ->  #{predisi}"
     
@@ -282,6 +291,7 @@ class Quick2DJob < Job
     data += "\n"+'<script type="text/javascript">' +"\n"
     data += 'initInfo(); '+"\n"
     data += 'RESIDUES="' +query['sequence']+'"; '+"\n"
+    #data += 'ALCO="'     +alco['cons']+'";      '+"\n"
     data += 'PSIPRED_CONF=new Array'+toJSArray( psipred['conf'] )+";\n"
     data += 'JNET_CONF=new Array'+toJSArray( jnet['conf'] )+";\n"
     data += 'PROFROST_CONF=new Array'+toJSArray( prof_r['conf'] )+";\n"
@@ -308,6 +318,9 @@ class Quick2DJob < Job
       #data += query['sequence'][i..(min(i+@@linewidth, len)-1)]+"\n"
 
       data += printSEQHTML(query['sequence'].split(//),"aa",i,stop)
+      data += printCONSHTML("CO AL2CO_ENT", "alcoent", alcoent['cons'].split(//), i, stop  ) 
+      data += printCONSHTML("CO AL2CO_VAR", "alcovar", alcovar['cons'].split(//), i, stop  ) 
+      data += printCONSHTML("CO AL2CO_SSP", "alcossp", alcossp['cons'].split(//), i, stop  ) 
       data += printSSHTML("SS PSIPRED", "psipred", psipred, i, stop)
       data += printSSHTML("SS JNET", "jnet", jnet, i, stop)
       data += printSSHTML("SS Prof (Ouali)", "prof_o", prof_o, i, stop)
@@ -353,6 +366,19 @@ class Quick2DJob < Job
     data = sprintf("<span>%-#{@@descr_width}s</span>", "")
     a.upto(b-1){ |j|
       data += "<span id=\"#{j}#{id_name}\" onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\">#{seq[j]}</span>"
+    }
+    data +="\n"
+    data
+  end
+
+  # Prints the necessary HTML code to display Aligment conservation computed by AL2CO
+  def printCONSHTML(name, id_name, cons, a, b)
+    data = sprintf("<span>%-#{@@descr_width}s</span>", name)
+    a.upto(b-1){ |j|
+      
+      # Determine the color 
+      rgb =  convert_to_rgb(0, 10, cons[j].to_i, [[0, 0, 255], [0, 255, 0], [255, 0, 0]])
+      data += "<span id=\"#{j}#{id_name} onmouseover=\"showInfo('#{j}aa');\" onmouseout=\"hideInfo();\" style=\"background-color: #{rgb_to_css(rgb)};\" >#{cons[j]}</span>"
     }
     data +="\n"
     data
@@ -517,6 +543,42 @@ class Quick2DJob < Job
   end
 
 
+  # This function is currently not used. See readAlcomap
+  #
+
+  #def readAlco
+  #    if (!File.exists?(self.actions[0].flash['al2cofile'])) then return {} end
+  #    ret={'cons'=>[]}
+  #    ar = IO.readlines(self.actions[0].flash['al2cofile'])
+  #    ar.each do |line|
+
+  #        # Line matches conservation line
+  #        if(line =~ /^[0-9]+\s+[A-Za-z\-]+\s+(\S+)/)
+
+  #            ret['cons'] << $1
+  #        end
+  #    end
+  #    return ret
+  #end
+  #
+
+
+  def readAlcomap(filename)
+      if (!File.exists?(self.actions[0].flash[filename])) then return {} end
+      ret={'cons'=>""}
+      ar = IO.readlines(self.actions[0].flash[filename])
+      ar.each do |line|
+
+          # Line matches conservation line
+          if(line =~ /^Conservation:\s+(\S+)$/)
+
+              ret['cons'] += $1
+          end
+      end
+      return ret
+  end
+  
+  
   def readJNet
     if( !File.exists?( self.actions[0].flash['jnetfile'] ) ) then return {} end
     ret={'conf'=>"", 'pred'=>"", 'sol'=>""}
@@ -1026,5 +1088,20 @@ class Quick2DJob < Job
     ret
   end
 
+  def convert_to_rgb(minval, maxval, val, colors)
+
+    max_index = colors.length - 1
+    v = (val - minval).to_f / (maxval - minval).to_f * max_index
+    i1 = v.to_i
+    i2 = [v.to_i + 1, max_index].min
+    color1 = colors[i1]
+    color2 = colors[i2]
+    f = v - i1
+    return [color1[0] + f*(color2[0]-color1[0]), color1[1] + f*(color2[1]-color1[1]), color1[2] + f*(color2[2]-color1[2])]
+  end
+  def rgb_to_css(color)
+
+    return "rgb(#{color[0].round},#{color[1].round},#{color[2].round})"
+  end
 
 end

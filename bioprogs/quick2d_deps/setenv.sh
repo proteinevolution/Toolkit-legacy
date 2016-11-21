@@ -1,4 +1,4 @@
-export PATH="${TK_ROOT}/bioprogs/hh-suite/scripts:${TK_ROOT}/bioprogs/psipred/bin:${TK_ROOT}/bioprogs/jnet/parse_psi:${TK_ROOT}/bioprogs/hmmer/binaries:${TK_ROOT}/bioprogs/jnet/bin64:${TK_ROOT}/bioprogs/blast:${TK_ROOT}/disopred2/bin:${PATH}"
+export PATH="${TK_ROOT}/bioprogs/hh-suite/scripts:${TK_ROOT}/bioprogs/psipred/bin:${TK_ROOT}/bioprogs/jnet/parse_psi:${TK_ROOT}/bioprogs/hmmer/binaries:${TK_ROOT}/bioprogs/jnet/bin64:${TK_ROOT}/bioprogs/blast:${TK_ROOT}/disopred2/bin:/ebio/abt1_share/toolkit_dev/lzimmermann/toolkit_sky/bioprogs/al2co:${PATH}"
 export DISOPREDDATA="${TK_ROOT}/bioprogs/disopred2/data"
 export NR="${TK_ROOT}/databases/standard/nr"
 export PSIPREDDATA="${TK_ROOT}/bioprogs/psipred/data"

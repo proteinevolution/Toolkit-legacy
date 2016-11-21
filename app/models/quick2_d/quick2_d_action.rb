@@ -124,6 +124,11 @@ end
     mem['disopredfile'] = basename+".horiz_d"
     mem['iupredfile'] = basename+".iupred"
     mem['headerfile']   = basename+".header"
+    mem['al2cofile'] =  basename+".al2co"
+    mem['al2comapent'] = basename+".al2comapent"
+    mem['al2comapvar'] = basename+".al2comapvar"
+    mem['al2comapssp'] = basename+=".al2comapssp"
+
     self.flash = mem
     self.save!
     params_to_file( flash['infile'], 'sequence_input', 'sequence_file' )
@@ -205,7 +210,10 @@ end
     if( @profouali )then commands << "echo 'Running PROFOUALI' >> #{flash['logfile']}; export PROF_DIR=#{PROFOUALIDIR}; #{PROFOUALI} -d -c -v -m 1 -a #{flash['clufile']} -p #{flash['matrixfile']} -o #{flash['profoualifile']}; echo 'Hide exitstate !=0 by this echo cmd'" end
     if( @coils )    then commands <<    "echo 'Running NCOILS' >> #{flash['logfile']}; export COILSDIR=#{NCOILSDIR}; #{NCOILS} -f < #{flash['queryfile']} > #{flash['coilsfile']}" end
     if( @memsatsvm ) then commands << "echo 'Running MEMSAT-SVM' >> #{flash['logfile']}; #{MEMSATSVM} #{flash['queryfile']} --path #{path}/" end
-    if( @profrost ) then commands <<    "echo 'Running PROFROST' >> #{flash['logfile']}; #{PROFROST} #{flash['queryfile']} #{flash['accfile']} #{flash['htmfile']} #{flash['secfile']}" end
+    if( @profrost ) then commands <<    "echo 'Running PROFROST' >> #{flash['logfile']}; #{PROFROST} #{flash['queryfile']} #{flash['accfile']} #{flash['htmfile']} #{flash['secfile']}"
+    
+    commands <<  "echo 'Running AL2CO' >> #{flash['logfile']}; . #{QUICK2DENV} ; al2co -i #{flash['clufile']} -o #{flash['al2cofile']} -t #{flash['al2comapent']} -c 0 ;  al2co -i #{flash['clufile']} -o #{flash['al2cofile']} -t #{flash['al2comapvar']} -c 1 ;  al2co -i #{flash['clufile']} -o #{flash['al2cofile']} -t #{flash['al2comapssp']} -c 2" 
+    end
 
     # vsl2 does better prediction with psipred results therefore execute vsl2 in a subsequent task if psipredresults are available
     if( !@psipred )
@@ -223,11 +231,13 @@ end
   end
 
   def doFinal
+    puts("Starting doFinal")
     init_vars
-    commands = []
-    logger.debug( "doFinal:\n"+commands.join("\n"))
     #if( @vsl2 )  then commands <<       "echo 'Running VSL2' >> #{flash['logfile']}; #{VSL2} -s:#{flash['seqfile']} -i:#{flash['ss2file']} -p:#{flash['matrixfile']} > #{flash['vsl2file']}" end
-    queue.submit(commands)
+    # Final steps of quick2D performed lokally
+    logger.debug( "doFinal:\n"+commands.join("\n"))
+
+    #queue.submit(commands)
   end
 
   # returns the number of sequences in a fasta file
