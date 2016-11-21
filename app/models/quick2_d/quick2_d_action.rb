@@ -215,30 +215,35 @@ end
     commands <<  "echo 'Running AL2CO' >> #{flash['logfile']}; . #{QUICK2DENV} ; al2co -i #{flash['clufile']} -o #{flash['al2cofile']} -t #{flash['al2comapent']} -c 0 ;  al2co -i #{flash['clufile']} -o #{flash['al2cofile']} -t #{flash['al2comapvar']} -c 1 ;  al2co -i #{flash['clufile']} -o #{flash['al2cofile']} -t #{flash['al2comapssp']} -c 2" 
     end
 
+    q = queue
+    q.save!
+    q.submit_parallel(commands)
+    self.save!
+
     # vsl2 does better prediction with psipred results therefore execute vsl2 in a subsequent task if psipredresults are available
-    if( !@psipred )
-     # if( @vsl2 )  then commands <<     "echo 'Running VSL2' >> #{flash['logfile']}; #{VSL2} -s:#{flash['seqfile']} -p:#{flash['matrixfile']} > #{flash['vsl2file']}" end
-      queue.submit_parallel(commands)
-    else
-      logger.debug( "doPredictions:\n"+commands.join("\n"))
-      q = queue
-      q.on_done = 'doFinal'
-      q.save!
-      q.submit_parallel(commands, false)
-      self.save!
-    end
+    #if( !@psipred )
+    # # if( @vsl2 )  then commands <<     "echo 'Running VSL2' >> #{flash['logfile']}; #{VSL2} -s:#{flash['seqfile']} -p:#{flash['matrixfile']} > #{flash['vsl2file']}" end
+    #  queue.submit_parallel(commands)
+    #else
+    #  logger.debug( "doPredictions:\n"+commands.join("\n"))
+    #  q = queue
+    #  #q.on_done = 'doFinal'
+    #  q.save!
+    #  q.submit_parallel(commands, false)
+    #  self.save!
+    #end
 
   end
 
-  def doFinal
-    puts("Starting doFinal")
-    init_vars
+ # def doFinal
+    #puts("Starting doFinal")
+    #init_vars
     #if( @vsl2 )  then commands <<       "echo 'Running VSL2' >> #{flash['logfile']}; #{VSL2} -s:#{flash['seqfile']} -i:#{flash['ss2file']} -p:#{flash['matrixfile']} > #{flash['vsl2file']}" end
     # Final steps of quick2D performed lokally
-    logger.debug( "doFinal:\n"+commands.join("\n"))
+    #logger.debug( "doFinal:\n"+commands.join("\n"))
 
     #queue.submit(commands)
-  end
+  #end
 
   # returns the number of sequences in a fasta file
   def countFastaSeqs(fasfile)
