@@ -318,9 +318,15 @@ class Quick2DJob < Job
       #data += query['sequence'][i..(min(i+@@linewidth, len)-1)]+"\n"
 
       data += printSEQHTML(query['sequence'].split(//),"aa",i,stop)
-      data += printCONSHTML("CO AL2CO_ENT", "alcoent", alcoent['cons'].split(//), i, stop  ) 
-      data += printCONSHTML("CO AL2CO_VAR", "alcovar", alcovar['cons'].split(//), i, stop  ) 
-      data += printCONSHTML("CO AL2CO_SSP", "alcossp", alcossp['cons'].split(//), i, stop  ) 
+      if(alcoent['cons'])
+        data += printCONSHTML("CO AL2CO_ENT", "alcoent", alcoent['cons'].split(//), i, stop  ) 
+      end
+      if(alcovar['cons'])
+        data += printCONSHTML("CO AL2CO_VAR", "alcovar", alcovar['cons'].split(//), i, stop  ) 
+      end
+      if(alcossp['cons'])
+        data += printCONSHTML("CO AL2CO_SSP", "alcossp", alcossp['cons'].split(//), i, stop  ) 
+      end
       data += printSSHTML("SS PSIPRED", "psipred", psipred, i, stop)
       data += printSSHTML("SS JNET", "jnet", jnet, i, stop)
       data += printSSHTML("SS Prof (Ouali)", "prof_o", prof_o, i, stop)
@@ -565,6 +571,7 @@ class Quick2DJob < Job
 
 
   def readAlcomap(filename)
+      if (!self.actions[0].flash[filename]) then return {} end
       if (!File.exists?(self.actions[0].flash[filename])) then return {} end
       ret={'cons'=>""}
       ar = IO.readlines(self.actions[0].flash[filename])
