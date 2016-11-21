@@ -354,6 +354,7 @@ class Quick2DJob < Job
   def printLegend
     ret = "";
     ret += "<span>SS = </span><span style=\"background-color: #{@@helix_color};\"> Alpha-Helix </span><span style=\"background-color: #{@@sheet_color};\"> Beta-Sheet </span><span> Secondary Structure</span></br>"
+    ret += "<span>CO = </span><span style=\"background-color: rgb(255,0,0);\">High</span><span style=\"background-color: rgb(0,0,255); \">Low</span><span>Conservation</span></span></br>"
     ret += "<span>CC = </span><span style=\"background-color: #{@@cc_color};\">Coiled Coils</span></br>"
     ret += "<span>TM = </span><span style=\"background-color: #{@@tm_color};\">Transmembrane</span><span> (\'+\'=outside, \'-\'=inside)</span></br>"
     ret += "<span>DO = </span><span style=\"background-color: #{@@do_color};\">Disorder</span></br>"
