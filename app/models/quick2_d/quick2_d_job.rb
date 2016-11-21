@@ -569,18 +569,24 @@ class Quick2DJob < Job
   #end
   #
 
-
+  # Read conservation output of AL2Co, omits positions where first sequence has gaps
   def readAlcomap(filename)
       if (!self.actions[0].flash[filename]) then return {} end
       if (!File.exists?(self.actions[0].flash[filename])) then return {} end
       ret={'cons'=>""}
-      ar = IO.readlines(self.actions[0].flash[filename])
-      ar.each do |line|
-
+      arr = IO.readlines(self.actions[0].flash[filename])
+      arr.each_with_index do |line, index| 
+      
           # Line matches conservation line
           if(line =~ /^Conservation:\s+(\S+)$/)
 
-              ret['cons'] += $1
+              conservation_line = $1
+              arr[index+1] =~ /^\S+\s+(\S+)$/
+              res_line = $1
+              conservation_line.split(//).zip(res_line.split(//)).each do |elem|
+                 p elem
+                 ret['cons'] += elem[0] unless elem[1] == '-'
+              end
           end
       end
       return ret
