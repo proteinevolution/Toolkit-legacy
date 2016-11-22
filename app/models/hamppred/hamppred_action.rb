@@ -1,12 +1,6 @@
 class HamppredAction < Action
-  HH = File.join(BIOPROGS, 'hhpred')
   HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
-  HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
-  CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
-  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
-  CSBLAST = File.join(BIOPROGS, 'csblast')
   HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')
-  PSIPRED = File.join(BIOPROGS, 'psipred')
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
                 :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs,:prefilter
@@ -155,19 +149,19 @@ class HamppredAction < Action
   # Prepare FASTA files for 'Show Query Alignemt', HHviz bar graph, and HMM histograms
   def prepare_fasta_hhviz_histograms_etc
     # Reformat query into fasta format ('full' alignment, i.e. 100 maximally diverse sequences, to limit amount of data to transfer)
-    @commands << "#{HHSUITE}/hhfilter -i #{@basename}.a3m -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 100"
-    @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.fas -d 160 -uc"  # max. 160 chars in description
+    @commands << "hhfilter -i #{@basename}.a3m -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 100"
+    @commands << "reformat.pl a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.fas -d 160 -uc"  # max. 160 chars in description
 
     # Reformat query into fasta format (reduced alignment)  (Careful: would need 32-bit version to execute on web server!!)
-    @commands << "#{HHSUITE}/hhfilter -i #{@basename}.a3m -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 50"
-    @commands << "#{HHSUITELIB}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas -uc"
+    @commands << "hhfilter -i #{@basename}.a3m -o #{@local_dir}/#{job.jobid}.reduced.a3m -diff 50"
+    @commands << "reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.reduced.a3m #{@basename}.reduced.fas -uc"
     @commands << "rm #{@local_dir}/#{job.jobid}.reduced.a3m"
 
     # Generate graphical display of hits
-    @commands << "#{HH}/hhviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
+    @commands << "hhviz.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} &> /dev/null"
 
     # Generate profile histograms
-    @commands << "#{HH}/profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
+    @commands << "profile_logos.pl #{job.jobid} #{job.job_dir} #{job.url_for_job_dir} > /dev/null"
   end
 
   # Tool can forward to HHpred in different modes, the following modes are possible:
@@ -207,10 +201,9 @@ class HamppredAction < Action
     params_dump
     cpus = 1
     # Export variable needed for HHSuite
-    @commands << "export  HHLIB=#{HHLIB} "
-    @commands << "export  PATH=$PATH:#{HHSUITE} "
+    @commands << "source #{SETENV}"
      # Create a fasta File later on used for the domain resubmission of the results
-     @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a2m #{@seqfile} #{@basename}.resub_domain.a2m"
+     @commands << "reformat.pl #{@informat} a2m #{@seqfile} #{@basename}.resub_domain.a2m"
 
     if job.parent.nil? || @mode.nil?
       # Create alignment
@@ -218,22 +211,22 @@ class HamppredAction < Action
       if(@prefilter=='psiblast')
          cpus = 4
          @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
-         @commands << "#{HH}/buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &>> #{job.statuslog_path}"
+         @commands << "buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000  #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &>> #{job.statuslog_path}"
       else
           if @maxhhblitsit == '0'
               @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
-              @commands << "#{HHSUITELIB}/reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
+              @commands << "reformat.pl #{@informat} a3m #{@seqfile} #{@basename}.a3m"
           else
               cpus = 8
               @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
-              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+              @commands << "hhblits -cpu 8 -v 2 -i #{@seqfile} #{@E_hhblits} -d #{HHBLITS_DB} -o #{@basename}.hhblits -oa3m #{@basename}.a3m -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
           end
       end
-      @commands << "#{HHSUITELIB}/addss.pl #{@basename}.a3m"
+      @commands << "addss.pl #{@basename}.a3m"
 
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      @commands << "hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     end
 
       if cpus < 4
@@ -263,10 +256,10 @@ class HamppredAction < Action
 
     prepare_fasta_hhviz_histograms_etc
 
-    @commands << "#{HHSUITE}/hhfilter -i #{@basename}.reduced.fas -o #{@basename}.top.a3m -id 90 -qid 0 -qsc 0 -cov 0 -diff 10 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
-    @commands << "#{HHSUITELIB}/reformat.pl a3m fas #{@basename}.top.a3m #{@basename}.repseq.fas -uc 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
-    @commands << "#{HH}/tenrep.rb -i #{@basename}.repseq.fas -h #{@basename}.hhr -p 40 -o #{@basename}.tenrep_file"
-    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.tenrep_file -o #{@basename}.tenrep_file"
+    @commands << "hhfilter -i #{@basename}.reduced.fas -o #{@basename}.top.a3m -id 90 -qid 0 -qsc 0 -cov 0 -diff 10 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "reformat.pl a3m fas #{@basename}.top.a3m #{@basename}.repseq.fas -uc 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "tenrep.rb -i #{@basename}.repseq.fas -h #{@basename}.hhr -p 40 -o #{@basename}.tenrep_file"
+    @commands << "parse_jalview.rb -i #{@basename}.tenrep_file -o #{@basename}.tenrep_file"
 
 
     logger.debug "L272 Commands:\n"+@commands.join("\n")
