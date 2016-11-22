@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 class HhpredAction < Action
-  HH = File.join(BIOPROGS, 'hhpred')
-  HHBLITS = File.join(BIOPROGS, 'hhblits')
-  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
-  CAL_HHM = File.join(DATABASES,'hhpred','cal.hhm')
-  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
-  CSBLAST = File.join(BIOPROGS, 'csblast')
   HHBLITS_DB = File.join(DATABASES, 'hhblits','uniprot20')  
-  PSIPRED = File.join(BIOPROGS, 'psipred')  
-  
+  HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')  
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
                 :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs,:prefilter
@@ -225,9 +218,7 @@ class HhpredAction < Action
     a3mFile = "#{@basename}.a3m"
     # Export variable needed for HHSuite
     @commands << "source #{SETENV}"
-    @commands << "export  HHLIB=#{HHLIB} "
-    @commands << "export  PATH=$PATH:#{HHSUITE} "
-     # Create a fasta File later on used for the domain resubmission of the results
+    # Create a fasta File later on used for the domain resubmission of the results
 
     if job.parent.nil? || @mode.nil?
       msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
@@ -252,7 +243,7 @@ class HhpredAction < Action
           else
               cpus = 8
               @commands << "echo 'Running HHblits for MSA Generation... ...' >> #{job.statuslog_path}"
-              @commands << "#{HHSUITE}/hhblits -cpu 8 -v 2 -i #{@basename}.resub_domain.a2m #{@E_hhblits} -d #{HHBLITS_DB} -o #{@basename}.hhblits -oa3m #{a3mFile} -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+              @commands << "hhblits -cpu 8 -v 2 -i #{@basename}.resub_domain.a2m #{@E_hhblits} -d #{HHBLITS_DB} -o #{@basename}.hhblits -oa3m #{a3mFile} -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
           end
       end
       @commands << "addss.pl #{a3mFile}"
@@ -260,7 +251,7 @@ class HhpredAction < Action
     if job.parent.nil? || @mode.nil? || @mode == "querymsa"
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      @commands << "hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     end
 
     if @mode == 'hhsenser'
@@ -276,14 +267,14 @@ class HhpredAction < Action
       @commands << "cp #{@basename}-Y.a3m #{a3mFile}"
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      @commands << "hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     end
 
     if @mode == 'realign'
 
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-      @commands << "#{HHSUITE}/hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      @commands << "hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
 
       # If cov_min is 20 and qid_min is 0, we can realign with hhm files instead of a3m files ($hhrealign_options="-hhm").
       # This speeds up realignment a lot because we don't have to filter all template alignments.
@@ -315,17 +306,17 @@ class HhpredAction < Action
 
       # HHsearch with query HMM against HMM database
       @commands << "echo 'Searching #{@dbnames} ...' >> #{job.statuslog_path}"
-      @commands << "#{HHSUITE}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs #{HHBLITS}/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "#{HHSUITE}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs ${HHLIB}/data/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     end
 
     prepare_fasta_hhviz_histograms_etc
     
     @commands << "reformat.pl a3m fas #{a3mFile} #{@basename}.full.fas "
 
-    @commands << "#{HHSUITE}/hhfilter -i #{@basename}.reduced.fas -o #{@basename}.top.a3m -id 90 -qid 0 -qsc 0 -cov 0 -diff 10 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "hhfilter -i #{@basename}.reduced.fas -o #{@basename}.top.a3m -id 90 -qid 0 -qsc 0 -cov 0 -diff 10 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     @commands << "reformat.pl a3m fas #{@basename}.top.a3m #{@basename}.repseq.fas -uc 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
-    @commands << "#{HH}/tenrep.rb -i #{@basename}.repseq.fas -h #{@basename}.hhr -p 40 -o #{@basename}.tenrep_file"
-    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.tenrep_file -o #{@basename}.tenrep_file"
+    @commands << "tenrep.rb -i #{@basename}.repseq.fas -h #{@basename}.hhr -p 40 -o #{@basename}.tenrep_file"
+    @commands << "parse_jalview.rb -i #{@basename}.tenrep_file -o #{@basename}.tenrep_file"
 
 
     logger.debug "L332 Commands:\n"+@commands.join("\n")
