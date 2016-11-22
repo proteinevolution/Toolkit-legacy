@@ -1,5 +1,4 @@
 class Hh3dQuerytemplAction < Action
-	HH = File.join(BIOPROGS, 'hhpred')
 	TMALIGN = File.join(BIOPROGS, 'TMalign')
 	FAST = File.join(BIOPROGS, 'fast')
 	
@@ -36,7 +35,6 @@ class Hh3dQuerytemplAction < Action
   
 	def perform
 		params_dump
-		
 		logger.debug "Methode: #{@method}"
 		
 		case @method
@@ -72,7 +70,7 @@ class Hh3dQuerytemplAction < Action
 		end
 		
 		# Superpose the template with the query structure and write the result into basename.templ.pdb
-		command = "#{HH}/superpose3d -v 2 -col -rms #{@rms} #{@basename}.index #{@templpdb} #{@querypdb} #{@basename}.templ.pdb > #{@basename}.sup3d_out 2>&1"
+		command = "source #{SETENV}; superpose3d -v 2 -col -rms #{@rms} #{@basename}.index #{@templpdb} #{@querypdb} #{@basename}.templ.pdb > #{@basename}.sup3d_out 2>&1 ; source #{UNSETENV}"
 		logger.debug "Command: #{command} "
 		system(command)
 			

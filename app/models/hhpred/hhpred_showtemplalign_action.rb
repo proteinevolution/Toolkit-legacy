@@ -1,5 +1,4 @@
 class HhpredShowtemplalignAction < Action
-  HH = File.join(BIOPROGS, 'hhpred')
   
   def do_fork?
     return false
@@ -94,19 +93,20 @@ class HhpredShowtemplalignAction < Action
   
   def perform
     params_dump
-    
+    @commands << "source #{SETENV}"
+
     # Generate FASTA formatted file for JALVIEW?
     if (@oldhit.nil? || !File.exist?(@basename + ".template.fas"))
       # Filter out 100 most different sequences
-      @commands << "#{HH}/hhfilter -i #{@dir}/#{@seq_name}.a3m -o #{@local_dir}/#{job.jobid}.template.reduced.a3m -diff 100"
-      @commands << "#{HH}/reformat.pl a3m fas #{@local_dir}/#{job.jobid}.template.reduced.a3m #{@basename}.template.fas"
+      @commands << "hhfilter -i #{@dir}/#{@seq_name}.a3m -o #{@local_dir}/#{job.jobid}.template.reduced.a3m -diff 100"
+      @commands << "reformat.pl a3m fas #{@local_dir}/#{job.jobid}.template.reduced.a3m #{@basename}.template.fas"
     end
     
     # Generate FASTA formatted file for JALVIEW (reduced alignment)		    		
     if (@oldhit.nil? || !File.exist?(@basename + ".template.reduced.fas"))
       # Filter out 50 most different sequences
-      @commands << "#{HH}/hhfilter -i #{@dir}/#{@seq_name}.a3m -o #{@local_dir}/#{job.jobid}.template.reduced.a3m -diff 50"
-      @commands << "#{HH}/reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.template.reduced.a3m #{@basename}.template.reduced.fas"
+      @commands << "hhfilter -i #{@dir}/#{@seq_name}.a3m -o #{@local_dir}/#{job.jobid}.template.reduced.a3m -diff 50"
+      @commands << "reformat.pl -r a3m fas #{@local_dir}/#{job.jobid}.template.reduced.a3m #{@basename}.template.reduced.fas"
       @commands << "rm #{@local_dir}/#{job.jobid}.template.reduced.a3m"
     end
 
@@ -114,11 +114,12 @@ class HhpredShowtemplalignAction < Action
     when 'fasta'
       @commands << "cp #{@basename}.template.fas #{@basename}.alnout"
     when 'clustal'
-      @commands << "#{HH}/reformat.pl a3m clu #{@dir}/#{@seq_name}.a3m #{@basename}.alnout"
+      @commands << "reformat.pl a3m clu #{@dir}/#{@seq_name}.a3m #{@basename}.alnout"
     else
       @commands << "cp #{@dir}/#{@seq_name}.a3m #{@basename}.alnout"
     end
     
+    @commands << "source #{UNSETENV}"
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'queue' => QUEUES[:immediate]})
   end

@@ -1,5 +1,4 @@
 class Hh3dTemplAction < Action
-  HH = File.join(BIOPROGS, 'hhpred')
   
   def do_fork?
     return false
