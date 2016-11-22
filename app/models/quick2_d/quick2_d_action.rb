@@ -24,20 +24,9 @@ class Quick2DAction < Action
 
   DUMMYDB     = File.join(DATABASES, 'do_not_delete', 'do_not_delete')
   
-if LOCATION == "Munich" && LINUX == 'SL6'
-    REFORMAT    = "perl "+File.join(BIOPROGS, 'perl', 'reformat.pl')
-    BUILDALI    = "perl "+File.join(BIOPROGS, 'hhpred', 'buildali.pl')
-    PHOBIUS     = "perl "+File.join(BIOPROGS,'phobius','phobius.pl')
-    MEMSATSVM   = "perl "+File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
-else
-    REFORMAT    = File.join(BIOPROGS, 'perl', 'reformat.pl')
-    REFORMAT2   = File.join(BIOPROGS, 'hhpred', 'reformat.pl') # Not set in 'Munich'
-    BUILDALI    = File.join(BIOPROGS, 'hhpred', 'buildali.pl')
-    PHOBIUS     = File.join(BIOPROGS,'phobius','phobius.pl')
-    MEMSATSVM = File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
-end
-
-
+  REFORMAT    = File.join(BIOPROGS, 'perl', 'reformat.pl')
+  PHOBIUS     = File.join(BIOPROGS,'phobius','phobius.pl')
+  MEMSATSVM = File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
 
   #Validation
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail
@@ -153,7 +142,7 @@ end
     commands << "source #{SETENV}"
     if @psiblast
       commands << "echo 'Running PSI-BLAST [buildali] ' >> #{flash['logfile']}"
-      commands << "#{BUILDALI} -v 5 -diff 200 -noss -n #{@psiblastit} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
+      commands << "buildali.pl -v 5 -diff 200 -noss -n #{@psiblastit} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
 
       commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
       commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
@@ -170,9 +159,8 @@ end
         commands << "echo 'There are more than 200 sequences!' >> #{flash['logfile']}"
         commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
         if !File.exist?(flash['a3mfile'])
-	  #  reformat.pl fas sto '*.fasta' .stockholm
- 	  commands << "#{REFORMAT2} fas a3m #{flash['fasfile']} #{flash['a3mfile']} -M first"
-          #commands << "#{REFORMAT} -i=fas -o=a3m -f=#{flash['fasfile']} -a=#{flash['a3mfile']} -M first"
+	       #  reformat.pl fas sto '*.fasta' .stockholm
+ 	      commands << "reformat.pl fas a3m #{flash['fasfile']} #{flash['a3mfile']} -M first"
         end
         commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
         commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['fasfile']}"
