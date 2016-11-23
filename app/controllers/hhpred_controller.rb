@@ -36,30 +36,31 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @maxseqval = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']    
     @prefilter_values = ['hhblits','psiblast']
     @prefilter_labels = ['HHblits', 'Psiblast']
-    searchpat = File.join(DATABASES, @tool['name'], 'new_dbs', '*')
-    dbvalues_pre = Dir.glob(searchpat)
+
+    # Configure databases
+    @dbvalues = IO.readlines(File.join(DATABASES, "hh-suite", "DBLIST")).map {|db| db.strip!;  File.join(DATABASES, "hh-suite", db, db) }
     
-    @dbvalues = Array.new
     
     # Sort list of directories according to order given in sortlist 
     # probably SCOPe* directories should be renamed do scop*
-    sortlist = Array["\/pdb70", "\/pdb_on_hold","\/SCOPe95","\/SCOPe70", "\/scop95", "\/scop70", "\/scop25", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test", "\/Pfalciparum" ]
-    if (is_internal?(request.remote_ip))
-      sortlist.push("\/stac") # DB of Mateusz Korycinski
-    end
+#    sortlist = Array["\/pdb70", "\/pdb_on_hold","\/SCOPe95","\/SCOPe70", "\/scop95", "\/scop70", "\/scop25", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test", "\/Pfalciparum" ]
+#    sortlist = Array["\/pdb70"]
+    #if (is_internal?(request.remote_ip))
+    #  sortlist.push("\/stac") # DB of Mateusz Korycinski
+    #end
     # Allow non-standard libraries only on internal server:
-    if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\\w+") end
-    if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
-    if (LOCATION == "Munich" && !@user.nil? && (@user.id == 119 || @user.groups.include?('admin'))) then sortlist.push("\/Proteasome") end
-    sortlist.each do |el|
-      dbvalues_pre.dup.each do |val|
-        if (!val.index(/#{el}/).nil?)
-          @dbvalues.push(val)
-          dbvalues_pre.delete(val)
-          next;
-        end
-      end
-    end
+#     if (ENV['RAILS_ENV'] == 'development') then sortlist.push("\\w+") end
+#    if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
+#    if (LOCATION == "Munich" && !@user.nil? && (@user.id == 119 || @user.groups.include?('admin'))) then sortlist.push("\/Proteasome") end
+#    sortlist.each do |el|
+#      dbvalues_pre.dup.each do |val|
+#        if (!val.index(/#{el}/).nil?)
+#          @dbvalues.push(val)
+#          dbvalues_pre.delete(val)
+#          next;
+#        end
+#      end
+#    end
 
     @dblabels = @dbvalues.collect{|e| File.basename(e)}
     @default_db = @dbvalues[0]
@@ -67,7 +68,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     @genome_dbvalues = Array.new
 
     ['eucarya', 'archaea', 'bacteria'].each do |org|
-      genomes_searchpat = File.join(DATABASES, @tool['name'], 'genomes', org, '*')
+      genomes_searchpat = File.join(DATABASES, "hh-suite", 'genomes', org, '*')
       genomes_dbvalues_pre = (Dir.glob(genomes_searchpat)).sort!
       @genome_dbvalues.concat(genomes_dbvalues_pre)
     end

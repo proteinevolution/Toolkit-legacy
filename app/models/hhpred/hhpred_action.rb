@@ -4,7 +4,8 @@ class HhpredAction < Action
   HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')  
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail,
-                :width, :Pmin, :maxlines, :hhpred_dbs, :genomes_hhpred_dbs,:prefilter
+                :width, :Pmin, :maxlines, :hhpred_dbs, #:genomes_hhpred_dbs,
+                :prefilter
 
   validates_input(:sequence_input, :sequence_file, {:informat_field => :informat,
                                                     :informat => 'fas',
@@ -19,7 +20,7 @@ class HhpredAction < Action
 
   validates_email(:mail)
 
-  validates_db(:hhpred_dbs, {:genomes_dbs => 'genomes_hhpred_dbs', :on => :create})
+ # validates_db(:hhpred_dbs, {:genomes_dbs => 'genomes_hhpred_dbs', :on => :create})
 
   validates_shell_params(:jobid, :mail, :width, :Pmin, :maxlines, {:on => :create})
 
@@ -39,12 +40,16 @@ class HhpredAction < Action
 
     @prefilter = params['prefilter'] ? params['prefilter'] : 'hhblits'
     
-    @dbs = params['hhpred_dbs'].nil? ? "" : params['hhpred_dbs']
-    if @dbs.kind_of?(Array) then @dbs = @dbs.join(' ') end
-    @genomes_dbs = params['genomes_hhpred_dbs'].nil? ? "" : params['genomes_hhpred_dbs']
-    if @genomes_dbs.kind_of?(Array) then @genomes_dbs = @genomes_dbs.join(' ') end
+    @dbs = params['hhpred_dbs'] 
+ 
+    # TODO Need to check whether hhpred supports multiple databases
+    #if @dbs.kind_of?(Array) then @dbs = @dbs.join(' ') end
     
-    @dbs = @dbs + " " + @genomes_dbs
+    # TODO Genome databases currently not supported
+    #@genomes_dbs = params['genomes_hhpred_dbs'].nil? ? "" : params['genomes_hhpred_dbs']
+    #if @genomes_dbs.kind_of?(Array) then @genomes_dbs = @genomes_dbs.join(' ') end
+    #@dbs = @dbs + " " + @genomes_dbs 
+    
     @maxhhblitsit = params['maxhhblitsit'].nil? ? '2' : params['maxhhblitsit']
     @E_hhblits = params["Ehhblitsval"].nil? ? '' : "-e "+params["Ehhblitsval"]
     @cov_min = params["cov_min"].nil? ? '' : '-cov '+params["cov_min"]
@@ -86,32 +91,32 @@ class HhpredAction < Action
   def process_databases
 
     # Expand cdd and interpro as list of member databases
-    if (@dbs =~ /cdd_/)
+#    if (@dbs =~ /cdd_/)
       # kft Dec 2014: In Aug 2012, Jörn replaced usage of pfam by pfamA here.
       # Changed back to pfam now, because pfam meets the official documentation
       # of cdd and the reason of replacing it by pfamA is unknown.
       # (This change was discussed with Hongbo, who appreciated it, too)
-      ['pfam_*', 'smart_*', 'KOG_*', 'COG_*', 'cd_*'].each do |db|
-        db_path = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', db))[0]
-        if (!db_path.nil?)
-          @dbs += " " + db_path
-        end
-      end
+#      ['pfam_*', 'smart_*', 'KOG_*', 'COG_*', 'cd_*'].each do |db|
+#        db_path = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', db))[0]
+#        if (!db_path.nil?)
+#          @dbs += " " + db_path
+#        end
+#      end
 #      @dbs += " " + Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pfam_*'))[0]
 #      @dbs += " " + Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'smart_*'))[0]
 #      @dbs += " " + Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'KOG_*'))[0]
 #      @dbs += " " + Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'COG_*'))[0]
 #      @dbs += " " + Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'cd_*'))[0]
 
-      @dbs.gsub!(/\s*\S+\/cdd_\S+\s+/, ' ')
-    end
-    if (@dbs =~ /interpro_/)
-      ['pfamA_*', 'smart_*', 'panther_*', 'tigrfam_*', 'pirsf_*', 'supfam_*', 'CATH_*'].each do |db|
-        db_path = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', db))[0]
-        if (!db_path.nil?)
-          @dbs += " " + db_path
-        end
-      end
+#      @dbs.gsub!(/\s*\S+\/cdd_\S+\s+/, ' ')
+#    end
+#    if (@dbs =~ /interpro_/)
+#      ['pfamA_*', 'smart_*', 'panther_*', 'tigrfam_*', 'pirsf_*', 'supfam_*', 'CATH_*'].each do |db|
+#        db_path = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', db))[0]
+#        if (!db_path.nil?)
+#          @dbs += " " + db_path
+#        end
+#      end
 
 #      @dbs += " " + Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pfamA_*'))[0]
 #      @dbs += " " + Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'smart_*'))[0]
@@ -121,40 +126,42 @@ class HhpredAction < Action
 #      @dbs += " " + Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'supfam_*'))[0]
 #      @dbs += " " + Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'CATH_*'))[0]
 
-      @dbs.gsub!(/\s*\S+\/interpro_\S+\s+/, ' ')
-    end
+#      @dbs.gsub!(/\s*\S+\/interpro_\S+\s+/, ' ')
+#    end
 
     # Replace pdb70_* with new version of pdb
-    newpdb = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pdb70_*'))[0]
-    @dbs.gsub!(/\S*pdb70_\S+/, newpdb)
+    # No longer needed with new hh-suite 3 version
+    #newpdb = Dir.glob(File.join(DATABASES, 'hhpred', 'new_dbs', 'pdb70_*'))[0]
+    #@dbs.gsub!(/\S*pdb70_\S+/, newpdb)
 
-    @dbs = @dbs.split(' ')
-    @dbs = @dbs.uniq.join(' ')
+#    @dbs = @dbs.split(' ')
+#    @dbs = @dbs.uniq.join(' ')
 
     # Save databases for realign
     @dbs_realign = @dbs.clone
 
     # Append /db/scop.hhm or /db/pdb.hhm or /db/cdd.hhm etc. to every database directory
-    dbs=""
-    @dbs.split(/\s+/).each do |db|
-      if db.gsub!(/(cdd|COG|KOG|\/pfam|smart|cd|pfamA|pfamB)(_\S*)/, '\1\2/db/\1.hhm')
+#    dbs=""
+#    @dbs.split(/\s+/).each do |db|
+#      if db.gsub!(/(cdd|COG|KOG|\/pfam|smart|cd|pfamA|pfamB)(_\S*)/, '\1\2/db/\1.hhm')
 #      elsif db.gsub!(/(scop|pdb)([^_]\S*)/, '\1\2/db/\1.hhm')
-      elsif db.gsub!(/(scop|pdb)(\S*)/, '\1\2/db/\1.hhm')
-      elsif db.gsub!(/SCOPe(\S*)/, 'SCOPe\1/db/scop.hhm')
-      elsif db.gsub!(/(panther|tigrfam|pirsf|supfam|CATH)(_\S*)/, '\1\2/db/\1.hmm')
-      elsif db.gsub!(/([^\/]+)$/, '\1/db/\1.hhm' )
-      end
-      dbs += db+' '
-    end
-    dbs.strip!
+#      elsif db.gsub!(/(scop|pdb)(\S*)/, '\1\2/db/\1.hhm')
+#      elsif db.gsub!(/SCOPe(\S*)/, 'SCOPe\1/db/scop.hhm')
+#      elsif db.gsub!(/(panther|tigrfam|pirsf|supfam|CATH)(_\S*)/, '\1\2/db/\1.hmm')
+#      elsif db.gsub!(/([^\/]+)$/, '\1/db/\1.hhm' )
+#      end
+#      dbs += db+' '
+#    end
+#    dbs.strip!
 
-    # Extract names from database directories for echo in log file
-    @dbnames = dbs.dup
-    @dbnames.gsub!(/\S*\/([^\/]*)\/db\/\S*/, '\1,')
-    @dbnames.gsub!(/,\s*$/, '')
-    @dbnames.gsub!(/,\s*(\S+)$/, ' and \1 databases')
-
-    @dbs = dbs
+    @dbnames = ""
+#    # Extract names from database directories for echo in log file
+#    @dbnames = @dbs.dup
+#    @dbnames.gsub!(/\S*\/([^\/]*)\/db\/\S*/, '\1,')
+#    @dbnames.gsub!(/,\s*$/, '')
+#    @dbnames.gsub!(/,\s*(\S+)$/, ' and \1 databases')
+#
+#    @dbs = dbs
   end
 
   # Prepare FASTA files for 'Show Query Alignemt', HHviz bar graph, and HMM histograms
@@ -306,7 +313,7 @@ class HhpredAction < Action
 
       # HHsearch with query HMM against HMM database
       @commands << "echo 'Searching #{@dbnames} ...' >> #{job.statuslog_path}"
-      @commands << "#{HHSUITE}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs ${HHLIB}/data/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs ${HHLIB}/data/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     end
 
     prepare_fasta_hhviz_histograms_etc
