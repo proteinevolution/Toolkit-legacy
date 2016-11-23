@@ -223,26 +223,29 @@ class HhpredAction < Action
     params_dump
     cpus = 1
     a3mFile = "#{@basename}.a3m"
-    # Export variable needed for HHSuite
     @commands << "source #{SETENV}"
-    # Create a fasta File later on used for the domain resubmission of the results
 
+
+    
+    # Create a fasta File later on used for the domain resubmission of the results
+    # We need to do this because there is no parent job 
     if job.parent.nil? || @mode.nil?
       msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
       a2mBase = "#{@basename}.resub_domain"
       a2mFile = "#{a2mBase}.a2m"
       @commands << "reformat.pl #{@informat} a2m #{@seqfile} #{a2mFile}#{msa_factor}"
-      # Create alignment
-
+    
+      # USE PSI-BLAST  
       if(@prefilter=='psiblast')
          cpus = 4
          @commands << "echo 'Running Psiblast for MSA Generation' >> #{job.statuslog_path}"
          if (@informat == "a2m" || @informat == "a3m")
-           @commands << "buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000 #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &>> #{job.statuslog_path}"
+           @commands << "buildali.pl -nodssp -cpu #{cpus} -v #{@v} -n #{@maxhhblitsit} -diff 1000 #{@E_hhblits} #{@cov_min} -#{@informat} #{@seqfile} &>> #{job.statuslog_path}"
          else
-           @commands << "buildali.pl -nodssp -cpu 4 -v #{@v} -n #{@maxhhblitsit} -diff 1000 #{@E_hhblits} #{@cov_min} -a2m #{a2mFile} &>> #{job.statuslog_path}"
+           @commands << "buildali.pl -nodssp -cpu #{cpus} -v #{@v} -n #{@maxhhblitsit} -diff 1000 #{@E_hhblits} #{@cov_min} -a2m #{a2mFile} &>> #{job.statuslog_path}"
            @commands << "mv #{a2mBase}.a3m #{a3mFile}"
          end
+      # USE HHblits   
       else
           if @maxhhblitsit == '0'
             @commands << "echo 'No MSA Generation Set... ...' >> #{job.statuslog_path}"
@@ -253,13 +256,21 @@ class HhpredAction < Action
               @commands << "hhblits -cpu 8 -v 2 -i #{@basename}.resub_domain.a2m #{@E_hhblits} -d #{HHBLITS_DB} -o #{@basename}.hhblits -oa3m #{a3mFile} -n #{@maxhhblitsit} -mact 0.35 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
           end
       end
+
+      # Add secondary structure annotation
       @commands << "addss.pl #{a3mFile}"
     end
+    #######################################################################################################################################################################
+    #######################################################################################################################################################################
+
+    # Build Profile. This can also be done directly by HHblits, but we get more control this way
     if job.parent.nil? || @mode.nil? || @mode == "querymsa"
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
       @commands << "hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{a3mFile} -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     end
+    #######################################################################################################################################################################
+    #######################################################################################################################################################################
 
     if @mode == 'hhsenser'
       if cpus < 4
@@ -313,7 +324,7 @@ class HhpredAction < Action
 
       # HHsearch with query HMM against HMM database
       @commands << "echo 'Searching #{@dbnames} ...' >> #{job.statuslog_path}"
-      @commands << "hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs ${HHLIB}/data/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      @commands << "hhsearch -cpu #{cpus} -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs ${HHLIB}/data/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
     end
 
     prepare_fasta_hhviz_histograms_etc

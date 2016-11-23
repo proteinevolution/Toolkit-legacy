@@ -10,7 +10,6 @@ class HhmakemodelAction < Action
     
     @mode = params['mode']
     hits = params['hits']		
-    
     logger.debug "Mode: #{@mode}"		
     
     @hits = hits.split(' ')		
@@ -42,9 +41,8 @@ class HhmakemodelAction < Action
       @commands << "selectTemplates.pl -i #{@parent_basename} -o #{@basename} -mode 'm' &> #{job.statuslog_path}"      
       prepare_fasta_hhviz_histograms_etc
     else
-      #hhmakemodel aufrufen
       #old: @commands << "#{HH}/hhmakemodel.pl -v 2 -m #{@hits} -i #{@parent_basename}.hhr -pir #{@basename}.out"
-      @commands << "checkTemplates.pl -i #{@parent_basename}.hhr -q #{@parent_basename}.a3m -pir #{@basename}.out -m #{@hits} -hhdbs #{@dbs} &> #{job.statuslog_path}" 
+      @commands << "checkTemplates.pl -i #{@parent_basename}.hhr -q #{@parent_basename}.a3m -pir #{@basename}.out -m #{@hits}  &> #{job.statuslog_path}" 
     end    
    
     @commands << "source #{UNSETENV}" 
