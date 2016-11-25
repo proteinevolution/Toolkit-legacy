@@ -34,7 +34,7 @@
 <div style="min-height: 80px;">
     <div class="row">
          <%= form_label("MSA Generation Method", "msa_generation_label") %>
-         <%= form_radio_buttons("msa_generation_method", @msa_gen_values, @msa_gen_labels, "input_only", "&nbsp;") %>
+         <%= form_radio_buttons("msa_generation_method", @msa_gen_values, @msa_gen_labels, "psiblast", "&nbsp;") %>
     </div>
     <div class="row" id="max_iter_row">
          <%= form_label("Maximal number of Iterations", "max_iter_label") %>
@@ -257,8 +257,10 @@
 
 (function() {
 
-  document.getElementById("max_iter_row").style.display = "none";
+  document.getElementById("max_iter_row").style.display = "block";
   document.getElementById("hhblitsdb_row").style.display = "none";
+
+  document.getElementById("msa_generation_method_psiblast").checked = true;
 
  var nodeList = document.getElementsByName("msa_generation_method");
  for (var i = 0; i < nodeList.length; ++i) {
