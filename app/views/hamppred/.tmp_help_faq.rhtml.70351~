@@ -263,7 +263,7 @@ FASTA alignments may be much longer than 6000 columns. They only get trimmed if 
 sequence</i> contains more than 6000 residues.
 However, a few iterations of PSI-BLAST search with sequences of 2000 residues or longer is very 
 time-consuming. We advise you to cut the sequence down into smaller blocks of less than 2000 residues
-and search with these parts seperately.
+and search with these parts separately.
 </div>
 <div class="top"><a href="#"><img src="/images/top.gif" border="0" style="float: right;"></a></div>
 
@@ -304,7 +304,7 @@ results.
 <b>Can I search several databases at a time?</b>
 <div class="row">
 HHpred allows you to select several databases from the menue by holding down the Control key during selection.
-Alternatively, you may submit several jobs, one for each database, seperately. 
+Alternatively, you may submit several jobs, one for each database, separately. 
 Just click 'Submit new job' or 'Submit with parameters of this job'. 
 Each job gets a job-ID (a five-digit number) that appears in the list of recent jobs in the light-blue pane 
 on the left. You can click on any of these job IDs to check the status and view the results. 

@@ -3,7 +3,6 @@ require 'ftools'
 class PsiBlastpAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   BLASTP = File.join(BIOPROGS, 'blastplus/bin')
-  HH = File.join(BIOPROGS, 'hhpred')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   REFORMAT = File.join(BIOPROGS,'reformat')
   
@@ -233,13 +232,13 @@ class PsiBlastpAction < Action
 	   @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -Q #{@basename}.fasta -e #{@expect} -fas -no_link -blastplus"   
     end
 
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
-    @commands << "if [ -s #{@basename}.ralign ]; then hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
+    @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
+    @commands << "if [ -s #{@basename}.ralign ]; then hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50 1>  #{File.join(job.job_dir, "psiblast.out")} 2>  #{File.join(job.job_dir, "psiblast.err")}       ; fi"
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     # the result of parse_jalview here seems to be overwritten immediatedly
     # and, additionally, relating to the wrong input file.
     # @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
-    @commands << "#{HH}/reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
+    @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
 
     
     @commands << "source #{UNSETENV}"
