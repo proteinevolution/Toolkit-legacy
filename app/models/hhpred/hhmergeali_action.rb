@@ -1,5 +1,4 @@
 class HhmergealiAction < Action
-  HH = File.join(BIOPROGS, 'hhpred')
   
   attr_accessor :hits
 
@@ -71,19 +70,21 @@ class HhmergealiAction < Action
   def perform
     params_dump
 
+    @commands << "source #{SETENV}"
     # Make FASTA alignment from query and selected templates (from hhr file). -N: use $parentId as query name
-    @commands << "#{HH}/hhmakemodel.pl -v 2 -N -m #{@seqs} -i #{@parent_basename}.hhr -fas #{@basename}.qt.fas -q #{@parent_basename}.a3m";
+    @commands << "hhmakemodel.pl -v 2 -N -m #{@seqs} -i #{@parent_basename}.hhr -fas #{@basename}.qt.fas -q #{@parent_basename}.a3m";
 
     # Merge all alignments whose sequences are given in $basename.qt.fas
-    @commands << "#{HH}/mergeali.pl #{@basename}.qt.fas #{@basename}.qt.a3m -d #{@parent_jobdir} #{@dirs} -diff 100 -mark";
+    @commands << "mergeali.pl #{@basename}.qt.fas #{@basename}.qt.a3m -d #{@parent_jobdir} #{@dirs} -diff 100 -mark";
 
-    @commands << "#{HH}/hhfilter -diff 100 -i #{@basename}.qt.a3m -o #{@basename}.qt.reduced.a3m";
+    @commands << "hhfilter -diff 100 -i #{@basename}.qt.a3m -o #{@basename}.qt.reduced.a3m";
 
-    @commands << "#{HH}/reformat.pl a3m fas -r -noss #{@basename}.qt.reduced.a3m #{@basename}.qt.reduced.fas";
-    @commands << "#{HH}/reformat.pl a3m fas -noss #{@basename}.qt.a3m #{@basename}.qt.fas";
+    @commands << "reformat.pl a3m fas -r -noss #{@basename}.qt.reduced.a3m #{@basename}.qt.reduced.fas";
+    @commands << "reformat.pl a3m fas -noss #{@basename}.qt.a3m #{@basename}.qt.fas";
 
     @commands << "gzip -c #{@basename}.qt.fas >  #{@basename}.qt.fas.gz ";
     @commands << "gzip -c #{@basename}.qt.reduced.fas >  #{@basename}.qt.reduced.fas.gz ";
+    @commands << "source #{UNSETENV}"
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)

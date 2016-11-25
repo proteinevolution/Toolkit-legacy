@@ -1,5 +1,4 @@
 class HhpredCoilsAction < Action
-	HH = File.join(BIOPROGS, 'hhpred')
   
   	def do_fork?
     	return false
@@ -11,12 +10,14 @@ class HhpredCoilsAction < Action
           @prepfile = @basename+"_filtered_for_coils.a3m"
           @outfile = @basename+"_filtered_for_coils.fas"
           @commands = []
+          @commands << "source #{SETENV}"
           # Filter query alignment
-          @commands << "#{HH}/hhfilter -i #{@infile} -o #{@prepfile} -qsc 0.7 -diff 0 &> /dev/null"
+          @commands << "hhfilter -i #{@infile} -o #{@prepfile} -qsc 0.7 -diff 0 &> /dev/null"
 
           # Reformat
-          @commands << "#{HH}/reformat.pl a3m fas #{@prepfile} #{@outfile} -r -noss &> /dev/null"
+          @commands << "reformat.pl a3m fas #{@prepfile} #{@outfile} -r -noss &> /dev/null"
 
+          @commands << "source #{UNSETENV}"
           logger.debug "Commands:\n"+@commands.join("\n")
           queue.submit(@commands, true, {'queue' => QUEUES[:immediate]})
   	end

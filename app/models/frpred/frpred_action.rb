@@ -1,7 +1,6 @@
 class FrpredAction < Action
   
   FRPRED = File.join(BIOPROGS, 'frpred')
-  HH = File.join(BIOPROGS, 'hhpred')
   if LOCATION == "Munich" && LINUX == 'SL6'
     REFORMAT = "perl "+File.join(BIOPROGS, 'hhpred', 'reformat.pl')
     FRPREDPERL = "perl "+File.join(BIOPROGS, 'frpred')
