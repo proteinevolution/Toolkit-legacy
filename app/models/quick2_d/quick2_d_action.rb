@@ -23,11 +23,6 @@ class Quick2DAction < Action
 
   DUMMYDB     = File.join(DATABASES, 'do_not_delete', 'do_not_delete')
   
-<<<<<<< HEAD
-  REFORMAT    = File.join(BIOPROGS, 'perl', 'reformat.pl')
-  PHOBIUS     = File.join(BIOPROGS,'phobius','phobius.pl')
-  MEMSATSVM = File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
-=======
 if LOCATION == "Munich" && LINUX == 'SL6'
     REFORMAT    = "perl "+File.join(BIOPROGS, 'perl', 'reformat.pl')
     PHOBIUS     = "perl "+File.join(BIOPROGS,'phobius','phobius.pl')
@@ -37,9 +32,6 @@ else
     PHOBIUS     = File.join(BIOPROGS,'phobius','phobius.pl')
     MEMSATSVM = File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
 end
-
-
->>>>>>> quick2d_maint
 
   #Validation
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail
@@ -158,11 +150,7 @@ end
     commands << "source #{SETENV}"
     if @msa_generation_method == "psiblast"
       commands << "echo 'Running PSI-BLAST [buildali] ' >> #{flash['logfile']}"
-<<<<<<< HEAD
-      commands << "buildali.pl -v 5 -diff 200 -noss -n #{@psiblastit} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
-=======
       commands << "buildali.pl -v 5 -diff 200 -noss -n #{@max_iter} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
->>>>>>> quick2d_maint
 
       commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
       commands << "getDiffSequences.rb #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
@@ -186,14 +174,9 @@ end
         commands << "echo 'There are more than 200 sequences!' >> #{flash['logfile']}"
         commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
         if !File.exist?(flash['a3mfile'])
-<<<<<<< HEAD
-	       #  reformat.pl fas sto '*.fasta' .stockholm
- 	      commands << "reformat.pl fas a3m #{flash['fasfile']} #{flash['a3mfile']} -M first"
-=======
 	  #  reformat.pl fas sto '*.fasta' .stockholm
  	  commands << "reformat.pl fas a3m #{flash['fasfile']} #{flash['a3mfile']} -M first"
           #commands << "#{REFORMAT} -i=fas -o=a3m -f=#{flash['fasfile']} -a=#{flash['a3mfile']} -M first"
->>>>>>> quick2d_maint
         end
         commands << "ruby getDiffSequences.rb #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
         commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['fasfile']}"
