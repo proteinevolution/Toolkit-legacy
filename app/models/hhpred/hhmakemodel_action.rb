@@ -29,7 +29,8 @@ class HhmakemodelAction < Action
     
     FileUtils.copy_file("#{@parent_basename}.a3m", "#{@basename}.a3m")		
     FileUtils.copy_file("#{@parent_basename}.hhm", "#{@basename}.hhm")
-		
+    FileUtils.copy_file("#{@parent_basename}.hhr", "#{@basename}.hhr")
+    FileUtils.copy_file("#{@parent_basename}.start.tab", "#{@basename}.start.tab")
   end
   
   def perform
@@ -38,8 +39,11 @@ class HhmakemodelAction < Action
     @commands << "source #{SETENV}"   
     if (@mode == 'filter')
       #old: @commands << "#{HH}/hhmeta.pl -v 2 -i #{@parent_basename}.hhr -o #{@basename} ... &> #{job.statuslog_path}"
-      @commands << "selectTemplates.pl -i #{@parent_basename} -o #{@basename} -mode 'm' &> #{job.statuslog_path}"      
-      prepare_fasta_hhviz_histograms_etc
+      #@commands << "selectTemplates.pl -i #{@parent_basename} -o #{@basename} -mode 'm' &> #{job.statuslog_path}"      
+       @commands << "selectTemplates.pl  -i #{@basename}  -o #{@basename}_selected_templates.hhr -m 10 &> #{job.statuslog_path}"      
+       
+
+       prepare_fasta_hhviz_histograms_etc
     else
       #old: @commands << "#{HH}/hhmakemodel.pl -v 2 -m #{@hits} -i #{@parent_basename}.hhr -pir #{@basename}.out"
       @commands << "checkTemplates.pl -i #{@parent_basename}.hhr -q #{@parent_basename}.a3m -pir #{@basename}.out -m #{@hits}  &> #{job.statuslog_path}" 
