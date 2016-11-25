@@ -5,7 +5,7 @@ class Quick2DController < ToolController
 		@informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
 		@max_iter_allowed = ['1','2','3','4','5','8']
         @msa_gen_values = ['input_only', 'psiblast', 'hhblits']
-        @msa_gen_labels = ['Input Only', 'PSI-BLAST', 'HHblits']
+        @msa_gen_labels = ['Use custom MSA', 'PSI-BLAST', 'HHblits']
 
         suffix = '.cs219'
 
