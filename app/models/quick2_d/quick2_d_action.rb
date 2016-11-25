@@ -155,7 +155,7 @@ end
       commands << "buildali.pl -v 5 -diff 200 -noss -n #{@max_iter} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
 
       commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
-      commands << "ruby getDiffSequences.rb #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
+      commands << "getDiffSequences.rb #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
 
       commands << "echo 'Reformat a3m to aln fasta' >> #{flash['logfile']}"
       commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['alnfasfile']}"
