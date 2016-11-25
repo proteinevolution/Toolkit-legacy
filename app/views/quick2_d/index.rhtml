@@ -257,10 +257,23 @@
 
 (function() {
 
-  document.getElementById("max_iter_row").style.display = "block";
-  document.getElementById("hhblitsdb_row").style.display = "none";
+  if(document.getElementById("msa_generation_method_psiblast").checked) {
 
-  document.getElementById("msa_generation_method_psiblast").checked = true;
+        document.getElementById("max_iter_row").style.display = "block"; 
+        document.getElementById("hhblitsdb_row").style.display = "none";
+
+  } else if(document.getElementById("msa_generation_method_input_only").checked ) {
+
+        document.getElementById("max_iter_row").style.display = "none";    
+        document.getElementById("hhblitsdb_row").style.display = "none";
+
+  } else if(document.getElementById("msa_generation_method_hhblits").checked ) {
+
+
+         document.getElementById("max_iter_row").style.display = "block"; 
+         document.getElementById("hhblitsdb_row").style.display = "block";
+
+  }
 
  var nodeList = document.getElementsByName("msa_generation_method");
  for (var i = 0; i < nodeList.length; ++i) {
