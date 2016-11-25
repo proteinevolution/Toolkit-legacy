@@ -16,7 +16,6 @@ class Quick2DAction < Action
 #  NCOILSDIR   = File.join(BIOPROGS, 'pcoils')
 #  NCOILS      = File.join(NCOILSDIR, 'run_Coils')
   PROFROST     = File.join(BIOPROGS, 'ruby', 'profRost.rb')
-  DIFFSEQS     = File.join(BIOPROGS, 'ruby', 'getDiffSequences.rb')
   PSIPRED      = File.join(BIOPROGS, 'ruby', 'psipred.rb')
   PREDISI      = File.join(BIOPROGS, 'predisi', 'predisi_q2d.sh')
   
@@ -26,13 +25,10 @@ class Quick2DAction < Action
   
 if LOCATION == "Munich" && LINUX == 'SL6'
     REFORMAT    = "perl "+File.join(BIOPROGS, 'perl', 'reformat.pl')
-    BUILDALI    = "perl "+File.join(BIOPROGS, 'hhpred', 'buildali.pl')
     PHOBIUS     = "perl "+File.join(BIOPROGS,'phobius','phobius.pl')
     MEMSATSVM   = "perl "+File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
 else
     REFORMAT    = File.join(BIOPROGS, 'perl', 'reformat.pl')
-    REFORMAT2   = File.join(BIOPROGS, 'hhpred', 'reformat.pl') # Not set in 'Munich'
-    BUILDALI    = File.join(BIOPROGS, 'hhpred', 'buildali.pl')
     PHOBIUS     = File.join(BIOPROGS,'phobius','phobius.pl')
     MEMSATSVM = File.join(BIOPROGS, 'memsat-svm','run_memsat-svm.pl')
 end
@@ -63,8 +59,11 @@ end
   def init_vars
     @msa_generation_method = params['msa_generation_method']
     @max_iter = params['max_iter']
+    if not @max_iter
+        @max_iter = "1"
+    end
+    
     @db = params['hhblits_dbs']      
-
     @psipred     = params['psipred_chk']   ? true : false
     @jnet        = params['jnet_chk']      ? true : false
     @coils       = params['coils_chk']     ? true : false
@@ -153,10 +152,10 @@ end
     commands << "source #{SETENV}"
     if @msa_generation_method == "psiblast"
       commands << "echo 'Running PSI-BLAST [buildali] ' >> #{flash['logfile']}"
-      commands << "#{BUILDALI} -v 5 -diff 200 -noss -n #{@max_iter} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
+      commands << "buildali.pl -v 5 -diff 200 -noss -n #{@max_iter} -e 1e-1 -fas #{flash['fasfile']} &> #{flash['buildalilog']}"
 
       commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
-      commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
+      commands << "ruby getDiffSequences.rb #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
 
       commands << "echo 'Reformat a3m to aln fasta' >> #{flash['logfile']}"
       commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['alnfasfile']}"
@@ -178,10 +177,10 @@ end
         commands << "echo 'Reducing alignment...' >> #{flash['logfile']}"
         if !File.exist?(flash['a3mfile'])
 	  #  reformat.pl fas sto '*.fasta' .stockholm
- 	  commands << "#{REFORMAT2} fas a3m #{flash['fasfile']} #{flash['a3mfile']} -M first"
+ 	  commands << "reformat.pl fas a3m #{flash['fasfile']} #{flash['a3mfile']} -M first"
           #commands << "#{REFORMAT} -i=fas -o=a3m -f=#{flash['fasfile']} -a=#{flash['a3mfile']} -M first"
         end
-        commands << "#{DIFFSEQS} #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
+        commands << "ruby getDiffSequences.rb #{flash['a3mfile']} #{flash['a3mfile']} 200 &> #{flash['buildalilog']}"
         commands << "#{REFORMAT} -i=a3m -o=fas -f=#{flash['a3mfile']} -a=#{flash['fasfile']}"
       end
       flash['alnfasfile'] = flash['fasfile']
