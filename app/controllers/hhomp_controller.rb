@@ -34,7 +34,7 @@ class HhompController < ToolController
     
     @gi_seq = ""
     if (@gi != "")
-      command = "#{File.join(BIOPROGS, 'blast32', 'fastacmd')} -d #{File.join(DATABASES, 'standard', 'nre')} -s '#{@gi}'"
+      command = "#{File.join(BIOPROGS, 'blast32', 'fastacmd')} -d #{File.join(DATABASES, 'standard_new', 'nre')} -s '#{@gi}'"
       Open3.popen3(command) do |stdin, stdout, stderr|
         @gi_seq = stdout.readlines
       end
