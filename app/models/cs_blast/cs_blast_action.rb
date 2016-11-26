@@ -11,6 +11,7 @@ class CsBlastAction < Action
   # Generate application paths
   BLAST = File.join(BIOPROGS, 'blast')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
+  HELPER = File.join(BIOPROGS, 'helper')
   CSBLAST = File.join(BIOPROGS, 'csblast')
   CSDB = File.join(DATABASES, 'csblast')
   
@@ -245,11 +246,19 @@ class CsBlastAction < Action
     @commands << "source #{SETENV}" 
     @commands << "echo 'Starting BLAST search' &> #{job.statuslog_path}"
     @commands << "#{CSBLAST}/bin/csblast -i #{@infile} -j #{@rounds} -h #{@e_thresh} -D #{CSBLAST}/data/K4000.crf #{@alignment} --blast-path #{BLAST}/bin -e #{@expect} -F #{@filter} -G #{@gapopen} -E #{@gapext} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} >>#{job.statuslog_path}"
-     
+
+    # Use blast parser to modify the output of CS-BLAST
+    @commands << "#{HELPER}/blast-parser.pl -i #{@outfile} --add-links > #{@outfile}_out"
+    @commands << "mv  #{@outfile}_out #{@outfile}"
+
     @commands << "echo 'Finished BLAST search' >> #{job.statuslog_path}"
+
     # run perl script to fix blast errors. TODO: Find out what script does 
-    @commands << "echo 'Fixing BLAST errors' >> #{job.statuslog_path}"  
-    @commands << "#{UTILS}/fix_blast_errors.pl -i #{@outfile} &>#{@basename}.log_fix_errors"
+    # @commands << "echo 'Fixing BLAST errors' >> #{job.statuslog_path}"  
+    # No longer used since the GI numbers were replaced by the accession numbers
+    #@commands << "#{UTILS}/fix_blast_errors.pl -i #{@outfile} &>#{@basename}.log_fix_errors"
+    
+    
     # run perl script to visualize blast results. TODO: Find out what script does
     @commands << "echo 'Visualizing BLAST Output' >> #{job.statuslog_path}" 
     @commands << "#{UTILS}/blastviz.pl #{@outfile} #{job.jobid} #{job.job_dir} #{job.url_for_job_dir_abs} &> #{@basename}.blastvizlog";
@@ -262,14 +271,14 @@ class CsBlastAction < Action
     @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -fas -no_link -e #{@expect}"
     # run perl script to reformat alignment TODO: Find out what script does
     @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
-    # TODO: Find out what script does
     @commands << "if [ -s #{@basename}.ralign ]; then hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
-    # TODO: Find out what script does
-    @commands << "#{RUBY_UTILS}/parse_csiblast.rb -i #{@basename}.csblast -o #{@basename}.csblast"
+    
+
+    #@commands << "#{RUBY_UTILS}/parse_csiblast.rb -i #{@basename}.csblast -o #{@basename}.csblast"
+    
     # Generate Jalview Output from alignment data
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align" 
-    # TODO: Find out what script does
     @commands << "reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
 
 
