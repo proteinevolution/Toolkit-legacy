@@ -2,7 +2,7 @@
 class NucBlastController < ToolController
 
 	def index
-		@std_dbs_paths = Dir.glob(File.join(DATABASES, 'standard', '*.nal')).map() {|p| p.gsub(/\.nal/ ,'')}
+		@std_dbs_paths = Dir.glob(File.join(DATABASES, 'standard_new', '*.nal')).map() {|p| p.gsub(/\.nal/ ,'')}
 		@std_dbs_paths.uniq!
 		@std_dbs_paths.sort!
 		@std_dbs_labels = @std_dbs_paths.map() {|p| File.basename(p)}
