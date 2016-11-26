@@ -178,10 +178,8 @@ def check_GI
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
     @commands << "reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
   
-  
-    # Use blast parser to modify the output of CS-BLAST
     @commands << "#{HELPER}/blast-parser.pl -i #{@outfile} --add-links > #{@outfile}_out"
-    @commands << "mv  #{@outfile}_out #{@outfile}"
+   @commands << "mv  #{@outfile}_out #{@outfile}"
   
     @commands << "source #{UNSETENV}"
 

@@ -3,7 +3,7 @@ class ClansController < ToolController
   def index
     @searchtool_values = ["blastp", "blastpgp"]
     @searchtool_labels = ["BLASTP", "PSI-BLAST"]		
-    @std_dbs_paths = Dir.glob(File.join(DATABASES, 'standard', '*.pal')).map() {|p| p.gsub(/\.pal/ ,'')}
+    @std_dbs_paths = Dir.glob(File.join(DATABASES, 'standard_new', '*.pal')).map() {|p| p.gsub(/\.pal/ ,'')}
     @std_dbs_paths.uniq!
     @std_dbs_paths.sort!
      ## Order up Standard databases that shall be displayed on top
