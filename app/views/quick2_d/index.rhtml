@@ -1,0 +1,306 @@
+<a href="#" onClick="openHelpWindow('/quick2_d/help_ov');" onmouseover="return overlib('Help');" onmouseout="return nd();"><img src="/images/helpbutton.gif" border="0" style="float: right; padding-top: 2px;"></a><h2><%= @page_title %></h2>
+
+<%= form_tag({:action => :run, :job => 'quick2_d'}, {:multipart => true})%> 
+
+<h3 class="<%= @section["name"] %>">Input</h3>
+<div class="row">
+	<%= form_label("Paste protein sequence or MSA", "input") %>
+	<%= form_text_area("sequence_input") %>
+</div>
+<div class="row">
+  <div class="formw">
+    <span style="color: #008C50;">
+      View alignment of <a href="#" style="color:#008C50;" onClick="javascript:pasteExample();">viral DNA ligases.</a>
+    </span>
+  </div>
+</div>
+<div class="row">
+	<%= form_label("or upload a local file") %>
+	<%= form_file("sequence_file") %>
+</div>	
+<div class="row">
+	<%= form_label("Select input format", "format") %>
+	<%= form_select_single("informat", @informat_values, @informat_labels, @informat_values[0]) %>	
+</div><div class="spacer">&nbsp;</div>
+
+<div class="row">
+	<%= form_submit_snail_buttons("Runtime ~5 min for N=100 sequences of length L=200.") %>
+</div>
+
+<div class="spacer">&nbsp;</div>
+
+<h3 class="<%= @section["name"] %>">Options</h3>
+
+<div style="min-height: 80px;">
+    <div class="row">
+         <%= form_label("MSA Generation Method", "msa_generation_label") %>
+         <%= form_radio_buttons("msa_generation_method", @msa_gen_values, @msa_gen_labels, "psiblast", "&nbsp;") %>
+    </div>
+    <div class="row" id="max_iter_row">
+         <%= form_label("Maximal number of Iterations", "max_iter_label") %>
+        <%= form_select_single("max_iter", @max_iter_allowed, @max_iter_allowed, @max_iter_allowed[0]) %>	
+     </div>
+    <div class="row" id="hhblitsdb_row">
+      <%= form_label("Select HMM database", "databases") %>
+        <table cellspacing="0">
+        <tr align="center"><td><b>Standard</b></td></tr>
+        <tr><td>
+        <%= form_select_single("hhblits_dbs", @dbvalues, @dblabels, @default_db, 5, "", false, true) %>
+        </td></tr>
+        </table>
+    </div>
+</div>     
+<!-- copied from hhpred -->
+<!-- copy end -->
+<div class="spacer">&nbsp;</div>
+
+
+<h3 class="<%= @section["name"] %>">Prediction Methods</h3>
+<div class="row">
+	<%= form_label("PSIPRED") %>
+	<div class="formw">	
+		<table><tr>
+			<td align="left" valign="top">
+				<%= form_checkbox("psipred_chk", '1', true, true) %>
+			</td><td> 
+				D. T. Jones (1999) 
+				Protein secondary structure prediction based on position-specific scoring matrices. 
+				<em>Journal of Molecular Biology</em> <b>292</b>, 195-202.
+			</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>		
+	
+<div class="row">
+	<%= form_label("JNET") %>	
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("jnet_chk", '1', true, true) %>
+		</td><td>
+			J. A. Cuff and G. J. Barton (1999) 
+			Application of enhanced multiple sequence alignment 
+			profiles to improve protein secondary structure prediction. 
+			<em>Proteins</em> <b>40</b>, 502-511.	
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>		
+	
+<div class="row">
+	<div class="label">
+		<%= form_label("Prof") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("profouali_chk", '1', true, true) %>
+		</td><td>		   
+  			M. Ouali and R. D. King (2000) Cascaded multiple classifiers for   
+  			secondary structure prediction. 
+			<em>Protein Science</em> <b>9</b>, 1162-1176. 
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>			
+<div class="row">
+	<div class="label">
+		<%= form_label("Prof") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("profrost_chk", '1', true, true) %>
+		</td><td>		   
+  			B. Rost (2001)
+  			Protein secondarystructure prediction continues to rise. 
+  			<em>Journal of Structural Biology</em> <b>134</b>, 204-218.
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>	
+
+<div class="row">
+	<div class="label">
+		<%= form_label("Coils") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("coils_chk", '1', true, true) %>
+		</td><td>			
+			A. N. Lupas, M. Van Dyke and J. Stock (1991)
+			Predicting Coiled Coils from Protein Sequences.
+			<em>Science</em> <b>252</b>, 1162-1164.
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>	
+	
+
+<div class="row">
+	<div class="label">
+		<%= form_label("HMMTOP") %>
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("hmmtop_chk", '1', true, true) %>
+		</td><td>			
+			G. E. Tusn&aacute;dy and I. Simon (1998) 
+			Principles Governing Amino Acid Composition of Integral Membrane Proteins: 
+			Applications to Topology Prediction. 
+			<em>Journal of Molecular Biology</em> <b>283</b>, 489-506.
+		</td>
+		</tr></table>
+	</div>			
+</div>
+<div class="spacer">&nbsp;</div>		
+
+<div class="row">
+	<div class="label">
+		<%= form_label("MEMSAT-SVM") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("memsatsvm_chk", '1', false, true) %>
+		</td><td>			
+			Timothy Nugent, David T. Jones (2009)
+			Transmembrane protein topology prediction using support vector machines
+			<em>BMC Bioinformatics 2009</em>
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>	
+
+<div class="row">
+	<div class="label">
+		<%= form_label("PHOBIUS") %>	
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("phobius_chk", '1', true, true) %>
+		</td><td>			
+			Lukas K&auml;ll, Anders Krogh and Erik L. L. Sonnhammer.
+			A Combined Transmembrane Topology and Signal Peptide Prediction Method.
+			<em>Journal of Molecular Biology</em> <b>338(5):1027-1036</b>, May 2004.
+		</td>
+		</tr></table>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>
+
+<div class="row">
+    <div class="label">
+        <%= form_label("PREDISI") %>    
+    </div>
+    <div class="formw">         
+        <table><tr><td align="left" valign="top">
+            <%= form_checkbox("predisi_chk", '1', true, true) %>
+        </td><td> 
+		    PrediSi: prediction of signal peptides and their cleavage positions. 
+		    Hiller K, Grote A, Scheer M, Münch R, Jahn D.
+            <em>Nucleic Acids Res</em> <b>1;32, W375-9</b>,Jul 2004.
+        </td>
+        </tr></table>
+    </div>
+</div>
+<div class="spacer">&nbsp;</div>
+
+			
+<div class="row">
+	<div class="label">
+		<%= form_label("DISOPRED2") %>
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("disopred2_chk", '1', false, true) %>
+		</td><td>			
+			J. J. Ward, J. S. Sodhi, L. J. McGuffin, B. F. Buxton and D. T. Jones (2004) 
+			Prediction and Functional Analysis of Native Disorder in Proteins
+			from the Three Kingdoms of Life.
+			<em>Journal of Molecular Biology</em> <b>337(3)</b>, 635-45.
+		</td>
+		</tr></table>
+	</div>			
+</div>
+<div class="spacer">&nbsp;</div>
+
+
+<div class="row">
+	<div class="label">
+		<%= form_label("IUPRED") %>
+	</div>
+	<div class="formw">			
+		<table><tr><td align="left" valign="top">
+			<%= form_checkbox("iupred_chk", '1', true, true) %>
+		</td><td>			
+			Zsuzsanna Doszt&aacute;, Veronika Csizm&oacute;k, P&eacute;ter Tompa and Istv&aacute;n Simon (2005) 
+			The Pairwise Energy Content Estimated from Amino Acid Composition Discriminates 
+			between Folded and Intrinsically Unstructured Proteins
+			<em>J. Mol. Biol.</em> <b>347</b>, 827-839.
+		</td>
+		</tr></table>
+	</div>			
+</div>
+<div class="spacer">&nbsp;</div>
+
+
+<%= render(:partial => "shared/joboptions") %>
+
+</form>
+<div class="row">&nbsp;</div>
+<%= render(:partial => "references_and_contact") %>
+
+<script>
+
+(function() {
+
+  if(document.getElementById("msa_generation_method_psiblast").checked) {
+
+        document.getElementById("max_iter_row").style.display = "block"; 
+        document.getElementById("hhblitsdb_row").style.display = "none";
+
+  } else if(document.getElementById("msa_generation_method_input_only").checked ) {
+
+        document.getElementById("max_iter_row").style.display = "none";    
+        document.getElementById("hhblitsdb_row").style.display = "none";
+
+  } else if(document.getElementById("msa_generation_method_hhblits").checked ) {
+
+
+         document.getElementById("max_iter_row").style.display = "block"; 
+         document.getElementById("hhblitsdb_row").style.display = "block";
+
+  }
+
+ var nodeList = document.getElementsByName("msa_generation_method");
+ for (var i = 0; i < nodeList.length; ++i) {
+    
+    nodeList[i].onchange = function() {
+    
+    if(this.value == "input_only") {
+
+        document.getElementById("max_iter_row").style.display = "none";    
+        document.getElementById("hhblitsdb_row").style.display = "none";
+
+    } else if(this.value == "psiblast") {
+
+         document.getElementById("max_iter_row").style.display = "block"; 
+        document.getElementById("hhblitsdb_row").style.display = "none";
+
+    } else if(this.value == "hhblits") {
+
+         document.getElementById("max_iter_row").style.display = "block"; 
+         document.getElementById("hhblitsdb_row").style.display = "block";
+
+    }
+    };    
+}
+})(); 
+</script>
+
+
+
+

@@ -4,7 +4,7 @@ class Hmmer3Controller < ToolController
           @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
           @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
           @std_dbs_paths = []
-          Dir.glob(File.join(DATABASES, 'standard', '*.pal')).each do |p|
+          Dir.glob(File.join(DATABASES, 'standard_new', '*.pal')).each do |p|
             p.gsub!(/\.pal/ ,'') 
             @std_dbs_paths << p if File.exist? p
           end    

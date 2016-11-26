@@ -248,7 +248,7 @@ class CsBlastAction < Action
     @commands << "#{CSBLAST}/bin/csblast -i #{@infile} -j #{@rounds} -h #{@e_thresh} -D #{CSBLAST}/data/K4000.crf #{@alignment} --blast-path #{BLAST}/bin -e #{@expect} -F #{@filter} -G #{@gapopen} -E #{@gapext} -v #{@descriptions} -b #{@alignments} -T T -o #{@outfile} -d \"#{@db_path}\" -I T -a 1 #{@other_advanced} >>#{job.statuslog_path}"
 
     # Use blast parser to modify the output of CS-BLAST
-    @commands << "#{HELPER}/blast-parser.pl -i #{@outfile} --add-links > #{@outfile}_out"
+    @commands << "#{HELPER}/blast-parser.pl -i #{@outfile}  --fix-legacy --add-links > #{@outfile}_out"
     @commands << "mv  #{@outfile}_out #{@outfile}"
 
     @commands << "echo 'Finished BLAST search' >> #{job.statuslog_path}"

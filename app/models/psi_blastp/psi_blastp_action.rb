@@ -5,7 +5,8 @@ class PsiBlastpAction < Action
   BLASTP = File.join(BIOPROGS, 'blastplus/bin')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   REFORMAT = File.join(BIOPROGS,'reformat')
-  
+  HELPER = File.join(BIOPROGS, "helper")
+
   if LOCATION == "Munich" && LINUX == 'SL6'
     UTILS = "perl "+File.join(BIOPROGS, 'perl')
   else
@@ -240,7 +241,10 @@ class PsiBlastpAction < Action
     # @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
     @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.j.align -M first -r"
 
-    
+    # Use blast parser to modify the output of CS-BLAST
+    @commands << "#{HELPER}/blast-parser.pl -i #{@outfile} --add-links > #{@outfile}_out"
+    @commands << "mv  #{@outfile}_out #{@outfile}"
+
     @commands << "source #{UNSETENV}"
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, true, {'cpus' => '4'})

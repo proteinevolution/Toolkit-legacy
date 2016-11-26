@@ -5,7 +5,8 @@ class ProtBlastpAction < Action
   BLAST = File.join(BIOPROGS, 'blast')
   BLASTP = File.join(BIOPROGS, 'blastplus/bin')
   RUBY_UTILS = File.join(BIOPROGS, 'ruby')
-  
+  HELPER = File.join(BIOPROGS, "helper")
+
   if LOCATION == "Munich" && LINUX == 'SL6'
     UTILS = "perl " +File.join(BIOPROGS, 'perl')
   else
@@ -160,6 +161,8 @@ def check_GI
     @commands << "#{BLASTP}/#{@program} -db \"#{@db_path}\" -query #{@infile} -matrix #{@mat_param} -evalue #{@expect} -gapopen #{@gapopen} -gapextend #{@gapext} -num_threads #{@nthreads} -num_descriptions #{@descriptions} -num_alignments #{@alignments} -out #{@outfile} -html -show_gis -seg #{@filter} #{@ungapped_alignment} #{@other_advanced} >>#{job.statuslog_path}"
     @commands << "echo 'Finished BLAST+ search!' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/fix_blast_errors.pl -i #{@outfile} &>#{@basename}.log_fix_errors"
+   
+   
     @commands << "echo 'Visualizing Blast Output... ' >> #{job.statuslog_path}"
     @commands << "#{UTILS}/blastviz.pl #{@outfile} #{job.jobid} #{job.job_dir} #{job.url_for_job_dir_abs} &> #{@basename}.blastvizlog";
     @commands << "echo 'Generating Blast Histograms... ' >> #{job.statuslog_path}"
@@ -174,6 +177,12 @@ def check_GI
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
     @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align"
     @commands << "reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
+  
+  
+    # Use blast parser to modify the output of CS-BLAST
+    @commands << "#{HELPER}/blast-parser.pl -i #{@outfile} --add-links > #{@outfile}_out"
+    @commands << "mv  #{@outfile}_out #{@outfile}"
+  
     @commands << "source #{UNSETENV}"
 
     logger.debug "Commands:\n"+@commands.join("\n")
