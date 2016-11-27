@@ -33,7 +33,7 @@
 
 <div class="row">
   <%= form_label("Select database", "database") %>
-  <%= form_select_single("database", @dbvalues, @dblabels, @default_db, 5) %>
+  <%= form_select_single("database", @dbvalues, @dblabels, @default_db, @dbvalues.length) %>
 </div>
 
 <div class="row">
@@ -86,3 +86,15 @@
 </ul>
 <%= render(:partial => "references_and_contact") %>
 </div>
+
+
+<script>
+(function() {
+    
+      document.getElementById("sequence_input").setAttribute("rows", 15);
+})();
+</script>
+
+
+
+

@@ -1,11 +1,6 @@
 class HhsenserAction < Action
   HH = File.join(BIOPROGS, 'hhpred')
-  
-  if LOCATION == "Munich" && LINUX == 'SL6'
-    HHPERL   = "perl "+File.join(BIOPROGS, 'hhpred')
-  else
-     HHPERL = File.join(BIOPROGS, 'hhpred')
-  end
+  HHPERL = File.join(BIOPROGS, 'hhpred')
   
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail
@@ -60,9 +55,11 @@ class HhsenserAction < Action
   
   def perform
     params_dump
+
+    @commands << "source #{SETENV}"
     
     msa_factor = @match_mode.empty? ? '' : " -M #{@match_mode}"
-    @commands << "#{HHPERL}/buildali.pl -v #{@v} -cpu 2 -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} -db #{@db}#{msa_factor} #{@seqfile} &>> #{job.statuslog_path}"
+    @commands << "buildali.pl -v #{@v} -cpu 2 -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} -maxres 500 -bl 0 -bs 0.5 -p 1E-7 -#{@informat} -db #{@db}#{msa_factor} #{@seqfile} &>> #{job.statuslog_path}"
 
     if (@screen)
       run_screening
@@ -79,7 +76,7 @@ class HhsenserAction < Action
     if (LOCATION == "Tuebingen" && RAILS_ENV == "development")
       tmax = "0:35"
     end
-    @commands << "#{HHPERL}/buildinter.pl -v #{@v} -tmax #{tmax} -Emax #{@e_max} -extnd #{@extnd} -Ymax #{@ymax} -E #{@e_hmm} -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} #{@repr_seq} -db #{@db} #{@basename}.a3m >> #{job.statuslog_path} 2>&1; echo 'Hide exit state!';"
+    @commands << "buildinter.pl --scripts ${MISC_SCRIPTS} -v #{@v} -tmax #{tmax} -Emax #{@e_max} -extnd #{@extnd} -Ymax #{@ymax} -E #{@e_hmm} -n #{@maxpsiblastit} -e #{@psiblast_eval} -cov #{@cov_min} #{@repr_seq} -db #{@db} #{@basename}.a3m >> #{job.statuslog_path} 2>&1; echo 'Hide exit state!';"
 
     # Prepare strict alignments
     @commands << "cp #{@basename}-X.a3m #{@basename}_strict.a3m"
@@ -88,7 +85,7 @@ class HhsenserAction < Action
     @commands << "#{HHPERL}/reformat.pl #{@basename}_strict.fas #{@basename}_strict.clu -v #{@v} -noss &> #{job.statuslog_path}_reform"
     @commands << "#{HHPERL}/reformat.pl #{@basename}_strict_masterslave.fas #{@basename}_strict_masterslave.clu -v #{@v} -noss -l 10000 -lname 32 &> #{job.statuslog_path}_reform"
 
-    @commands << "#{HH}/hhfilter -i #{@basename}_strict.a3m -o #{@basename}_strict.reduced.a3m -diff 100 -v #{@v}"
+    @commands << "hhfilter -i #{@basename}_strict.a3m -o #{@basename}_strict.reduced.a3m -diff 100 -v #{@v}"
     @commands << "#{HHPERL}/reformat.pl a3m fas #{@basename}_strict.reduced.a3m  #{@basename}_strict.reduced.fas -v #{@v} &> #{job.statuslog_path}_reform"
     @commands << "#{HHPERL}/reformat.pl a3m fas #{@basename}_strict.reduced.a3m  #{@basename}_strict_masterslave.reduced.fas -r -v #{@v} &> #{job.statuslog_path}_reform"
     @commands << "#{HHPERL}/reformat.pl fas clu #{@basename}_strict_masterslave.reduced.fas #{@basename}_strict_masterslave.reduced.clu -v #{@v} &> #{job.statuslog_path}_reform"
@@ -100,11 +97,12 @@ class HhsenserAction < Action
     @commands << "#{HHPERL}/reformat.pl #{@basename}_permissive.fas #{@basename}_permissive.clu -v #{@v} -noss &> #{job.statuslog_path}_reform"
     @commands << "#{HHPERL}/reformat.pl #{@basename}_permissive_masterslave.fas #{@basename}_permissive_masterslave.clu -v #{@v} -l 10000 -lname 32 &> #{job.statuslog_path}_reform"
 
-    @commands << "#{HH}/hhfilter -i #{@basename}_permissive.a3m -o #{@basename}_permissive.reduced.a3m -diff 100 -v #{@v}"
+    @commands << "hhfilter -i #{@basename}_permissive.a3m -o #{@basename}_permissive.reduced.a3m -diff 100 -v #{@v}"
     @commands << "#{HHPERL}/reformat.pl a3m fas #{@basename}_permissive.reduced.a3m #{@basename}_permissive.reduced.fas -v #{@v} &> #{job.statuslog_path}_reform"
     @commands << "#{HHPERL}/reformat.pl a3m fas #{@basename}_permissive.reduced.a3m #{@basename}_permissive_masterslave.reduced.fas -r -v #{@v} &> #{job.statuslog_path}_reform"
     @commands << "#{HHPERL}/reformat.pl fas clu #{@basename}_permissive_masterslave.reduced.fas #{@basename}_permissive_masterslave.reduced.clu -v #{@v} &> #{job.statuslog_path}_reform"
 
+    @commands << "source #{UNSETENV}"
     logger.debug "L108 Commands:\n"+@commands.join("\n")
     # -tmax 23:45 above specifies that the job should terminate gracefully within 24h.
     # queue.submit(@commands, true, { 'cpus' => cpus, 'queue' => QUEUES[:long] })
@@ -147,7 +145,7 @@ class HhsenserAction < Action
     
     # Make HMM file
     @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-    @commands << "#{HH}/hhmake -v #{@v} -diff 100 -i #{@basename}.hhpred.a3m -o #{@basename}.hhpred.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+    @commands << "hhmake -v #{@v} -diff 100 -i #{@basename}.hhpred.a3m -o #{@basename}.hhpred.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
     
     # Find SCOP database
     scop_db = Dir.glob(File.join(DATABASES, 'hhpred/new_dbs/SCOPe70*'))[0]
@@ -176,6 +174,7 @@ class HhsenserAction < Action
     self.flash = @hash
     self.save!
     
+    @commands << "source #{UNSETENV}"
     logger.debug "L179 Commands:\n"+@commands.join("\n")
     q = queue
     q.on_done = 'screening_search'
