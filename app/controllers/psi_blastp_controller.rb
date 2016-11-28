@@ -11,16 +11,9 @@ class PsiBlastpController < ToolController
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
     @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
     @std_dbs_paths = []
-    Dir.glob(File.join(DATABASES, 'standardp', '*.pal')).each do |p|
-   		p.gsub!(/\.pal/ ,'') 
-   		@std_dbs_paths << p
-    end
-    Dir.glob(File.join(DATABASES, 'standard', '*.pal')).each do |p|
+    Dir.glob(File.join(DATABASES, 'standard_new', '*.pal')).each do |p|
       p.gsub!(/\.pal/ ,'')
-      pp = p.sub('standard', 'standardp')
-      unless @std_dbs_paths.include?(pp)
-   		@std_dbs_paths << p
-      end
+      @std_dbs_paths << p
     end
     @std_dbs_paths.uniq!
     @std_dbs_paths.sort!

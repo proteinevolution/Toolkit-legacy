@@ -4,7 +4,7 @@ class PatsearchController < ToolController
           @grammar_values = ["pro", "reg"]
           @grammar_labels = ["Prosite grammar", "Regular expression"]
           @std_dbs_paths = []
-          Dir.glob(File.join(DATABASES, 'standard', '*.pal')).each do |p|
+          Dir.glob(File.join(DATABASES, 'standard_new', '*.pal')).each do |p|
             p.gsub!(/\.pal/ ,'') 
             @std_dbs_paths << p if File.exist? p
           end
