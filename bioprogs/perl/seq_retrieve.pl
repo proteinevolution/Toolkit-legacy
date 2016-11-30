@@ -47,7 +47,7 @@ if ( @ARGV < 2 ) {
 }
 
 for ( my $j = 0 ; $j < @ARGV ; $j++ ) {
-    
+
     if ( $ARGV[$j] eq "-i" ) {
 	$j++;
 	$infile = $ARGV[$j];
@@ -72,7 +72,7 @@ for ( my $j = 0 ; $j < @ARGV ; $j++ ) {
     } else {
 	print("\nERROR: Don't know this Argument: $ARGV[$j] \n\n");
 	error();
-	
+
 	exit(1);
     }
 }
@@ -167,12 +167,12 @@ while ($line = <IN>) {
 	    }
 	    $seqs{$seq} = 1;
 	    $num_extr_unique++;
-	    
+
 	    print "LINE 144 : Sequence Nr : ".$num_extr_unique."\n";
 	    print "LINE 144: Sequence \n".$seq."\n--------------------------\n";
-	    
+
 	}
-	
+
 	print OUT $ret;
 
     }
@@ -221,16 +221,16 @@ sub fast {
 
     open (IN, "$infile" ) or die("Cannot open!");
     open (PREPARE, ">$infile.prepare") or die ("Cannot open!");
-    
+
     while ($line = <IN>) {
-	
+
 	if ($counter > $max_seqs) { last; }
-	
+
 	$line =~ s/\s+/ /g;
 	$line =~ s/^\s+//g;
 	my @ids = split(/ /, $line);
 	foreach my $ident(@ids) {
-	    
+
 	    $counter++;
 	    $num_ident++;
 	    my $tmp = $ident;
@@ -244,12 +244,12 @@ sub fast {
 		$id{$ident} = 1;
 		$num_ident_unique++;
 	    }
-	    
+
 	    print PREPARE "$ident\n";
-	    
+
 	}
     }
-    
+
     close IN;
     close PREPARE;
 
