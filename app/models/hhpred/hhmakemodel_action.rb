@@ -39,13 +39,13 @@ class HhmakemodelAction < Action
     @commands << "source #{SETENV}"   
     if (@mode == 'filter')
       #old: @commands << "#{HH}/hhmeta.pl -v 2 -i #{@parent_basename}.hhr -o #{@basename} ... &> #{job.statuslog_path}"
-      @commands << "selectTemplates.pl -i #{@parent_basename} -o #{@basename} -mode 'm' &> #{job.statuslog_path}"      
+      @commands << "selectTemplates_hhsuite2.pl -i #{@parent_basename} -o #{@basename} -mode 'm' &> #{job.statuslog_path}"      
       prepare_fasta_hhviz_histograms_etc
     else
       #hhmakemodel aufrufen
       #old: @commands << "#{HH}/hhmakemodel.pl -v 2 -m #{@hits} -i #{@parent_basename}.hhr -pir #{@basename}.out"
       @commands << "checkTemplates.pl -i #{@parent_basename}.hhr -q #{@parent_basename}.a3m -pir #{@basename}.out -m #{@hits} -hhdbs #{@dbs} &> #{job.statuslog_path}" 
-    end    
+    end
    
     @commands << "source #{UNSETENV}" 
     logger.debug "Commands:\n"+@commands.join("\n")
