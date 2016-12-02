@@ -12,7 +12,7 @@ class CsBlastController < ToolController
     @informat_labels = ['FASTA', 'CLUSTAL', 'Stockholm', 'A2M', 'A3M', 'EMBL', 'MEGA', 'GCG/MSF', 'PIR/NBRF', 'TREECON']
     @std_dbs_paths = []
     # fill the Array with all files stored in folder standard, having extension .pal
-    Dir.glob(File.join(DATABASES, 'standard', '*.pal')).each do |p|
+    Dir.glob(File.join(DATABASES, 'standard_new', '*.pal')).each do |p|
    		# remove the extension from db list
       p.gsub!(/\.pal/ ,'') 
    		@std_dbs_paths << p
