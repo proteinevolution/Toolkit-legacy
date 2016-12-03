@@ -42,7 +42,6 @@ class AncesconJob < Job
     out.write(IO.readlines(@basename + ".out"))
     
     out.close
-    
   end
   
   def export_tree
@@ -64,8 +63,5 @@ class AncesconJob < Job
     out.write(res.slice(i..-1).join)
     
     out.close
-    
   end
-  
-  
 end
