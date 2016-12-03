@@ -1,15 +1,6 @@
 class Ali2dAction < Action
   ALI2D = File.join(BIOPROGS, 'ali2d')
-  
-
-  if LOCATION == "Munich" && LINUX == 'SL6'
-      PERL    =  "perl "+File.join(BIOPROGS, 'perl')
-      MEMSAT2 =  "perl "+File.join(BIOPROGS, 'memsat2')
-  else
-      PERL    = File.join(BIOPROGS, 'perl')
-      MEMSAT2 = File.join(BIOPROGS, 'memsat2')
-  end
-  
+  MEMSAT2 = File.join(BIOPROGS, 'memsat2')
   
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :seqident
@@ -56,7 +47,7 @@ class Ali2dAction < Action
   def perform
     params_dump
 
-    @commands << "#{JAVA_1_5_EXEC} -Xmx500m -jar #{ALI2D}/prepareAli2d.jar #{@infile} #{@basename} #{@seqident} #{@mainlog} &> #{job.statuslog_path}"
+    @commands << "#{JAVA_EXEC} -Xmx500m -jar #{ALI2D}/prepareAli2d.jar #{@infile} #{@basename} #{@seqident} #{@mainlog} &> #{job.statuslog_path}"
 
     #logger.debug "Commands:\n"+@commands.join("\n")
     q = queue
@@ -87,9 +78,9 @@ class Ali2dAction < Action
         @commands << "#{MEMSAT2}/memsat2.pl #{filename}.fas #{filename} &> #{filename}.memsat2.log"
         system("echo 'Memsat2 run for #{filename}!\n' >> #{job.statuslog_path}")
       else
-        command = "#{PERL}/runpsipred.pl #{line}.fas &> #{line}.log; "
+        command = ". #{SETENV} ;runpsipred.pl #{line}.fas &> #{line}.log; "
         system("echo 'PSIPRED run for #{line}!\n' >> #{job.statuslog_path}")
-        command += "#{MEMSAT2}/memsat2.pl #{line}.fas #{line} &> #{line}.memsat2.log;"
+        command += "#{MEMSAT2}/memsat2.pl #{line}.fas #{line} ; . #{UNSETENV} &> #{line}.memsat2.log;"
         system("echo 'Memsat2 run for #{line}!\n' >> #{job.statuslog_path}")
         @commands << command
       end
@@ -110,7 +101,7 @@ class Ali2dAction < Action
 
     init
 
-    @commands << "#{JAVA_1_5_EXEC} -Xmx8000m -jar #{ALI2D}/buildParams.jar #{@infile} #{@mainlog} &> #{@outfile} "
+    @commands << "#{JAVA_EXEC} -Xmx8000m -jar #{ALI2D}/buildParams.jar #{@infile} #{@mainlog} &> #{@outfile} "
 
     #logger.debug "Commands:\n"+@commands.join("\n")
     #queue.submit(@commands)
