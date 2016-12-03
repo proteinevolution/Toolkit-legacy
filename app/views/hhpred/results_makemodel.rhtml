@@ -38,7 +38,7 @@
   </div>
 
   <div class="row">
-    <input name="submitform" type="submit" class="toolbutton" value="Generate alignment for MODELLER" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:host => DOC_ROOTHOST, :action => :run, :jobaction => 'hhmakemodel_forward', :jobid => @job, :forward_action => "forward", :forward_controller => 'modeller') %>');" />
+    <input name="submitform" type="submit" class="toolbutton" value="Generate alignment for MODELLER" onClick="extract_selected(); setAction('<%= @job.tool %>_form', '<%= url_for(:action => :run, :jobaction => 'hhmakemodel_forward', :jobid => @job, :forward_action => "forward", :forward_controller => 'modeller') %>');" />
     <input name="hits" id="hits" type="hidden" value=""/>
     
   </div>
