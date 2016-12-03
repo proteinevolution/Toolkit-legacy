@@ -46,7 +46,4 @@ class AlnvizJob < Job
       end
     end
   end
-  
-  
-  
 end
