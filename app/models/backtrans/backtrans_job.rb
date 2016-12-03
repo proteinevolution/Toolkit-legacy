@@ -13,8 +13,6 @@ class BacktransJob < Job
     ret = IO.readlines(File.join(job_dir, jobid + @@export_ext)).join
   end
   
-  
-  
   # add your own data accessors for the result templates here! For example:
   # attr_reader :some_results_data
   
@@ -23,7 +21,4 @@ class BacktransJob < Job
   # def before_results(controller_params)
   #    @some_results_data = ">header\nsequence"
   # end
-  
-  
-  
 end

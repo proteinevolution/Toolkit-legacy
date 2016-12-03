@@ -5,6 +5,7 @@
 <div class="row">
 	<%= form_label("Paste protein in FASTA format", "input") %>
 	<%= form_text_area("sequence_input") %>
+    <script> document.getElementById("sequence_input").setAttribute("rows", 15); </script>
 </div>
 <div class="row">
   <div class="formw">

@@ -1,9 +1,6 @@
 class BacktransAction < Action
-  if LOCATION == "Munich" && LINUX == 'SL6'
-    BACKTRANS = "perl "+File.join(BIOPROGS, 'backtranslate')
-  else
-    BACKTRANS = File.join(BIOPROGS, 'backtranslate')
-  end
+
+  BACKTRANS = File.join(BIOPROGS, 'backtranslate')
   
   
   attr_accessor :sequence_input, :sequence_file, :mail, :jobid
@@ -31,7 +28,6 @@ class BacktransAction < Action
     @gencode = params['gencode']
     @cut = params['cut'] ? true : false
     @cutorganism = params['cutorganism']
-    
   end
 
   def perform
@@ -53,5 +49,4 @@ class BacktransAction < Action
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
   end
-
 end
