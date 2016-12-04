@@ -131,8 +131,8 @@
   title: Clustal Omega
   title_long: Clustal Omega
   section: alignment
-  updated: January, 2016
-  version: Omega 1.2.1
+  updated: December, 2016
+  version: Omega 1.2.3
   active: 
   - member
   - internal
@@ -458,9 +458,9 @@
   title: HHblits
   title_long: HHblits - Homology detection by iterative HMM-HMM comparison
   section: search
-  updated: May, 2012
-  version: HHsuite-2.0.16mod
-  active: 
+  updated: November, 2016
+  version: HHsuite-3.0.0
+  active:
   - hhgroup
   - member
   - internal
