@@ -82,5 +82,4 @@ class BlammerController < ToolController
     @job.actions.last.save!
     end
   end
-
 end

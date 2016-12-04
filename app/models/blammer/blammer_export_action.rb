@@ -53,7 +53,6 @@ class BlammerExportAction < Action
 					out.write(line)
 				end
 			end
-			
 		end
 			
 		out.close
@@ -68,6 +67,5 @@ class BlammerExportAction < Action
 		self.save!
 		job.update_status
 	end
-    
 end
 

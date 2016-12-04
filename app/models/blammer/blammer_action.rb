@@ -56,18 +56,14 @@ class BlammerAction < Action
     @maxseqalignment = params['maxseqalignment']
     @outformat = params['outformat']
     @html = params['html'] ? "T" : "F"
-
   end
 
   def perform
     params_dump
-
    
     @commands << "#{JAVA_EXEC} -Xmx3G -jar #{BLAMMER}/blammer.jar -conf #{BLAMMER}/blammer.conf -infile #{@infile} -coverage #{@minimalcoverage} -blastmax #{@maxevalue} -cluwidth #{@minimalanchor} -s/c #{@minimalscore} -seqs #{@maxseqalignment} -maxsim #{@maxseqidentity} -html #{@html} -oformat #{@outformat} -dohmmb f -dohmms f -dohmma f -doext f -dotax f -verbose 2 -hmmer #{HMMER}/binaries/ -clustalw #{CLUSTALW}/clustalw -blastdb #{DATABASES}/standard_new/nr -taxdir #{DATABASES}/taxonomy/ &> #{job.statuslog_path}"
  
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
-
   end
-
 end
