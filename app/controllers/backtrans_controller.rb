@@ -19,7 +19,6 @@ class BacktransController < ToolController
 								 'Trematode Mitochondrial',
 								 'Scenedesmus Obliquus Mitochondrial',
 								 'Thraustochytrium Mitochondrial']
-								 
 	end
 	
 	def results
@@ -49,7 +48,5 @@ class BacktransController < ToolController
 		end
 	  	  
 		redirect_to(:host => DOC_ROOTHOST, :controller => 'backtrans', :action => 'index', :organism => filename, :cut => true)
-	
 	end
-  
 end
