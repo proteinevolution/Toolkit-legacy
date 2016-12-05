@@ -36,5 +36,4 @@ class AncesconController < ToolController
 		@job.export_tree
 		export_to_file
 	end
-  
 end

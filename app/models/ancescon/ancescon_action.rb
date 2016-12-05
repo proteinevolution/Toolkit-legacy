@@ -1,10 +1,5 @@
 class AncesconAction < Action
   ANCESCON = File.join(BIOPROGS, 'ancescon')
-  if LOCATION == "Munich" && LINUX == 'SL6'
-    PERL   = "perl "+File.join(BIOPROGS, 'perl')
-  else
-    PERL   = File.join(BIOPROGS, 'perl')
-  end
 
   attr_accessor :informat, :sequence_input, :sequence_file, :jobid, :mail, :otheradvanced, :full_name
 
@@ -89,7 +84,7 @@ class AncesconAction < Action
 
     if(!@tree)
 
-    # Ersetze Sequence Namen
+    # Replace sequence names 
     seq_num = 0
     res = IO.readlines(@seqfile)
     names = File.new(@namesfile, "w+")
@@ -117,7 +112,7 @@ class AncesconAction < Action
 
     reformat("fas", "clu", @seqfile)
 
-    # CLUSTAL am Anfang des Alignments entfernen
+    # Remove CLUSTAL at the beginning of the alignment
     res = IO.readlines(@seqfile)
     res.delete_at(0)
     out = File.new(@alnfile, "w+")
@@ -130,28 +125,22 @@ class AncesconAction < Action
 
     if (@owntreefile)
        @commands << "cp treefile #{@alnfile}.org.tre"
-       @commands << "#{PERL}/treenormalizer.pl -n #{@namesfile} -t treefile &> #{job.statuslog_path}"
+       @commands << "#{ANCESCON}/treenormalizer.pl -n #{@namesfile} -t treefile &> #{job.statuslog_path}"
        @commands << "#{ANCESCON}/ancestral -R -i #{@alnfile} -t treefile -o #{@outfile} #{@options} &> #{job.statuslog_path}"
        @commands << "cp treefile #{@alnfile}.tre"
-       @commands << "#{PERL}/ancescontreemerger.pl -n #{@namesfile} -t #{@alnfile}.tre #{job.statuslog_path}"
+       @commands << "#{ANCESCON}/ancescontreemerger.pl -n #{@namesfile} -t #{@alnfile}.tre #{job.statuslog_path}"
 
 
-    else     @commands << "#{ANCESCON}/ancestral -i #{@alnfile} -o #{@outfile} #{@options} &> #{job.statuslog_path}"
-
-
+    else     
+        @commands << "#{ANCESCON}/ancestral -i #{@alnfile} -o #{@outfile} #{@options} &> #{job.statuslog_path}"
     @commands << "echo 'Finished Tree Generation... ' >> #{job.statuslog_path}"
 
 
     @commands << "cp #{@alnfile}.tre #{@alnfile}.org.tre"
-    @commands << "#{PERL}/ancescontreemerger.pl -n #{@namesfile} -t #{@alnfile}.tre &> #{job.statuslog_path}" end
+    @commands << "#{ANCESCON}/ancescontreemerger.pl -n #{@namesfile} -t #{@alnfile}.tre &> #{job.statuslog_path}" end
     @commands << "echo 'Finished Tree Labeling... ' >> #{job.statuslog_path}"
-
-
-
 
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands)
-
   end
-
 end
