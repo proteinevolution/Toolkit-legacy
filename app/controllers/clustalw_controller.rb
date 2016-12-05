@@ -55,9 +55,6 @@ class ClustalwController < ToolController
     calculate_forwardings(@tool)
     @fw_values = get_tool_list
     @fw_labels = get_tool_name_list              
-                  
-                  
-
 	end
 
 	def clustalw_export_browser
@@ -73,5 +70,4 @@ class ClustalwController < ToolController
 			@job.actions.last.save!
 		end
 	end
-
 end

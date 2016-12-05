@@ -75,8 +75,6 @@ class ClustalwAction < Action
         logger.debug "Commands:\n"+@commands.join("\n")
         queue.submit(@commands)
     end
-
   end
-
 end
 
