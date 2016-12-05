@@ -76,6 +76,5 @@ class BlammerForwardAction < Action
       {'sequence_input' => res.join, 'informat' => informat, 'inputmode' => 'alignment'}
     end
 	end
-    
 end
 
