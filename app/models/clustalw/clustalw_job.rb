@@ -52,7 +52,5 @@ class ClustalwJob < Job
     if (!block.empty?)
       @aln_blocks.push(block)
     end
-    
   end
- 
 end
