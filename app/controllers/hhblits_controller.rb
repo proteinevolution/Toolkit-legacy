@@ -66,8 +66,6 @@ class HhblitsController < ToolController
           next
         end
       end
-      
-      
     end
 
     @default_db = @dbvalues[0]
@@ -122,11 +120,6 @@ class HhblitsController < ToolController
                   tool_title('quick2_d'), 
                   tool_title('reformat'), 
                   tool_title('repper')]
-                  
-                   
-                  
-                  
-                  
                   
                   
     @fw_values_msa = [fw_msa_to_tool_url('hhblits', 'hhblits')+ "&mode=querymsa",
@@ -231,7 +224,6 @@ class HhblitsController < ToolController
   end
   
   
-  
   def help_histograms
     render(:layout => "help")
   end
@@ -283,5 +275,4 @@ class HhblitsController < ToolController
     index
     render(:action => 'index')
   end
-  
 end

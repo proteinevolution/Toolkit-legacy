@@ -1,20 +1,6 @@
 class HhblitsAction < Action
 
-  #HHSUITE = File.join(BIOPROGS, 'hhsuite/bin')
-  #HHSUITELIB = File.join(BIOPROGS, 'hhsuite/lib/hh/scripts')
-  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   HELPER = File.join(BIOPROGS, "helper")
-
-  if LOCATION == "Munich" && LINUX == 'SL6'
-    PERL = "perl "+File.join(BIOPROGS, 'perl')
-   # HH   = "perl "+File.join(BIOPROGS, 'hhpred')
-  else
-     PERL = File.join(BIOPROGS, 'perl')
-   #  HH = File.join(BIOPROGS, 'hhpred')
-  end
-  #PSIPRED = File.join(BIOPROGS, 'psipred')  
-
-  
   attr_accessor :jobid, :hhblits_dbs, :informat, :inputmode, :maxit, :alignmode, :realign, :mact, :maxseq, :width, :Pmin, :maxlines,
                 :sequence_input, :sequence_file, :mail, :otheradvanced
 
@@ -27,13 +13,9 @@ class HhblitsAction < Action
                                                     :ss_allow => true})
 
   validates_jobid(:jobid)
-  
   validates_email(:mail)
-  
   validates_db(:hhblits_dbs, {:on => :create})
-  
   validates_shell_params(:jobid, :mail, :width, :Pmin, :maxlines, {:on => :create})
-  
   validates_format_of(:width, :Pmin, :maxlines, {:with => /^\d+$/, :on => :create, :message => 'Invalid value! Only integer values are allowed!'}) 
 
  
@@ -118,7 +100,7 @@ class HhblitsAction < Action
     @commands << "reformat.pl -r a3m fas #{@basename}.in #{@basename}.ms.fas "
     
     # Generate jalview MS Alignment
-    @commands << "#{PERL}/masterslave_alignment.pl -q #{@basename}.ms.fas  -hhr #{@basename}.hhr -o #{@basename}.ms.out  &> /dev/null"
+    @commands << "masterslave_alignment.pl -q #{@basename}.ms.fas  -hhr #{@basename}.hhr -o #{@basename}.ms.out  &> /dev/null"
   end  
   
   def perform
@@ -135,8 +117,6 @@ class HhblitsAction < Action
     # -qhhm parameter was removed here 
     @commands << "hhblits -cpu 8 -v #{@v} -i #{@infile} -d #{@db}  -o #{@outfile} -oa3m #{@a3m_outfile}  -e #{@E_hhblits} -n #{@maxit} -p #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@realign} #{@mact} #{@filter} #{@cov_min} 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'"
 
-
-
     @commands << "addss.pl #{@a3m_outfile}"
 
     prepare_fasta_hhviz_histograms_etc    
@@ -145,9 +125,8 @@ class HhblitsAction < Action
     @commands << "reformat.pl a3m fas #{@basename}_out.a3m #{@basename}.full.fas "
     
     @commands << "reformat.pl fas fas #{@basename}.reduced.fas #{@basename}.uc.fas -uc -r"
-    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.uc.fas -o #{@basename}.j.fas"
+    @commands << "parse_jalview.rb -i #{@basename}.uc.fas -o #{@basename}.j.fas"
     @commands << "source #{UNSETENV}" 
-    
 
     # Parse outfile
     @commands << "#{HELPER}/blast-parser.pl -i #{@outfile} --add-links > outfile_temp.hhr"
@@ -156,10 +135,6 @@ class HhblitsAction < Action
     #queue.submit(@commands, true, {'cpus' => '4', 'queue' => QUEUES[:hhblits]})
     # declare as much cpus as are used by the commands
     queue.submit(@commands, true, {'cpus' => '8', 'queue' => QUEUES[:hhblits]})
-    
   end
-  
 end
-
-
 
