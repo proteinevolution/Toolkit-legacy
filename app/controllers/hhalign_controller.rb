@@ -9,5 +9,4 @@ class HhalignController < ToolController
 		@widescreen = true
 		@mode = params[:mode] ? params[:mode] : 'onlySS'
 	end
-  
 end

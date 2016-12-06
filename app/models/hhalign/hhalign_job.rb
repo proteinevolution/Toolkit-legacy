@@ -209,5 +209,4 @@ class HhalignJob < Job
 			@lines << res[i]
 		end # Each-loop
 	end
-  
 end

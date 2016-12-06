@@ -5,6 +5,7 @@
 <div class="row">
 	<%= form_label("Enter query alignment", "query_input") %>
 	<%= form_text_area("sequence_input") %>
+    <script> document.getElementById("sequence_input").setAttribute("rows", 15); </script>
 </div>
 <div class="row">
   <div class="formw">
@@ -30,7 +31,8 @@
 
 <div class="row">
 	<%= form_label("Enter target alignment", "target_input") %>
-	<%= form_text_area("target_input") %>
+    <%= form_text_area("target_input") %>
+    <script> document.getElementById("target_input").setAttribute("rows", 15); </script>
 </div>
 <div class="row">
 	<%= form_label("or upload a local file") %>
