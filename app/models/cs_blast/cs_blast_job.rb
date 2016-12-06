@@ -7,10 +7,7 @@ class CsBlastJob < Job
   @@MAX_DBS = 5
   
   attr_reader :header, :hits_better, :hits_worse, :alignments, :footer, :num_checkboxes , :evalue_threshold, :searching
-
   attr_accessor  :evalfirstit
-
- 
 
   @@export_ext = ".export"
   def set_export_ext(val)
@@ -48,5 +45,4 @@ class CsBlastJob < Job
   def export
     ret = IO.readlines(File.join(job_dir, jobid + @@export_ext)).join
   end
-  
 end 

@@ -10,16 +10,9 @@ require 'ftools'
 class CsBlastAction < Action
   # Generate application paths
   BLAST = File.join(BIOPROGS, 'blast')
-  RUBY_UTILS = File.join(BIOPROGS, 'ruby')
   HELPER = File.join(BIOPROGS, 'helper')
   CSBLAST = File.join(BIOPROGS, 'csblast')
   CSDB = File.join(DATABASES, 'csblast')
-  
-  if LOCATION == "Munich" && LINUX == 'SL6'
-    UTILS = "perl " +File.join(BIOPROGS, 'perl')
-  else
-     UTILS = File.join(BIOPROGS, 'perl')
-  end
   
   include GenomesModule
     
@@ -255,39 +248,37 @@ class CsBlastAction < Action
 
     # run perl script to fix blast errors. TODO: Find out what script does 
     # @commands << "echo 'Fixing BLAST errors' >> #{job.statuslog_path}"  
+   
     # No longer used since the GI numbers were replaced by the accession numbers
     #@commands << "#{UTILS}/fix_blast_errors.pl -i #{@outfile} &>#{@basename}.log_fix_errors"
     
-    
     # run perl script to visualize blast results. TODO: Find out what script does
     @commands << "echo 'Visualizing BLAST Output' >> #{job.statuslog_path}" 
-    @commands << "#{UTILS}/blastviz.pl #{@outfile} #{job.jobid} #{job.job_dir} #{job.url_for_job_dir_abs} &> #{@basename}.blastvizlog";
+    @commands << "blastviz.pl #{@outfile} #{job.jobid} #{job.job_dir} #{job.url_for_job_dir_abs} &> #{@basename}.blastvizlog";
     # run perl script to process blast history. TODO: Find out what script does
     @commands << "echo 'Generating Blast Histograms... ' >> #{job.statuslog_path}"
-    @commands << "#{UTILS}/blasthisto.pl  #{@outfile} #{job.jobid} #{job.job_dir} &> #{@basename}.blasthistolog";
+    @commands << "blasthisto.pl  #{@outfile} #{job.jobid} #{job.job_dir} &> #{@basename}.blasthistolog";
     
     # run perl script to create alignment
     @commands << "echo 'Processing Alignments... ' >> #{job.statuslog_path}"
-    @commands << "#{UTILS}/alignhits_html.pl #{@outfile} #{@basename}.align -fas -no_link -e #{@expect}"
+    @commands << "alignhits_html.pl #{@outfile} #{@basename}.align -fas -no_link -e #{@expect}"
     # run perl script to reformat alignment TODO: Find out what script does
     @commands << "reformat.pl fas fas #{@basename}.align #{@basename}.ralign -M first -r"
     @commands << "if [ -s #{@basename}.ralign ]; then hhfilter -i #{@basename}.ralign -o #{@basename}.ralign -diff 50; fi"
-    
-
+   
+    # I think this is not needed anymore, since the databases were changed from standard to standard_new 
     #@commands << "#{RUBY_UTILS}/parse_csiblast.rb -i #{@basename}.csblast -o #{@basename}.csblast"
     
     # Generate Jalview Output from alignment data
     @commands << "echo 'Creating Jalview Input... ' >> #{job.statuslog_path}"
-    @commands << "#{RUBY_UTILS}/parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align" 
+    @commands << "parse_jalview.rb -i #{@basename}.ralign -o #{@basename}.j.align" 
     @commands << "reformat.pl fas fas #{@basename}.j.align #{@basename}.j.align -r"
-
 
     @commands << "source #{UNSETENV}" 
 
     logger.debug "Commands:\n"+@commands.join("\n")
     # Submit generated cmd list to queue
     queue.submit(@commands)
-
   end  
 end
 

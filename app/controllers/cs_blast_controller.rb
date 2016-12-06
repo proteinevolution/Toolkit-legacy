@@ -205,6 +205,4 @@ class CsBlastController < ToolController
     index
     render(:action => 'index')
   end
-
-  
 end
