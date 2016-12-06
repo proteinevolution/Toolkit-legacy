@@ -1,10 +1,6 @@
 class DataaAction < Action
 
- if LOCATION == "Munich" && LINUX == 'SL6'
-    BAD = "perl "+File.join(BIOPROGS, 'dataa')
- else
     BAD = File.join(BIOPROGS, 'dataa')
- end
 
 	attr_accessor :jobid, :sequence_input, :sequence_file, :mail
 	
@@ -37,9 +33,5 @@ class DataaAction < Action
 		logger.debug "Commands:\n"+@commands.join("\n")
 		queue.submit(@commands)
 	end
-
 end
-
-
-
 
