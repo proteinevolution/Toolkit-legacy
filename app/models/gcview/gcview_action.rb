@@ -3,13 +3,8 @@ class GcviewAction < Action
 
   GCVIEW = File.join(BIOPROGS, 'gcview')
   BLAST = File.join(BIOPROGS, 'blast')
- 
-  
-  if LOCATION == "Munich" && LINUX == 'SL6'
-    UTILS   = "perl "+File.join(BIOPROGS, 'perl')
-  else
-    UTILS = File.join(BIOPROGS, 'perl')
-  end
+  BLASTPLUS = File.join(BIOPROGS, 'blastplus') 
+  UTILS = File.join(BIOPROGS, 'perl')
 
   attr_accessor :mail, :jobid, :sequence_input, :sequence_file, :informat
   
@@ -28,9 +23,9 @@ class GcviewAction < Action
     @basename = File.join(job.job_dir, job.jobid)
     @tmpdir = job.job_dir
     @outurl = job.url_for_job_dir_abs
-    @database_nr = File.join(DATABASES, "standard/nr")
-    @database_uniprot_sprot = File.join(DATABASES, "standard/uniprot_sprot.fasta")
-    @database_uniprot_trembl = File.join(DATABASES, "standard/uniprot_trembl.fasta")
+    @database_nr = File.join(DATABASES, "standard_new/nr")
+   # @database_uniprot_sprot = File.join(DATABASES, "standard_new/uniprot_sprot.fasta")
+   # @database_uniprot_trembl = File.join(DATABASES, "standard_new/uniprot_trembl.fasta")
     @commands = []
   end
   
@@ -333,13 +328,15 @@ class GcviewAction < Action
       writefile = File.open(inputfile, "w")
       writefile.write(line)
       writefile.close
-      if line.strip =~ /^[gi\|]?[0-9]+\|?$/
-        @database=@database_nr
-      else
-        @database="#{@database_uniprot_sprot} #{@database_uniprot_trembl}"
-      end
+      #if line.strip =~ /^[gi\|]?[0-9]+\|?$/
+      #  @database=@database_nr
+      #else
+      #  @database="#{@database_uniprot_sprot} #{@database_uniprot_trembl}"
+      #end
+      #Always retrieve from NR
+      @database=@database_nr
       gi2seq_out = File.join(@basename+"_#{descriptions}.in")
-      @commands << "#{UTILS}/seq_retrieve.pl -i #{inputfile} -o #{gi2seq_out} -b #{BLAST} -d \"#{@database}\" -unique >> #{@mainlog} 2>> #{@mainlog}"
+      @commands << "#{UTILS}/seq_retrieve.pl -i #{inputfile} -o #{gi2seq_out} -b #{BLASTPLUS}/bin -d \"#{@database}\" -use_blastplus -unique >> #{@mainlog} 2>> #{@mainlog}"
       parameter = job.jobid.to_s+"_"+descriptions.to_s
       @inputSequences.push(parameter)
       @inputTags.push(line)

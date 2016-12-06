@@ -2,7 +2,7 @@ class GcviewController < ToolController
 
   def index
     @informat_values = ['fas', 'gi']
-    @informat_labels = ['FASTA Sequences', 'GI/Uniprot Identifiers']
+    @informat_labels = ['FASTA Sequences', 'NCBI Accession']
     @numvalues = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
     @numlabels = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
     @typevalues = ['genes', 'kb']
@@ -32,5 +32,4 @@ class GcviewController < ToolController
   def help_results
     render(:layout => "help")
   end
-
 end

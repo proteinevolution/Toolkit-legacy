@@ -23,7 +23,4 @@ class GcviewJob < Job
   # def before_results(controller_params)
   #    @some_results_data = ">header\nsequence"
   # end
-  
-  
-  
 end
