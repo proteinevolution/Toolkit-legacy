@@ -47,5 +47,4 @@ class BlastclustForwardAction < Action
 		#{'sequence_input' => res.join, 'informat' => 'fas'}
     forward_alignment_tools()
 	end
-    
 end

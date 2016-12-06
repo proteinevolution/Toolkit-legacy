@@ -85,5 +85,4 @@ class BlastclustJob < Job
     	new_seq += seq.slice(i...i+80) + "\n"
     end
   end
-  
 end

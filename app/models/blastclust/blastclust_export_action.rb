@@ -48,5 +48,4 @@ class BlastclustExportAction < Action
 		self.save!
 		job.update_status
 	end
-    
 end

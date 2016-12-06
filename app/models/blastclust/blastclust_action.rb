@@ -51,9 +51,5 @@ class BlastclustAction < Action
       @commands << "#{BLAST}/blastclust -i #{@infile} -o #{@outfile} -p #{@norp} -L #{@lvalue} -b T -S #{@value} -e F"
       queue.submit(@commands)
     end
-
 end
-
-
-
 
