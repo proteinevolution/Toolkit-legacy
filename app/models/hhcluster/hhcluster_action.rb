@@ -119,9 +119,7 @@ class HhclusterAction < Action
     self.status = STATUS_DONE
     self.save!
     job.update_status
-
   end
-
 end
 
 
