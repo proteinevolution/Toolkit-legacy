@@ -4,7 +4,7 @@ class GcviewAction < Action
   GCVIEW = File.join(BIOPROGS, 'gcview')
   BLAST = File.join(BIOPROGS, 'blast')
   BLASTPLUS = File.join(BIOPROGS, 'blastplus') 
-  UTILS = File.join(BIOPROGS, 'perl')
+  SEQRET = File.join(BIOPROGS, 'seq_retrieve')
 
   attr_accessor :mail, :jobid, :sequence_input, :sequence_file, :informat
   
@@ -336,7 +336,7 @@ class GcviewAction < Action
       #Always retrieve from NR
       @database=@database_nr
       gi2seq_out = File.join(@basename+"_#{descriptions}.in")
-      @commands << "#{UTILS}/seq_retrieve.pl -i #{inputfile} -o #{gi2seq_out} -b #{BLASTPLUS}/bin -d \"#{@database}\" -use_blastplus -unique >> #{@mainlog} 2>> #{@mainlog}"
+      @commands << "#{SEQRET}/seq_retrieve.pl -i #{inputfile} -o #{gi2seq_out} -b #{BLASTPLUS}/bin -d \"#{@database}\" -use_blastplus -unique >> #{@mainlog} 2>> #{@mainlog}"
       parameter = job.jobid.to_s+"_"+descriptions.to_s
       @inputSequences.push(parameter)
       @inputTags.push(line)
@@ -344,10 +344,6 @@ class GcviewAction < Action
       descriptions += 1
     end
   end
-
-
 end
-
-
 
 
