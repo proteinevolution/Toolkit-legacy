@@ -22,6 +22,5 @@ class GcviewForwardAction < Action
           end
 	  return hash
         end
-
 end
 
