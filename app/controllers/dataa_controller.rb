@@ -53,7 +53,6 @@ class DataaController < ToolController
 		@img = img.readlines.join
 		end
 		send_data(@img, :type => 'image/png', :disposition => 'inline')
-
 	end	
 
 	def showpic
@@ -65,7 +64,6 @@ class DataaController < ToolController
 		@img = img.readlines.join
 		end
 		send_data(@img, :type => 'image/png', :disposition => 'inline')
-
 	end
 	
 	def index
@@ -78,7 +76,5 @@ class DataaController < ToolController
 		@include_js_text = "var domTT_styleClass = 'domTT';"
 		@include_css = "domtt.css"
 		@include_css_text = ".ramka {color: #000000; border-top: 1px silver solid; border-bottom: 1px silver solid; background-color: #ECF1F4; }\n	.delikatna {color: #000000; border-top: 1px silver solid; border-left: 1px silver solid; background-color: white;}"
-		
 	end
-  
 end
