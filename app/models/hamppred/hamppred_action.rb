@@ -226,7 +226,7 @@ class HamppredAction < Action
 
       # Make HMM file
       @commands << "echo 'Making profile HMM from alignment ...' >> #{job.statuslog_path}"
-      @commands << "hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}"
+      @commands << "hhmake -v #{@v} #{@cov_min} #{@qid_min} #{@diff} -i #{@basename}.a3m -o #{@basename}.hhm 1> #{@basename}_hhmake.out 2> #{@basename}_hhmake.err"
     end
 
       if cpus < 4
@@ -290,5 +290,4 @@ class HamppredAction < Action
     logger.debug "L297 Memory Allocation - HAMPpred - : #{memory}"
     memory
   end
-
 end

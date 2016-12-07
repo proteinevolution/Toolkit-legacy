@@ -1,7 +1,6 @@
 require 'fasta_reader.rb'
 
 class HamppredController < ToolController
-REFORMAT = File.join(BIOPROGS, 'reformat')
 
   def index
     @informat_values = ['fas', 'clu', 'sto', 'a2m', 'a3m', 'emb', 'meg', 'msf', 'pir', 'tre']
@@ -28,8 +27,6 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     # Sort list of directories according to order given in sortlist 
     sortlist = Array["\/hamppred"]
     # Allow non-standard libraries only on internal server:
-    if (LOCATION == "Munich" && !@user.nil? && @user.id == 2) then sortlist.push("\/hydra") end
-    if (LOCATION == "Munich" && !@user.nil? && (@user.id == 119 || @user.groups.include?('admin'))) then sortlist.push("\/Proteasome") end
     sortlist.each do |el|
       dbvalues_pre.dup.each do |val|
         if (!val.index(/#{el}/).nil?)
@@ -179,7 +176,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
   def resubmit_domain
 
     basename = File.join(@job.job_dir, @job.jobid)
-    @my_command = "#{BIOPROGS}/perl/alicutter.pl #{basename}.resub_domain.a2m #{basename}.in.cut #{params[:domain_start].to_i} #{params[:domain_end].to_i} "
+    @my_command = "source #{SETENV} ; alicutter.pl #{basename}.resub_domain.a2m #{basename}.in.cut #{params[:domain_start].to_i} #{params[:domain_end].to_i} ; source #{UNSETENV} "
     logger.debug("Running Alicutter -hamppred- #{@my_command}")
     system(@my_command)   
     job_params = @job.actions.first.params
