@@ -41,8 +41,5 @@ class HhclusterJob < Job
 				@evalue << $3
 			end
 		end
-		
 	end
-  
-  
 end

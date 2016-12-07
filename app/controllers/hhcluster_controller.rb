@@ -1,6 +1,5 @@
 class HhclusterController < ToolController
 
-  HH = File.join(BIOPROGS, "hhpred")
   HHCLUSTER = File.join(BIOPROGS, "hhcluster")
   
   def index
@@ -155,7 +154,7 @@ class HhclusterController < ToolController
     hhpred_action.save!
     
     # Generate graphical display of hits
-    command = "#{HH}/hhviz.pl #{hhpred_job.jobid} #{hhpred_job.job_dir} #{hhpred_job.url_for_job_dir} > #{hhpred_job.statuslog_path} 2>&1"
+    command = "source #{SETENV} ; hhviz.pl #{hhpred_job.jobid} #{hhpred_job.job_dir} #{hhpred_job.url_for_job_dir} > #{hhpred_job.statuslog_path} 2>&1 ; source #{UNSETENV}"
     logger.debug "###### Command: #{command}"
     system(command)
     
