@@ -14,9 +14,6 @@ class HhfragJob < Job
     ret = IO.readlines(File.join(job_dir, "query" + @@export_ext)).join
   end
 
-
-
-
   attr_reader :ta
 
   def before_results(controller_params)
@@ -58,7 +55,5 @@ class HhfragJob < Job
       @alignment.gsub!(/(P+)/, '<span style="background-color: #808080;">\1</span>')
       @alignment.gsub!(/(G+)/, '<span style="background-color: #ffd070;">\1</span>')
     end
-    
   end
-  
 end

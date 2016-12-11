@@ -30,8 +30,6 @@ class HhfragAction < Action
     @predict_ta = params['ta']
     reformat(@informat, "fas", @infile)
     @commands = []
-    
- 
   end
 
   def perform
@@ -42,10 +40,8 @@ class HhfragAction < Action
       @commands << "#{HHFRAG}/hhfrag.sh #{@infile} #{@outdir} #{@predict_ta}  >>#{job.statuslog_path}"
       # Fire up method to copy file from temp to folder
 
-   
     logger.debug "Commands:\n"+@commands.join("\n")
     queue.submit(@commands, nil, { 'cpus' => '4' })
   end
-  
 end
 

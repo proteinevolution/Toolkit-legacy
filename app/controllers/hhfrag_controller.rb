@@ -22,6 +22,4 @@ class HhfragController < ToolController
 
         def results_numerical
         end
-  
-  
 end
