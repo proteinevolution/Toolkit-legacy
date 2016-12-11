@@ -26,9 +26,6 @@ class HhfilterController < ToolController
                   fw_to_tool_url('hhfilter', 'frpred') + "&fw_mode=alignment",
                   fw_to_tool_url('hhfilter', 'hhrep') + "&fw_mode=alignment",
                   fw_to_tool_url('hhfilter', 'hhrepid') + "&fw_mode=alignment",
-                  
-                  
-                  
                   ]
 		@fw_labels = [tool_title('alnviz'), 
                   tool_title('blastclust'),
@@ -50,14 +47,12 @@ class HhfilterController < ToolController
                   tool_title('frpred'),
                   tool_title('hhrep'),
                   tool_title('hhrepid'),
-                  
                   ]
                                 
     # Test of Emission and Acceptance Values of YML DATA  
     calculate_forwardings(@tool)
     @fw_values = get_tool_list
     @fw_labels = get_tool_name_list             
-
 	end
 	
 	def hhfilter_export_browser
@@ -73,5 +68,4 @@ class HhfilterController < ToolController
 			@job.actions.last.save!
 		end
 	end
-  
 end

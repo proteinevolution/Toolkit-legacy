@@ -33,7 +33,6 @@ class HhfilterForwardAction < Action
 				out.write(line)
 			end
 		end
-
 		out.close
 		
 		self.status = STATUS_DONE
@@ -45,6 +44,5 @@ class HhfilterForwardAction < Action
 		res = IO.readlines(File.join(job.job_dir, job.jobid + ".forward"))
 		{'sequence_input' => res.join, 'informat' => 'fas'}
 	end
-    
 end
 
