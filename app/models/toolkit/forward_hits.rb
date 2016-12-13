@@ -5,6 +5,7 @@ module ForwardHits
   UTILS = File.join(BIOPROGS, 'perl')
   BLAST = File.join(BIOPROGS, 'blast')
   BLASTP = File.join(BIOPROGS, 'blastplus/bin')
+  SEQRET = File.join(BIOPROGS, 'seq_retrieve')
 
   HITLIST_LINE_PATTERN = /<a href\s*=\s*\#[^>]+>\s*[\deE\.+-]+<\/a>/
 
@@ -86,7 +87,7 @@ module ForwardHits
       if (mode.nil? || mode == "alignment")
         make_blast_output(job)
       else
-        make_seqs_output(job, handleGenomes, use_legacy_blast)
+        make_seqs_output(job, handleGenomes, use_legacy_blast, resultsFileType)
       end
 
       if (!mode.nil? && mode == "alignment")
@@ -154,7 +155,7 @@ module ForwardHits
     out.close
   end
   
-  def make_seqs_output(job, handleGenomes, use_legacy_blast)
+  def make_seqs_output(job, handleGenomes, use_legacy_blast, resultsFileType)
     i = @hits_end + 1
     # loop over alignments section
     while (i < @res.size)
@@ -255,12 +256,31 @@ module ForwardHits
       end
 
       if (use_legacy_blast)
-        @commands << "#{UTILS}/seq_retrieve.pl -i #{@basename}.fw_gis -o #{@outfile} -b #{BLAST} -unique#{db_option}"
+        @commands << "#{SEQRET}/seq_retrieve.pl -i #{@basename}.fw_gis -o #{@outfile} -b #{BLAST} -unique#{db_option}"
       else
-        @commands << "#{UTILS}/seq_retrieve.pl -use_blastplus -i #{@basename}.fw_gis -o #{@outfile} -b #{BLASTP} -unique#{db_option}"
+        
+         # Rewrite the forwarding file    
+        File.delete(@basename + ".fw_gis") if File.exists?(@basename + ".fw_gis")
+        
+        #  Write hits to file
+        File.open(@basename + ".fw_gis", "w+") do |f|
+              f.puts(remove_redundancy(hits))
+        end
+        @commands << "#{SEQRET}/seq_retrieve.pl -use_blastplus -i #{@basename}.fw_gis -o #{@outfile} -b #{BLASTP} -unique#{db_option}"
       end
     end
   
   end
+
+    # Removes an accession acc from the array if an equivalent accession acc.v with version annotation v is also in the array
+   def remove_redundancy(accs)
+
+        res = []
+        accs.each do |x|
+
+            res << x unless(accs.grep(/#{x}\.[0-9]/).any?)
+        end
+        return res
+   end
 
 end
