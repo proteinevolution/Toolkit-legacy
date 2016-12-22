@@ -12,6 +12,7 @@ function genomessearch(t){
 
 function onsearchcomplete(){ 
 	var val = $('taxids').value;
+    console.log("value is " + val)
 	taxids2tree(val);	
 	Element.toggle('gsearch_lnk','gsearching');  
 	expandselected(); 
@@ -48,25 +49,27 @@ function collapserec(level, TREE){
 	}
 }
 	
-function expandselected(){
-	expandselectedrec(tree[0]);
-}
 
-function expandselectedrec(TREE){
-	if(TREE.length>2){
-		var r=0;
-		for(var i=2; i<TREE.length; i++) r+=expandselectedrec(TREE[i]);
-		if(r>0){
-			$(TREE[0]+"gdiv").style.display = 'block';
-			$(TREE[0]+"gimg").src= '/images/minus.gif';
-		}else{
-			$(TREE[0]+"gdiv").style.display = 'none';
-			$(TREE[0]+"gimg").src= '/images/plus.gif';
-		}
-		return r;				
-	}else return TREE[1];
-	
-		
+
+function expandselected() {
+
+    checkboxes = document.getElementById("gtree").getElementsByTagName("input");
+    for(var i = 0; i < checkboxes.length; i++) {
+
+        var checkbox = checkboxes[i];
+        if(checkbox && checkbox.checked) {
+            atag = checkbox.parentNode.getElementsByTagName('a')[0];
+            if(atag) {
+                var img = atag.getElementsByTagName("img")[0];
+                
+                if(img) {
+                    if(img.src.slice(-8) == "plus.gif") {
+                        atag.click();
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -76,6 +79,29 @@ function dump(obj){
 		outstr += i+"\n";
 	return outstr;
 }
+
+function toggle(id) {
+    
+    if(id.tagName) {
+
+        if(id.style.display == "none") {
+
+            id.style.display = "block";
+        } else {
+            id.style.display = "none";
+        }
+    } else {
+
+    if(document.getElementById(id).style.display == "none") {
+      
+        document.getElementById(id).style.display = "block";
+    } else {
+
+        document.getElementById(id).style.display = "none";
+    }
+    }
+}
+
 
 function loadtogglegenomes(t, level){
     if( !$('gtree') ){
@@ -89,15 +115,16 @@ function loadtogglegenomes(t, level){
 				onLoading:function(request){ Element.toggle('gshow_lnk','gloading_lnk'); }, 
 				onComplete:function(request){ Element.toggle('ghide_lnk','gloading_lnk'); collapserec(level, tree[0]);} 
 	});
-    }else{  
-  	Effect.toggle('gtree');
-	Effect.toggle('gshow_lnk');
-	Effect.toggle('ghide_lnk');
+    }else{
+
+    toggle('gtree');
+    toggle('gshow_lnk');
+    toggle('ghide_lnk');
     }
 }
 
 function toggleplusminus(obj, hdiv){
-	Effect.toggle(hdiv);
+	toggle(hdiv);
 	if( obj.src.search(/plus/) != -1) obj.src='/images/minus.gif';
 	else obj.src= '/images/plus.gif';			
 }
