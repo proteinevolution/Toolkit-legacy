@@ -164,11 +164,45 @@ function deselectrec(TREE){
 	TREE[1]=0;		
 }
 
-function checker(obj){
-	var id = parseInt(obj.id);
-	findNode(id, tree[0], obj.checked);
-	control(tree);
+
+function hasClass(element, cls) {
+        return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 }
+
+
+function checker(obj) {
+    
+    var p = obj.parentNode;
+
+    // Done if parent is genomeLeaf
+    if(hasClass(p, "genomeleaf")) {
+        return;
+    }
+    p.id = "rememberMe";
+    var siblings = p.parentNode.childNodes;
+    var nSiblings = siblings.length;
+    for(var i = 0; i < nSiblings; i++) {
+    
+        if(siblings[i].id == "rememberMe") {
+            p.removeAttribute("id");
+            for(var j = i + 1; j < nSiblings; j++) {
+    
+                if(siblings[j].tagName) {
+
+                    // Set all checkboxes to the object's status
+                    var checkboxes = siblings[j].getElementsByTagName("input");
+                    for(var n = 0; n < checkboxes.length; n++) {
+
+                        checkboxes[n].checked = obj.checked;
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+    }
+}
+
 
 function findNode(ID, TREE, STAT){
 	if(TREE[0]==ID){
@@ -182,6 +216,7 @@ function findNode(ID, TREE, STAT){
 			}
 }
 
+ 
 function findLeaf(ID, TREE, STAT){
 	if(TREE[0]==ID && TREE.length==2){
 		changeStatus(TREE,STAT);
@@ -194,6 +229,8 @@ function findLeaf(ID, TREE, STAT){
 			}
 }
 
+
+
 function changeStatus(TREE, b){
 	$(TREE[0]+"gchk").checked=b;
 	if(b==true)TREE[1]=1;
@@ -202,6 +239,7 @@ function changeStatus(TREE, b){
 		for(var i=2; i<TREE.length; i++)
 			changeStatus(TREE[i], b);
 }
+
 
 function control(obj){
 	var button = $('submitform');
