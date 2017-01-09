@@ -59,9 +59,9 @@ module GenomesModule
     if( params['taxids'] )
       genomesjar = File.join(BIOPROGS, "genomes", "genomes.jar");
       if(data_type=="pep") then
-        cmd = "#{JAVA_1_5_EXEC} -jar #{genomesjar} -pep -nolog -dbs #{params['taxids']}"
+        cmd = "#{JAVA_1_5_EXEC} -jar #{genomesjar} -pep -nolog -dbs #{params['taxids']} | grep faa"
       elsif(data_type=="dna") then
-        cmd = "#{JAVA_1_5_EXEC} -jar #{genomesjar} -dna -nolog -dbs #{params['taxids']}" 
+        cmd = "#{JAVA_1_5_EXEC} -jar #{genomesjar} -dna -nolog -dbs #{params['taxids']} | grep fna" 
       else
         logger.error("Unknown data_type for gtree search (pep/dna) '#{data_type}'");
         raise("Unknown data_type for gtree search (pep/dna) '#{data_type}'");

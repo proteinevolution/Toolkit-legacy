@@ -410,7 +410,7 @@ end
         
         
         # Found a sequence line?
-      elsif line[b] =~ /^\s*(Q|T) (\S+)\s+\d+\s+(\S+)/ 
+      elsif line[b] =~ /^\s*(Q|T)\s+(\S+|<a.*a>)\s+\d+\s+(\S+)/ 
         seq     = $3
         old_seq = $3
         if coloring.eql?( "letters")
