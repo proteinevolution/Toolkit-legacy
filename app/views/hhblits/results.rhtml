@@ -101,7 +101,8 @@
   </div>
   <div class="formwa">
     <strong>
-      <%= radio_button_tag('coloring', 'onlySS', @mode == 'onlySS', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'onlySS')+"';"}) -%>&nbsp;color only SS &nbsp;&nbsp;&nbsp;&nbsp;
+    <!--  <%= radio_button_tag('coloring', 'onlySS', @mode == 'onlySS', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'onlySS')+"';"}) -%>&nbsp;color only SS
+&nbsp;&nbsp;&nbsp;&nbsp; -->
       <%= radio_button_tag('coloring', 'letters', @mode == 'letters', {:onclick => "location.href='"+url_for(:jobid => @job, :mode => 'letters')+"';"}) -%>&nbsp;
       <span style="color: orange;">c</span><span style="color: black;">o</span><span style="color: green;">l</span><span style="color: black;">o</span><span style="color: red;">r&nbsp;</span>
       <span style="color: grey;">a</span><span style="color: green;">li</span><span style="color: maroon;">g</span><span style="color: purple;">n</span><span style="color: green;">m</span><span style="color: blue;">e</span><span style="color: purple;">n</span><span style="color: grey;">t</span><span style="color: grey;">s</span> &nbsp;&nbsp;&nbsp;&nbsp;
