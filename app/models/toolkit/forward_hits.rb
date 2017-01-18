@@ -63,6 +63,7 @@ module ForwardHits
       hit_lines = @res[@hits_start..@hits_end]
 
       # get hits to be forwarded
+      # Does not work
       if (includehits == "byevalue")
         logger.debug "L66 byevalue!"
         if (hitsevalue =~ /^e.*$/)
@@ -84,7 +85,14 @@ module ForwardHits
         @hits.uniq!
       end
 
+      p "Forward hits:"
+      p @hits
+
+      p "Mode is:"
+      p mode
+
       if (mode.nil? || mode == "alignment")
+        p "Making BLAST output"
         make_blast_output(job)
       else
         make_seqs_output(job, handleGenomes, use_legacy_blast, resultsFileType)
@@ -138,10 +146,19 @@ module ForwardHits
     res << "</PRE>" 
     res << ""
     job.alignments.each do |h|
-      if( hits.include?(h[:id]) )
-        res << "<PRE>"
-        res << h[:content]
-        res << "</PRE>"
+      #p "Have alignment: "
+      #p h
+      #p "With id:"
+      #p h[:id]
+      #p "Tested against hits"
+      #p hits
+      h[:ids].each do |current_id|
+          if(hits.include?(current_id))
+            res << "<PRE>"
+            res << h[:content]
+            res << "</PRE>"
+            break
+          end
       end
     end
     res << "<PRE>" 
