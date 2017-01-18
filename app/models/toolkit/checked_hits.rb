@@ -42,6 +42,7 @@ private
     in_get_hits = false
     in_get_hits_prev = false
     in_get_algn = false
+    new_alignment_record = true
     while line = file.gets
 
        line = line.chomp
@@ -69,7 +70,7 @@ private
           next
         elsif ( line =~ /No hits found/ )
           no_hits = true
-	  in_get_header = false
+	      in_get_header = false
           in_get_algn = true # only for switching to in_footer
 	  next          
         elsif ( line =~ /Score/ )
@@ -137,17 +138,31 @@ private
      end
 
      if (in_get_algn)
+      # New record if the line starts with a '>'sign
+      if(line=~/^>.*$/)
+        new_alignment_record = true
+      else
+        new_alignment_record = false
+      end
       # extract alignments
       if( (line=~/^\s*<PRE>\s*$/) || (line=~/^\s*<\/PRE>\s*$/) )
         next 
       elsif( (line=~/^\s*Database:/) || (line=~/^Lambda/) )
         alignments << section if !section.nil?
-	in_get_algn = false
+	    in_get_algn = false
         in_footer = true
-      elsif( line=~/^><a name =\s*([^>\s]+)>/ || line=~/^>.*?<a name=([^>]+)>/ )
-        id = $1
-        alignments << section if !section.nil?
-        section = { :id => id, :check => false, :content => [line] }
+      # Line contains ID if the anchor tag with name attribute is present
+      elsif( line=~/^\s*(>?<a[^>]*>)?([^\s<]+).*<a\s+name.*$/ )
+        id = $2
+        #p line
+        #p id
+        if new_alignment_record
+            alignments << section if !section.nil?
+            section = { :id => id, :check => false, :content => [line], :ids => [id] }
+        else
+            section[:ids] << id
+            section[:content] << line
+        end
       elsif( line=~/#{eValueTag}\s*=\s*(\S+)/ )
         evalue = $1
         if( ids.has_key?(section[:id]) )
