@@ -85,14 +85,7 @@ module ForwardHits
         @hits.uniq!
       end
 
-      p "Forward hits:"
-      p @hits
-
-      p "Mode is:"
-      p mode
-
       if (mode.nil? || mode == "alignment")
-        p "Making BLAST output"
         make_blast_output(job)
       else
         make_seqs_output(job, handleGenomes, use_legacy_blast, resultsFileType)
@@ -120,7 +113,10 @@ module ForwardHits
   private
 
   def make_blast_output(job)
+    "START: Make BLAST output"
     job.before_results nil
+    p "HEADER"
+    p job.header
 
     res = job.header
     res << job.searching if job.searching
@@ -173,14 +169,41 @@ module ForwardHits
   end
   
   def make_seqs_output(job, handleGenomes, use_legacy_blast, resultsFileType)
+    # Supplements the hits by the one which appear in the alignments
+    add_hits = []
+    align_finished = false
+    
+    job.before_results nil
+    job.alignments.each do |h|
+
+        unless(align_finished)
+            @hits.each do |cur_hit|
+
+                if(h[:ids].include?(cur_hit))
+                    add_hits = add_hits + h[:ids]
+                    align_finished = true
+                    break
+                end
+            end
+        end
+        align_finished = false
+    end
+    @hits = @hits + add_hits
+    @hits.uniq!
+
     i = @hits_end + 1
     # loop over alignments section
+
+    p "SEQLEN is" + @seqlen.to_s
+
     while (i < @res.size)
       line = @res[i]
       if ((line=~/^\s*Database:/) || (line=~/^Lambda/)) then break end
       #><a name = 82736116><
-      if (line =~ /^><a name =\s*([^>\s]+)>/ || line=~/^>.*<a name=([^>]+)>/)
-        if @hits.include?($1)
+      if (line=~/^\s*(>?<a[^>]*>)?([^\s<]+).*<a\s+name.*$/)
+      #if (line =~ /^><a name =\s*([^>\s]+)>/ || line=~/^>.*<a name=([^>]+)>/)
+        if @hits.include?($2)
+            p "HIT found"
           # @hits.delete($1) # this was in cs_blast_forward_action.rb only
           if (!@seqlen.nil? && @seqlen == "complete")
             logger.debug "L168 "+$1
@@ -188,6 +211,7 @@ module ForwardHits
               logger.debug "L170 Trembl Hit "+$1
               ret = $1
               File.open(@basename + ".fw_gis", "a") do |file|
+                p "Writing GI to result file " + ret.to_s
                 file.write(ret + "\n")
               end
             end
@@ -276,9 +300,12 @@ module ForwardHits
         @commands << "#{SEQRET}/seq_retrieve.pl -i #{@basename}.fw_gis -o #{@outfile} -b #{BLAST} -unique#{db_option}"
       else
         
+        p "Rewriting  the following hits:"
+        p hits
+
          # Rewrite the forwarding file    
         File.delete(@basename + ".fw_gis") if File.exists?(@basename + ".fw_gis")
-        
+
         #  Write hits to file
         File.open(@basename + ".fw_gis", "w+") do |f|
               f.puts(remove_redundancy(hits))
