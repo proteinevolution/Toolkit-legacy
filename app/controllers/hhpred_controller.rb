@@ -43,7 +43,7 @@ REFORMAT = File.join(BIOPROGS, 'reformat')
     
     # Sort list of directories according to order given in sortlist 
     # probably SCOPe* directories should be renamed do scop*
-    sortlist = Array["\/pdb70", "\/pdb_on_hold","\/SCOPe95","\/SCOPe70", "\/scop95", "\/scop70", "\/scop25", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test", "\/Pfalciparum" ]
+    sortlist = Array["\/pdb70", "\/pdb_on_hold","\/mmcif70" ,"\/SCOPe95","\/SCOPe70", "\/scop95", "\/scop70", "\/scop25", "\/cdd", "\/interpro_", "\/pfamA_", "\/smart", "\/panther_", "\/tigrfam", "\/pirsf", "\/COG", "\/KOG", "\/CATH", "\/supfam", "\/pfam_", "\/pfamB_", "\/cd_", "\/test", "\/Pfalciparum" ]
     if (is_internal?(request.remote_ip))
       sortlist.push("\/stac") # DB of Mateusz Korycinski
     end
