@@ -41,6 +41,7 @@ class HhpredAction < Action
     
     @dbs = params['hhpred_dbs'].nil? ? "" : params['hhpred_dbs']
     if @dbs.kind_of?(Array) then @dbs = @dbs.join(' ') end
+   
     @genomes_dbs = params['genomes_hhpred_dbs'].nil? ? "" : params['genomes_hhpred_dbs']
     if @genomes_dbs.kind_of?(Array) then @genomes_dbs = @genomes_dbs.join(' ') end
     
@@ -306,7 +307,17 @@ class HhpredAction < Action
 
       # HHsearch with query HMM against HMM database
       @commands << "echo 'Searching #{@dbnames} ...' >> #{job.statuslog_path}"
+      
+      if(@dbs =~ /mmcif70/)
+
+      p "Using new HHsearch because of new database"
+   
+      @commands << "hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '/cluster/toolkit/production/databases/hhpred/new_dbs/mmcif70_Dec16/pdb70' -o #{@basename}.hhr -p #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs ${HHLIB}/data/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+      
+      else
+
       @commands << "#{HHSUITE}/hhsearch -cpu 4 -v #{@v} -i #{@basename}.hhm -d '#{@dbs}' -o #{@basename}.hhr -p #{@Pmin} -P #{@Pmin} -Z #{@max_lines} -z 1 -b 1 -B #{@max_lines} -seq #{@max_seqs} -aliw #{@aliwidth} -#{@ali_mode} #{@ss_scoring} #{@realign} #{@mact} #{@compbiascorr} -dbstrlen 10000 -cs ${HHLIB}/data/context_data.lib 1>> #{job.statuslog_path} 2>> #{job.statuslog_path}; echo 'Finished search'";
+    end
     end
 
     prepare_fasta_hhviz_histograms_etc
