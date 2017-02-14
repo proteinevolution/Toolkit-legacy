@@ -1,7 +1,6 @@
 <h3 class="<%= @section["name"] %>">Waiting for results</h3>
 <div class="row">
-	<p><strong>Your job is currently being processed, please be patient. The results of your job will appear in this browser window!</strong>
-	<br />(You may bookmark this page to view your results later if you wish.)</p>
+	<p>Your job is being processed and the results will appear in this browser window!
 </div>
 
 <div class="row">
@@ -50,6 +49,10 @@
 <div class="hr">&nbsp;</div>
 <p class="call-action"><%= link_to('Submit new job', :action => 'index') %></p>
 <p class="call-action"><%= link_to('Submit with same parameters', :action => 'resubmit', :jobid => @job) %></p>
+<font color="red"><strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; Follow us on <a href='https://www.facebook.com/mpitoolkit' target="_blank">Facebook <i class="fa fa-facebook"
+aria-hidden="true"></i> </a> and <a href='https://twitter.com/mpitoolkit' target="_blank">Twitter <i
+class="fa fa-twitter" aria-hidden="true"></i></a></strong></font>
 <div class="spacer">&nbsp;</div>
 	
 <h3 class="<%= @section["name"] %>">Statuslog</h3>
