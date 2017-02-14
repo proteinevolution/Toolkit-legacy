@@ -1,10 +1,6 @@
 package MyPaths;
 
-my $rootdir;
-BEGIN {
-   if (defined $ENV{TK_ROOT}) {$rootdir=$ENV{TK_ROOT};} 
-   else {$rootdir="/cluster";}
-};
+my $rootdir="/cluster/toolkit/production";
 
 use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION);
 use Exporter;
