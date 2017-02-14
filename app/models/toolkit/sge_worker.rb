@@ -373,7 +373,7 @@ class SgeWorker < AbstractWorker
     my_memory = case method
                   
                   ### A ###
-                when "AncesconAction" then 3
+                when "AncesconAction" then 12
                 when "Ali2dAction" then 64 # runs use memsat2 which uses blastpgp
                 when "Aln2plotAction" then 10
                 when "AlnvizAction" then 5
