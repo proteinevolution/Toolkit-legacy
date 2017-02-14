@@ -20,11 +20,8 @@ BEGIN {
 };
 
 use strict;
-use lib "/home/soeding/perl";        # for soeding's computer
-use lib "/cluster/soeding/perl";     # for cluster
 use lib $rootdir."/bioprogs/hhpred"; # for toolkit
 use lib $rootdir."/perl";            # for soeding
-use lib "/cluster/lib";              # for chimaera webserver: ConfigServer.pm
 use MyPaths;                         # config file with path variables for nr, blast, psipred, pdb, dssp etc.
 
 $|= 1; # Activate autoflushing on STDOUT

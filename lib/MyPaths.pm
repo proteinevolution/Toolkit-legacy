@@ -1,7 +1,5 @@
 package MyPaths;
 
-use lib "/cluster/lib";
-use lib "/home/soeding/perl";
 use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION);
 use Exporter;
 our $VERSION=1.00;
@@ -50,7 +48,7 @@ $/="\n";
 if (defined $ENV{TK_ROOT}) {
 
     # Directory paths for 64 bit nodes of toolkit
-    $rootdir=$ENV{TK_ROOT};
+    $rootdir="/cluster/toolkit/production";
     $database_dir = "$rootdir/databases";
     $bioprogs_dir = "$rootdir/bioprogs";
     $pdb_dir = "$database_dir/pdb/all";

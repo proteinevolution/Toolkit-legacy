@@ -28,7 +28,6 @@ BEGIN {
     if (defined $ENV{TK_ROOT}) {$rootdir=$ENV{TK_ROOT};} else {$rootdir="/cluster";}
 };
 use lib "$rootdir/bioprogs/hhpred";
-use lib "/cluster/lib";              # for chimaera webserver: ConfigServer.pm
 
 use strict;
 use MyPaths;                         # config file with path variables for nr, blast, psipred, pdb, dssp etc.
