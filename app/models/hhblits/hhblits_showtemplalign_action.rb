@@ -6,7 +6,19 @@ class HhblitsShowtemplalignAction < Action
   
   def before_perform
     @basename = File.join(job.job_dir, job.jobid)
-    @dba3m = "#{DATABASES}/hhblits/uniprot20_a3m"
+
+    # Read from db file to get back the database
+#counter = 1
+#file = File.new("readfile.rb", "r")
+#while (line = file.gets)
+#    puts "#{counter}: #{line}"
+#    counter = counter + 1
+#end
+#file.close
+
+    dbfile = File.new(@basename+".db", "r") 
+    @dba3m = dbfile.gets + "_a3m"
+    dbfile.close()
     @mode = params["alformat"]
     @hit = params["hits"]
     @oldhit = nil   

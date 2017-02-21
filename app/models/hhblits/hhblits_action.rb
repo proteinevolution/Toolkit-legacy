@@ -35,6 +35,7 @@ class HhblitsAction < Action
     @commands = []
 
     @db = params['hhblits_dbs']
+    File.open(@basename+".db", 'w') { |file| file.write(@db) }
 
     @match_mode = ((@informat == "a3m" || @informat == "a2m" || params["match_mode"].nil?) ? '' : params["match_mode"])
     @maxit = params['maxit']
