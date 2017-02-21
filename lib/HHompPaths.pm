@@ -52,11 +52,11 @@ if (defined $ENV{TK_ROOT}) {
     $calhhm=   "$database_dir/hhpred/cal.hhm"; 
     $proftmb_dir = "$bioprogs_dir/proftmb";
     $prof_db = "$database_dir/standard/uniprot_sprot.fasta $database_dir/standard/uniprot_trembl.fasta";
-    $nr    =   "$database_dir/standard/nr";             # nr database to be used
-    $nre   =   "$database_dir/standard/nre";            # nr database to be used
+    $nr    =   "$database_dir/standard_new/nr";             # nr database to be used
+    $nre   =   "$database_dir/standard_new/nre";            # nr database to be used
 #    $nrf   =   "$database_dir/standard/nrf";            # nr database to be used
-    $nr90  =   "$database_dir/standard/nr90";           # large nr database to be used
-    $nr70  =   "$database_dir/standard/nr70";           # large nr database to be used
+    $nr90  =   "$database_dir/standard_new/nr90";           # large nr database to be used
+    $nr70  =   "$database_dir/standard_new/nr70";           # large nr database to be used
 #    $nr90f =   "$database_dir/standard/nr90f";          # large nr database to be used
 #    $nr70f =   "$database_dir/standard/nr70f";          # reduced nr database to be used
     $dummydb=  "$database_dir/do_not_delete/do_not_delete"; # blast database consisting of just one sequence
