@@ -25,7 +25,7 @@ use Align;
 
 
 # CUSTOMIZE
-my $dbbase=$nre; 
+my $dbbase="/ebio/toolkit_precise/databases/standard/NewToolkitDBs/nre";
 #my $dbbase="/home/soeding/nr/nre"; # will use PSI-BLAST dbs $dbbase."90" and $dbbase."70" 
                                    # It is recommended to use nre = nr + env. 
                                    # 90: filtered with CD-HIT to 90% maximum pairwise sequence identity
