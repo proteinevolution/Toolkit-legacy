@@ -33,9 +33,7 @@
 	</form>
 	</div>
 </div><div class="spacer">&nbsp;</div>
-	
 <h3 class="<%= @section["name"] %>">Job specs</h3>
-			
 <div class="row">
 	<div class="slabel">ID</div>
 	<div class="bformw"><strong><%= @job.jobid %></strong>&nbsp;&nbsp;(<%= @job.config['title'] %>)</div>
@@ -49,11 +47,7 @@
 <div class="hr">&nbsp;</div>
 <p class="call-action"><%= link_to('Submit new job', :action => 'index') %></p>
 <p class="call-action"><%= link_to('Submit with same parameters', :action => 'resubmit', :jobid => @job) %></p>
-<font color="red"><strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-&nbsp; Follow us on <a href='https://www.facebook.com/mpitoolkit' target="_blank">Facebook <i class="fa fa-facebook"
-aria-hidden="true"></i> </a> and <a href='https://twitter.com/mpitoolkit' target="_blank">Twitter <i
-class="fa fa-twitter" aria-hidden="true"></i></a></strong></font>
+<font color="green"><strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Follow us on <a href='https://www.facebook.com/mpitoolkit' target="_blank"> <i class="fa fa-facebook fa-2x" aria-hidden="true"></i> </a> and <a href='https://twitter.com/mpitoolkit' target="_blank"> <i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a></strong></font>
 <div class="spacer">&nbsp;</div>
-	
 <h3 class="<%= @section["name"] %>">Statuslog</h3>
 <div class="statuslog"><%= @job.render_statuslog %></div>
