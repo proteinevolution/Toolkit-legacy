@@ -55,14 +55,17 @@ if ($multipleGIsPerLine) {
 		$tmparr{$1}=1;
 	    }
 	}
+
+	
  	# New NCBI accession.version ids; 
 	# The FASTA deflines for the different entries that belong to one 
 	# record are separated by control-A characters.
 	# >XP_642131.1 hypothetical protein DDB_G0277827 [Dictyostelium discoideum AX4]^AP54670.1 RecName: Full=Calfumirin-1; Short=CAF-1
 	else
 	{
-		while ($inline4loop =~ m/(\>|\cA|\^A)(\S+)/g){
-            		$tmparr{$2}=1;
+		while ($inline4loop =~ m/(\>|\cA|\^A)(\S+)\.(\d+)/g){
+			my $key = $1.".".$2;
+	       		$tmparr{$key}=1;
 		}
 	}
     }
@@ -73,9 +76,12 @@ if ($multipleGIsPerLine) {
 	    $tmparr{$1}=1;
 	} elsif ($inline=~/^\>nr20\|.*\|(\d+)/i) {
 	    $tmparr{$1}=1;
-	} elsif ($inline=~/^\>(\S+)/i) {
-            $tmparr{$1}=1;
+	} elsif ($inline=~/^\>(\S+)\.(\d+)/) {
+
+	    my $key = $1.".".$2;
+            $tmparr{$key}=1;
 	}
+
     }
 }
 close FILEIN;
