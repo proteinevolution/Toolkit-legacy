@@ -26,5 +26,6 @@ class FrpredJob < Job
     if (File.exists?(@basename + "_pdb.html"))
       @pdb = true
     end
+    
   end
 end

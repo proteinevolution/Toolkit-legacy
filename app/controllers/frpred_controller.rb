@@ -44,4 +44,5 @@ class FrpredController < ToolController
 		@tree = params['tree'] ? params['tree'] : ""
 		render(:layout => 'plain')
 	end
+
 end

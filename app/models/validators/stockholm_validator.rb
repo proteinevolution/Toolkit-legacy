@@ -14,7 +14,7 @@ module Toolkit
           configuration = { :max_seqs => 100,
             :min_seqs => 1,
             :max_length => 20000,					
-            :white_list => "ABUCZDEFGHIKLMNPQRSTVWYabcdefghiklmnpqrstvwyzxuX-",
+            :white_list => "-ABUCZDEFGHIKLMNPQRSTVWYabcdefghiklmnpqrstvwyzxuX.",
             :informat_field => nil,
             :informat => nil,
             :inputmode => "alignment",
@@ -89,9 +89,11 @@ module Toolkit
             lines.each do |line|
               
               if (line =~ /^\s*$/ && !flag) then next end
+	      if (line =~ /^\/\//) then break end
               if (line =~ /^\s*\#\s*stockholm/i)
                 flag = true
               elsif (flag)
+
                 if (line =~ /^\s*$/)
                   if (n > 0)
                     if (num_seqs > 0)
@@ -109,7 +111,7 @@ module Toolkit
                   end
                 elsif (line =~ /^\#/)
                   next
-                elsif (line =~ /\s*(\S+?)\s+(\S*)\s*$/)
+                elsif (line =~ /^(\S+)\s+(\S+)\s*/)
                   n += 1
                   name = $1
                   seq = $2
@@ -160,7 +162,7 @@ module Toolkit
                 error = "Infile is not correct STOCKHOLM format! Number of sequences per block is different."
               end
             end
-            
+            num_seqs = n
             if (num_seqs > configuration[:max_seqs])
               error = "Input contains more than #{configuration[:max_seqs]} sequence#{1 == configuration[:max_seqs] ? "" : "s"}!"
             elsif(error.nil? && num_seqs< configuration[:min_seqs])
