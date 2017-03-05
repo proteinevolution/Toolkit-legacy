@@ -21,10 +21,10 @@
 			// Styling
 			fontFamily: 'helvetica',
 			fontColor: '#FFFFFF',
-			fontSize: '13px',
+			fontSize: '12px',
 			backgroundColor: '#000000',
 			backgroundOpacity: '80',
-			linkColor: '#CA0000'
+			linkColor: '#ff0000'
 		}, options);
 		
 		// Perform consent checks
@@ -186,7 +186,8 @@
 				settings.message += 'use are essential for parts of the site to operate and have already been set.';
 			} else {
 				// Implied consent message
-				settings.message = '<b>Dear Toolkit Users, we are going to replace the current version of the Toolkit with an entirely new version on May 1. Please note that we will not be carrying over user accounts and job data associated with them, and therefore request you to make local backups. Follow us on Facebook and Twitter for more updates.</b>';
+				settings.message = '<b>Dear Toolkit Users, we are going to replace the current version of the Toolkit with an entirely new version on May 1. Please note that we will not be carrying over user accounts and job data associated with them, and therefore request you to make local backups. Follow us on <a href=\'https://www.facebook.com/mpitoolkit\'><font color=\"red\">Facebook</font></a> and <a href=\'https://twitter.com/mpitoolkit\'><font color=\"red\">Twitter</font></a> for more updates.</b>';
+
 				 //settings.message = '<b> Due to a network problem, our cluster system is out of order presently and jobs are not being scheduled for execution. All incomplete jobs will have to be resubmitted. We are sorry for the inconvenience.</b>';
 			}		
 		}	
